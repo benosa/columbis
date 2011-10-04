@@ -1,3 +1,8 @@
 ru:
+  home: 'Домой'
   users: 'Пользователи'
+  tourists: 'Туристы'
+  operators: 'Операторы'
+  claims: 'Заявки'
+  reservations: 'Бронирования'
 

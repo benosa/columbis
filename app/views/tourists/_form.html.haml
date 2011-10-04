@@ -1,0 +1,39 @@
+= form_for(@tourist) do |f|
+  - if @tourist.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@tourist.errors.count, "error")
+        prohibited this user from being saved:
+      %ul
+        - @tourist.errors.full_messages.each do |msg|
+          %li= msg
+  %p
+    = f.label :name
+    %br/
+    = f.text_field :name
+  %p
+    = f.label :pser
+    %br/
+    = f.text_field :pser
+  %p
+    = f.label :pnum
+    %br/
+    = f.text_field :pnum
+  %p
+    = f.label :pvalid
+    %br/
+    = f.text_field :pvalid
+  %p
+    = f.label :phonenum
+    %br/
+    = f.text_field :phonenum
+  %p
+    = f.label :address
+    %br/
+    = f.text_field :address
+  %p
+    = f.label :dateofbirth
+    %br/
+    = f.text_field :dateofbirth
+  .actions
+    = f.submit

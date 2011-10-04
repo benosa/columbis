@@ -1,0 +1,32 @@
+%h1 All Tourists
+%table#tourists
+  %thead
+    %tr
+      %th ФИО
+      %th Серия паспорта
+      %th Номер паспорта
+      %th Действителен до
+      %th Номер телефона
+      %th Адрес
+      %th Дата рождения
+      %th Добавлен
+      %th Изменен
+      %th
+      %th
+  %tbody
+    - @tourists.each do |tourist|
+      %tr
+        %th= tourist.name
+        %th= tourist.pser
+        %th= tourist.pnum
+        %th= tourist.pvalid
+        %th= tourist.phonenum
+        %th= tourist.address
+        %th= tourist.dateofbirth
+        %th= tourist.created_at.to_s(:datetime).downcase
+        %th= tourist.updated_at.to_s(:datetime).downcase
+        %th= link_to "Edit", edit_tourist_path(tourist)
+        %th= link_to "Delete", tourist, :method => :delete, :confirm => "Are you sure?"
+
+= link_to "Добавить туриста", new_tourist_path
+

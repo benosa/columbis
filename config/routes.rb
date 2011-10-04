@@ -2,6 +2,7 @@ Tourism::Application.routes.draw do
   devise_for :users
 
   resources :users
+  resources :tourists
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

@@ -1,4 +1,8 @@
 Tourism::Application.routes.draw do
+  resources :reservations
+
+  resources :claims
+
   resources :operators
 
   devise_for :users

@@ -1,0 +1,40 @@
+= form_for @client do |f|
+  = f.error_messages
+  %p
+    = f.label :last_name
+    %br
+    = f.text_field :last_name
+  %p
+    = f.label :first_name
+    %br
+    = f.text_field :first_name
+  %p
+    = f.label :middle_name
+    %br
+    = f.text_field :middle_name
+  %p
+    = f.label :passport_series
+    %br/
+    = f.text_field :passport_series
+  %p
+    = f.label :passport_number
+    %br/
+    = f.text_field :passport_number
+  %p
+    = f.label :passport_valid_until
+    %br/
+    = f.text_field :passport_valid_until
+  %p
+    = f.label :phone_number
+    %br/
+    = f.text_field :phone_number
+  %p
+    = f.label :address
+    %br/
+    = f.text_field :address
+  %p
+    = f.label :date_of_birth
+    %br/
+    = f.text_field :date_of_birth
+  %p
+    = f.submit

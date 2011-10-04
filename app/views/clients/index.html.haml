@@ -1,0 +1,19 @@
+%h1 Клиенты
+%table#clients
+  %thead
+    %tr
+      %th ФИО
+      %th Серия паспорта
+      %th Номер паспорта
+      %th Действителен до
+      %th Номер телефона
+      %th Адрес
+      %th Дата рождения
+      %th Добавлен
+      %th Изменен
+      %th
+      %th
+  %tbody
+    =render :partial => 'client', :collection => @clients
+
+= link_to "Добавить клиента", new_client_path

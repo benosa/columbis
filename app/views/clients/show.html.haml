@@ -1,0 +1,23 @@
+- title "Клиент"
+
+%p
+  ФИО: #{@client.full_name}
+%p
+  Серия паспорта: #{@client.passport_series}
+%p
+  Номер паспорта: #{@client.passport_number}
+%p
+  Действителен до: #{@client.passport_valid_until}
+%p
+  Номер телефона: #{@client.phone_number}
+%p
+  Адрес: #{@client.address}
+%p
+  Дата рождения: #{@client.date_of_birth}
+
+%p
+  = link_to "Edit", edit_client_path(@client)
+  |
+  = link_to "Destroy", @client, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", clients_path

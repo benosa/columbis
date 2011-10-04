@@ -11,13 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111004134752) do
+ActiveRecord::Schema.define(:version => 20111004191937) do
 
   create_table "claims", :force => true do |t|
     t.integer  "tourist_id"
     t.integer  "user_id"
     t.text     "description"
     t.datetime "check_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "clients", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_name"
+    t.integer  "passport_series"
+    t.integer  "passport_number"
+    t.string   "phone_number"
+    t.string   "address"
+    t.date     "passport_valid_until"
+    t.date     "date_of_birth"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

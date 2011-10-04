@@ -1,0 +1,17 @@
+%h1 All Users
+%table#users
+  %thead
+    %tr
+      %th Username
+      %th First Name
+      %th Last Name
+      %th Email
+      %th Login Count
+      %th Last Sign In
+      %th Role
+      %th Created At
+      %th Last Edited
+      %th
+      %th
+  %tbody
+    = render :partial => 'user', :collection => @users

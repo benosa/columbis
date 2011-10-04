@@ -18,6 +18,7 @@ end
 
 gem 'devise'
 gem 'cancan'
+#gem 'russian'
 
 gem 'jquery-rails'
 gem 'therubyracer'

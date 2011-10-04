@@ -14,19 +14,7 @@
       %th
       %th
   %tbody
-    - @tourists.each do |tourist|
-      %tr
-        %th= tourist.name
-        %th= tourist.pser
-        %th= tourist.pnum
-        %th= tourist.pvalid
-        %th= tourist.phonenum
-        %th= tourist.address
-        %th= tourist.dateofbirth
-        %th= tourist.created_at.to_s(:datetime).downcase
-        %th= tourist.updated_at.to_s(:datetime).downcase
-        %th= link_to "Edit", edit_tourist_path(tourist)
-        %th= link_to "Delete", tourist, :method => :delete, :confirm => "Are you sure?"
+    =render :partial => 'tourist', :collection => @tourists
 
 = link_to "Добавить туриста", new_tourist_path
 

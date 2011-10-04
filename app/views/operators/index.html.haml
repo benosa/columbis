@@ -1,0 +1,13 @@
+- title "Operators"
+
+%table
+  %tr
+    %th Name
+  - for operator in @operators
+    %tr
+      %td= operator.name
+      %td= link_to 'Show', operator
+      %td= link_to 'Edit', edit_operator_path(operator)
+      %td= link_to 'Destroy', operator, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Operator", new_operator_path

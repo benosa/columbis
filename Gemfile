@@ -31,5 +31,6 @@ group :test do
   gem 'turn', :require => false
   gem 'fabrication'
   gem 'rspec-rails'
+  gem 'mocha'
 end
 

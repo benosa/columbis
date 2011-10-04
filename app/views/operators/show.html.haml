@@ -1,0 +1,12 @@
+- title "Operator"
+
+%p
+  %strong Name:
+  = @operator.name
+
+%p
+  = link_to "Edit", edit_operator_path(@operator)
+  |
+  = link_to "Destroy", @operator, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", operators_path

@@ -5,8 +5,8 @@
     %title
       = yield(:title) || "Untitled"
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
-    = stylesheet_link_tag "application"
-    = javascript_include_tag :defaults
+    = stylesheet_link_tag 'application'
+    = javascript_include_tag 'application'
     = csrf_meta_tag
     = yield(:head)
 
@@ -16,6 +16,7 @@
         = content_tag :div, msg, :id => "flash_#{name}"
 
       %ul.hmenu
+        %li= link_to t('home'), root_url
         = render 'devise/menu/registration_items'
         = render 'devise/menu/login_items'
 

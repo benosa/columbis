@@ -1,7 +1,9 @@
 class CreateTourists < ActiveRecord::Migration
   def change
     create_table :tourists do |t|
-      t.string :name
+      t.string :firstname
+      t.string :lastname
+      t.string :middlename
       t.integer :pser
       t.integer :pnum
       t.date :dateofbirth

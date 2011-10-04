@@ -11,10 +11,10 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.lockable :lock_strategy => :failed_attempts, :unlock_strategy => :both
       # t.token_authenticatable
     
-      t.string :username	#логин
+      t.string :login	#логин
       t.string :lastname	#фамилия 
       t.string :firstname	#имя
-      t.string :patronymic	#отчество
+      t.string :middlename	#отчество
 
       t.timestamps
     end

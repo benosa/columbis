@@ -6,11 +6,11 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, 
-		  :username, :firstname, :lastname, :patronymic, :role
+		  :login, :firstname, :lastname, :middlename, :role
 
 
-  validates_uniqueness_of :username 
-  validates_presence_of :username, :role  
+  validates_uniqueness_of :login 
+  validates_presence_of :login, :role  
 
   ROLES = %w[admin manager accountant]
 

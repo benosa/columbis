@@ -20,7 +20,9 @@ ActiveRecord::Schema.define(:version => 20111004112901) do
   end
 
   create_table "tourists", :force => true do |t|
-    t.string   "name"
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "middlename"
     t.integer  "pser"
     t.integer  "pnum"
     t.date     "dateofbirth"
@@ -42,10 +44,10 @@ ActiveRecord::Schema.define(:version => 20111004112901) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "username"
+    t.string   "login"
     t.string   "lastname"
     t.string   "firstname"
-    t.string   "patronymic"
+    t.string   "middlename"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"

@@ -8,9 +8,9 @@
         - @user.errors.full_messages.each do |msg|
           %li= msg
   %p
-    = f.label :username
+    = f.label :login
     %br/
-    = f.text_field :username
+    = f.text_field :login
   %p
     = f.label :firstname
     %br/
@@ -20,9 +20,9 @@
     %br/
     = f.text_field :lastname
   %p
-    = f.label :patronymic
+    = f.label :middlename
     %br/
-    = f.text_field :patronymic
+    = f.text_field :middlename
   %p
     = f.label :email
     %br/

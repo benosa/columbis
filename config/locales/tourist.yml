@@ -1,0 +1,15 @@
+ru:
+  helpers:
+    label:
+      tourist:
+        name: "ФИО"
+        pser: "Серия паспорта"
+        pnum: "Номер паспорта" 
+        phonenum: "Номер телефона"
+        address: "Адрес"
+        pvalid: "Действителен до"
+        dateofbirth: "Дата рождения"
+    
+      
+    
+    

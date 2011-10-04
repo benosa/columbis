@@ -8,40 +8,40 @@
         - @tourist.errors.full_messages.each do |msg|
           %li= msg
   %p
-    = f.label :firstname
+    = f.label :first_name
     %br/
-    = f.text_field :firstname
+    = f.text_field :first_name
   %p
-    = f.label :lastname
+    = f.label :last_name
     %br/
-    = f.text_field :lastname
+    = f.text_field :last_name
   %p
-    = f.label :middlename
+    = f.label :middle_name
     %br/
-    = f.text_field :middlename
+    = f.text_field :middle_name
   %p
-    = f.label :pser
+    = f.label :passport_series
     %br/
-    = f.text_field :pser
+    = f.text_field :passport_series
   %p
-    = f.label :pnum
+    = f.label :passport_number
     %br/
-    = f.text_field :pnum
+    = f.text_field :passport_number
   %p
-    = f.label :pvalid
+    = f.label :passport_valid_until
     %br/
-    = f.text_field :pvalid
+    = f.text_field :passport_valid_until
   %p
-    = f.label :phonenum
+    = f.label :phone_number
     %br/
-    = f.text_field :phonenum
+    = f.text_field :phone_number
   %p
     = f.label :address
     %br/
     = f.text_field :address
   %p
-    = f.label :dateofbirth
+    = f.label :date_of_birth
     %br/
-    = f.text_field :dateofbirth
+    = f.text_field :date_of_birth
   .actions
     = f.submit

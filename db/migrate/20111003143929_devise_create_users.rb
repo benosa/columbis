@@ -12,9 +12,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.token_authenticatable
     
       t.string :login	#логин
-      t.string :lastname	#фамилия 
-      t.string :firstname	#имя
-      t.string :middlename	#отчество
+      t.string :last_name	#фамилия 
+      t.string :first_name	#имя
+      t.string :middle_name	#отчество
 
       t.timestamps
     end

@@ -1,14 +1,14 @@
 class CreateTourists < ActiveRecord::Migration
   def change
     create_table :tourists do |t|
-      t.string :firstname
-      t.string :lastname
-      t.string :middlename
-      t.integer :pser
-      t.integer :pnum
-      t.date :dateofbirth
-      t.date :pvalid
-      t.string :phonenum
+      t.string :first_name
+      t.string :last_name
+      t.string :middle_name
+      t.integer :passport_series
+      t.integer :passport_number
+      t.date :date_of_birth
+      t.date :passport_valid_until
+      t.string :phone_number
       t.string :address
 
       t.timestamps

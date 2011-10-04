@@ -1,13 +1,13 @@
 %tr
-  %td= tourist.lastname
-  %td= tourist.firstname
-  %td= tourist.middlename
-  %td= tourist.pser
-  %td= tourist.pnum
-  %td= tourist.pvalid
-  %td= tourist.phonenum
+  %td= tourist.last_name
+  %td= tourist.first_name
+  %td= tourist.middle_name
+  %td= tourist.passport_series
+  %td= tourist.passport_number
+  %td= tourist.passport_valid_until
+  %td= tourist.phone_number
   %td= tourist.address
-  %td= tourist.dateofbirth
+  %td= tourist.date_of_birth
   %td= tourist.created_at.to_s(:datetime).downcase
   %td= tourist.updated_at.to_s(:datetime).downcase
   %td= link_to "Edit", edit_tourist_path(tourist)

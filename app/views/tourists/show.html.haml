@@ -1,16 +1,16 @@
 %p
   ФИО: #{@tourist.fullname}
 %p
-  Серия паспорта: #{@tourist.pser}
+  Серия паспорта: #{@tourist.passport_series}
 %p
-  Номер паспорта: #{@tourist.pnum}
+  Номер паспорта: #{@tourist.passport_number}
 %p
-  Действителен до: #{@tourist.pvalid}
+  Действителен до: #{@tourist.passport_valid_until}
 %p
-  Номер телефона: #{@tourist.phonenum}
+  Номер телефона: #{@tourist.phone_number}
 %p
   Адрес: #{@tourist.address}
 %p
-  Дата рождения: #{@tourist.dateofbirth}
+  Дата рождения: #{@tourist.date_of_birth}
 
 = link_to "Туристы", tourists_path

@@ -1,0 +1,15 @@
+- title "Currency Course"
+
+%p
+  %strong Currency:
+  = @currency_course.currency
+%p
+  %strong Course:
+  = @currency_course.course
+
+%p
+  = link_to "Edit", edit_currency_course_path(@currency_course)
+  |
+  = link_to "Destroy", @currency_course, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", currency_courses_path

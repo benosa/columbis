@@ -37,6 +37,10 @@
       %br/
       = f.password_field :password_confirmation
   %p
+    = f.label :office_id
+    %br/
+    = f.collection_select :office_id, Office.all, :id, :name
+  %p
     = f.label :role
     %br/
     = f.collection_select :role, User::ROLES, :to_s, :humanize

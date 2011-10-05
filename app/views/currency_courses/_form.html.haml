@@ -1,0 +1,17 @@
+= form_for @currency_course do |f|
+  = f.error_messages
+  %p
+    = f.label :currency
+    %br
+    = f.select :currency, CurrencyCourse::CURRENCIES.collect {|o| [ o.upcase, o ] }
+  %p
+    = f.label :on_date
+    %br
+    = f.text_field :on_date
+  %p
+    = f.label :course
+    %br
+    = f.text_field :course
+  %p
+    = f.submit
+

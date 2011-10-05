@@ -3,11 +3,11 @@
   %p
     = f.label :tourist_id
     %br
-    = f.select :tourist_id, Tourist.all.collect {|o| [ o.name, o.id ] }
+    = f.select :tourist_id, Tourist.all.collect {|o| [ o.first_last_name, o.id ] }
   %p
     = f.label :user_id
     %br
-    = f.select :user_id, User.all.collect {|o| [ o.username, o.id ] }
+    = f.select :user_id, User.all.collect {|o| [ o.first_last_name, o.id ] }
   %p
     = f.label :description
     %br

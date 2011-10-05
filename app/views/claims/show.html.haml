@@ -2,10 +2,10 @@
 
 %p
   %strong Tourist
-  = @claim.tourist.try(:name)
+  = @claim.tourist.try(:first_last_name)
 %p
   %strong User:
-  = @claim.user.try(:username)
+  = @claim.user.try(:login)
 
 %p
   %strong Check:

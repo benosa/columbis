@@ -1,4 +1,8 @@
 Tourism::Application.routes.draw do
+  resources :offices
+
+  resources :currency_courses
+
   resources :reservations
 
   resources :claims

@@ -1,0 +1,12 @@
+ru:
+  currency_courses:
+    index:
+      currency_courses: 'Курсы валют'
+      actual_cources: 'Текущие курсы'
+      new_currency_course: 'Добавить новый курс'
+
+      currency: 'Валюта'
+      course: 'Курс'
+      on_date: 'На дату'
+      set_by: 'Установил'
+

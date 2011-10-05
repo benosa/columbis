@@ -1,0 +1,13 @@
+- title "Offices"
+
+%table
+  %tr
+    %th Name
+  - for office in @offices
+    %tr
+      %td= office.name
+      %td= link_to 'Show', office
+      %td= link_to 'Edit', edit_office_path(office)
+      %td= link_to 'Destroy', office, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Office", new_office_path

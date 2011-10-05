@@ -1,9 +1,7 @@
 ru:
   home: 'Домой'
-  users: 'Пользователи'
-  tourists: 'Туристы'
-  operators: 'Операторы'
-  claims: 'Заявки'
-  reservations: 'Бронирования'
-  clients: 'Потенциальные клиенты'
+  show: 'Показать'
+  edit: 'Изменить'
+  destroy: 'Удалить'
+  are_you_sure: 'Вы уверены?'
 

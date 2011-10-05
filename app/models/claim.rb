@@ -5,5 +5,8 @@ class Claim < ActiveRecord::Base
   belongs_to :tourist
   has_many :tourists
 
+  validates_presence_of :user_id
+  validates :currency, :inclusion => CurrencyCourse::CURRENCIES
+  validates_presence_of :course, :currency
 end
 

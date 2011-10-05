@@ -1,0 +1,28 @@
+- title t('.currency_courses')
+= t('.actual_cources') + ':'
+%ul
+  - for currency_course in @actual_courses
+    %li
+      %strong= currency_course.currency.upcase
+      = currency_course.course
+
+%table
+  %tr
+    %th= t('.currency')
+    %th= t('.course')
+    %th= t('.on_date')
+    %th= t('.set_by')
+  - for currency_course in @currency_courses
+    %tr
+      %td= currency_course.currency.upcase
+      %td= currency_course.course
+      %td
+        = currency_course.on_date.strftime '%d-%m-%Y'
+        = currency_course.on_date.strftime '%H:%M:%S'
+      %td= currency_course.user.first_last_name
+      %td= link_to t('show'), currency_course
+      %td= link_to t('edit'), edit_currency_course_path(currency_course)
+      %td= link_to t('destroy'), currency_course, :confirm => t('are_you_sure'), :method => :delete
+
+%p= link_to t('.new_currency_course'), new_currency_course_path
+

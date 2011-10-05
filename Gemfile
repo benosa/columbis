@@ -6,6 +6,12 @@ gem 'pg'
 gem 'haml'
 gem 'rack', '1.3.3'
 
+gem 'devise'
+gem 'cancan'
+
+gem 'jquery-rails'
+gem 'therubyracer'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -13,13 +19,6 @@ group :assets do
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
 end
-
-gem 'devise'
-gem 'cancan'
-#gem 'russian'
-
-gem 'jquery-rails'
-gem 'therubyracer'
 
 group :development do
   gem 'mongrel', '>= 1.2.0.pre2'

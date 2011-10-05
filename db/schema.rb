@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111004191937) do
+ActiveRecord::Schema.define(:version => 20111005195225) do
 
   create_table "claims", :force => true do |t|
     t.integer  "tourist_id"
@@ -36,15 +36,25 @@ ActiveRecord::Schema.define(:version => 20111004191937) do
     t.datetime "updated_at"
   end
 
-  create_table "operators", :force => true do |t|
+  create_table "currency_courses", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "on_date",                     :null => false
+    t.string   "currency",                    :null => false
+    t.float    "course",     :default => 0.0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "currency_courses", ["currency", "on_date"], :name => "index_currency_courses_on_currency_and_on_date"
+
+  create_table "offices", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "reservations", :force => true do |t|
+  create_table "operators", :force => true do |t|
     t.string   "name"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -81,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20111004191937) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"
+    t.integer  "office_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

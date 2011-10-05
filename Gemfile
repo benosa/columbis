@@ -2,11 +2,9 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
 
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
 gem 'haml'
+gem 'rack', '1.3.3'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -33,5 +31,6 @@ group :test do
   gem 'fabrication'
   gem 'rspec-rails'
   gem 'mocha'
+  gem 'factory_girl_rails'
 end
 

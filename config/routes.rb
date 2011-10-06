@@ -17,6 +17,10 @@ Tourism::Application.routes.draw do
 
   resources :clients
 
+  resources :companies
+  
+  resources :addresses
+
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)

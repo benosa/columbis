@@ -1,0 +1,33 @@
+= form_for @address do |f|
+  = f.error_messages
+  %p
+    = f.label :region, 'Region'
+    %br/
+    = f.text_field :region
+  %p
+    = f.label :street
+    %br/
+    = f.text_field :street
+  %p
+    = f.label :house_number
+    %br/
+    = f.text_field :house_number
+  %p
+    = f.label :housing, 'Housing'
+    %br/
+    = f.text_field :housing
+  %p
+    = f.label :office_number
+    %br/
+    = f.text_field :office_number
+  %p
+    = f.label :phone_number
+    %br/
+    = f.text_field :phone_number
+  %p
+    = f.label :zip_code
+    %br/
+    = f.text_field :zip_code
+
+  %p
+    = f.submit

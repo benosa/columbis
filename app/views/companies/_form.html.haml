@@ -1,0 +1,19 @@
+= form_for(@company) do |f|
+  = f.error_messages
+  %p
+    = f.label :title
+    %br/
+    = f.text_field :title
+  %p
+    = f.label :email
+    %br/
+    = f.text_field :email
+  %p
+    = f.label :oficial_letter_signature
+    %br/
+    = f.text_field :oficial_letter_signature
+
+  = f.fields_for :address do |address|
+    = render :partial => 'shared/address', :locals => {:f => address}
+  %p
+    = f.submit

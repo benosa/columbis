@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111005195225) do
+ActiveRecord::Schema.define(:version => 20111006084917) do
+
+  create_table "addresses", :force => true do |t|
+    t.integer  "addressable_id"
+    t.string   "addressable_type"
+    t.string   "region"
+    t.integer  "zip_code"
+    t.string   "house_number"
+    t.string   "housing"
+    t.string   "office_number"
+    t.string   "street"
+    t.string   "phone_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "claims", :force => true do |t|
     t.integer  "tourist_id"
@@ -32,6 +46,16 @@ ActiveRecord::Schema.define(:version => 20111005195225) do
     t.string   "address"
     t.date     "passport_valid_until"
     t.date     "date_of_birth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "companies", :force => true do |t|
+    t.string   "title"
+    t.string   "email"
+    t.string   "oficial_letter_signature"
+    t.integer  "country_id"
+    t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

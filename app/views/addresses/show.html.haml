@@ -1,0 +1,31 @@
+- title "Address"
+
+%p
+  %strong region:
+  = @address.region
+  %br/
+  %strong street:
+  = @address.street
+  %br/
+  %strong house_number:
+  = @address.house_number
+  %br/
+  %strong housing:
+  = @address.housing
+  %br/
+  %strong office_number:
+  = @address.office_number
+  %br/
+  %strong phone_number:
+  = @address.phone_number
+  %br/
+  %strong zip_code:
+  = @address.zip_code
+
+
+%p
+  = link_to "Edit", edit_address_path(@address)
+  |
+  = link_to "Destroy", @address, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", addresses_path

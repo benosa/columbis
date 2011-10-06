@@ -1,0 +1,24 @@
+- title "Company"
+
+%p
+  %strong Название
+  = @company.title
+  %br/
+  %strong email:
+  = @company.email
+  %br/
+  %strong Подпись:
+  = @company.oficial_letter_signature
+  %br/
+  %strong Полный адрес:
+  - if @company.address.present?
+    = @company.address.full_address
+  - else
+    Адрес не задан
+
+%p
+  = link_to "Edit", edit_company_path(@company)
+  |
+  = link_to "Destroy", @company, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", companies_path

@@ -1,0 +1,26 @@
+- title "companies"
+
+%table#companies
+  %thead
+    %tr
+      %th Название
+      %th Электронная почта
+      %th Официальная подпись
+      %th Адрес
+      %th
+      %th
+  %tbody
+    - for company in @companies
+      %tr
+        %td= company.title
+        %td= company.email
+        %td= company.oficial_letter_signature
+        - if company.address.present?
+          %td= company.address.full_address
+        - else
+          %td Нет адреса
+        %td= link_to 'Show', company
+        %td= link_to 'Edit', edit_company_path(company)
+        %td= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Company", new_company_path

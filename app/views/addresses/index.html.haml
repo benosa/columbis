@@ -1,0 +1,29 @@
+- title "Addresses"
+
+%table#addresses
+  %thead
+    %tr
+      %th Регион
+      %th Улица
+      %th Номер дома
+      %th Корпус
+      %th Номер офиса
+      %th Телефон
+      %th Почтовый индекс
+      %th
+      %th
+  %tbody
+    - for address in @addresses
+      %tr
+        %td= address.region
+        %td= address.street
+        %td= address.house_number
+        %td= address.housing
+        %td= address.office_number
+        %td= address.phone_number
+        %td= address.zip_code
+        %td= link_to 'Show', address
+        %td= link_to 'Edit', edit_address_path(address)
+        %td= link_to 'Destroy', address, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Address", new_address_path

@@ -3,10 +3,8 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new(:catalog_id => params[:catalog_id])
-    if @catalog.item_fields.present?
-      @catalog.item_fields.each do
-        @item.notes.build
-      end
+    @catalog.item_fields.each do
+      @item.notes.build
     end
   end
 

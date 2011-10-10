@@ -4,6 +4,8 @@
     = f.label :name
     %br
     = f.text_field :name
+  = f.fields_for :item_fields do |item_field|
+    = render :partial => 'item_fields/item_field', :locals => {:f => item_field}
   %p
     = f.submit
 

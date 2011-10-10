@@ -1,6 +1,7 @@
 class CatalogsController < ApplicationController
   def new
     @catalog = Catalog.new
+    3.times {@catalog.item_fields.build}
   end
 
   def create

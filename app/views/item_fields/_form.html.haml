@@ -1,0 +1,10 @@
+= form_for ([@catalog, @item_field]) do |f|
+  = f.error_messages
+  %p
+    = f.hidden_field :catalog_id
+  %p
+    = f.label :name
+    %br/
+    = f.text_field :name
+  %p
+    = f.submit

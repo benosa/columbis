@@ -1,0 +1,9 @@
+%p
+  = f.label :name
+  %br/
+  = f.text_field :name
+  %br/
+
+  = f.fields_for :notes do |notes|
+    = render :partial => 'shared/notes', :locals => {:f => notes}
+

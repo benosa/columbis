@@ -1,0 +1,12 @@
+- title "ItemField"
+
+%p
+  %strong название:
+  = @item_field.name
+
+%p
+  = link_to "Edit", edit_catalog_item_field_path(@item_field.catalog_id, @item_field.id)
+  |
+  = link_to "Destroy", catalog_item_field_path(@item_field.catalog_id, @item_field.id), :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", catalog_item_fields_path(@item_field.catalog_id)

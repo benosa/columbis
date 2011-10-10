@@ -1,0 +1,32 @@
+- title "Catalog"
+
+%p
+  %strong Название каталога:
+  = @catalog.name
+
+%table
+  %thead
+    %tr
+      - for item_field in @catalog.item_fields
+        %th= item_field.name
+      %th
+      %th
+  %tbody
+    - for item in @catalog.items
+      %tr
+        - for note in item.notes
+          - if note.value.present?
+            %td= note.value
+          - else
+            %td Пусто
+        %td= link_to "Edit", edit_catalog_item_path(@catalog,item)
+        %td= link_to "Destroy", catalog_item_path(@catalog,item), :confirm => 'Are you sure?', :method => :delete
+
+
+%p
+  = link_to "Add columns", new_catalog_item_field_path(@catalog)
+  |
+  = link_to "Add values", new_catalog_item_path(@catalog)
+  |
+  = link_to "View All", catalogs_path
+

@@ -1,0 +1,13 @@
+- title "Catalogs"
+
+%table
+  %tr
+    %th Name
+  - for catalog in @catalogs
+    %tr
+      %td= catalog.name
+      %td= link_to 'Show', catalog
+      %td= link_to 'Edit', edit_catalog_path(catalog)
+      %td= link_to 'Destroy', catalog, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Catalog", new_catalog_path

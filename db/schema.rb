@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111006084917) do
+ActiveRecord::Schema.define(:version => 20111010131925) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -23,6 +23,12 @@ ActiveRecord::Schema.define(:version => 20111006084917) do
     t.string   "office_number"
     t.string   "street"
     t.string   "phone_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "catalogs", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,6 +76,27 @@ ActiveRecord::Schema.define(:version => 20111006084917) do
   end
 
   add_index "currency_courses", ["currency", "on_date"], :name => "index_currency_courses_on_currency_and_on_date"
+
+  create_table "item_fields", :force => true do |t|
+    t.integer  "catalog_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "items", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "catalog_id"
+  end
+
+  create_table "notes", :force => true do |t|
+    t.integer  "item_id"
+    t.integer  "item_field_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "offices", :force => true do |t|
     t.string   "name"

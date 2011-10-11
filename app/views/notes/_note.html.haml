@@ -1,9 +1,9 @@
 %p
   = f.hidden_field :item_id
 %p
-  = f.label :item_field_id
+  = ItemField.find(f.object.item_field_id).name
   %br
-  = f.select :item_field_id, @catalog.item_fields.collect {|i| [ i.name, i.id ] }
+  = f.hidden_field :item_field_id
 %p
   = f.label :value
   %br/

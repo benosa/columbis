@@ -3,8 +3,8 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new(:catalog_id => params[:catalog_id])
-    @catalog.item_fields.each do
-      @item.notes.build
+    @catalog.item_fields.each do |item_field|
+      @item.notes.build(:item_field_id => item_field.id)
     end
   end
 
@@ -22,6 +22,9 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
+    @catalog.item_fields.each do |item_field|
+      @item.notes.build(:item_field_id => item_field.id)
+    end
   end
 
   def update

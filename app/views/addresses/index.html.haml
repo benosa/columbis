@@ -1,4 +1,4 @@
-- title "Addresses"
+- title t('.addresses')
 
 %table#addresses
   %thead
@@ -22,8 +22,8 @@
         %td= address.office_number
         %td= address.phone_number
         %td= address.zip_code
-        %td= link_to 'Show', address
-        %td= link_to 'Edit', edit_address_path(address)
-        %td= link_to 'Destroy', address, :confirm => 'Are you sure?', :method => :delete
+        %td= link_to t('show'), address
+        %td= link_to t('edit'), edit_address_path(address)
+        %td= link_to t('destroy'), address, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Address", new_address_path
+%p= link_to t('.add_address'), new_address_path

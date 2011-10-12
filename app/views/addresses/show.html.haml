@@ -1,31 +1,31 @@
-- title "Address"
+- title t('.address')
 
 %p
-  %strong region:
+  %strong Регион:
   = @address.region
   %br/
-  %strong street:
+  %strong Улица:
   = @address.street
   %br/
-  %strong house_number:
+  %strong Номер дома:
   = @address.house_number
   %br/
-  %strong housing:
+  %strong Корпус:
   = @address.housing
   %br/
-  %strong office_number:
+  %strong Номер офиса:
   = @address.office_number
   %br/
-  %strong phone_number:
+  %strong Телефон:
   = @address.phone_number
   %br/
-  %strong zip_code:
+  %strong Индекс:
   = @address.zip_code
 
 
 %p
-  = link_to "Edit", edit_address_path(@address)
+  = link_to t('edit'), edit_address_path(@address)
   |
-  = link_to "Destroy", @address, :confirm => 'Are you sure?', :method => :delete
+  = link_to t('destroy'), @address, :confirm => t('are_you_sure'), :method => :delete
   |
-  = link_to "View All", addresses_path
+  = link_to t('.addresses'), addresses_path

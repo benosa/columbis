@@ -1,0 +1,35 @@
+ru:
+  addresses:   
+    index:
+      add_address: 'Добавить адрес'
+      addresses: 'Адреса'
+
+    show:
+      addresses: 'Список адресов'
+      address: 'Адрес'
+   
+    new:
+      add_address: 'Добавление адреса'
+      addresses: 'Список адресов'
+
+    edit:
+      edit_address: 'Редактирование адреса'
+      addresses: 'Список адресов'
+
+      
+  activerecord:
+    attributes:
+      address:
+        region: 'Регион'
+        street: 'Улица'
+        house_number: 'Электронная почта'
+        housing: 'Корпус'
+        office_number: 'Номер офиса'
+        phone_number: 'Номер телефона'
+        zip_code: 'Индекс'
+        
+  helpers:
+    submit:
+      address:
+        create: 'Добавить'
+        update: 'Изменить'

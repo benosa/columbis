@@ -1,0 +1,30 @@
+ru:
+  companies:   
+    index:
+      add_company: 'Добавить компанию'
+      companies: 'Компании'
+
+    show:
+      companies: 'Список компаний'
+   
+    new:
+      add_company: 'Добавление компании'
+      companies: 'Список компаний'
+
+    edit:
+      edit_company: 'Редактирование данных компании'
+      companies: 'Список компаний'
+
+      
+  activerecord:
+    attributes:
+      company:
+        name: 'Название'
+        oficial_letter_signature: 'Подпись'
+        email: 'Электронная почта'
+        
+  helpers:
+    submit:
+      company:
+        create: 'Добавить'
+        update: 'Изменить'

@@ -1,4 +1,4 @@
-- title "companies"
+- title t('.companies')
 
 %table#companies
   %thead
@@ -12,15 +12,15 @@
   %tbody
     - for company in @companies
       %tr
-        %td= company.title
+        %td= company.name
         %td= company.email
         %td= company.oficial_letter_signature
         - if company.address.present?
           %td= company.address.full_address
         - else
           %td Нет адреса
-        %td= link_to 'Show', company
-        %td= link_to 'Edit', edit_company_path(company)
-        %td= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete
+        %td= link_to t('show'), company
+        %td= link_to t('edit'), edit_company_path(company)
+        %td= link_to t('destroy'), company, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Company", new_company_path
+%p= link_to t('.add_company'), new_company_path

@@ -1,0 +1,17 @@
+ru:
+  items:
+    index:
+      all_catalogs: 'Все каталоги'
+      add_values: 'Добавить запись' 
+      catalog_items: 'Записи текущего каталога'  
+    new:
+      new_item: 'Создание записи'
+
+    edit:
+      edit_item: 'Редактирование записи'
+       
+  helpers:
+    submit:
+      item:
+        create: 'Создать запись'
+        update: 'Изменить запись'

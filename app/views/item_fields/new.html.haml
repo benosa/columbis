@@ -1,5 +1,6 @@
-- title "New Item"
+- title t('.new_item')
 
 = render 'form'
 
-%p= link_to "Back to List", catalog_item_fields_path(@item_field.catalog_id)
+%p
+  = link_to t('.view_all'), catalog_item_fields_path(@item_field.catalog_id)

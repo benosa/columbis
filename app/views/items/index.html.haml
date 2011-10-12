@@ -1,0 +1,18 @@
+- title t('.catalog_items')
+
+%table
+  %tr
+    - for item in @catalog.items
+      - for note in item.notes
+        - if note.value.present?
+          %td= note.value
+        - else
+          %td Пусто
+      %td= link_to t('edit'), edit_catalog_item_path(@catalog,item)
+      %td= link_to t('destroy'), catalog_item_path(@catalog,item), :confirm => t('are_you_sure'), :method => :delete
+
+
+%p
+  = link_to t('.add_values'), new_catalog_item_path(@catalog)
+  |
+  = link_to t('.all_catalogs'), catalogs_path

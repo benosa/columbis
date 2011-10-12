@@ -1,7 +1,8 @@
 class CatalogsController < ApplicationController
+  before_filter :load_catalog, :only => [:edit, :update, :show, :destroy]
+
   def new
     @catalog = Catalog.new
-    3.times {@catalog.item_fields.build}
   end
 
   def create
@@ -17,11 +18,9 @@ class CatalogsController < ApplicationController
   end
 
   def edit
-    @catalog = Catalog.find(params[:id])
   end
 
   def update
-    @catalog = Catalog.find(params[:id])
 
     respond_to do |format|
       if @catalog.update_attributes(params[:catalog])
@@ -37,15 +36,18 @@ class CatalogsController < ApplicationController
   end
 
   def show
-    @catalog = Catalog.find(params[:id])
   end
 
   def destroy
-    @catalog = Catalog.find(params[:id])
     @catalog.destroy
 
     respond_to do |format|
       format.html { redirect_to catalogs_url }
     end
   end
+
+  private
+    def load_catalog
+      @catalog = Catalog.find(params[:id])
+    end
 end

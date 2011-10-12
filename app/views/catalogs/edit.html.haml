@@ -1,8 +1,8 @@
-- title "Edit Catalog"
+- title t('.edit_catalog')
 
 = render 'form'
 
 %p
-  = link_to "Show", @catalog
+  = link_to t('show'), @catalog
   |
-  = link_to "View All", catalogs_path
+  = link_to t('.view_all'), catalogs_path

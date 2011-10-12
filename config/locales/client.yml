@@ -1,6 +1,6 @@
 ru:
-  helpers:
-    label:
+  activerecord:
+    attributes:
       client:
         last_name: "Фамилия"
         first_name: "Имя"

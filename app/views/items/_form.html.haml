@@ -2,6 +2,7 @@
   = f.error_messages
   %p
     = f.hidden_field :catalog_id
+
   = f.fields_for :notes do |note|
     = render :partial => 'notes/note', :locals => {:f => note}
   %p

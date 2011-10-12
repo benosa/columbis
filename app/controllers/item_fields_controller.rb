@@ -1,5 +1,6 @@
 class ItemFieldsController < ApplicationController
   before_filter :get_catalog
+  before_filter :load_item_field, :only => [:edit, :update, :show, :destroy]
 
   def new
     @item_field = ItemField.new(:catalog_id => params[:catalog_id])
@@ -18,11 +19,9 @@ class ItemFieldsController < ApplicationController
   end
 
   def edit
-    @item_field = ItemField.find(params[:id])
   end
 
   def update
-    @item_field = ItemField.find(params[:id])
 
     respond_to do |format|
       if @item_field.update_attributes(params[:item])
@@ -37,15 +36,18 @@ class ItemFieldsController < ApplicationController
   end
 
   def show
-    @item_field = ItemField.find(params[:id])
   end
 
   def destroy
-    @item_field = ItemField.find(params[:id])
     @item_field.destroy
 
     respond_to do |format|
       format.html { redirect_to catalog_path(@item_field.catalog_id) }
     end
   end
+
+  private
+    def load_item_field
+      @item_field = ItemField.find(params[:id])
+    end
 end

@@ -1,0 +1,31 @@
+ru:
+  catalogs:   
+    index:
+      new_catalog: 'Создать каталог'
+      name: 'Название'
+      catalogs: 'Каталоги'
+
+    show:
+      add_columns: 'Добавить колонку'
+      add_values: 'Добавить значения'
+      view_all: 'Все каталоги'
+   
+    new:
+      new_catalog: 'Создание каталога'
+      view_all: 'Все каталоги'
+
+    edit:
+      edit_catalog: 'Редактирование каталога'
+      view_all: 'Все каталоги'
+
+      
+  activerecord:
+    attributes:
+      catalog:
+        name: 'Название'
+        
+  helpers:
+    submit:
+      catalog:
+        create: 'Создать каталог'
+        update: 'Изменить каталог'

@@ -1,12 +1,9 @@
 %p
   = f.hidden_field :item_id
 %p
-  = f.label :item_field_id
+  = f.hidden_field :item_field_id
   %br
-  = f.select :item_field_id, @catalog.item_fields.collect {|i| [ i.name, i.id ] }
 %p
-  = f.label :value
-  %br/
   = f.text_field :value
   %br/
 

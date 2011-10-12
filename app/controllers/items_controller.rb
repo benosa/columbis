@@ -1,10 +1,11 @@
 class ItemsController < ApplicationController
   before_filter :get_catalog
+  before_filter :load_item, :only => [:edit, :update, :show, :destroy]
 
   def new
     @item = Item.new(:catalog_id => params[:catalog_id])
-    @catalog.item_fields.each do
-      @item.notes.build
+    @catalog.item_fields.each do |item_field|
+      @item.notes.build(:item_field_id => item_field.id)
     end
   end
 
@@ -21,11 +22,14 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.find(params[:id])
+   @catalog.item_fields.each do |item_field|
+     if !item_field.notes.present?
+       @item.notes.build(:item_field_id => item_field.id)
+     end
+   end
   end
 
   def update
-    @item = Item.find(params[:id])
 
     respond_to do |format|
       if @item.update_attributes(params[:item])
@@ -40,15 +44,18 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
   end
 
   def destroy
-    @item = Item.find(params[:id])
     @item.destroy
 
     respond_to do |format|
       format.html { redirect_to catalogs_url }
     end
   end
+
+  private
+    def load_item
+      @item = Item.find(params[:id])
+    end
 end

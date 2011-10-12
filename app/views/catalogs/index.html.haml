@@ -1,13 +1,13 @@
-- title "Catalogs"
+- title t('.catalogs')
 
 %table
   %tr
-    %th Name
+    %th= t('.name')
   - for catalog in @catalogs
     %tr
       %td= catalog.name
-      %td= link_to 'Show', catalog
-      %td= link_to 'Edit', edit_catalog_path(catalog)
-      %td= link_to 'Destroy', catalog, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to t('show'), catalog
+      %td= link_to t('edit'), edit_catalog_path(catalog)
+      %td= link_to t('destroy'), catalog, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Catalog", new_catalog_path
+%p= link_to t('.new_catalog'), new_catalog_path

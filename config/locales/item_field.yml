@@ -1,0 +1,29 @@
+ru:
+  item_fields:   
+    index:
+      back_to_catalog: 'К каталогу'
+      catalog_item_fields: 'Колонки текущего каталога'
+      add_column: 'Добавить колонку'
+
+    show:
+      view_all: 'Все колонки'
+   
+    new:
+      new_item: 'Создание колонки'
+      view_all: 'Все колонки'
+
+    edit:
+      edit_item_field: 'Редактирование колонки'
+      view_all: 'Все колонки'
+
+      
+  activerecord:
+    attributes:
+      item_field:
+        name: 'Название'
+        
+  helpers:
+    submit:
+      item_field:
+        create: 'Создать колонку'
+        update: 'Изменить колонку'

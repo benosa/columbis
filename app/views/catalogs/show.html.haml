@@ -1,8 +1,4 @@
-- title "Catalog"
-
-%p
-  %strong Название каталога:
-  = @catalog.name
+- title "#{@catalog.name}"
 
 %table
   %thead
@@ -19,14 +15,14 @@
             %td= note.value
           - else
             %td Пусто
-        %td= link_to "Edit", edit_catalog_item_path(@catalog,item)
-        %td= link_to "Destroy", catalog_item_path(@catalog,item), :confirm => 'Are you sure?', :method => :delete
+        %td= link_to t('edit'), edit_catalog_item_path(@catalog,item)
+        %td= link_to t('destroy'), catalog_item_path(@catalog,item), :confirm => t('are_you_sure'), :method => :delete
 
 
 %p
-  = link_to "Add columns", new_catalog_item_field_path(@catalog)
+  = link_to t('.add_columns'), new_catalog_item_field_path(@catalog)
   |
-  = link_to "Add values", new_catalog_item_path(@catalog)
+  = link_to t('.add_values'), new_catalog_item_path(@catalog)
   |
-  = link_to "View All", catalogs_path
+  = link_to t('.view_all'), catalogs_path
 

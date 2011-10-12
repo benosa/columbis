@@ -3,4 +3,6 @@ class Note < ActiveRecord::Base
 
   belongs_to :item
   belongs_to :item_field
+
+  validates_presence_of :value
 end

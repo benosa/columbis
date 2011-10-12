@@ -1,8 +1,8 @@
-- title "Edit Item"
+- title t'.edit_item_field'
 
 = render 'form'
 
 %p
-  = link_to "Show", catalog_item_path(@item.catalog_id, @item)
+  = link_to t('show'), catalog_item_path(@item_field.catalog_id, @item_field)
   |
-  = link_to "View All", catalog__path(@item_field.catalog_id)
+  = link_to t('.view_all'), catalog_path(@item_field.catalog_id)

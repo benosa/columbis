@@ -1,12 +1,8 @@
-- title "ItemField"
+- title "#{@item_field.name}"
 
 %p
-  %strong название:
-  = @item_field.name
-
-%p
-  = link_to "Edit", edit_catalog_item_field_path(@item_field.catalog_id, @item_field.id)
+  = link_to t('edit'), edit_catalog_item_field_path(@item_field.catalog_id, @item_field.id)
   |
-  = link_to "Destroy", catalog_item_field_path(@item_field.catalog_id, @item_field.id), :confirm => 'Are you sure?', :method => :delete
+  = link_to t('destroy'), catalog_item_field_path(@item_field.catalog_id, @item_field.id), :confirm => t('are_you_sure'), :method => :delete
   |
-  = link_to "View All", catalog_item_fields_path(@item_field.catalog_id)
+  = link_to t('.view_all'), catalog_item_fields_path(@item_field.catalog_id)

@@ -1,14 +1,14 @@
-- title "ItemsFields"
+- title t('.catalog_item_fields')
 
 %table
   - for item_field in @catalog.item_fields
     %tr
       %td= item_field.name
-      %td= link_to 'Show', catalog_item_field_path(item_field.catalog_id, item_field)
-      %td= link_to 'Edit', edit_catalog_item_field_path(item_field.catalog_id, item_field)
-      %td= link_to 'Destroy', catalog_item_field_path(item_field.catalog_id, item_field), :confirm => 'Are you sure?', :method => :delete
+      %td= link_to t('show'), catalog_item_field_path(item_field.catalog_id, item_field)
+      %td= link_to t('edit'), edit_catalog_item_field_path(item_field.catalog_id, item_field)
+      %td= link_to t('destroy'), catalog_item_field_path(item_field.catalog_id, item_field), :confirm => t('are_you_sure'), :method => :delete
 
 %p
-  = link_to "Create column", new_catalog_item_field_path(@catalog)
+  = link_to t('.add_column'), new_catalog_item_field_path(@catalog)
   |
-  = link_to "Back to Catalog", catalog_path(@catalog)
+  = link_to t('.back_to_catalog'), catalog_path(@catalog)

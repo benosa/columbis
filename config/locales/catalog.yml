@@ -27,5 +27,5 @@ ru:
   helpers:
     submit:
       catalog:
-        create: 'Создать каталог'
-        update: 'Изменить каталог'
+        create: 'Создать'
+        update: 'Изменить'

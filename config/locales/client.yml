@@ -11,3 +11,22 @@ ru:
         address: "Адрес"
         passport_valid_until: "Действителен до"
         date_of_birth: "Дата рождения"
+
+  clients:
+    edit:
+      edit_client: 'Редактирование клиента'
+      clients: 'Список клиентов'
+    index:
+      add_client: 'Добавить клиента'
+      clients: 'Клиенты'
+    new:
+      add_client: 'Добавление клиента'
+      clients: 'Список клиентов'
+    show:
+      clients: 'Список клиентов'
+
+  helpers:
+    submit:
+      client:
+        create: 'Создать'
+        update: 'Изменить'

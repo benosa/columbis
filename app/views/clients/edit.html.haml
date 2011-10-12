@@ -1,8 +1,8 @@
-- title "Ред. Клиента"
+- title t('.edit_client')
 
 = render 'form'
 
 %p
-  = link_to "Show", @operator
+  = link_to t('show'), @client
   |
-  = link_to "View All", clients_path
+  = link_to t('.clients'), clients_path

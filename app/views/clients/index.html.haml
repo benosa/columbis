@@ -1,4 +1,4 @@
-%h1 Клиенты
+- title t('.clients')
 %table#clients
   %thead
     %tr
@@ -16,4 +16,4 @@
   %tbody
     =render :partial => 'client', :collection => @clients
 
-= link_to "Добавить клиента", new_client_path
+= link_to t('.add_client'), new_client_path

@@ -1,7 +1,5 @@
-- title "Клиент"
+- title "#{@client.full_name}"
 
-%p
-  ФИО: #{@client.full_name}
 %p
   Серия паспорта: #{@client.passport_series}
 %p
@@ -16,8 +14,8 @@
   Дата рождения: #{@client.date_of_birth}
 
 %p
-  = link_to "Edit", edit_client_path(@client)
+  = link_to t('edit'), edit_client_path(@client)
   |
-  = link_to "Destroy", @client, :confirm => 'Are you sure?', :method => :delete
+  = link_to t('destroy'), @client, :confirm => t('are_you_sure'), :method => :delete
   |
-  = link_to "View All", clients_path
+  = link_to t('.clients'), clients_path

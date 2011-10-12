@@ -8,5 +8,5 @@
   %td= client.date_of_birth
   %td= client.created_at.to_s(:datetime).downcase
   %td= client.updated_at.to_s(:datetime).downcase
-  %td= link_to "Edit", edit_client_path(client)
-  %td= link_to "Delete", client, :method => :delete, :confirm => "Are you sure?"
+  %td= link_to t('edit'), edit_client_path(client)
+  %td= link_to t('destroy'), client, :method => :delete, :confirm => t('are_you_sure')

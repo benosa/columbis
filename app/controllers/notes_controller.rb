@@ -47,9 +47,4 @@ class NotesController < ApplicationController
       format.html { redirect_to notes_url }
     end
   end
-
-  private
-    def get_catalog
-      @catalog = Catalog.find(params[:catalog_id])
-    end
 end

@@ -24,7 +24,7 @@ class ItemFieldsController < ApplicationController
   def update
 
     respond_to do |format|
-      if @item_field.update_attributes(params[:item])
+      if @item_field.update_attributes(params[:item_field])
         format.html { redirect_to catalog_path(@item_field.catalog_id), :notice => 'ItemField was successfully updated.' }
       else
         format.html { render :action => "edit" }

@@ -48,15 +48,15 @@ describe TouristsController do
     end
   end
 
-  pending 'POST create' do
+  describe 'POST create' do
     def do_tourist
-      post :create
+      post :create, :tourist => {:passport_series => '1223', :passport_number => '123123'}
     end
 
     it 'should redirect to tourists/show.html' do
       do_tourist
       new_tourist = Tourist.last
-      response.should redirect_to("/tourists/#{new_tourist.id}")
+      response.should redirect_to tourist_path(new_tourist)
     end
 
     it 'should change tourists count up by 1' do

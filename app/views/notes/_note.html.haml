@@ -1,8 +1,9 @@
 %p
   = f.hidden_field :item_id
 %p
-  = f.hidden_field :item_field_id
+  = ItemField.find(f.object.item_field_id).name
   %br
+  = f.hidden_field :item_field_id
 %p
   = f.text_field :value
   %br/

@@ -17,7 +17,7 @@ set :shared_host, "tourism.devmen.com"
 
 after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:migrate"
-after "deploy:migrate", "deploy:seed"
+#after "deploy:migrate", "deploy:seed"
 
 namespace :deploy do
   task :start do ; end

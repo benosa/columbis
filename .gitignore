@@ -17,7 +17,6 @@ config/*.yml
 *.swj
 *.swh
 *.swa
-Gemfile.lock
 .sass-cache
 Capfile
 config/development.sphinx.conf

@@ -1,3 +1,7 @@
-%h2 Редактирование
+- title t('.edit_tourist')
 = render 'form'
-= link_to 'Туристы', tourists_path
+
+%p
+  = link_to t('show'), @tourist
+  |
+  = link_to t('.tourists'), tourists_path

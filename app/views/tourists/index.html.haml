@@ -1,4 +1,4 @@
-%h1 All Tourists
+- title t('.tourists')
 %table#tourists
   %thead
     %tr
@@ -16,5 +16,5 @@
   %tbody
     =render :partial => 'tourist', :collection => @tourists
 
-= link_to "Добавить туриста", new_tourist_path
+= link_to t('.add_tourist'), new_tourist_path
 

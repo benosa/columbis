@@ -1,5 +1,5 @@
-%p
-  ФИО: #{@tourist.full_name}
+- title "#{@tourist.full_name}"
+
 %p
   Серия паспорта: #{@tourist.passport_series}
 %p
@@ -13,5 +13,10 @@
 %p
   Дата рождения: #{@tourist.date_of_birth}
 
-= link_to "Туристы", tourists_path
+%p
+  = link_to t('edit'), edit_tourist_path(@tourist)
+  |
+  = link_to t('destroy'), @tourist, :confirm => t('are_you_sure'), :method => :delete
+  |
+  = link_to t('.tourists'), tourists_path
 

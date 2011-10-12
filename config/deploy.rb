@@ -26,6 +26,6 @@ namespace :deploy do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
   task :config do
-    run "cd #{release_path}/config && ln -s #{shared_path}/config/* ."
+    run "cd #{release_path}/config && ln -s #{shared_path}/config/database.yml database.yml"
   end
 end

@@ -15,6 +15,7 @@ set :use_sudo, false
 set :rails_env, "production"
 set :shared_host, "tourism.devmen.com"
 
+after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:migrate"
 after "deploy:migrate", "deploy:seed"
 
@@ -23,5 +24,8 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
+  task :config do
+    run "cd #{release_path}/config && ln -s #{shared_path}/config/* ."
   end
 end

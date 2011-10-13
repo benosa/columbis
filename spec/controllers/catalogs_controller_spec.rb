@@ -53,7 +53,7 @@ describe CatalogsController do
       post :create, :catalog => {:name => 'catalog'}
     end
 
-    it 'should redirect to clients/show.html' do
+    it 'should redirect to catalogs/show.html' do
       do_catalog
       new_catalog = Catalog.last
       response.should redirect_to("/catalogs/#{new_catalog.id}")

@@ -4,3 +4,15 @@ FactoryGirl.define do
     association :catalog
   end
 end
+
+FactoryGirl.define do
+  factory :item_field_one, :parent => :item_field do
+    name 'surname'
+  end
+end
+
+FactoryGirl.define do
+  factory :item_field_two, :parent => :item_field do
+    name 'name'
+  end
+end

@@ -56,8 +56,7 @@ describe ClientsController do
 
     it 'should redirect to clients/show.html' do
       do_client
-      new_client = Client.last
-      response.should redirect_to("/clients/#{new_client.id}")
+      response.should redirect_to(catalog_path(Client.last.id))
     end
 
     it 'should change clients count up by 1' do
@@ -80,6 +79,10 @@ describe ClientsController do
     
     it 'should be successful' do
       response.should be_success
+    end
+
+    it 'should find right client' do
+      assigns[:client].id.should == @client.id
     end
   end
 
@@ -134,7 +137,7 @@ describe ClientsController do
     end
 
     it 'should find right client' do
-      assigns[:client].should == @client
+      assigns[:client].id.should == @client.id
     end
 
     it 'should render clients/show.html' do

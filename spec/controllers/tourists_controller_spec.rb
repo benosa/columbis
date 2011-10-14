@@ -55,8 +55,7 @@ describe TouristsController do
 
     it 'should redirect to tourists/show.html' do
       do_tourist
-      new_tourist = Tourist.last
-      response.should redirect_to tourist_path(new_tourist)
+      response.should redirect_to(tourist_path(Tourist.last.id))
     end
 
     it 'should change tourists count up by 1' do
@@ -79,6 +78,10 @@ describe TouristsController do
     
     it 'should be successful' do
       response.should be_success
+    end
+
+    it 'should find right tourist' do
+      assigns[:tourist].id.should == @tourist.id
     end
   end
 
@@ -133,7 +136,7 @@ describe TouristsController do
     end
 
     it 'should find right tourist' do
-      assigns[:tourist].should == @tourist
+      assigns[:tourist].id.should == @tourist.id
     end
 
     it 'should render tourists/show.html' do

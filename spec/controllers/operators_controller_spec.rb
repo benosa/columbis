@@ -78,7 +78,7 @@ describe OperatorsController do
     end
 
     it 'should find right operator' do
-      assigns[:operator].should == @operator
+      assigns[:operator].id.should == @operator.id
     end
 
     it 'should render operators/show.html' do
@@ -131,8 +131,7 @@ describe OperatorsController do
 
     it 'should redirect to operators/show.html' do
       do_operator
-      new_operator = Operator.last
-      response.should redirect_to(operator_path(new_operator))
+      response.should redirect_to(operator_path(Operator.last.id))
     end
 
     it 'should change catalog count up by 1' do

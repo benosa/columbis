@@ -55,8 +55,7 @@ describe CatalogsController do
 
     it 'should redirect to catalogs/show.html' do
       do_catalog
-      new_catalog = Catalog.last
-      response.should redirect_to("/catalogs/#{new_catalog.id}")
+      response.should redirect_to(catalog_path(Catalog.last.id))
     end
 
     it 'should change catalog count up by 1' do
@@ -80,6 +79,10 @@ describe CatalogsController do
     it 'should be successful' do
       response.should be_success
     end
+
+    it 'should find right catalog' do
+      assigns[:catalog].id.should == @catalog.id
+    end
   end
 
   describe 'PUT update' do
@@ -95,7 +98,7 @@ describe CatalogsController do
       assigns[:catalog].name.should == 'changed_catalog'
     end
     
-    it 'should redirect to catalog/show.html' do
+    it 'should redirect to catalogs/show.html' do
       response.should redirect_to @catalog
     end
   end
@@ -133,7 +136,7 @@ describe CatalogsController do
     end
 
     it 'should find right catalog' do
-      assigns[:catalog].should == @catalog
+      assigns[:catalog].id.should == @catalog.id
     end
 
     it 'should render catalogs/show.html' do

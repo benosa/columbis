@@ -8,6 +8,10 @@ describe UsersController do
     sign_in @user
   end
 
+  before(:each) do
+    create_user
+  end
+
   describe 'GET index' do
     def do_get
       get :index
@@ -18,7 +22,7 @@ describe UsersController do
       response.should be_success                
     end
 
-    pending 'should find all users' do
+    it 'should find all users' do
       do_get
       assigns[:users].size.should > 0
     end
@@ -29,7 +33,7 @@ describe UsersController do
     end
   end
 
-  pending 'DELETE destroy' do
+  describe 'DELETE destroy' do
     def do_delete
       delete :destroy, :id => @user.id
     end
@@ -48,7 +52,7 @@ describe UsersController do
     end
   end
 
-  pending 'GET edit' do    
+  describe 'GET edit' do    
     def do_get
       get :edit, :id => @user.id
     end
@@ -63,6 +67,10 @@ describe UsersController do
     
     it 'should be successful' do
       response.should be_success
+    end
+
+    it 'should find right user' do
+      assigns[:user].id.should == @user.id
     end
   end
 end

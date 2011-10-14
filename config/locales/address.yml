@@ -22,7 +22,7 @@ ru:
       address:
         region: 'Регион'
         street: 'Улица'
-        house_number: 'Электронная почта'
+        house_number: 'Номер дома'
         housing: 'Корпус'
         office_number: 'Номер офиса'
         phone_number: 'Номер телефона'

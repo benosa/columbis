@@ -55,8 +55,7 @@ describe OfficesController do
 
     it 'should redirect to offices/show.html' do
       do_office
-      new_office = Office.last
-      response.should redirect_to(office_path(new_office))
+      response.should redirect_to(office_path(Office.last.id))
     end
 
     it 'should change office count up by 1' do
@@ -79,6 +78,10 @@ describe OfficesController do
     
     it 'should be successful' do
       response.should be_success
+    end
+
+    it 'should find right office' do
+      assigns[:office].id.should == @office.id
     end
   end
 
@@ -133,7 +136,7 @@ describe OfficesController do
     end
 
     it 'should find right office' do
-      assigns[:office].should == @office
+      assigns[:office].id.should == @office.id
     end
 
     it 'should render offices/show.html' do

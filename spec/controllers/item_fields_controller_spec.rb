@@ -37,10 +37,9 @@ describe ItemFieldsController do
       post :create, :catalog_id => @catalog.id, :item_field => {:name => 'Surname', :catalog_id => @catalog.id}
     end
 
-    it 'should redirect to clients/show.html' do
+    it 'should redirect to catalogs/show.html' do
       do_item_field
-      new_item_field = ItemField.last
-      response.should redirect_to(catalog_path(new_item_field.catalog_id))
+      response.should redirect_to(catalog_path(ItemField.last.catalog_id))
     end
 
     it 'should change item_field count up by 1' do
@@ -106,7 +105,7 @@ describe ItemFieldsController do
     end
 
     it 'should show right item_field' do
-      assigns[:item_field].should == @item_field
+      assigns[:item_field].id.should == @item_field.id
     end
   end
 
@@ -128,7 +127,7 @@ describe ItemFieldsController do
     end
 
     it 'should find right catalog' do
-      assigns[:catalog].should == @catalog
+      assigns[:catalog].id.should == @catalog.id
     end
   end
 

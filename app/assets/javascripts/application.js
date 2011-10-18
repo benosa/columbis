@@ -6,4 +6,12 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require_tree .
+
+  $(function() {
+    $("#client_passport_valid_until").datepicker();
+    $("#client_date_of_birth").datepicker();
+    $("#tourist_passport_valid_until").datepicker();
+    $("#tourist_date_of_birth").datepicker();
+  });

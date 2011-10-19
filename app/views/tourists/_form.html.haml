@@ -7,41 +7,26 @@
       %ul
         - @tourist.errors.full_messages.each do |msg|
           %li= msg
-  %p
-    = f.label :first_name
-    %br/
-    = f.text_field :first_name
-  %p
-    = f.label :last_name
-    %br/
-    = f.text_field :last_name
-  %p
-    = f.label :middle_name
-    %br/
-    = f.text_field :middle_name
-  %p
-    = f.label :passport_series
-    %br/
-    = f.text_field :passport_series
-  %p
-    = f.label :passport_number
-    %br/
-    = f.text_field :passport_number
-  %p
-    = f.label :passport_valid_until
-    %br/
-    = f.text_field :passport_valid_until
-  %p
-    = f.label :phone_number
-    %br/
-    = f.text_field :phone_number
-  %p
-    = f.label :address
-    %br/
-    = f.text_field :address
-  %p
-    = f.label :date_of_birth
-    %br/
-    = f.text_field :date_of_birth
+  %table
+    %tr
+      %td= f.label 'ФИО'
+      %td= f.label :date_of_birth
+      %td{:colspan => "2"}
+        = f.label 'Паспорт'
+      %td= f.label :passport_valid_until
+    %tr
+      %td= f.text_field :full_name
+      %td= f.text_field :date_of_birth
+      %td= f.text_field :passport_series, 'size' => 4
+      %td= f.text_field :passport_number
+      %td= f.text_field :passport_valid_until
+    %tr
+      %td= f.label :phone_number
+    %tr
+      %td= f.text_field :phone_number
+    %tr
+      %td= f.label :address
+    %tr
+      %td= f.text_field :address
   .actions
     = f.submit

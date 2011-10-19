@@ -51,12 +51,12 @@ describe ClientsController do
   describe 'POST create' do
     def do_client
       post :create, :client => {:last_name => 'Ivanov', :first_name => 'Ivan', :middle_name => 'Ivanovich', :address =>'',
-:phone_number => '', :passport_number => '', :passport_series => '', :date_of_birth => '', :passport_valid_until => ''}
+:phone_number => '', :passport_number => '123444', :passport_series => '1234', :date_of_birth => '', :passport_valid_until => ''}
     end
 
     it 'should redirect to clients/show.html' do
       do_client
-      response.should redirect_to(catalog_path(Client.last.id))
+      response.should redirect_to(client_path(Client.last.id))
     end
 
     it 'should change clients count up by 1' do

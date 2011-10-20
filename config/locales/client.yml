@@ -19,6 +19,13 @@ ru:
     index:
       add_client: 'Добавить клиента'
       clients: 'Клиенты'
+      full_name: "ФИО"
+      passport_series: "Серия паспорта"
+      passport_number: "Номер паспорта" 
+      phone_number: "Номер телефона"
+      address: "Адрес"
+      passport_valid_until: "Действителен до"
+      date_of_birth: "Дата рождения"
     new:
       add_client: 'Добавление клиента'
       clients: 'Список клиентов'

@@ -3,6 +3,10 @@ ru:
     index:
       add_company: 'Добавить компанию'
       companies: 'Компании'
+      name: 'Название'
+      email: 'Электронная почта'
+      signature: 'Подпись'
+      address: 'Адрес'
 
     show:
       companies: 'Список компаний'

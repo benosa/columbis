@@ -16,6 +16,13 @@ ru:
     index:
       tourists: 'Туристы'
       add_tourist: 'Добавить туриста'
+      full_name: "ФИО"
+      passport_series: "Серия паспорта"
+      passport_number: "Номер паспорта" 
+      phone_number: "Номер телефона"
+      address: "Адрес"
+      passport_valid_until: "Действителен до"
+      date_of_birth: "Дата рождения"
     show:
       tourists: 'Список туристов'
     edit:

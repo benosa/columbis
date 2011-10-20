@@ -1,18 +1,11 @@
 %tr
   %td= user.login
-  %td= user.first_name
   %td= user.last_name
+  %td= user.first_name
+  %td= user.middle_name
   %td= user.email
-  %td= user.sign_in_count
-  %td
-    - if user.last_sign_in_at.blank?
-      Never logged in
-    - else
-      = time_ago_in_words(user.last_sign_in_at.to_datetime)+' ago'
   %td= user.role
-  %td= user.created_at.to_s(:datetime).downcase
-  %td= user.updated_at.to_s(:datetime).downcase
   - if can? :update, user
-    %td= link_to "Edit", edit_user_path(user)
+    %td= link_to t('edit'), edit_user_path(user)
   - if can? :destroy, user
-    %td= link_to "Delete", user, :method => :delete, :confirm => "Are you sure?"
+    %td= link_to t('destroy'), user, :method => :delete, :confirm => t('are_you_sure')

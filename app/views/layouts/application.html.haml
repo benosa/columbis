@@ -20,7 +20,7 @@
       #documents_to_print_menu
         %ul
           %li= link_to "Брони", '#'
-          %li= link_to "Новая заявка", new_claim_path
+          %li= link_to "Новая заявка", new_claim_path, :class => (controller.controller_name == "claims" ? "selected" : " ")
           %li= link_to "Договор", '#'
           %li= link_to "Путевка", '#'
           %li= link_to "Памятка", '#'
@@ -33,12 +33,12 @@
       #databases_menu
         %ul
           %li Базы
-          %li= link_to "Реквизиты фирмы", addresses_path
-          %li= link_to "Туристы", tourists_path
+          %li= link_to "Реквизиты фирмы", addresses_path, :class => (controller.controller_name == "addresses" ? "selected" : " ")
+          %li= link_to "Туристы", tourists_path, :class => (controller.controller_name == "tourists" ? "selected" : " ")
           %li= link_to "Туроператоры", '#'
-          %li= link_to "Потенц. клиенты", clients_path
+          %li= link_to "Потенц. клиенты", clients_path, :class => (controller.controller_name == "clients" ? "selected" : " ")
           %li= link_to "Симки", '#'
-          %li= link_to "Агенства", companies_path
+          %li= link_to "Агенства", companies_path, :class => (controller.controller_name == "companies" ? "selected" : " ")
 
       %div.clear
 

@@ -9,9 +9,3 @@ ru:
 
     edit:
       edit_item: 'Редактирование записи'
-       
-  helpers:
-    submit:
-      item:
-        create: 'Создать запись'
-        update: 'Изменить запись'

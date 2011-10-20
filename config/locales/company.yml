@@ -22,9 +22,3 @@ ru:
         name: 'Название'
         oficial_letter_signature: 'Подпись'
         email: 'Электронная почта'
-        
-  helpers:
-    submit:
-      company:
-        create: 'Добавить'
-        update: 'Изменить'

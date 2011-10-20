@@ -18,10 +18,14 @@ a {
   overflow: hidden;
 }
 
+ul  {
+  list-style:none;
+}
+
 #container {
-  width: 75%;
+  width: 80%;
   margin: 0 auto;
-  background-color: #FFF;
+  background-color: #eaf9dc;
   padding: 20px 40px;
   border: solid 1px black;
   margin-top: 20px;
@@ -73,4 +77,120 @@ a {
 .error_messages ul {
   margin: 0;
 }
+
+#documents_to_print_menu ul {
+  margin: 0;
+}
+
+#documents_to_print_menu ul li, #databases_menu ul li{
+  display: inline;
+  float: left;
+}
+
+#documents_to_print_menu ul, #databases_menu ul  {
+  font-style: italic;
+  font-weight: bold;
+  font-family: Arial,Times New Roman sans-serif;
+  font-size: 11pt;
+  padding: 0;
+}
+
+#documents_to_print_menu ul li a {	
+  padding: 7px 20px;
+  background-color: #f6e7c0;
+}
+
+#documents_to_print_menu ul li a:hover {	
+  padding: 7px 20px;
+  color: black;
+  background-color: #f3982d;
+}
+
+#documents_to_print_menu ul li a.accountant_login {
+  margin-left: 15px;
+}
+
+#databases_menu ul {
+  margin: 1px 0 0 30px;
+}
+
+#databases_menu ul li a {	
+  background-color: white;
+  margin-right: 1px;
+}
+
+#databases_menu ul li a, #documents_to_print_menu ul li a  {
+  border: 1px solid #5c1c03;
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+#databases_menu ul > li:first-child, #databases_menu ul li a, #databases_menu ul li a:hover  {
+  padding: 0 5px;
+}
+
+#databases_menu ul li a:hover {	
+  color: black;
+  background-color: #f3982d;
+}
+
+#documents_to_print_menu li span {
+ display: block;	
+ padding: 6px 20px;
+ color: #555;
+ background-color: #e8e8e8; 
+ border-top: 1px solid #ccc;
+ border-bottom: 1px solid #ccc;
+ margin-right: 2px;
+}
+
+form input[type="submit"] {
+  font-style: italic;
+  font-weight: bold;
+  font-family: Arial,Times New Roman sans-serif;
+  font-size: 11pt;
+  border-radius: 7px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border: 5px solid #cd0800;
+  width: 150px;
+  height: 35px;
+  background-color: #fbfbfb;
+}
+
+form input[type="text"], input[type="email"], input[type="password"] {
+  height: 25px;
+  color: blue;
+  font-size: 11pt;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  width: 200px;
+}
+
+table td  {
+  text-align: center;
+  font-style: italic;
+}
+
+table th .hint  {
+  font-weight: normal;
+  color: #da2c23;
+  font-style: italic;
+  font-size: 8pt;
+}
+
+#container form input[type="text"].passport_series  {
+  width: 60px;
+}
+
+#container ul.hmenu li {
+  display: inline;
+}
+
+#container table th  {
+  font-style: italic;
+}
+
 

@@ -23,9 +23,3 @@ ru:
     attributes:
       catalog:
         name: 'Название'
-        
-  helpers:
-    submit:
-      catalog:
-        create: 'Создать'
-        update: 'Изменить'

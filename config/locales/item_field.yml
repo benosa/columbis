@@ -21,9 +21,3 @@ ru:
     attributes:
       item_field:
         name: 'Название'
-        
-  helpers:
-    submit:
-      item_field:
-        create: 'Создать колонку'
-        update: 'Изменить колонку'

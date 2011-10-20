@@ -24,9 +24,3 @@ ru:
       clients: 'Список клиентов'
     show:
       clients: 'Список клиентов'
-
-  helpers:
-    submit:
-      client:
-        create: 'Создать'
-        update: 'Изменить'

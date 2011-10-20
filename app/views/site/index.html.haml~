@@ -5,6 +5,7 @@
   %li= link_to t('tourists.index.tourists'), tourists_path
   %li= link_to t('operators.index.operators'), operators_path
   %li= link_to t('claims.index.claims'), claims_path
+  %li= link_to t('reservations.index.reservations'), reservations_path
   %li= link_to t('clients.index.clients'), clients_path
   %li= link_to t('currency_courses.index.currency_courses'), currency_courses_path
   %li= link_to t('offices.index.offices'), offices_path

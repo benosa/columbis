@@ -6,7 +6,7 @@ Tourism::Application.routes.draw do
   resources :reservations
 
   resources :claims
-  resources :payments
+    resources :payments
 
   resources :operators
 

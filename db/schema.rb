@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111012083152) do
+ActiveRecord::Schema.define(:version => 20111018141502) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -40,6 +40,18 @@ ActiveRecord::Schema.define(:version => 20111012083152) do
     t.datetime "check_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "office_id"
+    t.integer  "operator_id"
+    t.string   "operator_confirmation"
+    t.datetime "visa"
+    t.string   "airport_to"
+    t.string   "airport_back"
+    t.string   "flight_to"
+    t.string   "flight_back"
+    t.string   "depart_to"
+    t.string   "depart_back"
+    t.time     "time_to"
+    t.time     "time_back"
   end
 
   create_table "clients", :force => true do |t|
@@ -106,6 +118,20 @@ ActiveRecord::Schema.define(:version => 20111012083152) do
 
   create_table "operators", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "payments", :force => true do |t|
+    t.integer  "claim_id"
+    t.datetime "date_in",                         :null => false
+    t.integer  "payer_id",                        :null => false
+    t.string   "payer_type",                      :null => false
+    t.integer  "recipient_id",                    :null => false
+    t.string   "recipient_type",                  :null => false
+    t.string   "currency",                        :null => false
+    t.float    "amount",         :default => 0.0
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -9,7 +9,11 @@
           %li= msg
   %table
     %tr
-      %td= f.label 'ФИО'
+      %th
+        = f.label 'ФИО'
+        %br/
+        .hint
+          (На кого оформляется договор)
       %td= f.label :date_of_birth
       %td{:colspan => "2"}
         = f.label 'Паспорт'
@@ -17,15 +21,15 @@
     %tr
       %td= f.text_field :full_name
       %td= f.text_field :date_of_birth
-      %td= f.text_field :passport_series, 'size' => 4
+      %td= f.text_field :passport_series, :class => 'passport_series'
       %td= f.text_field :passport_number
       %td= f.text_field :passport_valid_until
     %tr
-      %td= f.label :phone_number
+      %th= f.label :phone_number
     %tr
       %td= f.text_field :phone_number
     %tr
-      %td= f.label :address
+      %th= f.label :address
     %tr
       %td= f.text_field :address
   .actions

@@ -27,9 +27,3 @@ ru:
         office_number: 'Номер офиса'
         phone_number: 'Номер телефона'
         zip_code: 'Индекс'
-        
-  helpers:
-    submit:
-      address:
-        create: 'Добавить'
-        update: 'Изменить'

@@ -5,3 +5,13 @@ ru:
   destroy: 'Удалить'
   are_you_sure: 'Вы уверены?'
 
+  helpers:
+    submit:
+      create: 'Сохранить'
+      update: 'Сохранить'
+
+  
+  logout: 'Выйти'
+  login: 'Войти'
+  register: 'Зарегистрироваться'
+

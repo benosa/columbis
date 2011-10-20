@@ -24,12 +24,6 @@ ru:
     new:
       add_tourist: 'Создание туриста'
       tourists: 'Список туристов'
-
-  helpers:
-    submit:
-      tourist:
-        create: 'Создать'
-        update: 'Изменить'
       
       
     

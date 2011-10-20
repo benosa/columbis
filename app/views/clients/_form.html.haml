@@ -2,7 +2,11 @@
   = f.error_messages
   %table
     %tr
-      %td= f.label 'ФИО'
+      %th
+        = f.label 'ФИО'
+        %br/
+        .hint
+          (На кого оформляется договор)
       %td= f.label :date_of_birth
       %td{:colspan => "2"}
         = f.label 'Паспорт'
@@ -14,11 +18,11 @@
       %td= f.text_field :passport_number
       %td= f.text_field :passport_valid_until
     %tr
-      %td= f.label :phone_number
+      %th= f.label :phone_number
     %tr
       %td= f.text_field :phone_number
     %tr
-      %td= f.label :address
+      %th= f.label :address
     %tr
       %td= f.text_field :address
   %p

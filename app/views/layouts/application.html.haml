@@ -17,7 +17,7 @@
       - flash.each do |name, msg|
         = content_tag :div, msg, :id => "flash_#{name}"
 
-      #documents_to_print
+      #documents_to_print_menu
         %ul
           %li= link_to "Брони", '#'
           %li= link_to "Новая заявка", new_claim_path
@@ -32,7 +32,7 @@
 
       #databases_menu
         %ul
-          %li.databases Базы
+          %li Базы
           %li= link_to "Реквизиты фирмы", addresses_path
           %li= link_to "Туристы", tourists_path
           %li= link_to "Туроператоры", '#'
@@ -46,6 +46,8 @@
         %li= link_to t('home'), root_url
         = render 'devise/menu/registration_items'
         = render 'devise/menu/login_items'
+
+      %div.clear
 
       - if show_title?
         %h1= yield(:title)

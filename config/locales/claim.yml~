@@ -1,3 +1,14 @@
 ru:
   claims:   
     index:
+      claims: 'Заявки'
+    form:
+      office: 'Офис'  
+      user: 'Менеджер'
+      operator_confirmation: ''
+      visa: 'Виза'
+      check_date: 'Контрольная дата'
+      operator: 'Туроператор'
+      tourist: 'Турист'
+      description: 'Примечание'
+      

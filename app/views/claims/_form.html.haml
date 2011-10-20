@@ -1,36 +1,36 @@
 = form_for @claim do |f|
   = f.error_messages
   %p
-    = f.label :office_id
+    = f.label t('.office')
     %br
     = f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] }
   %p
-    = f.label :user_id
+    = f.label t('.user')
     %br
     = f.select :user_id, User.all.collect {|o| [ o.first_last_name, o.id ] }
   %hr
 
   %p
-    = f.label :operator_confirmation
+    = f.label t('.operator_confirmation')
     = f.text_field :operator_confirmation, :size => 10
 
-    = f.label :visa
+    = f.label t('.visa')
     = f.text_field :visa, :size => 10    
 
-    = f.label :check_date
+    = f.label t('.check_date')
     = f.text_field :check_date, :size => 10
         
   %p
-    = f.label :operator_id
+    = f.label t('.operator')
     %br
     = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }    
 
   %p
-    = f.label :tourist_id
+    = f.label t('.tourist')
     %br
     = f.select :tourist_id, Tourist.all.collect {|o| [ o.first_last_name, o.id ] }
   %p
-    = f.label :description
+    = f.label t('.description')
     %br
     = f.text_area :description, :cols => 80, :rows => 6
  

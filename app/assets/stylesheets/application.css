@@ -135,14 +135,8 @@ ul  {
   background-color: #f3982d;
 }
 
-#documents_to_print_menu li span {
- display: block;	
- padding: 6px 20px;
- color: #555;
- background-color: #e8e8e8; 
- border-top: 1px solid #ccc;
- border-bottom: 1px solid #ccc;
- margin-right: 2px;
+#documents_to_print_menu li a.selected, #databases_menu ul li a.selected {
+  background-color: #f3982d;
 }
 
 form input[type="submit"] {

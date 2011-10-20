@@ -6,8 +6,6 @@
   %td= tourist.phone_number
   %td= tourist.address
   %td= tourist.date_of_birth
-  %td= tourist.created_at.to_s(:datetime).downcase
-  %td= tourist.updated_at.to_s(:datetime).downcase
   %td= link_to t('show'), tourist
   %td= link_to t('edit'), edit_tourist_path(tourist)
   %td= link_to t('destroy'), tourist, :method => :delete, :confirm => t('are_you_sure')

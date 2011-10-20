@@ -3,6 +3,13 @@ ru:
     index:
       add_address: 'Добавить адрес'
       addresses: 'Адреса'
+      region: 'Регион'
+      street: 'Улица'
+      house_number: 'Номер дома'
+      housing: 'Корпус'
+      office_number: 'Номер офиса'
+      phone_number: 'Номер телефона'
+      zip_code: 'Индекс'
 
     show:
       addresses: 'Список адресов'

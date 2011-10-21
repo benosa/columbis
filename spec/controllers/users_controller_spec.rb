@@ -10,6 +10,7 @@ describe UsersController do
 
   before(:each) do
     create_user
+    puts @user.inspect
   end
 
   describe 'GET index' do

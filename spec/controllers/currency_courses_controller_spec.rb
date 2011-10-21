@@ -5,16 +5,18 @@ describe CurrencyCoursesController do
   
   def create_user
     @user = Factory(:user)
-    sign_in @user
+    test_sign_in(@user)
   end
 
   def create_course
-    @course = Factory(:currency_course)
+    @course = Factory(:currency_course, :user_id =>@user.id)
   end
 
   before(:each) do
     create_user
     create_course
+    puts @user.inspect
+    puts @course.inspect
   end
 
   describe 'GET new' do
@@ -24,7 +26,6 @@ describe CurrencyCoursesController do
 
     before (:each) do
       do_get
-      puts @user.inspect
     end
 
     it 'should render currency_cources/new' do

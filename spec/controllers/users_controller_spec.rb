@@ -5,7 +5,7 @@ describe UsersController do
   
   def create_user
     @user = Factory(:user)
-    sign_in @user
+    test_sign_in(@user)
   end
 
   before(:each) do

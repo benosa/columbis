@@ -1,14 +1,17 @@
 ru:
-  claims:   
+  claims:
     index:
       claims: 'Заявки'
     form:
-      office: 'Офис'  
+      office: 'Офис'
       user: 'Менеджер'
-      operator_confirmation: ''
+      operator_confirmation: 'Подтверждение оператора'
       visa: 'Виза'
       check_date: 'Контрольная дата'
       operator: 'Туроператор'
       tourist: 'Турист'
       description: 'Примечание'
-      
+    new:
+      title: 'Новая заявка'
+    edit:
+      title: 'Редактировать заявку'

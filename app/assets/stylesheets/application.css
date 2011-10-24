@@ -96,12 +96,12 @@ ul  {
   padding: 0;
 }
 
-#documents_to_print_menu ul li a {	
+#documents_to_print_menu ul li a {
   padding: 7px 20px;
   background-color: #f6e7c0;
 }
 
-#documents_to_print_menu ul li a:hover {	
+#documents_to_print_menu ul li a:hover {
   padding: 7px 20px;
   color: black;
   background-color: #f3982d;
@@ -115,7 +115,7 @@ ul  {
   margin: 1px 0 0 30px;
 }
 
-#databases_menu ul li a {	
+#databases_menu ul li a {
   background-color: white;
   margin-right: 1px;
 }
@@ -131,7 +131,7 @@ ul  {
   padding: 0 5px;
 }
 
-#databases_menu ul li a:hover {	
+#databases_menu ul li a:hover {
   color: black;
   background-color: #f3982d;
 }
@@ -176,8 +176,16 @@ table th .hint  {
   font-size: 8pt;
 }
 
-#container form input[type="text"].passport_series  {
+#container form input[type="text"].passport_series {
   width: 60px;
+}
+
+#container form label.narrow {
+  width: 480px;
+}
+
+#container form input.narrow {
+  width: 80px;
 }
 
 #container ul.hmenu li {
@@ -187,5 +195,3 @@ table th .hint  {
 #container table th  {
   font-style: italic;
 }
-
-

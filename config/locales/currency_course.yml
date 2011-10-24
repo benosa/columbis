@@ -9,4 +9,5 @@ ru:
       course: 'Курс'
       on_date: 'На дату'
       set_by: 'Установил'
-
+  activerecord:
+    errors:

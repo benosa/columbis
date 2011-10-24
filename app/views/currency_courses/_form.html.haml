@@ -3,7 +3,7 @@
   %p
     = f.label :currency
     %br
-    = f.select :currency, CurrencyCourse::CURRENCIES.collect {|o| [ o.upcase, o ] }
+    = f.select :currency, (CurrencyCourse::CURRENCIES - [CurrencyCourse::PRIMARY_CURRENCY]).collect {|o| [ o.upcase, o ] }
   %p
     = f.label :on_date
     %br

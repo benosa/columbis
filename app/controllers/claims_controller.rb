@@ -1,4 +1,6 @@
 class ClaimsController < ApplicationController
+ load_and_authorize_resource
+
   def index
     @claims = Claim.all
   end
@@ -9,6 +11,7 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new
+    @claim.tourist = Tourist.new
   end
 
   def create

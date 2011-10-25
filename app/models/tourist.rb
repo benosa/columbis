@@ -2,8 +2,8 @@ class Tourist < ActiveRecord::Base
   attr_accessible :full_name, :passport_series, :passport_number,
                   :date_of_birth, :passport_valid_until, :phone_number, :address
 
-  has_many :payments, :as => :payer 
-  has_many :refunds, :as => :recipient, :class_name => 'Payment' 
+  has_many :payments, :as => :payer
+  has_many :refunds, :as => :recipient, :class_name => 'Payment'
 
   validates :passport_series, :passport_number, :numericality => true
   validates :passport_series, :length => { :is => 4 }
@@ -24,4 +24,3 @@ class Tourist < ActiveRecord::Base
     self.middle_name = split[2]
   end
 end
-

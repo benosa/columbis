@@ -180,10 +180,6 @@ table th .hint  {
   width: 60px;
 }
 
-#container form label.narrow {
-  width: 480px;
-}
-
 #container form input.narrow {
   width: 80px;
 }
@@ -192,6 +188,34 @@ table th .hint  {
   display: inline;
 }
 
-#container table th  {
+#container table th {
   font-style: italic;
+}
+
+form .data_block {
+  font-size: 8pt;
+}
+
+form .data_block th {
+  font-weight: bold;
+  font-style: italic;
+
+}
+
+form .data_block td  {
+  padding: 2px;
+  width: 80px;
+}
+
+form .data_block input {
+  height:20px;
+  width: 100%;
+}
+
+form .data_block input .red_font {
+  color: #da2c23;
+}
+
+form .data_block .width_100 {
+  width: 100px;
 }

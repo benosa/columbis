@@ -1,0 +1,13 @@
+- title "Airlines"
+
+%table
+  %tr
+    %th Name
+  - for airline in @airlines
+    %tr
+      %td= airline.name
+      %td= link_to 'Show', airline
+      %td= link_to 'Edit', edit_airline_path(airline)
+      %td= link_to 'Destroy', airline, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Airline", new_airline_path

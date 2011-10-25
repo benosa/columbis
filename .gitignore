@@ -22,4 +22,3 @@ Capfile
 config/development.sphinx.conf
 db/sphinx/
 .rvmrc
-

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111018141502) do
+ActiveRecord::Schema.define(:version => 20111025160812) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -22,6 +22,12 @@ ActiveRecord::Schema.define(:version => 20111018141502) do
     t.string   "office_number"
     t.string   "street"
     t.string   "phone_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "airlines", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -42,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20111018141502) do
     t.integer  "office_id"
     t.integer  "operator_id"
     t.string   "operator_confirmation"
-    t.datetime "visa"
+    t.string   "visa",                                        :null => false
     t.string   "airport_to"
     t.string   "airport_back"
     t.string   "flight_to"
@@ -51,6 +57,16 @@ ActiveRecord::Schema.define(:version => 20111018141502) do
     t.string   "depart_back"
     t.time     "time_to"
     t.time     "time_back"
+    t.datetime "visa_check"
+    t.float    "tour_price",                 :default => 0.0
+    t.float    "visa_price",                 :default => 0.0
+    t.float    "insurance_price",            :default => 0.0
+    t.float    "additional_insurance_price", :default => 0.0
+    t.float    "fuel_tax_price",             :default => 0.0
+    t.float    "total_tour_price",           :default => 0.0
+    t.float    "primary_currency_price",     :default => 0.0
+    t.float    "course",                     :default => 0.0
+    t.string   "currency",                                    :null => false
   end
 
   create_table "clients", :force => true do |t|

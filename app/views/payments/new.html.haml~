@@ -1,5 +1,0 @@
-- title "New Office"
-
-= render 'form'
-
-%p= link_to "Back to List", offices_path

@@ -1,5 +1,8 @@
 - title t('.currency_courses')
-= t('.actual_cources') + ':'
+%p
+  = t('.primary_currency') + ': '
+  %strong= CurrencyCourse::PRIMARY_CURRENCY.upcase
+%p= t('.actual_cources') + ':'
 %ul
   - for currency_course in @actual_courses
     %li
@@ -25,4 +28,3 @@
       %td= link_to t('destroy'), currency_course, :confirm => t('are_you_sure'), :method => :delete
 
 %p= link_to t('.new_currency_course'), new_currency_course_path
-

@@ -1,5 +1,6 @@
 class ClaimsController < ApplicationController
- load_and_authorize_resource
+  load_and_authorize_resource
+  autocomplete :tourist, :last_name, :full => true
 
   def index
     @claims = Claim.all

@@ -1,8 +1,8 @@
-- title "Edit Currency Course"
+- title t('.edit_currency_course')
 
 = render 'form'
 
 %p
-  = link_to "Show", @currency_course
+  = link_to t('show'), @currency_course
   |
-  = link_to "View All", currency_courses_path
+  = link_to t('view_all'), currency_courses_path

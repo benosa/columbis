@@ -101,8 +101,9 @@
         %td= link_to t('.add'), '#'
       = f.fields_for :tourist, @claim.tourist do |builder|
         %tr
-          %td= f.select :tourist_id, Tourist.all.collect {|o| [ o.first_last_name, o.id ] }, :include_blank => true
-          %td= builder.text_field :full_name
+          %td 1
+          %td= builder.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path,
+            :id_element => 'tourist_1'
           %td.datepicker= builder.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 85%;'
           %td= builder.text_field :passport_series, :style => 'width: 90%;'
           %td= builder.text_field :passport_number

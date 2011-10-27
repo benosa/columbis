@@ -4,10 +4,24 @@ ru:
       currency_courses: 'Курсы валют'
       actual_cources: 'Текущие курсы'
       new_currency_course: 'Добавить новый курс'
-
+      primary_currency: 'Основная валюта учета'
       currency: 'Валюта'
       course: 'Курс'
       on_date: 'На дату'
       set_by: 'Установил'
+    new:
+      new_currency_course: 'Добавить курс'
+    edit:
+      edit_currency_course: 'Редактировать курс'
+    show:
+      currency_course: 'Курс валюты'
+      course: 'Курс'
+      currency: 'Валюта'
+
   activerecord:
-    errors:
+    attributes:
+      currency_course:
+        currency: 'Валюта'
+        course: 'Курс'
+        on_date: 'На дату'
+        set_by: 'Установил'

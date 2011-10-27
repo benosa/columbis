@@ -1,15 +1,15 @@
-- title "Currency Course"
+- title t('.currency_course')
 
 %p
-  %strong Currency:
+  %strong= t('.currency')
   = @currency_course.currency
 %p
-  %strong Course:
+  %strong= t('.course')
   = @currency_course.course
 
 %p
-  = link_to "Edit", edit_currency_course_path(@currency_course)
+  = link_to t('edit'), edit_currency_course_path(@currency_course)
   |
-  = link_to "Destroy", @currency_course, :confirm => 'Are you sure?', :method => :delete
+  = link_to t('destroy'), @currency_course, :confirm => t('are_you_sure'), :method => :delete
   |
-  = link_to "View All", currency_courses_path
+  = link_to t('view_all'), currency_courses_path

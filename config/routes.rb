@@ -5,7 +5,13 @@ Tourism::Application.routes.draw do
   resources :offices
   resources :currency_courses
   resources :reservations
-  resources :claims
+
+  resources :claims do
+    collection do
+      get 'autocomplete_tourist_last_name'
+    end
+  end
+
   resources :payments
   resources :operators
   resources :tourists

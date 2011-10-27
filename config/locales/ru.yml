@@ -7,12 +7,14 @@ ru:
   back_to_list: 'Назад к списку'
   view_all: 'Показать все'
 
+  logout: 'Выйти'
+  login: 'Войти'
+  register: 'Зарегистрироваться'
+
+  invalid_fields: 'Ошибка при заполнении полей'
+  correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'
+
   helpers:
     submit:
       create: 'Сохранить'
       update: 'Сохранить'
-
-
-  logout: 'Выйти'
-  login: 'Войти'
-  register: 'Зарегистрироваться'

@@ -2,3 +2,17 @@ ru:
   operators:
     index:
       operators: 'Операторы'
+      new_operator: 'Добавить оператора'
+      name: 'Название'
+    new:
+      new_operator: 'Добавить оператора'
+    edit:
+      edit_operator: 'Редактировать оператора'
+    show:
+      operator: 'Оператор'
+      name: 'Название'
+
+  activerecord:
+    attributes:
+      operator:
+        name: 'Название'

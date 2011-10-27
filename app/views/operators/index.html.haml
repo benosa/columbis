@@ -1,13 +1,13 @@
-- title "Operators"
+- title t('.operators')
 
 %table
   %tr
-    %th Name
+    %th= t('.name')
   - for operator in @operators
     %tr
       %td= operator.name
-      %td= link_to 'Show', operator
-      %td= link_to 'Edit', edit_operator_path(operator)
-      %td= link_to 'Destroy', operator, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to t('show'), operator
+      %td= link_to t('edit'), edit_operator_path(operator)
+      %td= link_to t('destroy'), operator, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Operator", new_operator_path
+%p= link_to t('.new_operator'), new_operator_path

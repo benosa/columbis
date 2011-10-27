@@ -1,12 +1,12 @@
-- title "Operator"
+- title t('.operator')
 
 %p
-  %strong Name:
+  %strong= t('.name')
   = @operator.name
 
 %p
-  = link_to "Edit", edit_operator_path(@operator)
+  = link_to t('edit'), edit_operator_path(@operator)
   |
-  = link_to "Destroy", @operator, :confirm => 'Are you sure?', :method => :delete
+  = link_to t('destroy'), @operator, :confirm => t('are_you_sure'), :method => :delete
   |
-  = link_to "View All", operators_path
+  = link_to t('view_all'), operators_path

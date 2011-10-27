@@ -140,7 +140,7 @@ ul  {
   background-color: #f3982d;
 }
 
-form input[type="submit"] {
+input[type="submit"] {
   font-style: italic;
   font-weight: bold;
   font-family: Arial,Times New Roman sans-serif;
@@ -154,7 +154,7 @@ form input[type="submit"] {
   background-color: #fbfbfb;
 }
 
-form input[type="text"], input[type="email"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"] {
   height: 25px;
   color: blue;
   font-size: 11pt;
@@ -181,7 +181,7 @@ table th .hint  {
 }
 
 #container form input.narrow {
-  width: 80px;
+  width: 100px;
 }
 
 #container ul.hmenu li {
@@ -207,15 +207,39 @@ form .data_block td  {
   width: 80px;
 }
 
+form .data_block td.datepicker {
+  width: 140px;
+}
+
 form .data_block input {
   height:20px;
   width: 100%;
 }
 
-form .data_block input .red_font {
-  color: #da2c23;
-}
-
 form .data_block .width_100 {
   width: 100px;
+}
+
+.red_back, .nothing_done {
+  background-color: #ffc0c0;
+}
+
+.orange_back, .docs_got {
+  background-color: #FFCC5F;
+}
+
+.green_back, .docs_sent {
+  background-color: #C8F1AF;
+}
+
+.navy_back, .visa_approved {
+  background-color: #96B1F0;
+}
+
+.blue_back, .passport_received {
+  background-color: #88D9FF;
+}
+
+#container .red {
+  color: red;
 }

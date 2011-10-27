@@ -12,18 +12,15 @@
     = f.text_field :operator_confirmation, :class => 'narrow'
 
     = f.label :visa, t('.visa'), :class => 'narrow'
-    = f.text_field :visa_check, :class => 'narrow'
-    = f.select :visa, Claim::VISA_STATUSES.map {|o| [ t(".#{o}"), o] }
+    = f.text_field :visa_check, :class => ('narrow datepicker ' << @claim.visa)
+    = f.hidden_field :visa
 
     = f.label :check_date, t('.check_date'), :class => 'narrow'
-    = f.text_field :check_date, :class => 'narrow'
+    = f.text_field :check_date, :class => 'narrow datepicker'
 
   %p
     = f.label :operator_id, t('.operator')
     = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }
-  %p
-    = f.label :tourist_id, t('.tourist')
-    = f.select :tourist_id, Tourist.all.collect {|o| [ o.first_last_name, o.id ] }
 
   = t('.flights')
   %table
@@ -67,39 +64,55 @@
         %th= t('.fuel_tax_price')
         %th= t('.total_tour_price')
       %tr
-        %td= f.text_field :tour_price, :class => 'red_font'
+        %td= f.text_field :tour_price, :class => 'red'
         %td= f.text_field :visa_price
         %td= f.text_field :insurance_price
         %td= f.text_field :additional_insurance_price
         %td= f.text_field :fuel_tax_price
-        %td= f.text_field :total_tour_price, :class => 'red_font'
+        %td= f.text_field :total_tour_price, :class => 'red'
       %tr
         %th{ :colspan => 6 }
           = t('.primary_currency_price')
       %tr
-        %td= f.text_field :primary_currency_price, :class => 'red_font'
+        %td= f.text_field :primary_currency_price, :class => 'red'
         %td{ :colspan => 5 }
-          = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red_font'
+          = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red'
 
   %hr
   .data_block
     = t('.tourists')
     %table
       %tr
-        %th
-        %th= t('.full_name')
+        %th{ :style => 'width: 20px;' }
+        %th{ :style => 'width: 220px;' }
+          = t('.full_name')
         %th= t('.date_of_birth')
         %th{ :colspan => 2 }
           = t('.passport')
         %th= t('.passport_expire')
-      %tr
-        = f.fields_for :tourist, @claim.tourist do |builder|
-          %td 1
+        %th
+      %tr#new_tourist{ :style => 'display:none' }
+        %td
+        %td= text_field_tag :full_name
+        %td= text_field_tag :date_of_birth
+        %td= text_field_tag :passport_series
+        %td= text_field_tag :passport_number
+        %td.datepicker= text_field_tag :passport_valid_until, nil, :class => 'datepicker'
+        %td= link_to t('.add'), '#'
+      = f.fields_for :tourist, @claim.tourist do |builder|
+        %tr
+          %td= f.select :tourist_id, Tourist.all.collect {|o| [ o.first_last_name, o.id ] }, :include_blank => true
           %td= builder.text_field :full_name
-          %td= builder.text_field :date_of_birth
-          %td= builder.text_field :passport_series
+          %td.datepicker= builder.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 85%;'
+          %td= builder.text_field :passport_series, :style => 'width: 90%;'
           %td= builder.text_field :passport_number
-          %td= builder.text_field :passport_valid_until
+          %td.datepicker= builder.text_field :passport_valid_until, :class => 'datepicker', :style => 'width: 85%;'
+          %td= link_to t('.add'), '#'
+        %tr
+          %td
+          %td= builder.text_field :phone_number
+          %td{ :colspan => 4 }
+            = builder.text_field :address
       - @claim.tourists.each_with_index do |trst, i|
         %tr
           %td= i + 1
@@ -108,5 +121,6 @@
           %td= trst.passport_series
           %td= trst.passport_number
           %td= trst.passport_valid_until
+          %td= link_to t('.add'), '#'
   %p
     = f.submit

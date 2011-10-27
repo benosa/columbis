@@ -14,6 +14,6 @@ class Claim < ActiveRecord::Base
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
   accepts_nested_attributes_for :tourist, :reject_if => proc { |attributes| attributes['tourist'].blank? }
-  accepts_nested_attributes_for :tourists, :allow_destroy => true
+  accepts_nested_attributes_for :tourists
 
 end

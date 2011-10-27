@@ -1,0 +1,14 @@
+- title t('.city')
+
+%p
+  %strong= t('.name')
+  = @city.name
+%p
+  %strong= t('.country')
+  = @city.country.name
+%p
+  = link_to t('edit'), edit_city_path(@city)
+  |
+  = link_to t('destroy'), @city, :confirm => t('are_you_sure'), :method => :delete
+  |
+  = link_to t('view_all'), cities_path

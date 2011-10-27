@@ -6,7 +6,7 @@ ru:
         first_name: "Имя"
         middle_name: "Отчество"
         passport_series: "Серия паспорта"
-        passport_number: "Номер паспорта" 
+        passport_number: "Номер паспорта"
         phone_number: "Номер телефона"
         address: "Адрес"
         passport_valid_until: "Действителен до"
@@ -18,7 +18,7 @@ ru:
       add_tourist: 'Добавить туриста'
       full_name: "ФИО"
       passport_series: "Серия паспорта"
-      passport_number: "Номер паспорта" 
+      passport_number: "Номер паспорта"
       phone_number: "Номер телефона"
       address: "Адрес"
       passport_valid_until: "Действителен до"
@@ -31,7 +31,3 @@ ru:
     new:
       add_tourist: 'Создание туриста'
       tourists: 'Список туристов'
-      
-      
-    
-    

@@ -1,0 +1,12 @@
+- title t('.country')
+
+%p
+  %strong= t('.name')
+  = @country.name
+
+%p
+  = link_to t('edit'), edit_country_path(@country)
+  |
+  = link_to t('destroy'), @country, :confirm => t('are_you_sure'), :method => :delete
+  |
+  = link_to t('view_all'), countries_path

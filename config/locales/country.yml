@@ -1,0 +1,18 @@
+ru:
+  countries:
+    index:
+      countries: 'Страны'
+      new_country: 'Добавить страну'
+      name: 'Название'
+    new:
+      new_country: 'Добавить страну'
+    edit:
+      edit_country: 'Редактировать страну'
+    show:
+      name: 'Название'
+      country: 'Страна'
+
+  activerecord:
+    attributes:
+      country:
+        name: 'Название'

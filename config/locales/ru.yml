@@ -4,14 +4,15 @@ ru:
   edit: 'Изменить'
   destroy: 'Удалить'
   are_you_sure: 'Вы уверены?'
+  back_to_list: 'Назад к списку'
+  view_all: 'Показать все'
 
   helpers:
     submit:
       create: 'Сохранить'
       update: 'Сохранить'
 
-  
+
   logout: 'Выйти'
   login: 'Войти'
   register: 'Зарегистрироваться'
-

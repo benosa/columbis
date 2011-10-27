@@ -1,0 +1,21 @@
+ru:
+  cities:
+    index:
+      cities: 'Города'
+      new_city: 'Добавить город'
+      name: 'Название'
+      country: 'Страна'
+    new:
+      new_city: 'Добавить город'
+    edit:
+      edit_city: 'Редактировать город'
+    show:
+      city: 'Город'
+      name: 'Название'
+      country: 'Страна'
+
+  activerecord:
+    attributes:
+      city:
+        country_id: 'Страна'
+        name: 'Название'

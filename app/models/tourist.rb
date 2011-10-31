@@ -5,6 +5,9 @@ class Tourist < ActiveRecord::Base
   has_many :payments, :as => :payer
   has_many :refunds, :as => :recipient, :class_name => 'Payment'
 
+  has_many :tourist_claims
+  has_many :claims, :through => :tourist_claims
+
   validates :passport_series, :passport_number, :numericality => true
   validates :passport_series, :length => { :is => 4 }
   validates :passport_number, :length => { :is => 6 }

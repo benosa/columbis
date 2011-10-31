@@ -81,7 +81,7 @@
   %hr
   .data_block
     = t('.tourists')
-    %table
+    %table#tourists
       %tr
         %th{ :style => 'width: 20px;' }
         %th{ :style => 'width: 220px;' }
@@ -93,35 +93,22 @@
         %th
       %tr#new_tourist{ :style => 'display:none' }
         %td
-        %td= text_field_tag :full_name
-        %td= text_field_tag :date_of_birth
-        %td= text_field_tag :passport_series
-        %td= text_field_tag :passport_number
-        %td.datepicker= text_field_tag :passport_valid_until, nil, :class => 'datepicker'
-        %td= link_to t('.add'), '#'
+        %td= text_field_tag :full_name, '', :autocomplete => autocomplete_tourist_last_name_claims_path,
+          :id_element => '', :size => 20, :class => 'autocomplete full_name'
+        %td= text_field_tag :date_of_birth, '', :class => 'datepicker date_of_birth', :style => 'width: 85%;'
+        %td= text_field_tag :passport_series, '', :class => 'passport_series', :style => 'width: 90%;'
+        %td= text_field_tag :passport_number, '', :class => 'passport_number'
+        %td.datepicker= text_field_tag :passport_valid_until, nil, :class => 'datepicker passport_valid_until', :style => 'width: 85%;'
+        %td= link_to t('.add_user'), '#', :class => 'add'
       = f.fields_for :tourist, @claim.tourist do |builder|
+        %tr.applicant
+          = render :partial => 'tourist', :locals => { :builder => builder }
         %tr
-          %td 1
-          %td= builder.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path,
-            :id_element => 'tourist_1', :size => 20, :class => 'autocomplete full_name'
-          %td.datepicker= builder.text_field :date_of_birth, :class => 'datepicker date_of_birth', :style => 'width: 85%;'
-          %td= builder.text_field :passport_series, :class => 'passport_series', :style => 'width: 90%;'
-          %td= builder.text_field :passport_number, :class => 'passport_number'
-          %td.datepicker= builder.text_field :passport_valid_until, :class => 'datepicker passport_valid_until', :style => 'width: 85%;'
-          %td= link_to t('.add'), '#'
-        %tr.additional_info
           %td
           %td= builder.text_field :phone_number, :class => 'phone_number'
-          %td{ :colspan => 4, :class => 'address' }
-            = builder.text_field :address
-      - @claim.tourists.each_with_index do |trst, i|
-        %tr
-          %td= i + 1
-          %td= trst.full_name
-          %td= trst.date_of_birth
-          %td= trst.passport_series
-          %td= trst.passport_number
-          %td= trst.passport_valid_until
-          %td= link_to t('.add'), '#'
+          %td{ :colspan => 4 }
+            = builder.text_field :address, :class => 'address'
+      = f.fields_for :tourists, @claim.tourists do |builder|
+        = render :partial => 'tourist', :locals => { :builder => builder }
   %p
     = f.submit

@@ -17,13 +17,13 @@
       %td= f.label :date_of_birth
       %td{:colspan => "2"}
         = f.label 'Паспорт'
-      %td= f.label :passport_valid_until, :class => 'datepicker'
+      %td= f.label :passport_valid_until
     %tr
       %td= f.text_field :full_name
-      %td= f.text_field :date_of_birth, :class => 'datepicker'
-      %td= f.text_field :passport_series, :class => 'passport_series'
+      %td= f.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 85%;'
+      %td= f.text_field :passport_series
       %td= f.text_field :passport_number
-      %td= f.text_field :passport_valid_until
+      %td= f.text_field :passport_valid_until, :class => 'datepicker', :style => 'width: 85%;'
     %tr
       %th= f.label :phone_number
     %tr

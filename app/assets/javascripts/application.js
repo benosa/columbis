@@ -13,6 +13,7 @@ $(function() {
 
   $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
+  // visa_check
   $('#claim_visa_check').click(function(){
     var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
     var curr = statuses.indexOf($('#claim_visa').val());
@@ -26,7 +27,7 @@ $(function() {
     $('#claim_visa').val(statuses[next]);
   });
 
-  // All autocomplete parameters in here
+  // autocomplete
   var $autocomplete = {
     touristLastName: {
       source: "/claims/autocomplete_tourist_last_name",
@@ -36,10 +37,31 @@ $(function() {
         tr.find("input.passport_number").val(ui.item.passport_number);
         tr.find("input.date_of_birth").val(ui.item.date_of_birth);
         tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
+        if(tr.hasClass('applicant')) {
+          tr = tr.next();
+          tr.find("input.phone_number").val(ui.item.phone_number);
+          tr.find("input.address").val(ui.item.address);
+        }
       }
     }
   };
 
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
 
+  // add user
+	$('#tourists a.add').click(function(e){
+		e.preventDefault();
+		$('#new_tourist').clone().appendTo($('#tourists'));
+    $('#tourists tr:last').addClass('dependent');
+		$('#tourists tr').each(function(i){
+		  if($(this).hasClass('dependent')) {
+			  $(this).attr('id','tourist' + i);
+			  $(this).attr('style', '');
+		  }
+		});
+		$('#tourists a.del').each(function(i){
+			$(this).attr('id','del'+i);
+		});
+ 
+	});
 });

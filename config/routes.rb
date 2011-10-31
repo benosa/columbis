@@ -1,4 +1,5 @@
 Tourism::Application.routes.draw do
+
   resources :cities
   resources :countries
   resources :airlines

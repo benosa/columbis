@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111027125145) do
+ActiveRecord::Schema.define(:version => 20111031163219) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -160,6 +160,13 @@ ActiveRecord::Schema.define(:version => 20111027125145) do
     t.string   "currency",                        :null => false
     t.float    "amount",         :default => 0.0
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tourist_claims", :force => true do |t|
+    t.integer  "claim_id"
+    t.integer  "tourist_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

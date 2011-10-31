@@ -28,13 +28,13 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new
-    @claim.tourist = Tourist.new
+    @claim.tourist ||= Tourist.new
   end
 
   def create
     @claim = Claim.new(params[:claim])
     if @claim.save
-      redirect_to @claim, :notice => "Successfully created claim."
+      redirect_to claims_url, :notice => "Successfully created claim."
     else
       render :action => 'new'
     end
@@ -42,12 +42,13 @@ class ClaimsController < ApplicationController
 
   def edit
     @claim = Claim.find(params[:id])
+    @claim.tourist ||= Tourist.new
   end
 
   def update
     @claim = Claim.find(params[:id])
     if @claim.update_attributes(params[:claim])
-      redirect_to @claim, :notice  => "Successfully updated claim."
+      redirect_to claims_url, :notice  => "Successfully updated claim."
     else
       render :action => 'edit'
     end

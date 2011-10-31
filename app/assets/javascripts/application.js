@@ -11,12 +11,7 @@
 
 $(function() {
 
-  $('#client_passport_valid_until').datepicker();
-  $('#client_date_of_birth').datepicker();
-  $('#tourist_passport_valid_until').datepicker();
-  $('#tourist_date_of_birth').datepicker();
-  $('#tourist_date_of_birth').datepicker();
-  $('.datepicker').datepicker();
+  $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
   $('#claim_visa_check').click(function(){
     var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
@@ -30,4 +25,21 @@ $(function() {
     $('#claim_visa_check').addClass(statuses[next]);
     $('#claim_visa').val(statuses[next]);
   });
+
+  // All autocomplete parameters in here
+  var $autocomplete = {
+    touristLastName: {
+      source: "/claims/autocomplete_tourist_last_name",
+      select: function(event, ui) {
+        var tr = $(event.target).parent().parent();
+        tr.find("input.passport_series").val(ui.item.passport_series);
+        tr.find("input.passport_number").val(ui.item.passport_number);
+        tr.find("input.date_of_birth").val(ui.item.date_of_birth);
+        tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
+      }
+    }
+  };
+
+  $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
+
 });

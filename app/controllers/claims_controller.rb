@@ -8,6 +8,7 @@ class ClaimsController < ApplicationController
       {
         :label => tourist.last_name,
         :value => tourist.full_name,
+        :id => tourist.id,
         :passport_series => tourist.passport_series,
         :passport_number => tourist.passport_number,
         :date_of_birth => tourist.date_of_birth,

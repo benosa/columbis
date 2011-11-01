@@ -41,27 +41,55 @@ $(function() {
           tr = tr.next();
           tr.find("input.phone_number").val(ui.item.phone_number);
           tr.find("input.address").val(ui.item.address);
+          $('#claim_tourist_attributes_id').val(ui.item.id);
+        } else {
+          input = tr.next();
         }
       }
     }
   };
-
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
 
-  // add user
-	$('#tourists a.add').click(function(e){
-		e.preventDefault();
-		$('#new_tourist').clone().appendTo($('#tourists'));
-    $('#tourists tr:last').addClass('dependent');
-		$('#tourists tr').each(function(i){
-		  if($(this).hasClass('dependent')) {
-			  $(this).attr('id','tourist' + i);
-			  $(this).attr('style', '');
-		  }
-		});
-		$('#tourists a.del').each(function(i){
-			$(this).attr('id','del'+i);
-		});
- 
-	});
+  // add tourist
+	var add_tourist = function(e){
+    e.preventDefault();
+    
+    $('#tourists .footer').before($('#new_tourist').clone());
+    $('#tourists #new_tourist').attr('id', '').addClass('dependent');
+
+    var last_ind = 0;
+    $('#tourists tr.dependent').each(function(i){
+      $(this).attr('id','dependent' + (i+2));
+
+      $(this).find('a.del').click(del_tourist);
+      $(this).find('a.del').attr('id','del'+(i+2));
+
+      $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
+      $(this).find('.num').text(i+2)
+      last_ind = i+1;
+    });
+    //$('#tourists .footer').before('<input id=​"claim_tourists_attributes_0_id" name=​"claim[tourists_attributes]​[0]​[id]​" type=​"hidden">​');
+	}
+	$('#tourists a.add').click(add_tourist);
+
+  // del tourist
+  var del_tourist = function(e){
+    e.preventDefault();
+    var id = $(this).attr('id').replace(/del/,'');
+    if (id == 1) {
+      $('.applicant input').val('');
+      $('.applicant').next().find('input').val('');
+      $('#claim_tourist_attributes_id').removeAttr('value');
+    } else {
+      $('#tourists #dependent' + id).next('input[type=hidden]').remove();
+      $('#tourists #dependent' + id).remove();
+    }
+
+    $('#tourists tr dependent').each(function(i){
+      $(this).find('.num').text(i+2)
+      $(this).find('.del').attr('id','del'+(i+2));
+      $(this).attr('id','dependent'+(i+2));
+    });
+  }
+	$('#tourists a.del').click(del_tourist);
 });

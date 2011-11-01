@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031163219) do
+ActiveRecord::Schema.define(:version => 20111101122007) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -116,6 +116,14 @@ ActiveRecord::Schema.define(:version => 20111031163219) do
   end
 
   add_index "currency_courses", ["currency", "on_date"], :name => "index_currency_courses_on_currency_and_on_date"
+
+  create_table "dropdown_values", :force => true do |t|
+    t.string "list"
+    t.string "value"
+  end
+
+  add_index "dropdown_values", ["list"], :name => "index_dropdown_values_on_list"
+  add_index "dropdown_values", ["value"], :name => "index_dropdown_values_on_value"
 
   create_table "item_fields", :force => true do |t|
     t.integer  "catalog_id"

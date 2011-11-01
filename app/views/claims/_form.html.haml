@@ -55,7 +55,7 @@
     = f.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
     = f.label :course
     = f.text_field :course, :class => 'width_100'
-    %table
+    %table#tour_price
       %tr
         %th= t('.tour_price')
         %th= t('.visa_price')
@@ -90,16 +90,7 @@
         %th{ :colspan => 2 }
           = t('.passport')
         %th= t('.passport_expire')
-        %th
-      %tr#new_tourist{ :style => 'display:none' }
-        %td
-        %td= text_field_tag :full_name, '', :autocomplete => autocomplete_tourist_last_name_claims_path,
-          :id_element => '', :size => 20, :class => 'autocomplete full_name'
-        %td= text_field_tag :date_of_birth, '', :class => 'datepicker date_of_birth', :style => 'width: 85%;'
-        %td= text_field_tag :passport_series, '', :class => 'passport_series', :style => 'width: 90%;'
-        %td= text_field_tag :passport_number, '', :class => 'passport_number'
-        %td.datepicker= text_field_tag :passport_valid_until, nil, :class => 'datepicker passport_valid_until', :style => 'width: 85%;'
-        %td= link_to t('.add_user'), '#', :class => 'add'
+        %th{ :style => 'width: 50px;' }
       = f.fields_for :tourist, @claim.tourist do |builder|
         %tr.applicant
           = render :partial => 'tourist', :locals => { :builder => builder }
@@ -108,7 +99,16 @@
           %td= builder.text_field :phone_number, :class => 'phone_number'
           %td{ :colspan => 4 }
             = builder.text_field :address, :class => 'address'
+      - ind = 2
       = f.fields_for :tourists, @claim.tourists do |builder|
-        = render :partial => 'tourist', :locals => { :builder => builder }
+        %tr.dependent{ :id => "dependent#{ind}"}
+          = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
+      %tr.footer
+        %td{ :colspan => 6 }
+          = link_to t('.add_another_tourist'), '#', :class => 'add'
   %p
     = f.submit
+  %table.invisible
+    = f.fields_for :tourist, Tourist.new do |builder|
+      %tr#new_tourist
+        = render :partial => 'tourist', :locals => { :builder => builder }

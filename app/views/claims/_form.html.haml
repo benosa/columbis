@@ -91,7 +91,7 @@
           = t('.passport')
         %th= t('.passport_expire')
         %th{ :style => 'width: 50px;' }
-      = f.fields_for :tourist, @claim.tourist do |builder|
+      = f.fields_for :applicant, @claim.applicant do |builder|
         %tr.applicant
           = render :partial => 'tourist', :locals => { :builder => builder }
         %tr
@@ -103,12 +103,9 @@
       = f.fields_for :tourists, @claim.tourists do |builder|
         %tr.dependent{ :id => "dependent#{ind}"}
           = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
+          - ind += 1
       %tr.footer
         %td{ :colspan => 6 }
           = link_to t('.add_another_tourist'), '#', :class => 'add'
   %p
     = f.submit
-  %table.invisible
-    = f.fields_for :tourist, Tourist.new do |builder|
-      %tr#new_tourist
-        = render :partial => 'tourist', :locals => { :builder => builder }

@@ -4,7 +4,6 @@ class ClaimsController < ApplicationController
 
   def autocomplete_tourist_last_name
     render :json => Tourist.where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
-      puts tourist.inspect
       {
         :label => tourist.last_name,
         :value => tourist.full_name,
@@ -29,13 +28,15 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new
-    @claim.tourist ||= Tourist.new
+    @claim.applicant ||= Tourist.new
   end
 
   def create
     @claim = Claim.new(params[:claim])
+    @claim.assign_applicant(params[:claim][:applicant])
+    raise @claim.errors.inspect
     if @claim.save
-      redirect_to claims_url, :notice => "Successfully created claim."
+      redirect_to claims_url, :notice => t('.successfully_created_claim.')
     else
       render :action => 'new'
     end
@@ -43,7 +44,7 @@ class ClaimsController < ApplicationController
 
   def edit
     @claim = Claim.find(params[:id])
-    @claim.tourist ||= Tourist.new
+    @claim.applicant ||= Tourist.new
   end
 
   def update

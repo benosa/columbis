@@ -8,6 +8,10 @@ class Tourist < ActiveRecord::Base
   has_many :tourist_claims
   has_many :claims, :through => :tourist_claims
 
+  validates_presence_of :first_name, :last_name, :middle_name
+  validates_presence_of :passport_series, :passport_number
+  validates_presence_of :date_of_birth, :passport_valid_until
+
   validates :passport_series, :passport_number, :numericality => true
   validates :passport_series, :length => { :is => 4 }
   validates :passport_number, :length => { :is => 6 }

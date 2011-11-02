@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111101122007) do
+ActiveRecord::Schema.define(:version => 20111102115822) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(:version => 20111101122007) do
   end
 
   create_table "claims", :force => true do |t|
-    t.integer  "tourist_id"
     t.integer  "user_id"
     t.text     "description"
     t.datetime "check_date"
@@ -177,6 +176,7 @@ ActiveRecord::Schema.define(:version => 20111101122007) do
     t.integer  "tourist_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "applicant",  :default => false
   end
 
   create_table "tourists", :force => true do |t|

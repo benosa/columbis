@@ -43,7 +43,7 @@ $(function() {
           tr.find("input.address").val(ui.item.address);
           $('#claim_tourist_attributes_id').val(ui.item.id);
         } else {
-          input = tr.next();
+          tr.next(".hidden_id").val(ui.item.id);
         }
       }
     }
@@ -54,8 +54,9 @@ $(function() {
 	var add_tourist = function(e){
     e.preventDefault();
     
-    $('#tourists .footer').before($('#new_tourist').clone());
-    $('#tourists #new_tourist').attr('id', '').addClass('dependent');
+    $('#tourists .footer').before($('#tourists .applicant').clone());
+    $('#tourists .applicant:last').after('<input type="hidden" class="hidden_id">');
+    $('#tourists .applicant:last').attr('id', '').addClass('dependent').removeClass('applicant');
 
     var last_ind = 0;
     $('#tourists tr.dependent').each(function(i){
@@ -64,11 +65,29 @@ $(function() {
       $(this).find('a.del').click(del_tourist);
       $(this).find('a.del').attr('id','del'+(i+2));
 
-      $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
       $(this).find('.num').text(i+2)
+
+      $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
+      $(this).find('input.autocomplete.full_name').attr('id', 'claim_tourists_attributes_' + i + '_full_name');
+      $(this).find('input.autocomplete.full_name').attr('name', 'claim[tourists_attributes][' + i + '][full_name]');
+
+      $(this).find('input.date_of_birth').attr('id', 'claim_tourists_attributes_' + i + '_date_of_birth');
+      $(this).find('input.date_of_birth').attr('name', 'claim[tourists_attributes][' + i + '][date_of_birth]');
+
+      $(this).find('input.passport_series').attr('id', 'claim_tourists_attributes_' + i + '_passport_series');
+      $(this).find('input.passport_series').attr('name', 'claim[tourists_attributes][' + i + '][passport_series]');
+
+      $(this).find('input.passport_number').attr('id', 'claim_tourists_attributes_' + i + '_passport_number');
+      $(this).find('input.passport_number').attr('name', 'claim[tourists_attributes][' + i + '][passport_number]');
+
+      $(this).find('input.passport_valid_until').attr('id', 'claim_tourists_attributes_' + i + '_passport_valid_until');
+      $(this).find('input.passport_valid_until').attr('name', 'claim[tourists_attributes][' + i + '][passport_valid_until]');
+
+      var hidden_id = $(this).next('[type=hidden]');
+      hidden_id.attr('id', 'claim_tourists_attributes_' + i + '_id');
+      hidden_id.attr('name', 'claim[tourists_attributes][' + i + '][id]');
       last_ind = i+1;
     });
-    //$('#tourists .footer').before('<input id=​"claim_tourists_attributes_0_id" name=​"claim[tourists_attributes]​[0]​[id]​" type=​"hidden">​');
 	}
 	$('#tourists a.add').click(add_tourist);
 

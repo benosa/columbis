@@ -99,11 +99,18 @@
           %td= builder.text_field :phone_number, :class => 'phone_number'
           %td{ :colspan => 4 }
             = builder.text_field :address, :class => 'address'
+        = builder.hidden_field :id
       - ind = 2
-      = f.fields_for :tourists, @claim.tourists do |builder|
+      = f.fields_for :tourists do |builder|
         %tr.dependent{ :id => "dependent#{ind}"}
           = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
           - ind += 1
+      -#
+        = @claim.tourists.each do |tourist|
+          %tr.dependent{ :id => "dependent#{ind}"}
+            = f.fields_for :tourists, tourist do |builder|
+              = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
+              - ind += 1
       %tr.footer
         %td{ :colspan => 6 }
           = link_to t('.add_another_tourist'), '#', :class => 'add'

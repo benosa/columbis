@@ -41,7 +41,7 @@ $(function() {
           tr = tr.next();
           tr.find("input.phone_number").val(ui.item.phone_number);
           tr.find("input.address").val(ui.item.address);
-          $('#claim_tourist_attributes_id').val(ui.item.id);
+          $('#claim_applicant_id').val(ui.item.id);
         } else {
           tr.next(".hidden_id").val(ui.item.id);
         }
@@ -56,6 +56,9 @@ $(function() {
     
     $('#tourists .footer').before($('#tourists .applicant').clone());
     $('#tourists .applicant:last').after('<input type="hidden" class="hidden_id">');
+    $('#tourists .applicant:last input').each(function(n){
+      this.value = '';
+    });
     $('#tourists .applicant:last').attr('id', '').addClass('dependent').removeClass('applicant');
 
     var last_ind = 0;
@@ -98,7 +101,7 @@ $(function() {
     if (id == 1) {
       $('.applicant input').val('');
       $('.applicant').next().find('input').val('');
-      $('#claim_tourist_attributes_id').removeAttr('value');
+      $('#claim_applicant_id').removeAttr('value');
     } else {
       $('#tourists #dependent' + id).next('input[type=hidden]').remove();
       $('#tourists #dependent' + id).remove();

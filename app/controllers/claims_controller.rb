@@ -28,16 +28,23 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new
-    @claim.applicant ||= Tourist.new
+    @claim.applicant = Tourist.new
+        @claim.tourists << Tourist.new
+                @claim.tourists << Tourist.new
   end
 
   def create
     @claim = Claim.new(params[:claim])
-    @claim.assign_applicant(params[:claim][:applicant])
-    raise @claim.errors.inspect
-    if @claim.save
-      redirect_to claims_url, :notice => t('.successfully_created_claim.')
+    @claim.assign_tourists_and_save(params[:claim])
+#    raise (params[:claim][:tourists_attributes]).inspect
+    unless @claim.errors.any?
+      if @claim.assign_tourists_and_save(params[:claim])
+        redirect_to claims_url, :notice => t('.successfully_created_claim.')
+      else
+        render :action => 'new'
+      end
     else
+      @claim.applicant ||= Tourist.new(params[:claim][:applicant])
       render :action => 'new'
     end
   end
@@ -49,9 +56,15 @@ class ClaimsController < ApplicationController
 
   def update
     @claim = Claim.find(params[:id])
-    if @claim.update_attributes(params[:claim])
-      redirect_to claims_url, :notice  => "Successfully updated claim."
+    @claim.assign_applicant(params[:claim][:applicant])
+    unless @claim.errors.any?
+      if @claim.update_attributes(params[:claim])
+        redirect_to claims_url, :notice  => "Successfully updated claim."
+      else
+        render :action => 'edit'
+      end
     else
+      @claim.applicant ||= Tourist.new(params[:claim][:applicant])
       render :action => 'edit'
     end
   end

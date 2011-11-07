@@ -9,10 +9,12 @@ class Claim < ActiveRecord::Base
   belongs_to :office
 
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
-  has_many :tourists, :through => :tourist_claims
+  has_many :dependents, :through => :tourist_claims, :source => :tourist
 
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
+
+  has_many :payments
 
   validates_presence_of :user_id
   validates_presence_of :check_date
@@ -20,10 +22,19 @@ class Claim < ActiveRecord::Base
   validates_presence_of :applicant
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
-  def assign_tourists_and_save(claim_params)
+  accepts_nested_attributes_for :payments
+
+  def assign_reflections_and_save(claim_params)
     self.transaction do
-      reset_tourists
-      self.assign_applicant(claim_params[:applicant])
+      reset_reflections
+#      self.assign_applicant(claim_params[:applicant])
+#      self.assign_tourists(claim_params[:tourists])
+
+      self.save
+    end
+  end
+
+  def assign_tourists(tourists_params)
       claim_params[:tourists_attributes].each do |num, tourist_hash|
         if tourist_hash[:id].blank?
           self.tourists << Tourist.create(tourist_hash)
@@ -31,8 +42,7 @@ class Claim < ActiveRecord::Base
           self.tourists << Tourist.find(tourist_hash[:id])
         end
       end
-    end
-    self.save
+
   end
 
   def assign_applicant(applicant_params)
@@ -66,8 +76,9 @@ class Claim < ActiveRecord::Base
 
   private
 
-  def reset_tourists
+  def reset_reflections
     self.applicant = nil
     self.tourists = []
+    self.payments = []
   end
 end

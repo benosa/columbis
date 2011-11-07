@@ -10,6 +10,7 @@ Tourism::Application.routes.draw do
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'
+      post 'amount_in_word'
     end
   end
 

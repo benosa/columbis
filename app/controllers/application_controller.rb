@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
   def get_catalog
     @catalog = Catalog.find(params[:catalog_id])
   end
+
+  def amount_in_word
+    render :text => RuPropisju.rublej(params[:amount])
+  end
 end

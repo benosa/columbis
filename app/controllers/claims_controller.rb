@@ -29,13 +29,12 @@ class ClaimsController < ApplicationController
   def new
     @claim = Claim.new
     @claim.applicant = Tourist.new
-        @claim.tourists << Tourist.new
-                @claim.tourists << Tourist.new
+    @claim.payments << Payment.new
   end
 
   def create
     @claim = Claim.new(params[:claim])
-    @claim.assign_tourists_and_save(params[:claim])
+    @claim.assign_reflections_and_save(params[:claim])
 #    raise (params[:claim][:tourists_attributes]).inspect
     unless @claim.errors.any?
       if @claim.assign_tourists_and_save(params[:claim])

@@ -142,6 +142,9 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
+    ru_propisju (1.1.0)
+    russian (0.6.0)
+      i18n (>= 0.5.0)
     sass (3.1.8)
     sass-rails (3.1.4)
       actionpack (~> 3.1.0)
@@ -190,6 +193,8 @@ DEPENDENCIES
   rails (= 3.1.0)
   rails3-jquery-autocomplete!
   rspec-rails
+  ru_propisju
+  russian (~> 0.6.0)
   sass-rails (~> 3.1.0)
   therubyracer
   turn

@@ -114,4 +114,81 @@ $(function() {
     });
   }
 	$('#tourists a.del').click(del_tourist);
+
+	// amount in word
+	$('#payments .amount').change(function(event){
+    $.ajax({
+      url: "amount_in_word",
+      type: "POST",
+      data: "amount="+$(this).val(),
+      cache: false,
+      success: function(resp){
+        $(event.currentTarget).parent().parent().find('.description').val(resp);
+      }
+    })
+	});
+
+  // add payment
+	var add_payment = function(e){
+    e.preventDefault();
+    
+    $('#payments .footer').before($('#payments tr.fields:first').clone());
+    $('#payments tr:last').after('<input type="hidden" class="hidden_id">');
+    $('#payments tr:last input').each(function(n){
+      this.value = '';
+    });
+    $('#payments tr:last').attr('id', '');
+
+    var last_ind = 0;
+    $('#payments tr').each(function(i){
+      $(this).attr('id','payment' + i);
+
+      $(this).find('a.del').click(del_payment);
+      $(this).find('a.del').attr('id','del' + i);
+
+      $(this).find('input.date_in').attr('id', 'claim_payments_attributes_' + i + '_date_in');
+      $(this).find('input.date_in').attr('name', 'claim[payments_attributes][' + i + '][date_in]');
+
+      $(this).find('input.amount').attr('id', 'claim_payments_attributes_' + i + '_amount');
+      $(this).find('input.amount').attr('name', 'claim[payments_attributes][' + i + '][amount]');
+
+      $(this).find('input.description').attr('id', 'claim_payments_attributes_' + i + '_description');
+      $(this).find('input.description').attr('name', 'claim[payments_attributes][' + i + '][description]');
+
+
+      var hidden_id = $(this).next('[type=hidden]');
+      hidden_id.attr('id', 'claim_payments_attributes_' + i + '_id');
+      hidden_id.attr('name', 'claim[payments_attributes][' + i + '][id]');
+      last_ind = i+1;
+    });
+	}
+	$('#payments a.add').click(add_payment);
+
+  // del tourist
+  var del_payment = function(e){
+    e.preventDefault();
+    var id = $(this).attr('id').replace(/del/,'');
+    if (id == 1) {
+      $('input').each(function(i){
+        if($(this).hasClass('amount')) {
+          $(this).val('0.0');
+        } else {
+          $(this).val('');
+        }
+      });
+
+      $('.applicant').next().find('input').val('');
+      $('#claim_applicant_id').removeAttr('value');
+    } else {
+      $('#tourists #dependent' + id).next('input[type=hidden]').remove();
+      $('#tourists #dependent' + id).remove();
+    }
+
+    $('#tourists tr dependent').each(function(i){
+      $(this).find('.num').text(i+2)
+      $(this).find('.del').attr('id','del'+(i+2));
+      $(this).attr('id','dependent'+(i+2));
+    });
+  }
+	$('#tourists a.del').click(del_tourist);
 });

@@ -14,7 +14,11 @@ class Claim < ActiveRecord::Base
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
 
-  has_many :payments
+  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
+  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
+
+  accepts_nested_attributes_for :payments_in
+  accepts_nested_attributes_for :payments_out
 
   validates_presence_of :user_id
   validates_presence_of :check_date
@@ -22,27 +26,38 @@ class Claim < ActiveRecord::Base
   validates_presence_of :applicant
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
-  accepts_nested_attributes_for :payments
-
   def assign_reflections_and_save(claim_params)
     self.transaction do
-      reset_reflections
-#      self.assign_applicant(claim_params[:applicant])
+      drop_reflections
+      self.assign_applicant(claim_params[:applicant])
 #      self.assign_tourists(claim_params[:tourists])
+      self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
 
       self.save
     end
   end
 
-  def assign_tourists(tourists_params)
-      claim_params[:tourists_attributes].each do |num, tourist_hash|
-        if tourist_hash[:id].blank?
-          self.tourists << Tourist.create(tourist_hash)
-        else
-          self.tourists << Tourist.find(tourist_hash[:id])
-        end
+  def assign_payments(payments_in, payments_out)
+    payments_in.each do |num, payment_hash|
+      if payment_hash[:id].blank?
+        #TODO add req. keys in hash
+        self.payments << Payment.create(payment_hash)
+      else
+        self.payments << Payment.find(payment_hash[:id])
       end
+    end
+    #TODO: remove unused payments
 
+  end
+
+  def assign_tourists(tourists)
+    tourists.each do |num, tourist_hash|
+      if tourist_hash[:id].blank?
+        self.tourists << Tourist.create(tourist_hash)
+      else
+        self.tourists << Tourist.find(tourist_hash[:id])
+      end
+    end
   end
 
   def assign_applicant(applicant_params)
@@ -76,9 +91,10 @@ class Claim < ActiveRecord::Base
 
   private
 
-  def reset_reflections
+  def drop_reflections
     self.applicant = nil
-    self.tourists = []
-    self.payments = []
+    self.dependents = []
+    self.payments_in = []
+    self.payments_out = []
   end
 end

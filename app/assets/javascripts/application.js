@@ -11,7 +11,7 @@
 
 $(function() {
 
-  $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+  $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
   // visa_check
   $('#claim_visa_check').click(function(){
@@ -116,7 +116,7 @@ $(function() {
 	$('#tourists a.del').click(del_tourist);
 
 	// amount in word
-	$('#payments .amount').change(function(event){
+	var get_amount_in_word = function(event){
     $.ajax({
       url: "amount_in_word",
       type: "POST",
@@ -125,70 +125,75 @@ $(function() {
       success: function(resp){
         $(event.currentTarget).parent().parent().find('.description').val(resp);
       }
-    })
-	});
+    });
+	}
+	$('#payments_in .amount').change(get_amount_in_word);
+  $('#payments_out .amount').change(get_amount_in_word);
 
   // add payment
 	var add_payment = function(e){
     e.preventDefault();
-    
-    $('#payments .footer').before($('#payments tr.fields:first').clone());
-    $('#payments tr:last').after('<input type="hidden" class="hidden_id">');
-    $('#payments tr:last input').each(function(n){
-      this.value = '';
-    });
-    $('#payments tr:last').attr('id', '');
 
-    var last_ind = 0;
-    $('#payments tr').each(function(i){
-      $(this).attr('id','payment' + i);
+    var t_id = '#' + $(e.currentTarget).parent().parent().parent().parent().attr('id');
+    $(t_id + ' .footer').before($(t_id + ' .fields:first').clone());
+    $(t_id + ' .fields:last').after('<input type="hidden" class="hidden_id">');
+    $(t_id + ' .fields:last input.datepicker').removeClass('hasDatepicker');
+    $(t_id + ' .fields:last input.datepicker').next('img').remove();
+
+    var p_type = t_id.replace(/#payments_/,'');
+     
+    $(t_id + ' .fields:last').find('input').each(function(n){
+      if($(this).hasClass('amount')) {
+        $(this).val('0.0');
+      } else {
+        $(this).val('');
+      }
+    });
+
+    $(t_id + ' .fields').each(function(i){
+
+      $(this).attr('id', (t_id.replace(/#payments/,'payment')) + '_' + i);
 
       $(this).find('a.del').click(del_payment);
       $(this).find('a.del').attr('id','del' + i);
 
-      $(this).find('input.date_in').attr('id', 'claim_payments_attributes_' + i + '_date_in');
-      $(this).find('input.date_in').attr('name', 'claim[payments_attributes][' + i + '][date_in]');
+      $(this).find('input.date_in').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_date_in');
+      $(this).find('input.date_in').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][date_in]');
+      $(this).find('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
-      $(this).find('input.amount').attr('id', 'claim_payments_attributes_' + i + '_amount');
-      $(this).find('input.amount').attr('name', 'claim[payments_attributes][' + i + '][amount]');
+      $(this).find('input.amount').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount');
+      $(this).find('input.amount').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount]');
+      $(t_id + ' .amount').change(get_amount_in_word);
 
-      $(this).find('input.description').attr('id', 'claim_payments_attributes_' + i + '_description');
-      $(this).find('input.description').attr('name', 'claim[payments_attributes][' + i + '][description]');
+      $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
+      $(this).find('input.description').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][description]');
 
 
       var hidden_id = $(this).next('[type=hidden]');
-      hidden_id.attr('id', 'claim_payments_attributes_' + i + '_id');
-      hidden_id.attr('name', 'claim[payments_attributes][' + i + '][id]');
-      last_ind = i+1;
+      hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');
+      hidden_id.attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][id]');
     });
 	}
-	$('#payments a.add').click(add_payment);
+	$('#payments_in a.add').click(add_payment);
+	$('#payments_out a.add').click(add_payment);
 
-  // del tourist
+  // del payment
   var del_payment = function(e){
     e.preventDefault();
+    var t_id = '#' + $(e.currentTarget).parent().parent().parent().parent().attr('id');
     var id = $(this).attr('id').replace(/del/,'');
-    if (id == 1) {
-      $('input').each(function(i){
-        if($(this).hasClass('amount')) {
-          $(this).val('0.0');
-        } else {
-          $(this).val('');
-        }
-      });
+    var $tr = $(t_id.replace(/payments/,'payment') + '_' + id);
 
-      $('.applicant').next().find('input').val('');
-      $('#claim_applicant_id').removeAttr('value');
+    if (id == 0) {
+      $tr.find('input').each(function(){
+        $(this).val($(this).hasClass('amount') ? '0.0' : '');
+      });
     } else {
-      $('#tourists #dependent' + id).next('input[type=hidden]').remove();
-      $('#tourists #dependent' + id).remove();
+      $tr.next('input[type=hidden]').remove();
+      $tr.remove();
     }
 
-    $('#tourists tr dependent').each(function(i){
-      $(this).find('.num').text(i+2)
-      $(this).find('.del').attr('id','del'+(i+2));
-      $(this).attr('id','dependent'+(i+2));
-    });
   }
-	$('#tourists a.del').click(del_tourist);
+	$('#payments_in a.del').click(del_payment);
+	$('#payments_out a.del').click(del_payment);
 });

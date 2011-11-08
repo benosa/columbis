@@ -13,7 +13,6 @@ gem 'jquery-rails'
 gem 'therubyracer'
 
 gem 'rails3-jquery-autocomplete', :git => 'https://github.com/etehtsea/rails3-jquery-autocomplete.git'
-gem 'russian', '~> 0.6.0'
 gem 'ru_propisju'
 
 # Gems used only for assets and not required

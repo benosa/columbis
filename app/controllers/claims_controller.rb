@@ -29,7 +29,8 @@ class ClaimsController < ApplicationController
   def new
     @claim = Claim.new
     @claim.applicant = Tourist.new
-    @claim.payments << Payment.new
+    @claim.payments_in << Payment.new
+    @claim.payments_out << Payment.new
   end
 
   def create
@@ -51,11 +52,12 @@ class ClaimsController < ApplicationController
   def edit
     @claim = Claim.find(params[:id])
     @claim.applicant ||= Tourist.new
+    @claim.payments << Payment.new
   end
 
   def update
     @claim = Claim.find(params[:id])
-    @claim.assign_applicant(params[:claim][:applicant])
+    @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       if @claim.update_attributes(params[:claim])
         redirect_to claims_url, :notice  => "Successfully updated claim."

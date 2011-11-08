@@ -3,7 +3,6 @@ class Tourist < ActiveRecord::Base
                   :date_of_birth, :passport_valid_until, :phone_number, :address
 
   has_many :payments, :as => :payer
-  has_many :refunds, :as => :recipient, :class_name => 'Payment'
 
   has_many :tourist_claims
   has_many :claims, :through => :tourist_claims

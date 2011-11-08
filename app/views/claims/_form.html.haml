@@ -112,20 +112,38 @@
 
   %hr
   .data_block
-    = t('.payments')
-    %table#payments
-      %tr
+    = t('.payments_in')
+    %table#payments_in
+      %tr.header
         %th= t('.date')
         %th= t('.paid')
         %th= t('.paid_in_word')
-      = f.fields_for :payments do |builder|
-        %tr.fields
+      - ind = 0
+      = f.fields_for :payments_in do |builder|
+        %tr.fields{ :id => "payment_in_#{ind}"}
           %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :style => 'width: 85%;'
           %td= builder.text_field :amount, :class => 'amount'
           %td= builder.text_field :description, :class => 'description'
           %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
         = builder.hidden_field :id
+      %tr.footer
+        %td{ :colspan => 3}
+          = link_to t('.add_another_payment'), '#', :class => 'add'
 
+    = t('.payments_out')
+    %table#payments_out
+      %tr.header
+        %th= t('.date')
+        %th= t('.paid')
+        %th= t('.paid_type')
+      - ind = 0
+      = f.fields_for :payments_out do |builder|
+        %tr.fields{ :id => "payment_in_#{ind}"}
+          %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :style => 'width: 85%;'
+          %td= builder.text_field :amount, :class => 'amount'
+          %td= builder.text_field :form
+          %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+        = builder.hidden_field :id
       %tr.footer
         %td{ :colspan => 3}
           = link_to t('.add_another_payment'), '#', :class => 'add'

@@ -38,8 +38,8 @@
       %td= f.text_field :flight_back
     %tr
       %td= f.label :depart_to, t('.depart')
-      %td= f.text_field :depart_to
-      %td= f.text_field :depart_back
+      %td= f.text_field :depart_to, :class => 'datetimepicker'
+      %td= f.text_field :depart_back, :class => 'datetimepicker'
     %tr
       %td= f.label :time_to, t('.time')
       %td= f.text_field :time_to

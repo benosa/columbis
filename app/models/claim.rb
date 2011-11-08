@@ -34,20 +34,25 @@ class Claim < ActiveRecord::Base
       self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
 
       self.save
+      #TODO: remove unused payments
+
     end
   end
 
   def assign_payments(payments_in, payments_out)
     payments_in.each do |num, payment_hash|
+      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
+      payment_hash[:recipient_id] = Company.first.try(:id)
+      payment_hash[:recipient_type] = Company.first.class.try(:name)
+      payment_hash[:payer_id] = self.applicant.try(:id)
+      payment_hash[:payer_type] = self.applicant.class.try(:name)
+
       if payment_hash[:id].blank?
-        #TODO add req. keys in hash
-        self.payments << Payment.create(payment_hash)
+        self.payments_in << Payment.create(payment_hash)
       else
-        self.payments << Payment.find(payment_hash[:id])
+        self.payments_in << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
       end
     end
-    #TODO: remove unused payments
-
   end
 
   def assign_tourists(tourists)

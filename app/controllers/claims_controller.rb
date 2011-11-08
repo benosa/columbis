@@ -65,7 +65,8 @@ class ClaimsController < ApplicationController
         render :action => 'edit'
       end
     else
-      @claim.applicant ||= Tourist.new(params[:claim][:applicant])
+      @claim.applicant ||=
+        (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
       render :action => 'edit'
     end
   end

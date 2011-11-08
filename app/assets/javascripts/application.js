@@ -12,6 +12,7 @@
 $(function() {
 
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+  $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
   // visa_check
   $('#claim_visa_check').click(function(){

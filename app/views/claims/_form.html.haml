@@ -138,10 +138,10 @@
         %th= t('.paid_type')
       - ind = 0
       = f.fields_for :payments_out do |builder|
-        %tr.fields{ :id => "payment_in_#{ind}"}
+        %tr.fields{ :id => "payment_out_#{ind}"}
           %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :style => 'width: 85%;'
           %td= builder.text_field :amount, :class => 'amount'
-          %td= builder.text_field :form
+          %td= builder.text_field :form, :class => 'autocomplete payment_form'
           %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
         = builder.hidden_field :id
       %tr.footer

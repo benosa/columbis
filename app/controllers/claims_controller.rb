@@ -18,6 +18,15 @@ class ClaimsController < ApplicationController
     }
   end
 
+  def autocomplete_payment_out_form
+    render :json => DropdownValue.dd_for_form.map { |dd|
+      {
+        :label => dd.value,
+        :value => dd.value
+      }
+    }
+  end
+
   def index
     @claims = Claim.all
   end

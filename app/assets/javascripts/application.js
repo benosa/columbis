@@ -47,9 +47,13 @@ $(function() {
           tr.next(".hidden_id").val(ui.item.id);
         }
       }
+    },
+      paymentOutForm: {
+      source: "/claims/autocomplete_payment_out_form"
     }
   };
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
+  $("input.autocomplete.payment_form").autocomplete($autocomplete.paymentOutForm);
 
   // add tourist
 	var add_tourist = function(e){

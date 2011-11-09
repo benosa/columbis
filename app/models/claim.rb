@@ -33,24 +33,50 @@ class Claim < ActiveRecord::Base
 #      self.assign_tourists(claim_params[:tourists])
       self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
 
-      self.save
-      #TODO: remove unused payments
+      if self.valid?
+        remove_unused_payments
+        self.save
+      end
+    end
+  end
 
+  def assign_applicant(applicant_params)
+    if applicant_params[:id].blank?
+      self.applicant = Tourist.create(applicant_params)
+    else
+      self.applicant = Tourist.find(applicant_params[:id])
     end
   end
 
   def assign_payments(payments_in, payments_out)
     payments_in.each do |num, payment_hash|
+      next if empty_payment_hash?(payment_hash)
+
+      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
+      payment_hash[:form] = DropdownValue.values_for_form.first
+      payment_hash[:recipient_id] = Company.first.try(:id)
+      payment_hash[:recipient_type] = Company.first.class.try(:name)
+      payment_hash[:payer_id] = self.applicant.try(:id)
+      payment_hash[:payer_type] = self.applicant.class.try(:name)
+      if payment_hash[:id].blank?
+        self.payments_in << Payment.create(payment_hash)
+      else
+        self.payments_in << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
+      end
+    end
+
+    payments_out.each do |num, payment_hash|
+      next if empty_payment_hash?(payment_hash)
+
       payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
       payment_hash[:payer_type] = self.applicant.class.try(:name)
-
       if payment_hash[:id].blank?
-        self.payments_in << Payment.create(payment_hash)
+        self.payments_out << Payment.create(payment_hash)
       else
-        self.payments_in << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
+        self.payments_out << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
       end
     end
   end
@@ -64,23 +90,6 @@ class Claim < ActiveRecord::Base
       end
     end
   end
-
-  def assign_applicant(applicant_params)
-    if applicant_params[:id].blank?
-      tourist = Tourist.new(applicant_params)
-      if tourist.save
-        self.applicant = tourist
-      else
-        tourist.errors.messages.each do |attr_name, err|
-          self.errors.add(:applicant, I18n.t("tourist.#{attr_name.to_s}" ) + " : " + err.join(', '))
-        end
-      end
-    else
-      applicant = Tourist.find(applicant_params[:id])
-    end
-  end
-
-
 
   def tourist_debt?
     true
@@ -96,8 +105,15 @@ class Claim < ActiveRecord::Base
 
   private
 
+  def remove_unused_payments
+    Payment.where(:claim_id => nil).destroy_all
+  end
+
+  def empty_payment_hash?(ph)
+    ph[:date_in].blank? and ph[:amount].to_f == 0.0 and ph[:id].blank?
+  end
+
   def drop_reflections
-    self.applicant = nil
     self.dependents = []
     self.payments_in = []
     self.payments_out = []

@@ -45,15 +45,12 @@ class ClaimsController < ApplicationController
   def create
     @claim = Claim.new(params[:claim])
     @claim.assign_reflections_and_save(params[:claim])
-#    raise (params[:claim][:tourists_attributes]).inspect
     unless @claim.errors.any?
-      if @claim.assign_tourists_and_save(params[:claim])
-        redirect_to claims_url, :notice => t('.successfully_created_claim.')
-      else
-        render :action => 'new'
-      end
+      redirect_to claims_url, :notice => t('.successfully_created_claim.')
     else
       @claim.applicant ||= Tourist.new(params[:claim][:applicant])
+      @claim.payments_in << Payment.new if @claim.payments_in.empty?
+      @claim.payments_out << Payment.new if @claim.payments_out.empty?
       render :action => 'new'
     end
   end
@@ -61,7 +58,8 @@ class ClaimsController < ApplicationController
   def edit
     @claim = Claim.find(params[:id])
     @claim.applicant ||= Tourist.new
-    @claim.payments << Payment.new
+    @claim.payments_in << Payment.new if @claim.payments_in.empty?
+    @claim.payments_out << Payment.new if @claim.payments_out.empty?
   end
 
   def update

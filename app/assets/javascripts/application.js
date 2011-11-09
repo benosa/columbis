@@ -76,24 +76,24 @@ $(function() {
       $(this).find('.num').text(i+2)
 
       $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
-      $(this).find('input.autocomplete.full_name').attr('id', 'claim_tourists_attributes_' + i + '_full_name');
-      $(this).find('input.autocomplete.full_name').attr('name', 'claim[tourists_attributes][' + i + '][full_name]');
+      $(this).find('input.autocomplete.full_name').attr('id', 'claim_dependents_attributes_' + i + '_full_name');
+      $(this).find('input.autocomplete.full_name').attr('name', 'claim[dependents_attributes][' + i + '][full_name]');
 
-      $(this).find('input.date_of_birth').attr('id', 'claim_tourists_attributes_' + i + '_date_of_birth');
-      $(this).find('input.date_of_birth').attr('name', 'claim[tourists_attributes][' + i + '][date_of_birth]');
+      $(this).find('input.date_of_birth').attr('id', 'claim_dependents_attributes_' + i + '_date_of_birth');
+      $(this).find('input.date_of_birth').attr('name', 'claim[dependents_attributes][' + i + '][date_of_birth]');
 
-      $(this).find('input.passport_series').attr('id', 'claim_tourists_attributes_' + i + '_passport_series');
-      $(this).find('input.passport_series').attr('name', 'claim[tourists_attributes][' + i + '][passport_series]');
+      $(this).find('input.passport_series').attr('id', 'claim_dependents_attributes_' + i + '_passport_series');
+      $(this).find('input.passport_series').attr('name', 'claim[dependents_attributes][' + i + '][passport_series]');
 
-      $(this).find('input.passport_number').attr('id', 'claim_tourists_attributes_' + i + '_passport_number');
-      $(this).find('input.passport_number').attr('name', 'claim[tourists_attributes][' + i + '][passport_number]');
+      $(this).find('input.passport_number').attr('id', 'claim_dependents_attributes_' + i + '_passport_number');
+      $(this).find('input.passport_number').attr('name', 'claim[dependents_attributes][' + i + '][passport_number]');
 
-      $(this).find('input.passport_valid_until').attr('id', 'claim_tourists_attributes_' + i + '_passport_valid_until');
-      $(this).find('input.passport_valid_until').attr('name', 'claim[tourists_attributes][' + i + '][passport_valid_until]');
+      $(this).find('input.passport_valid_until').attr('id', 'claim_dependents_attributes_' + i + '_passport_valid_until');
+      $(this).find('input.passport_valid_until').attr('name', 'claim[dependents_attributes][' + i + '][passport_valid_until]');
 
       var hidden_id = $(this).next('[type=hidden]');
-      hidden_id.attr('id', 'claim_tourists_attributes_' + i + '_id');
-      hidden_id.attr('name', 'claim[tourists_attributes][' + i + '][id]');
+      hidden_id.attr('id', 'claim_dependents_attributes_' + i + '_id');
+      hidden_id.attr('name', 'claim[dependents_attributes][' + i + '][id]');
       last_ind = i+1;
     });
 	}
@@ -102,17 +102,19 @@ $(function() {
   // del tourist
   var del_tourist = function(e){
     e.preventDefault();
+
     var id = $(this).attr('id').replace(/del/,'');
+    var $tr = $('#dependent' + id);
     if (id == 1) {
       $('.applicant input').val('');
       $('.applicant').next().find('input').val('');
       $('#claim_applicant_id').removeAttr('value');
     } else {
-      $('#tourists #dependent' + id).next('input[type=hidden]').remove();
-      $('#tourists #dependent' + id).remove();
+      $tr.next('input[type=hidden]').remove();
+      $tr.remove();
     }
 
-    $('#tourists tr dependent').each(function(i){
+    $('#tourists tr.dependent').each(function(i){
       $(this).find('.num').text(i+2)
       $(this).find('.del').attr('id','del'+(i+2));
       $(this).attr('id','dependent'+(i+2));

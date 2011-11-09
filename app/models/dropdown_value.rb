@@ -2,8 +2,8 @@ class DropdownValue < ActiveRecord::Base
   attr_accessible :list, :value
   validates_presence_of :list, :value
 
-  def check_and_save(list, value)
-    true
+  def self.check_and_save(list, value)
+    self.create(:list => list, :value => value) unless self.where(:list => list, :value => value).first
   end
 
   def self.method_missing(meth, *args, &block)

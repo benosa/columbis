@@ -103,7 +103,7 @@
       - ind = 2
       = f.fields_for :dependents, @claim.dependents do |builder|
         %tr.dependent{ :id => "dependent#{ind}"}
-          /= render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
+          = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
           - ind += 1
 
       %tr.footer

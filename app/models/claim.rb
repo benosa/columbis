@@ -17,6 +17,7 @@ class Claim < ActiveRecord::Base
   has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
   has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
 
+  accepts_nested_attributes_for :dependents
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
@@ -30,7 +31,7 @@ class Claim < ActiveRecord::Base
     self.transaction do
       drop_reflections
       self.assign_applicant(claim_params[:applicant])
-#      self.assign_tourists(claim_params[:tourists])
+      self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
       self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
 
       if self.valid?
@@ -48,6 +49,19 @@ class Claim < ActiveRecord::Base
     end
   end
 
+  def assign_dependents(tourists)
+    tourists.each do |num, tourist_hash|
+      next if empty_tourist_hash?(tourist_hash)
+      if tourist_hash[:id].blank?
+        self.dependents << Tourist.create(tourist_hash)
+      else
+        tourist = Tourist.find(tourist_hash[:id])
+        tourist.update_attributes(tourist_hash)
+        self.dependents << tourist
+      end
+    end
+  end
+
   def assign_payments(payments_in, payments_out)
     payments_in.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
@@ -58,11 +72,8 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
       payment_hash[:payer_type] = self.applicant.class.try(:name)
-      if payment_hash[:id].blank?
-        self.payments_in << Payment.create(payment_hash)
-      else
-        self.payments_in << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
-      end
+
+      process_payment_hash(payment_hash, self.payments_in)
     end
 
     payments_out.each do |num, payment_hash|
@@ -73,21 +84,8 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
       payment_hash[:payer_type] = self.applicant.class.try(:name)
-      if payment_hash[:id].blank?
-        self.payments_out << Payment.create(payment_hash)
-      else
-        self.payments_out << Payment.find(payment_hash[:id]).update_attributes(payment_hash)
-      end
-    end
-  end
 
-  def assign_tourists(tourists)
-    tourists.each do |num, tourist_hash|
-      if tourist_hash[:id].blank?
-        self.tourists << Tourist.create(tourist_hash)
-      else
-        self.tourists << Tourist.find(tourist_hash[:id])
-      end
+      process_payment_hash(payment_hash, self.payments_out)
     end
   end
 
@@ -107,6 +105,21 @@ class Claim < ActiveRecord::Base
 
   def remove_unused_payments
     Payment.where(:claim_id => nil).destroy_all
+  end
+
+  def process_payment_hash(ph, payments)
+    if payment_hash[:id].blank?
+      payments << Payment.create(ph)
+    else
+      payment = Payment.find(ph[:id])
+      payment.update_attributes(ph)
+      payments << payment
+    end
+  end
+
+  def empty_tourist_hash?(th)
+    th[:passport_number].blank? and th[:passport_valid_until].blank? and th[:id].blank? and
+    th[:passport_series].blank? and th[:full_name].blank? and th[:date_of_birth].blank?
   end
 
   def empty_payment_hash?(ph)

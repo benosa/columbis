@@ -1,0 +1,15 @@
+- title t('.dropdown_values')
+
+%table
+  %tr
+    %th= t('.list')
+    %th= t('.value')
+  - for dropdown_value in @dropdown_values
+    %tr
+      %td= dropdown_value.list
+      %td= dropdown_value.value
+      %td= link_to t('show'), dropdown_value
+      %td= link_to t('edit'), edit_dropdown_value_path(dropdown_value)
+      %td= link_to t('destroy'), dropdown_value, :confirm => ('are_you_sure'), :method => :delete
+
+%p= link_to t('.new_dropdown_value'), new_dropdown_value_path

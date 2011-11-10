@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111108123322) do
+ActiveRecord::Schema.define(:version => 20111109123322) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -61,8 +61,6 @@ ActiveRecord::Schema.define(:version => 20111108123322) do
     t.string   "flight_back"
     t.string   "depart_to"
     t.string   "depart_back"
-    t.time     "time_to"
-    t.time     "time_back"
     t.datetime "visa_check"
     t.float    "tour_price",                 :default => 0.0
     t.float    "visa_price",                 :default => 0.0
@@ -73,7 +71,18 @@ ActiveRecord::Schema.define(:version => 20111108123322) do
     t.float    "primary_currency_price",     :default => 0.0
     t.float    "course",                     :default => 0.0
     t.string   "currency",                                               :null => false
+    t.integer  "airline_id"
+    t.integer  "num"
+    t.integer  "visa_count"
+    t.string   "meals"
+    t.string   "placement"
+    t.integer  "nights"
+    t.string   "hotel"
+    t.datetime "arrival_date"
+    t.datetime "departure_date"
   end
+
+  add_index "claims", ["num"], :name => "index_claims_on_num"
 
   create_table "clients", :force => true do |t|
     t.string   "first_name"

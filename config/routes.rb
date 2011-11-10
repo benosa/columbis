@@ -5,7 +5,7 @@ Tourism::Application.routes.draw do
   resources :airlines
   resources :offices
   resources :currency_courses
-  resources :reservations
+  resources :dropdown_values, :except => :show
 
   resources :claims do
     collection do

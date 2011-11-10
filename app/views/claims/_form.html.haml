@@ -29,6 +29,10 @@
       %th= t('.there')
       %th= t('.back')
     %tr
+      %td{ :colspan => 3 }
+        = f.label :airline, t('.airline')
+        = f.text_field :airline
+    %tr
       %td= f.label :airport_to, t('.airport')
       %td= f.text_field :airport_to
       %td= f.text_field :airport_back
@@ -40,10 +44,7 @@
       %td= f.label :depart_to, t('.depart')
       %td= f.text_field :depart_to, :class => 'datetimepicker'
       %td= f.text_field :depart_back, :class => 'datetimepicker'
-    %tr
-      %td= f.label :time_to, t('.time')
-      %td= f.text_field :time_to
-      %td= f.text_field :time_back
+
   %p
     = f.label :description, t('.description')
     %br
@@ -59,6 +60,7 @@
       %tr
         %th= t('.tour_price')
         %th= t('.visa_price')
+        %th= t('.visa_count')
         %th= t('.insurance_price')
         %th= t('.additional_insurance_price')
         %th= t('.fuel_tax_price')
@@ -66,6 +68,7 @@
       %tr
         %td= f.text_field :tour_price, :class => 'red'
         %td= f.text_field :visa_price
+        %td= f.text_field :visa_count
         %td= f.text_field :insurance_price
         %td= f.text_field :additional_insurance_price
         %td= f.text_field :fuel_tax_price

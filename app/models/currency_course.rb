@@ -24,6 +24,10 @@ class CurrencyCourse < ActiveRecord::Base
     act_cour
   end
 
+  def self.actual_course(curr)
+    curr == PRIMARY_CURRENCY ? 1 : self.where(:currency => curr).order('on_date DESC').first.try(:course)
+  end
+
   def self.method_missing(meth, *args, &block)
     meth_name = meth.to_s
 

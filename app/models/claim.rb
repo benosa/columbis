@@ -7,6 +7,7 @@ class Claim < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :office
+  belongs_to :airline
 
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
   has_many :dependents, :through => :tourist_claims, :source => :tourist
@@ -30,6 +31,9 @@ class Claim < ActiveRecord::Base
   def assign_reflections_and_save(claim_params)
     self.transaction do
       drop_reflections
+
+      DropdownValue.check_and_save('form', self.form)
+
       self.assign_applicant(claim_params[:applicant])
       self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
       self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
@@ -108,7 +112,7 @@ class Claim < ActiveRecord::Base
   end
 
   def process_payment_hash(ph, payments)
-    if payment_hash[:id].blank?
+    if ph[:id].blank?
       payments << Payment.create(ph)
     else
       payment = Payment.find(ph[:id])

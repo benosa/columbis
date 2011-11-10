@@ -1,0 +1,11 @@
+= form_for @dropdown_value do |f|
+  = f.error_messages
+  %table
+    %tr
+      %th= f.label :list
+      %th= f.label :value
+    %tr
+      %td= f.text_field :list
+      %td= f.text_field :value
+  %p
+    = f.submit

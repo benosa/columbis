@@ -1,156 +1,211 @@
 = form_for @claim do |f|
   = f.error_messages
-  %p
-    = f.label :office_id, t('.office')
-    = f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] }
-    = f.label :user_id, t('.user')
-    = f.select :user_id, User.all.collect {|o| [ o.first_last_name, o.id ] }
-  %hr
+  #left_block
+    .data_block
+      %table
+        %tr
+          %th= f.label :num, t('.num'), :class => 'narrow'
+          %th= f.label :operator_confirmation, t('.operator_confirmation'), :class => 'narrow'
+          %th= f.label :visa, t('.visa'), :class => 'narrow'
+          %th= f.label :check_date, t('.check_date'), :class => 'narrow'
+        %tr
+          %td= f.text_field :num, :class => 'narrow'
+          %td= f.text_field :operator_confirmation, :class => 'narrow'
+          %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
+          %td.datepicker= f.text_field :check_date, :class => 'datepicker'
+        = f.hidden_field :visa
+      = f.label :early_reservation
+      = f.check_box :early_reservation, { :style => 'width:12px;'}
 
-  %p
-    = f.label :operator_confirmation, t('.operator_confirmation'), :class => 'narrow'
-    = f.text_field :operator_confirmation, :class => 'narrow'
+      %h2= t('.tourists')
+      %table#tourists
+        %tr
+          %th{ :style => 'width: 20px;' }
+          %th{ :style => 'width: 180px;' }
+            = t('.full_name')
+            .hint
+              = t('.tourists_full_name_hint')
+          %th= t('.date_of_birth')
+          %th{ :colspan => 2 }
+            = t('.passport')
+          %th= t('.passport_expire')
+          %th{ :style => 'width: 50px;' }
+        = f.fields_for :applicant, @claim.applicant do |builder|
+          %tr.applicant
+            = render :partial => 'tourist', :locals => { :builder => builder }
+          %tr
+            %td
+            %td= builder.text_field :phone_number, :class => 'phone_number'
+            %td{ :colspan => 4 }
+              = builder.text_field :address, :class => 'address'
+          = builder.hidden_field :id
+        - ind = 2
+        = f.fields_for :dependents, @claim.dependents do |builder|
+          %tr.dependent{ :id => "dependent#{ind}"}
+            = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
+            - ind += 1
 
-    = f.label :visa, t('.visa'), :class => 'narrow'
-    = f.text_field :visa_check, :class => ('narrow datepicker ' << @claim.visa)
-    = f.hidden_field :visa
+        %tr.footer
+          %td{ :colspan => 6 }
+            = link_to t('.add_another_tourist'), '#', :class => 'add'
 
-    = f.label :check_date, t('.check_date'), :class => 'narrow'
-    = f.text_field :check_date, :class => 'narrow datepicker'
-
-  %p
-    = f.label :operator_id, t('.operator')
-    = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }
-
-  = t('.flights')
-  %table
-    %tr
-      %th
-      %th= t('.there')
-      %th= t('.back')
-    %tr
-      %td{ :colspan => 3 }
-        = f.label :airline, t('.airline')
-        = f.text_field :airline
-    %tr
-      %td= f.label :airport_to, t('.airport')
-      %td= f.text_field :airport_to
-      %td= f.text_field :airport_back
-    %tr
-      %td= f.label :flight_to, t('.flight')
-      %td= f.text_field :flight_to
-      %td= f.text_field :flight_back
-    %tr
-      %td= f.label :depart_to, t('.depart')
-      %td= f.text_field :depart_to, :class => 'datetimepicker'
-      %td= f.text_field :depart_back, :class => 'datetimepicker'
-
-  %p
-    = f.label :description, t('.description')
-    %br
-    = f.text_area :description, :cols => 80, :rows => 6
-  %hr
-  .data_block
-    = t('.tour_price')
-    = f.label :currency
-    = f.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-    = f.label :course
-    = f.text_field :course, :class => 'width_100'
-    %table#tour_price
+    %h2= t('.flights')
+    %table
       %tr
-        %th= t('.tour_price')
-        %th= t('.visa_price')
-        %th= t('.visa_count')
-        %th= t('.insurance_price')
-        %th= t('.additional_insurance_price')
-        %th= t('.fuel_tax_price')
-        %th= t('.total_tour_price')
+        %td{ :colspan => 3 }
+          = f.label :airline, t('.airline')
+          = f.text_field :airline
       %tr
-        %td= f.text_field :tour_price, :class => 'red'
-        %td= f.text_field :visa_price
-        %td= f.text_field :visa_count
-        %td= f.text_field :insurance_price
-        %td= f.text_field :additional_insurance_price
-        %td= f.text_field :fuel_tax_price
-        %td= f.text_field :total_tour_price, :class => 'red'
+        %th
+        %th= t('.there')
+        %th= t('.back')
       %tr
-        %th{ :colspan => 6 }
-          = t('.primary_currency_price')
+        %td= f.label :airport_to, t('.airport')
+        %td= f.text_field :airport_to
+        %td= f.text_field :airport_back
       %tr
-        %td= f.text_field :primary_currency_price, :class => 'red'
-        %td{ :colspan => 5 }
-          = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red'
+        %td= f.label :flight_to, t('.flight')
+        %td= f.text_field :flight_to
+        %td= f.text_field :flight_back
+      %tr
+        %td= f.label :depart_to, t('.depart')
+        %td= f.text_field :depart_to, :class => 'datetimepicker'
+        %td= f.text_field :depart_back, :class => 'datetimepicker'
 
-  %hr
-  .data_block
-    = t('.tourists')
-    %table#tourists
+    %h2= t('.trip_documents')
+    %table
       %tr
-        %th{ :style => 'width: 20px;' }
-        %th{ :style => 'width: 220px;' }
-          = t('.full_name')
-        %th= t('.date_of_birth')
-        %th{ :colspan => 2 }
-          = t('.passport')
-        %th= t('.passport_expire')
-        %th{ :style => 'width: 50px;' }
-      = f.fields_for :applicant, @claim.applicant do |builder|
-        %tr.applicant
-          = render :partial => 'tourist', :locals => { :builder => builder }
+        %td= t('.memo')
+        %td= f.text_field :docs_memo
+      %tr
+        %td= t('.ticket')
+        %td= f.text_field :docs_ticket
+      %tr
+        %td= t('.note')
+        %td= f.text_field :docs_note
+
+  #center_block
+    %div.clr
+      %table#indicators.left_inside
+        %tr
+          %td.framed.tourist_debt{ :class => (@claim.tourist_debt? ? 'red_back' : 'green_back') }
+            = (@claim.tourist_debt? ? t('yes') : t('no'))
+          %td= t('.tourist_debt')
+        %tr
+          %td.framed.operator_debt{ :class => (@claim.operator_debt? ? 'red_back' : 'green_back') }
+            = (@claim.operator_debt? ? t('yes') : t('no'))
+          %td= t('.operator_debt')
+        %tr
+          %td.framed.documents_ready{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
+            = (@claim.documents_ready? ? t('yes') : t('no'))
+          %td= t('.documents_ready')
+        %tr
+          %td.framed.has_notes{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }
+            = (@claim.has_notes? ? t('yes') : t('no'))
+          %td= t('.has_notes')
+
+      %table#registration
+        %tr
+          %td= f.label :user_id, t('.reservation_date')
+          %td.datepicker= f.text_field :reservation_date, :class => ('datepicker')
+        %tr
+          %td= f.label :user_id, t('.user')
+          %td= f.label :office_id, t('.office')
+        %tr
+          %td= f.select :user_id, User.all.collect {|o| [ o.first_last_name, o.id ] }
+          %td= f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] }
+
+    .data_block
+      %h2= t('.marchroute')
+      %table#marchroute
+        %tr
+          %th{ :colspan => 2 }
+            Вылет
+          %th{ :colspan => 2 }
+            = f.label :operator_id, t('.operator')
+        %tr
+          %td{ :colspan => 2 }
+            ghjj
+          %td{ :colspan => 2 }
+            = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }
+        %tr
+          %th
+          %th
+          %th
+          %th
         %tr
           %td
-          %td= builder.text_field :phone_number, :class => 'phone_number'
-          %td{ :colspan => 4 }
-            = builder.text_field :address, :class => 'address'
-        = builder.hidden_field :id
-      - ind = 2
-      = f.fields_for :dependents, @claim.dependents do |builder|
-        %tr.dependent{ :id => "dependent#{ind}"}
-          = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
-          - ind += 1
+          %td
+          %td
+          %td
 
-      %tr.footer
-        %td{ :colspan => 6 }
-          = link_to t('.add_another_tourist'), '#', :class => 'add'
+    .data_block
+      %h2= t('.tour_price')
+      = f.label :currency
+      = f.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+      = f.label :course
+      = f.text_field :course, :class => 'width_100'
+      %table#tour_price
+        %tr
+          %th= t('.tour_price')
+          %th= t('.visa_price')
+          %th= t('.visa_count')
+          %th= t('.insurance_price')
+          %th= t('.additional_insurance_price')
+          %th= t('.fuel_tax_price')
+          %th= t('.total_tour_price')
+        %tr
+          %td= f.text_field :tour_price, :class => 'red'
+          %td= f.text_field :visa_price
+          %td= f.text_field :visa_count
+          %td= f.text_field :insurance_price
+          %td= f.text_field :additional_insurance_price
+          %td= f.text_field :fuel_tax_price
+          %td= f.text_field :total_tour_price, :class => 'red'
+        %tr
+          %th{ :colspan => 7 }
+            = t('.primary_currency_price')
+        %tr
+          %td{ :colspan => 2 }
+            = f.text_field :primary_currency_price, :class => 'red'
+          %td{ :colspan => 5 }
+            = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red'
 
-  %hr
-  .data_block
-    = t('.payments_in')
-    %table#payments_in
-      %tr.header
-        %th= t('.date')
-        %th= t('.paid')
-        %th= t('.paid_in_word')
-      - ind = 0
-      = f.fields_for :payments_in do |builder|
-        %tr.fields{ :id => "payment_in_#{ind}"}
-          %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :style => 'width: 85%;'
-          %td= builder.text_field :amount, :class => 'amount'
-          %td= builder.text_field :description, :class => 'description'
-          %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
-        = builder.hidden_field :id
-      %tr.footer
-        %td{ :colspan => 3}
-          = link_to t('.add_another_payment'), '#', :class => 'add'
+      %h2= t('.payments_in')
+      %table#payments_in
+        %tr.header
+          %th= t('.date')
+          %th= t('.paid')
+          %th= t('.paid_in_word')
+        - ind = 0
+        = f.fields_for :payments_in do |builder|
+          %tr.fields{ :id => "payment_in_#{ind}"}
+            %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
+            %td= builder.text_field :amount, :class => 'amount'
+            %td= builder.text_field :description, :class => 'description'
+            %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+          = builder.hidden_field :id
+        %tr.footer
+          %td{ :colspan => 3}
+            = link_to t('.add_another_payment'), '#', :class => 'add'
 
-    = t('.payments_out')
-    %table#payments_out
-      %tr.header
-        %th= t('.date')
-        %th= t('.paid')
-        %th= t('.paid_type')
-      - ind = 0
-      = f.fields_for :payments_out do |builder|
-        %tr.fields{ :id => "payment_out_#{ind}"}
-          %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :style => 'width: 85%;'
-          %td= builder.text_field :amount, :class => 'amount'
-          %td= builder.text_field :form, :class => 'autocomplete payment_form'
-          %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
-        = builder.hidden_field :id
-      %tr.footer
-        %td{ :colspan => 3}
-          = link_to t('.add_another_payment'), '#', :class => 'add'
-
+      %h2= t('.payments_out')
+      %table#payments_out
+        %tr.header
+          %th= t('.date')
+          %th= t('.paid')
+          %th= t('.paid_type')
+        - ind = 0
+        = f.fields_for :payments_out do |builder|
+          %tr.fields{ :id => "payment_out_#{ind}"}
+            %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
+            %td= builder.text_field :amount, :class => 'amount'
+            %td= builder.text_field :form, :class => 'autocomplete payment_form'
+            %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+          = builder.hidden_field :id
+        %tr.footer
+          %td{ :colspan => 3}
+            = link_to t('.add_another_payment'), '#', :class => 'add'
 
   %p
     = f.submit

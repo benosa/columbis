@@ -22,6 +22,8 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
+  validates_uniqueness_of :num
+  validates_presence_of :num
   validates_presence_of :user_id
   validates_presence_of :check_date
   validates_presence_of :currency
@@ -97,12 +99,20 @@ class Claim < ActiveRecord::Base
     true
   end
 
-  def operators_debt?
+  def operator_debt?
     false
   end
 
   def documents_ready?
     true
+  end
+
+  def has_notes?
+    !self.docs_memo.blank?
+  end
+
+  def set_new_num
+    self.num = Claim.last.try(:num).to_i + 1
   end
 
   private

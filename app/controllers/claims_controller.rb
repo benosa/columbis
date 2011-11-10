@@ -40,6 +40,7 @@ class ClaimsController < ApplicationController
     @claim.applicant = Tourist.new
     @claim.payments_in << Payment.new
     @claim.payments_out << Payment.new
+    @claim.set_new_num
   end
 
   def create

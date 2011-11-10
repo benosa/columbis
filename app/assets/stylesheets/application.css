@@ -79,6 +79,9 @@ ul  {
   margin: 0;
 }
 
+.clr {
+  float: inherit;
+}
 #documents_to_print_menu ul {
   margin: 0;
 }
@@ -101,6 +104,7 @@ ul  {
   background-color: #f6e7c0;
 }
 
+
 #documents_to_print_menu ul li a:hover {
   padding: 7px 20px;
   color: black;
@@ -109,6 +113,13 @@ ul  {
 
 #documents_to_print_menu ul li a.accountant_login {
   margin-left: 15px;
+  background-color: #e7f6c0;
+}
+
+#documents_to_print_menu ul li a.accountant_login:hover {
+  padding: 7px 20px;
+  color: black;
+  background-color: #f3982d;
 }
 
 #databases_menu ul {
@@ -140,11 +151,28 @@ ul  {
   background-color: #f3982d;
 }
 
+#left_block {
+  float: left;
+  width: 55%;
+}
+
+.left_inside {
+  float: left;
+}
+
+.left_inside .narrow {
+  width: 80px;
+}
+
+#center_block {
+  margin-left:56%;
+}
+
 input[type="submit"] {
   font-style: italic;
   font-weight: bold;
   font-family: Arial,Times New Roman sans-serif;
-  font-size: 10pt;
+  font-size: 9pt;
   border-radius: 7px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
@@ -155,13 +183,14 @@ input[type="submit"] {
 }
 
 input[type="text"], input[type="email"], input[type="password"] {
-  height: 25px;
+  height: 20px;
   color: blue;
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: bold;
   font-style: italic;
   text-align: center;
   width: 200px;
+  border: 1px solid #5c1c03;
 }
 
 table td  {
@@ -181,7 +210,7 @@ table th .hint  {
 }
 
 #container form input.narrow {
-  width: 100px;
+  width: 80px;
 }
 
 #container ul.hmenu li {
@@ -199,7 +228,6 @@ form .data_block {
 form .data_block th {
   font-weight: bold;
   font-style: italic;
-
 }
 
 #tour_price td  {
@@ -207,13 +235,41 @@ form .data_block th {
   width: 80px;
 }
 
-form .data_block td.datepicker {
+#indicators {
   width: 140px;
+}
+
+#indicators td {
+  text-align: left;
+}
+
+#indicators td.framed  {
+  border: 1px solid #5c1c03;
+}
+
+#registration input{
+  width:85px;
 }
 
 form .data_block input {
   height:20px;
   width: 100%;
+}
+
+form .data_block td.datepicker {
+  width: 85px;
+}
+
+form .data_block input.datepicker {
+  width: 66px;
+}
+
+form .data_block input.narrow {
+  width: 85px;
+}
+
+form .data_block td.del {
+  width: 20px;
 }
 
 form .data_block .width_100 {

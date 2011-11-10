@@ -2,8 +2,8 @@
 %td.num= ind
 %td= builder.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path,
   :size => 20, :class => 'autocomplete full_name'
-%td.datepicker= builder.text_field :date_of_birth, :class => 'datepicker date_of_birth', :style => 'width: 85%;'
+%td.datepicker= builder.text_field :date_of_birth, :class => 'datepicker date_of_birth'
 %td= builder.text_field :passport_series, :class => 'passport_series', :style => 'width: 90%;'
 %td= builder.text_field :passport_number, :class => 'passport_number'
-%td.datepicker= builder.text_field :passport_valid_until, :class => 'datepicker passport_valid_until', :style => 'width: 85%;'
-%td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+%td.datepicker= builder.text_field :passport_valid_until, :class => 'datepicker passport_valid_until'
+%td.del= link_to t('.x'), '#', :class => 'del', :id => "del#{ind}"

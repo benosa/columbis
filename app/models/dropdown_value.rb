@@ -1,6 +1,7 @@
 class DropdownValue < ActiveRecord::Base
   attr_accessible :list, :value
   validates_presence_of :list, :value
+  validates_uniqueness_of :value, :scope => :list
 
   def self.check_and_save(list, value)
     self.create(:list => list, :value => value) unless self.where(:list => list, :value => value).first

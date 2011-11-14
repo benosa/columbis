@@ -54,7 +54,7 @@
       %tr
         %td{ :colspan => 3 }
           = f.label :airline, t('.airline')
-          = f.text_field :airline
+          = f.text_field :airline, :class => 'autocomplete airline', :value => @claim.airline.try(:name)
       %tr
         %th
         %th= t('.there')
@@ -129,15 +129,30 @@
           %td{ :colspan => 2 }
             = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }
         %tr
-          %th
-          %th
-          %th
-          %th
+          %th= f.label :meals
+          %th= f.label :airport_to, t('.resort')
+          %th{ :colspan => 2 }
+            = f.label :hotel
         %tr
-          %td
-          %td
-          %td
-          %td
+          %td= f.text_field :meals
+          %td= f.text_field :airport_to, :id => 'resort'
+          %td{ :colspan => 2 }
+            = f.text_field :hotel, :class => 'autocomplete hotel'
+        %tr
+          %th= f.label :meals
+          %th= f.label :placement
+          %th= f.label :nights
+          %th= f.label :memo
+        %tr
+          %td= f.text_field :meals, :class => 'autocomplete meals'
+          %td= f.text_field :placement, :class => 'autocomplete placement'
+          %td= f.select :nights, (1..30).to_a
+          %td= f.text_field :memo
+
+      = f.label :arrival_date
+      = f.text_field :arrival_date, :class => 'datepicker'
+      = f.label :departure_date
+      = f.text_field :departure_date, :class => 'datepicker'
 
     .data_block
       %h2= t('.tour_price')

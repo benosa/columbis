@@ -7,6 +7,14 @@ class DropdownValue < ActiveRecord::Base
     self.create(:list => list, :value => value) unless self.where(:list => list, :value => value).first
   end
 
+  def self.dd_for(list)
+    DropdownValue.where( :list => list )
+  end
+
+  def self.values_for(list)
+    DropdownValue.where( :list => list ).map &:value
+  end
+
   def self.method_missing(meth, *args, &block)
     # just returns values for certain list
     if meth.to_s =~ /^dd_for_(.+)$/

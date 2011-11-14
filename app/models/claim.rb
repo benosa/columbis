@@ -1,9 +1,10 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  attr_accessible :user_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation, :visa, :visa_check,
+  attr_accessible :user_id, :airline_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation, :visa, :visa_check,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
-                  :visa_price, :insurance_price, :tour_price, :currency
+                  :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
+                  :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date
 
   belongs_to :user
   belongs_to :office
@@ -27,14 +28,14 @@ class Claim < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :check_date
   validates_presence_of :currency
-  validates_presence_of :applicant
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
+
+  validate :presence_of_applicant
 
   def assign_reflections_and_save(claim_params)
     self.transaction do
       drop_reflections
-
-      DropdownValue.check_and_save('form', self.form)
+      check_dropdowns(claim_params)
 
       self.assign_applicant(claim_params[:applicant])
       self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
@@ -108,7 +109,7 @@ class Claim < ActiveRecord::Base
   end
 
   def has_notes?
-    !self.docs_memo.blank?
+    !self.docs_note.blank?
   end
 
   def set_new_num
@@ -122,6 +123,7 @@ class Claim < ActiveRecord::Base
   end
 
   def process_payment_hash(ph, payments)
+    DropdownValue.check_and_save('form', ph[:form])
     if ph[:id].blank?
       payments << Payment.create(ph)
     else
@@ -144,5 +146,21 @@ class Claim < ActiveRecord::Base
     self.dependents = []
     self.payments_in = []
     self.payments_out = []
+  end
+
+  def check_dropdowns(claim_params)
+    lists = %w[meals hotel placement]
+    lists.each do |l|
+      DropdownValue.check_and_save(l, claim_params[l.to_sym])
+    end
+
+    Airline.create({ :name => claim_params[:airline] }) unless Airline.find_by_name(claim_params[:airline])
+    self.airline = Airline.where( :name => claim_params[:airline]).first
+
+
+  end
+
+  def presence_of_applicant
+    errors.add(:applicant, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
   end
 end

@@ -18,13 +18,16 @@ class ClaimsController < ApplicationController
     }
   end
 
-  def autocomplete_payment_out_form
-    render :json => DropdownValue.dd_for_form.map { |dd|
-      {
-        :label => dd.value,
-        :value => dd.value
-      }
-    }
+
+  def autocomplete_common
+    render :json => DropdownValue.dd_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
+  end
+
+  def autocomplete_model_common
+    case params[:model]
+      when 'airline'
+        render :json => Airline.where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
+    end
   end
 
   def index

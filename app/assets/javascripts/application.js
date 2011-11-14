@@ -14,6 +14,15 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
+  // resort = airport_to
+  $('#resort').change(function(){
+    $('#claim_airport_to').val($('#resort').val());
+  });
+
+  $('#claim_airport_to').change(function(){
+    $('#resort').val($('#claim_airport_to').val());
+  });
+
   // visa_check
   $('#claim_visa_check').click(function(){
     var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
@@ -49,16 +58,32 @@ $(function() {
       }
     },
       paymentOutForm: {
-      source: "/claims/autocomplete_payment_out_form"
+      source: "/claims/autocomplete_common/form"
+    },
+      meals: {
+      source: "/claims/autocomplete_common/meals"
+    },
+      placement: {
+      source: "/claims/autocomplete_common/placement"
+    },
+      hotel: {
+      source: "/claims/autocomplete_common/hotel"
+    },
+      airline: {
+      source: "/claims/autocomplete_model_common/airline"
     }
   };
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
   $("input.autocomplete.payment_form").autocomplete($autocomplete.paymentOutForm);
+  $("input.autocomplete.meals").autocomplete($autocomplete.meals);
+  $("input.autocomplete.placement").autocomplete($autocomplete.placement);
+  $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
+  $("input.autocomplete.airline").autocomplete($autocomplete.airline);
 
   // add tourist
 	var add_tourist = function(e){
     e.preventDefault();
-    
+
     $('#tourists .footer').before($('#tourists .applicant').clone());
     $('#tourists .applicant:last').after('<input type="hidden" class="hidden_id">');
     $('#tourists .applicant:last input').each(function(n){
@@ -148,7 +173,7 @@ $(function() {
     $(t_id + ' .fields:last input.datepicker').next('img').remove();
 
     var p_type = t_id.replace(/#payments_/,'');
-     
+
     $(t_id + ' .fields:last').find('input').each(function(n){
       if($(this).hasClass('amount')) {
         $(this).val('0.0');

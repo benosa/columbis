@@ -1,6 +1,6 @@
 Tourism::Application.routes.draw do
-  match 'claims/autocomplete_common/:list' => 'claims#autocomplete_common'
-  match 'claims/autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
+
+  match 'amount_in_word' => ApplicationController.action(:amount_in_word)
 
   resources :cities
   resources :countries
@@ -12,7 +12,9 @@ Tourism::Application.routes.draw do
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'
-      post 'amount_in_word'
+      match 'autocomplete_city/:country_id' => 'claims#autocomplete_city'
+      match 'autocomplete_common/:list' => 'claims#autocomplete_common'
+      match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
     end
   end
 

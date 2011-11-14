@@ -61,8 +61,8 @@
         %th= t('.back')
       %tr
         %td= f.label :airport_to, t('.airport')
-        %td= f.text_field :airport_to
-        %td= f.text_field :airport_back
+        %td= f.text_field :airport_to, :class => 'autocomplete airport'
+        %td= f.text_field :airport_back, :class => 'autocomplete airport'
       %tr
         %td= f.label :flight_to, t('.flight')
         %td= f.text_field :flight_to
@@ -127,15 +127,15 @@
           %td{ :colspan => 2 }
             ghjj
           %td{ :colspan => 2 }
-            = f.select :operator_id, Operator.all.collect {|o| [ o.name, o.id ] }
+            = f.text_field :operator, :class => 'autocomplete operator', :value => @claim.operator.try(:name)
         %tr
-          %th= f.label :meals
-          %th= f.label :airport_to, t('.resort')
+          %th= f.label :country, t('.direction')
+          %th= f.label :city, t('.resort')
           %th{ :colspan => 2 }
             = f.label :hotel
         %tr
-          %td= f.text_field :meals
-          %td= f.text_field :airport_to, :id => 'resort'
+          %td= f.text_field :country, :class => 'autocomplete country', :value => @claim.country.try(:name)
+          %td= f.text_field :city, :class => 'autocomplete city', :value => @claim.city.try(:name)
           %td{ :colspan => 2 }
             = f.text_field :hotel, :class => 'autocomplete hotel'
         %tr
@@ -191,14 +191,16 @@
         %tr.header
           %th= t('.date')
           %th= t('.paid')
+          %th= t('.currency')
           %th= t('.paid_in_word')
         - ind = 0
         = f.fields_for :payments_in do |builder|
           %tr.fields{ :id => "payment_in_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
             %td= builder.text_field :amount, :class => 'amount'
+            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
             %td= builder.text_field :description, :class => 'description'
-            %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+            %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id
         %tr.footer
           %td{ :colspan => 3}
@@ -209,14 +211,16 @@
         %tr.header
           %th= t('.date')
           %th= t('.paid')
+          %th= t('.currency')
           %th= t('.paid_type')
         - ind = 0
         = f.fields_for :payments_out do |builder|
           %tr.fields{ :id => "payment_out_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
             %td= builder.text_field :amount, :class => 'amount'
+            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
             %td= builder.text_field :form, :class => 'autocomplete payment_form'
-            %td= link_to t('.del'), '#', :class => 'del', :id => "del#{ind}"
+            %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id
         %tr.footer
           %td{ :colspan => 3}

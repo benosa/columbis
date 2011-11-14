@@ -18,16 +18,21 @@ class ClaimsController < ApplicationController
     }
   end
 
-
   def autocomplete_common
     render :json => DropdownValue.dd_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
   end
 
   def autocomplete_model_common
-    case params[:model]
-      when 'airline'
-        render :json => Airline.where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
+    if %w[airline operator country city].include?(params[:model])
+      cls = eval("#{params[:model].classify}")
+      render :json => cls.where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
     end
+  end
+
+  def autocomplete_city
+    country_filter = params[:country].to_i > 0 ? ('AND country_id = ' + params[:country]) : ''
+    render :json => City.where(["name ILIKE '%' || ? || '%'" << country_filter,
+                    params[:term]]).map { |o| { :label => o.name, :value => o.name } }
   end
 
   def index
@@ -40,10 +45,7 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new
-    @claim.applicant = Tourist.new
-    @claim.payments_in << Payment.new
-    @claim.payments_out << Payment.new
-    @claim.set_new_num
+    @claim.fill
   end
 
   def create

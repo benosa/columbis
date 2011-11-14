@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111111125953) do
+ActiveRecord::Schema.define(:version => 20111114191231) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20111111125953) do
     t.string   "docs_note"
     t.date     "reservation_date"
     t.string   "memo"
+    t.integer  "country_id"
   end
 
   add_index "claims", ["num"], :name => "index_claims_on_num"
@@ -184,6 +185,7 @@ ActiveRecord::Schema.define(:version => 20111111125953) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "form",                            :null => false
+    t.float    "amount_prim",    :default => 0.0
   end
 
   create_table "tourist_claims", :force => true do |t|

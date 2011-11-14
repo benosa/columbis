@@ -1,6 +1,7 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  attr_accessible :user_id, :airline_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation, :visa, :visa_check,
+  attr_accessible :user_id, :airline_id, :country_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation,
+                  :visa, :visa_check,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
@@ -9,6 +10,9 @@ class Claim < ActiveRecord::Base
   belongs_to :user
   belongs_to :office
   belongs_to :airline
+  belongs_to :operator
+  belongs_to :country
+  belongs_to :city
 
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
   has_many :dependents, :through => :tourist_claims, :source => :tourist
@@ -25,7 +29,7 @@ class Claim < ActiveRecord::Base
 
   validates_uniqueness_of :num
   validates_presence_of :num
-  validates_presence_of :user_id
+  validates_presence_of :user_id, :office_id
   validates_presence_of :check_date
   validates_presence_of :currency
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
@@ -73,7 +77,7 @@ class Claim < ActiveRecord::Base
     payments_in.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
+#      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:form] = DropdownValue.values_for_form.first
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
@@ -86,7 +90,7 @@ class Claim < ActiveRecord::Base
     payments_out.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
+#      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
@@ -114,6 +118,13 @@ class Claim < ActiveRecord::Base
 
   def set_new_num
     self.num = Claim.last.try(:num).to_i + 1
+  end
+
+  def fill
+    self.applicant = Tourist.new
+    self.payments_in << Payment.new
+    self.payments_out << Payment.new
+    self.set_new_num
   end
 
   private
@@ -154,10 +165,14 @@ class Claim < ActiveRecord::Base
       DropdownValue.check_and_save(l, claim_params[l.to_sym])
     end
 
+    DropdownValue.check_and_save('airport', claim_params[:airport_to])
+    DropdownValue.check_and_save('airport', claim_params[:airport_back])
+
     Airline.create({ :name => claim_params[:airline] }) unless Airline.find_by_name(claim_params[:airline])
     self.airline = Airline.where( :name => claim_params[:airline]).first
 
-
+    Operator.create({ :name => claim_params[:operator] }) unless Operator.find_by_name(claim_params[:operator])
+    self.operator = Operator.where( :name => claim_params[:operator]).first
   end
 
   def presence_of_applicant

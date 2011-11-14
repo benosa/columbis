@@ -14,15 +14,6 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
-  // resort = airport_to
-  $('#resort').change(function(){
-    $('#claim_airport_to').val($('#resort').val());
-  });
-
-  $('#claim_airport_to').change(function(){
-    $('#resort').val($('#claim_airport_to').val());
-  });
-
   // visa_check
   $('#claim_visa_check').click(function(){
     var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
@@ -71,6 +62,21 @@ $(function() {
     },
       airline: {
       source: "/claims/autocomplete_model_common/airline"
+    },
+      operator: {
+      source: "/claims/autocomplete_model_common/operator"
+    },
+      country: {
+      source: "/claims/autocomplete_model_common/country"
+    },
+      city: {
+      source: "/claims/autocomplete_city"
+    },
+      airport: {
+      source: "/claims/autocomplete_common/airport",
+      select: function(event, ui) {
+        $(event.target).attr('value', ui.item.value);
+      }
     }
   };
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
@@ -79,6 +85,14 @@ $(function() {
   $("input.autocomplete.placement").autocomplete($autocomplete.placement);
   $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
   $("input.autocomplete.airline").autocomplete($autocomplete.airline);
+  $("input.autocomplete.operator").autocomplete($autocomplete.operator);
+  $("input.autocomplete.country").autocomplete($autocomplete.country);
+  $("input.autocomplete.city").autocomplete($autocomplete.city);
+  $("input.autocomplete.airport").autocomplete($autocomplete.airport);
+
+  $('input.autocomplete.country').change(function() {
+    $autocomplete.city.source = "/claims/autocomplete_city/" + $("input.autocomplete.country").val();
+  });
 
   // add tourist
 	var add_tourist = function(e){
@@ -150,7 +164,7 @@ $(function() {
 	// amount in word
 	var get_amount_in_word = function(event){
     $.ajax({
-      url: "amount_in_word",
+      url: "/amount_in_word",
       type: "POST",
       data: "amount="+$(this).val(),
       cache: false,

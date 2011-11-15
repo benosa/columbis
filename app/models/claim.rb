@@ -1,11 +1,13 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  attr_accessible :user_id, :airline_id, :country_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation,
-                  :visa, :visa_check, :visa_count,
+  attr_accessible :user_id, :airline_id, :country_id, :check_date, :office_id, :operator_id, :operator_confirmation, :operator_price,
+                  :visa, :visa_check, :visa_count, :description,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
                   :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date
+
+  attr_reader :operator_debt, :tourist_debt
 
   belongs_to :user
   belongs_to :office
@@ -35,6 +37,8 @@ class Claim < ActiveRecord::Base
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
   validate :presence_of_applicant
+
+  before_save :update_debts
 
   def assign_reflections_and_save(claim_params)
     self.transaction do
@@ -77,7 +81,6 @@ class Claim < ActiveRecord::Base
     payments_in.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-#      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:form] = DropdownValue.values_for_form.first
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
@@ -90,7 +93,6 @@ class Claim < ActiveRecord::Base
     payments_out.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-#      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
@@ -100,12 +102,12 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def tourist_debt?
-    true
+  def has_tourist_debt?
+    self.tourist_debt != 0
   end
 
-  def operator_debt?
-    false
+  def has_operator_debt?
+    self.operator_debt != 0
   end
 
   def documents_ready?
@@ -129,18 +131,24 @@ class Claim < ActiveRecord::Base
 
   private
 
+  def update_debts
+    self.operator_debt = (CurrencyCourse.convert_from_curr_to_curr(
+      self.currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.payments_out.sum('amount_prim')
+    self.tourist_debt = self.primary_currency_price - self.payments_in.sum('amount_prim')
+  end
+
   def remove_unused_payments
     Payment.where(:claim_id => nil).destroy_all
   end
 
-  def process_payment_hash(ph, payments)
+  def process_payment_hash(ph, in_out_payments)
     DropdownValue.check_and_save('form', ph[:form])
     if ph[:id].blank?
-      payments << Payment.create(ph)
+      in_out_payments << Payment.create(ph)
     else
       payment = Payment.find(ph[:id])
       payment.update_attributes(ph)
-      payments << payment
+      in_out_payments << payment
     end
   end
 

@@ -304,6 +304,11 @@ form .data_block .width_100 {
   display: none;
 }
 
+#container .tourist_debt{
+  float:right;
+  width: 50%;
+}
+
 .ui-autocomplete.ui-menu {
   width: 400px !important;
 }

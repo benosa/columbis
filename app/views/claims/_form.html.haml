@@ -88,11 +88,11 @@
     %div.clr
       %table#indicators.left_inside
         %tr
-          %td.framed.tourist_debt{ :class => (@claim.tourist_debt? ? 'red_back' : 'green_back') }
+          %td.framed.tourist_debt{ :class => (@claim.has_tourist_debt? ? 'red_back' : 'green_back') }
             = (@claim.tourist_debt? ? t('yes') : t('no'))
           %td= t('.tourist_debt')
         %tr
-          %td.framed.operator_debt{ :class => (@claim.operator_debt? ? 'red_back' : 'green_back') }
+          %td.framed.operator_debt{ :class => (@claim.has_operator_debt? ? 'red_back' : 'green_back') }
             = (@claim.operator_debt? ? t('yes') : t('no'))
           %td= t('.operator_debt')
         %tr
@@ -184,7 +184,8 @@
           %td{ :colspan => 2 }
             = f.text_field :primary_currency_price, :class => 'red'
           %td{ :colspan => 5 }
-            = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red', :disabled => true
+            = text_field_tag :price_as_string,
+              RuPropisju.amount_in_word(@claim.primary_currency_price, CurrencyCourse::PRIMARY_CURRENCY), :class => 'red', :disabled => true
 
       %h2= t('.payments_in')
       %table#payments_in
@@ -202,12 +203,28 @@
             %td= builder.text_field :description, :class => 'description', :disabled => true
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id
+          - ind += 1
         %tr.footer
-          %td{ :colspan => 3}
+          %td{ :colspan => 2}
             = link_to t('.add_another_payment'), '#', :class => 'add'
+          %td
+            = f.label :tourist_debt
+          %td
+            = f.text_field :tourist_debt, :disabled => true, :class => 'red'
+
+      %br
 
       %h2= t('.payments_out')
       %table#payments_out
+        %tr
+          %td
+            = f.label :operator_price
+          %td
+            = f.text_field :operator_price
+          %td
+            = f.label :operator_debt
+          %td
+            = f.text_field :operator_debt, :disabled => true, :class => 'red'
         %tr.header
           %th= t('.date')
           %th= t('.paid')
@@ -222,8 +239,9 @@
             %td= builder.text_field :form, :class => 'autocomplete payment_form'
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id
+          - ind += 1
         %tr.footer
-          %td{ :colspan => 3}
+          %td{ :colspan => 4}
             = link_to t('.add_another_payment'), '#', :class => 'add'
 
   %p

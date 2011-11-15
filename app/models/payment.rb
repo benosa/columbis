@@ -19,13 +19,14 @@ class Payment < ActiveRecord::Base
     errors.add(:recipient, I18n.t('.recipient_blank')) unless self.recipient
   end
 
-  def before_save
+  before_save :fill_fields
+  def fill_fields
     # we also store amount in primary currency
     if self.currency == CurrencyCourse::PRIMARY_CURRENCY
       self.amount_prim = self.amount
     else
       self.amount_prim = CurrencyCourse.convert_from_curr_to_curr(self.currency, CurrencyCourse::PRIMARY_CURRENCY, self.amount)
     end
-    raise self.inspect
+    self.description = RuPropisju.amount_in_word(self.amount, self.currency)
   end
 end

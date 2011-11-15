@@ -273,6 +273,9 @@ $(function() {
       $(this).find('input.amount').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount');
       $(this).find('input.amount').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount]');
       $(t_id + ' .amount').change(get_amount_in_word);
+
+      $(this).find('select.currency').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_currency');
+      $(this).find('select.currency').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][currency]');
       $(t_id + ' .currency').change(get_amount_in_word);
 
       $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
@@ -298,6 +301,7 @@ $(function() {
       $tr.find('input').each(function(){
         $(this).val($(this).hasClass('amount') ? '0.0' : '');
       });
+      $tr.next().removeAttr('value');
     } else {
       $tr.next('input[type=hidden]').remove();
       $tr.remove();

@@ -1,7 +1,7 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
   attr_accessible :user_id, :airline_id, :country_id, :check_date, :description, :office_id, :operator_id, :operator_confirmation,
-                  :visa, :visa_check,
+                  :visa, :visa_check, :visa_count,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,

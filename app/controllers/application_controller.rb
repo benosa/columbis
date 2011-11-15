@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   def amount_in_word
-    render :text => RuPropisju.rublej(params[:amount])
+    render :text => RuPropisju.amount_in_word(params[:amount], params[:currency])
   end
 
   def get_currency_course

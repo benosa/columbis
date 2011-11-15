@@ -14,6 +14,84 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
+  // amount in word
+	function create_data_string($elem){
+	  var amount = 0, currency = '';
+	  if(/^claim_payments_.{2,3}_attributes_\d+_(amount|currency)/.test($elem.attr('id'))){
+	    // trying to find curr in row
+      amount = $elem.closest('tr').find('.amount').val();
+      currency = $elem.closest('tr').find('.currency').val();
+	  } else {
+	    // take curr from Tour Price block
+	    amount = $('#claim_primary_currency_price').val();
+      // TODO make ajax loading for PROAMRY_CURRENCY
+      currency = 'rur';
+	  }
+	  return "amount=" + amount + ";currency=" + currency;
+	}
+
+	var get_amount_in_word = function(event){
+    $.ajax({
+      url: "/amount_in_word",
+      type: "POST",
+      data: create_data_string($(this)),
+      cache: false,
+      success: function(resp){
+        if(/^claim_payments_.{2,3}_attributes_\d+_(amount|currency)/.test($(event.currentTarget).attr('id'))){
+          $(event.currentTarget).closest('tr').find('.description').val(resp);
+        }
+        else {
+          $('#price_as_string').val(resp);
+        }
+      }
+    });
+	}
+	$('#payments_in .amount').change(get_amount_in_word);
+  $('#payments_out .amount').change(get_amount_in_word);
+
+  $('#payments_in .currency').change(get_amount_in_word);
+  $('#payments_out .currency').change(get_amount_in_word);
+
+  $('#claim_primary_currency_price').change(get_amount_in_word);
+
+  // tour price
+  $('#claim_currency').change(function(){
+    $.ajax({
+      url: "/get_currency_course",
+      type: "POST",
+      data: "currency="+$('#claim_currency').val(),
+      cache: false,
+      success: function(resp){
+        $('#claim_course').val(resp);
+      }
+    });
+  });
+
+  $('.countable').change(function(){
+    var visa_price = parseFloat($('#claim_visa_price').val()) * parseFloat($('#claim_visa_count').val());
+    var fee = parseFloat($('#claim_tour_price').val()) +
+      parseFloat($('#claim_insurance_price').val()) +
+      parseFloat($('#claim_additional_insurance_price').val()) +
+      parseFloat($('#claim_fuel_tax_price').val());
+    var total = fee + visa_price;
+
+    $('#claim_total_tour_price').val(total);
+    $('#claim_total_tour_price').change();
+  });
+
+  $('#claim_total_tour_price').change(function(){
+    $.ajax({
+      url: "/get_currency_course",
+      type: "POST",
+      data: "currency="+$('#claim_currency').val(),
+      cache: false,
+      success: function(resp){
+        $('#claim_primary_currency_price').val(parseFloat(resp) * parseFloat($('#claim_total_tour_price').val()));
+        $('#claim_primary_currency_price').change();
+      }
+    });
+  });
+
   // visa_check
   $('#claim_visa_check').click(function(){
     var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
@@ -161,21 +239,6 @@ $(function() {
   }
 	$('#tourists a.del').click(del_tourist);
 
-	// amount in word
-	var get_amount_in_word = function(event){
-    $.ajax({
-      url: "/amount_in_word",
-      type: "POST",
-      data: "amount="+$(this).val(),
-      cache: false,
-      success: function(resp){
-        $(event.currentTarget).parent().parent().find('.description').val(resp);
-      }
-    });
-	}
-	$('#payments_in .amount').change(get_amount_in_word);
-  $('#payments_out .amount').change(get_amount_in_word);
-
   // add payment
 	var add_payment = function(e){
     e.preventDefault();
@@ -210,6 +273,7 @@ $(function() {
       $(this).find('input.amount').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount');
       $(this).find('input.amount').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount]');
       $(t_id + ' .amount').change(get_amount_in_word);
+      $(t_id + ' .currency').change(get_amount_in_word);
 
       $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
       $(this).find('input.description').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][description]');

@@ -1,6 +1,7 @@
 Tourism::Application.routes.draw do
 
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)
+  match 'get_currency_course' => ApplicationController.action(:get_currency_course)
 
   resources :cities
   resources :countries
@@ -35,5 +36,5 @@ Tourism::Application.routes.draw do
 
   resources :notes
 
-  root :to => 'site#index'
+  root :to => 'claims#index'
 end

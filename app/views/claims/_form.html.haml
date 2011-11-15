@@ -170,13 +170,13 @@
           %th= t('.fuel_tax_price')
           %th= t('.total_tour_price')
         %tr
-          %td= f.text_field :tour_price, :class => 'red'
-          %td= f.text_field :visa_price
-          %td= f.text_field :visa_count
-          %td= f.text_field :insurance_price
-          %td= f.text_field :additional_insurance_price
-          %td= f.text_field :fuel_tax_price
-          %td= f.text_field :total_tour_price, :class => 'red'
+          %td= f.text_field :tour_price, :class => 'red countable'
+          %td= f.text_field :visa_price, :class => 'countable'
+          %td= f.text_field :visa_count, :class => 'countable'
+          %td= f.text_field :insurance_price, :class => 'countable'
+          %td= f.text_field :additional_insurance_price, :class => 'countable'
+          %td= f.text_field :fuel_tax_price, :class => 'countable'
+          %td= f.text_field :total_tour_price, :class => 'red', :disabled => true
         %tr
           %th{ :colspan => 7 }
             = t('.primary_currency_price')
@@ -184,7 +184,7 @@
           %td{ :colspan => 2 }
             = f.text_field :primary_currency_price, :class => 'red'
           %td{ :colspan => 5 }
-            = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red'
+            = text_field_tag :price_as_string, @claim.primary_currency_price, :class => 'red', :disabled => true
 
       %h2= t('.payments_in')
       %table#payments_in
@@ -198,8 +198,8 @@
           %tr.fields{ :id => "payment_in_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
             %td= builder.text_field :amount, :class => 'amount'
-            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= builder.text_field :description, :class => 'description'
+            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
+            %td= builder.text_field :description, :class => 'description', :disabled => true
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id
         %tr.footer
@@ -218,7 +218,7 @@
           %tr.fields{ :id => "payment_out_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
             %td= builder.text_field :amount, :class => 'amount'
-            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+            %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
             %td= builder.text_field :form, :class => 'autocomplete payment_form'
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
           = builder.hidden_field :id

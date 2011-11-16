@@ -6,8 +6,8 @@ class Payment < ActiveRecord::Base
   belongs_to :payer, :polymorphic => true
   belongs_to :recipient, :polymorphic => true
 
-  validates_presence_of :amount, :amount_prim, :form, :currency
-  validates_presence_of :recipient_id, :recipient_type
+  validates_presence_of :amount, :amount_prim, :form, :currency, :claim_id, :date_in
+  validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
   validates_numericality_of :amount, :amount_prim
   validates_inclusion_of :form, :in => DropdownValue.values_for_form
 

@@ -1,6 +1,6 @@
-- title "Claims"
+- title t('.claims')
 
-%table
+%table#claims
 
   - for claim in @claims
     %tr
@@ -11,10 +11,9 @@
       %td куда
       %td откуда
       %td= claim.visa
-      %td= link_to 'Show', claim
-      %td= link_to 'Edit', edit_claim_path(claim)
-      %td= link_to 'Destroy', claim, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to t('edit'), edit_claim_path(claim)
+      %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Claim", new_claim_path
+%p= link_to t('.new_claim'), new_claim_path
 
 -#

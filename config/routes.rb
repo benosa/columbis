@@ -2,6 +2,7 @@ Tourism::Application.routes.draw do
 
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)
   match 'get_currency_course' => ApplicationController.action(:get_currency_course)
+  match 'management' => "site#index"
 
   resources :cities
   resources :countries

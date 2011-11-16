@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    attributes:
+      payment:
+        date_in: 'Дата'
+        currency: 'Валюта'
+        amount: 'Сумма'
+        description: 'Примечание'
+        form: 'Форма расчетов'
+        amount_prim: 'Сумма осн.'

@@ -8,8 +8,8 @@
       %td= claim.reservation_date
       %td= claim.user.first_last_name
       %td= claim.applicant.try(:full_name)
-      %td куда
-      %td откуда
+      %td= claim.airport_to
+      %td= claim.airport_back
       %td= claim.visa
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

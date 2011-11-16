@@ -55,8 +55,7 @@ class ClaimsController < ApplicationController
       redirect_to claims_url, :notice => t('.successfully_created_claim.')
     else
       @claim.applicant ||= Tourist.new(params[:claim][:applicant])
-      @claim.payments_in << Payment.new if @claim.payments_in.empty?
-      @claim.payments_out << Payment.new if @claim.payments_out.empty?
+      check_payments
       render :action => 'new'
     end
   end
@@ -64,8 +63,7 @@ class ClaimsController < ApplicationController
   def edit
     @claim = Claim.find(params[:id])
     @claim.applicant ||= Tourist.new
-    @claim.payments_in << Payment.new if @claim.payments_in.empty?
-    @claim.payments_out << Payment.new if @claim.payments_out.empty?
+    check_payments
   end
 
   def update
@@ -73,13 +71,14 @@ class ClaimsController < ApplicationController
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       if @claim.update_attributes(params[:claim])
-        redirect_to claims_url, :notice  => "Successfully updated claim."
+        redirect_to claims_url, :notice  => t('.successfully_updated_claim.')
       else
         render :action => 'edit'
       end
     else
       @claim.applicant ||=
         (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
+      check_payments
       render :action => 'edit'
     end
   end
@@ -87,6 +86,13 @@ class ClaimsController < ApplicationController
   def destroy
     @claim = Claim.find(params[:id])
     @claim.destroy
-    redirect_to claims_url, :notice => "Successfully destroyed claim."
+    redirect_to claims_url, :notice =>  t('.successfully_destroyed_claim.')
+  end
+
+  private
+
+  def check_payments
+    @claim.payments_in << Payment.new if @claim.payments_in.empty?
+    @claim.payments_out << Payment.new if @claim.payments_out.empty?
   end
 end

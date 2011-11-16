@@ -53,60 +53,60 @@
     %table
       %tr
         %td{ :colspan => 3 }
-          = f.label :airline, t('.airline')
+          = f.label :airline_id
           = f.text_field :airline, :class => 'autocomplete airline', :value => @claim.airline.try(:name)
       %tr
         %th
         %th= t('.there')
         %th= t('.back')
       %tr
-        %td= f.label :airport_to, t('.airport')
+        %td.text_right= f.label :airport_to, t('.airport')
         %td= f.text_field :airport_to, :class => 'autocomplete airport'
         %td= f.text_field :airport_back, :class => 'autocomplete airport'
       %tr
-        %td= f.label :flight_to, t('.flight')
+        %td.text_right= f.label :flight_to, t('.flight')
         %td= f.text_field :flight_to
         %td= f.text_field :flight_back
       %tr
-        %td= f.label :depart_to, t('.depart')
+        %td.text_right= f.label :depart_to, t('.depart')
         %td= f.text_field :depart_to, :class => 'datetimepicker'
         %td= f.text_field :depart_back, :class => 'datetimepicker'
 
     %h2= t('.trip_documents')
     %table
       %tr
-        %td= t('.memo')
+        %td.text_right= f.label :docs_memo
         %td= f.text_field :docs_memo
       %tr
-        %td= t('.ticket')
+        %td.text_right= f.label :docs_ticket
         %td= f.text_field :docs_ticket
       %tr
-        %td= t('.note')
+        %td.text_right= f.label :docs_note
         %td= f.text_field :docs_note
 
   #center_block
     %div.clr
       %table#indicators.left_inside
         %tr
-          %td.framed.tourist_debt{ :class => (@claim.has_tourist_debt? ? 'red_back' : 'green_back') }
+          %td.framed.tourist_debt_ind{ :class => (@claim.has_tourist_debt? ? 'red_back' : 'green_back') }
             = (@claim.tourist_debt? ? t('yes') : t('no'))
           %td= t('.tourist_debt')
         %tr
-          %td.framed.operator_debt{ :class => (@claim.has_operator_debt? ? 'red_back' : 'green_back') }
+          %td.framed.operator_debt_ind{ :class => (@claim.has_operator_debt? ? 'red_back' : 'green_back') }
             = (@claim.operator_debt? ? t('yes') : t('no'))
           %td= t('.operator_debt')
         %tr
-          %td.framed.documents_ready{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
+          %td.framed.documents_ready_ind{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
             = (@claim.documents_ready? ? t('yes') : t('no'))
           %td= t('.documents_ready')
         %tr
-          %td.framed.has_notes{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }
+          %td.framed.has_notes_ind{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }
             = (@claim.has_notes? ? t('yes') : t('no'))
           %td= t('.has_notes')
 
       %table#registration
         %tr
-          %td= f.label :user_id, t('.reservation_date')
+          %td= f.label :reservation_date
           %td.datepicker= f.text_field :reservation_date, :class => ('datepicker')
         %tr
           %td= f.label :user_id, t('.user')
@@ -162,13 +162,13 @@
       = f.text_field :course, :class => 'width_100'
       %table#tour_price
         %tr
-          %th= t('.tour_price')
-          %th= t('.visa_price')
-          %th= t('.visa_count')
-          %th= t('.insurance_price')
-          %th= t('.additional_insurance_price')
-          %th= t('.fuel_tax_price')
-          %th= t('.total_tour_price')
+          %th= f.label :tour_price
+          %th= f.label :visa_price
+          %th= f.label :visa_count
+          %th= f.label :insurance_price
+          %th= f.label :additional_insurance_price
+          %th= f.label :fuel_tax_price
+          %th= f.label :total_tour_price
         %tr
           %td= f.text_field :tour_price, :class => 'red countable'
           %td= f.text_field :visa_price, :class => 'countable'
@@ -179,7 +179,7 @@
           %td= f.text_field :total_tour_price, :class => 'red', :disabled => true
         %tr
           %th{ :colspan => 7 }
-            = t('.primary_currency_price')
+            = f.label :primary_currency_price
         %tr
           %td{ :colspan => 2 }
             = f.text_field :primary_currency_price, :class => 'red'

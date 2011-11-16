@@ -198,6 +198,10 @@ table td  {
   font-style: italic;
 }
 
+table td.text_right {
+  text-align: right;
+}
+
 table th .hint  {
   font-weight: normal;
   color: #da2c23;

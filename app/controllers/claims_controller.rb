@@ -44,7 +44,7 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    @claim = Claim.new
+    @claim = Claim.new( :user_id => current_user.id)
     @claim.fill
   end
 

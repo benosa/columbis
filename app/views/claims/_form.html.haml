@@ -20,8 +20,8 @@
       %h2= t('.tourists')
       %table#tourists
         %tr
-          %th{ :style => 'width: 20px;' }
-          %th{ :style => 'width: 180px;' }
+          %th{ :style => 'width: 10px;' }
+          %th{ :style => 'width: 150px;' }
             = t('.full_name')
             .hint
               = t('.tourists_full_name_hint')
@@ -89,19 +89,19 @@
       %table#indicators.left_inside
         %tr
           %td.framed.tourist_debt_ind{ :class => (@claim.has_tourist_debt? ? 'red_back' : 'green_back') }
-            = (@claim.tourist_debt? ? t('yes') : t('no'))
+            = (@claim.tourist_debt? ? t('yep') : t('nope'))
           %td= t('.tourist_debt')
         %tr
           %td.framed.operator_debt_ind{ :class => (@claim.has_operator_debt? ? 'red_back' : 'green_back') }
-            = (@claim.operator_debt? ? t('yes') : t('no'))
+            = (@claim.operator_debt? ? t('yep') : t('nope'))
           %td= t('.operator_debt')
         %tr
           %td.framed.documents_ready_ind{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
-            = (@claim.documents_ready? ? t('yes') : t('no'))
+            = (@claim.documents_ready? ? t('yep') : t('nope'))
           %td= t('.documents_ready')
         %tr
           %td.framed.has_notes_ind{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }
-            = (@claim.has_notes? ? t('yes') : t('no'))
+            = (@claim.has_notes? ? t('yep') : t('nope'))
           %td= t('.has_notes')
 
       %table#registration

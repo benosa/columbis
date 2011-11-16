@@ -4,13 +4,13 @@
     .data_block
       %table
         %tr
-          %th= f.label :num, t('.num'), :class => 'narrow'
-          %th= f.label :operator_confirmation, t('.operator_confirmation'), :class => 'narrow'
-          %th= f.label :visa, t('.visa'), :class => 'narrow'
-          %th= f.label :check_date, t('.check_date'), :class => 'narrow'
+          %th= f.label :num
+          %th= f.label :operator_confirmation
+          %th= f.label :visa
+          %th= f.label :check_date
         %tr
-          %td= f.text_field :num, :class => 'narrow'
-          %td= f.text_field :operator_confirmation, :class => 'narrow'
+          %td= f.text_field :num
+          %td= f.text_field :operator_confirmation
           %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
           %td.datepicker= f.text_field :check_date, :class => 'datepicker'
         = f.hidden_field :visa
@@ -29,7 +29,7 @@
           %th{ :colspan => 2 }
             = t('.passport')
           %th= t('.passport_expire')
-          %th{ :style => 'width: 50px;' }
+          %th
         = f.fields_for :applicant, @claim.applicant do |builder|
           %tr.applicant
             = render :partial => 'tourist', :locals => { :builder => builder }
@@ -49,40 +49,40 @@
           %td{ :colspan => 6 }
             = link_to t('.add_another_tourist'), '#', :class => 'add'
 
-    %h2= t('.flights')
-    %table
-      %tr
-        %td{ :colspan => 3 }
-          = f.label :airline_id
-          = f.text_field :airline, :class => 'autocomplete airline', :value => @claim.airline.try(:name)
-      %tr
-        %th
-        %th= t('.there')
-        %th= t('.back')
-      %tr
-        %td.text_right= f.label :airport_to, t('.airport')
-        %td= f.text_field :airport_to, :class => 'autocomplete airport'
-        %td= f.text_field :airport_back, :class => 'autocomplete airport'
-      %tr
-        %td.text_right= f.label :flight_to, t('.flight')
-        %td= f.text_field :flight_to
-        %td= f.text_field :flight_back
-      %tr
-        %td.text_right= f.label :depart_to, t('.depart')
-        %td= f.text_field :depart_to, :class => 'datetimepicker'
-        %td= f.text_field :depart_back, :class => 'datetimepicker'
+      %h2= t('.flights')
+      %table#flights
+        %tr
+          %td{ :colspan => 3 }
+            = f.label :airline_id
+            = f.text_field :airline, :class => 'autocomplete airline', :value => @claim.airline.try(:name), :style => 'width: auto;'
+        %tr
+          %th
+          %th= t('.there')
+          %th= t('.back')
+        %tr
+          %td.text_right= f.label :airport_to, t('.airport')
+          %td= f.text_field :airport_to, :class => 'autocomplete airport'
+          %td= f.text_field :airport_back, :class => 'autocomplete airport'
+        %tr
+          %td.text_right= f.label :flight_to, t('.flight')
+          %td= f.text_field :flight_to
+          %td= f.text_field :flight_back
+        %tr
+          %td.text_right= f.label :depart_to, t('.depart')
+          %td.datepicker= f.text_field :depart_to, :class => 'datetimepicker'
+          %td.datepicker= f.text_field :depart_back, :class => 'datetimepicker'
 
-    %h2= t('.trip_documents')
-    %table
-      %tr
-        %td.text_right= f.label :docs_memo
-        %td= f.text_field :docs_memo
-      %tr
-        %td.text_right= f.label :docs_ticket
-        %td= f.text_field :docs_ticket
-      %tr
-        %td.text_right= f.label :docs_note
-        %td= f.text_field :docs_note
+      %h2= t('.trip_documents')
+      %table
+        %tr
+          %td.text_right= f.label :docs_memo
+          %td= f.text_field :docs_memo
+        %tr
+          %td.text_right= f.label :docs_ticket
+          %td= f.text_field :docs_ticket
+        %tr
+          %td.text_right= f.label :docs_note
+          %td= f.text_field :docs_note
 
   #center_block
     %div.clr
@@ -125,7 +125,7 @@
             = f.label :operator_id, t('.operator')
         %tr
           %td{ :colspan => 2 }
-            ghjj
+            = f.text_field :airport_to, :class => 'autocomplete airport'
           %td{ :colspan => 2 }
             = f.text_field :operator, :class => 'autocomplete operator', :value => @claim.operator.try(:name)
         %tr
@@ -149,10 +149,14 @@
           %td= f.select :nights, (1..30).to_a
           %td= f.text_field :memo
 
-      = f.label :arrival_date
-      = f.text_field :arrival_date, :class => 'datepicker'
-      = f.label :departure_date
-      = f.text_field :departure_date, :class => 'datepicker'
+      %table#arrival_date
+        %tr
+          %th{ :colspan => 4 }= t('.arrival_date')
+        %tr
+          %td.text_right= t('.from')
+          %td= f.text_field :arrival_date, :class => 'datepicker red'
+          %td.text_right= t('.til')
+          %td= f.text_field :departure_date, :class => 'datepicker red'
 
     .data_block
       %h2= t('.tour_price')
@@ -172,7 +176,7 @@
         %tr
           %td= f.text_field :tour_price, :class => 'red countable'
           %td= f.text_field :visa_price, :class => 'countable'
-          %td= f.text_field :visa_count, :class => 'countable'
+          %td= f.select :visa_count, (0..30).to_a, {}, :class => 'countable'
           %td= f.text_field :insurance_price, :class => 'countable'
           %td= f.text_field :additional_insurance_price, :class => 'countable'
           %td= f.text_field :fuel_tax_price, :class => 'countable'
@@ -198,7 +202,7 @@
         = f.fields_for :payments_in do |builder|
           %tr.fields{ :id => "payment_in_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
-            %td= builder.text_field :amount, :class => 'amount'
+            %td.amount= builder.text_field :amount, :class => 'amount'
             %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
             %td= builder.text_field :description, :class => 'description', :disabled => true
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
@@ -217,14 +221,10 @@
       %h2= t('.payments_out')
       %table#payments_out
         %tr
-          %td
-            = f.label :operator_price
-          %td
-            = f.text_field :operator_price
-          %td
-            = f.label :operator_debt
-          %td
-            = f.text_field :operator_debt, :disabled => true, :class => 'red'
+          %td= f.label :operator_price
+          %td.amount= f.text_field :operator_price
+          %td= f.label :operator_debt
+          %td= f.text_field :operator_debt, :disabled => true, :class => 'red'
         %tr.header
           %th= t('.date')
           %th= t('.paid')
@@ -234,7 +234,7 @@
         = f.fields_for :payments_out do |builder|
           %tr.fields{ :id => "payment_out_#{ind}"}
             %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
-            %td= builder.text_field :amount, :class => 'amount'
+            %td.amount= builder.text_field :amount, :class => 'amount'
             %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
             %td= builder.text_field :form, :class => 'autocomplete payment_form'
             %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"

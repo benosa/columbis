@@ -44,6 +44,10 @@ ru:
       paid_type: 'Форма оплаты'
       paid_in_word: 'Сумма прописью'
 
+      arrival_date: 'Даты заезда'
+      from: 'с'
+      til: 'по'
+
       add_another_tourist: 'Добавить туриста'
       add_another_payment: 'Добавить платеж'
     new:
@@ -79,7 +83,7 @@ ru:
         hotel: 'Отель'
         arrival_date: 'Дата заезда'
         departure_date: 'Дата выезда'
-        early_reservation: 'Раннее резервирование'
+        early_reservation: 'Раннее бронирование'
         docs_memo: 'Памятка'
         docs_ticket: 'Ваучер, страховка, билеты'
         docs_note: 'Примечание'

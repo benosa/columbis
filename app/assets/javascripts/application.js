@@ -19,8 +19,8 @@ $(function() {
 	  var amount = 0, currency = '';
 	  if(/^claim_payments_.{2,3}_attributes_\d+_(amount|currency)/.test($elem.attr('id'))){
 	    // trying to find curr in row
-      amount = $elem.closest('tr').find('.amount').val();
-      currency = $elem.closest('tr').find('.currency').val();
+      amount = $elem.closest('tr').find('input.amount').val();
+      currency = $elem.closest('tr').find('select.currency').val();
 	  } else {
 	    // take curr from Tour Price block
 	    amount = $('#claim_primary_currency_price').val();

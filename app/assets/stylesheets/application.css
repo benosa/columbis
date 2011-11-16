@@ -1,7 +1,7 @@
 body {
   background-color: #4B7399;
   font-family: Verdana, Helvetica, Arial;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 a img {
@@ -20,6 +20,13 @@ a {
 
 ul  {
   list-style:none;
+}
+
+h2 {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  color: gray;
 }
 
 #container {
@@ -153,7 +160,7 @@ ul  {
 
 #left_block {
   float: left;
-  width: 55%;
+  width: 53%;
 }
 
 .left_inside {
@@ -165,7 +172,7 @@ ul  {
 }
 
 #center_block {
-  margin-left:56%;
+  margin-left:53%;
 }
 
 input[type="submit"] {
@@ -261,19 +268,35 @@ form .data_block input {
 }
 
 form .data_block td.datepicker {
-  width: 85px;
+  width: 120px;
 }
 
 form .data_block input.datepicker {
-  width: 66px;
+  width: 100px;
+}
+
+#flights {
+  width: 90%;
+}
+
+#flights td.text_right{
+  width: 18%;
+}
+
+#arrival_date {
+  width: 100%;
+}
+
+#flights input.datetimepicker, #arrival_date input.datepicker{
+  width: 85%;
+}
+
+#payments_in td.amount , #payments_out td.amount {
+  width: 90px;
 }
 
 form .data_block input.narrow {
   width: 85px;
-}
-
-form .data_block td.del {
-  width: 20px;
 }
 
 form .data_block .width_100 {

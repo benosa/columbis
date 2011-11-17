@@ -179,7 +179,9 @@ $(function() {
     $('#tourists .footer').before($('#tourists .applicant').clone());
     $('#tourists .applicant:last').after('<input type="hidden" class="hidden_id">');
     $('#tourists .applicant:last input').each(function(n){
-      this.value = '';
+      $(this).removeClass('hasDatepicker');
+      $(this).next('img').remove();
+      $(this).val('');
     });
     $('#tourists .applicant:last').attr('id', '').addClass('dependent').removeClass('applicant');
 
@@ -207,6 +209,8 @@ $(function() {
 
       $(this).find('input.passport_valid_until').attr('id', 'claim_dependents_attributes_' + i + '_passport_valid_until');
       $(this).find('input.passport_valid_until').attr('name', 'claim[dependents_attributes][' + i + '][passport_valid_until]');
+
+      $(this).find('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
       var hidden_id = $(this).next('[type=hidden]');
       hidden_id.attr('id', 'claim_dependents_attributes_' + i + '_id');

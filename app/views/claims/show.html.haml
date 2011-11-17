@@ -1,24 +1,2 @@
-- title "Claim"
-
-%p
-  %strong Tourist
-  = @claim.tourist.try(:first_last_name)
-%p
-  %strong User:
-  = @claim.user.try(:login)
-
-%p
-  %strong Check:
-  = @claim.check_date
-
-%p
-  %strong Description:
-  = @claim.description
-
-%p
-  = link_to "Edit", edit_claim_path(@claim)
-  |
-  = link_to "Destroy", @claim, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", claims_path
-
+- title t('.title'), false
+= render 'form'

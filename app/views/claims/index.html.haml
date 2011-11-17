@@ -1,21 +1,86 @@
-- title t('.claims')
+- title t('.claims'), false
 
-%table#claims
+%table#claims{ :rules => 'all'}
+  %tr
+    %th= t('.reservation_date')
+    %th= t('.manager')
+    %th= t('.full_name')
+    %th= t('.to')
+    %th= t('.from')
+    %th= t('.visa')
+    %th= t('.term')
+    %th= t('.depart_to')
+    %th= t('.depart_back')
+    %th= t('.operator')
+    %th= t('.claim')
+    %th= t('.price')
+    %th= t('.calculation')
+    %th= t('.advance')
+    %th= t('.debt')
+    %th= t('.payment_term')
+    %th= t('.currency')
+    %th= t('.paid')
+    %th= t('.docs')
+    %th= t('.memo')
+    %th= t('.check_date')
 
   - for claim in @claims
     %tr
-
       %td= claim.reservation_date
-      %td= claim.user.first_last_name
+      %td= claim.user.login
       %td= claim.applicant.try(:full_name)
-      %td= claim.airport_to
+      %td= claim.country.try(:name)
       %td= claim.airport_back
-      %td= claim.depart_to.strftime '%d-%m-%Y %H:%M:%S'
-      %td= claim.depart_back.strftime '%d-%m-%Y %H:%M:%S'
-      %td= claim.visa
+      %td{ :class => claim.visa }
+        ????
+      %td= claim.visa_check
+      %td= claim.depart_to.strftime '%d-%m-%Y %H:%M'
+      %td= claim.depart_back.strftime '%d-%m-%Y %H:%M'
+      %td= claim.operator.try(:name)
+      %td= claim.num
+      %td= claim.num
+      %td= claim.num
+      %td= claim.num
+      %td= claim.num
+      %td= claim.num
+      %td= claim.currency
+      %td= claim.num
+      %td= claim.num
+      %td= claim.num
+      %td= claim.check_date
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
 
 %p= link_to t('.new_claim'), new_claim_path
 
 -#
+  - title t('.claims')
+
+  %table#claims
+    %tr
+      %th= t('.number')
+      %th= t('.reservation_date')
+      %th= t('.office')
+      %th= t('.manager')
+      %th= t('.full_name')
+      %th= t('.there')
+      %th= t('.back')
+      %th= t('.flight')
+      %th= t('.number')
+
+    - for claim in @claims
+      %tr
+        %td= claim.num
+        %td= claim.reservation_date
+        %td= claim.office.try(:name)
+        %td= claim.user.first_last_name
+        %td= claim.applicant.try(:full_name)
+        %td= claim.country.try(:name)
+        %td= claim.airport_to
+        %td= claim.depart_to.strftime '%d-%m-%Y %H:%M:%S'
+        %td= claim.operator.try(:name)
+        %td= claim.visa
+        %td= link_to t('edit'), edit_claim_path(claim)
+        %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
+
+  %p= link_to t('.new_claim'), new_claim_path

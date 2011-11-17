@@ -214,7 +214,16 @@ table th .hint  {
   font-weight: normal;
   color: #da2c23;
   font-style: italic;
-  font-size: 8pt;
+  font-size: 7pt;
+}
+
+#claims {
+  padding: 1px;
+  font-size: 10px;
+}
+
+#claims th{
+  background-color: yellow;
 }
 
 #container form input[type="text"].passport_series {
@@ -353,7 +362,3 @@ form .data_block .width_100 {
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
-
-.ui-datepicker-trigger {
-  padding-top: 4px;
-}

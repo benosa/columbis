@@ -2,6 +2,28 @@ ru:
   claims:
     index:
       claims: 'Заявки'
+      reservation_date: 'Дата'
+      manager: 'Менеджер'
+      full_name: 'ФИО'
+      to: 'Куда'
+      from: 'Откуда'
+      visa: 'Виза'
+      term: 'Срок'
+      depart_to: 'Вылет'
+      depart_back: 'Возврат'
+      operator: 'Оператор'
+      claim: 'Заявка'
+      price: 'Цена'
+      advance: 'Аванс'
+      debt: 'Долг'
+      payment_term: 'Срок оплаты'
+      currency: 'Валюта'
+      check_date: 'Контроль'
+      calculation: 'Расчет'
+      paid: 'Оплачено'
+      docs: 'Документы'
+      memo: 'Примечание'
+      new_claim: 'Новая заявка'
     form:
       num: 'Номер'
       office: 'Офис'
@@ -43,6 +65,9 @@ ru:
       currency: 'Валюта'
       paid_type: 'Форма оплаты'
       paid_in_word: 'Сумма прописью'
+
+      direction: 'Направление'
+      resort: 'Курорт'
 
       arrival_date: 'Даты заезда'
       from: 'с'
@@ -93,3 +118,4 @@ ru:
         operator_price: 'К оплате'
         operator_debt: 'Долг оператору'
         tourist_debt: 'Долг туристов'
+        payments_in_date_in: 'ололо'

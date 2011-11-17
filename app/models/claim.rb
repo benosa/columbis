@@ -181,6 +181,12 @@ class Claim < ActiveRecord::Base
 
     Operator.create({ :name => claim_params[:operator] }) unless Operator.find_by_name(claim_params[:operator])
     self.operator = Operator.where( :name => claim_params[:operator]).first
+
+    Country.create({ :name => claim_params[:country] }) unless Country.find_by_name(claim_params[:country])
+    self.country = Country.where( :name => claim_params[:country]).first
+
+    City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+    self.country = City.where( :name => claim_params[:city]).first
   end
 
   def presence_of_applicant

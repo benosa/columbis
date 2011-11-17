@@ -29,5 +29,5 @@ ru:
       edit_tourist: 'Редактирование туриста'
       tourists: 'Список туристов'
     new:
-      add_tourist: 'Создание туриста'
+      add_tourist: 'Добавление туриста'
       tourists: 'Список туристов'

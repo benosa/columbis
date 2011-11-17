@@ -30,13 +30,17 @@ h2 {
 }
 
 #container {
-  width: 1024px;
+  width: 90%;
   margin: 0 auto;
   background-color: #eaf9dc;
   padding: 20px 40px;
   border: solid 1px black;
   margin-top: 20px;
   min-width: 1000px;
+}
+
+#container .wrapper {
+  width: 1024px;
 }
 
 #flash_notice, #flash_error, #flash_alert {

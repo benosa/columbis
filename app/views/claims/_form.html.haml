@@ -160,10 +160,11 @@
 
     .data_block
       %h2= t('.tour_price')
-      = f.label :currency
-      = f.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-      = f.label :course
-      = f.text_field :course, :class => 'width_100'
+      #currency_block
+        = f.label :currency
+        = f.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+        = f.label :course
+        = f.text_field :course, :class => 'width_100'
       %table#tour_price
         %tr
           %th= f.label :tour_price

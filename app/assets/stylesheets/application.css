@@ -30,7 +30,7 @@ h2 {
 }
 
 #container {
-  width: 80%;
+  width: 1024px;
   margin: 0 auto;
   background-color: #eaf9dc;
   padding: 20px 40px;
@@ -59,7 +59,7 @@ h2 {
 }
 
 .error_messages {
-  width: 400px;
+  width: 100%;
   border: 2px solid #CF0000;
   padding: 0px;
   padding-bottom: 12px;
@@ -160,7 +160,7 @@ h2 {
 
 #left_block {
   float: left;
-  width: 53%;
+  width: 545px;
 }
 
 .left_inside {
@@ -172,7 +172,8 @@ h2 {
 }
 
 #center_block {
-  margin-left:53%;
+  margin-left:545px;
+  background: url('palm.png') 0px 246px no-repeat;
 }
 
 input[type="submit"] {
@@ -284,7 +285,13 @@ form .data_block input.datepicker {
 }
 
 #arrival_date {
-  width: 100%;
+  width: 340px;
+  float:right;
+  margin-left:120px;
+}
+
+#currency_block {
+  float:right;
 }
 
 #flights input.datetimepicker, #arrival_date input.datepicker{
@@ -346,3 +353,7 @@ form .data_block .width_100 {
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+.ui-datepicker-trigger {
+  padding-top: 4px;
+}

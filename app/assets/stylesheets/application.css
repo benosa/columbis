@@ -218,6 +218,7 @@ table th .hint  {
 }
 
 #claims {
+  border: 1px solid black;
   padding: 1px;
   font-size: 10px;
 }

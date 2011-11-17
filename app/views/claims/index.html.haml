@@ -34,8 +34,8 @@
       %td{ :class => claim.visa }
         ????
       %td= claim.visa_check
-      %td= claim.depart_to.strftime '%d-%m-%Y %H:%M'
-      %td= claim.depart_back.strftime '%d-%m-%Y %H:%M'
+      %td= claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
+      %td= claim.depart_back.strftime('%d-%m-%Y %H:%M') if claim.depart_back
       %td= claim.operator.try(:name)
       %td= claim.num
       %td= claim.num

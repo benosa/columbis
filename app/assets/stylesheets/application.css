@@ -317,6 +317,15 @@ form .data_block input.datepicker {
   width: 90px;
 }
 
+.lamp_block {
+  display: block;
+  background: url(lamp.png);
+  background-position:0% -36px;
+  background-repeat:no-repeat;
+  height: 36px;
+  padding-left: 36px;
+}
+
 form .data_block input.narrow {
   width: 85px;
 }

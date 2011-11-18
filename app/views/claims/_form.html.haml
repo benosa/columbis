@@ -15,8 +15,9 @@
             %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
             %td.datepicker= f.text_field :check_date, :class => 'datepicker'
           = f.hidden_field :visa
-        = f.label :early_reservation
-        = f.check_box :early_reservation, { :style => 'width:12px;'}
+        .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }
+          = f.label :early_reservation
+          = f.check_box :early_reservation, { :style => 'width:12px;'}
 
         %h2= t('.tourists')
         %table#tourists

@@ -14,6 +14,14 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
+  $('#claim_early_reservation').change(function(){
+    if (this.checked) {
+      $('.lamp_block').css('background-position','top left');
+    } else {
+      $('.lamp_block').css('background-position','0% -36px')
+    }
+  });
+
   // amount in word
 	function create_data_string($elem){
 	  var amount = 0, currency = '';

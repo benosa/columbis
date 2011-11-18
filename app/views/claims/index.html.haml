@@ -24,7 +24,7 @@
     %th= t('.memo')
     %th= t('.check_date')
 
-  - for claim in @claims
+  - @claims.each do |claim|
     %tr
       %td= claim.reservation_date
       %td= claim.user.login
@@ -41,7 +41,7 @@
       %td= claim.num
       %td= claim.num
       %td= claim.num
-      %td= claim.num
+      %td= claim.tourist_debt
       %td= claim.num
       %td= claim.currency
       %td= claim.num
@@ -52,35 +52,3 @@
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
 
 %p= link_to t('.new_claim'), new_claim_path
-
--#
-  - title t('.claims')
-
-  %table#claims
-    %tr
-      %th= t('.number')
-      %th= t('.reservation_date')
-      %th= t('.office')
-      %th= t('.manager')
-      %th= t('.full_name')
-      %th= t('.there')
-      %th= t('.back')
-      %th= t('.flight')
-      %th= t('.number')
-
-    - for claim in @claims
-      %tr
-        %td= claim.num
-        %td= claim.reservation_date
-        %td= claim.office.try(:name)
-        %td= claim.user.first_last_name
-        %td= claim.applicant.try(:full_name)
-        %td= claim.country.try(:name)
-        %td= claim.airport_to
-        %td= claim.depart_to.strftime '%d-%m-%Y %H:%M:%S'
-        %td= claim.operator.try(:name)
-        %td= claim.visa
-        %td= link_to t('edit'), edit_claim_path(claim)
-        %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
-
-  %p= link_to t('.new_claim'), new_claim_path

@@ -5,9 +5,8 @@ class Claim < ActiveRecord::Base
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
-                  :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date
-
-  attr_reader :operator_debt, :tourist_debt
+                  :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date,
+                  :operator_debt, :tourist_debt
 
   belongs_to :user
   belongs_to :office
@@ -93,10 +92,10 @@ class Claim < ActiveRecord::Base
     payments_out.each do |num, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-      payment_hash[:recipient_id] = Company.first.try(:id)
-      payment_hash[:recipient_type] = Company.first.class.try(:name)
-      payment_hash[:payer_id] = self.applicant.try(:id)
-      payment_hash[:payer_type] = self.applicant.class.try(:name)
+      payment_hash[:recipient_id] = self.operator.try(:id)
+      payment_hash[:recipient_type] = self.operator.class.try(:name)
+      payment_hash[:payer_id] = Company.first.try(:id)
+      payment_hash[:payer_type] = Company.first.class.try(:name)
 
       process_payment_hash(payment_hash, self.payments_out)
     end

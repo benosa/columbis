@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111116164335) do
+ActiveRecord::Schema.define(:version => 20111118131155) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(:version => 20111116164335) do
 
   create_table "payments", :force => true do |t|
     t.integer  "claim_id"
-    t.datetime "date_in",                         :null => false
+    t.date     "date_in",                         :null => false
     t.integer  "payer_id",                        :null => false
     t.string   "payer_type",                      :null => false
     t.integer  "recipient_id",                    :null => false

@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+DropdownValue.create(:list => 'form', :value => 'наличный') if DropdownValue.where(:list => 'form', :value => 'наличный').empty?
+DropdownValue.create(:list => 'form', :value => 'безналичный') if DropdownValue.where(:list => 'form', :value => 'безналичный').empty?

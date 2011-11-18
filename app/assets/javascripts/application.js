@@ -237,8 +237,6 @@ $(function() {
 
     $('#tourists tr.dependent').each(function(i){
       $(this).find('.num').text(i+2)
-      $(this).find('.del').attr('id','del'+(i+2));
-      $(this).attr('id','dependent'+(i+2));
     });
   }
 	$('#tourists a.del').click(del_tourist);

@@ -37,7 +37,7 @@ class ClaimsController < ApplicationController
   end
 
   def index
-    @claims = Claim.paginate(:page => params[:page], :per_page => 2).order(sort_column + " " + sort_direction)
+    @claims = Claim.paginate(:page => params[:page], :per_page => 30).order(sort_column + " " + sort_direction)
   end
 
   def show
@@ -46,7 +46,7 @@ class ClaimsController < ApplicationController
 
   def new
     @claim = Claim.new( :user_id => current_user.id)
-    @claim.fill
+    @claim.fill_new
   end
 
   def create

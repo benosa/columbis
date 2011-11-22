@@ -394,6 +394,24 @@ form .data_block .width_100 {
   border: 1px solid black;
 }
 
+.sort_span {
+  display: inline;
+  float: right;
+  background: url(sort_button.png);
+  background-position: top left;
+  background-repeat:no-repeat;
+  height: 17px;
+  width: 17px;
+}
+
+.sort_span.asc {
+  background-position: bottom left;
+}
+
+.sort_span.desc {
+  background-position: 0px -17px;
+}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
 .ui-timepicker-div dl{ text-align: left; }

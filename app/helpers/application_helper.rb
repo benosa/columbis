@@ -1,8 +1,10 @@
 module ApplicationHelper
-  def sortable(column, title = nil)
+  def sortable(column, title = nil, search = nil)
     title ||= column.titleize
     css_class = column == sort_column ? "current #{sort_direction}" : nil
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+    link_to({ :sort => column, :direction => direction }, { :class => css_class }) do
+      raw(title.to_s + tag('span', :class => 'sort_span ' << css_class.to_s))
+    end
   end
 end

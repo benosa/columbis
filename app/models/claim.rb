@@ -6,7 +6,7 @@ class Claim < ActiveRecord::Base
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
                   :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date,
-                  :operator_debt, :tourist_debt
+                  :operator_debt, :tourist_debt, :maturity
 
   belongs_to :user
   belongs_to :office
@@ -117,15 +117,13 @@ class Claim < ActiveRecord::Base
     !self.docs_note.blank?
   end
 
-  def set_new_num
-    self.num = Claim.last.try(:num).to_i + 1
-  end
-
-  def fill
+  def fill_new
     self.applicant = Tourist.new
     self.payments_in << Payment.new
     self.payments_out << Payment.new
-    self.set_new_num
+
+    self.num = Claim.last.try(:num).to_i + 1
+    self.maturity = Date.today + 3.days
   end
 
   private

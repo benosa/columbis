@@ -21,6 +21,10 @@ ru:
       create: 'Сохранить'
       update: 'Сохранить'
 
+  will_paginate:
+    previous_label: 'Предыдущая'
+    next_label: 'Следующая'
+
   errors:
     # The default format to use in full error messages.
     format: "%{attribute} %{message}"

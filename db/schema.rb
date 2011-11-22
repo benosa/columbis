@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111118131155) do
+ActiveRecord::Schema.define(:version => 20111121155039) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -232,6 +232,7 @@ ActiveRecord::Schema.define(:version => 20111118131155) do
     t.datetime "updated_at"
     t.string   "role"
     t.integer  "office_id"
+    t.string   "color"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

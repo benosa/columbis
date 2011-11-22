@@ -1,33 +1,40 @@
 - title t('.claims'), false
+.bar
+  = text_field_tag :filter
+  %span
+    = current_user.office.try(:name)
+  %span.user{ :style => "background-color:#{current_user.color}" }
+    = current_user.full_name
 
 %table#claims{ :rules => 'all'}
   %tr
-    %th= t('.reservation_date')
-    %th= t('.manager')
-    %th= t('.full_name')
-    %th= t('.to')
-    %th= t('.from')
-    %th= t('.visa')
-    %th= t('.term')
-    %th= t('.depart_to')
-    %th= t('.depart_back')
-    %th= t('.operator')
-    %th= t('.claim')
-    %th= t('.price')
-    %th= t('.calculation')
-    %th= t('.advance')
-    %th= t('.debt')
-    %th= t('.payment_term')
-    %th= t('.currency')
-    %th= t('.paid')
-    %th= t('.docs')
-    %th= t('.memo')
-    %th= t('.check_date')
-
+    %th= sortable 'reservation_date', t('.reservation_date')
+    %th= sortable 'user_id', t('.manager')
+    %th= sortable 'last_name', t('.full_name')
+    %th= sortable 'country', t('.to')
+    %th= sortable 'airport_back', t('.from')
+    %th= sortable 'visa', t('.visa')
+    %th= sortable t('.term')
+    %th= sortable t('.depart_to')
+    %th= sortable t('.depart_back')
+    %th= sortable t('.operator')
+    %th= sortable t('.claim')
+    %th= sortable t('.price')
+    %th= sortable t('.calculation')
+    %th= sortable t('.advance')
+    %th= sortable t('.debt')
+    %th= sortable t('.payment_term')
+    %th= sortable t('.currency')
+    %th= sortable t('.paid')
+    %th= sortable t('.docs')
+    %th= sortable t('.memo')
+    %th= sortable t('.check_date')
+    %th{ :colspan => 2 }
   - @claims.each do |claim|
     %tr
       %td= claim.reservation_date
-      %td= claim.user.login
+      %td{ :style => "background-color:#{claim.user.color}" }
+        = claim.user.login
       %td= claim.applicant.try(:full_name)
       %td= claim.country.try(:name)
       %td= claim.airport_back
@@ -51,4 +58,4 @@
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to t('.new_claim'), new_claim_path
+= will_paginate @claims

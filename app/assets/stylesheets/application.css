@@ -222,10 +222,27 @@ table th .hint  {
   font-size: 7pt;
 }
 
+.bar {
+  margin:auto;
+  margin-bottom:16px;
+  width:800px;
+}
+
+.bar input{
+  width:70%;
+}
+
+.bar span {
+  border: 1px solid black;
+  margin-left: 16px;
+  padding: 4px;
+}
+
 #claims {
   border: 1px solid black;
   padding: 1px;
   font-size: 10px;
+  background-color: #c2d9f0;
 }
 
 #claims th{
@@ -371,9 +388,58 @@ form .data_block .width_100 {
   width: 400px !important;
 }
 
+.color_sample {
+  height: 20px;
+  width:60px;
+  border: 1px solid black;
+}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
 .ui-timepicker-div dl{ text-align: left; }
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+/* css for will_paginate*/
+.pagination {
+  text-align: center;
+  padding: 0.3em;
+  cursor: default;
+  margin-top:16px;
+}
+.pagination a, .pagination span, .pagination em {
+    padding: 0.2em 0.5em;
+}
+.pagination .disabled {
+  color: #777;
+}
+.pagination .current {
+  font-style: normal;
+  font-weight: bold;
+  color: #990b00;
+}
+.pagination a {
+  border: 1px solid black;
+  color: black;
+  background: #F6E7C0;
+  text-decoration: none;
+}
+.pagination a:hover, .pagination a:focus {
+  border-color: black;
+  background: #f3982d;
+  color: black;
+}
+.pagination .page_info {
+  color: #aaaaaa;
+  padding-top: 0.8em;
+}
+.pagination .previous_page, .pagination .next_page {
+  border-width: 1px;
+}
+.pagination .previous_page {
+  margin-right: 1em;
+}
+.pagination .next_page {
+  margin-left: 1em;
+}

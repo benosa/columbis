@@ -1,6 +1,7 @@
 class ClaimsController < ApplicationController
   load_and_authorize_resource
   autocomplete :tourist, :last_name, :full => true
+  helper_method :sort_column, :sort_direction
 
   def autocomplete_tourist_last_name
     render :json => Tourist.where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
@@ -36,7 +37,7 @@ class ClaimsController < ApplicationController
   end
 
   def index
-    @claims = Claim.all
+    @claims = Claim.paginate(:page => params[:page], :per_page => 2).order(sort_column + " " + sort_direction)
   end
 
   def show
@@ -94,5 +95,13 @@ class ClaimsController < ApplicationController
   def check_payments
     @claim.payments_in << Payment.new if @claim.payments_in.empty?
     @claim.payments_out << Payment.new if @claim.payments_out.empty?
+  end
+
+  def sort_column
+    Claim.column_names.include?(params[:sort]) ? params[:sort] : "num"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 end

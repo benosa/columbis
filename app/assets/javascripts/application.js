@@ -14,6 +14,7 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
+  // green lamp
   $('#claim_early_reservation').change(function(){
     if (this.checked) {
       $('.lamp_block').css('background-position','top left');
@@ -21,6 +22,12 @@ $(function() {
       $('.lamp_block').css('background-position','0% -36px')
     }
   });
+
+  // user color
+  $('#user_color').live('change', function(event){
+    $('.color_sample').css('background-color', $(event.currentTarget).val());
+  });
+  $('.color_sample').css('background-color', $('#user_color').val());
 
   // amount in word
 	function create_data_string($elem){

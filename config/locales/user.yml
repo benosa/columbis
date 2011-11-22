@@ -11,6 +11,8 @@ ru:
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
         remember_me: 'Запомнить меня'
+        office_id: 'Офис'
+        color: 'Цвет (для списков)'
 
   users:
     index:

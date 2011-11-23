@@ -227,16 +227,17 @@ table th.id  {
 }
 
 .bar {
-  margin:auto;
-  margin-bottom:16px;
-  width:860px;
+  margin: auto;
+  margin-bottom: 16px;
+  width: 1000px;
 }
 
 .bar input{
-  width:70%;
+  width: 60%;
 }
 
-.bar span {
+.bar div {
+  display: inline-block;
   border: 1px solid black;
   margin-left: 16px;
   padding: 4px;

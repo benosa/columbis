@@ -23,7 +23,7 @@
     %th= sortable t('.calculation')
     %th= sortable t('.advance')
     %th= sortable t('.debt')
-    %th= sortable t('.payment_term')
+    %th= sortable 'maturity', t('.payment_term')
     %th= sortable t('.currency')
     %th= sortable t('.paid')
     %th= sortable t('.docs')
@@ -44,16 +44,16 @@
       %td= claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
       %td= claim.depart_back.strftime('%d-%m-%Y %H:%M') if claim.depart_back
       %td= claim.operator.try(:name)
-      %td= claim.num
-      %td= claim.num
-      %td= claim.num
-      %td= claim.num
+      %td= claim.id
+      %td= claim.id
+      %td= claim.id
+      %td= claim.id
       %td= claim.tourist_debt
-      %td= claim.num
+      %td= claim.maturity.strftime('%d-%m-%Y') if claim.maturity
       %td= claim.currency
-      %td= claim.num
-      %td= claim.num
-      %td= claim.num
+      %td= claim.id
+      %td= claim.id
+      %td= claim.id
       %td= claim.check_date
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

@@ -4,7 +4,7 @@ class Claim < ActiveRecord::Base
                   :visa, :visa_check, :visa_count, :description,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
-                  :visa_price, :insurance_price, :tour_price, :currency, :num, :meals, :hotel, :placement, :nights, :memo,
+                  :visa_price, :insurance_price, :tour_price, :currency, :meals, :hotel, :placement, :nights, :memo,
                   :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date,
                   :operator_debt, :tourist_debt, :maturity
 
@@ -28,14 +28,13 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_uniqueness_of :num
-  validates_presence_of :num
   validates_presence_of :user_id, :office_id
   validates_presence_of :check_date
   validates_presence_of :currency
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
   validate :presence_of_applicant
+  validate :correctness_of_maturity
 
   before_save :update_debts
 
@@ -64,7 +63,7 @@ class Claim < ActiveRecord::Base
   end
 
   def assign_dependents(tourists)
-    tourists.each do |num, tourist_hash|
+    tourists.each do |key, tourist_hash|
       next if empty_tourist_hash?(tourist_hash)
       if tourist_hash[:id].blank?
         self.dependents << Tourist.create(tourist_hash)
@@ -77,7 +76,7 @@ class Claim < ActiveRecord::Base
   end
 
   def assign_payments(payments_in, payments_out)
-    payments_in.each do |num, payment_hash|
+    payments_in.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
       payment_hash[:form] = DropdownValue.values_for_form.first
@@ -89,7 +88,7 @@ class Claim < ActiveRecord::Base
       process_payment_hash(payment_hash, self.payments_in)
     end
 
-    payments_out.each do |num, payment_hash|
+    payments_out.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
       payment_hash[:recipient_id] = self.operator.try(:id)
@@ -122,8 +121,12 @@ class Claim < ActiveRecord::Base
     self.payments_in << Payment.new
     self.payments_out << Payment.new
 
-    self.num = Claim.last.try(:num).to_i + 1
+    self.reservation_date = Date.today
     self.maturity = Date.today + 3.days
+  end
+
+  def self.next_id
+    Claim.last.try(:id).to_i + 1
   end
 
   private
@@ -150,6 +153,7 @@ class Claim < ActiveRecord::Base
   end
 
   def empty_tourist_hash?(th)
+    th = th.symbolize_keys
     th[:passport_number].blank? and th[:passport_valid_until].blank? and th[:id].blank? and
     th[:passport_series].blank? and th[:full_name].blank? and th[:date_of_birth].blank?
   end
@@ -188,5 +192,9 @@ class Claim < ActiveRecord::Base
 
   def presence_of_applicant
     errors.add(:applicant, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
+  end
+
+  def correctness_of_maturity
+    errors.add(:maturity, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
   end
 end

@@ -5,12 +5,12 @@
       .data_block
         %table
           %tr
-            %th= f.label :num
+            %th= f.label :id
             %th= f.label :operator_confirmation
             %th= f.label :visa
             %th= f.label :check_date
           %tr
-            %td= f.text_field :num
+            %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
             %td= f.text_field :operator_confirmation
             %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
             %td.datepicker= f.text_field :check_date, :class => 'datepicker'
@@ -224,9 +224,14 @@
         %h2= t('.payments_out')
         %table#payments_out
           %tr
-            %td= f.label :operator_price
+            %th= f.label :maturity
+            %th= f.label :operator_price
+            %th
+            %th= f.label :operator_debt
+          %tr
+            %td= f.text_field :maturity, :class => 'datepicker'
             %td.amount= f.text_field :operator_price
-            %td= f.label :operator_debt
+            %td
             %td= f.text_field :operator_debt, :disabled => true, :class => 'red'
           %tr.header
             %th= t('.date')

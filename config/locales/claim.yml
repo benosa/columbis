@@ -79,7 +79,10 @@ ru:
       title: 'Новая заявка'
     edit:
       title: 'Редактировать заявку'
-
+    messages:
+      successfully_created_claim: 'Заявка создана'
+      successfully_updated_claim: 'Заявка изменена'
+      successfully_destroyed_claim: 'Заявка удалена'
   activerecord:
     attributes:
       claim:
@@ -100,7 +103,7 @@ ru:
         course: 'Курс'
         currency: 'Валюта'
         airline_id: 'Авиакомпания'
-        num: 'Номер'
+        id: 'Номер'
         visa_count: 'К-во виз'
         meals: 'Питание'
         placement: 'Размещение'
@@ -119,3 +122,4 @@ ru:
         operator_debt: 'Долг оператору'
         tourist_debt: 'Долг туристов'
         payments_in_date_in: 'ололо'
+        maturity: 'Срок оплаты'

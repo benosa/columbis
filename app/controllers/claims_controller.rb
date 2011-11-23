@@ -53,7 +53,7 @@ class ClaimsController < ApplicationController
     @claim = Claim.new(params[:claim])
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
-      redirect_to claims_url, :notice => t('.successfully_created_claim.')
+      redirect_to claims_url, :notice => t('claims.messages.successfully_created_claim')
     else
       @claim.applicant ||= Tourist.new(params[:claim][:applicant])
       check_payments
@@ -72,7 +72,7 @@ class ClaimsController < ApplicationController
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       if @claim.update_attributes(params[:claim])
-        redirect_to claims_url, :notice  => t('.successfully_updated_claim.')
+        redirect_to claims_url, :notice  => t('claims.messages.successfully_updated_claim')
       else
         render :action => 'edit'
       end
@@ -87,7 +87,7 @@ class ClaimsController < ApplicationController
   def destroy
     @claim = Claim.find(params[:id])
     @claim.destroy
-    redirect_to claims_url, :notice =>  t('.successfully_destroyed_claim.')
+    redirect_to claims_url, :notice =>  t('claims.messages.successfully_destroyed_claim')
   end
 
   private
@@ -98,10 +98,10 @@ class ClaimsController < ApplicationController
   end
 
   def sort_column
-    Claim.column_names.include?(params[:sort]) ? params[:sort] : "num"
+    Claim.column_names.include?(params[:sort]) ? params[:sort] : 'id'
   end
 
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
   end
 end

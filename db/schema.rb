@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111122182001) do
+ActiveRecord::Schema.define(:version => 20111123102559) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(:version => 20111122182001) do
     t.float    "course",                     :default => 0.0
     t.string   "currency",                                               :null => false
     t.integer  "airline_id"
-    t.integer  "num"
     t.integer  "visa_count"
     t.string   "meals"
     t.string   "placement"
@@ -91,8 +90,6 @@ ActiveRecord::Schema.define(:version => 20111122182001) do
     t.datetime "depart_back"
     t.date     "maturity"
   end
-
-  add_index "claims", ["num"], :name => "index_claims_on_num"
 
   create_table "clients", :force => true do |t|
     t.string   "first_name"

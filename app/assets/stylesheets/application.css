@@ -295,9 +295,14 @@ form .data_block th {
   width:85px;
 }
 
-form .data_block input {
+form .data_block input[type="text"] {
   height:20px;
   width: 100%;
+}
+
+form .data_block input[type="checkbox"] {
+  height:10px;
+  width: 10px;
 }
 
 form .data_block td.datepicker {
@@ -306,6 +311,10 @@ form .data_block td.datepicker {
 
 form .data_block input.datepicker {
   width: 100px;
+}
+
+#claim_operator_confirmation {
+  width: 90px;
 }
 
 #flights {
@@ -341,6 +350,7 @@ form .data_block input.datepicker {
   background-repeat:no-repeat;
   height: 36px;
   padding-left: 36px;
+  padding-top: 10px;
 }
 
 form .data_block input.narrow {

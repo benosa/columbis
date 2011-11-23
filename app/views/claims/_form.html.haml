@@ -11,7 +11,9 @@
             %th= f.label :check_date
           %tr
             %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
-            %td= f.text_field :operator_confirmation
+            %td
+              = f.text_field :operator_confirmation
+              = f.check_box :operator_confirmation_flag, { :style => 'width:12px;'}
             %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
             %td.datepicker= f.text_field :check_date, :class => 'datepicker'
           = f.hidden_field :visa

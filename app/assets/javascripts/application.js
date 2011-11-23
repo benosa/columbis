@@ -16,8 +16,14 @@ $(function() {
 
   // city, resort, flights
   $('#claim_city').change(function(){
-    if($('#claim_airport_back').val() == '') {
+    if($('#claim_airport_to').val() == '') {
       $('#claim_airport_to').val($('#claim_city').val());
+    }
+  });
+
+  $('#claim_resort').change(function(){
+    if($('#claim_airport_back').val() == '') {
+      $('#claim_airport_back').val($('#claim_resort').val());
     }
   });
 

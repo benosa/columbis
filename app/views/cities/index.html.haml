@@ -7,7 +7,7 @@
   - for city in @cities
     %tr
       %td= city.name
-      %td= city.country.name
+      %td= city.country.try(:name)
       %td= link_to t('show'), city
       %td= link_to t('edit'), edit_city_path(city)
       %td= link_to t('destroy'), city, :confirm => t('are_you_sure'), :method => :delete

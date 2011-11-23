@@ -222,6 +222,10 @@ table th .hint  {
   font-size: 7pt;
 }
 
+table th.id  {
+  width:90px;
+}
+
 .bar {
   margin:auto;
   margin-bottom:16px;
@@ -314,7 +318,7 @@ form .data_block input.datepicker {
 }
 
 #claim_operator_confirmation {
-  width: 90px;
+  width: 120px;
 }
 
 #flights {
@@ -356,8 +360,7 @@ form .data_block input.datepicker {
 form .data_block input.narrow {
   width: 85px;
 }
-
-form .data_block .width_100 {
+#claim_course {
   width: 100px;
 }
 
@@ -395,7 +398,7 @@ form .data_block .width_100 {
 }
 
 .ui-autocomplete.ui-menu {
-  width: 400px !important;
+  width: 200px !important;
 }
 
 .color_sample {

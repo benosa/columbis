@@ -1,6 +1,7 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  attr_accessible :user_id, :airline_id, :country_id, :check_date, :office_id, :operator_id, :operator_confirmation, :operator_price,
+  attr_accessible :user_id, :airline_id, :country_id, :check_date, :office_id, :operator_id, :city_id, :resort_id,
+                  :operator_confirmation, :operator_confirmation_flag, :operator_price,
                   :visa, :visa_check, :visa_count, :description,
                   :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
@@ -14,6 +15,7 @@ class Claim < ActiveRecord::Base
   belongs_to :operator
   belongs_to :country
   belongs_to :city
+  belongs_to :resort, :class_name => 'City'
 
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
   has_many :dependents, :through => :tourist_claims, :source => :tourist
@@ -187,7 +189,10 @@ class Claim < ActiveRecord::Base
     self.country = Country.where( :name => claim_params[:country]).first
 
     City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
-    self.country = City.where( :name => claim_params[:city]).first
+    self.city = City.where( :name => claim_params[:city]).first
+
+    City.create({ :name => claim_params[:resort] }) unless City.find_by_name(claim_params[:resort])
+    self.resort = City.where( :name => claim_params[:resort]).first
   end
 
   def presence_of_applicant

@@ -14,6 +14,13 @@ $(function() {
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
 
+  // city, resort, flights
+  $('#claim_city').change(function(){
+    if($('#claim_airport_back').val() == '') {
+      $('#claim_airport_to').val($('#claim_city').val());
+    }
+  });
+
   // green lamp
   $('#claim_early_reservation').change(function(){
     if (this.checked) {
@@ -160,10 +167,26 @@ $(function() {
       source: "/claims/autocomplete_model_common/operator"
     },
       country: {
-      source: "/claims/autocomplete_model_common/country"
+      source: "/claims/autocomplete_model_common/country",
+      select: function(event, ui) {
+        $("input.autocomplete.resort").autocomplete($autocomplete.resort);
+      }
     },
       city: {
-      source: "/claims/autocomplete_city"
+      source: "/claims/autocomplete_model_common/city",
+      select: function(event, ui) {
+        if($('#claim_airport_to').val() == '') {
+          $('#claim_airport_to').val(ui.item.value);
+        }
+      }
+    },
+      resort: {
+      source: "/claims/autocomplete_model_common/resort",
+      select: function(event, ui) {
+        if($('#claim_airport_back').val() == '') {
+          $('#claim_airport_back').val(ui.item.value);
+        }
+      }
     },
       airport: {
       source: "/claims/autocomplete_common/airport",
@@ -181,6 +204,7 @@ $(function() {
   $("input.autocomplete.operator").autocomplete($autocomplete.operator);
   $("input.autocomplete.country").autocomplete($autocomplete.country);
   $("input.autocomplete.city").autocomplete($autocomplete.city);
+  $("input.autocomplete.resort").autocomplete($autocomplete.resort);
   $("input.autocomplete.airport").autocomplete($autocomplete.airport);
 
   $('input.autocomplete.country').change(function() {

@@ -24,16 +24,14 @@ class ClaimsController < ApplicationController
   end
 
   def autocomplete_model_common
-    if %w[airline operator country city].include?(params[:model])
-      cls = eval("#{params[:model].classify}")
+    if %w[airline operator country city resort].include?(params[:model])
+      if params[:model] == 'resort'
+        cls = City
+      else
+        cls = eval("#{params[:model].classify}")
+      end
       render :json => cls.where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
     end
-  end
-
-  def autocomplete_city
-    country_filter = params[:country].to_i > 0 ? ('AND country_id = ' + params[:country]) : ''
-    render :json => City.where(["name ILIKE '%' || ? || '%'" << country_filter,
-                    params[:term]]).map { |o| { :label => o.name, :value => o.name } }
   end
 
   def index

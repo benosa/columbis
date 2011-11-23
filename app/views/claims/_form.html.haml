@@ -5,7 +5,7 @@
       .data_block
         %table
           %tr
-            %th= f.label :id
+            %th.id= f.label :id
             %th= f.label :operator_confirmation
             %th= f.label :visa
             %th= f.label :check_date
@@ -129,17 +129,17 @@
               = f.label :operator_id, t('.operator')
           %tr
             %td{ :colspan => 2 }
-              = f.text_field :airport_to, :class => 'autocomplete airport'
+              = f.text_field :city, :class => 'autocomplete city', :value => @claim.city.try(:name)
             %td{ :colspan => 2 }
               = f.text_field :operator, :class => 'autocomplete operator', :value => @claim.operator.try(:name)
           %tr
             %th= f.label :country, t('.direction')
-            %th= f.label :city, t('.resort')
+            %th= f.label :resort
             %th{ :colspan => 2 }
               = f.label :hotel
           %tr
             %td= f.text_field :country, :class => 'autocomplete country', :value => @claim.country.try(:name)
-            %td= f.text_field :city, :class => 'autocomplete city', :value => @claim.city.try(:name)
+            %td= f.text_field :resort, :class => 'autocomplete resort', :value => @claim.resort.try(:name)
             %td{ :colspan => 2 }
               = f.text_field :hotel, :class => 'autocomplete hotel'
           %tr

@@ -247,7 +247,7 @@ table th.id  {
   border: 1px solid black;
   padding: 1px;
   font-size: 10px;
-  background-color: #c2d9f0;
+  background-color: #bde0fa;
 }
 
 #claims th{
@@ -365,11 +365,11 @@ form .data_block input.narrow {
   width: 100px;
 }
 
-.red_back, .nothing_done {
+.red_back, .nothing_done, .hot {
   background-color: #ffc0c0;
 }
 
-.orange_back, .docs_got {
+.orange_back, .docs_got, .soon {
   background-color: #FFCC5F;
 }
 
@@ -381,8 +381,8 @@ form .data_block input.narrow {
   background-color: #96B1F0;
 }
 
-.blue_back, .passport_received {
-  background-color: #88D9FF;
+.blue_back, .passport_received, .departed {
+  background-color: #bde0fa;
 }
 
 #container .red {

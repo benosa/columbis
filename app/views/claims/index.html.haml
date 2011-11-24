@@ -39,10 +39,12 @@
       %td= claim.country.try(:name)
       %td= claim.airport_back
       %td{ :class => claim.visa }
-        ????
-      %td= claim.visa_check
-      %td= claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
-      %td= claim.depart_back.strftime('%d-%m-%Y %H:%M') if claim.depart_back
+        = claim.visa == 'passport_received' ? t('got') : t('nope')
+      %td= claim.check_date
+      %td{ :class => claim.flight_status }
+        = claim.depart_to.strftime('%d-%m-%Y %H:%M')
+      %td{ :class => claim.flight_status }
+        = claim.depart_back.strftime('%d-%m-%Y %H:%M')
       %td= claim.operator.try(:name)
       %td= claim.id
       %td= claim.primary_currency_price
@@ -52,8 +54,10 @@
       %td= claim.maturity.strftime('%d-%m-%Y') if claim.maturity
       %td= claim.currency
       %td= claim.id
-      %td= claim.id
-      %td= claim.id
+      %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }"}
+        = claim.documents_ready? ? t('.ready') : t('.not_ready')
+      %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back'  }"}
+        = claim.docs_note == '' ? t('nope') : claim.docs_note
       %td= claim.check_date
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

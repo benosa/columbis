@@ -24,6 +24,8 @@ ru:
       docs: 'Документы'
       memo: 'Примечание'
       new_claim: 'Новая заявка'
+      ready: 'Готово'
+      not_ready: 'Не готово'
     form:
       num: 'Номер'
       office: 'Офис'

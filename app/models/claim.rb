@@ -3,7 +3,7 @@ class Claim < ActiveRecord::Base
   attr_accessible :user_id, :airline_id, :country_id, :check_date, :office_id, :operator_id, :city_id, :resort_id,
                   :operator_confirmation, :operator_confirmation_flag, :operator_price,
                   :visa, :visa_check, :visa_count, :description,
-                  :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back, :time_to, :time_back,
+                  :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back,
                   :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
                   :visa_price, :insurance_price, :tour_price, :currency, :meals, :hotel, :placement, :nights, :memo,
                   :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date,
@@ -31,7 +31,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_out
 
   validates_presence_of :user_id, :office_id
-  validates_presence_of :check_date
+  validates_presence_of :check_date, :depart_to, :depart_back
   validates_presence_of :currency
   validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
 
@@ -129,6 +129,25 @@ class Claim < ActiveRecord::Base
 
   def self.next_id
     Claim.last.try(:id).to_i + 1
+  end
+
+  def flight_status
+    day_of_week = depart_to.to_a[6]
+    day_of_week = 7 if day_of_week == 0
+
+    monday = (depart_to.to_date - (day_of_week - 1).days).to_time
+
+    puts Time.now
+    puts monday
+    puts depart_to
+
+    if monday > Time.now
+     'soon'
+    elsif monday < Time.now and depart_to > Time.now
+      'hot'
+    else
+      'departed'
+    end
   end
 
   private

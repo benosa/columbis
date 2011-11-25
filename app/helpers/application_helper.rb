@@ -8,3 +8,9 @@ module ApplicationHelper
     end
   end
 end
+
+class Float
+  def to_money
+    sprintf("%0.2f", self)
+  end
+end

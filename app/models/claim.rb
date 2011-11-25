@@ -1,13 +1,27 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  attr_accessible :user_id, :airline_id, :country_id, :check_date, :office_id, :operator_id, :city_id, :resort_id,
-                  :operator_confirmation, :operator_confirmation_flag, :operator_price,
-                  :visa, :visa_check, :visa_count, :description,
-                  :airport_to, :airport_back, :flight_to, :flight_back, :depart_to, :depart_back,
-                  :total_tour_price, :course, :fuel_tax_price, :additional_insurance_price, :primary_currency_price,
-                  :visa_price, :insurance_price, :tour_price, :currency, :meals, :hotel, :placement, :nights, :memo,
-                  :arrival_date, :departure_date, :early_reservation, :docs_memo, :docs_ticket, :docs_note, :reservation_date,
-                  :operator_debt, :tourist_debt, :maturity
+  # relations
+  attr_accessible :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
+
+  # price block
+  attr_accessible :tour_price, :visa_price, :visa_count, :insurance_price, :additional_insurance_price, :fuel_tax_price,
+                  :primary_currency_price, :course_eur, :course_usd, :tour_price_currency, :visa_price_currency,
+                  :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :calculation
+
+  # flight block
+  attr_accessible :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+
+  # marchroute block
+  attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date, :memo
+
+  # common
+  attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date, :operator_confirmation,
+                  :early_reservation, :docs_memo, :docs_ticket, :docs_note
+
+  # amounts and payments
+  attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
+                  :maturity, :tourist_advance, :tourist_paid
+
 
   belongs_to :user
   belongs_to :office
@@ -30,10 +44,14 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id, :office_id
-  validates_presence_of :check_date, :depart_to, :depart_back
-  validates_presence_of :currency
-  validates_inclusion_of :currency, :in => CurrencyCourse::CURRENCIES
+  validates_presence_of :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
+#  validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+#  validates_presence_of :tour_price_currency, :visa_price_currency, :insurance_price_currency,
+#                        :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency
+
+  [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
+    validates_inclusion_of a, :in => CurrencyCourse::CURRENCIES
+  end
 
   validate :presence_of_applicant
   validate :correctness_of_maturity
@@ -154,8 +172,27 @@ class Claim < ActiveRecord::Base
 
   def update_debts
     self.operator_debt = (CurrencyCourse.convert_from_curr_to_curr(
-      self.currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.payments_out.sum('amount_prim')
-    self.tourist_debt = self.primary_currency_price - self.payments_in.sum('amount_prim')
+      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.payments_out.sum('amount_prim')
+
+    self.tourist_advance = self.payments_in.sum('amount_prim')
+
+    self.tourist_debt = self.primary_currency_price - self.tourist_advance
+    self.tourist_paid = create_paid_string
+  end
+
+  def create_paid_string
+    str = ''
+    CurrencyCourse::CURRENCIES.each do |cur|
+      payment_amount = self.payments_in.sum(:amount, :conditions => "currency = '#{cur}'")
+      (str += cur.upcase << ': ' << payment_amount.to_s << ' ') unless payment_amount == 0.0
+    end
+    str.strip!
+  end
+
+  def create_calculation_string
+    str = ''
+
+    str.strip!
   end
 
   def remove_unused_payments

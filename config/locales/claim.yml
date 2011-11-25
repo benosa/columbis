@@ -93,7 +93,7 @@ ru:
         office_id: 'Офис'
         operator_id: 'Туроператор'
         operator_confirmation: 'Подтверждение оператора'
-        visa: ''
+        visa: 'Виза'
         visa_check: 'Виза'
         tour_price: 'Цена'
         visa_price: 'Виза'

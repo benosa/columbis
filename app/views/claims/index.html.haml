@@ -48,7 +48,7 @@
       %td= claim.operator.try(:name)
       %td= claim.id
       %td= claim.primary_currency_price
-      %td= claim.id
+      %td= claim.calculation
       %td= claim.tourist_advance.to_money
       %td= claim.tourist_debt.to_money
       %td= claim.maturity.strftime('%d-%m-%Y') if claim.maturity

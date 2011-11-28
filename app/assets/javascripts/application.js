@@ -9,10 +9,98 @@
 //= require jquery-ui
 //= require_tree .
 
-$(function() {
-
+$(function(){
   $('input.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
   $('input.datetimepicker').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'h:m' });
+
+  // tour price
+  function course(elem) {
+    switch (elem.val())
+    {
+      case 'eur':
+        return parseFloat($('#claim_course_eur').val());
+      case 'usd':
+        return parseFloat($('#claim_course_usd').val());
+      default:
+        return 1;
+    }
+  }
+
+  function update_calculation() {
+    if ($('#claim_calculation').val() == '' || /\[\a\]/.test($('#claim_calculation').val())) {
+      var str = '';
+      var val = parseFloat($('#claim_primary_currency_price').val());
+      if (isFinite(val)) {
+        str = str + val + 'rur = ';
+
+        val = parseFloat($('#claim_tour_price').val());
+        if (isFinite(val)) {
+          str = str + val + $('#claim_tour_price_currency').val() + ' + ';
+        }
+
+        if ($('#claim_visa_count').val() > 0){
+          val = parseFloat($('#claim_visa_price').val());
+          if (isFinite(val)) {
+            str = str + $('#claim_visa_count').val() + 'x' + val + $('#claim_visa_price_currency').val() + ' + ';
+          }
+        }
+
+        val = parseFloat($('#claim_insurance_price').val());
+        if (isFinite(val)) {
+          str = str + val + $('#claim_insurance_price_currency').val() + ' + ';
+        }
+
+        val = parseFloat($('#claim_additional_insurance_price').val());
+        if (isFinite(val)) {
+          str = str + val + $('#claim_additional_insurance_price_currency').val() + ' + ';
+        }
+        val = parseFloat($('#claim_fuel_tax_price').val());
+        if (isFinite(val)) {
+          str = str + val + $('#claim_fuel_tax_price_currency').val() + ' + ';
+        }
+
+        if (str != '') {
+          $('#claim_calculation').val(str.slice(0, -2) + ' [a]');
+        }
+      }
+
+    }
+  }
+
+  var calculate_tour_price = function(){
+    var visa_price = parseFloat($('#claim_visa_price').val()) *
+      parseFloat($('#claim_visa_count').val()) * course($('#claim_visa_price_currency'));
+
+    var fee = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency')) +
+      parseFloat($('#claim_insurance_price').val()) * course($('#claim_insurance_price_currency')) +
+      parseFloat($('#claim_additional_insurance_price').val()) * course($('#claim_additional_insurance_price_currency')) +
+      parseFloat($('#claim_fuel_tax_price').val()) * course($('#claim_fuel_tax_price_currency'));
+
+    return fee + visa_price;
+  }
+
+  $('tr.countable input, tr.countable select').change(function(){
+    var total = calculate_tour_price();
+    $('#claim_primary_currency_price').val(total);
+    $('#claim_primary_currency_price').change();
+    update_calculation();
+  });
+
+  // get system course
+  var get_system_course = function(e){
+    e.preventDefault();
+    $.ajax({
+      url: "/get_currency_course",
+      type: "POST",
+      data: "currency=" + $(e.currentTarget).prev('input').attr('id').replace(/claim_course_/,''),
+      cache: false,
+      success: function(resp){
+        $(e.currentTarget).prev('input').val(resp);
+        calculate_tour_price();
+      }
+    });
+  }
+	$('#courses_block a').click(get_system_course);
 
   // city, resort, flights
   $('#claim_city').change(function(){
@@ -81,44 +169,6 @@ $(function() {
   $('#payments_out .currency').change(get_amount_in_word);
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
-
-  // tour price
-  $('#claim_currency').change(function(){
-    $.ajax({
-      url: "/get_currency_course",
-      type: "POST",
-      data: "currency="+$('#claim_currency').val(),
-      cache: false,
-      success: function(resp){
-        $('#claim_course').val(resp);
-      }
-    });
-  });
-
-  $('.countable').change(function(){
-    var visa_price = parseFloat($('#claim_visa_price').val()) * parseFloat($('#claim_visa_count').val());
-    var fee = parseFloat($('#claim_tour_price').val()) +
-      parseFloat($('#claim_insurance_price').val()) +
-      parseFloat($('#claim_additional_insurance_price').val()) +
-      parseFloat($('#claim_fuel_tax_price').val());
-    var total = fee + visa_price;
-
-    $('#claim_total_tour_price').val(total);
-    $('#claim_total_tour_price').change();
-  });
-
-  $('#claim_total_tour_price').change(function(){
-    $.ajax({
-      url: "/get_currency_course",
-      type: "POST",
-      data: "currency="+$('#claim_currency').val(),
-      cache: false,
-      success: function(resp){
-        $('#claim_primary_currency_price').val(parseFloat(resp) * parseFloat($('#claim_total_tour_price').val()));
-        $('#claim_primary_currency_price').change();
-      }
-    });
-  });
 
   // visa_check
   $('#claim_visa_check').click(function(){

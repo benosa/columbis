@@ -27,7 +27,7 @@ ru:
       ready: 'Готово'
       not_ready: 'Не готово'
     form:
-      num: 'Номер'
+      reset: 'Сброс'
       office: 'Офис'
       user: 'Менеджер'
       operator_confirmation: 'Подтверждение оператора'
@@ -102,7 +102,8 @@ ru:
         fuel_tax_price: 'Топливный сбор'
         total_tour_price: 'Стоимость'
         primary_currency_price: 'Полная стоимость тура'
-        course: 'Курс'
+        course_eur: 'Курс EUR'
+        course_usd: 'Курс USD'
         currency: 'Валюта'
         airline_id: 'Авиакомпания'
         id: 'Номер'
@@ -126,3 +127,4 @@ ru:
         payments_in_date_in: 'ололо'
         maturity: 'Срок оплаты'
         resort: 'Курорт'
+        calculation: 'Расчет'

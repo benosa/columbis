@@ -181,7 +181,7 @@ h2 {
 
 #center_block {
   margin-left:545px;
-  background: url('palm.png') 0px 246px no-repeat;
+  background: url('palm.png') 0px 260px no-repeat;
 }
 
 input[type="submit"] {
@@ -282,9 +282,9 @@ form .data_block th {
   font-style: italic;
 }
 
-#tour_price td  {
+#tour_price {
   padding: 2px;
-  width: 80px;
+  width: 100%;
 }
 
 #indicators {
@@ -339,8 +339,12 @@ form .data_block input.datepicker {
   margin-left:120px;
 }
 
-#currency_block {
+#courses_block {
   float:right;
+}
+
+#courses_block input {
+  width: 110px;
 }
 
 #flights input.datetimepicker, #arrival_date input.datepicker{

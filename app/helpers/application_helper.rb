@@ -7,10 +7,6 @@ module ApplicationHelper
       raw(title.to_s + tag('span', :class => 'sort_span ' << css_class.to_s))
     end
   end
-
-  def currency_select(field)
-
-  end
 end
 
 class Float

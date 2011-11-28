@@ -9,15 +9,14 @@
             %th= f.label :operator_confirmation
             %th{ :colspan => 2 }
               = f.label :visa
-            %th= f.label :check_date
+            %th{ :colspan => 2 }
+              = f.label :check_date
           %tr
             %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
-            %td
-              = f.text_field :operator_confirmation
-            %td
-              = f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
-            %td.datepicker
-              = f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
+            %td= f.text_field :operator_confirmation
+            %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
+            %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
+            %td= f.check_box :closed, { :style => 'width:12px;'}
             %td.datepicker= f.text_field :check_date, :class => 'datepicker'
           = f.hidden_field :visa
         .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }

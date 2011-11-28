@@ -26,6 +26,7 @@ ru:
       new_claim: 'Новая заявка'
       ready: 'Готово'
       not_ready: 'Не готово'
+      calculation: 'Расчет'
     form:
       reset: 'Сброс'
       office: 'Офис'

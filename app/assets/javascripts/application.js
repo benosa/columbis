@@ -34,28 +34,28 @@ $(function(){
         str = str + val + 'rur = ';
 
         val = parseFloat($('#claim_tour_price').val());
-        if (isFinite(val)) {
+        if (isFinite(val) && val > 0) {
           str = str + val + $('#claim_tour_price_currency').val() + ' + ';
         }
 
         if ($('#claim_visa_count').val() > 0){
           val = parseFloat($('#claim_visa_price').val());
-          if (isFinite(val)) {
+          if (isFinite(val) && val > 0) {
             str = str + $('#claim_visa_count').val() + 'x' + val + $('#claim_visa_price_currency').val() + ' + ';
           }
         }
 
         val = parseFloat($('#claim_insurance_price').val());
-        if (isFinite(val)) {
+        if (isFinite(val) && val > 0) {
           str = str + val + $('#claim_insurance_price_currency').val() + ' + ';
         }
 
         val = parseFloat($('#claim_additional_insurance_price').val());
-        if (isFinite(val)) {
+        if (isFinite(val) && val > 0) {
           str = str + val + $('#claim_additional_insurance_price_currency').val() + ' + ';
         }
         val = parseFloat($('#claim_fuel_tax_price').val());
-        if (isFinite(val)) {
+        if (isFinite(val) && val > 0) {
           str = str + val + $('#claim_fuel_tax_price_currency').val() + ' + ';
         }
 

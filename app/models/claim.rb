@@ -58,6 +58,20 @@ class Claim < ActiveRecord::Base
 
   before_save :update_debts
 
+  define_index do
+    indexes airport_to, airport_back, flight_to, flight_back, meals, placement, hotel, memo
+
+    indexes operator(:name), :as => :operator
+    indexes country(:name), :as => :country
+    indexes city(:name), :as => :city
+    indexes resort(:name), :as => :resort
+
+    indexes [dependents.last_name, dependents.first_name], :as => :dependents
+    indexes [applicant.last_name, applicant.first_name], :as => :applicant
+
+    set_property :delta => true
+  end
+
   def assign_reflections_and_save(claim_params)
     self.transaction do
       drop_reflections
@@ -161,9 +175,9 @@ class Claim < ActiveRecord::Base
 
     if monday > Time.now
      'soon'
-    elsif monday < Time.now and depart_to > Time.now
+    elsif (monday < Time.now and depart_to > Time.now) or (depart_to < Time.now)
       'hot'
-    else
+    elsif
       'departed'
     end
   end

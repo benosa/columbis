@@ -20,11 +20,10 @@
     %th= sortable t('.operator')
     %th= sortable t('.claim')
     %th= sortable t('.price')
-    %th= sortable t('.calculation')
-    %th= sortable t('.advance')
-    %th= sortable t('.debt')
+    %th= sortable 'calculation', t('.calculation')
+    %th= sortable 'tourist_advance', t('.advance')
+    %th= sortable 'tourist_debt', t('.debt')
     %th= sortable 'maturity', t('.payment_term')
-    %th= sortable t('.currency')
     %th= sortable t('.paid')
     %th= sortable t('.docs')
     %th= sortable t('.memo')
@@ -37,7 +36,7 @@
         = claim.user.login
       %td= claim.applicant.try(:full_name)
       %td= claim.country.try(:name)
-      %td= claim.airport_back
+      %td= claim.city.try(:name)
       %td{ :class => claim.visa }
         = claim.visa_confirmation_flag ? t('got') : t('nope')
       %td= claim.check_date
@@ -49,11 +48,13 @@
       %td= claim.id
       %td= claim.primary_currency_price
       %td= claim.calculation
-      %td= claim.tourist_advance.to_money
-      %td= claim.tourist_debt.to_money
+      %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
+        = claim.tourist_advance.to_money
+      %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
+        = claim.tourist_debt.to_money
       %td= claim.maturity.strftime('%d-%m-%Y') if claim.maturity
-      %td
-      %td= claim.tourist_paid
+      %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
+        = claim.tourist_paid
       %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }"}
         = claim.documents_ready? ? t('.ready') : t('.not_ready')
       %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back'  }"}

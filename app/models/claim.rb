@@ -72,6 +72,10 @@ class Claim < ActiveRecord::Base
     set_property :delta => true
   end
 
+  def self.search_and_sort(query_str)
+    self.search(query_str)
+  end
+
   def assign_reflections_and_save(claim_params)
     self.transaction do
       drop_reflections

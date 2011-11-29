@@ -14,6 +14,7 @@ Tourism::Application.routes.draw do
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'
+      get 'search'
       match 'autocomplete_common/:list' => 'claims#autocomplete_common'
       match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
     end

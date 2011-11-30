@@ -35,7 +35,7 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claims = Claim.search_and_sort(params[:filter])
+    @claims = Claim.search_and_sort(:filter => params[:filter], :order => (sort_column + " " + sort_direction))
     render :partial => 'manager_list'
   end
 

@@ -54,3 +54,5 @@
       %td= claim.check_date
       %td= link_to t('edit'), edit_claim_path(claim)
       %td= link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete
+
+= will_paginate @claims

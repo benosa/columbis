@@ -72,8 +72,9 @@ class Claim < ActiveRecord::Base
     set_property :delta => true
   end
 
-  def self.search_and_sort(query_str)
-    self.search(query_str)
+  def self.search_and_sort(query_hash = {})
+    self.search(query_hash[:filter])
+#    self.search(query_hash[:filter]).order(query_hash[:order])
   end
 
   def assign_reflections_and_save(claim_params)

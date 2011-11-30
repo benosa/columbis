@@ -45,13 +45,13 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_out
 
   validates_presence_of :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
-#  validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
-#  validates_presence_of :tour_price_currency, :visa_price_currency, :insurance_price_currency,
-#                        :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency
+  validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+  validates_presence_of :tour_price_currency, :visa_price_currency, :insurance_price_currency,
+                        :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency
 
-#  [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
-#    validates_inclusion_of a, :in => CurrencyCourse::CURRENCIES
-#  end
+  [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
+    validates_inclusion_of a, :in => CurrencyCourse::CURRENCIES
+  end
 
   validate :presence_of_applicant
   validate :correctness_of_maturity

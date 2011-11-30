@@ -1,4 +1,5 @@
 require 'bundler/capistrano'
+require 'thinking_sphinx/deploy/capistrano'
 
 set :application, 'tourism'
 set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"
@@ -19,6 +20,7 @@ before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
+after  "deploy:update_code", "thinking_sphinx:configure"
 after  "deploy:update_code", "thinking_sphinx:index"
 after  "deploy:update_code", "thinking_sphinx:start"
 

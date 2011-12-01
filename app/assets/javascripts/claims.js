@@ -1,5 +1,5 @@
 $(function(){
-  function getCurrentSortParams($curr){
+  function getCurrentSortParams($curr, inversion){
     var currentParams = { sort:'id', direction:'asc', filter: '' };
     if ($curr.length > 0) {
       var href = $curr.attr('href');
@@ -12,11 +12,11 @@ $(function(){
     	      currentParams.sort = pair[1];
   	        break;
           case 'direction':
-//            if ($curr.hasClass('current')) {
-//              currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc'); // cause URL consist a future direction
-//            } else {
+            if ($curr.hasClass('current') && inversion) {
+              currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc'); // cause URL consist a future direction
+            } else {
               currentParams.direction = pair[1];
-//            }
+            }
     	      break;
           case 'filter':
     	      currentParams.filter = pair[1];
@@ -34,7 +34,7 @@ $(function(){
       url: 'claims/search',
       data: currentParams,
       success: function(resp){
-        $('#claims').replaceWith(resp);
+        $('.claims').replaceWith(resp);
       }
     });
   }
@@ -50,13 +50,29 @@ $(function(){
 
   $('#filter').keyup(function(){
     delay(function(){
-      loadList(getCurrentSortParams($('#claims th a.current')));
+      loadList(getCurrentSortParams($('#claims th a.current'), true));
     }, 200 );
   });
 
   // sort
   $('#claims th a').live('click', function(e){
     e.preventDefault();
-    loadList(getCurrentSortParams($(e.currentTarget)));
+    loadList(getCurrentSortParams($(e.currentTarget), false));
+  });
+
+  // pagination
+  $(".pagination a").each(function(i){
+    href = $(this).attr('href');
+    $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
+  });
+
+  $(".pagination a").live('click', function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(e.currentTarget).attr('href'),
+      success: function(resp){
+        $('.claims').replaceWith(resp);
+      }
+    });
   });
 });

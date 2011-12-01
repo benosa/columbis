@@ -77,7 +77,20 @@ class Claim < ActiveRecord::Base
   def self.search_and_sort(options = {})
     options = { :filter => '', :column => 'id', :direction => 'asc' }.merge(options)
     ids = search(options[:filter]).map(&:id)
-    where('id in(?)', ids).order(options[:column] + ' ' + options[:direction])
+    claims = where('claims.id in(?)', ids)
+
+    return claims if claims.empty?
+
+    if options[:column] == 'applicant_last_name'
+      # TODO sort by last name
+      claims.order('claims.id ' + options[:direction])
+    elsif options[:column] == 'countries.name'
+      claims.joins(:country).order(options[:column] + ' ' + options[:direction])
+    elsif options[:column] == 'operators.name'
+      claims.joins(:operator).order(options[:column] + ' ' + options[:direction])
+    else
+      claims.order(options[:column] + ' ' + options[:direction])
+    end
   end
 
   def assign_reflections_and_save(claim_params)

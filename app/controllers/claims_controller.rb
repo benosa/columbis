@@ -35,12 +35,14 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column, :direction => sort_direction).paginate(:page => params[:page], :per_page => 20)
+    @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column,
+      :direction => sort_direction).paginate(:page => params[:page], :per_page => 1)
     render :partial => 'manager_list'
   end
 
   def index
-    @claims = Claim.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+    @claims = Claim.search_and_sort(:column => sort_column,
+          :direction => sort_direction).paginate(:page => params[:page], :per_page => 1)
   end
 
   def show
@@ -101,7 +103,8 @@ class ClaimsController < ApplicationController
   end
 
   def sort_column
-    Claim.column_names.include?(params[:sort]) ? params[:sort] : 'reservation_date'
+    accesible_column_names = Claim.column_names + ['applicant.last_name', 'countries.name', 'operators.name']
+    accesible_column_names.include?(params[:sort]) ? params[:sort] : 'reservation_date'
   end
 
   def sort_direction

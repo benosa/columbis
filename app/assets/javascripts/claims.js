@@ -3,7 +3,7 @@ $(function(){
     var currentParams = { sort:'id', direction:'asc', filter: '' };
     if ($curr.length > 0) {
       var href = $curr.attr('href');
-      href = href.replace('/claims?', '');
+      href = href.replace(/\/claims.*\?/, '');
       var params = href.split('&');
       for (var i = 0, len = params.length; i < len; i++){
         var pair = params[i].split('=');
@@ -12,11 +12,11 @@ $(function(){
     	      currentParams.sort = pair[1];
   	        break;
           case 'direction':
-            if ($curr.hasClass('current')) {
-              currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc'); // cause URL consist a future direction
-            } else {
+//            if ($curr.hasClass('current')) {
+//              currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc'); // cause URL consist a future direction
+//            } else {
               currentParams.direction = pair[1];
-            }
+//            }
     	      break;
           case 'filter':
     	      currentParams.filter = pair[1];

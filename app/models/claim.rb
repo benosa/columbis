@@ -61,20 +61,23 @@ class Claim < ActiveRecord::Base
   define_index do
     indexes airport_to, airport_back, flight_to, flight_back, meals, placement, hotel, memo
 
-    indexes operator(:name), :as => :operator
-    indexes country(:name), :as => :country
-    indexes city(:name), :as => :city
-    indexes resort(:name), :as => :resort
+    indexes user(:last_name), :as => :user, :sortable => true
+    indexes office(:name), :as => :office, :sortable => true
+    indexes operator(:name), :as => :operator, :sortable => true
+    indexes country(:name), :as => :country, :sortable => true
+    indexes city(:name), :as => :city, :sortable => true
+    indexes resort(:name), :as => :resort, :sortable => true
 
-    indexes [dependents.last_name, dependents.first_name], :as => :dependents
+    indexes [dependents.last_name, dependents.first_name], :as => :dependents, :sortable => true
     indexes [applicant.last_name, applicant.first_name], :as => :applicant
 
     set_property :delta => true
   end
 
-  def self.search_and_sort(query_hash = {})
-    self.search(query_hash[:filter])
-#    self.search(query_hash[:filter]).order(query_hash[:order])
+  def self.search_and_sort(options = {})
+    options = { :filter => '', :column => 'id', :direction => 'asc' }.merge(options)
+    ids = search(options[:filter]).map(&:id)
+    where('id in(?)', ids).order(options[:column] + ' ' + options[:direction])
   end
 
   def assign_reflections_and_save(claim_params)
@@ -182,7 +185,7 @@ class Claim < ActiveRecord::Base
      'soon'
     elsif (monday < Time.now and depart_to > Time.now) or (depart_to < Time.now)
       'hot'
-    elsif
+    else
       'departed'
     end
   end

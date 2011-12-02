@@ -257,6 +257,11 @@ table th.id  {
   background-color: yellow;
 }
 
+#claims th.green_back{
+  background-color: #9ACD32;
+  padding: 4px;
+}
+
 #container form input[type="text"].passport_series {
   width: 60px;
 }
@@ -421,8 +426,8 @@ form .data_block input.narrow {
   background: url(sort_button.png);
   background-position: top left;
   background-repeat:no-repeat;
-  height: 17px;
-  width: 17px;
+  height: 12px;
+  width: 12px;
 }
 
 .sort_span.asc {
@@ -430,7 +435,7 @@ form .data_block input.narrow {
 }
 
 .sort_span.desc {
-  background-position: 0px -17px;
+  background-position: 0px -12px;
 }
 
 /* css for timepicker */

@@ -86,6 +86,8 @@ class Claim < ActiveRecord::Base
       claims.order('claims.id ' + options[:direction])
     elsif options[:column] == 'countries.name'
       claims.joins(:country).order(options[:column] + ' ' + options[:direction])
+    elsif options[:column] == 'offices.name'
+      claims.joins(:office).order(options[:column] + ' ' + options[:direction])
     elsif options[:column] == 'operators.name'
       claims.joins(:operator).order(options[:column] + ' ' + options[:direction])
     else

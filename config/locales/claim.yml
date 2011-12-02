@@ -27,6 +27,8 @@ ru:
       ready: 'Готово'
       not_ready: 'Не готово'
       calculation: 'Расчет'
+      manager_view: 'Учет менеджеров'
+      accountant_view: 'Учет бухгалтера'
     form:
       reset: 'Сброс'
       office: 'Офис'

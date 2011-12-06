@@ -1,5 +1,7 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
+  DOCUMENTS_STATUSES = %w[not_ready ready received].freeze
+
   # relations
   attr_accessible :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
 
@@ -166,7 +168,7 @@ class Claim < ActiveRecord::Base
   end
 
   def documents_ready?
-    true
+    determine_docs_status == 'received'
   end
 
   def has_notes?
@@ -223,12 +225,6 @@ class Claim < ActiveRecord::Base
       payment_amount = self.payments_in.sum(:amount, :conditions => "currency = '#{cur}'")
       (str += cur.upcase << ': ' << payment_amount.to_s << ' ') unless payment_amount == 0.0
     end
-    str.strip!
-  end
-
-  def create_calculation_string
-    str = ''
-
     str.strip!
   end
 
@@ -294,5 +290,13 @@ class Claim < ActiveRecord::Base
 
   def correctness_of_maturity
     errors.add(:maturity, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
+  end
+
+  def determine_docs_status
+    begin
+      Claim::DOCUMENTS_STATUSES[ [Claim::DOCUMENTS_STATUSES.index(self.docs_memo), Claim::DOCUMENTS_STATUSES.index(self.docs_ticket)].min ]
+    rescue
+      Claim::DOCUMENTS_STATUSES.min
+    end
   end
 end

@@ -79,13 +79,15 @@
             %td.datepicker= f.text_field :depart_back, :class => 'datetimepicker'
 
         %h2= t('.trip_documents')
-        %table
+        %table#docs
           %tr
             %td.text_right= f.label :docs_memo
-            %td= f.text_field :docs_memo
+            %td= f.select :docs_memo, (Claim::DOCUMENTS_STATUSES).collect {|o| [ t(".documents_statuses.#{o}"), o ] },
+              {}, :class => "#{ @claim.docs_memo == 'received' ? '' : 'red_back'}"
           %tr
             %td.text_right= f.label :docs_ticket
-            %td= f.text_field :docs_ticket
+            %td= f.select :docs_ticket, (Claim::DOCUMENTS_STATUSES).collect {|o| [ t(".documents_statuses.#{o}"), o ] },
+              {}, :class => "#{ @claim.docs_ticket == 'received' ? '' : 'red_back'}"
           %tr
             %td.text_right= f.label :docs_note
             %td= f.text_field :docs_note

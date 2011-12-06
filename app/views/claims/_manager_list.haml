@@ -50,8 +50,11 @@
           = claim.tourist_paid
         %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }"}
           = claim.documents_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
-        %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back'  }"}
-          = claim.docs_note == '' ? t('nope') : claim.docs_note
+        %td{ :class => "#{ claim.docs_note == ''? '' : 'tooltip red_back'  }"}
+          = claim.docs_note == '' ? t('nope') : t('yep')
+          %span
+            = claim.docs_note
+            %small
         %td= claim.check_date
         %td
           = link_to t('edit'), edit_claim_path(claim)

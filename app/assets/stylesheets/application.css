@@ -360,6 +360,11 @@ form .data_block input.datepicker {
   width: 90px;
 }
 
+#docs select {
+  height: 20px;
+  width: 100%;
+}
+
 .lamp_block {
   display: block;
   background: url(lamp.png);
@@ -487,3 +492,44 @@ form .data_block input.narrow {
 .pagination .next_page {
   margin-left: 1em;
 }
+
+/* tooltip */
+.tooltip { position: relative; }
+.tooltip span {
+  position: absolute;
+  right: 0;
+  top: -30px;
+  display: none;
+  min-width: 50px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  font-size: 11px;
+  text-align: right;
+  background-color: rgba(0,0,0,.8);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  color: #fff;
+}
+
+.tooltip span small {
+  position: absolute;
+  right: 10px;
+  bottom: -6px;
+  border-top: 6px solid rgba(0,0,0,.8);
+  border-left: 6px solid transparent;
+}
+.tooltip:hover span { display: block; }
+
+
+/* for IE */
+.tooltip span { background-color: #000; }
+.tooltip span small { border-top: 6px solid #000; }
+
+/* for IE 6 */
+*html .tooltip span small {
+  border-left: 6px solid #363636;
+}
+
+/* forIE 8 */
+.tooltip span { background-color /*\**/: #000\9  }
+.tooltip span small { border-top /*\**/: 6px solid #000; }

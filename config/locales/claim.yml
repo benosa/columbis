@@ -45,6 +45,11 @@ ru:
       has_notes: 'Примечание'
 
       trip_documents: 'Документы в дорогу'
+      documents_statuses:
+        not_ready: 'Не готово'
+        ready: 'Готово'
+        received: 'Передано туристу'
+
       tour_price: 'Стоимость тура'
       flights: 'Вылеты'
       tourists: 'Туристы'

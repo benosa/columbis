@@ -22,12 +22,12 @@
       %th= sortable 'tourist_debt', t('claims.index.debt')
       %th Неясно
       / accountant section
-      %th.green_back
-      %th.green_back
-      %th.green_back
-      %th.green_back
-      %th.green_back
-      %th.green_back
+      %th.green_back= 'Цена'
+      %th.green_back= 'Оплачено'
+      %th.green_back= 'Стоимость'
+      %th.green_back= 'Оплачено'
+      %th.green_back= 'Наценка'
+      %th.green_back= '% наценки'
 
       %th
     - @claims.each do |claim|
@@ -52,12 +52,17 @@
         %td Неясно
         / accountant section
         %td
+          = claim.primary_currency_price
         %td
+          = claim.tourist_paid
         %td
+          = claim.operator_debt.to_money
         %td
+          = claim.operator_paid
         %td
+          = claim.profit.to_money
         %td
-
+          = claim.profit_in_percent.to_money
         %td
           = link_to t('edit'), edit_claim_path(claim)
           = link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

@@ -22,7 +22,7 @@ class Claim < ActiveRecord::Base
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
-                  :maturity, :tourist_advance, :tourist_paid
+                  :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid
 
 
   belongs_to :user
@@ -159,6 +159,16 @@ class Claim < ActiveRecord::Base
     end
   end
 
+  def profit
+    self.primary_currency_price - (CurrencyCourse.convert_from_curr_to_curr(
+      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
+  end
+
+  def profit_in_percent
+    profit/((CurrencyCourse.convert_from_curr_to_curr(
+      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
+  end
+
   def has_tourist_debt?
     self.tourist_debt != 0
   end
@@ -210,19 +220,20 @@ class Claim < ActiveRecord::Base
   private
 
   def update_debts
+    self.operator_advance = self.payments_out.sum('amount_prim')
     self.operator_debt = (CurrencyCourse.convert_from_curr_to_curr(
-      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.payments_out.sum('amount_prim')
+      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.operator_advance
+    self.operator_paid = create_paid_string(:out)
 
     self.tourist_advance = self.payments_in.sum('amount_prim')
-
     self.tourist_debt = self.primary_currency_price - self.tourist_advance
-    self.tourist_paid = create_paid_string
+    self.tourist_paid = create_paid_string(:in)
   end
 
-  def create_paid_string
+  def create_paid_string(in_out)
     str = ''
     CurrencyCourse::CURRENCIES.each do |cur|
-      payment_amount = self.payments_in.sum(:amount, :conditions => "currency = '#{cur}'")
+      payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
       (str += cur.upcase << ': ' << payment_amount.to_s << ' ') unless payment_amount == 0.0
     end
     str.strip!

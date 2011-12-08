@@ -30,6 +30,8 @@ ru:
       manager_view: 'Учет менеджеров'
       accountant_view: 'Учет бухгалтера'
       cost: 'Стоимость'
+      accountant_list: 'Для бухгалтера'
+      manager_list: 'Для менеджера'
     form:
       reset: 'Сброс'
       office: 'Офис'

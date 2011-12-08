@@ -6,6 +6,7 @@ class Ability
     if user.role == 'admin'
       can :manage, :all
     elsif user.role == 'accountant'
+      can :switch_view, User
       can :manage, CurrencyCourse
       can :manage, Country
       can :manage, City

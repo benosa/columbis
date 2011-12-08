@@ -25,6 +25,8 @@ $(function(){
       }
     }
     currentParams.filter = $('#filter').val();
+    currentParams.list_type = $('.accountant_login').attr('list_type');
+
     return currentParams;
   }
 

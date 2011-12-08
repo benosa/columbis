@@ -29,7 +29,7 @@
     = f.email_field :email
   - if action_name == "new"
     %p
-      = f.label :password, "New password"
+      = f.label :password, "Новый пароль"
       %br/
       = f.password_field :password
     %p
@@ -39,7 +39,9 @@
   %p
     = f.label :role
     %br/
-    = f.collection_select :role, User::ROLES, :to_s, :humanize
+    - if current_user.role == 'admin'
+      = f.collection_select :role, User::ROLES, :to_s, :humanize
+    - else
+      = @user.role
   .actions
     = f.submit
-

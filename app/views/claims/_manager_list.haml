@@ -17,10 +17,10 @@
       %th= sortable 'tourist_advance', t('claims.index.advance')
       %th= sortable 'tourist_debt', t('claims.index.debt')
       %th= sortable 'maturity', t('claims.index.payment_term')
-      %th= sortable t('claims.index.paid')
-      %th= sortable t('claims.index.docs')
-      %th= sortable t('claims.index.memo')
-      %th= sortable t('claims.index.check_date')
+      %th= sortable 'tourist_paid', t('claims.index.paid')
+      %th= sortable 'docs_ticket', t('claims.index.docs')
+      %th= sortable 'docs_note', t('claims.index.memo')
+      %th= sortable 'check_date', t('claims.index.check_date')
       %th
     - @claims.each do |claim|
       %tr

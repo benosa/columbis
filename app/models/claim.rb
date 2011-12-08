@@ -195,10 +195,6 @@ class Claim < ActiveRecord::Base
 
     monday = (depart_to.to_date - (day_of_week - 1).days).to_time
 
-    puts Time.now
-    puts monday
-    puts depart_to
-
     if monday > Time.now
      'soon'
     elsif (monday < Time.now and depart_to > Time.now) or (depart_to < Time.now)

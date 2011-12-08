@@ -18,11 +18,6 @@
   <div><%= f.label :email %><br />
   <%= f.email_field :email %></div>
 
-  <p>
-    <%= f.label :role %><br />
-    <%= f.collection_select :role, User::ROLES, :to_s, :humanize %>
-  </p>
-
   <div><%= f.label :office_id %><br />
   <%= f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] } %></div>
 

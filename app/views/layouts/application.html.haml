@@ -25,7 +25,8 @@
           %li= link_to "Потенц. клиенты", clients_path, :class => (controller.controller_name == "clients" ? "selected" : " ")
           %li= link_to "Симки", '#'
           %li= link_to "Агентства", companies_path, :class => (controller.controller_name == "companies" ? "selected" : " ")
-          %li= link_to "Вход для бухглатера", '#', :class => "accountant_login"
+          - if can? :switch_view, current_user
+            %li= link_for_view_switcher
 
       %div.clear
 

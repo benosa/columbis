@@ -37,8 +37,8 @@ class ClaimsController < ApplicationController
   def search
     @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column,
       :direction => sort_direction).paginate(:page => params[:page], :per_page => 30)
-    render :partial => 'manager_list'
-#    render :partial => 'accountant_list'
+#    render :partial => 'manager_list'
+    render :partial => 'accountant_list'
 
   end
 

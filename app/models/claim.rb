@@ -22,7 +22,8 @@ class Claim < ActiveRecord::Base
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
-                  :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid
+                  :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
+                  :primary_currency_operator_price, :profit, :profit_in_percent
 
 
   belongs_to :user
@@ -159,24 +160,6 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def primary_currency_operator_price
-    (CurrencyCourse.convert_from_curr_to_curr(
-      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
-  end
-
-  def profit
-    self.primary_currency_price - primary_currency_operator_price
-  end
-
-  def profit_in_percent
-    begin
-      profit/((CurrencyCourse.convert_from_curr_to_curr(
-        self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
-    rescue
-      0
-    end
-  end
-
   def has_tourist_debt?
     self.tourist_debt != 0
   end
@@ -236,6 +219,18 @@ class Claim < ActiveRecord::Base
     self.tourist_advance = self.payments_in.sum('amount_prim')
     self.tourist_debt = self.primary_currency_price - self.tourist_advance
     self.tourist_paid = create_paid_string(:in)
+
+    self.primary_currency_operator_price = (CurrencyCourse.convert_from_curr_to_curr(
+      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
+
+    self.profit = self.primary_currency_price - primary_currency_operator_price
+    self.profit_in_percent =
+      begin
+        profit/((CurrencyCourse.convert_from_curr_to_curr(
+          self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
+      rescue
+        0
+      end
   end
 
   def create_paid_string(in_out)

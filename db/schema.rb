@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111206124647) do
+ActiveRecord::Schema.define(:version => 20111208085611) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -104,6 +104,9 @@ ActiveRecord::Schema.define(:version => 20111206124647) do
     t.boolean  "delta",                               :default => true
     t.float    "operator_advance",                    :default => 0.0,            :null => false
     t.string   "operator_paid"
+    t.float    "primary_currency_operator_price",     :default => 0.0,            :null => false
+    t.float    "profit",                              :default => 0.0,            :null => false
+    t.float    "profit_in_percent",                   :default => 0.0,            :null => false
   end
 
   create_table "clients", :force => true do |t|

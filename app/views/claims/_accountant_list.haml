@@ -22,12 +22,12 @@
       %th= sortable 'tourist_debt', t('claims.index.debt')
       %th Неясно
       / accountant section
-      %th.green_back= 'Цена'
-      %th.green_back= 'Оплачено'
-      %th.green_back= 'Стоимость'
-      %th.green_back= 'Оплачено'
-      %th.green_back= 'Наценка'
-      %th.green_back= '% наценки'
+      %th.green_back= sortable 'primary_currency_price', t('claims.index.price')
+      %th.green_back= sortable 'tourist_paid', t('claims.index.paid')
+      %th.green_back= sortable 'primary_currency_operator_price', t('claims.index.cost')
+      %th.green_back= sortable 'operator_paid', t('claims.index.paid')
+      %th.green_back= sortable 'profit', 'Наценка'
+      %th.green_back= sortable 'profit_in_percent', '% наценки'
 
       %th
     - @claims.each do |claim|

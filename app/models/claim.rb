@@ -159,14 +159,22 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def profit
-    self.primary_currency_price - (CurrencyCourse.convert_from_curr_to_curr(
+  def primary_currency_operator_price
+    (CurrencyCourse.convert_from_curr_to_curr(
       self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
   end
 
+  def profit
+    self.primary_currency_price - primary_currency_operator_price
+  end
+
   def profit_in_percent
-    profit/((CurrencyCourse.convert_from_curr_to_curr(
-      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
+    begin
+      profit/((CurrencyCourse.convert_from_curr_to_curr(
+        self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
+    rescue
+      0
+    end
   end
 
   def has_tourist_debt?

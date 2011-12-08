@@ -51,13 +51,13 @@
           = claim.tourist_debt.to_money
         %td Неясно
         / accountant section
-        %td
+        %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.primary_currency_price
-        %td
+        %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_paid
-        %td
-          = claim.operator_debt.to_money
-        %td
+        %td{ :class => "#{ claim.has_operator_debt? ? 'red_back' : '' }" }
+          = claim.primary_currency_operator_price.to_money
+        %td{ :class => "#{ claim.has_operator_debt? ? 'red_back' : '' }" }
           = claim.operator_paid
         %td
           = claim.profit.to_money

@@ -378,14 +378,17 @@ $(function(){
       $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
       $(this).find('input.description').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][description]');
 
+      $(this).find('input.payment_form').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_form');
+      $(this).find('input.payment_form').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][form]');
+      $("input.autocomplete.payment_form").autocomplete($autocomplete.paymentOutForm);
 
       var hidden_id = $(this).next('[type=hidden]');
       hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');
       hidden_id.attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][id]');
     });
 	}
-	$('#payments_in a.add').click(add_payment);
-	$('#payments_out a.add').click(add_payment);
+	$('#payments_in a.add').live('click', add_payment);
+	$('#payments_out a.add').live('click', add_payment);
 
   // del payment
   var del_payment = function(e){

@@ -3,7 +3,8 @@
     %tr
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th= sortable 'user_id', t('claims.index.manager')
-      %th= sortable 'applicant.last_name', t('claims.index.full_name')
+      /%th= sortable 'applicant.last_name', t('claims.index.full_name')
+      %th= t('claims.index.full_name')
       %th= sortable 'countries.name', t('claims.index.to')
       %th= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'visa', t('claims.index.visa')

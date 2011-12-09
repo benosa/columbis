@@ -36,7 +36,7 @@ class ClaimsController < ApplicationController
 
   def search
     @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column,
-      :direction => sort_direction).paginate(:page => params[:page], :per_page => 30)
+      :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
     if can? :switch_view, current_user
       params[:list_type] ||= 'manager_list'
     else
@@ -48,7 +48,7 @@ class ClaimsController < ApplicationController
   def index
     params[:list_type] ||= 'manager_list'
     @claims = Claim.search_and_sort(:column => sort_column,
-          :direction => sort_direction).paginate(:page => params[:page], :per_page => 30)
+          :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
   end
 
   def show

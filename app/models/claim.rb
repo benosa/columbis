@@ -18,7 +18,7 @@ class Claim < ActiveRecord::Base
 
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date, :operator_confirmation,
-                  :early_reservation, :docs_memo, :docs_ticket, :docs_note
+                  :early_reservation, :docs_memo, :docs_ticket, :docs_note, :closed
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,

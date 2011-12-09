@@ -17,7 +17,7 @@
             %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
             %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
             %td= f.check_box :closed, { :style => 'width:12px;'}
-            %td.datepicker= f.text_field :check_date, :class => 'datepicker'
+            %td.datepicker= f.text_field :check_date, :class => "datepicker #{ @claim.closed ? '' : 'red_back'  }"
           = f.hidden_field :visa
         .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }
           = f.label :early_reservation

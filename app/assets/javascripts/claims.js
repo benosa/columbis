@@ -68,7 +68,7 @@ $(function(){
     $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
   });
 
-  $(".pagination a").live('click', function(e) {
+  $('.pagination a').live('click', function(e) {
     e.preventDefault();
     $.ajax({
       url: $(e.currentTarget).attr('href'),
@@ -76,5 +76,10 @@ $(function(){
         $('.claims').replaceWith(resp);
       }
     });
+  });
+
+  // closed
+  $('#claim_closed').click(function(e) {
+    this.checked ? $('#claim_check_date').removeClass('red_back') : $('#claim_check_date').addClass('red_back');
   });
 });

@@ -18,6 +18,9 @@ Tourism::Application.routes.draw do
       match 'autocomplete_common/:list' => 'claims#autocomplete_common'
       match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
     end
+    member do
+      match 'print/:document' => 'claims#print'
+    end
   end
 
   resources :payments

@@ -53,6 +53,9 @@ class ClaimsController < ApplicationController
 
   def show
     @claim = Claim.find(params[:id])
+    if %w[contract memo].include? params[:print]
+      render :partial => params[:print], :layout => false
+    end
   end
 
   def new

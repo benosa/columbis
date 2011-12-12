@@ -35,9 +35,11 @@
           %li Базы
           %li= link_to "Брони", claims_path, :class => ((params[:controller] == "claims" and params[:action] == "index") ? "selected" : " ")
           %li= link_to "Новая заявка", new_claim_path, :class => ((params[:controller] == "claims" and params[:action] == "new") ? "selected" : " ")
-          %li= link_to "Договор", '#'
+          %li{ :class => "#{ @claim ? 'enabled' : 'disabled' }" }
+            = @claim ? (link_to "Договор", claim_path(@claim.id, :print => 'contract')) : 'Договор'
           %li= link_to "Путевка", '#'
-          %li= link_to "Памятка", '#'
+          %li{ :class => "#{ @claim ? 'enabled' : 'disabled' }" }
+            = @claim ? (link_to "Памятка", claim_path(@claim.id, :print => 'memo')) : 'Памятка'
           %li= link_to "Приходник", '#'
           %li= link_to "Справка", '#'
 

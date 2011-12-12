@@ -40,7 +40,7 @@
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
         %td{ :class => claim.flight_status }
-          = claim.depart_to.strftime('%d-%m-%Y %H:%M')
+          = claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
         %td= claim.operator.try(:name)
         %td= claim.id
         %td= claim.primary_currency_price

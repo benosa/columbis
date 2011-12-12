@@ -503,13 +503,17 @@ form .data_block input.narrow {
 }
 
 /* tooltip */
-.tooltip { position: relative; }
+.tooltip {
+  position: relative;
+}
+
 .tooltip span {
+  color: #fff;
   position: absolute;
   right: 0;
   top: -30px;
   display: none;
-  min-width: 50px;
+  min-width: 20px;
   padding: 3px 8px;
   white-space: nowrap;
   font-size: 11px;
@@ -517,7 +521,6 @@ form .data_block input.narrow {
   background-color: rgba(0,0,0,.8);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  color: #fff;
 }
 
 .tooltip span small {

@@ -190,6 +190,8 @@ class Claim < ActiveRecord::Base
   end
 
   def flight_status
+    return 'empty' unless self.depart_to
+
     day_of_week = depart_to.to_a[6]
     day_of_week = 7 if day_of_week == 0
 

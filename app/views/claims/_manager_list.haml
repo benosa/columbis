@@ -35,9 +35,9 @@
           = claim.visa_confirmation_flag ? t('got') : t('nope')
         %td= claim.check_date
         %td{ :class => claim.flight_status }
-          = claim.depart_to.strftime('%d-%m-%Y %H:%M')
+          = claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
         %td{ :class => claim.flight_status }
-          = claim.depart_back.strftime('%d-%m-%Y %H:%M')
+          = claim.depart_back.strftime('%d-%m-%Y %H:%M') if claim.depart_back
         %td= claim.operator.try(:name)
         %td= claim.id
         %td= claim.primary_currency_price

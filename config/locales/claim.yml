@@ -85,7 +85,7 @@ ru:
       arrival_date: 'Даты заезда'
       from: 'с'
       til: 'по'
-
+      save_before_pay: 'Добавление платежей будет доступно после сохранения'
       add_another_tourist: 'Добавить туриста'
       add_another_payment: 'Добавить платеж'
     new:
@@ -97,6 +97,9 @@ ru:
       successfully_updated_claim: 'Заявка изменена'
       successfully_destroyed_claim: 'Заявка удалена'
   activerecord:
+    errors:
+      messages:
+         blank_or_wrong: 'заполнен с ошибками'
     attributes:
       claim:
         user_id: 'Менеджер'
@@ -139,3 +142,13 @@ ru:
         maturity: 'Срок оплаты'
         resort: 'Курорт'
         calculation: 'Расчет'
+        applicant: 'Основной турист'
+        resort_id: 'Курорт'
+        city_id: 'Город'
+        airport_to: 'Аэропорт прямого вылета'
+        airport_back: 'Аэропорт обратного вылета'
+        flight_to: 'Номер прямого рейса'
+        flight_back: 'Номер обратного рейса'
+        depart_to: 'Время прямого вылета'
+        depart_back: 'Время обратного вылета'
+        operator_price_currency: 'Валюта цены оператора'

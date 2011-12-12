@@ -47,8 +47,8 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
-  validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+  validates_presence_of :user_id,:office_id, :country_id, :resort_id, :city_id
+  #validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
   validates_presence_of :tour_price_currency, :visa_price_currency, :insurance_price_currency,
                         :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency
 
@@ -295,11 +295,11 @@ class Claim < ActiveRecord::Base
   end
 
   def presence_of_applicant
-    errors.add(:applicant, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
+    errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
   def correctness_of_maturity
-    errors.add(:maturity, I18n.t('.applicant_blank_or_wrong')) unless self.applicant.valid?
+    errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
   def determine_docs_status

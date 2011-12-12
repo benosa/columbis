@@ -64,7 +64,7 @@ class ClaimsController < ApplicationController
     @claim = Claim.new(params[:claim])
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
-      redirect_to claims_url, :notice => t('claims.messages.successfully_created_claim')
+      redirect_to edit_claim_url(@claim.id), :notice => t('claims.messages.successfully_created_claim')
     else
       @claim.applicant ||= Tourist.new(params[:claim][:applicant])
       check_payments

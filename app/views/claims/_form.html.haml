@@ -232,9 +232,9 @@
           - ind = 0
           = f.fields_for :payments_in do |builder|
             %tr.fields{ :id => "payment_in_#{ind}"}
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
-              %td.amount= builder.text_field :amount, :class => 'amount'
-              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
+              %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
+              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => @claim.new_record?
               %td= builder.text_field :description, :class => 'description', :disabled => true
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
             = builder.hidden_field :id
@@ -246,7 +246,10 @@
             %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
           %tr.bottom
             %td{ :colspan => 4}
-              = link_to t('.add_another_payment'), '#', :class => 'add'
+              - if @claim.new_record?
+                .hint= t('.save_before_pay')
+              - else
+                = link_to t('.add_another_payment'), '#', :class => 'add'
 
         %h2= t('.payments_out')
         %table#payments_out
@@ -267,17 +270,21 @@
           - ind = 0
           = f.fields_for :payments_out do |builder|
             %tr.fields{ :id => "payment_out_#{ind}"}
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in'
-              %td.amount= builder.text_field :amount, :class => 'amount'
-              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency'
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
+              %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
+              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
+                {}, :class => 'currency', :disabled => @claim.new_record?
               %td{ :colspan => 2 }
-                = builder.text_field :form, :class => 'autocomplete payment_form'
+                = builder.text_field :form, :class => 'autocomplete payment_form', :disabled => @claim.new_record?
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td{ :colspan => 4}
-              = link_to t('.add_another_payment'), '#', :class => 'add'
+            %td{ :colspan => 5}
+              - if @claim.new_record?
+                .hint= t('.save_before_pay')
+              - else
+                = link_to t('.add_another_payment'), '#', :class => 'add'
 
     %p
       = f.submit

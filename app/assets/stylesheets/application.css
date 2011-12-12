@@ -209,6 +209,15 @@ input[type="text"], input[type="email"], input[type="password"] {
   border: 1px solid #5c1c03;
 }
 
+.hint  {
+  font-weight: normal;
+  color: #da2c23;
+  font-style: italic;
+  font-size: 7pt;
+  padding: 20px;
+  text-align: center;
+}
+
 table td  {
   text-align: center;
   font-style: italic;

@@ -508,19 +508,19 @@ form .data_block input.narrow {
 }
 
 .tooltip span {
-  color: #fff;
   position: absolute;
   right: 0;
   top: -30px;
   display: none;
-  min-width: 20px;
+  min-width: 50px;
   padding: 3px 8px;
   white-space: nowrap;
   font-size: 11px;
-  text-align: right;
+  text-align: center;
   background-color: rgba(0,0,0,.8);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  color: #fff;
 }
 
 .tooltip span small {

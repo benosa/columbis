@@ -51,11 +51,12 @@
           = claim.tourist_paid
         %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }" }
           = claim.documents_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
-        %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back tooltip' }" }
-          = claim.docs_note == '' ? t('nope') : t('yep')
-          %span
-            = claim.docs_note
-            %small
+        %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }" }
+          %div{ :class => "#{ claim.docs_note == ''? '' : 'tooltip' }" }
+            = claim.docs_note == '' ? t('nope') : t('yep')
+            %span
+              = claim.docs_note
+              %small
         %td{ :class => "#{ claim.closed ? '' : 'red_back'  }"}
           = claim.check_date
         %td

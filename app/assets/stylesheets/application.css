@@ -217,7 +217,7 @@ input[type="text"], input[type="email"], input[type="password"] {
   border: 1px solid #5c1c03;
 }
 
-.hint  {
+#payments_in .hint, #payments_out .hint {
   font-weight: normal;
   color: #da2c23;
   font-style: italic;

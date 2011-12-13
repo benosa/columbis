@@ -1,12 +1,14 @@
 !!!
 %head
   %title Договор на реализацию
-  :css
-    %body
+  = stylesheet_link_tag 'contract'
+%body
+  /= raise @claim.inspect
   #content
     %div
-      %img{ :alt => "Логотип", :src => "/assets/print_logo.png" }/
-      %h2.firsth ДОГОВОР на реализацию права на турпродукт №
+      = image_tag 'print_logo.png'
+      %h2.firsth
+        = "ДОГОВОР на реализацию права на турпродукт №#{@claim.id}"
     %p.firstp
       %b> Туристическая компания "ООО Мистраль"
       , представляющая интересы Туроператора, именуемая в дальнейшем
@@ -19,7 +21,7 @@
       действующая на основании Устава с одной стороны, и
       %br/
       %span.underline.client
-        %b.red> Вагапов Альфир Мингалиевич
+        %b.red>= @claim.applicant.full_name
         ,
       именуемый(ая) в дальнейшем как
       = succeed "," do
@@ -36,63 +38,63 @@
       %tr
         %td.ra Страна
         %td.la
-          %b.red США
+          %b.red= @claim.country.try(:name)
         %td.ra Курорт
         %td.la{:colspan => "2"}
-          %b.red Калифорния
+          %b.red= @claim.resort.try(:name)
         %td.ra{:colspan => "2"} Отправление
         %td.la
-          %b.red 10/10/2011
+          %b.red= @claim.depart_to.strftime('%d-%m-%Y %H:%M') if @claim.depart_to
       %tr
         %td.ra Отель
         %td.la{:colspan => "2"}
-          %b.red Отели США+Мексика
+          %b.red= @claim.hotel
         %td{:colspan => "2"}
         %td.ra{:colspan => "2"} Возврат
         %td.la
-          %b.red 10/4/2011
+          %b.red= @claim.depart_back.strftime('%d-%m-%Y %H:%M') if @claim.depart_back
       %tr
         %td.ra Размещение
         %td.la{:colspan => "2"}
-          %b.red DBL
+          %b.red= @claim.placement
         %td.ra Кол‐во туристов
         %td.la
-          %b.red 2
+          %b.red= @claim.dependents.count + 1
         %td.ra{:colspan => "2"} Кол‐во ночей
         %td.la
-          %b.red 24
+          %b.red= @claim.nights
       %tr
         %td.ra Переезд
         %td.la{:colspan => "2"}
-          %b.red авиа из Москвы
+          %b.red XXXXXXX
         %td.ra Класс
         %td.la
-          %b.red эконом
+          %b.red XXXXXXX
         %td.ra{:colspan => "2"} Питание
         %td.la
-          %b.red BB+AL
+          %b.red= @claim.meals
       %tr
         %td.ra Виза
         %td.la
-          %b.red нет
+          %b.red= @claim.visa_count > 0 ? 'Да' : 'Нет'
         %td.ra Страховка медицинская
         %td.la
-          %b.red да
+          %b.red= @claim.insurance_price > 0 ? 'Да' : 'Нет'
         %td.ra Трансфер
         %td.la
-          %b.red да
+          %b.red XXXXXXX
         %td.ra Страховка от невыезда
         %td.la
-          %b.red нет
+          %b.red= @claim.additional_insurance_price > 0 ? 'Да' : 'Нет'
       %tr
         %td.la{:colspan => "3"} Дополнительные услуги и экскурсии
         %td.la{:colspan => "5"}
-          %b.red нет
+          %b.red XXXXXXX
       %tr
         %td.la Сумма на
         %td.la 9/22/2011
         %td.la{:colspan => "6"}
-          %b.red 340 000(триста сорок тысяч рублей)
+          %b.red= @claim.primary_currency_price.to_money.to_s + ' ' + CurrencyCourse::PRIMARY_CURRENCY
       %tr
         %td.la{:colspan => "2"}
           %b Стоимость тура
@@ -114,7 +116,7 @@
         %td.la{:colspan => "2"}
           %b.red нет
         %td.ca{:colspan => "2"}
-          %b.red 340 000 руб
+          %b.red= @claim.primary_currency_price.to_money.to_s + ' ' + CurrencyCourse::PRIMARY_CURRENCY
       %tr
         %td.la{:colspan => "3"}
           %b ФИО
@@ -128,26 +130,27 @@
           %b Действителен
       %tr
         %td.la{:colspan => "3"}
-          %b Вагапов Альфир Мингалиевич
+          %b.red= @claim.applicant.full_name
         %td.la
-          %b.red 4/20/1965
+          %b.red= @claim.applicant.date_of_birth
         %td.la
-          %b.red 63
+          %b.red= @claim.applicant.passport_series
         %td.la
-          %b.red 7739698
+          %b.red= @claim.applicant.passport_number
         %td.ca{:colspan => "2"}
-          %b.red 9/18/2012
-      %tr
-        %td.la{:colspan => "3"}
-          %b.red Вагапова Эльмира Адгамовна
-        %td.la
-          %b.red 3/19/1968
-        %td.la
-          %b.red 62
-        %td.la
-          %b.red 6893656
-        %td.ca{:colspan => "2"}
-          %b.red 9/28/2012
+          %b.red= @claim.applicant.passport_valid_until
+      - @claim.dependents.each do |dep|
+        %tr
+          %td.la{:colspan => "3"}
+            %b.red= dep.full_name
+          %td.la
+            %b.red= dep.date_of_birth
+          %td.la
+            %b.red= dep.passport_series
+          %td.la
+            %b.red= dep.passport_number
+          %td.ca{:colspan => "2"}
+            %b.red= dep.passport_valid_until
     %p.red
       %b Особые условия по чартерным рейсам:
       время вылета чартерных рейсов может меняться авиакомпанией за один день до вылета.
@@ -323,7 +326,7 @@
           %b АКБ «СПУРТ» банк (ОАО) г. Казань
         %td.ca{:colpsan => "2"}
           ФИО
-          %b Вагапов Альфир Мингалиевич
+          %b= @claim.applicant.full_name
       %tr
         %td.la{:colpsan => "3"}
           %b БИК 049205858
@@ -344,24 +347,3 @@
         %td.la{:colpsan => "3"}
           %b (843)238-60-50,238-60-53
         %td{:colpsan => "2"}
-:css
-  body { margin:0; padding: 0;}
-  .client, .operator { font-size: 14pt;}
-  .underline { display: block; width: 900px; border-bottom: 1px solid black; text-align: center; margin-bottom: 0;}
-  .uppercase { text-transform: uppercase; }
-  .red { color: red; }
-  #content { width: 900px; margin: 0 auto; }
-  #content p {margin:0; text-align: justify;}
-  #content ul { margin: 0; padding: 0; list-style-type: none;}
-  #content h2 { text-align: center; margin: 3px 0;}
-  #content { font: 10pt Times New Roman;}
-  #content h2.firsth { float: left; margin-top: 10px;}
-  #content p.firstp { margin-top: 25px; clear: both;}
-  table {border-spacing: 0; width: 100%; border: 1px solid black; }
-  table td { border: 1px solid black; padding: 0 5px;}
-  table.withoutanyborder { border-spacing: 0; width: 100%; border: none; }
-  table.withoutanyborder td { border: none; padding: 0; }
-  td.ra { text-align: right; }
-  td.la { text-align: left; }
-  td.ca { text-align: center; }
-  div img { float: left; margin-right: 10px; margin-left: 80px; width: 115px; height: 52px;}

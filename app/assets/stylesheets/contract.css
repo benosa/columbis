@@ -1,0 +1,20 @@
+body { margin:0; padding: 0;}
+.client, .operator { font-size: 14pt;}
+.underline { display: block; width: 900px; border-bottom: 1px solid black; text-align: center; margin-bottom: 0;}
+.uppercase { text-transform: uppercase; }
+.red { color: red; }
+#content { width: 900px; margin: 0 auto; }
+#content p {margin:0; text-align: justify;}
+#content ul { margin: 0; padding: 0; list-style-type: none;}
+#content h2 { text-align: center; margin: 3px 0;}
+#content { font: 10pt Times New Roman;}
+#content h2.firsth { float: left; margin-top: 10px;}
+#content p.firstp { margin-top: 25px; clear: both;}
+table {border-spacing: 0; width: 100%; border: 1px solid black; }
+table td { border: 1px solid black; padding: 0 5px;}
+table.withoutanyborder { border-spacing: 0; width: 100%; border: none; }
+table.withoutanyborder td { border: none; padding: 0; }
+td.ra { text-align: right; }
+td.la { text-align: left; }
+td.ca { text-align: center; }
+div img { float: left; margin-right: 10px; margin-left: 80px; width: 115px; height: 52px;}

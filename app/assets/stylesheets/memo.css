@@ -1,0 +1,9 @@
+.uppercase{text-transform: uppercase;}
+.underline{text-decoration: underline;}
+#top{text-align:center;}
+#content #top h2.underline {margin:0;}
+#center{text-align: center; margin-top: 20px;}
+#content ul {padding:0;margin:0;list-style-type:none;}
+#reset p, #reset h2{margin:0;}
+#content{width: 1000px; margin: 0 auto; font: 12pt Times New Roman}
+.important{border: 1px solid black;padding: 0.5em; margin-bottom: 10px;}

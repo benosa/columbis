@@ -66,10 +66,10 @@
       %tr
         %td.ra Переезд
         %td.la{:colspan => "2"}
-          %b.red XXXXXXX
+          %b.red= @claim.relocation
         %td.ra Класс
         %td.la
-          %b.red XXXXXXX
+          %b.red= @claim.service_class
         %td.ra{:colspan => "2"} Питание
         %td.la
           %b.red= @claim.meals
@@ -82,19 +82,19 @@
           %b.red= @claim.insurance_price > 0 ? 'Да' : 'Нет'
         %td.ra Трансфер
         %td.la
-          %b.red XXXXXXX
+          %b.red= @claim.transfer
         %td.ra Страховка от невыезда
         %td.la
           %b.red= @claim.additional_insurance_price > 0 ? 'Да' : 'Нет'
       %tr
         %td.la{:colspan => "3"} Дополнительные услуги и экскурсии
         %td.la{:colspan => "5"}
-          %b.red XXXXXXX
+          %b.red= @claim.additional_services
       %tr
         %td.la Сумма на
-        %td.la 9/22/2011
+        %td.la= @claim.reservation_date.strftime('%d/%m/%Y') if @claim.reservation_date
         %td.la{:colspan => "6"}
-          %b.red= @claim.primary_currency_price.to_money.to_s + ' ' + CurrencyCourse::PRIMARY_CURRENCY
+          %b.red= @claim.primary_currency_price.to_money.to_s + ' руб'
       %tr
         %td.la{:colspan => "2"}
           %b Стоимость тура
@@ -108,7 +108,7 @@
           %b Итого
       %tr
         %td.la{:colspan => "2"}
-          %b.red 340 000 руб
+          %b.red= @claim.primary_currency_price.to_money.to_s + ' руб'
         %td.la
           %b.red нет
         %td.la
@@ -116,7 +116,7 @@
         %td.la{:colspan => "2"}
           %b.red нет
         %td.ca{:colspan => "2"}
-          %b.red= @claim.primary_currency_price.to_money.to_s + ' ' + CurrencyCourse::PRIMARY_CURRENCY
+          %b.red= @claim.primary_currency_price.to_money.to_s + ' руб'
       %tr
         %td.la{:colspan => "3"}
           %b ФИО

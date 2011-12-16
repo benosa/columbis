@@ -156,6 +156,22 @@
             %td= f.text_field :placement, :class => 'autocomplete placement'
             %td= f.select :nights, (1..30).to_a
             %td= f.text_field :memo
+          %tr
+            %th= f.label :transfer
+            %th= f.label :service_class
+            %th{ :colspan => 2 }
+              = f.label :relocation
+          %tr
+            %td= f.text_field :transfer, :class => 'autocomplete transfer'
+            %td= f.text_field :service_class, :class => 'autocomplete service_class'
+            %td{ :colspan => 2 }
+              = f.text_field :relocation, :class => 'autocomplete relocation'
+          %tr
+            %th{ :colspan => 4 }
+              = f.label :additional_services
+          %tr
+            %td{ :colspan => 4 }
+              = f.text_field :additional_services
 
         %table#arrival_date
           %tr

@@ -82,4 +82,13 @@ $(function(){
   $('#claim_closed').click(function(e) {
     this.checked ? $('#claim_check_date').removeClass('red_back') : $('#claim_check_date').addClass('red_back');
   });
+
+  // green lamp
+  $('#claim_early_reservation').change(function(){
+    if (this.checked) {
+      $('.lamp_block').css('background-position','top left');
+    } else {
+      $('.lamp_block').css('background-position','0% -36px')
+    }
+  });
 });

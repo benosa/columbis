@@ -115,15 +115,6 @@ $(function(){
     }
   });
 
-  // green lamp
-  $('#claim_early_reservation').change(function(){
-    if (this.checked) {
-      $('.lamp_block').css('background-position','top left');
-    } else {
-      $('.lamp_block').css('background-position','0% -36px')
-    }
-  });
-
   // user color
   $('#user_color').live('change', function(event){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
@@ -216,6 +207,15 @@ $(function(){
       hotel: {
       source: "/claims/autocomplete_common/hotel"
     },
+      transfer: {
+      source: "/claims/autocomplete_common/transfer"
+    },
+      relocation: {
+      source: "/claims/autocomplete_common/relocation"
+    },
+      service_class: {
+      source: "/claims/autocomplete_common/service_class"
+    },
       airline: {
       source: "/claims/autocomplete_model_common/airline"
     },
@@ -262,6 +262,9 @@ $(function(){
   $("input.autocomplete.city").autocomplete($autocomplete.city);
   $("input.autocomplete.resort").autocomplete($autocomplete.resort);
   $("input.autocomplete.airport").autocomplete($autocomplete.airport);
+  $("input.autocomplete.transfer").autocomplete($autocomplete.transfer);
+  $("input.autocomplete.relocation").autocomplete($autocomplete.relocation);
+  $("input.autocomplete.service_class").autocomplete($autocomplete.service_class);
 
   $('input.autocomplete.country').change(function() {
     $autocomplete.city.source = "/claims/autocomplete_city/" + $("input.autocomplete.country").val();

@@ -4,6 +4,7 @@ ru:
       countries: 'Страны'
       new_country: 'Добавить страну'
       name: 'Название'
+      memo: 'Для памятки'
     new:
       new_country: 'Добавить страну'
     edit:
@@ -16,3 +17,4 @@ ru:
     attributes:
       country:
         name: 'Название'
+        memo: 'Название для памятки(латиницей)'

@@ -15,6 +15,7 @@ gem 'therubyracer'
 gem 'will_paginate', '~> 3.0'
 gem 'rails3-jquery-autocomplete', :git => 'https://github.com/etehtsea/rails3-jquery-autocomplete.git'
 gem 'ru_propisju', :git => 'https://github.com/terraplane/ru_propisju.git'
+gem 'stringex'
 
 gem 'thinking-sphinx', '2.0.10'
 

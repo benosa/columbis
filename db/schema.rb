@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111208085611) do
+ActiveRecord::Schema.define(:version => 20111216103635) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -107,6 +107,10 @@ ActiveRecord::Schema.define(:version => 20111208085611) do
     t.float    "primary_currency_operator_price",     :default => 0.0,            :null => false
     t.float    "profit",                              :default => 0.0,            :null => false
     t.float    "profit_in_percent",                   :default => 0.0,            :null => false
+    t.string   "transfer"
+    t.string   "relocation"
+    t.string   "service_class"
+    t.string   "additional_services"
   end
 
   create_table "clients", :force => true do |t|
@@ -137,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20111208085611) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "memo"
   end
 
   create_table "currency_courses", :force => true do |t|

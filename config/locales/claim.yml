@@ -152,3 +152,7 @@ ru:
         depart_to: 'Время прямого вылета'
         depart_back: 'Время обратного вылета'
         operator_price_currency: 'Валюта цены оператора'
+        transfer: 'Трансфер'
+        relocation: 'Переезд'
+        service_class: 'Класс'
+        additional_services: 'Дополнительные услуги'

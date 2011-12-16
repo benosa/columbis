@@ -54,7 +54,16 @@ class ClaimsController < ApplicationController
   def show
     @claim = Claim.find(params[:id])
     if %w[contract memo].include? params[:print]
-      render :partial => params[:print], :layout => false
+      if params[:print] == 'memo'
+        if @claim.has_memo_partial?
+          render :partial => @claim.memo_partial, :layout => false
+        else
+          redirect_to edit_claim_url(@claim.id), :alert => t('print_partial_not_found')
+        end
+      else
+        render :partial => params[:print], :layout => false
+      end
+
     end
   end
 

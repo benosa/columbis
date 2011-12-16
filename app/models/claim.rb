@@ -14,7 +14,8 @@ class Claim < ActiveRecord::Base
   attr_accessible :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
 
   # marchroute block
-  attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date, :memo
+  attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
+                  :memo, :transfer, :relocation, :service_class, :additional_services
 
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date, :operator_confirmation,
@@ -62,7 +63,8 @@ class Claim < ActiveRecord::Base
   before_save :update_debts
 
   define_index do
-    indexes airport_to, airport_back, flight_to, flight_back, meals, placement, hotel, memo
+    indexes airport_to, airport_back, flight_to, flight_back, meals, placement
+    indexes hotel, memo, transfer, relocation, service_class, additional_services
 
     indexes user(:last_name), :as => :user, :sortable => true
     indexes office(:name), :as => :office, :sortable => true
@@ -206,6 +208,14 @@ class Claim < ActiveRecord::Base
     end
   end
 
+  def memo_partial
+    self.country ? "memo_for_#{self.country.memo}" : nil
+  end
+
+  def has_memo_partial?
+    self.country ? File.exists?(Rails.root.to_s + "/app/views/claims/_memo_for_#{self.country.memo}.html.haml") : false
+  end
+
   private
 
   def update_debts
@@ -272,7 +282,7 @@ class Claim < ActiveRecord::Base
   end
 
   def check_dropdowns(claim_params)
-    lists = %w[meals hotel placement]
+    lists = %w[meals hotel placement transfer relocation service_class]
     lists.each do |l|
       DropdownValue.check_and_save(l, claim_params[l.to_sym])
     end

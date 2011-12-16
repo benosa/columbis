@@ -3,9 +3,11 @@
 %table
   %tr
     %th= t('.name')
+    %th= t('.memo')
   - for country in @countries
     %tr
       %td= country.name
+      %td= country.memo
       %td= link_to t('show'), country
       %td= link_to t('edit'), edit_country_path(country)
       %td= link_to t('destroy'), country, :confirm => ('are_you_sure'), :method => :delete

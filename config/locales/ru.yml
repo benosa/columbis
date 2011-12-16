@@ -16,6 +16,7 @@ ru:
 
   invalid_fields: 'Ошибка при заполнении полей'
   correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'
+  print_partial_not_found: 'Не найдена форма печати'
 
   helpers:
     submit:

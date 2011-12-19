@@ -13,7 +13,7 @@ ru:
         remember_me: 'Запомнить меня'
         office_id: 'Офис'
         color: 'Цвет (для списков)'
-
+        company: 'Компания'
   users:
     index:
       login: 'Логин'

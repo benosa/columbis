@@ -2,16 +2,36 @@
   = f.error_messages
   %p
     = f.label :name
-    %br/
+    %br
     = f.text_field :name
   %p
     = f.label :email
-    %br/
+    %br
     = f.text_field :email
   %p
     = f.label :oficial_letter_signature
-    %br/
+    %br
     = f.text_field :oficial_letter_signature
+  %p
+    = f.label :bank
+    %br
+    = f.text_field :bank
+  %p
+    = f.label :bik
+    %br
+    = f.text_field :bik
+  %p
+    = f.label :curr_account
+    %br
+    = f.text_field :curr_account
+  %p
+    = f.label :corr_account
+    %br
+    = f.text_field :corr_account
+  %p
+    = f.label :ogrn
+    %br
+    = f.text_field :ogrn
 
   = f.fields_for :address do |address|
     = render :partial => 'shared/address', :locals => {:f => address}

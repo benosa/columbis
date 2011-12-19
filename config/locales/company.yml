@@ -1,5 +1,5 @@
 ru:
-  companies:   
+  companies:
     index:
       add_company: 'Добавить компанию'
       companies: 'Компании'
@@ -10,7 +10,7 @@ ru:
 
     show:
       companies: 'Список компаний'
-   
+
     new:
       add_company: 'Добавление компании'
       companies: 'Список компаний'
@@ -19,10 +19,15 @@ ru:
       edit_company: 'Редактирование данных компании'
       companies: 'Список компаний'
 
-      
+
   activerecord:
     attributes:
       company:
         name: 'Название'
         oficial_letter_signature: 'Подпись'
         email: 'Электронная почта'
+        bank: 'Банк'
+        bik: 'БИК'
+        curr_account: 'Расчетный счет'
+        corr_account: 'Корреспондентский счет'
+        ogrn: 'ОРГН'

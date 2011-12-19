@@ -12,6 +12,16 @@ module ApplicationHelper
     label = params[:list_type] == 'manager_list' ? 'accountant_list' : 'manager_list'
     link_to t('claims.index.' << label), claims_path(:list_type => label), :class =>  'accountant_login', :list_type => params[:list_type]
   end
+
+  # this block provides methods like is_admin? or is_accountant?
+  # wich is dynamically created from the User::ROLES array
+  User::ROLES.each do |role|
+    define_method :"is_#{role}?" do
+      if current_user
+        current_user.role == role
+      end
+    end
+  end
 end
 
 class Float

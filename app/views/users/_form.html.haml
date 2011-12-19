@@ -43,5 +43,12 @@
       = f.collection_select :role, User::ROLES, :to_s, :humanize
     - else
       = @user.role
+  %p
+    = f.label :company
+    %br/
+    - if current_user.role == 'admin'
+      = f.collection_select :company, Company.all, :name
+    - else
+      = @user.company.try(:name)
   .actions
     = f.submit

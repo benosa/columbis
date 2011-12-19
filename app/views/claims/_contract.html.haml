@@ -10,7 +10,7 @@
       %h2.firsth
         = "ДОГОВОР на реализацию права на турпродукт №#{@claim.id}"
     %p.firstp
-      %b> Туристическая компания "ООО Мистраль"
+      %b><Туристическая компания #{@claim.user.company.try(:name)}
       , представляющая интересы Туроператора, именуемая в дальнейшем
       = succeed "," do
         %b
@@ -44,7 +44,7 @@
           %b.red= @claim.resort.try(:name)
         %td.ra{:colspan => "2"} Отправление
         %td.la
-          %b.red= @claim.depart_to.strftime('%d-%m-%Y %H:%M') if @claim.depart_to
+          %b.red= @claim.depart_to.strftime('%d/%m/%Y') if @claim.depart_to
       %tr
         %td.ra Отель
         %td.la{:colspan => "2"}
@@ -52,7 +52,7 @@
         %td{:colspan => "2"}
         %td.ra{:colspan => "2"} Возврат
         %td.la
-          %b.red= @claim.depart_back.strftime('%d-%m-%Y %H:%M') if @claim.depart_back
+          %b.red= @claim.depart_back.strftime('%d/%m/%Y %H:%M') if @claim.depart_back
       %tr
         %td.ra Размещение
         %td.la{:colspan => "2"}
@@ -162,7 +162,7 @@
     %p
       %b
         1.2. Компанией, оказывающей потребителю услуги по данному договору является ТУРОПЕРАТОР
-        %span.red.operator Мистраль
+        %span.red.operator= @claim.user.company.try(:name)
     %p
       Туроператор полностью обеспечивает оказание туристам всех услуг, входящих в указанный туристический продукт самостоятельно или с привличением третих
       лиц, независимо от того, кем эти услуги оказываются.
@@ -171,14 +171,14 @@
         1.3. Полную ответственность за надлежащее выполнение настоящего договора по оказанию туристических услуг в соответствие с Федеральным законом
         \"Об основах туристической деятельности в РФ" несет ТУРОПЕРАТОР.
     %p
-      %b> 1.4. Компания ООО "Мистраль"
+      %b> 1.4. Компания #{@claim.user.company.try(:name)}
       , выступающая по данному договору, как АГЕНТ туропрератора, отвечает за правильность и полноту представления КЛИЕНТУ
       информации о заказываемом туристическим продукте.
     %h2 2. СВЕДЕНИЯ О ТУРОПЕРАТОРЕ
     %p
       %b 2.1.ТУРОПЕРАТОР‐ИСПОЛНИТЕЛЬ
       туристических услуг является компания
-      %b.red.operator Мистраль
+      %b.red.operator= @claim.user.company.try(:name)
     %p
       2.2. Полная информация о
       = succeed "," do
@@ -314,36 +314,50 @@
     %table.withoutanyborder
       %tr
         %td.la{:colpsan => "3"}
-          %b     АГЕНТ ООО Мистраль
+          %b
+            АГЕНТ
+            = @claim.user.company.try(:name)
         %td.ca{:colspan => "2"}
           %b КЛИЕНТ
       %tr
         %td.la{:colpsan => "3"}
-          %b 420107 Татарстан г. Казань, ул. Спартаковская, д. 2 В оф.105
+          %b
+            - if @claim.user.company.address.present?
+              = @claim.user.company.address.pretty_full_address
+            - else
+              Нет адреса
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b АКБ «СПУРТ» банк (ОАО) г. Казань
+          %b= @claim.user.company.bank
         %td.ca{:colpsan => "2"}
           ФИО
           %b= @claim.applicant.full_name
       %tr
         %td.la{:colpsan => "3"}
-          %b БИК 049205858
+          %b
+            БИК
+            = @claim.user.company.try(:bik)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b к/сч 30101810400000000858
+          %b
+            к/сч
+            = @claim.user.company.try(:corr_account)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b р/сч 40702810100000001465
+          %b
+            р/сч
+            = @claim.user.company.try(:curr_account)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b ОГРН 1071690027584
+          %b
+            ОГРН
+            = @claim.user.company.try(:ogrn)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b (843)238-60-50,238-60-53
+          %b= @claim.user.company.address.phone_number if @claim.user.company.address
         %td{:colpsan => "2"}

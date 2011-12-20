@@ -8,7 +8,7 @@ db/*.sqlite3
 log/*.log
 log
 tmp/
-config/*.yml
+config/database.yml
 *.swp
 *.swo
 *.swm
@@ -20,4 +20,5 @@ config/*.yml
 .sass-cache
 Capfile
 config/development.sphinx.conf
+config/production.sphinx.conf
 db/sphinx/

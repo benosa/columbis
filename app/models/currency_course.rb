@@ -16,7 +16,7 @@ class CurrencyCourse < ActiveRecord::Base
   scope :order_by_date, order('on_date DESC')
 
   def self.convert_from_curr_to_curr(source_currency, target_currency, amount)
-    return amount if source_currency == target_currency
+    return amount if source_currency == target_currency or amount == 0
 
     source_course = CurrencyCourse.actual_course(source_currency)
     target_course = CurrencyCourse.actual_course(target_currency)

@@ -236,8 +236,8 @@ class Claim < ActiveRecord::Base
 
     self.profit_in_percent =
       begin
-        profit/((CurrencyCourse.convert_from_curr_to_curr(
-          self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))/100 )
+        perc = CurrencyCourse.convert_from_curr_to_curr(operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, operator_price)/100
+        perc > 0 ? profit/perc : 0
       rescue
         0
       end

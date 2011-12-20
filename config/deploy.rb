@@ -25,11 +25,16 @@ after  "deploy:update_code", "thinking_sphinx:index"
 after  "deploy:update_code", "thinking_sphinx:start"
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
+  task :start do
+  end
+
+  task :stop do
+  end
+
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
+
   task :config do
     run "cd #{release_path}/config && ln -s #{shared_path}/config/database.yml database.yml"
   end

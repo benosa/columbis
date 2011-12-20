@@ -232,6 +232,8 @@ class Claim < ActiveRecord::Base
       self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
 
     self.profit = self.primary_currency_price - primary_currency_operator_price
+    self.profit = 0 unless self.profit.is_a?(Float)
+
     self.profit_in_percent =
       begin
         profit/((CurrencyCourse.convert_from_curr_to_curr(

@@ -7,6 +7,7 @@
         = t('claims.index.accountant_view')
       %th
     %tr
+      %th= sortable 'id', t('claims.index.num')
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th= sortable 'offices.name', t('claims.index.office')
       %th= sortable 'user_id', t('claims.index.manager')
@@ -15,7 +16,6 @@
       %th= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'depart_to', t('claims.index.depart_to')
       %th= sortable 'operators.name', t('claims.index.operator')
-      %th= sortable 'id', t('claims.index.claim')
       %th= sortable 'primary_currency_price', t('claims.index.price')
       %th= sortable 'calculation', t('claims.index.calculation')
       %th= sortable 'tourist_advance', t('claims.index.advance')
@@ -32,7 +32,8 @@
       %th
     - @claims.each do |claim|
       %tr
-        %td= claim.reservation_date
+        %td= claim.id
+        %td= claim.reservation_date.strftime('%d.%m.%y') if claim.reservation_date
         %td= claim.office.try(:name)
         %td{ :style => "background-color:#{claim.user.color}" }
           = claim.user.login
@@ -40,9 +41,8 @@
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
         %td{ :class => claim.flight_status }
-          = claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
+          = l( claim.depart_to, :format => :short )
         %td= claim.operator.try(:name)
-        %td= claim.id
         %td= claim.primary_currency_price
         %td= claim.calculation
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
@@ -52,7 +52,7 @@
         %td Неясно
         / accountant section
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
-          = claim.primary_currency_price
+          = claim.primary_currency_price.to_money
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_paid
         %td{ :class => "#{ claim.has_operator_debt? ? 'red_back' : '' }" }
@@ -62,7 +62,7 @@
         %td
           = claim.profit.to_money
         %td
-          = claim.profit_in_percent.to_money
+          = claim.profit_in_percent.to_percent
         %td
           = link_to t('edit'), edit_claim_path(claim)
           = link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

@@ -28,4 +28,27 @@ class Float
   def to_money
     sprintf("%0.0f", self)
   end
+
+  def to_percent
+    sprintf("%0.2f", self)
+  end
+end
+
+module ActionView
+  module Helpers
+    module TranslationHelper
+      def localize(*args)
+        #Avoid I18n::ArgumentError for nil values
+        I18n.localize(*args) unless args.first.nil?
+      end
+      # l() still points at old definition
+      alias l localize
+    end
+
+    module FormHelper
+      def date_field(object_name, method, options = {})
+        text_field(object_name, method, options = {})
+      end
+    end
+  end
 end

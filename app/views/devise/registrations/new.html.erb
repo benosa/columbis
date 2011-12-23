@@ -22,7 +22,7 @@
   <%= f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] } %></div>
 
   <div><%= f.label :color %><br />
-  <div class="color_sample"></div>
+  <div class="color_sample">ФИО</div>
   <%= f.select :color, User.available_colors %>
   </div>
 

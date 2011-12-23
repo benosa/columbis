@@ -8,7 +8,7 @@ ru:
       to: 'Куда'
       from: 'Откуда'
       visa: 'Виза'
-      term: 'Срок'
+      term: 'Срок по визе'
       depart_to: 'Вылет'
       depart_back: 'Возврат'
       operator: 'Оператор'
@@ -32,6 +32,7 @@ ru:
       cost: 'Стоимость'
       accountant_list: 'Для бухгалтера'
       manager_list: 'Для менеджера'
+      num: 'Номер'
     form:
       reset: 'Сброс'
       office: 'Офис'

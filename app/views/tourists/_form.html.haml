@@ -20,10 +20,10 @@
       %td= f.label :passport_valid_until
     %tr
       %td= f.text_field :full_name
-      %td= f.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 85%;'
+      %td= f.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 85%;', :value => l(@tourist.date_of_birth, :format => :long)
       %td= f.text_field :passport_series
       %td= f.text_field :passport_number
-      %td= f.text_field :passport_valid_until, :class => 'datepicker', :style => 'width: 85%;'
+      %td= f.text_field :passport_valid_until, :class => 'datepicker', :style => 'width: 85%;', :value => l(@tourist.passport_valid_until, :format => :long)
     %tr
       %th= f.label :phone_number
     %tr

@@ -1,5 +1,4 @@
 development: &my_settings
-  port: 9333
   enable_star: true
   min_infix_len: 1
   charset_type: utf-8
@@ -9,4 +8,5 @@ test:
   <<: *my_settings
 production:
   <<: *my_settings
+  port: 9333
   bin_path: '/usr/local/bin'

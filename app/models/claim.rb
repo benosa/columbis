@@ -247,7 +247,7 @@ class Claim < ActiveRecord::Base
     str = ''
     CurrencyCourse::CURRENCIES.each do |cur|
       payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
-      (str += cur.upcase << ': ' << payment_amount.to_s << ' ') unless payment_amount == 0.0
+      (str += cur.upcase << ': ' << sprintf("%0.0f", payment_amount) << ' ') unless payment_amount == 0.0
     end
     str.strip!
   end

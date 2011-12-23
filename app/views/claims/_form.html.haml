@@ -15,9 +15,12 @@
             %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
             %td= f.text_field :operator_confirmation
             %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
-            %td.datepicker= f.text_field :visa_check, :class => ('datepicker ' << @claim.visa)
+            %td.datepicker
+              = f.text_field :visa_check, :class => ('datepicker ' << @claim.visa), :value => l(@claim.visa_check, :format => :long)
             %td= f.check_box :closed, { :style => 'width:12px;'}
-            %td.datepicker= f.text_field :check_date, :class => "datepicker #{ @claim.closed ? '' : 'red_back'  }"
+            %td.datepicker
+              = f.text_field :check_date, :class => "datepicker #{ @claim.closed ? '' : 'red_back'  }",
+                :value => l(@claim.check_date, :format => :long)
           = f.hidden_field :visa
         .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }
           = f.label :early_reservation
@@ -75,8 +78,10 @@
             %td= f.text_field :flight_back
           %tr
             %td.text_right= f.label :depart_to, t('.depart')
-            %td.datepicker= f.text_field :depart_to, :class => 'datetimepicker'
-            %td.datepicker= f.text_field :depart_back, :class => 'datetimepicker'
+            %td.datepicker
+              = f.text_field :depart_to, :class => 'datetimepicker', :value => l(@claim.depart_to, :format => :long)
+            %td.datepicker
+              = f.text_field :depart_back, :class => 'datetimepicker', :value => l(@claim.depart_back, :format => :long)
 
         %h2= t('.trip_documents')
         %table#docs

@@ -1,4 +1,15 @@
 ru:
+  date:
+    formats:
+      default: "%d.%m.%y"
+      short: "%d.%m"
+      long: "%d.%m.%Y"
+  time:
+    formats:
+      default: "%d.%m %h:%m"
+      short: "%d.%m %H:%M"
+      long: "%d.%m.%Y %h:%m"
+
   yep: 'Да'
   nope: 'Нет'
   got: 'Есть'

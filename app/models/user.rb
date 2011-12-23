@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   def self.available_colors
     colors = YAML.load_file("#{Rails.root}/app/assets/colors.yml")
-    colors['colors']
+    colors['colors'].sort
   end
 
   private

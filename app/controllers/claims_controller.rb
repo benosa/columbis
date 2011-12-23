@@ -122,7 +122,7 @@ class ClaimsController < ApplicationController
 
   def sort_column
     accesible_column_names = Claim.column_names + ['applicant.last_name', 'countries.name', 'operators.name', 'offices.name']
-    accesible_column_names.include?(params[:sort]) ? params[:sort] : 'reservation_date'
+    accesible_column_names.include?(params[:sort]) ? params[:sort] : 'id'
   end
 
   def sort_direction

@@ -1,6 +1,7 @@
 .claims
   %table#claims{ :rules => 'all'}
     %tr
+      %th= sortable 'id', t('claims.index.num')
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th= sortable 'user_id', t('claims.index.manager')
       /%th= sortable 'applicant.last_name', t('claims.index.full_name')
@@ -12,7 +13,6 @@
       %th= sortable 'depart_to', t('claims.index.depart_to')
       %th= sortable 'depart_back', t('claims.index.depart_back')
       %th= sortable 'operators.name', t('claims.index.operator')
-      %th= sortable 'id', t('claims.index.claim')
       %th= sortable 'primary_currency_price', t('claims.index.price')
       %th= sortable 'calculation', t('claims.index.calculation')
       %th= sortable 'tourist_advance', t('claims.index.advance')
@@ -25,28 +25,28 @@
       %th
     - @claims.each do |claim|
       %tr
-        %td= claim.reservation_date
+        %td= claim.id
+        %td= l( claim.reservation_date, :format => :default )
         %td{ :style => "background-color:#{claim.user.color}" }
           = claim.user.login
         %td= claim.applicant.try(:full_name)
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
         %td{ :class => claim.visa }
-          = claim.visa_confirmation_flag ? t('got') : t('nope')
-        %td= claim.check_date
+          = claim.visa_confirmation_flag ? t('yep') : t('nope')
+        %td= l( claim.check_date, :format => :short )
         %td{ :class => claim.flight_status }
-          = claim.depart_to.strftime('%d-%m-%Y %H:%M') if claim.depart_to
+          = l( claim.depart_to, :format => :short )
         %td{ :class => claim.flight_status }
-          = claim.depart_back.strftime('%d-%m-%Y %H:%M') if claim.depart_back
+          = l( claim.depart_back, :format => :short )
         %td= claim.operator.try(:name)
-        %td= claim.id
-        %td= claim.primary_currency_price
+        %td= claim.primary_currency_price.to_money
         %td= claim.calculation
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_advance.to_money
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_debt.to_money
-        %td= claim.maturity.strftime('%d-%m-%Y') if claim.maturity
+        %td= l( claim.maturity, :format => :short )
         %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
           = claim.tourist_paid
         %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }" }
@@ -58,7 +58,7 @@
               = claim.docs_note
               %small
         %td{ :class => "#{ claim.closed ? '' : 'red_back'  }"}
-          = claim.check_date
+          = l( claim.check_date, :format => :short )
         %td
           = link_to t('edit'), edit_claim_path(claim)
           = link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

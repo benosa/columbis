@@ -470,6 +470,9 @@ form .data_block input.narrow {
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
 
+/* UI jQuery Timepicker elements fixes */
+.ui-datepicker .ui-datepicker-buttonpane { margin-top: 4em !important; }
+
 /* css for will_paginate*/
 .pagination {
   text-align: center;

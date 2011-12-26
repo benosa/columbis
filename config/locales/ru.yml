@@ -8,7 +8,7 @@ ru:
     formats:
       default: "%d.%m %h:%m"
       short: "%d.%m %H:%M"
-      long: "%d.%m.%Y %h:%m"
+      long: "%d.%m.%Y %H:%M"
 
   yep: 'Да'
   nope: 'Нет'

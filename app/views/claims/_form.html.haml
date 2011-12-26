@@ -43,6 +43,11 @@
             %tr.applicant
               = render :partial => 'tourist', :locals => { :builder => builder }
             %tr
+              %th
+              %th= t('.phone')
+              %th{ :colspan => 4 }
+                = t('.address')
+            %tr
               %td
               %td= builder.text_field :phone_number, :class => 'phone_number'
               %td{ :colspan => 4 }
@@ -204,8 +209,9 @@
           %tr
             %th{ :colspan => 2 }
               = f.label :tour_price
-            %th{ :colspan => 4 }
+            %th{ :colspan => 2 }
               = f.label :visa_price
+            %th{ :colspan => 2 }
           %tr{ :class => 'countable' }
             %td= f.text_field :tour_price, :class => 'red'
             %td= f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }

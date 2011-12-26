@@ -25,7 +25,8 @@
       %th
     - @claims.each do |claim|
       %tr
-        %td= claim.id
+        %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
+          = claim.id
         %td= l( claim.reservation_date, :format => :default )
         %td{ :style => "background-color:#{claim.user.color}" }
           = claim.user.login
@@ -40,7 +41,8 @@
         %td{ :class => claim.flight_status }
           = l( claim.depart_back, :format => :short )
         %td= claim.operator.try(:name)
-        %td= claim.primary_currency_price.to_money
+        %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
+          = claim.primary_currency_price.to_money
         %td= claim.calculation
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_advance.to_money
@@ -58,7 +60,7 @@
               = claim.docs_note
               %small
         %td{ :class => "#{ claim.closed ? '' : 'red_back'  }"}
-          = l( claim.check_date, :format => :short )
+          = l( claim.check_date, :format => :default )
         %td
           = link_to t('edit'), edit_claim_path(claim)
           = link_to t('destroy'), claim, :confirm => t('are_you_sure'), :method => :delete

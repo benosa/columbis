@@ -11,12 +11,19 @@
 
 $(function(){
   $('input.datepicker').datepicker({ dateFormat: 'dd.mm.yy' });
-  $('input.datetimepicker').datetimepicker({ dateFormat: 'dd.mm.yy', timeFormat: 'h:m' });
+  $('input.datetimepicker').datetimepicker({
+    timeOnlyTitle: 'Выберите время',
+    timeText: 'Время',
+    hourText: 'Часы',
+    minuteText: 'Минуты',
+    secondText: 'Секунды',
+    currentText: 'Сейчас',
+    closeText: 'Закрыть'
+  });
 
   // user color
   $('#user_color').live('change', function(event){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
   });
   $('.color_sample').css('background-color', $('#user_color').val());
-
 });

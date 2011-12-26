@@ -189,7 +189,7 @@ h2 {
 
 #center_block {
   margin-left:545px;
-  background: url('palm.png') 0px 350px no-repeat;
+  background: url('palm.png') 0px 392px no-repeat;
 }
 
 input[type="submit"] {
@@ -273,6 +273,11 @@ table th.id  {
 #claims th{
   background-color: yellow;
 }
+
+#claims th.medium {
+  width: 65px;
+}
+
 
 #claims th.green_back{
   background-color: #9ACD32;

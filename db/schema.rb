@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111219121546) do
+ActiveRecord::Schema.define(:version => 20111226190226) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -76,8 +76,6 @@ ActiveRecord::Schema.define(:version => 20111219121546) do
     t.date     "arrival_date"
     t.date     "departure_date"
     t.boolean  "early_reservation"
-    t.string   "docs_memo"
-    t.string   "docs_ticket"
     t.string   "docs_note"
     t.date     "reservation_date"
     t.string   "memo"
@@ -111,6 +109,10 @@ ActiveRecord::Schema.define(:version => 20111219121546) do
     t.string   "relocation"
     t.string   "service_class"
     t.string   "additional_services"
+    t.float    "additional_services_price",           :default => 0.0,            :null => false
+    t.string   "additional_services_price_currency",  :default => "eur",          :null => false
+    t.string   "medical_insurance"
+    t.boolean  "docs_ready",                          :default => false
   end
 
   create_table "clients", :force => true do |t|

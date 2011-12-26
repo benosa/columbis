@@ -13,7 +13,7 @@
       %th= sortable 'user_id', t('claims.index.manager')
       %th= sortable 'applicant.last_name', t('claims.index.full_name')
       %th= sortable 'countries.name', t('claims.index.to')
-      %th= sortable 'airport_back', t('claims.index.from')
+      %th.medium= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'depart_to', t('claims.index.depart_to')
       %th= sortable 'operators.name', t('claims.index.operator')
       %th= sortable 'primary_currency_price', t('claims.index.price')

@@ -91,13 +91,10 @@
         %h2= t('.trip_documents')
         %table#docs
           %tr
-            %td.text_right= f.label :docs_memo
-            %td= f.select :docs_memo, (Claim::DOCUMENTS_STATUSES).collect {|o| [ t(".documents_statuses.#{o}"), o ] },
-              {}, :class => "#{ @claim.docs_memo == 'received' ? '' : 'red_back'}"
-          %tr
-            %td.text_right= f.label :docs_ticket
-            %td= f.select :docs_ticket, (Claim::DOCUMENTS_STATUSES).collect {|o| [ t(".documents_statuses.#{o}"), o ] },
-              {}, :class => "#{ @claim.docs_ticket == 'received' ? '' : 'red_back'}"
+            %td
+            %td{ :style => 'text-align:left;'}
+              = f.check_box :docs_ready, { :style => 'width:12px;' }
+              = f.label :docs_ready, :class => "#{ @claim.docs_ready ? '' : 'red' }"
           %tr
             %td.text_right= f.label :docs_note
             %td= f.text_field :docs_note
@@ -114,8 +111,8 @@
               = (@claim.operator_debt? ? t('yep') : t('nope'))
             %td= t('.operator_debt')
           %tr
-            %td.framed.documents_ready_ind{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
-              = (@claim.documents_ready? ? t('yep') : t('nope'))
+            %td.framed.documents_ready_ind{ :class => (@claim.docs_ready? ? 'green_back' : 'red_back' ) }
+              = (@claim.docs_ready? ? t('yep') : t('nope'))
             %td= t('.documents_ready')
           %tr
             %td.framed.has_notes_ind{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }
@@ -125,7 +122,7 @@
         %table#registration
           %tr
             %td= f.label :reservation_date
-            %td.datepicker= f.text_field :reservation_date, :class => ('datepicker')
+            %td.datepicker= f.text_field :reservation_date, :class => ('datepicker'), :value => l(@claim.reservation_date, :format => :long)
           %tr
             %td= f.label :user_id, t('.user')
             %td= f.label :office_id, t('.office')
@@ -138,7 +135,7 @@
         %table#marchroute
           %tr
             %th{ :colspan => 2 }
-              Вылет
+              Вылет из города
             %th{ :colspan => 2 }
               = f.label :operator_id, t('.operator')
           %tr
@@ -158,14 +155,14 @@
               = f.text_field :hotel, :class => 'autocomplete hotel'
           %tr
             %th= f.label :meals
+            %th= f.label :medical_insurance
             %th= f.label :placement
             %th= f.label :nights
-            %th= f.label :memo
           %tr
             %td= f.text_field :meals, :class => 'autocomplete meals'
+            %td= f.text_field :medical_insurance
             %td= f.text_field :placement, :class => 'autocomplete placement'
             %td= f.select :nights, (1..30).to_a
-            %td= f.text_field :memo
           %tr
             %th= f.label :transfer
             %th= f.label :service_class
@@ -182,6 +179,12 @@
           %tr
             %td{ :colspan => 4 }
               = f.text_field :additional_services
+          %tr
+            %th{ :colspan => 4 }
+              = f.label :memo
+          %tr
+            %td{ :colspan => 4 }
+              = f.text_field :memo
 
         %table#arrival_date
           %tr
@@ -217,7 +220,7 @@
             %td= f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
             %td= f.text_field :visa_price
             %td= f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.label :visa_count
+            %th= f.label :visa_count
             %td= f.select :visa_count, (0..30).to_a
           %tr
             %th{ :colspan => 2 }
@@ -233,6 +236,14 @@
             %td= f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
             %td= f.text_field :fuel_tax_price
             %td= f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+          %tr{ :class => 'countable' }
+            %th{ :colspan => 4, :style => 'text-align:right; padding-right:6px;' }
+              = f.label :additional_services_price
+            %td= f.text_field :additional_services_price
+            %td= f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+          %tr
+            %td{ :colspan => 6 }
+              %br
           %tr
             %th{ :colspan => 6 }
               = f.label :primary_currency_price

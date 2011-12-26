@@ -7,7 +7,7 @@
       /%th= sortable 'applicant.last_name', t('claims.index.full_name')
       %th= t('claims.index.full_name')
       %th= sortable 'countries.name', t('claims.index.to')
-      %th= sortable 'airport_back', t('claims.index.from')
+      %th.medium= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'visa', t('claims.index.visa')
       %th= sortable 'check_date', t('claims.index.term')
       %th= sortable 'depart_to', t('claims.index.depart_to')
@@ -51,8 +51,8 @@
         %td= l( claim.maturity, :format => :short )
         %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
           = claim.tourist_paid
-        %td{ :class => "#{ claim.documents_ready? ? '' : 'red_back'  }" }
-          = claim.documents_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
+        %td{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }
+          = claim.docs_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
         %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }" }
           %div{ :class => "#{ claim.docs_note == ''? '' : 'tooltip' }" }
             = claim.docs_note == '' ? t('nope') : t('yep')

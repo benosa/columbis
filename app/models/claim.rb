@@ -15,15 +15,16 @@ class Claim < ActiveRecord::Base
 
   # marchroute block
   attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
-                  :memo, :transfer, :relocation, :service_class, :additional_services
+                  :memo, :transfer, :relocation, :service_class, :additional_services, :medical_insurance
 
   # common
-  attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date, :operator_confirmation,
-                  :early_reservation, :docs_memo, :docs_ticket, :docs_note, :closed
+  attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
+                  :operator_confirmation, :early_reservation, :docs_ready, :docs_note, :closed
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
+                  :additional_services_price, :additional_services_currency,
                   :primary_currency_operator_price, :profit, :profit_in_percent
 
 
@@ -170,10 +171,6 @@ class Claim < ActiveRecord::Base
     self.operator_debt != 0
   end
 
-  def documents_ready?
-    determine_docs_status == 'received'
-  end
-
   def has_notes?
     !self.docs_note.blank?
   end
@@ -316,11 +313,11 @@ class Claim < ActiveRecord::Base
     errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
-  def determine_docs_status
-    begin
-      Claim::DOCUMENTS_STATUSES[ [Claim::DOCUMENTS_STATUSES.index(self.docs_memo), Claim::DOCUMENTS_STATUSES.index(self.docs_ticket)].min ]
-    rescue
-      Claim::DOCUMENTS_STATUSES.min
-    end
-  end
+#  def determine_docs_status
+#    begin
+#      Claim::DOCUMENTS_STATUSES[ [Claim::DOCUMENTS_STATUSES.index(self.docs_memo), Claim::DOCUMENTS_STATUSES.index(self.docs_ticket)].min ]
+#    rescue
+#      Claim::DOCUMENTS_STATUSES.min
+#    end
+#  end
 end

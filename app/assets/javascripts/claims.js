@@ -153,6 +153,7 @@ $(function(){
     var fee = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency')) +
       parseFloat($('#claim_insurance_price').val()) * course($('#claim_insurance_price_currency')) +
       parseFloat($('#claim_additional_insurance_price').val()) * course($('#claim_additional_insurance_price_currency')) +
+      parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency')) +
       parseFloat($('#claim_fuel_tax_price').val()) * course($('#claim_fuel_tax_price_currency'));
 
     return fee + visa_price;

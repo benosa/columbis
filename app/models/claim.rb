@@ -49,7 +49,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id,:office_id, :country_id, :resort_id, :city_id
+  validates_presence_of :user_id,:office_id, :country_id, :resort_id, :city_id, :check_date
   #validates_presence_of :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
   validates_presence_of :tour_price_currency, :visa_price_currency, :insurance_price_currency,
                         :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency
@@ -186,6 +186,18 @@ class Claim < ActiveRecord::Base
 
   def self.next_id
     Claim.last.try(:id).to_i + 1
+  end
+
+  def check_date_status
+    return 'hot' unless self.check_date
+
+    if self.closed?
+      'departed'
+    elsif (self.check_date - 1.day) <= Time.now.to_date
+      'hot'
+    else
+      'soon'
+    end
   end
 
   def flight_status

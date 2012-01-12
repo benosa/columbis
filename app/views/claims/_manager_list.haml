@@ -59,7 +59,7 @@
             %span
               = claim.docs_note
               %small
-        %td{ :class => "#{ claim.closed ? '' : 'red_back'  }"}
+        %td{ :class => claim.check_date_status }
           = l( claim.check_date, :format => :default )
         %td
           = link_to t('edit'), edit_claim_path(claim)

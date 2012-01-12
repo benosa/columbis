@@ -437,6 +437,17 @@ form .data_block input.narrow {
   width: 50%;
 }
 
+#claim_calculation {
+  width: 455px;
+  color: blue;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  border: 1px solid #5c1c03;
+  resize: none;
+}
+
 .ui-autocomplete.ui-menu {
   width: 200px !important;
 }

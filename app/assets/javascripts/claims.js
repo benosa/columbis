@@ -1,4 +1,6 @@
 $(function(){
+
+  // search
   function getCurrentSortParams($curr, inversion){
     var currentParams = { sort:'id', direction:'asc', filter: '' };
     if ($curr.length > 0) {
@@ -29,6 +31,33 @@ $(function(){
 
     return currentParams;
   }
+
+  // check date color
+  function checkDateColor(){
+
+  }
+
+  $('#claim_check_date, #claim_closed').live('change', function(e){
+    $('#claim_check_date').removeClass('departed hot soon');
+
+    var currentDate = new Date();
+    var check_date_arr = $('#claim_check_date').val().split('.');
+    var d, m, y;
+
+    d = parseInt(check_date_arr[0])-1; // we want to get one day before...
+    m = parseInt(check_date_arr[1])-1;
+    y = parseInt(check_date_arr[2]);
+
+    var check_date = new Date(y, m, d);
+
+    if ($('#claim_closed')[0].checked){
+      $('#claim_check_date').addClass('departed');
+    } else if(check_date <= currentDate) {
+      $('#claim_check_date').addClass('hot');
+    } else {
+      $('#claim_check_date').addClass('soon');
+    }
+  });
 
   // load list
   function loadList(currentParams){
@@ -106,7 +135,7 @@ $(function(){
   }
 
   function update_calculation() {
-    if ($('#claim_calculation').val() == '' || /\[\a\]/.test($('#claim_calculation').val())) {
+    if ($('#claim_calculation').val() == '' || /\*$/.test($('#claim_calculation').val())) {
       var str = '';
       var val = parseFloat($('#claim_primary_currency_price').val());
       if (isFinite(val)) {
@@ -114,32 +143,39 @@ $(function(){
 
         val = parseFloat($('#claim_tour_price').val());
         if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_tour_price_currency').val() + ' + ';
+          str = str + val + $('#claim_tour_price_currency').val() + '(тур) + ';
         }
 
         if ($('#claim_visa_count').val() > 0){
           val = parseFloat($('#claim_visa_price').val());
           if (isFinite(val) && val > 0) {
-            str = str + $('#claim_visa_count').val() + 'x' + val + $('#claim_visa_price_currency').val() + ' + ';
+            str = str + $('#claim_visa_count').val() + 'x' + val + $('#claim_visa_price_currency').val() + '(визы) + ';
           }
         }
 
         val = parseFloat($('#claim_insurance_price').val());
         if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_insurance_price_currency').val() + ' + ';
+          str = str + val + $('#claim_insurance_price_currency').val() + '(страховка) + ';
         }
 
         val = parseFloat($('#claim_additional_insurance_price').val());
         if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_additional_insurance_price_currency').val() + ' + ';
+          str = str + val + $('#claim_additional_insurance_price_currency').val() + '(страховка доп.) + ';
         }
+
         val = parseFloat($('#claim_fuel_tax_price').val());
         if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_fuel_tax_price_currency').val() + ' + ';
+          str = str + val + $('#claim_fuel_tax_price_currency').val() + '(топл. сбор) + ';
+        }
+
+        val = parseFloat($('#claim_additional_services_price').val());
+        if (isFinite(val) && val > 0) {
+          str = str + val + $('#claim_additional_services_price_currency').val() + '(' +
+          $('#claim_additional_services').val() + ') + ';
         }
 
         if (str != '') {
-          $('#claim_calculation').val(str.slice(0, -2) + ' [a]');
+          $('#claim_calculation').val(str.slice(0, -2) + ' *');
         }
       }
 

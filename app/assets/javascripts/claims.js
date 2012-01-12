@@ -40,6 +40,14 @@ $(function(){
   $('#claim_check_date, #claim_closed').live('change', function(e){
     $('#claim_check_date').removeClass('departed hot soon');
 
+    if ($('#claim_closed')[0].checked) {
+      $('#claim_check_date').addClass('departed');
+      return;
+    } else if ($('#claim_check_date').val() == '') {
+      $('#claim_check_date').addClass('hot');
+      return;
+    }
+
     var currentDate = new Date();
     var check_date_arr = $('#claim_check_date').val().split('.');
     var d, m, y;
@@ -48,15 +56,19 @@ $(function(){
     m = parseInt(check_date_arr[1])-1;
     y = parseInt(check_date_arr[2]);
 
+    if (isNaN(d) || isNaN(m) || isNaN(y)) {
+      $('#claim_check_date').addClass('hot');
+      return;
+    }
+
     var check_date = new Date(y, m, d);
 
-    if ($('#claim_closed')[0].checked){
-      $('#claim_check_date').addClass('departed');
-    } else if(check_date <= currentDate) {
+    if(check_date <= currentDate) {
       $('#claim_check_date').addClass('hot');
     } else {
       $('#claim_check_date').addClass('soon');
     }
+
   });
 
   // load list

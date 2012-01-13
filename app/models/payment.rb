@@ -1,6 +1,6 @@
 class Payment < ActiveRecord::Base
   attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id,
-                  :recipient_type, :currency, :amount, :amount_prim, :description
+                  :recipient_type, :currency, :amount, :amount_prim, :description, :approved
 
   belongs_to :claim
   belongs_to :payer, :polymorphic => true

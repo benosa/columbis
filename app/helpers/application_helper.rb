@@ -19,6 +19,8 @@ module ApplicationHelper
     define_method :"is_#{role}?" do
       if current_user
         current_user.role == role
+      else
+        false
       end
     end
   end

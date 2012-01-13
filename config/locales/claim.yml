@@ -142,6 +142,7 @@ ru:
         tourist_debt: 'Долг туристов'
         payments_in_date_in: 'ололо'
         maturity: 'Срок оплаты'
+        operator_maturity: 'Срок оплаты оператору'
         resort: 'Курорт'
         calculation: 'Расчет'
         applicant: 'Основной турист'

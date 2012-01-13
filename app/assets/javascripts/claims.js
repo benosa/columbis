@@ -243,7 +243,7 @@ $(function(){
     }
   });
 
-// amount in word
+  // amount in word
 	function create_data_string($elem){
 	  var amount = 0, currency = '';
 	  if(/^claim_payments_.{2,3}_attributes_\d+_(amount|currency)/.test($elem.attr('id'))){
@@ -476,6 +476,8 @@ $(function(){
     $(t_id + ' .fields:last').find('input').each(function(n){
       if($(this).hasClass('amount')) {
         $(this).val('0.0');
+      } else if ($(this).hasClass('approved')) {
+        this.checked = false;
       } else {
         $(this).val('');
       }
@@ -487,6 +489,11 @@ $(function(){
 
       $(this).find('a.del').click(del_payment);
       $(this).find('a.del').attr('id','del' + i);
+
+      $approved = $(this).find('input.approved[type=checkbox]');
+      $approved.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_approved');
+      $approved.attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][approved]');
+      $approved.prev('input[type=hidden]').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][approved]');
 
       $(this).find('input.date_in').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_date_in');
       $(this).find('input.date_in').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][date_in]');
@@ -524,7 +531,11 @@ $(function(){
 
     if (id == 0) {
       $tr.find('input').each(function(){
-        $(this).val($(this).hasClass('amount') ? '0.0' : '');
+        if ($(this).hasClass('approved')) {
+          this.checked = false;
+        } else {
+          $(this).val($(this).hasClass('amount') ? '0.0' : '');
+        }
       });
       $tr.next().removeAttr('value');
     } else {

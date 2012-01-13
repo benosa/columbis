@@ -191,9 +191,9 @@
             %th{ :colspan => 4 }= t('.arrival_date')
           %tr
             %td.text_right= t('.from')
-            %td= f.text_field :arrival_date, :class => 'datepicker red'
+            %td= f.text_field :arrival_date, :class => 'datepicker red', :value => l(@claim.arrival_date, :format => :long)
             %td.text_right= t('.til')
-            %td= f.text_field :departure_date, :class => 'datepicker red'
+            %td= f.text_field :departure_date, :class => 'datepicker red', :value => l(@claim.departure_date, :format => :long)
 
       .data_block
         %h2= t('.tour_price')
@@ -264,6 +264,7 @@
         %h2= t('.payments_in')
         %table#payments_in
           %tr.header
+            %th{ :style => 'width:12px;' }
             %th= t('.date')
             %th= t('.paid')
             %th= t('.currency')
@@ -271,6 +272,7 @@
           - ind = 0
           = f.fields_for :payments_in do |builder|
             %tr.fields{ :id => "payment_in_#{ind}"}
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
               %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => @claim.new_record?
@@ -279,12 +281,13 @@
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td= f.label :maturity
-            %td.datepicker= f.text_field :maturity, :class => 'datepicker'
+            %td{ :colspan => 2}
+              = f.label :maturity
+            %td.datepicker= f.text_field :maturity, :class => 'datepicker', :value => l(@claim.maturity, :format => :long)
             %td= f.label :tourist_debt
             %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
           %tr.bottom
-            %td{ :colspan => 4}
+            %td{ :colspan => 5}
               - if @claim.new_record?
                 .hint= t('.save_before_pay')
               - else
@@ -293,15 +296,12 @@
         %h2= t('.payments_out')
         %table#payments_out
           %tr
+            %td{ :colspan => 2 }
             %td= f.label :operator_price
-            %td.amount
-              = f.text_field :operator_price
-            %td
-              = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.label :operator_debt
-            %td
-              = f.text_field :operator_debt, :disabled => true, :class => 'red'
+            %td.amount= f.text_field :operator_price
+            %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
           %tr.header
+            %th{ :style => 'width:12px;' }
             %th= t('.date')
             %th= t('.paid')
             %th= t('.currency')
@@ -309,6 +309,7 @@
           - ind = 0
           = f.fields_for :payments_out do |builder|
             %tr.fields{ :id => "payment_out_#{ind}"}
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
               %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
@@ -319,7 +320,13 @@
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td{ :colspan => 5}
+            %td{ :colspan => 2}
+              = f.label :operator_maturity
+            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
+            %td= f.label :operator_debt
+            %td{ :colspan => 2 }= f.text_field :operator_debt, :disabled => true, :class => 'red'
+          %tr.bottom
+            %td{ :colspan => 6}
               - if @claim.new_record?
                 .hint= t('.save_before_pay')
               - else

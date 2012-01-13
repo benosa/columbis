@@ -17,7 +17,10 @@
       %th= sortable 'calculation', t('claims.index.calculation')
       %th= sortable 'tourist_advance', t('claims.index.advance')
       %th= sortable 'tourist_debt', t('claims.index.debt')
-      %th= sortable 'maturity', t('claims.index.payment_term')
+      %th
+      %th= sortable 'operator_maturity', t('claims.index.operator_payment_term')
+      %th
+      %th
       %th= sortable 'tourist_paid', t('claims.index.paid')
       %th= sortable 'docs_ticket', t('claims.index.docs')
       %th= sortable 'docs_note', t('claims.index.memo')
@@ -48,7 +51,10 @@
           = claim.tourist_advance.to_money
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_debt.to_money
-        %td= l( claim.maturity, :format => :short )
+        %td
+        %td= l( claim.operator_maturity, :format => :short )
+        %td
+        %td
         %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
           = claim.tourist_paid
         %td{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }

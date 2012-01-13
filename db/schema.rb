@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111226190226) do
+ActiveRecord::Schema.define(:version => 20120113065735) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -113,6 +113,9 @@ ActiveRecord::Schema.define(:version => 20111226190226) do
     t.string   "additional_services_price_currency",  :default => "eur",          :null => false
     t.string   "medical_insurance"
     t.boolean  "docs_ready",                          :default => false
+    t.date     "operator_maturity"
+    t.float    "approved_operator_advance",           :default => 0.0,            :null => false
+    t.float    "approved_tourist_advance",            :default => 0.0,            :null => false
   end
 
   create_table "clients", :force => true do |t|
@@ -205,19 +208,22 @@ ActiveRecord::Schema.define(:version => 20111226190226) do
 
   create_table "payments", :force => true do |t|
     t.integer  "claim_id"
-    t.date     "date_in",                         :null => false
-    t.integer  "payer_id",                        :null => false
-    t.string   "payer_type",                      :null => false
-    t.integer  "recipient_id",                    :null => false
-    t.string   "recipient_type",                  :null => false
-    t.string   "currency",                        :null => false
+    t.date     "date_in",                           :null => false
+    t.integer  "payer_id",                          :null => false
+    t.string   "payer_type",                        :null => false
+    t.integer  "recipient_id",                      :null => false
+    t.string   "recipient_type",                    :null => false
+    t.string   "currency",                          :null => false
     t.float    "amount",         :default => 0.0
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "form",                            :null => false
+    t.string   "form",                              :null => false
     t.float    "amount_prim",    :default => 0.0
+    t.boolean  "approved",       :default => false
   end
+
+  add_index "payments", ["approved"], :name => "index_payments_on_approved"
 
   create_table "tourist_claims", :force => true do |t|
     t.integer  "claim_id"

@@ -24,8 +24,9 @@ class Claim < ActiveRecord::Base
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
-                  :additional_services_price, :additional_services_currency,
-                  :primary_currency_operator_price, :profit, :profit_in_percent
+                  :additional_services_price, :additional_services_currency, :operator_maturity,
+                  :primary_currency_operator_price, :profit, :profit_in_percent,
+                  :approved_operator_advance, :approved_tourist_advance
 
 
   belongs_to :user
@@ -229,11 +230,15 @@ class Claim < ActiveRecord::Base
 
   def update_debts
     self.operator_advance = self.payments_out.sum('amount_prim')
+    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount_prim')
+
     self.operator_debt = (CurrencyCourse.convert_from_curr_to_curr(
       self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.operator_advance
     self.operator_paid = create_paid_string(:out)
 
     self.tourist_advance = self.payments_in.sum('amount_prim')
+    self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
+
     self.tourist_debt = self.primary_currency_price - self.tourist_advance
     self.tourist_paid = create_paid_string(:in)
 

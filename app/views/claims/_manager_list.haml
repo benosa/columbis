@@ -17,10 +17,10 @@
       %th= sortable 'calculation', t('claims.index.calculation')
       %th= sortable 'tourist_advance', t('claims.index.advance')
       %th= sortable 'tourist_debt', t('claims.index.debt')
-      %th
+      %th= sortable 'operator_price', t('claims.index.operator_price')
       %th= sortable 'operator_maturity', t('claims.index.operator_payment_term')
-      %th
-      %th
+      %th= sortable 'operator_advance', t('claims.index.operator_paid')
+      %th= sortable 'operator_debt', t('claims.index.operator_debt')
       %th= sortable 'tourist_paid', t('claims.index.paid')
       %th= sortable 'docs_ticket', t('claims.index.docs')
       %th= sortable 'docs_note', t('claims.index.memo')
@@ -51,10 +51,10 @@
           = claim.tourist_advance.to_money
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_debt.to_money
-        %td
+        %td= "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" if claim.operator_price > 0
         %td= l( claim.operator_maturity, :format => :short )
-        %td
-        %td
+        %td= claim.operator_advance.to_money
+        %td= claim.operator_debt.to_money
         %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
           = claim.tourist_paid
         %td{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }

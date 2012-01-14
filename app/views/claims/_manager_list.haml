@@ -74,8 +74,8 @@
           = l( claim.check_date, :format => :default )
         %td
           = link_to edit_claim_path(claim) do
-            = image_tag 'edit_icon.png'
+            = image_tag 'edit_icon.png', :title => t('edit')
           = link_to claim, :confirm => t('are_you_sure'), :method => :delete do
-            = image_tag 'delete_icon.png'
+            = image_tag 'delete_icon.png', :title => t('destroy')
 
   = will_paginate @claims

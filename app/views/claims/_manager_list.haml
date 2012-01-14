@@ -61,7 +61,7 @@
           = claim.docs_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
         %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }" }
           %div{ :class => "#{ claim.docs_note == ''? '' : 'tooltip' }" }
-            = claim.docs_note == '' ? t('nope') : t('yep')
+            = (claim.docs_note.nil? or claim.docs_note.blank?) ? t('nope') : truncate(claim.docs_note, :length => 25)
             %span
               = claim.docs_note
               %small

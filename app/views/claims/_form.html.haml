@@ -89,15 +89,12 @@
               = f.text_field :depart_back, :class => 'datetimepicker', :value => l(@claim.depart_back, :format => :long)
 
         %h2= t('.trip_documents')
-        %table#docs
-          %tr
-            %td
-            %td{ :style => 'text-align:left;'}
-              = f.check_box :docs_ready, { :style => 'width:12px;' }
-              = f.label :docs_ready, :class => "#{ @claim.docs_ready ? '' : 'red' }"
-          %tr
-            %td.text_right= f.label :docs_note
-            %td= f.text_field :docs_note
+        %p
+          = f.check_box :docs_ready, { :style => 'width:12px; margin-left:0px;' }
+          = f.label :docs_ready, :class => "#{ @claim.docs_ready ? '' : 'red' }"
+        %p
+          = f.label :docs_note
+          = f.text_field :docs_note
 
     #center_block
       %div.clr

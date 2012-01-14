@@ -231,6 +231,10 @@ table td  {
   font-style: italic;
 }
 
+table th.thick_border, table td.thick_border {
+  border-left: solid 2px;
+}
+
 table td.text_right {
   text-align: right;
 }
@@ -437,13 +441,12 @@ form .data_block input.narrow {
   width: 50%;
 }
 
-#claim_calculation {
+#claim_calculation, #claim_docs_note {
   width: 455px;
   color: blue;
   font-size: 8pt;
   font-weight: bold;
   font-style: italic;
-  text-align: center;
   border: 1px solid #5c1c03;
   resize: none;
 }

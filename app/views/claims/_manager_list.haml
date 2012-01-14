@@ -9,7 +9,7 @@
       %th= sortable 'countries.name', t('claims.index.to')
       %th.medium= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'visa', t('claims.index.visa')
-      %th= sortable 'check_date', t('claims.index.term')
+      %th= sortable 'visa_check', t('claims.index.term')
       %th= sortable 'depart_to', t('claims.index.depart_to')
       %th= sortable 'depart_back', t('claims.index.depart_back')
       %th= sortable 'operators.name', t('claims.index.operator')
@@ -17,12 +17,12 @@
       %th= sortable 'calculation', t('claims.index.calculation')
       %th= sortable 'tourist_advance', t('claims.index.advance')
       %th= sortable 'tourist_debt', t('claims.index.debt')
-      %th= sortable 'operator_price', t('claims.index.operator_price')
+      %th= sortable 'tourist_paid', t('claims.index.paid')
+      %th.thick_border= sortable 'operator_price', t('claims.index.operator_price')
       %th= sortable 'operator_maturity', t('claims.index.operator_payment_term')
       %th= sortable 'operator_advance', t('claims.index.operator_paid')
       %th= sortable 'operator_debt', t('claims.index.operator_debt')
-      %th= sortable 'tourist_paid', t('claims.index.paid')
-      %th= sortable 'docs_ticket', t('claims.index.docs')
+      %th.thick_border= sortable 'docs_ticket', t('claims.index.docs')
       %th= sortable 'docs_note', t('claims.index.memo')
       %th= sortable 'check_date', t('claims.index.check_date')
       %th
@@ -38,7 +38,8 @@
         %td= claim.city.try(:name)
         %td{ :class => claim.visa }
           = claim.visa_confirmation_flag ? t('yep') : t('nope')
-        %td= l( claim.check_date, :format => :short )
+        %td{ :class => "#{ claim.visa_confirmation_flag? ? 'red_back' : '' }" }
+          = l( claim.visa_check, :format => :short )
         %td{ :class => claim.flight_status }
           = l( claim.depart_to, :format => :short )
         %td{ :class => claim.flight_status }
@@ -51,13 +52,17 @@
           = claim.tourist_advance.to_money
         %td{ :class => "#{ claim.has_tourist_debt? ? 'red_back' : '' }" }
           = claim.tourist_debt.to_money
-        %td= "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" if claim.operator_price > 0
-        %td= l( claim.operator_maturity, :format => :short )
-        %td= claim.operator_advance.to_money
-        %td= claim.operator_debt.to_money
         %td{ :class => "#{ claim.early_reservation ? 'green_back' : '' }" }
           = claim.tourist_paid
-        %td{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }
+        %td.thick_border{ :class => color_for_operator_debt(claim) }
+          = "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" if claim.operator_price > 0
+        %td{ :class => color_for_operator_debt(claim) }
+          = l( claim.operator_maturity, :format => :short )
+        %td{ :class => color_for_operator_debt(claim) }
+          = claim.operator_advance.to_money
+        %td{ :class => color_for_operator_debt(claim) }
+          = claim.operator_debt.to_money
+        %td.thick_border{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }
           = claim.docs_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
         %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }" }
           %div{ :class => "#{ claim.docs_note == ''? '' : 'tooltip' }" }

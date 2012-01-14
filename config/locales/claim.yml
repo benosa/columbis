@@ -24,7 +24,7 @@ ru:
       currency: 'Валюта'
       check_date: 'Контроль'
       calculation: 'Расчет'
-      paid: 'Оплачено'
+      paid: 'Оплачено в валюте'
       docs: 'Документы'
       memo: 'Примечание'
       new_claim: 'Новая заявка'

@@ -187,7 +187,7 @@ $(function(){
         }
 
         if (str != '') {
-          $('#claim_calculation').val(str.slice(0, -2) + ' *');
+          $('#claim_calculation').val(str.slice(0, -2) + '*');
         }
       }
 

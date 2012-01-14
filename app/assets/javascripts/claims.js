@@ -308,7 +308,7 @@ $(function(){
         tr.find("input.date_of_birth").val(ui.item.date_of_birth);
         tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
         if(tr.hasClass('applicant')) {
-          tr = tr.next();
+          tr = tr.next().next();
           tr.find("input.phone_number").val(ui.item.phone_number);
           tr.find("input.address").val(ui.item.address);
           $('#claim_applicant_id').val(ui.item.id);
@@ -448,7 +448,7 @@ $(function(){
     var $tr = $('#dependent' + id);
     if (id == 1) {
       $('.applicant input').val('');
-      $('.applicant').next().find('input').val('');
+      $('.applicant').next().next().find('input').val('');
       $('#claim_applicant_id').removeAttr('value');
     } else {
       $tr.next('input[type=hidden]').remove();

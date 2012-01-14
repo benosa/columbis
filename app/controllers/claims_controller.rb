@@ -97,6 +97,9 @@ class ClaimsController < ApplicationController
       if @claim.update_attributes(params[:claim])
         redirect_to claims_url, :notice  => t('claims.messages.successfully_updated_claim')
       else
+        @claim.applicant ||=
+          (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
+        check_payments
         render :action => 'edit'
       end
     else

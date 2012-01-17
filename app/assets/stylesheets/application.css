@@ -1,7 +1,7 @@
 body {
   background-color: #4B7399;
   font-family: Verdana, Helvetica, Arial;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 a img {
@@ -73,14 +73,14 @@ h2 {
   padding-bottom: 12px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .error_messages h2 {
   text-align: left;
   font-weight: bold;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 10px;
   margin: 0;
   background-color: #c00;
   color: #fff;
@@ -267,6 +267,11 @@ table th.id  {
   padding: 4px;
 }
 
+.bar #full_value {
+  margin-top: 8px;
+  width: 100%;
+}
+
 #claims {
   border: 1px solid black;
   padding: 1px;
@@ -282,10 +287,17 @@ table th.id  {
   width: 65px;
 }
 
+#claims th.short_date {
+  width: 35px;
+}
 
 #claims th.green_back{
   background-color: #9ACD32;
   padding: 4px;
+}
+
+#claims tr {
+  height: 20px;
 }
 
 #container form input[type="text"].passport_series {

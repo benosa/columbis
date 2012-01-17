@@ -36,6 +36,12 @@ class Float
   end
 end
 
+class String
+  def initial
+    self.chars.first + '.'
+  end
+end
+
 module ActionView
   module Helpers
     module TranslationHelper

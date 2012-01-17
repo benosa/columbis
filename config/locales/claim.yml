@@ -36,7 +36,9 @@ ru:
       cost: 'Стоимость'
       accountant_list: 'Для бухгалтера'
       manager_list: 'Для менеджера'
-      num: 'Номер'
+      num: '№'
+      operator_confirmation: 'Подтвержд.'
+      phone_number: 'Тел.'
     form:
       reset: 'Сброс'
       office: 'Офис'

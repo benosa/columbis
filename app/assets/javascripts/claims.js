@@ -32,11 +32,12 @@ $(function(){
     return currentParams;
   }
 
+  // td click full value
+  $('#claims td').live('click', function(e){
+    $('#full_value').val($(this).attr('full_value'));
+  });
+
   // check date color
-  function checkDateColor(){
-
-  }
-
   $('#claim_check_date, #claim_closed').live('change', function(e){
     $('#claim_check_date').removeClass('departed hot soon');
 

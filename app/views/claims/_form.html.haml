@@ -94,7 +94,10 @@
           = f.label :docs_ready, :class => "#{ @claim.docs_ready ? '' : 'red' }"
         %p
           = f.label :docs_note
+          %br
           = f.text_field :docs_note
+        %p
+          = f.submit
 
     #center_block
       %div.clr
@@ -328,6 +331,3 @@
                 .hint= t('.save_before_pay')
               - else
                 = link_to t('.add_another_payment'), '#', :class => 'add'
-
-    %p
-      = f.submit

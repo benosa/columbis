@@ -32,6 +32,32 @@ $(function(){
     return currentParams;
   }
 
+  // visa check
+  $('#claim_visa_confirmation_flag').click(function(e){
+    if (!this.checked) {
+      $('#claim_visa_check').removeClass($('#claim_visa').val());
+      $('#claim_visa_check').addClass('passport_received');
+      $('#claim_visa').val('passport_received');
+    }
+  });
+
+  // visa_check
+  $('#claim_visa_check').click(function(){
+    if ($('#claim_visa_confirmation_flag')[0].checked) {
+      var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
+      var curr = statuses.indexOf($('#claim_visa').val());
+      var next = curr + 1;
+      if (statuses[curr] == 'passport_received') {
+        next = 0;
+      }
+
+      $('#claim_visa_check').removeClass(statuses[curr]);
+      $('#claim_visa_check').addClass(statuses[next]);
+      $('#claim_visa').val(statuses[next]);
+    }
+  });
+
+
   // td click full value
   $('#claims td').live('click', function(e){
     $('#full_value').val($(this).attr('full_value'));
@@ -283,20 +309,6 @@ $(function(){
   $('#payments_out .currency').change(get_amount_in_word);
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
-
-  // visa_check
-  $('#claim_visa_check').click(function(){
-    var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
-    var curr = statuses.indexOf($('#claim_visa').val());
-    var next = curr + 1;
-    if (statuses[curr] == 'passport_received') {
-      next = 0;
-    }
-
-    $('#claim_visa_check').removeClass(statuses[curr]);
-    $('#claim_visa_check').addClass(statuses[next]);
-    $('#claim_visa').val(statuses[next]);
-  });
 
   // autocomplete
   var $autocomplete = {

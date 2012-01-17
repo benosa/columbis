@@ -21,9 +21,9 @@ class Ability
       can :manage, City
       can :manage, DropdownValue
 
-      can [:update], Claim
+      can [:create, :update], Claim
       can :manage, Tourist
-      can :manage, Payment
+      can :manage, Payment #, :approved => false
       can [:update], User, :id => user.id
       can :read, :all
     else

@@ -361,7 +361,7 @@ form .data_block td.datepicker {
 }
 
 form .data_block input.datepicker {
-  width: 100px;
+  width: 80px;
 }
 
 #claim_operator_confirmation {

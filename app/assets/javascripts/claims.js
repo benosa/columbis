@@ -186,25 +186,27 @@ $(function(){
         }
 
         if ($('#claim_visa_count').val() > 0){
+          var str_visa_count = $('#claim_visa_count').val() + 'x';
+
           val = parseFloat($('#claim_visa_price').val());
           if (isFinite(val) && val > 0) {
-            str = str + $('#claim_visa_count').val() + 'x' + val + $('#claim_visa_price_currency').val() + '(визы) + ';
+            str = str + str_visa_count + val + $('#claim_visa_price_currency').val() + '(визы) + ';
           }
-        }
 
-        val = parseFloat($('#claim_insurance_price').val());
-        if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_insurance_price_currency').val() + '(страховка) + ';
-        }
+          val = parseFloat($('#claim_insurance_price').val());
+          if (isFinite(val) && val > 0) {
+            str = str + str_visa_count + val + $('#claim_insurance_price_currency').val() + '(страховка) + ';
+          }
 
-        val = parseFloat($('#claim_additional_insurance_price').val());
-        if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_additional_insurance_price_currency').val() + '(страховка доп.) + ';
-        }
+          val = parseFloat($('#claim_additional_insurance_price').val());
+          if (isFinite(val) && val > 0) {
+            str = str + str_visa_count + val + $('#claim_additional_insurance_price_currency').val() + '(страховка доп.) + ';
+          }
 
-        val = parseFloat($('#claim_fuel_tax_price').val());
-        if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_fuel_tax_price_currency').val() + '(топл. сбор) + ';
+          val = parseFloat($('#claim_fuel_tax_price').val());
+          if (isFinite(val) && val > 0) {
+            str = str + str_visa_count + val + $('#claim_fuel_tax_price_currency').val() + '(топл. сбор) + ';
+          }
         }
 
         val = parseFloat($('#claim_additional_services_price').val());
@@ -222,16 +224,36 @@ $(function(){
   }
 
   var calculate_tour_price = function(){
-    var visa_price = parseFloat($('#claim_visa_price').val()) *
-      parseFloat($('#claim_visa_count').val()) * course($('#claim_visa_price_currency'));
+    // we must set 0 if user left empty field after editing
+    var fields =  '#claim_tour_price, #claim_additional_services_price, #claim_visa_price, ' +
+                  '#claim_insurance_price, #claim_additional_insurance_price, #claim_fuel_tax_price';
 
-    var fee = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency')) +
-      parseFloat($('#claim_insurance_price').val()) * course($('#claim_insurance_price_currency')) +
-      parseFloat($('#claim_additional_insurance_price').val()) * course($('#claim_additional_insurance_price_currency')) +
-      parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency')) +
-      parseFloat($('#claim_fuel_tax_price').val()) * course($('#claim_fuel_tax_price_currency'));
+    $(fields).each(function(){
+      var val = parseFloat($(this).val());
+      if (!isFinite(val)) {
+        $(this).val(0);
+      }
+    });
 
-    return fee + visa_price;
+    var sum_price = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency'));
+    sum_price = sum_price +
+      parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency'));
+
+    // some fields are calculated per person
+    fields =  ['#claim_visa_price', '#claim_insurance_price', '#claim_additional_insurance_price', '#claim_fuel_tax_price'];
+
+    var visa_count = parseFloat($('#claim_visa_count').val());
+    if (visa_count > 0) {
+      var total = 0;
+      for(var i=0; i<fields.length; i++)  {
+        var val = parseFloat($(fields[i]).val()) *
+        parseFloat($('#claim_visa_count').val()) * course($(fields[i] +'_currency'));
+        total = total + val;
+      }
+      sum_price = sum_price + total;
+    }
+
+    return sum_price;
   }
 
   $('tr.countable input, tr.countable select').change(function(){

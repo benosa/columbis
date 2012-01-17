@@ -143,7 +143,6 @@ class Claim < ActiveRecord::Base
     payments_in.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
-      payment_hash[:form] = DropdownValue.values_for_form.first
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)

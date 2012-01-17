@@ -57,12 +57,9 @@
           = claim.tourist_debt.to_money
         %td.thick_border{ :class => color_for_operator_debt(claim) }
           = "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" if claim.operator_price > 0
-        %td{ :class => color_for_operator_debt(claim) }
-          = l( claim.operator_maturity, :format => :short )
-        %td{ :class => color_for_operator_debt(claim) }
-          = claim.operator_advance.to_money
-        %td{ :class => color_for_operator_debt(claim) }
-          = claim.operator_debt.to_money
+        %td= l( claim.operator_maturity, :format => :short )
+        %td= claim.operator_advance.to_money
+        %td= claim.operator_debt.to_money
         %td.thick_border{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }
           = claim.docs_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
         %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }", :full_value => claim.docs_note }

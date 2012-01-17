@@ -176,7 +176,7 @@
           %tr
             %th{ :colspan => 4 }
               = f.label :additional_services
-          %tr
+          %tr{ :class => 'countable' }
             %td{ :colspan => 4 }
               = f.text_field :additional_services
           %tr
@@ -269,6 +269,7 @@
             %th= t('.paid')
             %th= t('.currency')
             %th= t('.paid_in_word')
+            %th= t('.paid_type')
           - ind = 0
           = f.fields_for :payments_in do |builder|
             %tr.fields{ :id => "payment_in_#{ind}"}
@@ -277,6 +278,8 @@
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => @claim.new_record?
               %td= builder.text_field :description, :class => 'description', :disabled => true
+              %td{ :colspan => 2 }
+                = builder.text_field :form, :class => 'autocomplete payment_form', :disabled => @claim.new_record?
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
             = builder.hidden_field :id
             - ind += 1

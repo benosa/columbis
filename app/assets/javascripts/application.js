@@ -21,6 +21,15 @@ $(function(){
     closeText: 'Закрыть'
   });
 
+  // visa check flag
+  if ($('#claim_visa_confirmation_flag').length > 0) {
+    if ($('#claim_visa_confirmation_flag')[0].checked) {
+      $('#claim_visa_check').datepicker('enable');
+    } else {
+      $('#claim_visa_check').datepicker('disable');
+    }
+  }
+
   // user color
   $('#user_color').live('change', function(event){
     $('.color_sample').css('background-color', $(event.currentTarget).val());

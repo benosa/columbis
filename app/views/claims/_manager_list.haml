@@ -28,10 +28,10 @@
       %th= sortable 'check_date', t('claims.index.check_date')
       %th
     - @claims.each do |claim|
-      %tr
+      %tr{ :class => claim.canceled? && 'gray_back' }
         %td= claim.id
         %td= l( claim.reservation_date, :format => :default )
-        %td{ :style => "background-color:#{claim.user.color}" }
+        %td{ :style => !claim.canceled? && "background-color:#{claim.user.color}" }
           = claim.user.login
         %td= claim.applicant.try(:initials_name)
         %td= claim.applicant.try(:phone_number)
@@ -39,11 +39,11 @@
         %td= claim.city.try(:name)
         %td{ :class => claim.visa }
           = claim.visa_confirmation_flag ? t('yep') : t('nope')
-        %td{ :class => "#{ claim.visa_confirmation_flag? ? 'red_back' : '' }" }
+        %td{ :class => color_for_visa_check(claim) }
           = l( claim.visa_check, :format => :short )
-        %td{ :class => claim.flight_status }
+        %td{ :class => color_for_flight(claim)}
           = l( claim.depart_to, :format => :short )
-        %td{ :class => claim.flight_status }
+        %td
           = l( claim.depart_back, :format => :short )
         %td= claim.operator.try(:name)
         %td= claim.operator_confirmation
@@ -60,8 +60,8 @@
         %td= l( claim.operator_maturity, :format => :short )
         %td= claim.operator_advance.to_money
         %td= claim.operator_debt.to_money
-        %td.thick_border{ :class => "#{ claim.docs_ready? ? '' : 'red_back'  }" }
-          = claim.docs_ready? ? t('claims.index.ready') : t('claims.index.not_ready')
+        %td.thick_border{ :class => claim.documents_status }
+          = t('claims.form.documents_statuses.' << claim.documents_status)
         %td{ :class => "#{ claim.docs_note == ''? '' : 'red_back' }", :full_value => claim.docs_note }
           =truncate(claim.docs_note, :length => 12)
         %td{ :class => claim.check_date_status }

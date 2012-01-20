@@ -420,7 +420,7 @@ form .data_block input.narrow {
   width: 100px;
 }
 
-.red_back, .nothing_done, .hot {
+.red_back, .nothing_done, .hot, .not_ready, .received {
   background-color: #ffc0c0;
 }
 
@@ -436,8 +436,12 @@ form .data_block input.narrow {
   background-color: #96B1F0;
 }
 
-.blue_back, .passport_received, .departed {
+.blue_back, .all_done, .departed {
   background-color: #bde0fa;
+}
+
+.gray_back {
+  background-color: #ccc;
 }
 
 #container .red {

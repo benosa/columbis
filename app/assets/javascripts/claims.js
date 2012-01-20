@@ -1,4 +1,5 @@
 $(function(){
+  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
 
   // search
   function getCurrentSortParams($curr, inversion){
@@ -31,32 +32,45 @@ $(function(){
 
     return currentParams;
   }
+  $('#claim_documents_status').change(function(e){
+    $('#claim_documents_status').removeClass('not_ready received all_done');
+    $('#claim_documents_status').addClass($('#claim_documents_status').val());
+  });
 
-  // visa check
+  // visa check flag
   $('#claim_visa_confirmation_flag').click(function(e){
+    $('#claim_visa_check').removeClass($('#claim_visa').val());
     if (!this.checked) {
-      $('#claim_visa_check').removeClass($('#claim_visa').val());
-      $('#claim_visa_check').addClass('passport_received');
-      $('#claim_visa').val('passport_received');
+      for (i in VISA_STATUSES) {
+        $('#claim_visa_check').removeClass(VISA_STATUSES[i]);
+      }
+
+      $('#claim_visa_check').addClass('all_done');
+      $('#claim_visa').val('all_done');
+      $('#claim_visa_check').datepicker('disable');
+      $('#claim_visa_check').val('');
+    } else {
+      $('#claim_visa_check').removeClass('all_done');
+      $('#claim_visa_check').addClass('nothing_done');
+      $('#claim_visa').val('nothing_done');
+      $('#claim_visa_check').datepicker('enable');
     }
   });
 
   // visa_check
   $('#claim_visa_check').click(function(){
     if ($('#claim_visa_confirmation_flag')[0].checked) {
-      var statuses = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'passport_received'];
-      var curr = statuses.indexOf($('#claim_visa').val());
+      var curr = VISA_STATUSES.indexOf($('#claim_visa').val());
       var next = curr + 1;
-      if (statuses[curr] == 'passport_received') {
+      if (VISA_STATUSES[curr] == 'all_done') {
         next = 0;
       }
 
-      $('#claim_visa_check').removeClass(statuses[curr]);
-      $('#claim_visa_check').addClass(statuses[next]);
-      $('#claim_visa').val(statuses[next]);
+      $('#claim_visa_check').removeClass(VISA_STATUSES[curr]);
+      $('#claim_visa_check').addClass(VISA_STATUSES[next]);
+      $('#claim_visa').val(VISA_STATUSES[next]);
     }
   });
-
 
   // td click full value
   $('#claims td').live('click', function(e){

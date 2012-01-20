@@ -56,9 +56,9 @@ ru:
 
       trip_documents: 'Документы в дорогу'
       documents_statuses:
-        not_ready: 'Не готово'
-        ready: 'Готово'
-        received: 'Передано туристу'
+        not_ready: 'Не готовы'
+        received: 'Готовы'
+        all_done: 'Готовы'
 
       tour_price: 'Стоимость тура'
       flights: 'Вылеты'
@@ -138,7 +138,7 @@ ru:
         arrival_date: 'Дата заезда'
         departure_date: 'Дата выезда'
         early_reservation: 'Раннее бронирование'
-        docs_ready: 'Документы подготовлены'
+        documents_status: 'Готовность документов'
         docs_note: 'Примечание'
         reservation_date: 'Дата резервирования'
         memo: 'Примечание'
@@ -167,3 +167,4 @@ ru:
         additional_services: 'Дополнительные услуги'
         additional_services_price: 'Стоимость дополнительных услуг'
         medical_insurance: 'Медстраховка'
+        canceled: 'Аннулирована'

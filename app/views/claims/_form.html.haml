@@ -16,7 +16,7 @@
             %td= f.text_field :operator_confirmation
             %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
             %td.datepicker
-              = f.text_field :visa_check, :class => ('datepicker ' << @claim.visa), :value => l(@claim.visa_check, :format => :long)
+              = f.text_field :visa_check, :class => ('datepicker ' << color_for_visa(@claim)), :value => l(@claim.visa_check, :format => :long)
             %td= f.check_box :closed, { :style => 'width:12px;'}
             %td.datepicker
               = f.text_field :check_date, :class => "datepicker #{ @claim.check_date_status }",
@@ -90,13 +90,16 @@
 
         %h2= t('.trip_documents')
         %p
-          = f.check_box :docs_ready, { :style => 'width:12px; margin-left:0px;' }
-          = f.label :docs_ready, :class => "#{ @claim.docs_ready ? '' : 'red' }"
+          = f.label :documents_status
+          = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('claims.form.documents_statuses.' << o), o ] },
+            {}, :class => @claim.documents_status
         %p
           = f.label :docs_note
           %br
           = f.text_field :docs_note
         %p
+          = f.label :canceled
+          = f.check_box :canceled, { :style => 'width:12px;'}
           = f.submit
 
     #center_block
@@ -111,8 +114,8 @@
               = (@claim.operator_debt? ? t('yep') : t('nope'))
             %td= t('.operator_debt')
           %tr
-            %td.framed.documents_ready_ind{ :class => (@claim.docs_ready? ? 'green_back' : 'red_back' ) }
-              = (@claim.docs_ready? ? t('yep') : t('nope'))
+            %td.framed.documents_ready_ind{ :class => (@claim.documents_ready? ? 'green_back' : 'red_back' ) }
+              = (@claim.documents_ready? ? t('yep') : t('nope'))
             %td= t('.documents_ready')
           %tr
             %td.framed.has_notes_ind{ :class => (@claim.has_notes? ? 'red_back' : 'green_back' ) }

@@ -1,6 +1,6 @@
 class Claim < ActiveRecord::Base
-  VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved passport_received].freeze
-  DOCUMENTS_STATUSES = %w[not_ready ready received].freeze
+  VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done].freeze
+  DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
 
   # relations
   attr_accessible :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
@@ -19,14 +19,14 @@ class Claim < ActiveRecord::Base
 
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
-                  :operator_confirmation, :early_reservation, :docs_ready, :docs_note, :closed
+                  :operator_confirmation, :early_reservation, :documents_status, :docs_note, :closed
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :primary_currency_operator_price, :profit, :profit_in_percent,
-                  :approved_operator_advance, :approved_tourist_advance
+                  :approved_operator_advance, :approved_tourist_advance, :canceled
 
 
   belongs_to :user
@@ -163,6 +163,10 @@ class Claim < ActiveRecord::Base
     end
   end
 
+  def documents_ready?
+    self.documents_status == 'all_done'
+  end
+
   def has_tourist_debt?
     self.tourist_debt != 0
   end
@@ -197,23 +201,6 @@ class Claim < ActiveRecord::Base
       'hot'
     else
       'soon'
-    end
-  end
-
-  def flight_status
-    return 'empty' unless self.depart_to
-
-    day_of_week = depart_to.to_a[6]
-    day_of_week = 7 if day_of_week == 0
-
-    monday = (depart_to.to_date - (day_of_week - 1).days).to_time
-
-    if monday > Time.now
-     'soon'
-    elsif (monday < Time.now and depart_to > Time.now) or (depart_to < Time.now)
-      'hot'
-    else
-      'departed'
     end
   end
 

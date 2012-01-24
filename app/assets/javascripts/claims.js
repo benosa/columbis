@@ -43,16 +43,45 @@ $(function(){
     $('#claim_documents_status').addClass($('#claim_documents_status').val());
   });
 
-  function check_docs_memo(){
-    if(trim($('#claim_docs_note').val()) == ''){
-      $('#claim_docs_note').removeClass('red_back');
+  function check_marchroute_memo(){
+   if($('#claim_memo_tasks_done')[0].checked){
+      $('#claim_memo').removeClass('red_back');
+      $('#claim_memo').addClass('blue_back');
     } else {
-      $('#claim_docs_note').addClass('red_back');
+      $('#claim_memo').removeClass('blue_back');
+      if(trim($('#claim_memo').val()) == ''){
+        $('#claim_memo').removeClass('red_back');
+      } else {
+        $('#claim_memo').addClass('red_back');
+      }
     }
   }
-  check_docs_memo();
+  $('#claim_memo').change(check_marchroute_memo);
+
+  function check_docs_memo(){
+    if($('#claim_memo_tasks_done')[0].checked){
+      $('#claim_docs_note').removeClass('red_back');
+      $('#claim_docs_note').addClass('blue_back');
+    } else {
+      $('#claim_docs_note').removeClass('blue_back');
+      if(trim($('#claim_docs_note').val()) == ''){
+        $('#claim_docs_note').removeClass('red_back');
+      } else {
+        $('#claim_docs_note').addClass('red_back');
+      }
+    }
+  }
   $('#claim_docs_note').change(check_docs_memo);
 
+  $('#claim_memo_tasks_done').change(function(){
+    check_docs_memo();
+    check_marchroute_memo();
+  });
+
+  if($('#claim_memo_tasks_done').length > 0) {
+    check_marchroute_memo();
+    check_docs_memo();
+  }
 
   // visa check flag
   $('#claim_visa_confirmation_flag').click(function(e){

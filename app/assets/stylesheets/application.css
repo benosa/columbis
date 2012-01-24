@@ -192,6 +192,11 @@ h2 {
   background: url('palm.png') 0px 392px no-repeat;
 }
 
+#payments_block {
+  margin-left:345px;
+  background: url('palm.png') 0px 392px no-repeat;
+}
+
 input[type="submit"] {
   font-style: italic;
   font-weight: bold;

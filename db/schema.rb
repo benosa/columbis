@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120120140835) do
+ActiveRecord::Schema.define(:version => 20120124141328) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(:version => 20120120140835) do
     t.float    "approved_tourist_advance",            :default => 0.0,            :null => false
     t.boolean  "canceled",                            :default => false
     t.string   "documents_status",                    :default => "not_ready"
+    t.boolean  "memo_tasks_done",                     :default => false
   end
 
   create_table "clients", :force => true do |t|

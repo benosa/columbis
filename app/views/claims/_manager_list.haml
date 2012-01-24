@@ -64,9 +64,9 @@
         %td= claim.operator_debt.to_money
         %td.thick_border{ :class => claim.documents_status }
           = t('claims.form.documents_statuses.' << claim.documents_status)
-        %td{ :class => claim.docs_note != '' && 'red_back', :full_value => claim.docs_note }
+        %td{ :class => (!claim.memo_tasks_done and claim.docs_note != '') && 'red_back', :full_value => claim.docs_note }
           =truncate(claim.docs_note, :length => 12)
-        %td{ :class => claim.check_date_status }
+        %td{ :class => check_date_status(claim) }
           = l( claim.check_date, :format => :default )
         %td
           = link_to edit_claim_path(claim) do

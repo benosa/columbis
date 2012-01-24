@@ -19,15 +19,16 @@ class Claim < ActiveRecord::Base
 
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
-                  :operator_confirmation, :early_reservation, :documents_status, :docs_note, :closed
+                  :operator_confirmation, :early_reservation, :documents_status, :docs_note,
+                  :closed, :memo_tasks_done, :canceled
+
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :primary_currency_operator_price, :profit, :profit_in_percent,
-                  :approved_operator_advance, :approved_tourist_advance, :canceled
-
+                  :approved_operator_advance, :approved_tourist_advance
 
   belongs_to :user
   belongs_to :office
@@ -190,18 +191,6 @@ class Claim < ActiveRecord::Base
 
   def self.next_id
     Claim.last.try(:id).to_i + 1
-  end
-
-  def check_date_status
-    return 'hot' unless self.check_date
-
-    if self.closed?
-      'departed'
-    elsif (self.check_date - 1.day) <= Time.now.to_date
-      'hot'
-    else
-      'soon'
-    end
   end
 
   def memo_partial

@@ -19,7 +19,7 @@
               = f.text_field :visa_check, :class => ('datepicker ' << color_for_visa(@claim)), :value => l(@claim.visa_check, :format => :long)
             %td= f.check_box :closed, { :style => 'width:12px;'}
             %td.datepicker
-              = f.text_field :check_date, :class => "datepicker #{ @claim.check_date_status }",
+              = f.text_field :check_date, :class => "datepicker #{ check_date_status(@claim) }",
                 :value => l(@claim.check_date, :format => :long)
           = f.hidden_field :visa
         .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }
@@ -98,6 +98,8 @@
           %br
           = f.text_field :docs_note
         %p
+          = f.label :memo_tasks_done
+          = f.check_box :memo_tasks_done, { :style => 'width:12px;'}
           = f.label :canceled
           = f.check_box :canceled, { :style => 'width:12px;'}
           = f.submit
@@ -264,6 +266,8 @@
               %p
                 = f.text_area :calculation, :rows => 6
 
+    #payments_block
+      .data_block
         %h2= t('.payments_in')
         %table#payments_in
           %tr.header

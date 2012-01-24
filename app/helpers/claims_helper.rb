@@ -1,4 +1,16 @@
 module ClaimsHelper
+  def check_date_status(claim)
+    return 'hot' unless claim.check_date
+
+    if claim.closed?
+      'departed'
+    elsif (claim.check_date - 1.day) <= Time.now.to_date
+      'hot'
+    else
+      'soon'
+    end
+  end
+
   def color_for_tourist_advance(claim)
     color = ''
     if claim.canceled?

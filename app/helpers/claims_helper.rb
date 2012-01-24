@@ -1,4 +1,14 @@
 module ClaimsHelper
+  def color_for_tourist_advance(claim)
+    color = ''
+    if claim.canceled?
+      color = 'red_back' if claim.tourist_advance > 0
+    else
+      color = 'red_back' if claim.has_tourist_debt?
+    end
+    color
+  end
+
   def color_for_operator_debt(claim)
     return 'green_back' if claim.early_reservation?
     color = ''
@@ -7,6 +17,11 @@ module ClaimsHelper
     end
     color
   end
+
+  def color_for_operator_advance(claim)
+    'red_back' if claim.canceled? and claim.operator_advance > 0
+  end
+
 
   def color_for_visa(claim)
     return 'all_done' if claim.new_record?
@@ -29,9 +44,9 @@ module ClaimsHelper
 
     if monday > Time.now
      'soon'
-    elsif (monday < Time.now and claim.depart_to > Time.now) or (claim.depart_to < Time.now)
+    elsif monday < Time.now and claim.depart_to > Time.now
       'hot'
-    else
+    elsif claim.depart_to < Time.now
       'departed'
     end
   end

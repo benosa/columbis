@@ -1,6 +1,10 @@
 $(function(){
   var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
 
+  function trim(str) {
+     return str.replace(/^\s+|\s+$/g, '');
+  }
+
   // search
   function getCurrentSortParams($curr, inversion){
     var currentParams = { sort:'id', direction:'asc', filter: '' };
@@ -32,10 +36,23 @@ $(function(){
 
     return currentParams;
   }
+
+  // documents colors
   $('#claim_documents_status').change(function(e){
     $('#claim_documents_status').removeClass('not_ready received all_done');
     $('#claim_documents_status').addClass($('#claim_documents_status').val());
   });
+
+  function check_docs_memo(){
+    if(trim($('#claim_docs_note').val()) == ''){
+      $('#claim_docs_note').removeClass('red_back');
+    } else {
+      $('#claim_docs_note').addClass('red_back');
+    }
+  }
+  check_docs_memo();
+  $('#claim_docs_note').change(check_docs_memo);
+
 
   // visa check flag
   $('#claim_visa_confirmation_flag').click(function(e){

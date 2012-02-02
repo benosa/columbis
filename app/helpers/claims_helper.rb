@@ -24,7 +24,7 @@ module ClaimsHelper
   end
 
   def color_for_tourist_advance(claim)
-    color = ''
+    color = 'blue_back'
     if claim.canceled?
       color = 'red_back' if claim.tourist_advance > 0
     else
@@ -34,7 +34,7 @@ module ClaimsHelper
   end
 
   def color_for_operator_debt(claim)
-    color = ''
+    color = 'blue_back'
     if claim.has_operator_debt?
       return 'green_back' if claim.early_reservation?
       color = (claim.operator_advance > 0 ? 'orange_back' : 'red_back')

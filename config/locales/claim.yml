@@ -59,7 +59,7 @@ ru:
       documents_statuses:
         not_ready: 'Не готовы'
         received: 'Готовы'
-        all_done: 'Готовы'
+        all_done: 'Выданы'
 
       tour_price: 'Стоимость тура'
       flights: 'Вылеты'

@@ -34,9 +34,9 @@ module ClaimsHelper
   end
 
   def color_for_operator_debt(claim)
-    return 'green_back' if claim.early_reservation?
     color = ''
     if claim.has_operator_debt?
+      return 'green_back' if claim.early_reservation?
       color = (claim.operator_advance > 0 ? 'orange_back' : 'red_back')
     end
     color
@@ -65,21 +65,8 @@ module ClaimsHelper
      'soon'
     elsif claim.depart_to > Time.now-1.day
       'hot'
-    else#if claim.depart_to < Time.now-1.day
+    else
       'departed'
     end
-
-#    day_of_week = claim.depart_to.to_a[6]
-#    day_of_week = 7 if day_of_week == 0
-
-#    monday = (claim.depart_to.to_date - (day_of_week - 1).days).to_time
-
-#    if monday > Time.now
-#     'soon'
-#    elsif monday < Time.now and claim.depart_to > Time.now
-#      'hot'
-#    elsif claim.depart_to < Time.now
-#      'departed'
-#    end
   end
 end

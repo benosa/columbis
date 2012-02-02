@@ -48,8 +48,7 @@
         %td= claim.operator.try(:name)
         %td{ :class => claim.operator_confirmation == '' && 'red_back' }
           = claim.operator_confirmation
-        %td{ :class => color_for_tourist_advance(claim) }
-          = claim.primary_currency_price.to_money
+        %td= claim.primary_currency_price.to_money
         %td{ :full_value => claim.calculation }
           = truncate(claim.calculation, :length => 12)
         %td{ :class => color_for_tourist_advance(claim)}

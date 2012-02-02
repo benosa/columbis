@@ -37,6 +37,15 @@ $(function(){
     return currentParams;
   }
 
+  // dates colors
+  $('#claim_arrival_date').change(function(e){
+    $('#claim_depart_to').val($('#claim_arrival_date').val());
+  });
+
+  $('#claim_departure_date').change(function(e){
+    $('#claim_depart_back').val($('#claim_departure_date').val());
+  });
+
   // documents colors
   $('#claim_documents_status').change(function(e){
     $('#claim_documents_status').removeClass('not_ready received all_done');

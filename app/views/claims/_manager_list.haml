@@ -38,7 +38,7 @@
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
         %td{ :class => claim.visa }
-          = claim.visa_confirmation_flag ? t('yep') : t('nope')
+          = text_for_visa(claim)
         %td{ :class => claim.visa }
           = l( claim.visa_check, :format => :short )
         %td{ :class => color_for_flight(claim)}

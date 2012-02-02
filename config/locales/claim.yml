@@ -39,6 +39,7 @@ ru:
       num: '№'
       operator_confirmation: 'Подтвержд.'
       phone_number: 'Тел.'
+      sent: 'Отпр.'
     form:
       reset: 'Сброс'
       office: 'Офис'

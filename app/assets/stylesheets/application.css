@@ -430,11 +430,11 @@ form .data_block input.narrow {
 }
 
 .orange_back, .docs_got, .soon {
-  background-color: #FFCC5F;
+  background-color: #ff5eb0;
 }
 
 .green_back, .docs_sent {
-  background-color: #C8F1AF;
+  background-color: #21d00c;
 }
 
 .navy_back, .visa_approved {

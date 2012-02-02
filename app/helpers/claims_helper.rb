@@ -1,4 +1,16 @@
 module ClaimsHelper
+  def text_for_visa(claim)
+    if claim.visa_confirmation_flag
+      if claim.visa == 'docs_sent'
+        t('claims.index.sent')
+      else
+        t('claims.index.visa')
+      end
+    else
+      t('nope')
+    end
+  end
+
   def check_date_status(claim)
     return 'hot' unless claim.check_date
 

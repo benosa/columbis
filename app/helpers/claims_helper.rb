@@ -61,17 +61,25 @@ module ClaimsHelper
   def color_for_flight(claim)
     return 'empty' unless claim.depart_to
 
-    day_of_week = claim.depart_to.to_a[6]
-    day_of_week = 7 if day_of_week == 0
-
-    monday = (claim.depart_to.to_date - (day_of_week - 1).days).to_time
-
-    if monday > Time.now
+    if claim.depart_to > Time.now + 8.day
      'soon'
-    elsif monday < Time.now and claim.depart_to > Time.now
+    elsif claim.depart_to > Time.now-1.day
       'hot'
-    elsif claim.depart_to < Time.now
+    else#if claim.depart_to < Time.now-1.day
       'departed'
     end
+
+#    day_of_week = claim.depart_to.to_a[6]
+#    day_of_week = 7 if day_of_week == 0
+
+#    monday = (claim.depart_to.to_date - (day_of_week - 1).days).to_time
+
+#    if monday > Time.now
+#     'soon'
+#    elsif monday < Time.now and claim.depart_to > Time.now
+#      'hot'
+#    elsif claim.depart_to < Time.now
+#      'departed'
+#    end
   end
 end

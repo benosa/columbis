@@ -7,12 +7,12 @@
       /%th= sortable 'applicant.last_name', t('claims.index.full_name')
       %th.medium= t('claims.index.full_name')
       %th= t('claims.index.phone_number')
+      %th.medium= sortable 'depart_to', t('claims.index.depart_to')
+      %th.medium= sortable 'depart_back', t('claims.index.depart_back')
       %th= sortable 'countries.name', t('claims.index.to')
       %th.medium= sortable 'airport_back', t('claims.index.from')
       %th= sortable 'visa', t('claims.index.visa')
       %th.short_date= sortable 'visa_check', t('claims.index.term')
-      %th.medium= sortable 'depart_to', t('claims.index.depart_to')
-      %th.medium= sortable 'depart_back', t('claims.index.depart_back')
       %th= sortable 'operators.name', t('claims.index.operator')
       %th= sortable 'operator_confirmation', t('claims.index.operator_confirmation')
       %th= sortable 'primary_currency_price', t('claims.index.price')
@@ -35,16 +35,16 @@
           = claim.user.login
         %td= claim.applicant.try(:initials_name)
         %td= claim.applicant.try(:phone_number)
+        %td{ :class => color_for_flight(claim)}
+          = l( claim.depart_to, :format => :short )
+        %td
+          = l( claim.depart_back, :format => :short )
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
         %td{ :class => claim.visa }
           = text_for_visa(claim)
         %td{ :class => claim.visa }
           = l( claim.visa_check, :format => :short )
-        %td{ :class => color_for_flight(claim)}
-          = l( claim.depart_to, :format => :short )
-        %td
-          = l( claim.depart_back, :format => :short )
         %td= claim.operator.try(:name)
         %td{ :class => claim.operator_confirmation == '' && 'red_back' }
           = claim.operator_confirmation

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124141328) do
+ActiveRecord::Schema.define(:version => 20120206155907) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -118,6 +118,13 @@ ActiveRecord::Schema.define(:version => 20120124141328) do
     t.boolean  "canceled",                            :default => false
     t.string   "documents_status",                    :default => "not_ready"
     t.boolean  "memo_tasks_done",                     :default => false
+    t.boolean  "operator_confirmation_flag",          :default => false
+    t.integer  "insurance_count"
+    t.integer  "additional_insurance_count"
+    t.integer  "fuel_tax_count"
+    t.float    "children_visa_price",                 :default => 0.0,            :null => false
+    t.integer  "children_visa_count"
+    t.string   "children_visa_price_currency",        :default => "eur",          :null => false
   end
 
   create_table "clients", :force => true do |t|

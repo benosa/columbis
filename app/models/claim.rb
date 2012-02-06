@@ -6,9 +6,13 @@ class Claim < ActiveRecord::Base
   attr_accessible :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
 
   # price block
-  attr_accessible :tour_price, :visa_price, :visa_count, :insurance_price, :additional_insurance_price, :fuel_tax_price,
-                  :primary_currency_price, :course_eur, :course_usd, :tour_price_currency, :visa_price_currency,
-                  :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :calculation
+  attr_accessible :tour_price, :tour_price_currency,
+                  :visa_price, :visa_count, :visa_price_currency,
+                  :children_visa_price, :children_visa_count, :children_visa_price_currency,
+                  :insurance_price, :insurance_count, :insurance_price_currency,
+                  :additional_insurance_price, :additional_insurance_count,  :additional_insurance_price_currency,
+                  :fuel_tax_price, :fuel_tax_count, :fuel_tax_price_currency,
+                  :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
   attr_accessible :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
@@ -19,8 +23,8 @@ class Claim < ActiveRecord::Base
 
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
-                  :operator_confirmation, :early_reservation, :documents_status, :docs_note,
-                  :closed, :memo_tasks_done, :canceled
+                  :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
+                  :docs_note, :closed, :memo_tasks_done, :canceled
 
 
   # amounts and payments
@@ -304,12 +308,4 @@ class Claim < ActiveRecord::Base
   def correctness_of_maturity
     errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
-
-#  def determine_docs_status
-#    begin
-#      Claim::DOCUMENTS_STATUSES[ [Claim::DOCUMENTS_STATUSES.index(self.docs_memo), Claim::DOCUMENTS_STATUSES.index(self.docs_ticket)].min ]
-#    rescue
-#      Claim::DOCUMENTS_STATUSES.min
-#    end
-#  end
 end

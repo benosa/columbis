@@ -31,7 +31,7 @@
       %tr{ :class => claim.canceled? && 'gray_back' }
         %td= claim.id
         %td= l( claim.reservation_date, :format => :default )
-        %td{ :style => !claim.canceled? && "background-color:#{claim.user.color}" }
+        %td{ :style => "background-color:#{claim.user.color}" }
           = claim.user.login
         %td= claim.applicant.try(:initials_name)
         %td= claim.applicant.try(:phone_number)
@@ -41,12 +41,12 @@
           = l( claim.depart_back, :format => :short )
         %td= claim.country.try(:name)
         %td= claim.city.try(:name)
-        %td{ :class => claim.visa }
+        %td{ :class => !claim.canceled? && claim.visa }
           = text_for_visa(claim)
-        %td{ :class => claim.visa }
+        %td{ :class => !claim.canceled? && claim.visa }
           = l( claim.visa_check, :format => :short )
         %td= claim.operator.try(:name)
-        %td{ :class => claim.operator_confirmation == '' && 'red_back' }
+        %td{ :class => !claim.operator_confirmation_flag && 'red_back' }
           = claim.operator_confirmation
         %td= claim.primary_currency_price.to_money
         %td{ :full_value => claim.calculation }
@@ -55,13 +55,13 @@
           = claim.tourist_advance.to_money
         %td{ :class => !claim.canceled? && color_for_tourist_advance(claim) }
           = claim.tourist_debt.to_money
-        %td.thick_border{ :class => color_for_operator_debt(claim) }
+        %td.thick_border{ :class => !claim.canceled? && color_for_operator_debt(claim) }
           = "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" if claim.operator_price > 0
         %td= l( claim.operator_maturity, :format => :short )
-        %td{ :class => color_for_operator_advance(claim) }
+        %td{ :class =>  !claim.canceled? && color_for_operator_advance(claim) }
           = claim.operator_advance.to_money
         %td= claim.operator_debt.to_money
-        %td.thick_border{ :class => claim.documents_status }
+        %td.thick_border{ :class => !claim.canceled? && claim.documents_status }
           = t('claims.form.documents_statuses.' << claim.documents_status)
         %td{ :class => (!claim.memo_tasks_done and claim.docs_note != '') && 'red_back', :full_value => claim.docs_note }
           =truncate(claim.docs_note, :length => 12)

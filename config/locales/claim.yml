@@ -118,6 +118,7 @@ ru:
         operator_id: 'Туроператор'
         operator_confirmation: 'Подтверждение оператора'
         visa: 'Виза'
+        children_visa_price: 'Виза детск.'
         visa_check: 'Виза'
         tour_price: 'Цена тура'
         visa_price: 'Виза'

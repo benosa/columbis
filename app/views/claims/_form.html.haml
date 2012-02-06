@@ -6,14 +6,16 @@
         %table
           %tr
             %th.id= f.label :id
-            %th= f.label :operator_confirmation
+            %th{ :colspan => 2 }
+              = f.label :operator_confirmation
             %th{ :colspan => 2 }
               = f.label :visa
             %th{ :colspan => 2 }
               = f.label :check_date
           %tr
             %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
-            %td= f.text_field :operator_confirmation
+            %td= f.check_box :operator_confirmation_flag, { :style => 'width:12px;'}
+            %td= f.text_field :operator_confirmation, :class => @claim.operator_confirmation_flag ? 'blue_back' : 'red_back'
             %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
             %td.datepicker
               = f.text_field :visa_check, :class => ('datepicker ' << color_for_visa(@claim)), :value => l(@claim.visa_check, :format => :long)
@@ -207,64 +209,72 @@
             %p
               = f.label :course_eur
               = f.text_field :course_eur, :class => 'countable'
-              = link_to t('.reset'), '#'
+              /= link_to t('.reset'), '#'
             %p
               = f.label :course_usd
               = f.text_field :course_usd, :class => 'countable'
-              = link_to t('.reset'), '#'
+              /= link_to t('.reset'), '#'
 
-        %table#tour_price
-          %tr
-            %th{ :colspan => 2 }
-              = f.label :tour_price
-            %th{ :colspan => 2 }
-              = f.label :visa_price
-            %th{ :colspan => 2 }
-          %tr{ :class => 'countable' }
-            %td= f.text_field :tour_price, :class => 'red'
-            %td= f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.text_field :visa_price
-            %td= f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %th= f.label :visa_count
-            %td= f.select :visa_count, (0..30).to_a
-          %tr
-            %th{ :colspan => 2 }
-              = f.label :insurance_price
-            %th{ :colspan => 2 }
-              = f.label :additional_insurance_price
-            %th{ :colspan => 2 }
-              = f.label :fuel_tax_price
-          %tr{ :class => 'countable' }
-            %td= f.text_field :insurance_price
-            %td= f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.text_field :additional_insurance_price
-            %td= f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.text_field :fuel_tax_price
-            %td= f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-          %tr{ :class => 'countable' }
-            %th{ :colspan => 4, :style => 'text-align:right; padding-right:6px;' }
-              = f.label :additional_services_price
-            %td= f.text_field :additional_services_price
-            %td= f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-          %tr
-            %td{ :colspan => 6 }
-              %br
-          %tr
-            %th{ :colspan => 6 }
-              = f.label :primary_currency_price
-          %tr
-            %td
-              = f.text_field :primary_currency_price, :class => 'red'
-            %td{ :colspan => 5 }
-              = text_field_tag :price_as_string,
-                RuPropisju.amount_in_word(@claim.primary_currency_price, CurrencyCourse::PRIMARY_CURRENCY), :class => 'red', :disabled => true
-          %tr
-            %th{ :colspan => 6 }
-              = f.label :calculation
-          %tr
-            %td{ :colspan => 6 }
-              %p
-                = f.text_area :calculation, :rows => 6
+          %table#tour_price
+            %tr
+              %th{ :colspan => 3 }
+                = f.label :tour_price
+              %th{ :colspan => 2 }
+                = f.label :visa_price
+              %td= f.label :visa_count
+              %th{ :colspan => 2 }
+                = f.label :children_visa_price
+              %td= f.label :visa_count
+            %tr{ :class => 'countable' }
+              %td= f.text_field :tour_price, :class => 'red'
+              %td{ :colspan => 2 }
+                = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td.amount= f.text_field :visa_price
+              %td= f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :visa_count, (0..30).to_a
+              %td.amount= f.text_field :children_visa_price
+              %td= f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :children_visa_count, (0..30).to_a
+            %tr
+              %th{ :colspan => 3 }
+                = f.label :insurance_price
+              %th{ :colspan => 3 }
+                = f.label :additional_insurance_price
+              %th{ :colspan => 3 }
+                = f.label :fuel_tax_price
+            %tr{ :class => 'countable' }
+              %td.amount= f.text_field :insurance_price
+              %td= f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :insurance_count, (0..30).to_a
+              %td.amount= f.text_field :additional_insurance_price
+              %td= f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :additional_insurance_count, (0..30).to_a
+              %td.amount= f.text_field :fuel_tax_price
+              %td= f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :fuel_tax_count, (0..30).to_a
+            %tr{ :class => 'countable' }
+              %th{ :colspan => 6, :style => 'text-align:right; padding-right:6px;' }
+                = f.label :additional_services_price
+              %td.amount= f.text_field :additional_services_price
+              %td= f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td
+            %tr
+              %td{ :colspan => 9 }
+                %br
+            %tr
+              %th{ :colspan => 9 }
+                = f.label :primary_currency_price
+            %tr
+              %td.amount= f.text_field :primary_currency_price, :class => 'red'
+              %td{ :colspan => 8 }
+                = text_field_tag :price_as_string,
+                  @claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY), :class => 'red', :disabled => true
+            %tr
+              %th{ :colspan => 9 }
+                = f.label :calculation
+            %tr
+              %td{ :colspan => 9 }
+                = f.text_area :calculation, :rows => 4
 
     #payments_block
       .data_block

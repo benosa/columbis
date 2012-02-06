@@ -44,7 +44,7 @@ h2 {
 }
 #container .wrapper {
   margin: 0 auto;
-  width: 1024px;
+  width: 1100px;
 }
 
 #flash_notice, #flash_error, #flash_alert {
@@ -211,7 +211,7 @@ input[type="submit"] {
   background-color: #fbfbfb;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
   height: 20px;
   color: blue;
   font-size: 8pt;
@@ -333,6 +333,14 @@ form .data_block th {
 #tour_price {
   padding: 2px;
   width: 100%;
+}
+
+#tour_price td input.wide {
+  width: 100px;
+}
+
+#tour_price td.amount {
+  width: 80px;
 }
 
 #indicators {
@@ -462,8 +470,14 @@ form .data_block input.narrow {
   width: 50%;
 }
 
+#claim_docs_note {
+  width: 532px;
+}
+#claim_calculation {
+  width: 100%;
+}
+
 #claim_calculation, #claim_docs_note {
-  width: 455px;
   color: blue;
   font-size: 8pt;
   font-weight: bold;

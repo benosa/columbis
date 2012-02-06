@@ -10,10 +10,17 @@ class ApplicationController < ActionController::Base
   end
 
   def amount_in_word
-    render :text => RuPropisju.amount_in_word(params[:amount], params[:currency])
+    render :text => params[:amount].to_f.amount_in_word(params[:currency])
   end
 
   def get_currency_course
     render :text => CurrencyCourse.actual_course(params[:currency])
+  end
+end
+
+class Float
+  def amount_in_word( currency)
+    str = RuPropisju.amount_in_word(self, currency)
+    str.mb_chars.capitalize.to_s
   end
 end

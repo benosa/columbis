@@ -73,7 +73,9 @@ class Claim < ActiveRecord::Base
     indexes airport_to, airport_back, flight_to, flight_back, meals, placement
     indexes hotel, memo, transfer, relocation, service_class, additional_services
 
-    indexes user(:last_name), :as => :user_last_name, :sortable => true
+    indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true
+
+    indexes user(:last_name), :as => :last_name, :sortable => true
     indexes office(:name), :as => :office, :sortable => true
     indexes operator(:name), :as => :operator, :sortable => true
     indexes country(:name), :as => :country, :sortable => true
@@ -88,13 +90,14 @@ class Claim < ActiveRecord::Base
 
   def self.search_and_sort(options = {})
     options = { :filter => '', :column => 'id', :direction => 'asc' }.merge(options)
+
     ids = search(options[:filter]).map(&:id)
     claims = where('claims.id in(?)', ids)
 
     return claims if claims.empty?
 
     if options[:column] == 'applicant.last_name'
-      claims.joins(:user).order('user_last_name ' + options[:direction])
+      claims.joins(:applicant).order('tourists.last_name ' + options[:direction])
     elsif %w[countries.name offices.name operators.name].include?(options[:column])
       claims.joins(options[:column].sub('.name', '').singularize.to_sym).order(options[:column] + ' ' + options[:direction])
     else

@@ -5,7 +5,7 @@
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th= sortable 'user_id', t('claims.index.manager')
       %th= sortable 'applicant.last_name', t('claims.index.full_name')
-      /%th= t('claims.index.full_name')
+      /%th.medium= t('claims.index.full_name')
       %th= t('claims.index.phone_number')
       %th.medium= sortable 'depart_to', t('claims.index.depart_to')
       %th.medium= sortable 'depart_back', t('claims.index.depart_back')

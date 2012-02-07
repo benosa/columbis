@@ -150,6 +150,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
       payment_hash[:payer_type] = self.applicant.class.try(:name)
+
       case payment_hash[:currency]
       when 'eur'
         payment_hash[:course] = self.course_eur

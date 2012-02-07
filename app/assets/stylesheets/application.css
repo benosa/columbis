@@ -192,8 +192,7 @@ h2 {
 }
 
 #payments_block {
-  margin-left:345px;
-  background: url('palm.png') 0px 392px no-repeat;
+  margin-left:390px;
 }
 
 input[type="submit"] {
@@ -392,7 +391,7 @@ form .data_block input.datepicker {
   width: 100%;
 }
 
-#palm_block .amount {
+#palm_block input.amount {
   width: 90px;
 }
 

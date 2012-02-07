@@ -73,7 +73,7 @@ class Claim < ActiveRecord::Base
     indexes airport_to, airport_back, flight_to, flight_back, meals, placement
     indexes hotel, memo, transfer, relocation, service_class, additional_services
 
-    indexes user(:last_name), :as => :user, :sortable => true
+    indexes user(:last_name), :as => :user_last_name, :sortable => true
     indexes office(:name), :as => :office, :sortable => true
     indexes operator(:name), :as => :operator, :sortable => true
     indexes country(:name), :as => :country, :sortable => true
@@ -93,15 +93,10 @@ class Claim < ActiveRecord::Base
 
     return claims if claims.empty?
 
-    if options[:column] == 'applicant_last_name'
-      # TODO sort by last name
-      claims.order('claims.id ' + options[:direction])
-    elsif options[:column] == 'countries.name'
-      claims.joins(:country).order(options[:column] + ' ' + options[:direction])
-    elsif options[:column] == 'offices.name'
-      claims.joins(:office).order(options[:column] + ' ' + options[:direction])
-    elsif options[:column] == 'operators.name'
-      claims.joins(:operator).order(options[:column] + ' ' + options[:direction])
+    if options[:column] == 'applicant.last_name'
+      claims.joins(:user).order('user_last_name ' + options[:direction])
+    elsif %w[countries.name offices.name operators.name].include?(options[:column])
+      claims.joins(options[:column].sub('.name', '').singularize.to_sym).order(options[:column] + ' ' + options[:direction])
     else
       claims.order(options[:column] + ' ' + options[:direction])
     end
@@ -180,8 +175,8 @@ class Claim < ActiveRecord::Base
     self.operator_debt != 0
   end
 
-  def has_notes?
-    !self.docs_note.blank?
+  def has_memo?
+    !self.memo.blank?
   end
 
   def fill_new

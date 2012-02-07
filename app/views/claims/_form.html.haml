@@ -96,15 +96,15 @@
           = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('claims.form.documents_statuses.' << o), o ] },
             {}, :class => @claim.documents_status
         %p
-          = f.label :docs_note
-          %br
-          = f.text_field :docs_note
-        %p
-          = f.label :memo_tasks_done
-          = f.check_box :memo_tasks_done, { :style => 'width:12px;'}
           = f.label :canceled
           = f.check_box :canceled, { :style => 'width:12px;'}
           = f.submit
+        %p
+          %br
+          %br
+          = f.label :docs_note
+          %br
+          = f.text_field :docs_note
 
     #center_block
       %div.clr
@@ -122,8 +122,8 @@
               = (@claim.documents_ready? ? t('yep') : t('nope'))
             %td= t('.documents_ready')
           %tr
-            %td.framed.has_notes_ind{ :class => (!@claim.memo_tasks_done and @claim.docs_note != '') ? 'red_back' : 'blue_back'  }
-              = (@claim.has_notes? ? t('yep') : t('nope'))
+            %td.framed.has_notes_ind{ :class => (!@claim.memo_tasks_done and @claim.memo != '') ? 'red_back' : 'blue_back'  }
+              = (@claim.has_memo? ? t('yep') : t('nope'))
             %td= t('.has_notes')
 
         %table#registration
@@ -187,7 +187,10 @@
             %td{ :colspan => 4 }
               = f.text_field :additional_services
           %tr
-            %th{ :colspan => 4 }
+            %td.left
+              = f.check_box :memo_tasks_done, { :style => 'width:12px;'}
+              = f.label :memo_tasks_done
+            %th{ :colspan => 3 }
               = f.label :memo
           %tr
             %td{ :colspan => 4 }

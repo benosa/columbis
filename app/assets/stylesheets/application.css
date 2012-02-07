@@ -486,6 +486,10 @@ form .data_block input.narrow {
   resize: none;
 }
 
+td.left{
+  text-align: left;
+}
+
 .ui-autocomplete.ui-menu {
   width: 200px !important;
 }

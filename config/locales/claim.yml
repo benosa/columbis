@@ -141,7 +141,7 @@ ru:
         departure_date: 'Дата выезда'
         early_reservation: 'Раннее бронирование'
         documents_status: 'Готовность документов'
-        docs_note: 'Примечание'
+        docs_note: 'Заметки менеджера'
         reservation_date: 'Дата резервирования'
         memo: 'Примечание'
         country_id: 'Направление'

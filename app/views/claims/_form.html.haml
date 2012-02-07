@@ -294,12 +294,13 @@
           = f.fields_for :payments_in do |builder|
             %tr.fields{ :id => "payment_in_#{ind}"}
               %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
+                :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => @claim.new_record?
               %td= builder.text_field :description, :class => 'description', :disabled => true
               %td{ :colspan => 2 }
-                = builder.text_field :form, :class => 'autocomplete payment_form', :disabled => @claim.new_record?
+                = builder.select :form, DropdownValue.where(:list => 'form').collect {|o| [ o.value, o.value ] }, :disabled => @claim.new_record?
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
             = builder.hidden_field :id
             - ind += 1
@@ -328,17 +329,22 @@
             %th= t('.date')
             %th= t('.paid')
             %th= t('.currency')
+            %th= t('.course')
+            %th= t('.paid_rur')
             %th= t('.paid_type')
           - ind = 0
           = f.fields_for :payments_out do |builder|
             %tr.fields{ :id => "payment_out_#{ind}"}
               %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in', :disabled => @claim.new_record?
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
+                :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
                 {}, :class => 'currency', :disabled => @claim.new_record?
-              %td{ :colspan => 2 }
-                = builder.text_field :form, :class => 'autocomplete payment_form', :disabled => @claim.new_record?
+              %td.amount= builder.text_field :course, :class => 'course', :disabled => @claim.new_record?
+              %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
+              %td= builder.select :form, DropdownValue.where(:list => 'form').collect {|o| [ o.value, o.value ] },
+                { :disabled => @claim.new_record? }, :class => 'payment_form'
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}"
             = builder.hidden_field :id
             - ind += 1

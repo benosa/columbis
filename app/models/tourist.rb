@@ -28,4 +28,6 @@ class Tourist < ActiveRecord::Base
     self.first_name = split[1]
     self.middle_name = split[2] if split[2]
   end
+
+  alias_method :name, :full_name
 end

@@ -2,10 +2,34 @@
 
 %table
   %tr
+    %th #
     %th Name
+    %th Claim
+    %th Date_in
+    %th Form
+    %th Payer
+    %th Recipient
+    %th Course
+    %th Currency
+    %th Amount
+    %th Amount prim
+    %th Description,
+    %th Approved
   - for payment in @payments
     %tr
+      %td= payment.id
       %td= payment.amount
+      %td= payment.claim_id
+      %td= payment.date_in
+      %td= payment.form
+      %td= payment.payer.try(:name)
+      %td= payment.recipient.try(:name)
+      %td= payment.course
+      %td= payment.currency
+      %td= payment.amount
+      %td= payment.amount_prim
+      %td= payment.description
+      %td= payment.approved
       %td= link_to 'Show', payment
       %td= link_to 'Edit', edit_payment_path(payment)
       %td= link_to 'Destroy', payment, :confirm => 'Are you sure?', :method => :delete

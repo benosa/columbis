@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120206155907) do
+ActiveRecord::Schema.define(:version => 20120207170124) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20120206155907) do
     t.string   "form",                              :null => false
     t.float    "amount_prim",    :default => 0.0
     t.boolean  "approved",       :default => false
+    t.float    "course",         :default => 1.0
   end
 
   add_index "payments", ["approved"], :name => "index_payments_on_approved"

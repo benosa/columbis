@@ -85,7 +85,9 @@ ru:
 
       date: 'Дата'
       paid: 'Оплачено'
+      paid_rur: 'Оплачено руб.'
       currency: 'Валюта'
+      course: 'Курс'
       paid_type: 'Форма оплаты'
       paid_in_word: 'Сумма прописью'
 

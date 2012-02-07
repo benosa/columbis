@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id,
+  attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id, :course,
                   :recipient_type, :currency, :amount, :amount_prim, :description, :approved
 
   belongs_to :claim
@@ -22,11 +22,7 @@ class Payment < ActiveRecord::Base
   before_save :fill_fields
   def fill_fields
     # we also store amount in primary currency
-    if self.currency == CurrencyCourse::PRIMARY_CURRENCY
-      self.amount_prim = self.amount
-    else
-      self.amount_prim = CurrencyCourse.convert_from_curr_to_curr(self.currency, CurrencyCourse::PRIMARY_CURRENCY, self.amount)
-    end
+    self.amount_prim = self.course * self.amount
     self.description = RuPropisju.amount_in_word(self.amount, self.currency)
   end
 end

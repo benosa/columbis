@@ -323,7 +323,7 @@ $(function(){
         total = total + parseFloat($(fields[i]).val()) * count * course($(fields[i] +'_currency'));
       }
     }
-    sum_price = sum_price + total;
+    sum_price = Math.round(sum_price + total);
 
 
     return sum_price;
@@ -397,11 +397,24 @@ $(function(){
       }
     });
 	}
-	$('#payments_in .amount').change(get_amount_in_word);
-  $('#payments_out .amount').change(get_amount_in_word);
 
-  $('#payments_in .currency').change(get_amount_in_word);
-  $('#payments_out .currency').change(get_amount_in_word);
+  var calculate_amount_prim = function(event){
+    $tr = $(this).parent().parent();
+    $course = $tr.find('input.course');
+    $amount = $tr.find('input.amount');
+
+    var amount_prim = Math.round($course.val() * $amount.val());
+    $tr.find('input.amount_prim').val(amount_prim);
+  }
+
+	$('#payments_in input.amount').change(get_amount_in_word);
+  $('#payments_out input.amount').change(get_amount_in_word);
+
+  $('#payments_out input.amount').change(calculate_amount_prim);
+  $('#payments_out input.course').change(calculate_amount_prim);
+
+  $('#payments_in select.currency').change(get_amount_in_word);
+  $('#payments_out select.currency').change(get_amount_in_word);
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
 
@@ -424,9 +437,6 @@ $(function(){
           tr.next(".hidden_id").val(ui.item.id);
         }
       }
-    },
-      paymentOutForm: {
-      source: "/claims/autocomplete_common/form"
     },
       meals: {
       source: "/claims/autocomplete_common/meals"
@@ -482,7 +492,6 @@ $(function(){
     }
   };
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
-  $("input.autocomplete.payment_form").autocomplete($autocomplete.paymentOutForm);
   $("input.autocomplete.meals").autocomplete($autocomplete.meals);
   $("input.autocomplete.placement").autocomplete($autocomplete.placement);
   $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
@@ -582,8 +591,9 @@ $(function(){
     var p_type = t_id.replace(/#payments_/,'');
 
     $(t_id + ' .fields:last').find('input').each(function(n){
-      if($(this).hasClass('amount')) {
+      if($(this).hasClass('amount') || $(this).hasClass('amount_prim') || $(this).hasClass('course')) {
         $(this).val('0.0');
+        $(this).attr('value', '0.0');
       } else if ($(this).hasClass('approved')) {
         this.checked = false;
       } else {
@@ -609,18 +619,25 @@ $(function(){
 
       $(this).find('input.amount').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount');
       $(this).find('input.amount').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount]');
-      $(t_id + ' .amount').change(get_amount_in_word);
+      $(t_id + ' input.amount').change(get_amount_in_word);
+      $(t_id + ' input.amount').change(calculate_amount_prim);
+
+      $(this).find('input.course').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_course');
+      $(this).find('input.course').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][course]');
+      $(t_id + ' input.course').change(calculate_amount_prim);
+
+      $(this).find('input.amount_prim').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount_prim');
+      $(this).find('input.amount_prim').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount_prim]');
 
       $(this).find('select.currency').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_currency');
       $(this).find('select.currency').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][currency]');
-      $(t_id + ' .currency').change(get_amount_in_word);
+      $(t_id + ' input.currency').change(get_amount_in_word);
 
       $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
       $(this).find('input.description').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][description]');
 
-      $(this).find('input.payment_form').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_form');
-      $(this).find('input.payment_form').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][form]');
-      $("input.autocomplete.payment_form").autocomplete($autocomplete.paymentOutForm);
+      $(this).find('select.payment_form').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_form');
+      $(this).find('select.payment_form').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][form]');
 
       var hidden_id = $(this).next('[type=hidden]');
       hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');

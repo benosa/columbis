@@ -196,7 +196,10 @@
             %td{ :colspan => 4 }
               = f.text_field :memo
 
-        %table#arrival_date
+        %table#palm_block
+          %tr
+            %td{ :rowspan => 6, :width => '250px' }
+              = image_tag 'palm.png'
           %tr
             %th{ :colspan => 4 }= t('.arrival_date')
           %tr
@@ -204,21 +207,21 @@
             %td= f.text_field :arrival_date, :class => 'datepicker red', :value => l(@claim.arrival_date, :format => :long)
             %td.text_right= t('.til')
             %td= f.text_field :departure_date, :class => 'datepicker red', :value => l(@claim.departure_date, :format => :long)
-
-      .data_block
-        %h2= t('.tour_price')
-        %div{ :style => 'float:none'}
-          #courses_block
-            %p
+          %tr
+            %td{ :colspan => 4 }
+              %h2= t('.tour_price')
+          %tr
+            %td{ :colspan => 2 }
+            %td{ :colspan => 2 }
               = f.label :course_eur
-              = f.text_field :course_eur, :class => 'countable'
-              /= link_to t('.reset'), '#'
-            %p
+              = f.text_field :course_eur, :class => 'countable amount'
+          %tr
+            %td{ :colspan => 2 }
+            %td{ :colspan => 2 }
               = f.label :course_usd
-              = f.text_field :course_usd, :class => 'countable'
-              /= link_to t('.reset'), '#'
+              = f.text_field :course_usd, :class => 'countable amount'
 
-          %table#tour_price
+          %table#tour_price{ :style => 'float:none'}
             %tr
               %th{ :colspan => 3 }
                 = f.label :tour_price

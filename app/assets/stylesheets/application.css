@@ -189,7 +189,6 @@ h2 {
 
 #center_block {
   margin-left:545px;
-  background: url('palm.png') 0px 392px no-repeat;
 }
 
 #payments_block {
@@ -389,18 +388,12 @@ form .data_block input.datepicker {
   width: 18%;
 }
 
-#arrival_date {
-  width: 340px;
-  float:right;
-  margin-left:120px;
+#palm_block {
+  width: 100%;
 }
 
-#courses_block {
-  float:right;
-}
-
-#courses_block input {
-  width: 110px;
+#palm_block .amount {
+  width: 90px;
 }
 
 #flights input.datetimepicker, #arrival_date input.datepicker{

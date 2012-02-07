@@ -136,7 +136,7 @@ $(function(){
     var check_date_arr = $('#claim_check_date').val().split('.');
     var d, m, y;
 
-    d = parseInt(check_date_arr[0])-1; // we want to get one day before...
+    d = parseInt(check_date_arr[0])-1; // we want to get two day before...
     m = parseInt(check_date_arr[1])-1;
     y = parseInt(check_date_arr[2]);
 
@@ -324,7 +324,6 @@ $(function(){
       }
     }
     sum_price = Math.round(sum_price + total);
-
 
     return sum_price;
   }

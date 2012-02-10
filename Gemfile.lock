@@ -82,7 +82,7 @@ GEM
     highline (1.6.2)
     hike (1.2.1)
     i18n (0.6.0)
-    jquery-rails (1.0.14)
+    jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
     libv8 (3.3.10.2)
@@ -194,7 +194,7 @@ DEPENDENCIES
   fabrication
   factory_girl_rails
   haml
-  jquery-rails
+  jquery-rails (= 1.0.19)
   mocha
   mongrel (>= 1.2.0.pre2)
   nifty-generators

@@ -11,8 +11,8 @@ class ClaimsController < ApplicationController
         :id => tourist.id,
         :passport_series => tourist.passport_series,
         :passport_number => tourist.passport_number,
-        :date_of_birth => tourist.date_of_birth,
-        :passport_valid_until => tourist.passport_valid_until,
+        :date_of_birth => tourist.date_of_birth.try(:strftime, '%d-%m-%Y'),
+        :passport_valid_until => tourist.passport_valid_until.try(:strftime, '%d-%m-%Y'),
         :phone_number => tourist.phone_number,
         :address => tourist.address
       }

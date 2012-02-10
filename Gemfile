@@ -9,7 +9,7 @@ gem 'rack', '1.3.5'
 gem 'devise'
 gem 'cancan'
 
-gem 'jquery-rails'
+gem 'jquery-rails', '1.0.19'
 gem 'therubyracer'
 
 gem 'will_paginate', '~> 3.0'

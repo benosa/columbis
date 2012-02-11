@@ -5,7 +5,7 @@
       %th= f.label :list
       %th= f.label :value
     %tr
-      %td= f.text_field :list
+      %td= select_tag :list_filter, options_for_select(DropdownValue.all(:select => 'distinct(list)').map(&:list))
       %td= f.text_field :value
   %p
     = f.submit

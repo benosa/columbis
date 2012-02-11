@@ -1,6 +1,13 @@
 class DropdownValuesController < ApplicationController
+  load_and_authorize_resource
+
   def index
-    @dropdown_values = DropdownValue.all
+    if params[:list]
+      @dropdown_values = DropdownValue.where(:list => params[:list])
+      render :partial => 'table'
+    else
+      @dropdown_values = DropdownValue.all
+    end
   end
 
   def new

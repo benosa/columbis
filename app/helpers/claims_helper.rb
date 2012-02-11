@@ -1,6 +1,6 @@
 module ClaimsHelper
   def text_for_visa(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
 
     if claim.visa_confirmation_flag
       if claim.visa == 'docs_sent'
@@ -14,7 +14,7 @@ module ClaimsHelper
   end
 
   def check_date_status(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
     return 'hot' unless claim.check_date
 
     if claim.closed?
@@ -27,7 +27,7 @@ module ClaimsHelper
   end
 
   def color_for_tourist_advance(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
 
     color = 'blue_back'
     if claim.canceled?
@@ -39,7 +39,7 @@ module ClaimsHelper
   end
 
   def color_for_operator_debt(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
 
     color = 'blue_back'
     if claim.has_operator_debt?
@@ -55,14 +55,14 @@ module ClaimsHelper
 
 
   def color_for_visa(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
 
     return 'all_done' if claim.new_record?
     !claim.visa_confirmation_flag ? 'all_done' : claim.visa
   end
 
   def color_for_visa_check(claim)
-    return if claim.canceled?
+    return '' if claim.canceled?
 
     if claim.visa_confirmation_flag?
       (%w[docs_sent visa_approved all_done].include?(claim.visa)) ? 'green_back' : 'red_back'
@@ -70,8 +70,8 @@ module ClaimsHelper
   end
 
   def color_for_flight(claim)
-    return 'empty' unless claim.depart_to
-    return if claim.canceled?
+    return '' unless claim.depart_to
+    return '' if claim.canceled?
 
     if claim.depart_to > Time.now + 8.day
      'soon'

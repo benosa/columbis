@@ -47,7 +47,7 @@
     = f.label :company
     %br/
     - if current_user.role == 'admin'
-      = f.collection_select :company, Company.all, :name
+      = f.collection_select :company, Company.all, :id, :name
     - else
       = @user.company.try(:name)
   .actions

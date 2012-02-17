@@ -15,6 +15,19 @@ class CurrencyCourse < ActiveRecord::Base
 
   scope :order_by_date, order('on_date DESC')
 
+  def self.currency_symbol(curr)
+    case curr
+    when 'rur'
+      'р.'
+    when 'eur'
+      '€'
+    when 'usd'
+      '$'
+    else
+      raise 'Unknown currency!'
+    end
+  end
+
   def self.convert_from_curr_to_curr(source_currency, target_currency, amount)
     return amount if source_currency == target_currency or amount == 0
 

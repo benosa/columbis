@@ -23,6 +23,6 @@ class Payment < ActiveRecord::Base
   def fill_fields
     # we also store amount in primary currency
     self.amount_prim = (self.course * self.amount).round
-    self.description = RuPropisju.amount_in_word(self.amount, self.currency)
+    self.description = RuPropisju.amount_in_word(self.amount, self.currency).mb_chars.capitalize.to_s
   end
 end

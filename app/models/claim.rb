@@ -24,7 +24,7 @@ class Claim < ActiveRecord::Base
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
-                  :docs_note, :closed, :memo_tasks_done, :canceled
+                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat
 
 
   # amounts and payments
@@ -150,15 +150,9 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
       payment_hash[:payer_type] = self.applicant.class.try(:name)
+      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
+      payment_hash[:course] = 1
 
-      case payment_hash[:currency]
-      when 'eur'
-        payment_hash[:course] = self.course_eur
-      when 'usd'
-        payment_hash[:course] = self.course_usd
-      else
-        payment_hash[:course] = 1
-      end
       process_payment_hash(payment_hash, self.payments_in)
     end
 
@@ -169,6 +163,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = self.operator.class.try(:name)
       payment_hash[:payer_id] = Company.first.try(:id)
       payment_hash[:payer_type] = Company.first.class.try(:name)
+      payment_hash[:currency] = self.operator_price_currency
 
       process_payment_hash(payment_hash, self.payments_out)
     end
@@ -192,9 +187,10 @@ class Claim < ActiveRecord::Base
 
   def fill_new
     self.applicant = Tourist.new
-    self.payments_in << Payment.new
-    self.payments_out << Payment.new
+    self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
+    self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
 
+    self.operator_price_currency = CurrencyCourse::PRIMARY_CURRENCY
     self.reservation_date = Date.today
     self.maturity = Date.today + 3.days
   end
@@ -214,11 +210,10 @@ class Claim < ActiveRecord::Base
   private
 
   def update_debts
-    self.operator_advance = self.payments_out.sum('amount_prim')
-    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount_prim')
+    self.operator_advance = self.payments_out.sum('amount')
+    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
 
-    self.operator_debt = (CurrencyCourse.convert_from_curr_to_curr(
-      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price)) - self.operator_advance
+    self.operator_debt = self.operator_price - self.operator_advance
     self.operator_paid = create_paid_string(:out)
 
     self.tourist_advance = self.payments_in.sum('amount_prim')

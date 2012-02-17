@@ -137,6 +137,13 @@ h2 {
   background-color: #f3982d;
 }
 
+#documents_to_print_menu ul li.disabled {
+  padding: 7px 20px;
+  background-color: #f6e7c0;
+  color: gray;
+  border: 1px solid #5c1c03;
+}
+
 #databases_menu ul {
   margin: 1px 0 0 30px;
 }
@@ -164,14 +171,6 @@ h2 {
 
 #documents_to_print_menu li a.selected, #databases_menu ul li a.selected {
   background-color: #f3982d;
-}
-
-#databases_menu ul li.disabled {
-  color: gray;
-  background-color: white;
-  border: 1px solid #5c1c03;
-  margin-right: 1px;
-  padding: 0px 5px;
 }
 
 #left_block {
@@ -210,7 +209,7 @@ input[type="submit"] {
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
-  height: 20px;
+  height: 18px;
   color: blue;
   font-size: 8pt;
   font-weight: bold;
@@ -240,6 +239,10 @@ table th.thick_border, table td.thick_border {
 
 table td.text_right {
   text-align: right;
+}
+
+table td.text_left {
+  text-align: left;
 }
 
 table th .hint  {
@@ -277,7 +280,8 @@ table th.id  {
 
 #claims {
   border: 1px solid black;
-  padding: 1px;
+  padding: 0px;
+  margin: 0px;
   font-size: 10px;
   background-color: #bde0fa;
 }
@@ -290,6 +294,14 @@ table th.id  {
   width: 65px;
 }
 
+#claims th.w85px {
+  width: 85px;
+}
+
+#claims th.w36px {
+  width: 36px;
+}
+
 #claims th.short_date {
   width: 35px;
 }
@@ -299,8 +311,10 @@ table th.id  {
   padding: 4px;
 }
 
-#claims tr {
+#claims td {
   height: 20px;
+    padding: 0px;
+  margin: 0px;
 }
 
 #container form input[type="text"].passport_series {
@@ -358,7 +372,6 @@ form .data_block th {
 }
 
 form .data_block input[type="text"] {
-  height:20px;
   width: 100%;
 }
 

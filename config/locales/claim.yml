@@ -40,6 +40,7 @@ ru:
       operator_confirmation: 'Подтвержд.'
       phone_number: 'Тел.'
       sent: 'Отпр.'
+      tourist_stat: 'Откуда'
     form:
       reset: 'Сброс'
       office: 'Офис'
@@ -49,6 +50,7 @@ ru:
       check_date: 'Контрольная дата'
       operator: 'Туроператор'
       tourist: 'Турист'
+      tourist_stat: 'Статистика'
 
       tourist_debt: 'Долг туриста'
       operator_debt: 'Долг оператору'
@@ -103,6 +105,8 @@ ru:
     new:
       title: 'Новая заявка'
     edit:
+      title: 'Редактировать заявку'
+    show:
       title: 'Редактировать заявку'
     messages:
       successfully_created_claim: 'Заявка создана'
@@ -173,3 +177,18 @@ ru:
         medical_insurance: 'Медстраховка'
         canceled: 'Аннулирована'
         memo_tasks_done: 'Примечания учтены'
+        tourist_stat: 'Откуда пришел клиент'
+        payments_in:
+          currency: 'Оплата туристом: Валюта'
+          date_in: 'Оплата туристом: Дата оплаты'
+          amount: 'Оплата туристом: Сумма'
+          course: 'Оплата туристом: Курс'
+          amount_prim: 'Оплата туристом: Сумма руб.'
+          form: 'Оплата туристом: Форма оплаты'
+        payments_out:
+          currency: 'Оплата оператору: Валюта'
+          date_in: 'Оплата оператору: Дата оплаты'
+          amount: 'Оплата оператору: Сумма'
+          course: 'Оплата оператору: Курс'
+          amount_prim: 'Оплата оператору: Сумма руб.'
+          form: 'Оплата оператору: Форма оплаты'

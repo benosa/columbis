@@ -42,7 +42,7 @@ class ClaimsController < ApplicationController
     else
       params[:list_type] = 'manager_list'
     end
-    render :partial => params[:list_type]
+    render :partial => 'list'
   end
 
   def index
@@ -119,8 +119,8 @@ class ClaimsController < ApplicationController
   private
 
   def check_payments
-    @claim.payments_in << Payment.new if @claim.payments_in.empty?
-    @claim.payments_out << Payment.new if @claim.payments_out.empty?
+    @claim.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_in.empty?
+    @claim.payments_out << Payment.new(:currency => @claim.operator_price_currency) if @claim.payments_out.empty?
   end
 
   def sort_column

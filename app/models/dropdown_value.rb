@@ -3,6 +3,18 @@ class DropdownValue < ActiveRecord::Base
   validates_presence_of :list, :value
   validates_uniqueness_of :value, :scope => :list
 
+  def self.available_lists
+    { :relocation => 'Переезд',
+      :hotel => 'Отель',
+      :form => 'Форма оплаты',
+      :airport => 'Аэропорт',
+      :transfer => 'Трансфер',
+      :meals => 'Питание',
+      :service_class => 'Класс',
+      :tourist_stat => 'Откуда турист'
+    }
+  end
+
   def self.check_and_save(list, value)
     self.create(:list => list, :value => value) unless self.where(:list => list, :value => value).first
   end

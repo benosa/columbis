@@ -1,5 +1,5 @@
 - title t('.title')
-= select_tag :list_filter, options_for_select(DropdownValue.all(:select => 'distinct(list)').map(&:list))
+= select_tag :list_filter, options_for_select(DropdownValue.available_lists.map{ |k,v| [v, k] })
 
 = render :partial => 'table'
 

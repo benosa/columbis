@@ -152,7 +152,6 @@ $(function(){
     } else {
       $('#claim_check_date').addClass('soon');
     }
-
   });
 
   // load list
@@ -332,24 +331,9 @@ $(function(){
     var total = calculate_tour_price();
     $('#claim_primary_currency_price').val(total);
     $('#claim_primary_currency_price').change();
+    calculate_tourist_debt();
     update_calculation();
   });
-
-  // get system course
-  var get_system_course = function(e){
-    e.preventDefault();
-    $.ajax({
-      url: "/get_currency_course",
-      type: "POST",
-      data: "currency=" + $(e.currentTarget).prev('input').attr('id').replace(/claim_course_/,''),
-      cache: false,
-      success: function(resp){
-        $(e.currentTarget).prev('input').val(resp);
-        calculate_tour_price();
-      }
-    });
-  }
-	$('#courses_block a').click(get_system_course);
 
   // city, resort, flights
   $('#claim_city').change(function(){
@@ -384,7 +368,7 @@ $(function(){
     $.ajax({
       url: "/amount_in_word",
       type: "POST",
-      data: create_data_string($(this)),
+      data: create_data_string($(event.currentTarget)),
       cache: false,
       success: function(resp){
         if(/^claim_payments_.{2,3}_attributes_\d+_(amount|currency)/.test($(event.currentTarget).attr('id'))){
@@ -396,24 +380,62 @@ $(function(){
       }
     });
 	}
+  var calculate_tourist_debt = function(event){
+    var price = parseFloat($('#claim_primary_currency_price').val());
+    var paid = 0.0;
+    if (isFinite(price)) {
+      $('#payments_in tr.fields').each(function (i) {
+        var val = parseFloat($('#claim_payments_in_attributes_' + i + '_amount').val());
+        if (isFinite(val)) {
+          paid += val;
+        }
+      });
+    }
+    $('#claim_tourist_debt').val(price - paid);
+  }
+
+  var calculate_operator_debt = function(event){
+    var price = parseFloat($('#claim_operator_price').val());
+    var paid = 0.0;
+    if (isFinite(price)) {
+      $('#payments_out tr.fields').each(function (i) {
+        var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount').val());
+        if (isFinite(val)) {
+          paid += val;
+        }
+      });
+    }
+    $('#claim_operator_debt').val(price - paid);
+  }
+
+  $('#claim_operator_price_currency').change(function (event){
+    $('#payments_out tr.fields').each(function (i) {
+      $('#claim_payments_out_attributes_' + i + '_currency').val($('#claim_operator_price_currency').val());
+    });
+    calculate_operator_debt(event);
+  });
+
+  $('#claim_operator_price').change(calculate_operator_debt);
 
   var calculate_amount_prim = function(event){
-    $tr = $(this).parent().parent();
-    $course = $tr.find('input.course');
-    $amount = $tr.find('input.amount');
+    $tr = $(event.currentTarget).parent().parent();
+    $course = $tr.find('input.course').val();
+    $amount = $tr.find('input.amount').val();
 
-    var amount_prim = Math.round($course.val() * $amount.val());
+    var amount_prim = Math.round($course * $amount);
     $tr.find('input.amount_prim').val(amount_prim);
   }
 
-	$('#payments_in input.amount').change(get_amount_in_word);
-  $('#payments_out input.amount').change(get_amount_in_word);
+  $('#payments_in input.amount').change(function(event){
+    get_amount_in_word(event);
+  	calculate_tourist_debt(event);
+  });
 
-  $('#payments_out input.amount').change(calculate_amount_prim);
-  $('#payments_out input.course').change(calculate_amount_prim);
-
-  $('#payments_in select.currency').change(get_amount_in_word);
-  $('#payments_out select.currency').change(get_amount_in_word);
+	$('#payments_out input.amount, #payments_out input.course').change(function(event){
+    calculate_amount_prim(event);
+  	get_amount_in_word(event);
+  	calculate_operator_debt(event);
+  });
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
 
@@ -618,25 +640,33 @@ $(function(){
 
       $(this).find('input.amount').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount');
       $(this).find('input.amount').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount]');
-      $(t_id + ' input.amount').change(get_amount_in_word);
-      $(t_id + ' input.amount').change(calculate_amount_prim);
 
       $(this).find('input.course').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_course');
       $(this).find('input.course').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][course]');
-      $(t_id + ' input.course').change(calculate_amount_prim);
 
       $(this).find('input.amount_prim').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_amount_prim');
       $(this).find('input.amount_prim').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][amount_prim]');
 
       $(this).find('select.currency').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_currency');
       $(this).find('select.currency').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][currency]');
-      $(t_id + ' input.currency').change(get_amount_in_word);
+
 
       $(this).find('input.description').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_description');
       $(this).find('input.description').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][description]');
 
       $(this).find('select.payment_form').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_form');
       $(this).find('select.payment_form').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][form]');
+
+      $('#payments_in input.amount').change(function(event){
+        get_amount_in_word(event);
+      	calculate_tourist_debt(event);
+      });
+
+	    $('#payments_out input.amount, #payments_out input.course').change(function(event){
+        calculate_amount_prim(event);
+      	get_amount_in_word(event);
+      	calculate_operator_debt(event);
+      });
 
       var hidden_id = $(this).next('[type=hidden]');
       hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');
@@ -667,6 +697,8 @@ $(function(){
       $tr.remove();
     }
 
+    calculate_tourist_debt();
+    calculate_operator_debt();
   }
 	$('#payments_in a.del').click(del_payment);
 	$('#payments_out a.del').click(del_payment);

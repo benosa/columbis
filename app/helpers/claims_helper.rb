@@ -1,4 +1,20 @@
 module ClaimsHelper
+  def operator_price(claim)
+    claim.operator_price.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
+  end
+
+  def approved_advance(claim, who)
+    if who == :tourist
+      claim.approved_tourist_advance.to_money + CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
+    else
+      claim.approved_operator_advance.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
+    end
+  end
+
+  def tourists_list(claim)
+    ([claim.applicant.full_name] + claim.dependents.map{ |o| o.full_name }).join(', ')
+  end
+
   def text_for_visa(claim)
     return '' if claim.canceled?
 

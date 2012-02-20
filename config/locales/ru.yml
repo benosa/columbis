@@ -9,6 +9,7 @@ ru:
       default: "%d.%m %h:%m"
       short: "%d.%m %H:%M"
       long: "%d.%m.%Y %H:%M"
+      short_date: "%d.%m"
 
   yep: 'Да'
   nope: 'Нет'

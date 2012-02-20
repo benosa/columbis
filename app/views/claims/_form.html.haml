@@ -109,6 +109,8 @@
 
         %p
           = f.submit
+          - if (!@claim.new_record? && (can? :destroy, @claim))
+            = link_to t('destroy'), @claim, :confirm => t('are_you_sure'), :method => :delete, :class => 'button_delete'
 
     #center_block
       %div.clr

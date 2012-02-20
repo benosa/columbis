@@ -31,8 +31,7 @@ class Claim < ActiveRecord::Base
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
-                  :primary_currency_operator_price, :profit, :profit_in_percent,
-                  :approved_operator_advance, :approved_tourist_advance
+                  :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance
 
   belongs_to :user
   belongs_to :office
@@ -89,7 +88,7 @@ class Claim < ActiveRecord::Base
   end
 
   def self.search_and_sort(options = {})
-    options = { :filter => '', :column => 'id', :direction => 'asc' }.merge(options)
+    options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
 
     ids = search(options[:filter]).map(&:id)
     claims = where('claims.id in(?)', ids)
@@ -212,6 +211,7 @@ class Claim < ActiveRecord::Base
   def update_debts
     self.operator_advance = self.payments_out.sum('amount')
     self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
+    self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
 
     self.operator_debt = self.operator_price - self.operator_advance
     self.operator_paid = create_paid_string(:out)
@@ -219,22 +219,53 @@ class Claim < ActiveRecord::Base
     self.tourist_advance = self.payments_in.sum('amount_prim')
     self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
 
+    self.primary_currency_price = calculate_tour_price
     self.tourist_debt = self.primary_currency_price - self.tourist_advance
     self.tourist_paid = create_paid_string(:in)
 
-    self.primary_currency_operator_price = (CurrencyCourse.convert_from_curr_to_curr(
-      self.operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, self.operator_price))
+    # profit amount available only full payment
+    if approved_operator_advance >= operator_price
 
-    self.profit = self.primary_currency_price - primary_currency_operator_price
-    self.profit = 0 unless self.profit.is_a?(Float)
+      self.profit = primary_currency_price - approved_operator_advance_prim
 
-    self.profit_in_percent =
-      begin
-        perc = CurrencyCourse.convert_from_curr_to_curr(operator_price_currency, CurrencyCourse::PRIMARY_CURRENCY, operator_price)/100
-        perc > 0 ? profit/perc : 0
-      rescue
-        0
-      end
+      self.profit_in_percent =
+        begin
+          perc = approved_operator_advance_prim / 100
+          perc > 0 ? profit/perc : 0
+        rescue
+          0
+        end
+    else
+      self.profit = 0
+      self.profit_in_percent = 0
+    end
+  end
+
+  def calculate_tour_price
+
+    sum_price = tour_price * course(tour_price_currency)
+    sum_price += additional_services_price * course(additional_services_price_currency);
+
+    # some fields are calculated per person
+    fields =  ['visa_price', 'children_visa_price', 'insurance_price', 'additional_insurance_price', 'fuel_tax_price'];
+
+    total = 0;
+    fields.each do |f|
+      count = send(f.sub(/_price$/, '_count'))
+      total += send(f) * count * course(send(f + '_currency')) if (count > 0)
+    end
+    (sum_price + total).round
+  end
+
+  def course(curr)
+    case curr
+    when 'eur'
+      course_eur
+    when 'usd'
+      course_usd
+    else
+      1
+    end
   end
 
   def create_paid_string(in_out)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120217013517) do
+ActiveRecord::Schema.define(:version => 20120220135951) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20120217013517) do
     t.boolean  "delta",                               :default => true
     t.float    "operator_advance",                    :default => 0.0,            :null => false
     t.string   "operator_paid"
-    t.float    "primary_currency_operator_price",     :default => 0.0,            :null => false
     t.float    "profit",                              :default => 0.0,            :null => false
     t.float    "profit_in_percent",                   :default => 0.0,            :null => false
     t.string   "transfer"
@@ -126,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20120217013517) do
     t.integer  "children_visa_count"
     t.string   "children_visa_price_currency",        :default => "eur",          :null => false
     t.string   "tourist_stat"
+    t.float    "approved_operator_advance_prim",      :default => 0.0,            :null => false
   end
 
   create_table "clients", :force => true do |t|

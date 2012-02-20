@@ -35,4 +35,8 @@ $(function(){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
   });
   $('.color_sample').css('background-color', $('#user_color').val());
+
+  $('#tour_price input, #payments_in input, #payments_out input').click(function(e){
+    e.currentTarget.select();
+  });
 });

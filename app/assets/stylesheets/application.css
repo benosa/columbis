@@ -194,7 +194,7 @@ h2 {
   margin-left:390px;
 }
 
-input[type="submit"] {
+input[type="submit"], a.button_delete{
   font-style: italic;
   font-weight: bold;
   font-family: Arial,Times New Roman sans-serif;
@@ -206,6 +206,12 @@ input[type="submit"] {
   width: 150px;
   height: 35px;
   background-color: #fbfbfb;
+}
+
+a.button_delete {
+  text-decoration:none;
+  color: black;
+  padding: 4.5pt;
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
@@ -288,18 +294,27 @@ table th.id  {
 
 #claims th{
   background-color: yellow;
+  font-size: 9px;
 }
 
 #claims th.medium {
   width: 65px;
 }
 
-#claims th.w85px {
-  width: 85px;
+#claims th.w75 {
+  width: 75px;
 }
 
-#claims th.w36px {
-  width: 36px;
+#claims th.w50px {
+  width: 50px;
+}
+
+#claims th.w45px {
+  width: 45px;
+}
+
+#claims th.last_cols {
+  width: 14px;
 }
 
 #claims th.short_date {

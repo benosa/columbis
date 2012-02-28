@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
   belongs_to :office
 
   validates_uniqueness_of :login
-  validates_presence_of :login, :role, :office_id
+  validates_presence_of :login, :role
+  validates_presence_of :office_id, :unless => Proc.new{  User.all.empty? }
 
   before_validation :set_role, :on => :create
 

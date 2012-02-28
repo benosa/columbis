@@ -16,7 +16,7 @@ describe OfficesController do
 
     it 'should be successful' do
       do_get
-      response.should be_success                
+      response.should be_success
     end
 
     it 'should find all offices' do
@@ -26,7 +26,7 @@ describe OfficesController do
 
     it 'should render offices/index.html' do
       do_get
-      response.should render_template('index')                
+      response.should render_template('index')
     end
   end
 
@@ -50,7 +50,7 @@ describe OfficesController do
 
   describe 'POST create' do
     def do_office
-      post :create, :office => {:name => 'office'}
+      post :create, :office => {:name => 'branch'}
     end
 
     it 'should redirect to offices/show.html' do
@@ -63,7 +63,7 @@ describe OfficesController do
     end
   end
 
-  describe 'GET edit' do    
+  describe 'GET edit' do
     def do_get
       get :edit, :id => @office.id
     end
@@ -75,7 +75,7 @@ describe OfficesController do
     it 'should render offices/edit' do
       response.should render_template('edit')
     end
-    
+
     it 'should be successful' do
       response.should be_success
     end
@@ -97,7 +97,7 @@ describe OfficesController do
     it 'should change office name' do
       assigns[:office].name.should == 'first'
     end
-    
+
     it 'should redirect to offices/show.html' do
       response.should redirect_to @office
     end

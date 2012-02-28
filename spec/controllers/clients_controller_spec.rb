@@ -16,7 +16,7 @@ describe ClientsController do
 
     it 'should be successful' do
       do_get
-      response.should be_success                
+      response.should be_success
     end
 
     it 'should find all clients' do
@@ -26,7 +26,7 @@ describe ClientsController do
 
     it 'should render clients/index.html' do
       do_get
-      response.should render_template('index')                
+      response.should render_template('index')
     end
   end
 
@@ -50,8 +50,9 @@ describe ClientsController do
 
   describe 'POST create' do
     def do_client
-      post :create, :client => {:last_name => 'Ivanov', :first_name => 'Ivan', :middle_name => 'Ivanovich', :address =>'',
-:phone_number => '', :passport_number => '123444', :passport_series => '1234', :date_of_birth => '', :passport_valid_until => ''}
+      post :create, :client => { :last_name => 'Ivanov', :first_name => 'Ivan', :middle_name => 'Ivanovich',
+                                  :address =>'', :phone_number => '', :passport_number => '123444',
+                                  :passport_series => '1234', :date_of_birth => '', :passport_valid_until => '' }
     end
 
     it 'should redirect to clients/show.html' do
@@ -64,19 +65,16 @@ describe ClientsController do
     end
   end
 
-  describe 'GET edit' do    
-    def do_get
-      get :edit, :id => @client.id
-    end
+  describe 'GET edit' do
 
     before (:each) do
-      do_get
+      get :edit, :id => @client.id
     end
 
     it 'should render clients/edit' do
       response.should render_template('edit')
     end
-    
+
     it 'should be successful' do
       response.should be_success
     end
@@ -87,18 +85,14 @@ describe ClientsController do
   end
 
   describe 'PUT update' do
-    def do_put
-      put :update, :id => @client.id, :client => {:last_name => 'Ivanov'}
-    end
-
     before(:each) do
-      do_put
+      put :update, :id => @client.id, :client => {:last_name => 'Petrov'}
     end
 
     it 'should change client last_name' do
-      assigns[:client].last_name.should == 'Ivanov'
+      assigns[:client].last_name.should == 'Petrov'
     end
-    
+
     it 'should redirect to clients/show.html' do
       response.should redirect_to @client
     end
@@ -124,12 +118,9 @@ describe ClientsController do
   end
 
   describe 'GET show' do
-    def do_get
-      get :show, :id => @client.id
-    end
 
     before (:each) do
-      do_get
+      get :show, :id => @client.id
     end
 
     it 'should be successful' do

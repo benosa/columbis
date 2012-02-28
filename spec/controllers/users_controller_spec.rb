@@ -1,16 +1,17 @@
 require 'spec_helper'
 
 describe UsersController do
-  include Devise::TestHelpers  
-  
-  def create_user
-    @user = Factory(:user)
-    test_sign_in(@user)
+  include Devise::TestHelpers
+
+  def create_users
+    office = Factory(:office)
+    @admin = Factory(:admin)
+    @manager = Factory(:manager, :office_id => office.id)
+    test_sign_in(@manager)
   end
 
   before(:each) do
-    create_user
-    puts @user.inspect
+    create_users
   end
 
   describe 'GET index' do
@@ -20,7 +21,7 @@ describe UsersController do
 
     it 'should be successful' do
       do_get
-      response.should be_success                
+      response.should be_success
     end
 
     it 'should find all users' do
@@ -30,13 +31,13 @@ describe UsersController do
 
     it 'should render users/index.html' do
       do_get
-      response.should render_template('index')                
+      response.should render_template('index')
     end
   end
 
   describe 'DELETE destroy' do
     def do_delete
-      delete :destroy, :id => @user.id
+      delete :destroy, :id => @manager.id
     end
 
     it 'should be successful' do
@@ -45,7 +46,7 @@ describe UsersController do
 
     it 'should redirect to users/index.html' do
       do_delete
-      response.should redirect_to(users_path)
+      response.should redirect_to(new_user_session_path)
     end
 
     it 'should change users count down by 1' do
@@ -53,9 +54,9 @@ describe UsersController do
     end
   end
 
-  describe 'GET edit' do    
+  describe 'GET edit' do
     def do_get
-      get :edit, :id => @user.id
+      get :edit, :id => @manager.id
     end
 
     before (:each) do
@@ -65,13 +66,13 @@ describe UsersController do
     it 'should render users/edit' do
       response.should render_template('edit')
     end
-    
+
     it 'should be successful' do
       response.should be_success
     end
 
     it 'should find right user' do
-      assigns[:user].id.should == @user.id
+      assigns[:user].id.should == @manager.id
     end
   end
 end

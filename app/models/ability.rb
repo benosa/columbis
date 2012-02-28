@@ -10,6 +10,7 @@ class Ability
       can :manage, CurrencyCourse
       can :manage, Country
       can :manage, City
+      can :manage, Client
       can :manage, DropdownValue
       can :manage, Claim
       can :manage, Tourist
@@ -19,6 +20,7 @@ class Ability
     elsif user.role == 'manager'
       can :manage, Country
       can :manage, City
+      can :manage, Client
       can :manage, DropdownValue
 
       can [:create, :update], Claim

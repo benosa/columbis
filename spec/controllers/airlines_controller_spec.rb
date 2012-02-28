@@ -1,57 +1,146 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe AirlinesController do
-  fixtures :all
-  render_views
-
-  it "index action should render index template" do
-    get :index
-    response.should render_template(:index)
+  def create_airline
+    @airline = Factory(:airline)
   end
 
-  it "show action should render show template" do
-    get :show, :id => Airline.first
-    response.should render_template(:show)
+  before (:each) do
+    create_airline
   end
 
-  it "new action should render new template" do
-    get :new
-    response.should render_template(:new)
+  describe 'GET index' do
+    def do_get
+      get :index
+    end
+
+    it 'should be successful' do
+      do_get
+      response.should be_success
+    end
+
+    it 'should find all airlines' do
+      do_get
+      assigns[:airlines].size.should > 0
+    end
+
+    it 'should render airlines/index.html' do
+      do_get
+      response.should render_template('index')
+    end
   end
 
-  it "create action should render new template when model is invalid" do
-    Airline.any_instance.stubs(:valid?).returns(false)
-    post :create
-    response.should render_template(:new)
+  describe 'GET new' do
+    def do_get
+      get :new
+    end
+
+    before (:each) do
+      do_get
+    end
+
+    it 'should render airlines/new' do
+      response.should render_template('new')
+    end
+
+    it 'should be successful' do
+      response.should be_success
+    end
   end
 
-  it "create action should redirect when model is valid" do
-    Airline.any_instance.stubs(:valid?).returns(true)
-    post :create
-    response.should redirect_to(airline_url(assigns[:airline]))
+  describe 'POST create' do
+    def do_airline
+      post :create, :airline => {:name => 'airline'}
+    end
+
+    it 'should redirect to airlines/show.html' do
+      do_airline
+      response.should redirect_to(airlines_path)
+    end
+
+    it 'should change airline count up by 1' do
+      lambda { do_airline }.should change{ Airline.count }.by(1)
+    end
   end
 
-  it "edit action should render edit template" do
-    get :edit, :id => Airline.first
-    response.should render_template(:edit)
+  describe 'GET edit' do
+    def do_get
+      get :edit, :id => @airline.id
+    end
+
+    before (:each) do
+      do_get
+    end
+
+    it 'should render airlines/edit' do
+      response.should render_template('edit')
+    end
+
+    it 'should be successful' do
+      response.should be_success
+    end
+
+    it 'should find right airline' do
+      assigns[:airline].id.should == @airline.id
+    end
   end
 
-  it "update action should render edit template when model is invalid" do
-    Airline.any_instance.stubs(:valid?).returns(false)
-    put :update, :id => Airline.first
-    response.should render_template(:edit)
+  describe 'PUT update' do
+    def do_put
+      put :update, :id => @airline.id, :airline => {:name => 'first'}
+    end
+
+    before(:each) do
+      do_put
+    end
+
+    it 'should change airline name' do
+      assigns[:airline].name.should == 'first'
+    end
+
+    it 'should redirect to airlines/show.html' do
+      response.should redirect_to airlines_path
+    end
   end
 
-  it "update action should redirect when model is valid" do
-    Airline.any_instance.stubs(:valid?).returns(true)
-    put :update, :id => Airline.first
-    response.should redirect_to(airline_url(assigns[:airline]))
+  describe 'DELETE destroy' do
+    def do_delete
+      delete :destroy, :id => @airline.id
+    end
+
+    it 'should be successful' do
+      response.should be_success
+    end
+
+    it 'should redirect to airlines/index.html' do
+      do_delete
+      response.should redirect_to(airlines_path)
+    end
+
+    it 'should change airline count down by 1' do
+      lambda { do_delete }.should change{ Airline.count }.by(-1)
+    end
   end
 
-  it "destroy action should destroy model and redirect to index action" do
-    airline = Airline.first
-    delete :destroy, :id => airline
-    response.should redirect_to(airlines_url)
-    Airline.exists?(airline.id).should be_false
+  describe 'GET show' do
+    def do_get
+      get :show, :id => @airline.id
+    end
+
+    before (:each) do
+      do_get
+    end
+
+    it 'should be successful' do
+      response.should be_success
+    end
+
+    it 'should find right airline' do
+      assigns[:airline].id.should == @airline.id
+    end
+
+    it 'should render airlines/show.html' do
+      response.should render_template('show')
+    end
   end
 end

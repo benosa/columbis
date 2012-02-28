@@ -33,10 +33,15 @@ group :development do
   gem 'capistrano'
 end
 
+group :development, :test do
+  gem 'ffaker',                   '~> 1.5'
+  gem 'rspec-rails',              '~> 2.7.0'
+end
+
 group :test do
   gem 'turn', :require => false
-  gem 'fabrication'
-  gem 'rspec-rails'
-  gem 'mocha'
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'guard-rspec'
+  gem 'guard-bundler'
 end

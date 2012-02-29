@@ -16,7 +16,7 @@ describe TouristsController do
 
     it 'should be successful' do
       do_get
-      response.should be_success                
+      response.should be_success
     end
 
     it 'should find all tourists' do
@@ -26,7 +26,7 @@ describe TouristsController do
 
     it 'should render tourists/index.html' do
       do_get
-      response.should render_template('index')                
+      response.should render_template('index')
     end
   end
 
@@ -50,7 +50,7 @@ describe TouristsController do
 
   describe 'POST create' do
     def do_tourist
-      post :create, :tourist => {:passport_series => '1223', :passport_number => '123123'}
+      post :create, :tourist => {:first_name => 'Billy', :last_name => 'G!' }
     end
 
     it 'should redirect to tourists/show.html' do
@@ -63,7 +63,7 @@ describe TouristsController do
     end
   end
 
-  describe 'GET edit' do    
+  describe 'GET edit' do
     def do_get
       get :edit, :id => @tourist.id
     end
@@ -75,7 +75,7 @@ describe TouristsController do
     it 'should render tourists/edit' do
       response.should render_template('edit')
     end
-    
+
     it 'should be successful' do
       response.should be_success
     end
@@ -97,7 +97,7 @@ describe TouristsController do
     it 'should change tourist last_name' do
       assigns[:tourist].last_name.should == 'Ivanov'
     end
-    
+
     it 'should redirect to tourists/show.html' do
       response.should redirect_to @tourist
     end

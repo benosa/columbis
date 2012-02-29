@@ -10,7 +10,7 @@ FactoryGirl.define do
     passport_valid_until '20.10.11'
     date_of_birth '12.12.12'
   end
-  factory :applicant do
+  factory :applicant, :class => Tourist do
     first_name 'Походов'
     last_name  'Иван'
     middle_name 'Акакиевич'

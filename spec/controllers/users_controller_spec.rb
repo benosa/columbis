@@ -7,7 +7,7 @@ describe UsersController do
     office = Factory(:office)
     @admin = Factory(:admin)
     @manager = Factory(:manager, :office_id => office.id)
-    test_sign_in(@manager)
+    test_sign_in(@admin)
   end
 
   before(:each) do
@@ -44,7 +44,7 @@ describe UsersController do
       response.should be_success
     end
 
-    it 'should redirect to users/index.html' do
+    it 'should redirect to sign in' do
       do_delete
       response.should redirect_to(new_user_session_path)
     end

@@ -1,5 +1,5 @@
 class TouristsController < ApplicationController
-  
+
   def new
     @tourist = Tourist.new
   end

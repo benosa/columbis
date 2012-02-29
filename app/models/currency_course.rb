@@ -6,7 +6,6 @@ class CurrencyCourse < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :currency, :inclusion => CURRENCIES
   validates_inclusion_of :currency, :in => CURRENCIES, :message => I18n.t('currency_code_not_found')
   validates_exclusion_of :currency, :in => [PRIMARY_CURRENCY], :message => I18n.t('primary_currency_course_updating_is_mpossilble')
 

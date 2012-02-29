@@ -86,11 +86,11 @@ describe ClientsController do
 
   describe 'PUT update' do
     before(:each) do
-      put :update, :id => @client.id, :client => {:last_name => 'Petrov'}
+      put :update, :id => @client.id, :client => {:full_name => 'Козлов Акакий'}
     end
 
     it 'should change client last_name' do
-      assigns[:client].last_name.should == 'Petrov'
+      assigns[:client].full_name.should == 'Козлов Акакий'
     end
 
     it 'should redirect to clients/show.html' do

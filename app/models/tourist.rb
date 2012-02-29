@@ -8,7 +8,6 @@ class Tourist < ActiveRecord::Base
   has_many :claims, :through => :tourist_claims
 
   validates_presence_of :first_name, :last_name
-  validates_presence_of :date_of_birth, :passport_valid_until
 
   def first_last_name
     "#{first_name} #{last_name}".strip

@@ -9,7 +9,7 @@ describe OperatorsController do
     create_operator
   end
 
-  describe 'GET edit' do    
+  describe 'GET edit' do
     def do_get
       get :edit, :id => @operator.id
     end
@@ -21,7 +21,7 @@ describe OperatorsController do
     it 'should render operators/edit' do
       response.should render_template('edit')
     end
-    
+
     it 'should be successful' do
       response.should be_success
     end
@@ -39,7 +39,7 @@ describe OperatorsController do
     it 'should change operator name' do
       assigns[:operator].name.should == 'changed_operator'
     end
-    
+
     it 'should redirect to operators/show.html' do
       response.should redirect_to @operator
     end
@@ -92,7 +92,7 @@ describe OperatorsController do
 
     it 'should be successful' do
       do_get
-      response.should be_success                
+      response.should be_success
     end
 
     it 'should find all operators' do
@@ -102,7 +102,7 @@ describe OperatorsController do
 
     it 'should render operators/index.html' do
       do_get
-      response.should render_template('index')                
+      response.should render_template('index')
     end
   end
 
@@ -126,7 +126,7 @@ describe OperatorsController do
 
   describe 'POST create' do
     def do_operator
-      post :create, :operator => {:name => 'operator'}
+      post :create, :operator => {:name => 'another operator'}
     end
 
     it 'should redirect to operators/show.html' do

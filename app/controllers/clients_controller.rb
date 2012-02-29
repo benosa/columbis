@@ -21,7 +21,6 @@ class ClientsController < ApplicationController
 
   def update
     @client = Client.find(params[:id])
-
     respond_to do |format|
       if @client.update_attributes(params[:client])
         format.html { redirect_to @client, :notice => 'Client was successfully updated.' }

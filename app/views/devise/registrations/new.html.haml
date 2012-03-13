@@ -1,0 +1,11 @@
+- title t('.title')
+
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+  = f.error_messages
+
+  = render :partial => 'users/user_attributes', :locals => { :f => f }
+
+  .actions
+    = f.submit t('.submit')
+
+= render :partial => "devise/shared/links"

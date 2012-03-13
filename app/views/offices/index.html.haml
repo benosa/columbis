@@ -1,13 +1,13 @@
-- title "Offices"
+- title t('.title')
 
 %table
   %tr
-    %th Name
+    %th Название
   - for office in @offices
     %tr
       %td= office.name
-      %td= link_to 'Show', office
-      %td= link_to 'Edit', edit_office_path(office)
-      %td= link_to 'Destroy', office, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to t('show'), office
+      %td= link_to t('edit'), edit_office_path(office)
+      %td= link_to t('destroy'), office, :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to "New Office", new_office_path
+%p= link_to t('.new_office'), new_office_path

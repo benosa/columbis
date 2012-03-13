@@ -2,6 +2,9 @@ class Client < ActiveRecord::Base
   attr_accessible :full_name, :passport_series, :passport_number,
                   :date_of_birth, :passport_valid_until, :phone_number, :address
 
+  attr_protected :company_id
+  belongs_to :company
+
   validates :passport_series, :passport_number, :numericality => true
   validates :passport_series, :length => { :is => 4 }
   validates :passport_number, :length => { :is => 6 }

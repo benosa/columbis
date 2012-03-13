@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  ROLES = %w[admin manager accountant]
+  ROLES = %w[admin boss manager accountant]
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -7,17 +7,22 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :company_id,
-                  :login, :first_name, :last_name, :middle_name, :role, :office_id, :color
-
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
+                  :login, :first_name, :last_name, :middle_name, :color
+  attr_protected :company_id, :role
   belongs_to :company
   belongs_to :office
 
+  before_validation :set_role, :on => :create, :unless => Proc.new{  ROLES.include? self.role  }
+
   validates_uniqueness_of :login
   validates_presence_of :login, :role
-  validates_presence_of :office_id, :unless => Proc.new{  User.all.empty? }
+  validates_presence_of :company_id, :office_id, :unless => Proc.new{ %w[admin boss].include? self.role }
 
-  before_validation :set_role, :on => :create
+
+  def last_boss?
+
+  end
 
   def first_last_name
     "#{first_name} #{last_name}".strip
@@ -38,7 +43,7 @@ class User < ActiveRecord::Base
     if User.count == 0
       self.role = 'admin'
     else
-      self.role = 'manager'
+      self.role = 'boss'
     end
   end
 end

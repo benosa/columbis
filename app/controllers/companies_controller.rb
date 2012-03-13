@@ -1,4 +1,10 @@
 class CompaniesController < ApplicationController
+  load_and_authorize_resource
+
+  def index
+    @companies = Company.where(:id => current_user.company_id).accessible_by(current_ability)
+  end
+
   def new
     @company = Company.new
     @company.build_address
@@ -7,12 +13,11 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(params[:company])
 
-    respond_to do |format|
-      if @company.save
-        format.html { redirect_to @company, :notice => 'Company was successfully created.' }
-      else
-        format.html { render :action => "new" }
-      end
+    if @company.save
+      current_user.update_attribute(:company_id, @company.id)
+      redirect_to @company, :notice => 'Company was successfully created.'
+    else
+      render :action => "new"
     end
   end
 
@@ -26,17 +31,11 @@ class CompaniesController < ApplicationController
   def update
     @company = Company.find(params[:id])
 
-    respond_to do |format|
-      if @company.update_attributes(params[:company])
-        format.html { redirect_to @company, :notice => 'Company was successfully updated.' }
-      else
-        format.html { render :action => "edit" }
-      end
+    if @company.update_attributes(params[:company])
+      redirect_to @company, :notice => 'Company was successfully updated.'
+    else
+      render :action => "edit"
     end
-  end
-
-  def index
-    @companies = Company.find(:all)
   end
 
   def show
@@ -46,9 +45,6 @@ class CompaniesController < ApplicationController
   def destroy
     @company = Company.find(params[:id])
     @company.destroy
-
-    respond_to do |format|
-      format.html { redirect_to companies_url }
-    end
+    redirect_to companies_url
   end
 end

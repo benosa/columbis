@@ -74,6 +74,7 @@ class ClaimsController < ApplicationController
 
   def create
     @claim = Claim.new(params[:claim])
+    @claim.user_id = current_user.id
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       redirect_to edit_claim_url(@claim.id), :notice => t('claims.messages.successfully_created_claim')

@@ -1,5 +1,8 @@
 class DropdownValue < ActiveRecord::Base
   attr_accessible :list, :value
+  attr_protected :company_id
+  belongs_to :company
+
   validates_presence_of :list, :value
   validates_uniqueness_of :value, :scope => :list
 

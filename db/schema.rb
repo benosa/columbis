@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120220135951) do
+ActiveRecord::Schema.define(:version => 20120309073747) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -24,18 +24,21 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "phone_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "airlines", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "catalogs", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "cities", :force => true do |t|
@@ -43,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "claims", :force => true do |t|
@@ -126,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "children_visa_price_currency",        :default => "eur",          :null => false
     t.string   "tourist_stat"
     t.float    "approved_operator_advance_prim",      :default => 0.0,            :null => false
+    t.integer  "company_id"
   end
 
   create_table "clients", :force => true do |t|
@@ -140,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.date     "date_of_birth"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "companies", :force => true do |t|
@@ -162,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "memo"
+    t.integer  "company_id"
   end
 
   create_table "currency_courses", :force => true do |t|
@@ -171,13 +178,15 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.float    "course",     :default => 0.0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   add_index "currency_courses", ["currency", "on_date"], :name => "index_currency_courses_on_currency_and_on_date"
 
   create_table "dropdown_values", :force => true do |t|
-    t.string "list"
-    t.string "value"
+    t.string  "list"
+    t.string  "value"
+    t.integer "company_id"
   end
 
   add_index "dropdown_values", ["list"], :name => "index_dropdown_values_on_list"
@@ -188,12 +197,14 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "items", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "catalog_id"
+    t.integer  "company_id"
   end
 
   create_table "notes", :force => true do |t|
@@ -202,18 +213,21 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "offices", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "operators", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "payments", :force => true do |t|
@@ -232,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.float    "amount_prim",    :default => 0.0
     t.boolean  "approved",       :default => false
     t.float    "course",         :default => 1.0
+    t.integer  "company_id"
   end
 
   add_index "payments", ["approved"], :name => "index_payments_on_approved"
@@ -256,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20120220135951) do
     t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   create_table "users", :force => true do |t|

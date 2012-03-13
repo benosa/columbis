@@ -1,7 +1,9 @@
 class Tourist < ActiveRecord::Base
   attr_accessible :full_name, :passport_series, :passport_number, :first_name, :last_name,
                   :date_of_birth, :passport_valid_until, :phone_number, :address
+  attr_protected :company_id
 
+  belongs_to :company
   has_many :payments, :as => :payer
 
   has_many :tourist_claims

@@ -25,6 +25,8 @@ ru:
   logout: 'Выйти'
   login: 'Войти'
   register: 'Зарегистрироваться'
+  unauthorized:
+    default: 'Вы не имеете доступа к этой странице.'
 
   invalid_fields: 'Ошибка при заполнении полей'
   correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'

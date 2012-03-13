@@ -1,10 +1,9 @@
 class OfficesController < ApplicationController
-  def index
-    @offices = Office.all
-  end
+  load_and_authorize_resource
+  skip_authorize_resource :only => :new
 
-  def show
-    @office = Office.find(params[:id])
+  def index
+    @offices = Office.where(:company_id => current_user.company_id).accessible_by(current_ability)
   end
 
   def new
@@ -13,8 +12,11 @@ class OfficesController < ApplicationController
 
   def create
     @office = Office.new(params[:office])
+    @office.company = current_user.company
+
     if @office.save
-      redirect_to @office, :notice => "Successfully created office."
+      current_user.update_attribute(:office_id, @office.id)
+      redirect_to offices_url, :notice => "Successfully created office."
     else
       render :action => 'new'
     end
@@ -26,8 +28,10 @@ class OfficesController < ApplicationController
 
   def update
     @office = Office.find(params[:id])
+    @office.company ||= current_user.company
+
     if @office.update_attributes(params[:office])
-      redirect_to @office, :notice  => "Successfully updated office."
+      redirect_to offices_url, :notice  => "Successfully updated office."
     else
       render :action => 'edit'
     end
@@ -35,7 +39,10 @@ class OfficesController < ApplicationController
 
   def destroy
     @office = Office.find(params[:id])
-    @office.destroy
-    redirect_to offices_url, :notice => "Successfully destroyed office."
+    if @office.destroy
+      redirect_to offices_url, :notice => 'Successfully destroyed office.'
+    else
+      render :action => 'edit'
+    end
   end
 end

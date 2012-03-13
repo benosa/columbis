@@ -1,48 +1,7 @@
 = form_for(@user) do |f|
-  - if @user.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@user.errors.count, "error")
-        prohibited this user from being saved:
-      %ul
-        - @user.errors.full_messages.each do |msg|
-          %li= msg
-  %p
-    = f.label :login
-    %br/
-    = f.text_field :login
-  %p
-    = f.label :first_name
-    %br/
-    = f.text_field :first_name
-  %p
-    = f.label :last_name
-    %br/
-    = f.text_field :last_name
-  %p
-    = f.label :middle_name
-    %br/
-    = f.text_field :middle_name
-  %p
-    = f.label :email
-    %br/
-    = f.email_field :email
-  - if action_name == "new"
-    %p
-      = f.label :password, "Новый пароль"
-      %br/
-      = f.password_field :password
-    %p
-      = f.label :password_confirmation
-      %br/
-      = f.password_field :password_confirmation
-  %p
-    = f.label :role
-    %br/
-    - if current_user.role == 'admin'
-      = f.collection_select :role, User::ROLES, :to_s, :humanize
-    - else
-      = @user.role
+  = f.error_messages
+  = render :partial => 'user_attributes', :locals => { :f => f }
+
   %p
     = f.label :company
     %br/

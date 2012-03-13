@@ -3,7 +3,9 @@ class CurrencyCourse < ActiveRecord::Base
   PRIMARY_CURRENCY = CURRENCIES[0]
 
   attr_accessible :currency, :course, :user_id, :on_date
+  attr_protected :company_id
 
+  belongs_to :company
   belongs_to :user
 
   validates_inclusion_of :currency, :in => CURRENCIES, :message => I18n.t('currency_code_not_found')

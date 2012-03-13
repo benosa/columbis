@@ -7,7 +7,7 @@ Tourism::Application.routes.draw do
   resources :cities
   resources :countries
   resources :airlines
-  resources :offices
+  resources :offices, :except => :show
   resources :currency_courses
   resources :dropdown_values, :except => :show
 
@@ -29,16 +29,16 @@ Tourism::Application.routes.draw do
   resources :clients
   resources :companies
   resources :addresses
-
-  devise_for :users
-  resources :users
+  resources :notes
 
   resources :catalogs do
     resources :item_fields
     resources :items
   end
 
-  resources :notes
+
+  devise_for :users
+  resources :users
 
   root :to => 'claims#index'
 end

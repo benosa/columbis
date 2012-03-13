@@ -5,18 +5,14 @@ class Ability
     user ||= User.new
     if user.role == 'admin'
       can :manage, :all
+    elsif user.role == 'boss'
+      can :manage, Company, :id => user.company_id
+      can :manage, [CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Office, Payment, User], :company_id => user.company_id
     elsif user.role == 'accountant'
       can :switch_view, User
-      can :manage, CurrencyCourse
-      can :manage, Country
-      can :manage, City
-      can :manage, Client
-      can :manage, DropdownValue
-      can :manage, Claim
-      can :manage, Tourist
-      can :manage, Payment
-      can [:update, :destroy], User, :id => user.id
-      can :read, :all
+      can :manage, [CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Payment], :company_id => user.company_id
+      can [:update, :destroy], User, :id => user.id, :company_id => user.company_id
+      can :read, :all, :company_id => user.company_id
     elsif user.role == 'manager'
       can :manage, Country
       can :manage, City
@@ -27,7 +23,7 @@ class Ability
       can :manage, Tourist
       can :manage, Payment #, :approved => false
       can [:update], User, :id => user.id
-      can :read, :all
+      can :read, :all, :company_id => user.company_id
     else
       can [:update, :destroy], User, :id => user.id
     end

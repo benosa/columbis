@@ -33,6 +33,8 @@ class Claim < ActiveRecord::Base
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance
 
+  attr_protected :company_id
+  belongs_to :company
   belongs_to :user
   belongs_to :office
   belongs_to :airline

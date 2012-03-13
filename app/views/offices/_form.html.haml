@@ -4,5 +4,18 @@
     = f.label :name
     %br
     = f.text_field :name
+  %h3= t('.users')
+  %table#users
+    %thead
+      %tr
+        %th= t('users.index.login')
+        %th= t('users.index.last_name')
+        %th= t('users.index.first_name')
+        %th= t('users.index.middle_name')
+        %th= t('users.index.email')
+        %th= t('users.index.role')
+    %tbody
+      = render :partial => 'user', :collection => @office.users
+
   %p
     = f.submit

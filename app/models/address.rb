@@ -1,4 +1,6 @@
 class Address < ActiveRecord::Base
+  attr_protected :company_id
+  belongs_to :company
   belongs_to :addressable, :polymorphic => true
 
   def full_address

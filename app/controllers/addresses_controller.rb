@@ -5,6 +5,7 @@ class AddressesController < ApplicationController
 
   def create
     @address = Address.new(params[:address])
+    @address.company_id = current_user.company_id
 
     respond_to do |format|
       if @address.save

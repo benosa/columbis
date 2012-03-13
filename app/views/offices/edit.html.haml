@@ -1,8 +1,8 @@
-- title "Edit Office"
+- title t('.title')
 
 = render 'form'
 
 %p
-  = link_to "Show", @office
+  = link_to t('show'), @office
   |
-  = link_to "View All", offices_path
+  = link_to t('view_all'), offices_path

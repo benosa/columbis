@@ -19,8 +19,8 @@
           %td= company.address.full_address
         - else
           %td Нет адреса
-        %td= link_to t('show'), company
-        %td= link_to t('edit'), edit_company_path(company)
-        %td= link_to t('destroy'), company, :confirm => t('are_you_sure'), :method => :delete
+        %td= link_to t('show'), [:dashboard, company]
+        %td= link_to t('edit'), edit_dashboard_company_path(company)
+        %td= link_to t('destroy'), [:dashboard, company], :confirm => t('are_you_sure'), :method => :delete
 
-%p= link_to t('.add_company'), new_company_path
+%p= link_to t('.add_company'), new_dashboard_company_path

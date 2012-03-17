@@ -2,14 +2,9 @@ Tourism::Application.routes.draw do
 
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)
   match 'get_currency_course' => ApplicationController.action(:get_currency_course)
-  match 'management' => "site#index"
 
-  resources :cities
-  resources :countries
   resources :airlines
-  resources :offices, :except => :show
   resources :currency_courses
-  resources :dropdown_values, :except => :show
 
   resources :claims do
     collection do
@@ -27,7 +22,6 @@ Tourism::Application.routes.draw do
   resources :operators
   resources :tourists
   resources :clients
-  resources :companies
   resources :addresses
   resources :notes
 
@@ -36,9 +30,19 @@ Tourism::Application.routes.draw do
     resources :items
   end
 
-
   devise_for :users
-  resources :users
+
+  namespace :dashboard do
+    match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
+    match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
+
+    resources :companies
+    resources :dropdown_values, :except => :show
+    resources :offices, :except => :show
+    resources :users
+
+    match '/' => "dashboard#index"
+  end
 
   root :to => 'claims#index'
 end

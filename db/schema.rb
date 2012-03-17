@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309073747) do
+ActiveRecord::Schema.define(:version => 20120316123902) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -46,7 +46,15 @@ ActiveRecord::Schema.define(:version => 20120309073747) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_id"
+    t.integer  "region_id"
+  end
+
+  add_index "cities", ["country_id", "region_id", "name"], :name => "index_cities_on_country_id_and_region_id_and_name"
+  add_index "cities", ["name"], :name => "index_cities_on_name"
+
+  create_table "city_companies", :force => true do |t|
+    t.integer "city_id"
+    t.integer "company_id"
   end
 
   create_table "claims", :force => true do |t|
@@ -171,6 +179,8 @@ ActiveRecord::Schema.define(:version => 20120309073747) do
     t.integer  "company_id"
   end
 
+  add_index "countries", ["name"], :name => "index_countries_on_name"
+
   create_table "currency_courses", :force => true do |t|
     t.integer  "user_id"
     t.datetime "on_date",                     :null => false
@@ -250,6 +260,14 @@ ActiveRecord::Schema.define(:version => 20120309073747) do
   end
 
   add_index "payments", ["approved"], :name => "index_payments_on_approved"
+
+  create_table "regions", :force => true do |t|
+    t.integer "country_id"
+    t.string  "name"
+  end
+
+  add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
+  add_index "regions", ["name"], :name => "index_regions_on_name"
 
   create_table "tourist_claims", :force => true do |t|
     t.integer  "claim_id"

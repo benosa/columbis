@@ -22,6 +22,9 @@ ru:
   back_to_list: 'Назад к списку'
   view_all: 'Показать все'
 
+  add: 'Добавить'
+  delete: 'Удалить'
+
   logout: 'Выйти'
   login: 'Войти'
   register: 'Зарегистрироваться'

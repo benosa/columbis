@@ -1,0 +1,65 @@
+ru:
+  dashboard:
+    companies:
+      index:
+        add_company: 'Добавить компанию'
+        companies: 'Компании'
+        name: 'Название'
+        email: 'Электронная почта'
+        signature: 'Подпись'
+        address: 'Адрес'
+      show:
+        companies: 'Список компаний'
+      new:
+        add_company: 'Добавление компании'
+        companies: 'Список компаний'
+      edit:
+        edit_company: 'Редактирование данных компании'
+        companies: 'Список компаний'
+
+    dropdown_values:
+      index:
+        title: 'Списки значений'
+        new_dropdown_value: 'Новое значение'
+      new:
+        title: 'Новое значение'
+      edit:
+        title: 'Изменить значение'
+      table:
+        list: 'Список'
+        value: 'Значение'
+
+    offices:
+      index:
+        title: 'Офисы'
+        new_office: 'Добавить офис'
+        name: 'Название'
+      new:
+        title: 'Добавить офис'
+      edit:
+        title: 'Редактировать офис'
+      form:
+        users: 'Пользователи'
+
+    activerecord:
+      attributes:
+        company:
+          name: 'Название'
+          oficial_letter_signature: 'Подпись'
+          email: 'Электронная почта'
+          bank: 'Банк'
+          bik: 'БИК'
+          curr_account: 'Расчетный счет'
+          corr_account: 'Корреспондентский счет'
+          ogrn: 'ОРГН'
+
+        dropdown_value:
+          list: 'Список'
+          value: 'Значение'
+
+        office:
+          name: 'Название'
+
+      errors:
+        messages:
+          has_assignments: 'Данный офис закреплен за пользователями. Укажите этим пользователям другой офис и попробуйте снова.'

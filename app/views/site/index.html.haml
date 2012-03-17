@@ -1,5 +1,9 @@
 %ul
-  %li= link_to t('users.index.users'), users_path
+  %li= link_to t('companies.index.companies'), dashboard_companies_path
+  %li= link_to t('offices.index.offices'), dashboard_offices_path
+  %li= link_to t('dropdown_values.index.dropdown_values'), dashboard_dropdown_values_path
+  %li= link_to t('users.index.users'), dashboard_users_path
+
   %li= link_to t('tourists.index.tourists'), tourists_path
   %li= link_to t('claims.index.claims'), claims_path
   %li= link_to t('clients.index.clients'), clients_path
@@ -7,11 +11,6 @@
   %li= link_to t('addresses.index.addresses'), addresses_path
   %li= link_to t('catalogs.index.catalogs'), catalogs_path
 
-  %li= link_to t('countries.index.countries'), countries_path
-  %li= link_to t('cities.index.cities'), cities_path
   %li= link_to t('operators.index.operators'), operators_path
   %li= link_to t('airlines.index.airlines'), airlines_path
-  %li= link_to t('companies.index.companies'), companies_path
-  %li= link_to t('offices.index.offices'), offices_path
   %li= link_to t('currency_courses.index.currency_courses'), currency_courses_path
-  %li= link_to t('dropdown_values.index.dropdown_values'), dropdown_values_path

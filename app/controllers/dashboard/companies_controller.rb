@@ -8,6 +8,7 @@ class Dashboard::CompaniesController < ApplicationController
   def new
     @company = Company.new
     @company.build_address
+    @company.build_city
   end
 
   def create
@@ -22,17 +23,14 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def edit
-    @company = Company.find(params[:id])
     if !@company.address.present?
       @company.build_address
     end
   end
 
   def update
-    @company = Company.find(params[:id])
-
     if @company.update_attributes(params[:company])
-      redirect_to @company, :notice => 'Company was successfully updated.'
+      redirect_to root_url, :notice => 'Company was successfully updated.'
     else
       render :action => "edit"
     end

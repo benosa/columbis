@@ -1,4 +1,4 @@
-class DropdownValuesController < ApplicationController
+class Dashboard::DropdownValuesController < ApplicationController
   load_and_authorize_resource
 
   def index

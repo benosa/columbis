@@ -23,6 +23,7 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def edit
+    @company = current_company unless @company
     if !@company.address.present?
       @company.build_address
     end

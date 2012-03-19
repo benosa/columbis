@@ -33,6 +33,7 @@ Tourism::Application.routes.draw do
   devise_for :users
 
   namespace :dashboard do
+    match 'edit_company' => 'companies#edit'
     match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
 

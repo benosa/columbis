@@ -16,7 +16,10 @@ ru:
       edit:
         edit_company: 'Редактирование данных компании'
         companies: 'Список компаний'
-
+      cities:
+        our_cities: 'Города'
+      form:
+        address: 'Адрес'
     dropdown_values:
       index:
         title: 'Списки значений'

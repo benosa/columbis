@@ -36,6 +36,7 @@
   = render :partial => 'cities', :locals => { :f => f }
 
   = f.fields_for :address do |address|
+    %h3= t('.address')
     = render :partial => 'shared/address', :locals => { :f => address }
 
   %p

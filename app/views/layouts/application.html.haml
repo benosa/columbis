@@ -39,7 +39,7 @@
         %ul
           %li Базы
           %li= link_to 'Управление', dashboard_path, :class => (controller.controller_name == 'dashboard' ? 'selected' : ' ')
-          %li= link_to 'Реквизиты фирмы', addresses_path, :class => (controller.controller_name == 'addresses' ? 'selected' : ' ')
+          %li= link_to 'Реквизиты фирмы', dashboard_edit_company_path, :class => (controller.controller_name == 'addresses' ? 'selected' : ' ')
           %li= link_to 'Туристы', tourists_path, :class => (controller.controller_name == 'tourists' ? 'selected' : ' ')
           %li= link_to 'Туроператоры', operators_path, :class => (params[:controller] == 'operators' ? 'selected' : ' ')
           %li= link_to 'Потенц. клиенты', clients_path, :class => (controller.controller_name == 'clients' ? 'selected' : ' ')

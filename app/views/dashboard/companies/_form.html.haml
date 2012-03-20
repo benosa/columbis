@@ -1,43 +1,48 @@
 = form_for [:dashboard, @company] do |f|
   = f.error_messages
-  %p
-    = f.label :name
-    %br
-    = f.text_field :name
-  %p
-    = f.label :email
-    %br
-    = f.text_field :email
-  %p
-    = f.label :oficial_letter_signature
-    %br
-    = f.text_field :oficial_letter_signature
-  %p
-    = f.label :bank
-    %br
-    = f.text_field :bank
-  %p
-    = f.label :bik
-    %br
-    = f.text_field :bik
-  %p
-    = f.label :curr_account
-    %br
-    = f.text_field :curr_account
-  %p
-    = f.label :corr_account
-    %br
-    = f.text_field :corr_account
-  %p
-    = f.label :ogrn
-    %br
-    = f.text_field :ogrn
+  .left
+    %table
+      %tr
+        %td= f.label :name
+        %td= f.text_field :name
+      %tr
+        %td= f.label :email
+        %td= f.text_field :email
+      %tr
+        %td= f.label :oficial_letter_signature
+        %td= f.text_field :oficial_letter_signature
+      %tr
+        %td= f.label :bank
+        %td= f.text_field :bank
+      %tr
+        %td= f.label :bik
+        %td= f.text_field :bik
+      %tr
+        %td= f.label :curr_account
+        %td= f.text_field :curr_account
+      %tr
+        %td= f.label :corr_account
+        %td= f.text_field :corr_account
+      %tr
+        %td= f.label :ogrn
+        %td= f.text_field :ogrn
 
-  = render :partial => 'cities', :locals => { :f => f }
-
-  = f.fields_for :address do |address|
     %h3= t('.address')
-    = render :partial => 'shared/address', :locals => { :f => address }
+    = f.fields_for :address do |address|
+      = render :partial => 'shared/address', :locals => { :f => address }
 
-  %p
-    = f.submit
+    %p
+      = f.submit
+  .center
+    = render :partial => 'cities', :locals => { :f => f }
+
+    %h3= t('.offices')
+    .nested_attributes
+      = f.fields_for :offices do |builder|
+        %p.fields
+          = builder.label :name
+          = builder.text_field :name
+          = link_to_remove_fields t('delete'), builder
+      = link_to t('add'), '#', :class => 'add'
+
+  .clear

@@ -1,5 +1,7 @@
 class Dashboard::CompaniesController < ApplicationController
   load_and_authorize_resource
+  before_filter lambda {
+  }, :only => [:edit, :new]
 
   def index
     @companies = Company.where(:id => current_user.company_id).accessible_by(current_ability)
@@ -24,6 +26,8 @@ class Dashboard::CompaniesController < ApplicationController
 
   def edit
     @company = current_company unless @company
+
+    @company.offices.build
     if !@company.address.present?
       @company.build_address
     end

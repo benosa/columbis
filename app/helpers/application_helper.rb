@@ -13,6 +13,9 @@ module ApplicationHelper
     link_to t('claims.index.' << label), claims_path(:list_type => label), :class =>  'accountant_login', :list_type => params[:list_type]
   end
 
+  def link_to_remove_fields(name, f)
+    f.hidden_field(:_destroy) + link_to(name, '#', :class => 'remove')
+  end
 end
 
 class Float

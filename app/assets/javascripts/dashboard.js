@@ -2,6 +2,39 @@
 
 $(function(){
 
+	// add nested fields
+  $('.nested_attributes a.add').live('click', function(e) {
+		e.preventDefault();
+
+    $fields = $(this).prev('.fields').clone(true);
+    $fields.css('display', '');
+
+    var id = parseInt(/_attributes_(\d+)/.exec($fields.find('input:first').attr('id'))[1]);
+    id += 1;
+    $fields.find('*').each(function (i) {
+      $(this).val('');
+      if ($(this).attr('id') != undefined) {
+        $(this).attr('id', $(this).attr('id').replace(/_attributes_(\d+)/, '_attributes_' + id));
+      }
+      if ($(this).attr('name') != undefined) {
+        $(this).attr('name', $(this).attr('name').replace(/_attributes\]\[(\d+)/, '_attributes][' + id));
+      }
+      if ($(this).attr('for') != undefined) {
+        $(this).attr('for', $(this).attr('for').replace(/_attributes_(\d+)/, '_attributes_' + id));
+      }
+    });
+
+    $(this).before($fields);
+	});
+
+	// delete nested fields
+  $('.nested_attributes a.remove').live('click', function(e) {
+		e.preventDefault();
+
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('.fields').hide();
+	});
+
   // select regions
 	function loadRegions(country_id){
     $.ajax({
@@ -42,12 +75,12 @@ $(function(){
     }
 	});
 
-
   // delete selected city
-  $('a.del').live('click', function(e) {
+  $('#selected_cities a.del').live('click', function(e) {
 		e.preventDefault();
 
     var id = $(this).attr('id').replace(/del_/, '');
     $('#tr_'+id).remove();
 	});
+
 });

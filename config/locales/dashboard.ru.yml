@@ -20,6 +20,8 @@ ru:
         our_cities: 'Города'
       form:
         address: 'Адрес'
+        offices: 'Офисы'
+
     dropdown_values:
       index:
         title: 'Списки значений'

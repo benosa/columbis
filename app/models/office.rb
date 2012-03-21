@@ -14,7 +14,7 @@ class Office < ActiveRecord::Base
   private
 
   def check_assignments
-    errors.add(:base, I18n.t('activerecord.errors.messages.has_assignments')) unless self.users.empty?
+    self.errors.add(:base, I18n.t('activerecord.errors.messages.has_assignments')) unless self.users.empty?
     self.users.empty?
   end
 end

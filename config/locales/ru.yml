@@ -20,6 +20,7 @@ ru:
   destroy: 'Удалить'
   are_you_sure: 'Вы уверены?'
   back_to_list: 'Назад к списку'
+  back: 'Назад'
   view_all: 'Показать все'
 
   add: 'Добавить'
@@ -28,6 +29,7 @@ ru:
   logout: 'Выйти'
   login: 'Войти'
   register: 'Зарегистрироваться'
+  profile: 'Профиль'
   unauthorized:
     default: 'Вы не имеете доступа к этой странице.'
 

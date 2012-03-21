@@ -12,3 +12,5 @@
       %th
   %tbody
     = render :partial => 'user', :collection => @users
+
+= link_to t('.add_user'), new_dashboard_user_path

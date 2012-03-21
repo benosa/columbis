@@ -1,6 +1,5 @@
 class DashboardController < ApplicationController
-  load_and_authorize_resource
-
   def index
+    authorize! :dasboard_index, current_user
   end
 end

@@ -1,0 +1,63 @@
+%p
+  = f.label :login
+  %br
+  = f.text_field :login
+%p
+  = f.label :first_name
+  %br
+  = f.text_field :first_name
+%p
+  = f.label :last_name
+  %br
+  = f.text_field :last_name
+%p
+  = f.label :middle_name
+  %br
+  = f.text_field :middle_name
+%p
+  = f.label :email
+  %br
+  = f.email_field :email
+%p
+  %span.color_sample= f.label :color
+  = f.select :color, User.available_colors
+
+- if %w[new create].include? action_name
+
+  %p
+    = f.label :password
+    %br
+    = f.password_field :password
+  %p
+    = f.label :password_confirmation
+    %br
+    = f.password_field :password_confirmation
+
+- else
+
+  %p
+    = f.label :company
+    %br
+    - if is_admin?
+      = f.collection_select :company, Company.all, :id, :name
+    - else
+      %strong= @user.new_record? ? current_user.company.name : @user.company.try(:name)
+  %p
+    = f.label :office_id
+    %br
+    - if is_admin? or is_boss?
+      = f.select :office_id, f.object.company.offices.map {|o| [ o.name, o.id ] }
+    - else
+      = f.object.office.try(:name)
+  %p
+    = f.label :role
+    %br
+    - if is_admin? or is_boss?
+      = f.collection_select :role, current_user.available_roles, :to_s, :humanize
+    - else
+      = f.object.role
+  %p
+    = f.label :current_password
+    %i (действующий пароль для подтверждения изменений)
+    %br
+    = f.password_field :current_password

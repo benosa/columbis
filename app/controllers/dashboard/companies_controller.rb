@@ -1,7 +1,7 @@
 class Dashboard::CompaniesController < ApplicationController
   load_and_authorize_resource
-  before_filter lambda {
-  }, :only => [:edit, :new]
+#  before_filter lambda {
+#  }, :only => [:edit, :new]
 
   def index
     @companies = Company.where(:id => current_user.company_id).accessible_by(current_ability)

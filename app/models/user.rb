@@ -37,6 +37,17 @@ class User < ActiveRecord::Base
     colors['colors'].sort
   end
 
+  def available_roles
+    case role
+    when 'admin'
+      ROLES
+    when 'boss'
+      ROLES - ['admin']
+    else
+      []
+    end
+  end
+
   private
 
   def set_role

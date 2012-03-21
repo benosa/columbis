@@ -41,6 +41,9 @@ ru:
       new:
         title: 'Регистрация'
         submit: 'Регистрация'
+      edit:
+        title: 'Редактировать учетную запись'
+        submit: 'Отредактировать'
       reasons:
         inactive: 'неактивна'
         unconfirmed: 'не подтверждена'

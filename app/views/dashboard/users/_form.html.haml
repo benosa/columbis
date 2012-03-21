@@ -1,13 +1,7 @@
 = form_for [:dashboard, @user] do |f|
   = f.error_messages
-  = render :partial => 'user_attributes', :locals => { :f => f }
 
-  %p
-    = f.label :company
-    %br/
-    - if current_user.role == 'admin'
-      = f.collection_select :company, Company.all, :id, :name
-    - else
-      = @user.company.try(:name)
+  = render :partial => '/users/user_attributes', :locals => { :f => f }
+
   .actions
     = f.submit

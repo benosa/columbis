@@ -39,7 +39,6 @@ Tourism::Application.routes.draw do
 
     resources :companies
     resources :dropdown_values, :except => :show
-    resources :offices, :except => :show
     resources :users
 
     match '/' => "dashboard#index"

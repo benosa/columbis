@@ -9,3 +9,5 @@
     %td= link_to t('edit'), edit_dashboard_user_path(user)
   - if can? :destroy, user
     %td= link_to t('destroy'), [:dashboard, user], :method => :delete, :confirm => t('are_you_sure')
+  - if can? :create, user
+    %td= link_to t('.resent_password'), resent_password_dashboard_user_path(user), :confirm => t('are_you_sure')

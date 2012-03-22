@@ -13,12 +13,14 @@ ru:
         role: 'Тип пользователя'
         email: 'Адрес электронной почты'
         users: 'Сотрудники'
+        add_user: 'Добавить сотрудника'
       new:
         title: 'Новый сотрудник'
       edit:
         edit_user: 'Редактирование профиля'
         users: 'Сотрудники'
-
+      user:
+        resent_password: 'Переустановить пароль'
     companies:
       index:
         add_company: 'Добавить компанию'

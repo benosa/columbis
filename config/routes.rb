@@ -39,7 +39,11 @@ Tourism::Application.routes.draw do
 
     resources :companies
     resources :dropdown_values, :except => :show
-    resources :users
+    resources :users do
+      member do
+        get 'resent_password'
+      end
+    end
 
     match '/' => "dashboard#index"
   end

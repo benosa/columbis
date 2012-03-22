@@ -9,11 +9,13 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
                   :login, :first_name, :last_name, :middle_name, :color
-  attr_protected :company_id, :role
+  attr_protected :company_id, :as => :admin
+  attr_protected :role, :as => [:admin, :boss]
+
   belongs_to :company
   belongs_to :office
 
-  before_validation :set_role, :on => :create, :unless => Proc.new{  ROLES.include? self.role  }
+  before_validation :set_role, :on => :create, :unless => Proc.new{ ROLE.include? self.role  }
 
   validates_uniqueness_of :login
   validates_presence_of :login, :role
@@ -21,7 +23,7 @@ class User < ActiveRecord::Base
 
 
   def last_boss?
-
+    User.where('role = \'boss\' AND company_id = ? AND id != ?', company_id, id).empty?
   end
 
   def first_last_name
@@ -43,6 +45,10 @@ class User < ActiveRecord::Base
       ROLES
     when 'boss'
       ROLES - ['admin']
+    when 'accountant'
+      [role]
+    when 'manager'
+      [role]
     else
       []
     end

@@ -1,0 +1,7 @@
+%p
+  = f.label :company
+  %br
+  - if is_admin?
+    = f.collection_select :company, Company.all, :id, :name
+  - else
+    %strong= @user.new_record? ? current_user.company.name : @user.company.try(:name)

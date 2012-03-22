@@ -2,6 +2,8 @@
   = f.error_messages
 
   = render :partial => '/users/user_attributes', :locals => { :f => f }
+  = render :partial => '/users/role', :locals => { :f => f }
+  = render :partial => '/users/office', :locals => { :f => f }
 
   .actions
     = f.submit

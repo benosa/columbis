@@ -10,6 +10,7 @@ ru:
         email: 'Адрес электронной почты'
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
+        current_password: 'Текущий пароль'
         remember_me: 'Запомнить меня'
         office_id: 'Офис'
         color: 'Цвет (для списков)'

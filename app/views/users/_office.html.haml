@@ -1,0 +1,7 @@
+%p
+  = f.label :office_id
+  %br
+  - if is_admin? or is_boss?
+    = f.select :office_id, current_user.company.offices.map {|o| [ o.name, o.id ] }
+  - else
+    = f.object.office.try(:name)

@@ -1,0 +1,7 @@
+%p
+  = f.label :role
+  %br
+  - if is_admin? or is_boss?
+    = f.collection_select :role, current_user.available_roles, :to_s, :humanize
+  - else
+    = f.object.role

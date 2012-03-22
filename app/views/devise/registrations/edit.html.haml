@@ -4,6 +4,8 @@
   = f.error_messages
 
   = render :partial => 'users/user_attributes', :locals => { :f => f }
+  = render :partial => 'users/password', :locals => { :f => f, :with_current => true }
+  = render :partial => 'users/office', :locals => { :f => f }
 
   .actions
     = f.submit t('.submit')

@@ -6,7 +6,7 @@ class Ability
     if user.role == 'admin'
       can :manage, :all
     elsif user.role == 'boss'
-      can :manage, [Company, CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Office, Payment, User], :company_id => user.company_id
+      can :manage, [Company, Printer, CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Office, Payment, User], :company_id => user.company_id
       can :dasboard_index, :user
     elsif user.role == 'accountant'
       can :switch_view, User

@@ -42,6 +42,7 @@ ru:
       form:
         address: 'Адрес'
         offices: 'Офисы'
+        printers: 'Печатные формы'
 
     dropdown_values:
       index:

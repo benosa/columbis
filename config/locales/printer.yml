@@ -1,0 +1,9 @@
+ru:
+  activerecord:
+    attributes:
+      printer:
+        mode: 'Тип'
+        contract: 'Договор'
+        memo: 'Памятка'
+        template: 'Шаблон'
+        country_id: 'Страна'

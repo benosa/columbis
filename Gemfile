@@ -18,6 +18,7 @@ gem 'ru_propisju', :git => 'https://github.com/terraplane/ru_propisju.git'
 gem 'stringex'
 
 gem 'thinking-sphinx', '2.0.10'
+gem 'carrierwave'
 
 # Gems used only for assets and not required
 # in production environments by default.

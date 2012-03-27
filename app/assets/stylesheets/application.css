@@ -67,8 +67,9 @@ h2 {
   border: solid 1px #C66;
 }
 
-.fieldWithErrors {
+.field_with_errors {
   display: inline;
+  color: red;
 }
 
 .error_messages {

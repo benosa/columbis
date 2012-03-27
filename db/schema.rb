@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120316123902) do
+ActiveRecord::Schema.define(:version => 20120327144901) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -260,6 +260,13 @@ ActiveRecord::Schema.define(:version => 20120316123902) do
   end
 
   add_index "payments", ["approved"], :name => "index_payments_on_approved"
+
+  create_table "printers", :force => true do |t|
+    t.integer "company_id"
+    t.integer "country_id"
+    t.string  "template"
+    t.string  "mode"
+  end
 
   create_table "regions", :force => true do |t|
     t.integer "country_id"

@@ -1,4 +1,4 @@
-= form_for [:dashboard, @company] do |f|
+= form_for [:dashboard, @company], :html => { :multipart => true } do |f|
   = f.error_messages
   .left
     %table
@@ -42,6 +42,19 @@
         %p.fields
           = builder.label :name
           = builder.text_field :name
+          = link_to_remove_fields t('delete'), builder
+      = link_to t('add'), '#', :class => 'add'
+
+    %h3= t('.printers')
+    .nested_attributes
+      = f.fields_for :printers do |builder|
+        %p.fields
+          = builder.label :template
+          = builder.file_field :template
+          = builder.label :mode
+          = builder.select :mode, Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }
+          = builder.label :country_id
+          = builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }
           = link_to_remove_fields t('delete'), builder
       = link_to t('add'), '#', :class => 'add'
 

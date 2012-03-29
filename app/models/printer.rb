@@ -5,8 +5,9 @@ class Printer < ActiveRecord::Base
 
   belongs_to :company
   belongs_to :country
-
   validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' }
 
   mount_uploader :template, TemplateUploader
+
+  after_destroy { Pathname.new(self.template.path).dirname.delete }
 end

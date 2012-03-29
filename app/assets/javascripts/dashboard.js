@@ -12,7 +12,9 @@ $(function(){
     var id = parseInt(/_attributes_(\d+)/.exec($fields.find('input:first').attr('id'))[1]);
     id += 1;
     $fields.find('*').each(function (i) {
-      $(this).val('');
+      if (this.tagName != 'OPTION') {
+        $(this).val('');
+      }
       if ($(this).attr('id') != undefined) {
         $(this).attr('id', $(this).attr('id').replace(/_attributes_(\d+)/, '_attributes_' + id));
       }

@@ -31,3 +31,5 @@ ru:
         curr_account: 'Расчетный счет'
         corr_account: 'Корреспондентский счет'
         ogrn: 'ОРГН'
+      company/printers:
+          template: 'Шаблон'

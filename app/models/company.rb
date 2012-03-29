@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
   has_many :cities, :through => :city_companies, :order => :name
   has_many :countries, :through => :cities, :group => 'countries.id', :order => :name
 
-  has_many :printers
+  has_many :printers, :order => :id
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :offices, :reject_if => proc { |attributes| attributes['name'].blank? }, :allow_destroy => true
@@ -23,5 +23,13 @@ class Company < ActiveRecord::Base
 
   def company_id
     id
+  end
+
+  def contract_printer
+    printers.where(:mode => 'contract').last
+  end
+
+  def memo_printer_for(country)
+    printers.where(:mode => 'memo', :country_id => country).last
   end
 end

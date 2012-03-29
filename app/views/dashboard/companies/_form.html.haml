@@ -46,16 +46,16 @@
       = link_to t('add'), '#', :class => 'add'
 
     %h3= t('.printers')
-    .nested_attributes
+    .nested_attributes.printers
       = f.fields_for :printers do |builder|
         - if builder.object.new_record?
           %p.fields
             = builder.label :template
             = builder.file_field :template
             = builder.label :mode
-            = builder.select :mode, Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }
-            = builder.label :country_id
-            = builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }
+            = builder.select :mode, Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }, {}, :class => 'mode_select'
+            = builder.label :country_id, nil, :class => 'country_label', :style => 'display:none;'
+            = builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
             = link_to_remove_fields t('delete'), builder
         - else
           %p.fields

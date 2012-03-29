@@ -2,6 +2,19 @@
 
 $(function(){
 
+  //prepare fields
+  function process($fields) {
+    if ($fields.parent('.nested_attributes').hasClass('printers')) {
+      if ($fields.find('.mode_select').val() == 'contract') {
+        $fields.find('.country_label').hide();
+        $fields.find('.country_select').hide();
+      } else {
+        $fields.find('.country_label').show();
+        $fields.find('.country_select').show();
+      }
+    }
+  }
+
 	// add nested fields
   $('.nested_attributes a.add').live('click', function(e) {
 		e.preventDefault();
@@ -12,7 +25,7 @@ $(function(){
     var id = parseInt(/_attributes_(\d+)/.exec($fields.find('input:first').attr('id'))[1]);
     id += 1;
     $fields.find('*').each(function (i) {
-      if (this.tagName != 'OPTION') {
+      if (!$(this).is('option')) {
         $(this).val('');
       }
       if ($(this).attr('id') != undefined) {
@@ -27,6 +40,7 @@ $(function(){
     });
 
     $(this).before($fields);
+    process($fields);
 	});
 
 	// delete nested fields
@@ -35,6 +49,12 @@ $(function(){
 
     $(this).prev('input[type=hidden]').val('1');
     $(this).closest('.fields').hide();
+	});
+
+  // show-hide country when mode changed
+  $('.printers .mode_select').live('change', function(e) {
+    $(this).closest('.fields').find('.country_label').toggle();
+    $(this).closest('.fields').find('.country_select').toggle();
 	});
 
   // select regions

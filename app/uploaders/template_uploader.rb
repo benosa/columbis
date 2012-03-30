@@ -22,11 +22,13 @@ class TemplateUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
+  process :uppercase
+  def uppercase
+    txt = File.read(self.file.path)
+    File.open(self.file.path, 'w') do |file|
+      file.puts(txt.gsub!( /#\{[а-яА-ЯёЁ0-9]+\}/ ){ |m| m = m.mb_chars.upcase})
+    end
+  end
 
   # Create different versions of your uploaded files:
   # version :thumb do
@@ -35,9 +37,9 @@ class TemplateUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-   def extension_white_list
-     %w(html htm txt)
-   end
+  def extension_white_list
+    %w(html htm txt)
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

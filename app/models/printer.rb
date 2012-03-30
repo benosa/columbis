@@ -1,5 +1,6 @@
 class Printer < ActiveRecord::Base
-  MODES = %w[contract memo]
+  MODES = %w[contract memo].freeze
+
   attr_accessible :country_id, :template, :mode
   attr_protected :company_id
 
@@ -10,4 +11,14 @@ class Printer < ActiveRecord::Base
   mount_uploader :template, TemplateUploader
 
   after_destroy { Pathname.new(self.template.path).dirname.delete }
+
+  def prepare_template(fields)
+    text = File.read(template.path)
+
+    fields.each do |key, value|
+      text.gsub!("\#\{#{key.mb_chars.upcase}\}", value)
+    end
+
+    text
+  end
 end

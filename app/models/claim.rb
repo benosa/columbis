@@ -3,7 +3,7 @@ class Claim < ActiveRecord::Base
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
 
   # relations
-  attr_accessible :user_id,:office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
+  attr_protected :user_id, :company_id, :office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
 
   # price block
   attr_accessible :tour_price, :tour_price_currency,
@@ -33,7 +33,6 @@ class Claim < ActiveRecord::Base
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance
 
-  attr_protected :company_id
   belongs_to :company
   belongs_to :user
   belongs_to :office
@@ -198,15 +197,17 @@ class Claim < ActiveRecord::Base
     Claim.last.try(:id).to_i + 1
   end
 
-  def memo_partial
-    self.country ? "memo_for_#{self.country.memo}" : nil
-  end
-
-  def has_memo_partial?
-    self.country ? File.exists?(Rails.root.to_s + "/app/views/claims/_memo_for_#{self.country.memo}.html.haml") : false
+  def print_contract
+    company.contract_printer.prepare_template(printable_fields)
   end
 
   private
+
+  def printable_fields
+    {
+      'ФИО' => self.applicant.try(:full_name)
+    }
+  end
 
   def update_debts
     self.operator_advance = self.payments_out.sum('amount')

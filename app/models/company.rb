@@ -32,4 +32,5 @@ class Company < ActiveRecord::Base
   def memo_printer_for(country)
     printers.where(:mode => 'memo', :country_id => country).last
   end
+
 end

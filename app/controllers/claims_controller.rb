@@ -3,6 +3,8 @@ class ClaimsController < ApplicationController
   autocomplete :tourist, :last_name, :full => true
   helper_method :sort_column, :sort_direction
 
+  before_filter :set_protected_attr, :only => [:create, :update]
+
   def autocomplete_tourist_last_name
     render :json => Tourist.where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
       {
@@ -54,16 +56,14 @@ class ClaimsController < ApplicationController
   def show
     @claim = Claim.find(params[:id])
     if %w[contract memo].include? params[:print]
-      if params[:print] == 'memo'
-        if @claim.has_memo_partial?
-          render :partial => @claim.memo_partial, :layout => false
-        else
-          redirect_to edit_claim_url(@claim.id), :alert => t('print_partial_not_found')
-        end
-      else
-        render :partial => params[:print], :layout => false
+      case params[:print]
+      when 'contract'
+        render :text => @claim.print_contract, :layout => false
+      when 'memo'
+        render :text => 'wassup!'
       end
-
+    else
+      redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:print]}'"
     end
   end
 
@@ -73,8 +73,6 @@ class ClaimsController < ApplicationController
   end
 
   def create
-    @claim = Claim.new(params[:claim])
-    @claim.user_id = current_user.id
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       redirect_to edit_claim_url(@claim.id), :notice => t('claims.messages.successfully_created_claim')
@@ -86,13 +84,11 @@ class ClaimsController < ApplicationController
   end
 
   def edit
-    @claim = Claim.find(params[:id])
     @claim.applicant ||= Tourist.new
     check_payments
   end
 
   def update
-    @claim = Claim.find(params[:id])
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
       if @claim.update_attributes(params[:claim])
@@ -118,6 +114,12 @@ class ClaimsController < ApplicationController
   end
 
   private
+
+  def set_protected_attr
+    @claim.user_id = current_user.id
+    @claim.company_id = current_company.id
+    @claim.office_id = current_office.id
+  end
 
   def check_payments
     @claim.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_in.empty?

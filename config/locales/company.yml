@@ -19,6 +19,9 @@ ru:
       edit_company: 'Редактирование данных компании'
       companies: 'Список компаний'
 
+    messages:
+      successfully_created_company: 'Компания создана'
+      successfully_updated_company: 'Данные компании обновлены'
 
   activerecord:
     attributes:

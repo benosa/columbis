@@ -16,7 +16,7 @@ class Dashboard::CompaniesController < ApplicationController
 
     if @company.save
       current_user.update_attribute(:company_id, @company.id)
-      redirect_to @company, :notice => 'Company was successfully created.'
+      redirect_to @company, :notice => t('companies.messages.successfully_created_company')
     else
       render :action => "new"
     end
@@ -34,7 +34,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   def update
     if @company.update_attributes(params[:company])
-      redirect_to root_url, :notice => 'Company was successfully updated.'
+      redirect_to root_url, :notice => t('companies.messages.successfully_updated_company')
     else
       render :action => "edit"
     end

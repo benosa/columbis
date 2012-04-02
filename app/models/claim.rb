@@ -205,7 +205,34 @@ class Claim < ActiveRecord::Base
 
   def printable_fields
     {
-      'ФИО' => self.applicant.try(:full_name)
+      'Номер' => id,
+      'Страна' => country.try(:name),
+      'Курорт' => resort.try(:name),
+      'Отправление' => (depart_to.strftime('%d/%m/%Y') if depart_to),
+      'Возврат' => (depart_back.strftime('%d/%m/%Y %H:%M') if depart_back),
+      'Отель' => hotel,
+      'Размещение' => placement,
+      'КоличествоТуристов' => (dependents.count + 1),
+      'КоличествоНочей' => nights,
+      'Переезд' => relocation,
+      'Класс' => service_class,
+      'Питание' => meals,
+      'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
+      'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
+      'Трансфер' => transfer,
+      'СтраховкаОтНевыезда' => (additional_insurance_price > 0 ? 'Да' : 'Нет'),
+      'ДополнительныеУслуги' => additional_services,
+      'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
+      'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+      'Компания' => company.try(:name),
+      'Банк' => company.try(:bank),
+      'БИК' => company.try(:bik),
+      'РасчетныйСчет' => company.try(:curr_account),
+      'КорреспондентскийСчет' => company.try(:corr_account),
+      'ОГРН' => company.try(:ogrn),
+      'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
+      'Телефон' => (company.address.phone_number if company.address.present?),
+      'ФИО' => applicant.try(:full_name)
     }
   end
 
@@ -330,7 +357,7 @@ class Claim < ActiveRecord::Base
     City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
     self.city = City.where( :name => claim_params[:city]).first
 
-    City.create({ :name => claim_params[:resort] }) unless City.find_by_name(claim_params[:resort])
+    City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
     self.resort = City.where( :name => claim_params[:resort]).first
   end
 

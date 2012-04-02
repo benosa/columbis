@@ -4,6 +4,6 @@
   %div
     = current_user.office.try(:name)
   %div.user{ :style => "background-color:#{current_user.color}" }
-    = current_user.first_last_name
+    = "#{current_user.first_last_name} [#{current_user.role}]"
   = text_field_tag :full_value
 = render :partial => 'list'

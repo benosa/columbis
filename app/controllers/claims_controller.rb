@@ -39,16 +39,12 @@ class ClaimsController < ApplicationController
   def search
     @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column,
       :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
-    if can? :switch_view, current_user
-      params[:list_type] ||= 'accountant_list'
-    else
-      params[:list_type] = 'manager_list'
-    end
+    set_list_type
     render :partial => 'list'
   end
 
   def index
-    params[:list_type] ||= 'accountant_list'
+    params[:list_type] || set_list_type
     @claims = Claim.search_and_sort(:column => sort_column,
           :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
   end
@@ -114,6 +110,14 @@ class ClaimsController < ApplicationController
   end
 
   private
+
+  def set_list_type
+    if can? :switch_view, current_user
+      params[:list_type] ||= 'accountant_list'
+    else
+      params[:list_type] = 'manager_list'
+    end
+  end
 
   def set_protected_attr
     @claim.user_id = current_user.id

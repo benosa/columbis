@@ -16,7 +16,8 @@ class Printer < ActiveRecord::Base
     text = File.read(template.path)
 
     fields.each do |key, value|
-      text.gsub!("\#\{#{key.mb_chars.upcase}\}", value)
+      value ||= ''
+      text.gsub!("\#\{#{key.mb_chars.upcase}\}", value.to_s)
     end
 
     text

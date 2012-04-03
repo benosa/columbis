@@ -17,8 +17,12 @@ module ApplicationHelper
     f.hidden_field(:_destroy) + link_to(name, '#', :class => 'remove')
   end
 
-  def li_contract_class(claim)
-    (claim && !claim.new_record? && claim.company.try(:contract_printer)) ? 'enabled' : 'disabled'
+  def li_class(claim, target)
+    if target == :contract
+      (claim && !claim.new_record? && claim.company.try(:contract_printer)) ? 'enabled' : 'disabled'
+    elsif target == :memo
+      (claim && !claim.new_record? && claim.company.try(:memo_printer_for, claim.country)) ? 'enabled' : 'disabled'
+    end
   end
 end
 

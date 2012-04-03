@@ -56,7 +56,7 @@ class ClaimsController < ApplicationController
       when 'contract'
         render :text => @claim.print_contract, :layout => false
       when 'memo'
-        render :text => 'wassup!'
+        render :text => @claim.print_memo, :layout => false
       end
     else
       redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:print]}'"

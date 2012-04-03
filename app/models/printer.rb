@@ -27,32 +27,27 @@ class Printer < ActiveRecord::Base
 
   private
 
-
   def setup_collections(collections)
     collections.each do |key, value|
       collection_name = key.mb_chars.upcase.to_s
-      collection = value[:collection]
+      if (/\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%/m).match(@text)
+        collection = value[:collection]
+        match = Regexp.last_match[0].clone
+        partial = ''<< Regexp.last_match[1].clone
+        result = ''
 
-      (/\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%/m).match(@text)
-      match = Regexp.last_match[0]
-      partial = Regexp.last_match[1]
-      result = ''
-
-      collection.each do |ob|
-        str = partial
-
-        value.each  do |collection_key, collection_field|
-          next if collection_key == :collection
-          collection_field ||= ''.to_sym
-          str.gsub!(/\#\{#{collection_key.mb_chars.upcase}\}/, ob.try(collection_field).to_s)
-          puts '+++++++++++++++++++++++++++++++++++++++++++++', partial
+        collection.each do |ob|
+          row = partial.clone
+          value.each  do |collection_key, collection_field|
+            next if collection_key == :collection
+            collection_field ||= ''.to_sym
+            field = ob.try(collection_field)
+            row.gsub!(/\#\{#{collection_key.mb_chars.upcase}\}/, (field.respond_to?(:strftime) ? field.strftime('%d/%m/%Y') : field.to_s))
+          end
+          result += row
         end
-
-#        raise partial.inspect
-
-        result += str
+        @text.gsub!(match, result)
       end
-#      raise result.inspect
     end
   end
 end

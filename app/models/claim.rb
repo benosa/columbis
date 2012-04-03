@@ -201,11 +201,16 @@ class Claim < ActiveRecord::Base
     company.contract_printer.prepare_template(printable_fields, printable_collections)
   end
 
+  def print_memo
+    company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
+  end
+
   private
 
   def printable_fields
     {
       'Номер' => id,
+      'Город' => city.try(:name),
       'Страна' => country.try(:name),
       'Курорт' => resort.try(:name),
       'Отправление' => (depart_to.strftime('%d/%m/%Y') if depart_to),
@@ -236,7 +241,15 @@ class Claim < ActiveRecord::Base
       'ДатаРождения' => applicant.try(:date_of_birth),
       'СерияПаспорта' => applicant.try(:passport_series),
       'НомерПаспорта' => applicant.try(:passport_number),
-      'СрокПаспорта' => applicant.try(:passport_valid_until)
+      'СрокПаспорта' => applicant.try(:passport_valid_until),
+      'АэропортТуда' => airport_to,
+      'АэропортОбратно' => airport_back,
+      'РейсТуда' => flight_to,
+      'РейсОбратно' => flight_back,
+      'ВылетТуда' => (depart_to.strftime('%d/%m/%Y') if depart_to),
+      'ВылетОбратно' => (depart_back.strftime('%d/%m/%Y') if depart_back),
+      'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
+      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
     }
   end
 

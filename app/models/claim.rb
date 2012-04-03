@@ -198,7 +198,7 @@ class Claim < ActiveRecord::Base
   end
 
   def print_contract
-    company.contract_printer.prepare_template(printable_fields)
+    company.contract_printer.prepare_template(printable_fields, printable_collections)
   end
 
   private
@@ -232,7 +232,25 @@ class Claim < ActiveRecord::Base
       'ОГРН' => company.try(:ogrn),
       'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
       'Телефон' => (company.address.phone_number if company.address.present?),
-      'ФИО' => applicant.try(:full_name)
+      'ФИО' => applicant.try(:full_name),
+      'ДатаРождения' => applicant.try(:date_of_birth),
+      'СерияПаспорта' => applicant.try(:passport_series),
+      'НомерПаспорта' => applicant.try(:passport_number),
+      'СрокПаспорта' => applicant.try(:passport_valid_until)
+    }
+  end
+
+  def printable_collections
+    {
+      'Туристы' =>
+        {
+          :collection => dependents,
+          'Турист.ФИО' => :full_name,
+          'Турист.ДатаРождения' => :date_of_birth,
+          'Турист.СерияПаспорта' => :passport_series,
+          'Турист.НомерПаспорта' => :passport_number,
+          'Турист.СрокПаспорта' => :passport_valid_until
+        }
     }
   end
 

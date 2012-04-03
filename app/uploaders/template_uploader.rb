@@ -26,7 +26,7 @@ class TemplateUploader < CarrierWave::Uploader::Base
   def uppercase
     txt = File.read(self.file.path)
     File.open(self.file.path, 'w') do |file|
-      file.puts(txt.gsub!( /#\{[а-яА-ЯёЁ0-9]+\}/ ){ |m| m = m.mb_chars.upcase})
+      file.puts(txt.gsub!( /\{[а-яА-ЯёЁ0-9.]+\}/ ){ |m| m = m.mb_chars.upcase})
     end
   end
 

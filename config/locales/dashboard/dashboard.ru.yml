@@ -1,0 +1,7 @@
+ru:
+  dashboard:
+    index:
+      title: 'Панель управления'
+      company: 'Моя компания'
+      users: 'Сотрудники'
+      dropdown_values: 'Выпадающие списки'

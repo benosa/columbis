@@ -3,8 +3,8 @@ class DropdownValue < ActiveRecord::Base
   attr_protected :company_id
   belongs_to :company
 
-  validates_presence_of :list, :value
-  validates_uniqueness_of :value, :scope => :list
+  validates_presence_of :list, :value, :company_id
+  validates_uniqueness_of :value, :scope => [:company_id, :list]
 
   def self.available_lists
     { :relocation => 'Переезд',
@@ -18,16 +18,18 @@ class DropdownValue < ActiveRecord::Base
     }
   end
 
-  def self.check_and_save(list, value)
-    self.create(:list => list, :value => value) unless self.where(:list => list, :value => value).first
+  def self.check_and_save(list, value, company_id)
+    unless self.where(:list => list, :value => value, :company_id => company_id).first
+      self.create( :list => list, :value => value, :company_id => company_id )
+    end
   end
 
-  def self.dd_for(list)
-    DropdownValue.where( :list => list )
+  def self.dd_for(list, company_id)
+    DropdownValue.where( :list => list, :company_id => company_id )
   end
 
-  def self.values_for(list)
-    DropdownValue.where( :list => list ).map &:value
+  def self.values_for(list, company_id)
+    DropdownValue.where( :list => list, :company_id => company_id ).map &:value
   end
 
   def self.method_missing(meth, *args, &block)

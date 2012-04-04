@@ -1,0 +1,35 @@
+ru:
+  dashboard:
+    users:
+      index:
+        login: 'Логин'
+        last_name: "Фамилия"
+        first_name: "Имя"
+        middle_name: "Отчество"
+        role: 'Тип пользователя'
+        email: 'Адрес электронной почты'
+        users: 'Сотрудники'
+        add_user: 'Добавить сотрудника'
+      new:
+        title: 'Новый сотрудник'
+      edit:
+        edit_user: 'Редактирование профиля'
+        users: 'Сотрудники'
+      user:
+        resent_password: 'Переустановить пароль'
+
+    activerecord:
+      attributes:
+        user:
+          login: 'Логин'
+          last_name: "Фамилия"
+          first_name: "Имя"
+          middle_name: "Отчество"
+          role: 'Тип пользователя'
+          email: 'Адрес электронной почты'
+          password: 'Пароль'
+          password_confirmation: 'Подтверждение пароля'
+          remember_me: 'Запомнить меня'
+          office_id: 'Офис'
+          color: 'Цвет (для списков)'
+          company: 'Компания'

@@ -98,7 +98,7 @@
         %h2= t('.tourist_stat')
         %p
           = f.label :tourist_stat
-          = f.select :tourist_stat, DropdownValue.values_for('tourist_stat')
+          = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat')
 
         %p
           %br
@@ -314,7 +314,7 @@
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
               %td= builder.text_field :description, :class => 'description', :disabled => true
               %td{ :colspan => 2 }
-                = builder.select :form, DropdownValue.where(:list => 'form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form', :disabled => @claim.new_record?
+                = builder.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form', :disabled => @claim.new_record?
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
             = builder.hidden_field :id
             - ind += 1
@@ -357,7 +357,7 @@
                 {}, :class => 'currency', :disabled => true
               %td.amount= builder.text_field :course, :class => 'course', :disabled => @claim.new_record?
               %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
-              %td= builder.select :form, DropdownValue.values_for('form'),
+              %td= builder.select :form, current_company.dropdown_values_for('form'),
                 { :disabled => @claim.new_record? }, :class => 'payment_form', :disabled => @claim.new_record?
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
             = builder.hidden_field :id

@@ -6,5 +6,5 @@
     %tr
       %td= dropdown_value.list
       %td= dropdown_value.value
-      %td= link_to t('edit'), edit_dropdown_value_path(dropdown_value)
-      %td= link_to t('destroy'), dropdown_value, :confirm => t('are_you_sure'), :method => :delete
+      %td= link_to t('edit'), edit_dashboard_dropdown_value_path(dropdown_value)
+      %td= link_to t('destroy'), [:dashboard, dropdown_value], :confirm => t('are_you_sure'), :method => :delete

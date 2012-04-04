@@ -131,9 +131,11 @@ class Claim < ActiveRecord::Base
     tourists.each do |key, tourist_hash|
       next if empty_tourist_hash?(tourist_hash)
       if tourist_hash[:id].blank?
+        tourist_hash[:company_id] = company_id
         self.dependents << Tourist.create(tourist_hash)
       else
         tourist = Tourist.find(tourist_hash[:id])
+        tourist_hash[:company_id] ||= company_id
         tourist.update_attributes(tourist_hash)
         self.dependents << tourist
       end
@@ -144,6 +146,7 @@ class Claim < ActiveRecord::Base
     payments_in.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
+      payment_hash[:company_id] = company_id
       payment_hash[:recipient_id] = Company.first.try(:id)
       payment_hash[:recipient_type] = Company.first.class.try(:name)
       payment_hash[:payer_id] = self.applicant.try(:id)
@@ -157,6 +160,7 @@ class Claim < ActiveRecord::Base
     payments_out.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
+      payment_hash[:company_id] = company_id
       payment_hash[:recipient_id] = self.operator.try(:id)
       payment_hash[:recipient_type] = self.operator.class.try(:name)
       payment_hash[:payer_id] = Company.first.try(:id)

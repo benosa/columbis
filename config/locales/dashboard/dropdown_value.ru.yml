@@ -1,0 +1,19 @@
+ru:
+  dashboard:
+    dropdown_values:
+      index:
+        title: 'Списки значений'
+        new_dropdown_value: 'Новое значение'
+      new:
+        title: 'Новое значение'
+      edit:
+        title: 'Изменить значение'
+      table:
+        list: 'Список'
+        value: 'Значение'
+
+    activerecord:
+      attributes:
+        dropdown_value:
+          list: 'Список'
+          value: 'Значение'

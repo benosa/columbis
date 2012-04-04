@@ -1,18 +1,18 @@
 class PaymentsController < ApplicationController
+  load_and_authorize_resource
+
   def index
-    @payments = Payment.order('claim_id ASC')
+    @payments = Payment.where(:company_id => current_company.id).order('claim_id ASC')
   end
 
   def show
-    @payment = Payment.find(params[:id])
   end
 
   def new
-    @payment = Payment.new
   end
 
   def create
-    @payment = Payment.new(params[:payment])
+    @payment.company = current_company
     if @payment.save
       redirect_to @payment, :notice => "Successfully created payment."
     else
@@ -21,7 +21,6 @@ class PaymentsController < ApplicationController
   end
 
   def edit
-    @payment = Payment.find(params[:id])
   end
 
   def update

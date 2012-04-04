@@ -11,7 +11,7 @@ class Ability
     elsif user.role == 'accountant'
       can :switch_view, User
       can :manage, [CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Payment], :company_id => user.company_id
-      can [:update, :destroy], User, :id => user.id, :company_id => user.company_id
+      can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
     elsif user.role == 'manager'
       can :manage, Country
@@ -21,7 +21,6 @@ class Ability
 
       can [:create, :update], Claim
       can :manage, Tourist
-      can :manage, Payment #, :approved => false
       can [:update], User, :id => user.id
       can :read, :all, :company_id => user.company_id
     else

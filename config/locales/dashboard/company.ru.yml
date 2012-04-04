@@ -1,0 +1,36 @@
+ru:
+  dashboard:
+    companies:
+      index:
+        add_company: 'Добавить компанию'
+        companies: 'Компании'
+        name: 'Название'
+        email: 'Электронная почта'
+        signature: 'Подпись'
+        address: 'Адрес'
+      show:
+        companies: 'Список компаний'
+      new:
+        add_company: 'Добавление компании'
+        companies: 'Список компаний'
+      edit:
+        edit_company: 'Редактирование данных компании'
+        companies: 'Список компаний'
+      cities:
+        our_cities: 'Города'
+      form:
+        address: 'Адрес'
+        offices: 'Офисы'
+        printers: 'Печатные формы'
+
+    activerecord:
+      attributes:
+        company:
+          name: 'Название'
+          oficial_letter_signature: 'Подпись'
+          email: 'Электронная почта'
+          bank: 'Банк'
+          bik: 'БИК'
+          curr_account: 'Расчетный счет'
+          corr_account: 'Корреспондентский счет'
+          ogrn: 'ОРГН'

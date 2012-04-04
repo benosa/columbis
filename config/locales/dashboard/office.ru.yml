@@ -1,0 +1,22 @@
+ru:
+  dashboard:
+    offices:
+      index:
+        title: 'Офисы'
+        new_office: 'Добавить офис'
+        name: 'Название'
+      new:
+        title: 'Добавить офис'
+      edit:
+        title: 'Редактировать офис'
+      form:
+        users: 'Пользователи'
+
+    activerecord:
+      attributes:
+        office:
+          name: 'Название'
+
+      errors:
+        messages:
+          has_assignments: 'Данный офис закреплен за пользователями. Укажите этим пользователям другой офис и попробуйте снова.'

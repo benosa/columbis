@@ -33,4 +33,15 @@ class Company < ActiveRecord::Base
     printers.where(:mode => 'memo', :country_id => country).last
   end
 
+  def check_and_save_dropdown(list, value)
+    DropdownValue.check_and_save(list, value, id)
+  end
+
+  def dropdown_for(list)
+    DropdownValue.dd_for(list, id)
+  end
+
+  def dropdown_values_for(list)
+    DropdownValue.values_for(list, id)
+  end
 end

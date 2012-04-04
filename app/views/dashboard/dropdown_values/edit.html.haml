@@ -3,6 +3,6 @@
 = render 'form'
 
 %p
-  = link_to t('show'), @dropdown_values
+  = link_to t('show'), [:dashboard, @dropdown_values]
   |
-  = link_to t('view_all'), dropdown_values_path
+  = link_to t('view_all'), dashboard_dropdown_values_path

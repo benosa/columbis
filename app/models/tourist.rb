@@ -9,7 +9,7 @@ class Tourist < ActiveRecord::Base
   has_many :tourist_claims
   has_many :claims, :through => :tourist_claims
 
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :first_name, :last_name, :company_id
 
   def first_last_name
     "#{first_name} #{last_name}".strip

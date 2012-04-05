@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_company_office
-    if user_signed_in?
+    if user_signed_in? and (request.path != destroy_user_session_path)
       unless current_company
         redirect_to new_dashboard_company_path unless
           (request.path == new_dashboard_company_path or (request.path == dashboard_companies_path and request.method == 'POST'))

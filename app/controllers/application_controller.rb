@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   CURRENTS.each do |elem|
     define_method :"current_#{elem}" do
-      eval "@#{elem} ||= current_user.try(:#{elem})" if current_user
+      current_user.try(:"#{elem}") if current_user
     end
   end
 

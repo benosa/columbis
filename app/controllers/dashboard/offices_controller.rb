@@ -11,8 +11,7 @@ class Dashboard::OfficesController < ApplicationController
   end
 
   def create
-    @office = Office.new(params[:office])
-    @office.company = current_user.company
+    @office.company = current_company
 
     if @office.save
       current_user.update_attribute(:office_id, @office.id)
@@ -23,12 +22,10 @@ class Dashboard::OfficesController < ApplicationController
   end
 
   def edit
-    @office = Office.find(params[:id])
   end
 
   def update
-    @office = Office.find(params[:id])
-    @office.company ||= current_user.company
+    @office.company ||= current_company
 
     if @office.update_attributes(params[:office])
       redirect_to offices_url, :notice  => "Successfully updated office."
@@ -38,7 +35,6 @@ class Dashboard::OfficesController < ApplicationController
   end
 
   def destroy
-    @office = Office.find(params[:id])
     if @office.destroy
       redirect_to offices_url, :notice => 'Successfully destroyed office.'
     else

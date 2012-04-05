@@ -1,18 +1,18 @@
 class OperatorsController < ApplicationController
+  load_and_authorize_resource
+
   def index
-    @operators = Operator.all
+    @operators = current_company.operators
   end
 
   def show
-    @operator = Operator.find(params[:id])
   end
 
   def new
-    @operator = Operator.new
   end
 
   def create
-    @operator = Operator.new(params[:operator])
+    @operator.company = current_company
     if @operator.save
       redirect_to @operator, :notice => "Successfully created operator."
     else
@@ -21,11 +21,10 @@ class OperatorsController < ApplicationController
   end
 
   def edit
-    @operator = Operator.find(params[:id])
   end
 
   def update
-    @operator = Operator.find(params[:id])
+    @operator.company ||= current_company
     if @operator.update_attributes(params[:operator])
       redirect_to @operator, :notice  => "Successfully updated operator."
     else
@@ -34,7 +33,6 @@ class OperatorsController < ApplicationController
   end
 
   def destroy
-    @operator = Operator.find(params[:id])
     @operator.destroy
     redirect_to operators_url, :notice => "Successfully destroyed operator."
   end

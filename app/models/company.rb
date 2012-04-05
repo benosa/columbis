@@ -4,16 +4,21 @@ class Company < ActiveRecord::Base
   attr_accessor :company_id
 
   has_one :address, :as => :addressable, :dependent => :destroy
-  has_many :payments_in, :as => :payer, :class_name => 'Payment'
-  has_many :payments_out, :as => :recipient, :class_name => 'Payment'
+  has_many :payments_in, :as => :payer, :class_name => 'Payment', :dependent => :destroy
+  has_many :payments_out, :as => :recipient, :class_name => 'Payment', :dependent => :destroy
 
-  has_many :users
-  has_many :offices
-  has_many :city_companies
+  has_many :users, :dependent => :destroy
+  has_many :offices, :dependent => :destroy
+  has_many :claims, :dependent => :destroy
+  has_many :tourists, :dependent => :destroy
+  has_many :clients, :dependent => :destroy
+  has_many :operators, :dependent => :destroy
+
+  has_many :city_companies, :dependent => :destroy
   has_many :cities, :through => :city_companies, :order => :name
   has_many :countries, :through => :cities, :group => 'countries.id', :order => :name
 
-  has_many :printers, :order => :id
+  has_many :printers, :order => :id, :dependent => :destroy
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :offices, :reject_if => proc { |attributes| attributes['name'].blank? }, :allow_destroy => true

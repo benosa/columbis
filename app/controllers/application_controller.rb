@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_filter :check_company_office
+  skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -34,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   CURRENTS.each do |elem|
     define_method :"current_#{elem}" do
-      current_user.try(:"#{elem}") if current_user
+      eval "@#{elem} ||= current_user.try(:#{elem})" if current_user
     end
   end
 
@@ -53,14 +54,14 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_company_office
-    if user_signed_in? and (request.path != destroy_user_session_path)
+    if user_signed_in? and request.path != destroy_user_session_path
       unless current_company
-        redirect_to new_dashboard_company_path unless
+        redirect_to(new_dashboard_company_path, :alert => t('you_must_add_company_info')) unless
           (request.path == new_dashboard_company_path or (request.path == dashboard_companies_path and request.method == 'POST'))
       else
         unless current_office
-          redirect_to new_dashboard_office_path unless
-            (request.path == new_dashboard_office_path or (request.path == dashboard_offices_path and request.method == 'POST'))
+          redirect_to(dashboard_edit_company_path, :alert => t('you_must_add_office')) unless
+            (request.path == dashboard_edit_company_path or (request.path == dashboard_company_path(current_company) and request.method == 'POST'))
         end
       end
     end

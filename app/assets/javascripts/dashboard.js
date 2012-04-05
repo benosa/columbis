@@ -74,7 +74,7 @@ $(function(){
   // select regions
 	function loadRegions(country_id){
     $.ajax({
-      url: '/dashboard/get_regions/' + country_id,
+      url: '/dashboard/get_regions/' + country_id
     });
   }
 
@@ -85,7 +85,7 @@ $(function(){
   // select cities
   function loadCities(region_id){
     $.ajax({
-      url: '/dashboard/get_cities/' + region_id,
+      url: '/dashboard/get_cities/' + region_id
     });
   }
 

@@ -24,7 +24,7 @@ class TouristsController < ApplicationController
     if @tourist.update_attributes(params[:tourist])
       redirect_to @tourist, :notice => 'Tourist was successfully updated.'
     else
-      render :action => "edit" }
+      render :action => "edit"
     end
   end
 
@@ -33,7 +33,7 @@ class TouristsController < ApplicationController
 
   def destroy
     @tourist.destroy
-    redirect_to tourists_url }
+    redirect_to tourists_url
   end
 
 end

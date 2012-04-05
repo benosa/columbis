@@ -19,10 +19,10 @@ set :shared_host, "tourism.devmen.com"
 before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:migrate"
-#after "deploy:migrate", "deploy:seed"
-after  "deploy:update_code", "thinking_sphinx:configure"
-after  "deploy:update_code", "thinking_sphinx:index"
-after  "deploy:update_code", "thinking_sphinx:start"
+##after "deploy:migrate", "deploy:seed"
+#after  "deploy:update_code", "thinking_sphinx:configure"
+#after  "deploy:update_code", "thinking_sphinx:index"
+#after  "deploy:update_code", "thinking_sphinx:start"
 
 namespace :deploy do
   task :start do

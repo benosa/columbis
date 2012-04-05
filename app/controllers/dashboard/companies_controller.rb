@@ -1,14 +1,10 @@
 class Dashboard::CompaniesController < ApplicationController
   load_and_authorize_resource
 
-  def index
-    @companies = Company.where(:id => current_user.company_id).accessible_by(current_ability)
-  end
-
   def new
-    @company = Company.new
+    @company.offices.build
+    @company.printers.build
     @company.build_address
-    @company.build_city
   end
 
   def create
@@ -16,7 +12,7 @@ class Dashboard::CompaniesController < ApplicationController
 
     if @company.save
       current_user.update_attribute(:company_id, @company.id)
-      redirect_to @company, :notice => t('companies.messages.successfully_created_company')
+      redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_created_company')
     else
       render :action => "new"
     end
@@ -34,19 +30,9 @@ class Dashboard::CompaniesController < ApplicationController
 
   def update
     if @company.update_attributes(params[:company])
-      redirect_to root_url, :notice => t('companies.messages.successfully_updated_company')
+      redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
       render :action => "edit"
     end
-  end
-
-  def show
-    @company = Company.find(params[:id])
-  end
-
-  def destroy
-    @company = Company.find(params[:id])
-    @company.destroy
-    redirect_to companies_url
   end
 end

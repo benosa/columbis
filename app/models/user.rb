@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   belongs_to :company
   belongs_to :office
 
-  before_validation :set_role, :on => :create, :unless => Proc.new{ ROLE.include? self.role  }
+  before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
 
   validates_uniqueness_of :login
   validates_presence_of :login, :role

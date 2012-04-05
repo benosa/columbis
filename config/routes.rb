@@ -37,7 +37,7 @@ Tourism::Application.routes.draw do
     match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
 
-    resources :companies, :except => :index
+    resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show
     resources :users do
       member do

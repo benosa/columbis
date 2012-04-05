@@ -55,12 +55,12 @@ class ApplicationController < ActionController::Base
   def check_company_office
     if user_signed_in?
       unless current_company
-        redirect_to new_company_path unless
-          (request.path == new_company_path or (request.path == companies_path and request.method == 'POST'))
+        redirect_to new_dashboard_company_path unless
+          (request.path == new_dashboard_company_path or (request.path == dashboard_companies_path and request.method == 'POST'))
       else
         unless current_office
-          redirect_to new_office_path unless
-            (request.path == new_office_path or (request.path == offices_path and request.method == 'POST'))
+          redirect_to new_dashboard_office_path unless
+            (request.path == new_dashboard_office_path or (request.path == dashboard_offices_path and request.method == 'POST'))
         end
       end
     end

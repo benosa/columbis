@@ -44,9 +44,8 @@ Tourism::Application.routes.draw do
         get 'resent_password'
       end
     end
-
-    match '/' => "dashboard#index"
   end
 
+  match 'dashboard' => "dashboard#index"
   root :to => 'claims#index'
 end

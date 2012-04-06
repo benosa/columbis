@@ -55,7 +55,8 @@
             = builder.label :mode
             = builder.select :mode, Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }, {}, :class => 'mode_select'
             = builder.label :country_id, nil, :class => 'country_label', :style => 'display:none;'
-            = builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
+            = builder.select :country_id, Country.all.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
+            /= builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
             = link_to_remove_fields t('delete'), builder
         - else
           %p.fields

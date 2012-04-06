@@ -7,7 +7,7 @@ class Office < ActiveRecord::Base
   has_many :claims
 
   validates_uniqueness_of :name, :scope => :company_id
-  validates_presence_of :name, :company_id
+  validates_presence_of :name
 
   before_destroy :check_assignments
 

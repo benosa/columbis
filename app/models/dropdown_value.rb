@@ -3,7 +3,8 @@ class DropdownValue < ActiveRecord::Base
   attr_protected :company_id
   belongs_to :company
 
-  validates_presence_of :list, :value, :company_id
+  validates_presence_of :list, :value
+  validates_presence_of :company_id, :if => Proc.new { |dd| dd.common == false }
   validates_uniqueness_of :value, :scope => [:company_id, :list]
 
   def self.available_lists
@@ -18,32 +19,17 @@ class DropdownValue < ActiveRecord::Base
     }
   end
 
-  def self.check_and_save(list, value, company_id)
+  def self.check_and_save(list, value, company_id, common = false)
     unless self.where(:list => list, :value => value, :company_id => company_id).first
       self.create( :list => list, :value => value, :company_id => company_id )
     end
   end
 
-  def self.dd_for(list, company_id)
-    DropdownValue.where( :list => list, :company_id => company_id )
+  def self.dd_for(list, company_id, include_common = true)
+    DropdownValue.where( 'list = ? AND (company_id = ? OR common = ?)', list, company_id, true ).order('common DESC, value ASC')
   end
 
-  def self.values_for(list, company_id)
-    DropdownValue.where( :list => list, :company_id => company_id ).map &:value
-  end
-
-  def self.method_missing(meth, *args, &block)
-    # just returns values for certain list
-    if meth.to_s =~ /^dd_for_(.+)$/
-      # returns as an AR-objects array
-      # for example: DropdownValue.dd_for_payment_form. where list name is 'payment_form'
-      DropdownValue.where( :list => $1 )
-    elsif meth.to_s =~ /^values_for_(.+)$/
-      # returns as a string array
-      # for example: DropdownValue.values_for_payment_form. where list name is 'payment_form'
-      DropdownValue.where( :list => $1 ).map &:value
-    else
-      super
-    end
+  def self.values_for(list, company_id, include_common = true)
+    self.dd_for(list, company_id, include_common).map &:value
   end
 end

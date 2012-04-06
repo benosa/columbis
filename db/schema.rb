@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120327144901) do
+ActiveRecord::Schema.define(:version => 20120406021901) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20120327144901) do
     t.string  "list"
     t.string  "value"
     t.integer "company_id"
+    t.boolean "common",     :default => false
   end
 
   add_index "dropdown_values", ["list"], :name => "index_dropdown_values_on_list"

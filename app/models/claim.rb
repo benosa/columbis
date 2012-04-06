@@ -55,7 +55,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id,:office_id, :country_id, :resort_id, :city_id, :check_date
+  validates_presence_of :user_id, :office_id, :country_id, :resort_id, :city_id, :check_date
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
     validates_presence_of a
@@ -89,7 +89,7 @@ class Claim < ActiveRecord::Base
   def self.search_and_sort(options = {})
     options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
 
-    ids = search(options[:filter]).map(&:id)
+    ids = search(options[:filter]).map{ |obj| obj.id if obj }
     claims = where('claims.id in(?)', ids)
 
     return claims if claims.empty?
@@ -110,7 +110,7 @@ class Claim < ActiveRecord::Base
 
       self.assign_applicant(claim_params[:applicant])
       self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
-      self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes])
+      self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes]) unless self.new_record?
 
       if self.valid?
         remove_unused_payments
@@ -121,7 +121,10 @@ class Claim < ActiveRecord::Base
 
   def assign_applicant(applicant_params)
     if applicant_params[:id].blank?
-      self.applicant = Tourist.create(applicant_params)
+      a = Tourist.new(applicant_params)
+      a.company_id = company_id
+      a.save
+      self.applicant = a
     else
       self.applicant = Tourist.find(applicant_params[:id])
     end
@@ -341,7 +344,7 @@ class Claim < ActiveRecord::Base
   end
 
   def remove_unused_payments
-    Payment.where(:claim_id => nil).destroy_all
+    Payment.where(:claim_id => nil, :company_id => company.id).destroy_all
   end
 
   def process_payment_hash(ph, in_out_payments)
@@ -374,25 +377,32 @@ class Claim < ActiveRecord::Base
   def check_dropdowns(claim_params)
     lists = %w[meals hotel placement transfer relocation service_class]
     lists.each do |l|
-      DropdownValue.check_and_save(l, claim_params[l.to_sym])
+      DropdownValue.check_and_save(l, claim_params[l.to_sym], company)
     end
 
-    DropdownValue.check_and_save('airport', claim_params[:airport_to])
-    DropdownValue.check_and_save('airport', claim_params[:airport_back])
+    DropdownValue.check_and_save('airport', claim_params[:airport_to], company)
+    DropdownValue.check_and_save('airport', claim_params[:airport_back], company)
 
-    Airline.create({ :name => claim_params[:airline] }) unless Airline.find_by_name(claim_params[:airline])
-    self.airline = Airline.where( :name => claim_params[:airline]).first
+    Airline.create({ :name => claim_params[:airline], :company_id => company.id }) unless
+      company.airlines.find_by_name(claim_params[:airline])
+    self.airline = company.airlines.find_by_name(claim_params[:airline])
 
-    Operator.create({ :name => claim_params[:operator] }) unless Operator.find_by_name(claim_params[:operator])
-    self.operator = Operator.where( :name => claim_params[:operator]).first
+    Operator.create({ :name => claim_params[:operator], :company_id => company.id }) unless
+      company.operators.find_by_name(claim_params[:operator])
+    self.operator = company.operators.find_by_name(claim_params[:operator])
 
-    Country.create({ :name => claim_params[:country] }) unless Country.find_by_name(claim_params[:country])
+    Country.create({ :name => claim_params[:country] }) unless
+      (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
     self.country = Country.where( :name => claim_params[:country]).first
 
-    City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+    unless claim_params[:city].blank?
+      City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+    end
     self.city = City.where( :name => claim_params[:city]).first
 
-    City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
+    unless claim_params[:resort].blank?
+      City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
+    end
     self.resort = City.where( :name => claim_params[:resort]).first
   end
 

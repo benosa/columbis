@@ -63,4 +63,10 @@ Tourism::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
+
+
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => '[Tourism] ',
+    :sender_address => %{ "notifier" <mailer.devmen.com@gmail.com> },
+    :exception_recipients => %w{ stratonaut@gmail.com }
 end

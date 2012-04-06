@@ -6,6 +6,22 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# die die die
+[Company, Address, Airline,  Catalog, CityCompany, Claim, Client, CurrencyCourse,
+DropdownValue, Item, ItemField, Note, Office, Operator, Payment, Printer, Tourist, TouristClaim, User,
+Country, City, Region].map{ |c| c.destroy_all}
 
-DropdownValue.create(:list => 'form', :value => 'наличный') if DropdownValue.where(:list => 'form', :value => 'наличный').empty?
-DropdownValue.create(:list => 'form', :value => 'безналичный') if DropdownValue.where(:list => 'form', :value => 'безналичный').empty?
+
+[
+  { :list => 'form', :value => 'Наличный' },
+  { :list => 'form', :value => 'Безналичный' },
+  { :list => 'tourist_stat', :value => 'Интернет' },
+  { :list => 'tourist_stat', :value => 'Реклама ТВ' },
+  { :list => 'tourist_stat', :value => 'Знакомый' },
+].each do |params_hash|
+  DropdownValue.create(params_hash.reverse_merge(:common => true)) if DropdownValue.where(params_hash.reverse_merge(:common => true)).empty?
+end
+
+plain_sql = File.open(Rails.root.join("db/geo_utf.sql")).read
+connection = ActiveRecord::Base.connection();
+connection.execute(plain_sql)

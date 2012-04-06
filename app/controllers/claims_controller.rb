@@ -120,9 +120,9 @@ class ClaimsController < ApplicationController
   end
 
   def set_protected_attr
-    @claim.user_id ||= current_user.id
-    @claim.company_id ||= current_company.id
-    @claim.office_id ||= current_office.id
+    @claim.user ||= current_user
+    @claim.company ||= current_company
+    @claim.office ||= current_office
   end
 
   def check_payments

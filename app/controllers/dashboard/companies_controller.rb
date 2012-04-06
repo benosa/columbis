@@ -9,7 +9,6 @@ class Dashboard::CompaniesController < ApplicationController
 
   def create
     @company = Company.new(params[:company])
-
     if @company.save
       current_user.update_attribute(:company_id, @company.id)
       current_user.update_attribute(:office_id, @company.offices.first.id) unless @company.offices.empty?

@@ -7,6 +7,13 @@ GIT
       yajl-ruby
 
 GIT
+  remote: https://github.com/smartinez87/exception_notification.git
+  revision: 88724d229ff4beda025c7bd3e66150f422e4549f
+  specs:
+    exception_notification (2.6.0.rc1)
+      actionmailer (>= 3.0.4)
+
+GIT
   remote: https://github.com/terraplane/ru_propisju.git
   revision: 68082451b15db53da0f434f6d69a79b940a2ae79
   specs:
@@ -202,6 +209,7 @@ DEPENDENCIES
   coffee-rails (~> 3.1.0)
   database_cleaner
   devise
+  exception_notification!
   factory_girl_rails
   ffaker (~> 1.5)
   guard-bundler

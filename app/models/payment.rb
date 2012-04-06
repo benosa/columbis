@@ -11,7 +11,7 @@ class Payment < ActiveRecord::Base
   validates_presence_of :amount, :amount_prim, :form, :currency, :claim_id, :date_in
   validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
   validates_numericality_of :amount, :amount_prim
-  validates_inclusion_of :form, :in => DropdownValue.values_for_form
+  validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
 
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
 

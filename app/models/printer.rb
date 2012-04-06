@@ -6,7 +6,7 @@ class Printer < ActiveRecord::Base
 
   belongs_to :company
   belongs_to :country
-  validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' }
+  validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' } # TODO: check company presence
 
   mount_uploader :template, TemplateUploader
 

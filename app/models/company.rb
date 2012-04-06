@@ -13,6 +13,8 @@ class Company < ActiveRecord::Base
   has_many :tourists, :dependent => :destroy
   has_many :clients, :dependent => :destroy
   has_many :operators, :dependent => :destroy
+  has_many :airlines, :dependent => :destroy
+  has_many :dropdown_values, :dependent => :destroy
 
   has_many :city_companies, :dependent => :destroy
   has_many :cities, :through => :city_companies, :order => :name

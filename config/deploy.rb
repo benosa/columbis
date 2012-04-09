@@ -18,6 +18,7 @@ set :shared_host, "tourism.devmen.com"
 
 before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"
+after "deploy:update_code", "deploy:uploads"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
 after "deploy:update_code", "thinking_sphinx:configure"
@@ -37,6 +38,10 @@ namespace :deploy do
 
   task :config do
     run "cd #{release_path}/config && ln -s #{shared_path}/config/database.yml database.yml"
+  end
+
+  task :uploads do
+    run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
   end
 
   desc "reload the database with seed data"

@@ -348,7 +348,7 @@ class Claim < ActiveRecord::Base
   end
 
   def process_payment_hash(ph, in_out_payments)
-    DropdownValue.check_and_save('form', ph[:form])
+    company.check_and_save_dropdown('form', ph[:form])
     if ph[:id].blank?
       in_out_payments << Payment.create(ph)
     else
@@ -377,11 +377,11 @@ class Claim < ActiveRecord::Base
   def check_dropdowns(claim_params)
     lists = %w[meals hotel placement transfer relocation service_class]
     lists.each do |l|
-      DropdownValue.check_and_save(l, claim_params[l.to_sym], company)
+      company.check_and_save_dropdown(l, claim_params[l.to_sym])
     end
 
-    DropdownValue.check_and_save('airport', claim_params[:airport_to], company)
-    DropdownValue.check_and_save('airport', claim_params[:airport_back], company)
+    company.check_and_save_dropdown('airport', claim_params[:airport_to])
+    company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
     Airline.create({ :name => claim_params[:airline], :company_id => company.id }) unless
       company.airlines.find_by_name(claim_params[:airline])

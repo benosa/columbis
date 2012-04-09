@@ -383,11 +383,11 @@ class Claim < ActiveRecord::Base
     company.check_and_save_dropdown('airport', claim_params[:airport_to])
     company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
-    Airline.create({ :name => claim_params[:airline], :company_id => company.id }) unless
+    company.airlines.create({ :name => claim_params[:airline] }) unless
       company.airlines.find_by_name(claim_params[:airline])
     self.airline = company.airlines.find_by_name(claim_params[:airline])
 
-    Operator.create({ :name => claim_params[:operator], :company_id => company.id }) unless
+    company.operators.create({ :name => claim_params[:operator] }) unless
       company.operators.find_by_name(claim_params[:operator])
     self.operator = company.operators.find_by_name(claim_params[:operator])
 

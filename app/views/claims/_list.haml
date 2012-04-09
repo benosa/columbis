@@ -58,7 +58,8 @@
           = text_for_visa(claim)
         %td{ :full_value => l( claim.visa_check, :format => :short ), :class => !claim.canceled? && claim.visa }
           = l( claim.visa_check, :format => :short )
-        %td= claim.operator.try(:name)
+        %td{ :full_value => claim.operator.try(:name) }
+          = claim.operator.try(:name)
         %td{ :full_value => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
           = truncate(claim.operator_confirmation, :length => 10)
         %td{ :full_value => claim.primary_currency_price.to_money }

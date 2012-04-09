@@ -1,6 +1,7 @@
 class Company < ActiveRecord::Base
-  attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes,
+  attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids
+
   attr_accessor :company_id
 
   has_one :address, :as => :addressable, :dependent => :destroy

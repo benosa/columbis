@@ -22,7 +22,7 @@ class ClaimsController < ApplicationController
   end
 
   def autocomplete_common
-    render :json => DropdownValue.dd_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
+    render :json => current_company.dropdown_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
   end
 
   def autocomplete_model_common

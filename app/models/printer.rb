@@ -10,7 +10,7 @@ class Printer < ActiveRecord::Base
 
   mount_uploader :template, TemplateUploader
 
-  after_destroy { Pathname.new(self.template.path).dirname.delete if File.exist?(Pathname.new(p.template.path).dirname) }
+  after_destroy { Pathname.new(self.template.path).dirname.delete if File.exist?(Pathname.new(self.template.path).dirname) }
 
   def prepare_template(fields, collections)
     @text = File.read(template.path)

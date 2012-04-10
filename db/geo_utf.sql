@@ -11847,3 +11847,12 @@ INSERT INTO cities (id, region_id, country_id, name) VALUES (10811, 904, 106, '�
 INSERT INTO cities (id, region_id, country_id, name) VALUES (10812, 904, 106, 'Шимоносеки');
 INSERT INTO cities (id, region_id, country_id, name) VALUES (10813, 904, 106, 'Ямагучи');
 INSERT INTO cities (id, region_id, country_id, name) VALUES (10814, 905, 106, 'Кофу');
+
+SELECT max(id) FROM countries
+SELECT setval('table_id_seq', max_id);
+
+SELECT max(id) FROM regions
+SELECT setval('table_id_seq', max_id);
+
+SELECT max(id) FROM cities
+SELECT setval('table_id_seq', max_id);

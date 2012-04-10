@@ -21,6 +21,7 @@ after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:uploads"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
+after "deploy:migrate", "deploy:repair_sequences"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
@@ -47,5 +48,10 @@ namespace :deploy do
   desc "reload the database with seed data"
   task :seed do
     run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  end
+
+  desc "secuenses changes when need generate new value for relaten table"
+  task :repair_sequences do
+    run "cd #{current_path}; bundle exec rake repair:sequences RAILS_ENV=#{rails_env}"
   end
 end

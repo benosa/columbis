@@ -37,7 +37,7 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claims = Claim.search_and_sort(:filter => params[:filter], :column => sort_column,
+    @claims = current_company.claims.search_and_sort(:filter => params[:filter], :column => sort_column,
       :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
     set_list_type
     render :partial => 'list'
@@ -45,12 +45,11 @@ class ClaimsController < ApplicationController
 
   def index
     params[:list_type] || set_list_type
-    @claims = Claim.search_and_sort(:column => sort_column,
+    @claims = current_company.claims.search_and_sort(:column => sort_column,
           :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
   end
 
   def show
-    @claim = Claim.find(params[:id])
     if %w[contract memo].include? params[:print]
       case params[:print]
       when 'contract'
@@ -104,7 +103,6 @@ class ClaimsController < ApplicationController
   end
 
   def destroy
-    @claim = Claim.find(params[:id])
     @claim.destroy
     redirect_to claims_url, :notice =>  t('claims.messages.successfully_destroyed_claim')
   end

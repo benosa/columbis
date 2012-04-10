@@ -167,7 +167,7 @@
             %th{ :colspan => 2 }
               = f.label :hotel
           %tr
-            %td= f.text_field :country, :class => 'autocomplete country', :value => @claim.country.try(:name)
+            %td= f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {}, :class => 'country'
             %td= f.text_field :resort, :class => 'autocomplete resort', :value => @claim.resort.try(:name)
             %td{ :colspan => 2 }
               = f.text_field :hotel, :class => 'autocomplete hotel'

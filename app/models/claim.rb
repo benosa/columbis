@@ -112,7 +112,7 @@ class Claim < ActiveRecord::Base
       self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
       self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes]) unless self.new_record?
 
-      if self.valid?
+      unless self.errors.any?
         remove_unused_payments
         self.save
       end
@@ -133,14 +133,20 @@ class Claim < ActiveRecord::Base
   def assign_dependents(tourists)
     tourists.each do |key, tourist_hash|
       next if empty_tourist_hash?(tourist_hash)
+
       if tourist_hash[:id].blank?
-        tourist_hash[:company_id] = company_id
-        self.dependents << Tourist.create(tourist_hash)
+        tourist = Tourist.new(tourist_hash)
+        tourist.company_id = company_id
       else
         tourist = Tourist.find(tourist_hash[:id])
-        tourist_hash[:company_id] ||= company_id
         tourist.update_attributes(tourist_hash)
+      end
+
+      tourist.company_id = company_id
+      begin
         self.dependents << tourist
+      rescue
+        tourist.errors.full_messages.each { |msg| self.errors.add(:tourists, msg) }
       end
     end
   end
@@ -350,12 +356,13 @@ class Claim < ActiveRecord::Base
   def process_payment_hash(ph, in_out_payments)
     company.check_and_save_dropdown('form', ph[:form])
     if ph[:id].blank?
-      in_out_payments << Payment.create(ph)
+      p = Payment.create(ph)
     else
       payment = Payment.find(ph[:id])
       payment.update_attributes(ph)
-      in_out_payments << payment
     end
+    p.company_id = company_id
+    in_out_payments << payment
   end
 
   def empty_tourist_hash?(th)
@@ -391,9 +398,9 @@ class Claim < ActiveRecord::Base
       company.operators.find_by_name(claim_params[:operator])
     self.operator = company.operators.find_by_name(claim_params[:operator])
 
-    Country.create({ :name => claim_params[:country] }) unless
-      (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
-    self.country = Country.where( :name => claim_params[:country]).first
+#    Country.create({ :name => claim_params[:country] }) unless
+#      (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
+#    self.country = Country.where( :name => claim_params[:country]).first
 
     unless claim_params[:city].blank?
       City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
@@ -407,10 +414,10 @@ class Claim < ActiveRecord::Base
   end
 
   def presence_of_applicant
-    errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
+    self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
   def correctness_of_maturity
-    errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
+    self.errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 end

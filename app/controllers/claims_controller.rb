@@ -85,6 +85,7 @@ class ClaimsController < ApplicationController
 
   def update
     @claim.assign_reflections_and_save(params[:claim])
+
     unless @claim.errors.any?
       if @claim.update_attributes(params[:claim])
         redirect_to claims_url, :notice  => t('claims.messages.successfully_updated_claim')

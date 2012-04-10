@@ -483,12 +483,6 @@ $(function(){
       operator: {
       source: "/claims/autocomplete_model_common/operator"
     },
-      country: {
-      source: "/claims/autocomplete_model_common/country",
-      select: function(event, ui) {
-        $("input.autocomplete.resort").autocomplete($autocomplete.resort);
-      }
-    },
       city: {
       source: "/claims/autocomplete_model_common/city",
       select: function(event, ui) {
@@ -518,17 +512,12 @@ $(function(){
   $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
   $("input.autocomplete.airline").autocomplete($autocomplete.airline);
   $("input.autocomplete.operator").autocomplete($autocomplete.operator);
-  $("input.autocomplete.country").autocomplete($autocomplete.country);
   $("input.autocomplete.city").autocomplete($autocomplete.city);
   $("input.autocomplete.resort").autocomplete($autocomplete.resort);
   $("input.autocomplete.airport").autocomplete($autocomplete.airport);
   $("input.autocomplete.transfer").autocomplete($autocomplete.transfer);
   $("input.autocomplete.relocation").autocomplete($autocomplete.relocation);
   $("input.autocomplete.service_class").autocomplete($autocomplete.service_class);
-
-  $('input.autocomplete.country').change(function() {
-    $autocomplete.city.source = "/claims/autocomplete_city/" + $("input.autocomplete.country").val();
-  });
 
   // add tourist
 	var add_tourist = function(e){

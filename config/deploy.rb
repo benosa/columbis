@@ -22,7 +22,7 @@ after "deploy:update_code", "deploy:uploads"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
 
-after "deploy:update_code", "deploy:repair_sequences"
+#after "deploy:update_code", "deploy:repair_sequences"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"

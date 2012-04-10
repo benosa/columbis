@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120406021901) do
+ActiveRecord::Schema.define(:version => 20120410133044) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -42,11 +42,9 @@ ActiveRecord::Schema.define(:version => 20120406021901) do
   end
 
   create_table "cities", :force => true do |t|
-    t.integer  "country_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "region_id"
+    t.integer "country_id"
+    t.string  "name"
+    t.integer "region_id"
   end
 
   add_index "cities", ["country_id", "region_id", "name"], :name => "index_cities_on_country_id_and_region_id_and_name"
@@ -172,11 +170,9 @@ ActiveRecord::Schema.define(:version => 20120406021901) do
   end
 
   create_table "countries", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "memo"
-    t.integer  "company_id"
+    t.string  "name"
+    t.string  "memo"
+    t.integer "company_id"
   end
 
   add_index "countries", ["name"], :name => "index_countries_on_name"

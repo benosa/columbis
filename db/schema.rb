@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120410133044) do
+ActiveRecord::Schema.define(:version => 20120410135044) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -170,9 +170,7 @@ ActiveRecord::Schema.define(:version => 20120410133044) do
   end
 
   create_table "countries", :force => true do |t|
-    t.string  "name"
-    t.string  "memo"
-    t.integer "company_id"
+    t.string "name"
   end
 
   add_index "countries", ["name"], :name => "index_countries_on_name"

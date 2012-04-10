@@ -19,7 +19,7 @@ class Company < ActiveRecord::Base
 
   has_many :city_companies, :dependent => :destroy
   has_many :cities, :through => :city_companies, :order => :name
-  has_many :countries, :through => :cities, :group => 'countries.id', :order => :name
+  has_many :countries, :through => :cities, :group => 'countries.name, countries.id', :order => :name
 
   has_many :printers, :order => :id, :dependent => :destroy
 

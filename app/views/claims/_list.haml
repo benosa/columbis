@@ -54,9 +54,9 @@
           = truncate(claim.country.try(:name), :length => 8)
         %td{ :full_value => claim.city.try(:name) }
           = truncate(claim.city.try(:name), :length => 6)
-        %td{ :full_value => text_for_visa(claim), :class => !claim.canceled? && claim.visa }
+        %td{ :full_value => text_for_visa(claim), :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
           = text_for_visa(claim)
-        %td{ :full_value => l( claim.visa_check, :format => :short ), :class => !claim.canceled? && claim.visa }
+        %td{ :full_value => l( claim.visa_check, :format => :short ), :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa  }
           = l( claim.visa_check, :format => :short )
         %td{ :full_value => claim.operator.try(:name) }
           = claim.operator.try(:name)

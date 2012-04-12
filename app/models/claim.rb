@@ -3,7 +3,7 @@ class Claim < ActiveRecord::Base
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
 
   # relations
-  attr_protected :user_id, :company_id, :office_id, :operator_id, :airline_id, :country_id, :resort_id, :city_id
+  attr_protected :user_id, :company_id, :office_id, :operator_id, :airline_id, :resort_id, :city_id
 
   # price block
   attr_accessible :tour_price, :tour_price_currency,
@@ -18,7 +18,7 @@ class Claim < ActiveRecord::Base
   attr_accessible :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
 
   # marchroute block
-  attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
+  attr_accessible :country_id, :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
                   :memo, :transfer, :relocation, :service_class, :additional_services, :medical_insurance
 
   # common

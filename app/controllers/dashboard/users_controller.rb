@@ -14,11 +14,17 @@ class Dashboard::UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @user.company = current_user.company
-    @user.password = User.reset_password_token #won't actually be used...
-    @user.reset_password_token = User.reset_password_token
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
+
+    if @user.office.default_password.blank?
+      @user.password = User.reset_password_token #won't actually be used...
+      @user.reset_password_token = User.reset_password_token
+    else
+      @user.password = @user.office.default_password
+    end
+
     if @user.save
-      @user.send_reset_password_instructions
+      @user.send_reset_password_instructions if @user.office.default_password.blank?
       redirect_to dashboard_users_url, :notice => "Successfully created user."
     else
       render :action => 'new'

@@ -356,12 +356,12 @@ class Claim < ActiveRecord::Base
   def process_payment_hash(ph, in_out_payments)
     company.check_and_save_dropdown('form', ph[:form])
     if ph[:id].blank?
-      p = Payment.create(ph)
+      payment = Payment.create(ph)
     else
       payment = Payment.find(ph[:id])
       payment.update_attributes(ph)
     end
-    p.company_id = company_id
+    payment.company_id = company_id
     in_out_payments << payment
   end
 

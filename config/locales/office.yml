@@ -14,6 +14,7 @@ ru:
     attributes:
       office:
         name: 'Название'
+        default_password: 'Пароль по умолчанию'
     errors:
       messages:
         has_assignments: 'Данный офис закреплен за пользователями. Укажите этим пользователям другой офис и попробуйте снова.'

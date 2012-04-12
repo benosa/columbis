@@ -42,6 +42,8 @@
         %p.fields
           = builder.label :name
           = builder.text_field :name
+          = builder.label :default_password
+          = builder.text_field :default_password
           = link_to_remove_fields t('delete'), builder
       = link_to t('add'), '#', :class => 'add'
 

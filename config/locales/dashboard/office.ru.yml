@@ -16,6 +16,7 @@ ru:
       attributes:
         office:
           name: 'Название'
+          default_password: 'Пароль по умолчанию'
 
       errors:
         messages:

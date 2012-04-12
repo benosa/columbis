@@ -1,5 +1,5 @@
 class Office < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :default_password
   attr_protected :company_id
 
   belongs_to :company

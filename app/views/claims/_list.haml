@@ -1,4 +1,14 @@
 .claims
+  .filter_bar
+    - if is_admin? or is_boss? or is_supervisor?
+      = label_tag :office
+      = select_tag :office,  options_from_collection_for_select(current_company.offices, 'id', 'name')
+      = label_tag :user
+      = select_tag :user,  options_from_collection_for_select(current_company.users, 'id', 'first_last_name')
+    - else
+      = check_box_tag :only_my
+      = label_tag :only_my
+
   %table#claims{ :rules => 'all'}
     %tr
       %th= sortable 'id', t('claims.index.num')

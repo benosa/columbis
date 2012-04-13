@@ -1,12 +1,13 @@
 class ClaimsController < ApplicationController
   load_and_authorize_resource
+
   autocomplete :tourist, :last_name, :full => true
   helper_method :sort_column, :sort_direction
 
   before_filter :set_protected_attr, :only => [:create, :update]
 
   def autocomplete_tourist_last_name
-    render :json => Tourist.where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
+    render :json => Tourist.accessible_by(current_ability).where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
       {
         :label => tourist.last_name,
         :value => tourist.full_name,
@@ -32,12 +33,12 @@ class ClaimsController < ApplicationController
       else
         cls = eval("#{params[:model].classify}")
       end
-      render :json => cls.where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
+      render :json => cls.accessible_by(current_ability).where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
     end
   end
 
   def search
-    @claims = current_company.claims.search_and_sort(:filter => params[:filter], :column => sort_column,
+    @claims = Claim.accessible_by(current_ability).search_and_sort(:filter => params[:filter], :column => sort_column,
       :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
     set_list_type
     render :partial => 'list'
@@ -45,7 +46,7 @@ class ClaimsController < ApplicationController
 
   def index
     params[:list_type] || set_list_type
-    @claims = current_company.claims.search_and_sort(:column => sort_column,
+    @claims = Claim.accessible_by(current_ability).search_and_sort(:column => sort_column,
           :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
   end
 
@@ -63,7 +64,7 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    @claim = Claim.new( :user_id => current_user.id)
+    set_protected_attr
     @claim.fill_new
   end
 

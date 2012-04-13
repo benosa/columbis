@@ -3,26 +3,27 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+
     if user.role == 'admin'
-      can :manage, :all
+      can :manage, :all, :company_id => user.company_id
     elsif user.role == 'boss'
-      can :manage, [Company, Printer, CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Office, Payment, User], :company_id => user.company_id
+      can :manage, :all, :company_id => user.company_id
+      cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
     elsif user.role == 'accountant'
       can :switch_view, User
-      can :manage, [CurrencyCourse, Country, City, Client, DropdownValue, Claim, Tourist, Payment], :company_id => user.company_id
+      can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id
       can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
-    elsif user.role == 'manager'
-      can :manage, Country
-      can :manage, City
-      can :manage, Client
-      can :manage, DropdownValue
-
-      can [:create, :update], Claim
-      can :manage, Tourist
+    elsif user.role == 'supervisor'
+      can :manage, [Client, Tourist], :company_id => user.company_id
+      can [:create, :update], Claim, :company_id => user.company_id
       can [:update], User, :id => user.id
-      can :read, :all, :company_id => user.company_id
+    elsif user.role == 'manager'
+      can :manage, [Client, Tourist], :company_id => user.company_id
+      can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
+      can :read, Claim, :company_id => user.company_id, :office_id => user.office_id
+      can [:update], User, :id => user.id
     else
       can [:update, :destroy], User, :id => user.id
     end

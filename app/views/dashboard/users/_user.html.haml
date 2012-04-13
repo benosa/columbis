@@ -1,10 +1,11 @@
 %tr
+  %td= user.role
+  %td= user.office.try(:name)
   %td= user.login
   %td= user.last_name
   %td= user.first_name
   %td= user.middle_name
   %td= user.email
-  %td= user.role
   - if can? :update, user
     %td= link_to t('edit'), edit_dashboard_user_path(user)
   - if can? :destroy, user

@@ -92,6 +92,7 @@ class Claim < ActiveRecord::Base
     ids = search(options[:filter]).map{ |obj| obj.id if obj }
     claims = where('claims.id in(?)', ids)
 
+
     return claims if claims.empty?
 
     if options[:column] == 'applicant.last_name'

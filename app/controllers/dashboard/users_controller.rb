@@ -8,7 +8,6 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
   end
 
   def create
@@ -32,7 +31,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def index
-    @users = User.where(:company_id => current_user.company_id).accessible_by(current_ability)
+    @users = User.accessible_by(current_ability).order(:role)
   end
 
   def show

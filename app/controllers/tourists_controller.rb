@@ -2,7 +2,6 @@ class TouristsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @tourists = Tourist.where(:company_id => current_company.id)
   end
 
   def new
@@ -21,6 +20,7 @@ class TouristsController < ApplicationController
   end
 
   def update
+    @tourist.company = current_company
     if @tourist.update_attributes(params[:tourist])
       redirect_to @tourist, :notice => 'Tourist was successfully updated.'
     else
@@ -35,5 +35,4 @@ class TouristsController < ApplicationController
     @tourist.destroy
     redirect_to tourists_url
   end
-
 end

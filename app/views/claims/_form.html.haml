@@ -145,8 +145,14 @@
             %td= f.label :user_id, t('.user')
             %td= f.label :office_id, t('.office')
           %tr
-            %td= f.select :user_id, User.all.collect {|o| [ o.first_last_name, o.id ] }, {}, :class => 'small'
-            %td= f.select :office_id, Office.all.collect {|o| [ o.name, o.id ] }, {}, :class => 'small'
+            - if is_admin? or is_boss?
+              %td= f.select :user_id, current_company.users.map {|o| [ o.first_last_name, o.id ] }, {}, :class => 'small'
+              %td= f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ] }, {}, :class => 'small'
+            - else
+              %td
+                %strong.small= @claim.user.try(:first_last_name)
+              %td
+                %strong.small= @claim.office.try(:name)
 
       .data_block
         %h2= t('.marchroute')

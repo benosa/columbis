@@ -19,11 +19,13 @@ class Ability
       can :manage, [Client, Tourist], :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
       can [:update], User, :id => user.id
+      can :read, [Country, Region, City]
     elsif user.role == 'manager'
       can :manage, [Client, Tourist], :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
       can :read, Claim, :company_id => user.company_id, :office_id => user.office_id
       can [:update], User, :id => user.id
+      can :read, [Country, Region, City]
     else
       can [:update, :destroy], User, :id => user.id
     end

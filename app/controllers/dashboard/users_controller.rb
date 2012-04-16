@@ -2,9 +2,14 @@ class Dashboard::UsersController < ApplicationController
   load_and_authorize_resource
 
   def resent_password
-    @user.update_attribute(:reset_password_token, User.reset_password_token)
-    @user.send_reset_password_instructions
-    redirect_to dashboard_users_url, :notice => "Mail with instrictions send to user"
+    if @user.office.default_password.blank?
+      @user.update_attribute(:reset_password_token, User.reset_password_token)
+      @user.send_reset_password_instructions
+      redirect_to dashboard_users_url, :notice => "Mail with instrictions send to user"
+    else
+      @user.password = @user.office.default_password
+      @user.save
+    end
   end
 
   def new

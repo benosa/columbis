@@ -207,4 +207,7 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+
+  require 'custom_devise_strategy'
+  Warden::Strategies.add(:sign_in_as, SignInAs::Devise::Strategies::FromAdmin)
 end

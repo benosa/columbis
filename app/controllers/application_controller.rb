@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include SignInAs::Concerns::RememberAdmin
+
   CURRENTS = %w[company office]
   protect_from_forgery
 
@@ -9,6 +11,8 @@ class ApplicationController < ActionController::Base
   User::ROLES.each do |role|
     helper_method :"is_#{role}?"
   end
+
+  helper_method :"logged_as_another_user?"
 
   before_filter :check_company_office
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
@@ -68,6 +72,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def logged_as_another_user?
+    self.remember_admin_id?
+  end
 
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(resource_or_scope)

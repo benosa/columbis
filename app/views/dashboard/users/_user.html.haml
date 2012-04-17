@@ -1,6 +1,5 @@
 %tr
   %td= user.role
-  %td= user.office.try(:name)
   %td= user.login
   %td= user.last_name
   %td= user.first_name
@@ -11,4 +10,6 @@
   - if can? :destroy, user
     %td= link_to t('destroy'), [:dashboard, user], :method => :delete, :confirm => t('are_you_sure')
   - if can? :create, user
-    %td= link_to t('.resent_password'), resent_password_dashboard_user_path(user), :confirm => t('are_you_sure')
+    %td= link_to t('.reset_password'), edit_password_dashboard_user_path(user), :class => 'password_reset_form'
+  - if can? :manage, user
+    %td= link_to t('.sign_in_as'),  dashboard_sign_in_as_path(user)

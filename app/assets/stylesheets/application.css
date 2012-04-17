@@ -103,6 +103,62 @@ h2 {
 .clr {
   float: inherit;
 }
+
+#popup {
+	position: absolute;
+	opacity: 0.73;
+	filter:alpha(opacity=73);
+	background: #545454;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2000;
+	display: none;
+}
+
+.window	{
+  width: 400px;
+  margin-left: -200px;  
+	height: 200px;
+  position:absolute;
+  left: 50%;
+  top: 130px;
+  z-index: 2001;
+  display: none;
+  background-color: white;
+  border: solid 1px black;
+  background-color: #eaf9dc;
+}
+
+.window .close	{
+  padding: 8px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  font: bold 14px arial;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  z-index:2002;
+  text-transform: none;
+}
+
+.window .title	{
+  font: bold 14px arial;
+  color: #48494a;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  background-color: #F6E7C0;
+  border-bottom: solid 1px black;
+}
+
+.window .content	{
+  padding: 12px;
+}
+
 #documents_to_print_menu ul {
   margin: 0;
 }

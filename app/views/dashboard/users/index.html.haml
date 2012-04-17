@@ -3,7 +3,6 @@
   %thead
     %tr
       %th= t('.role')
-      %th= t('.office')
       %th= t('.login')
       %th= t('.last_name')
       %th= t('.first_name')
@@ -12,6 +11,18 @@
       %th
       %th
   %tbody
-    = render :partial => 'user', :collection => @users
+    - @offices.each do |office|
+      %tr
+        %td{ :colspan => 2 }
+          %h2= office.try(:name)
+      %tr
+        %td{ :colspan => 4 }
+      = render :partial => 'user', :collection => office.users
+%p
+  = link_to t('.add_user'), new_dashboard_user_path
 
-= link_to t('.add_user'), new_dashboard_user_path
+.window#password_reset_form{ :style => 'display:none' }
+  .title
+    = t('dashboard.users.user.reset_password')
+    .close X
+  .content

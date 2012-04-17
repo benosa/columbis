@@ -43,4 +43,40 @@ $(function(){
   $('#user_color').keyup(function(event){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
   });
+
+  // popups
+  function show_popup(e){
+    $('#popup').height($('#content').height()).show();
+    var classes = $(e.currentTarget).attr('class').split(' ');
+    for (var i in classes) {
+      if (/[a-z_]+_form$/.test(classes[i])) {
+        $('.window#' + classes[i]).fadeIn();
+        break;
+      }
+    }
+  }
+
+  $('a.show_popup').click(function(e){
+    e.preventDefault();
+    show_popup(e);
+	});
+
+	$('.window .close').click(function(e) {
+		e.preventDefault();
+		$('#popup').fadeOut(300);
+		$('.window').hide();
+	});
+
+  //password reset form
+  $('a.password_reset_form').click(function(e){
+    e.preventDefault();
+    $.ajax({
+      url: $(e.currentTarget).attr('href'),
+      success: function(resp){
+        $('.window .content').empty().append(resp);
+      }
+    });
+    show_popup(e);
+  });
+
 });

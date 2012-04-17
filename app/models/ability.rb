@@ -3,7 +3,6 @@ class Ability
 
   def initialize(user)
     user ||= User.new
-
     if user.role == 'admin'
       can :manage, :all, :company_id => user.company_id
     elsif user.role == 'boss'
@@ -18,6 +17,7 @@ class Ability
     elsif user.role == 'supervisor'
       can :manage, [Client, Tourist], :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
+      can :read, Claim, :company_id => user.company_id
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
     elsif user.role == 'manager'

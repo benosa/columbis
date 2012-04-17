@@ -17,7 +17,7 @@ ru:
         edit_user: 'Редактирование профиля'
         users: 'Сотрудники'
       user:
-        resent_password: 'Переустановить пароль'
+        reset_password: 'Переустановить пароль'
 
     activerecord:
       attributes:

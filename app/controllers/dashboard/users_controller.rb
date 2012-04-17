@@ -1,15 +1,13 @@
 class Dashboard::UsersController < ApplicationController
   load_and_authorize_resource
 
-  def resent_password
-    if @user.office.default_password.blank?
-      @user.update_attribute(:reset_password_token, User.reset_password_token)
-      @user.send_reset_password_instructions
-      redirect_to dashboard_users_url, :notice => "Mail with instrictions send to user"
-    else
-      @user.password = @user.office.default_password
-      @user.save
-    end
+  def edit_password
+    render :partial => 'edit_password'
+  end
+
+  def update_password
+    flash[:info] = "Successfully ololol user."
+    redirect_to dashboard_users_url
   end
 
   def new
@@ -20,12 +18,7 @@ class Dashboard::UsersController < ApplicationController
     @user.company = current_user.company
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
 
-    if @user.office.default_password.blank?
-      @user.password = User.reset_password_token #won't actually be used...
-      @user.reset_password_token = User.reset_password_token
-    else
-      @user.password = @user.office.default_password
-    end
+    @user.password = @user.office.default_password
 
     if @user.save
       @user.send_reset_password_instructions if @user.office.default_password.blank?
@@ -36,6 +29,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def index
+    @offices = Office.accessible_by(current_ability).order(:name)
     @users = User.accessible_by(current_ability).order(:role)
   end
 

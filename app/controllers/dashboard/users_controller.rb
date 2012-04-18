@@ -6,8 +6,11 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def update_password
-    flash[:info] = "Successfully ololol user."
-    redirect_to dashboard_users_url
+    if @user.update_attributes(params[:user])
+      Mailer.registrations_info(@user).deliver
+    else
+      render :action => 'edit'
+    end
   end
 
   def new
@@ -17,11 +20,10 @@ class Dashboard::UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.company = current_user.company
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
-
-    @user.password = @user.office.default_password
+    @user.password = @user.office.default_password if @user.password.blank?
 
     if @user.save
-      @user.send_reset_password_instructions if @user.office.default_password.blank?
+      Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => "Successfully created user."
     else
       render :action => 'new'

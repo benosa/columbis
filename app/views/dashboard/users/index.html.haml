@@ -1,4 +1,19 @@
 - title t('.users')
+
+#info{ :style => 'display:none' }
+  %table
+    %th
+      %td{ :colspan => 2 }
+        = t('record_successfuly_saved')
+    %tr
+      %td
+        %strong= t('activerecord.attributes.user.login')
+      %td#login= @user.try(:login)
+    %tr
+      %td
+        %strong= t('activerecord.attributes.user.password')
+      %td#password= @user.try(:password)
+
 %table#users
   %thead
     %tr

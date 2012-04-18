@@ -18,6 +18,7 @@ ru:
         users: 'Сотрудники'
       user:
         reset_password: 'Переустановить пароль'
+        sign_in_as: 'Войти этим пользователем'
 
     activerecord:
       attributes:

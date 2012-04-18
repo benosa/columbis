@@ -21,6 +21,19 @@ $(function(){
     closeText: 'Закрыть'
   });
 
+  $('.editable-select').editableSelect({
+    bg_iframe: true,
+    onSelect: function(list_item) {
+      // alert('List item text: '+ list_item.text());
+      // 'this' is a reference to the instance of EditableSelect
+      // object, so you have full access to everything there
+      // alert('Input value: '+ this.text.val());
+    },
+    case_sensitive: false, // If set to true, the user has to type in an exact
+                        // match for the item to get highlighted
+    items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+  });
+
   // visa check flag
   if ($('#claim_visa_confirmation_flag').length > 0) {
     if ($('#claim_visa_confirmation_flag')[0].checked) {
@@ -74,7 +87,8 @@ $(function(){
       url: $(e.currentTarget).attr('href'),
       success: function(resp){
         $('.window .content').empty().append(resp);
-      }
+      },
+      async: false
     });
     show_popup(e);
   });

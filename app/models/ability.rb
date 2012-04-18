@@ -3,12 +3,14 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+
     if user.role == 'admin'
       can :manage, :all, :company_id => user.company_id
     elsif user.role == 'boss'
       can :manage, :all, :company_id => user.company_id
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
+      can :dasboard_sign_in_as, :user
     elsif user.role == 'accountant'
       can :switch_view, User
       can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id

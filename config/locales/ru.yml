@@ -33,6 +33,8 @@ ru:
   unauthorized:
     default: 'Вы не имеете доступа к этой странице.'
   current_password_for_changes: '(действующий пароль для подтверждения изменений)'
+  registration_data: 'Регистрационные данные'
+  record_successfuly_saved: 'Запись успешно сохранена'
 
   invalid_fields: 'Ошибка при заполнении полей'
   correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'

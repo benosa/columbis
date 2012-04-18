@@ -98,7 +98,7 @@
         %h2= t('.tourist_stat')
         %p
           = f.label :tourist_stat
-          = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat')
+          = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat'), {}, :class => 'editable-select'
 
         %p
           %br
@@ -164,17 +164,21 @@
               = f.label :operator_id, t('.operator')
           %tr
             %td{ :colspan => 2 }
-              = f.text_field :city, :class => 'autocomplete city', :value => @claim.city.try(:name)
+              = f.select :city_id, current_company.cities.collect {|o|  o.name }, {},
+                :class => 'city editable-select', :style => 'width:340px'
             %td{ :colspan => 2 }
-              = f.text_field :operator, :class => 'autocomplete operator', :value => @claim.operator.try(:name)
+              = f.select :operator_id, current_company.operators.collect {|o| [ o.name ] }, {},
+                :class => 'operator editable-select', :style => 'width:205px'
           %tr
             %th= f.label :country, t('.direction')
             %th= f.label :resort
             %th{ :colspan => 2 }
               = f.label :hotel
           %tr
-            %td= f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {}, :class => 'country'
-            %td= f.text_field :resort, :class => 'autocomplete resort', :value => @claim.resort.try(:name)
+            %td= f.select :country_id, current_company.countries.collect {|o| [ o.name ] }, {},
+              :class => 'country editable-select', :style => 'width:174px'
+            %td= f.select :resort_id, current_company.cities.collect {|o| [ o.name ] }, {},
+              :class => 'resort editable-select', :style => 'width:162px'
             %td{ :colspan => 2 }
               = f.text_field :hotel, :class => 'autocomplete hotel'
           %tr
@@ -186,7 +190,7 @@
             %td= f.text_field :meals, :class => 'autocomplete meals'
             %td= f.text_field :medical_insurance
             %td= f.text_field :placement, :class => 'autocomplete placement'
-            %td= f.select :nights, (1..30).to_a
+            %td= f.select :nights, (1..30).to_a, {}, :class => 'editable-select'
           %tr
             %th= f.label :transfer
             %th= f.label :service_class

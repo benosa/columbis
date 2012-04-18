@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
 
   def sign_in_as
     authorize! :dasboard_sign_in_as, current_user
+
     self.remember_admin_id = current_user.id
     sign_in :user, User.find(params[:user_id])
 

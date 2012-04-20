@@ -318,7 +318,7 @@
           - ind = 0
           = f.fields_for :payments_in do |builder|
             %tr.fields{ :id => "payment_in_#{ind}"}
-              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?)
               %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
                 :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
@@ -360,7 +360,7 @@
           - ind = 0
           = f.fields_for :payments_out do |builder|
             %tr.fields{ :id => "payment_out_#{ind}"}
-              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_accountant?)
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?)
               %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
                 :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?

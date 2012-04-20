@@ -10,7 +10,7 @@ class Ability
       can :manage, :all, :company_id => user.company_id
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
-      can :dasboard_sign_in_as, :user
+      can :users_sign_in_as, :user
     elsif user.role == 'accountant'
       can :switch_view, User
       can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id

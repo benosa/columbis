@@ -1,6 +1,15 @@
 class Dashboard::UsersController < ApplicationController
   load_and_authorize_resource
 
+  def sign_in_as
+    authorize! :users_sign_in_as, current_user
+
+    self.remember_admin_id = current_user.id
+    sign_in :user, User.find(params[:user_id])
+
+    redirect_to root_path
+  end
+
   def edit_password
     render :partial => 'edit_password'
   end

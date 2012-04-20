@@ -3,7 +3,7 @@ class Claim < ActiveRecord::Base
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
 
   # relations
-  attr_protected :user_id, :company_id, :office_id, :operator_id, :airline_id, :resort_id, :city_id
+  attr_protected :user_id, :company_id, :office_id, :operator_id, :resort_id, :city_id, :country_id
 
   # price block
   attr_accessible :tour_price, :tour_price_currency,
@@ -15,10 +15,10 @@ class Claim < ActiveRecord::Base
                   :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
-  attr_accessible :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
 
   # marchroute block
-  attr_accessible :country_id, :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
+  attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
                   :memo, :transfer, :relocation, :service_class, :additional_services, :medical_insurance
 
   # common
@@ -36,7 +36,6 @@ class Claim < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
   belongs_to :office
-  belongs_to :airline
   belongs_to :operator
   belongs_to :country
   belongs_to :city
@@ -55,7 +54,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id, :office_id, :country_id, :resort_id, :city_id, :check_date
+  validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id, :check_date
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
     validates_presence_of a
@@ -383,35 +382,50 @@ class Claim < ActiveRecord::Base
   end
 
   def check_dropdowns(claim_params)
-    lists = %w[meals hotel placement transfer relocation service_class]
+    lists = DropdownValue.available_lists.map{|k, v| k.to_s}
     lists.each do |l|
       company.check_and_save_dropdown(l, claim_params[l.to_sym])
     end
-
     company.check_and_save_dropdown('airport', claim_params[:airport_to])
     company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
-    company.airlines.create({ :name => claim_params[:airline] }) unless
-      company.airlines.find_by_name(claim_params[:airline])
-    self.airline = company.airlines.find_by_name(claim_params[:airline])
-
-    company.operators.create({ :name => claim_params[:operator] }) unless
-      company.operators.find_by_name(claim_params[:operator])
-    self.operator = company.operators.find_by_name(claim_params[:operator])
-
-#    Country.create({ :name => claim_params[:country] }) unless
-#      (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
-#    self.country = Country.where( :name => claim_params[:country]).first
-
-    unless claim_params[:city].blank?
-      City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+    if claim_params[:operator_id].blank?
+      company.operators.create({ :name => claim_params[:operator] }) unless
+        company.operators.find_by_name(claim_params[:operator])
+      self.operator = company.operators.find_by_name(claim_params[:operator])
+    else
+      self.operator_id = claim_params[:operator_id]
     end
-    self.city = City.where( :name => claim_params[:city]).first
 
-    unless claim_params[:resort].blank?
-      City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
+    if claim_params[:country_id].blank?
+      Country.create({ :name => claim_params[:country] }) unless
+        (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
+      self.country = Country.where( :name => claim_params[:country]).first
+    else
+      self.country_id = claim_params[:country_id]
     end
-    self.resort = City.where( :name => claim_params[:resort]).first
+
+    if claim_params[:city_id].blank?
+      unless claim_params[:city].blank?
+        City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+        self.city = City.where( :name => claim_params[:city]).first
+      end
+    else
+      self.city_id = claim_params[:city_id]
+    end
+    company.cities << self.city
+
+    if claim_params[:resort_id].blank?
+      unless claim_params[:resort].blank?
+        City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
+        self.resort = City.where( :name => claim_params[:resort]).first
+      end
+    else
+      self.resort_id = claim_params[:resort_id]
+    end
+    company.cities << self.resort
+
+    self.company.city_ids = self.company.city_ids.uniq
   end
 
   def presence_of_applicant

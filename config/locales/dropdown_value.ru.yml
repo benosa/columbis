@@ -10,6 +10,10 @@ ru:
     table:
       list: 'Список'
       value: 'Значение'
+    messages:
+      successfully_updated_dropdown_value: 'Список значений изменен'
+      successfully_created_dropdown_value: 'Список значений создан'
+      successfully_destroyed_dropdown_value: 'Список значений удален'
 
   activerecord:
     attributes:

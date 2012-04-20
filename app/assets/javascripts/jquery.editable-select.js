@@ -60,9 +60,17 @@
       this.wrapper = $(document.createElement('div'));
       this.wrapper.addClass('editable-select-options');
       this.select = $(select);
+
       this.text = $('<input type="text">');
-      this.text.attr('name', this.select.attr('name'));
+      if(/_id\]$/.test(this.select.attr('name'))) {
+        this.text.attr('name', this.select.attr('name').replace(/_id\]$/,'\]'));
+        $(select).after('<input type="hidden" id="'+ this.select.attr('id') + '_storage" name="' + this.select.attr('name') + '">');
+        this.storage = $('#' + this.select.attr('id') + '_storage');
+      } else {
+        this.text.attr('name', this.select.attr('name'));
+      }
       this.text.data('editable-selecter', this.select.data('editable-selecter'));
+
       // Because we don't want the value of the select when the form
       // is submitted
       this.select.attr('disabled', 'disabled');
@@ -105,12 +113,18 @@
       var option_list = $(document.createElement('ul'));
       this.wrapper.append(option_list);
       var options = this.select.find('option');
+      if (this.storage !== undefined) {
+        var $storage = this.storage;
+      }
       options.each(function() {
         if($(this).attr('selected')) {
-          context.text.val($(this).val());
-          context.current_value = $(this).val();
+          context.text.val($(this).text());
+          context.current_value = $(this).text();
+          if ($storage !== undefined) {
+            $storage.val($(this).val());
+          }
         };
-        var li = $('<li>'+ $(this).val() +'</li>');
+        var li = $('<li>' + $(this).text() + ' <input type="hidden" value="' + $(this).val() + '"></li>');
         context.initListItemEvents(li);
         option_list.append(li);
       });
@@ -131,7 +145,7 @@
       };
     },
     addOption: function(value) {
-      var li = $('<li>'+ value +'</li>');
+      var li = $('<li>'+ value +' <input type="hidden" value=""></li>');
       var option = $('<option>'+ value +'</option>');
       this.select.append(option);
       this.initListItemEvents(li);
@@ -167,6 +181,10 @@
       ).keydown(
         // Capture key events so the user can navigate through the list
         function(e) {
+          // clear value to storage
+          if(context.storage) {
+            context.storage.val('');
+          }
           switch(e.keyCode) {
             // Down
             case 40:
@@ -183,10 +201,14 @@
               e.preventDefault();
               context.selectNewListItem('up');
               break;
-            // Tab
-            case 9:
+            // Right
+            case 39:
               context.pickListItem(context.selectedListItem());
               break;
+//            // Tab
+//            case 9:
+//              context.pickListItem(context.selectedListItem());
+//              break;
             // Esc
             case 27:
               e.preventDefault();
@@ -288,6 +310,10 @@
       if(list_item.length) {
         this.text.val(list_item.text());
         this.current_value = this.text.val();
+        // add value to storage
+        if(this.storage) {
+          this.storage.val(list_item.find('input').val());
+        }
       };
       if(typeof this.settings.onSelect == 'function') {
         this.settings.onSelect.call(this, list_item);
@@ -378,7 +404,9 @@
       // Need to do this in order to get the list item height
       this.wrapper.css('visibility', 'hidden');
       this.wrapper.show();
-      this.list_item_height = this.wrapper.find('li')[0].offsetHeight;
+      if(this.wrapper.find('li').length > 0){
+        this.list_item_height = this.wrapper.find('li')[0].offsetHeight;
+      }
       this.wrapper.css('visibility', 'visible');
       this.wrapper.hide();
     },

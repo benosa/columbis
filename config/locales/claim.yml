@@ -137,7 +137,7 @@ ru:
         course_eur: 'Курс EUR'
         course_usd: 'Курс USD'
         currency: 'Валюта'
-        airline_id: 'Авиакомпания'
+        airline: 'Авиакомпания'
         id: 'Номер'
         visa_count: 'К-во виз'
         meals: 'Питание'

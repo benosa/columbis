@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412141946) do
+ActiveRecord::Schema.define(:version => 20120420101039) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -22,13 +22,6 @@ ActiveRecord::Schema.define(:version => 20120412141946) do
     t.string   "office_number"
     t.string   "street"
     t.string   "phone_number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "company_id"
-  end
-
-  create_table "airlines", :force => true do |t|
-    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
@@ -77,7 +70,7 @@ ActiveRecord::Schema.define(:version => 20120412141946) do
     t.float    "primary_currency_price",              :default => 0.0
     t.float    "course_usd",                          :default => 0.0
     t.string   "tour_price_currency",                                             :null => false
-    t.integer  "airline_id"
+    t.integer  "airline"
     t.integer  "visa_count"
     t.string   "meals"
     t.string   "placement"

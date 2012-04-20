@@ -477,9 +477,6 @@ $(function(){
 //      service_class: {
 //      source: "/claims/autocomplete_common/service_class"
 //    },
-//      airline: {
-//      source: "/claims/autocomplete_model_common/airline"
-//    },
 //      operator: {
 //      source: "/claims/autocomplete_model_common/operator"
 //    },
@@ -510,7 +507,6 @@ $(function(){
 //  $("input.autocomplete.meals").autocomplete($autocomplete.meals);
 //  $("input.autocomplete.placement").autocomplete($autocomplete.placement);
 //  $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
-//  $("input.autocomplete.airline").autocomplete($autocomplete.airline);
 //  $("input.autocomplete.operator").autocomplete($autocomplete.operator);
 //  $("input.autocomplete.city").autocomplete($autocomplete.city);
 //  $("input.autocomplete.resort").autocomplete($autocomplete.resort);

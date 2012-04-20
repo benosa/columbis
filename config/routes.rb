@@ -32,10 +32,8 @@ Tourism::Application.routes.draw do
 
   devise_for :users
 
+  match 'sign_in_as/:user_id' => 'dashboard#sign_in_as', :as => :sign_in_as
   namespace :dashboard do
-    match 'sign_in_as/:user_id' => 'dashboard#sign_in_as', :as => :sign_in_as
-    match 'sign_out_as' => 'dashboard#sign_out_as', :as => :sign_out_as
-
     match 'edit_company' => 'companies#edit'
     match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities

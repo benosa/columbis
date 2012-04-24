@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
     User.where('role = \'boss\' AND company_id = ? AND id != ?', company_id, id).empty?
   end
 
+  def name_for_list
+    first_last_name.blank? ? login : first_last_name
+  end
+
   def first_last_name
     "#{first_name} #{last_name}".strip
   end

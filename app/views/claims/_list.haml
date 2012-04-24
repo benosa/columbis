@@ -7,7 +7,7 @@
         :include_blank => true
 
       = label_tag :user_id, t('.user')
-      = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'first_last_name', params[:user_id]),
+      = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'name_for_list', params[:user_id]),
         :include_blank => true
 
     - else

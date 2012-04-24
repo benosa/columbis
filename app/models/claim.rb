@@ -89,8 +89,12 @@ class Claim < ActiveRecord::Base
     options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
 
     ids = search(options[:filter]).map{ |obj| obj.id if obj }
-    claims = where('claims.id in(?)', ids)
 
+    opts = {}
+    opts[:user_id] = options[:user_id] if options[:user_id]
+    opts[:office_id] = options[:office_id] if options[:office_id]
+
+    claims = where('claims.id in(?)', ids).where(opts)
 
     return claims if claims.empty?
 

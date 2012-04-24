@@ -113,6 +113,10 @@ ru:
       successfully_created_claim: 'Заявка создана'
       successfully_updated_claim: 'Заявка изменена'
       successfully_destroyed_claim: 'Заявка удалена'
+    list:
+      only_my: 'Только мои'
+      office: 'Отбор по офису'
+      user: 'Отбор по пользователю'
   activerecord:
     errors:
       messages:

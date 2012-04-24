@@ -31,11 +31,23 @@ $(function(){
         }
       }
     }
+
+    if ($('#office_id').length > 0 && $('#user_id').length > 0) {
+      currentParams.office_id = $('#office_id').val();
+      currentParams.user_id = $('#user_id').val();
+    } else if ($('#only_my').length > 0) {
+      currentParams.only_my = ($('#only_my')[0].checked ? '1' : '0');
+    }
     currentParams.filter = $('#filter').val();
     currentParams.list_type = $('.accountant_login').attr('list_type');
 
     return currentParams;
   }
+
+  // claims filter
+	$('.filter_bar select, .filter_bar input').live('change', function(){
+	  loadList(getCurrentSortParams($('#claims th a.current'), true));
+	});
 
   // dates colors
   $('#claim_arrival_date').change(function(e){

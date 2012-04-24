@@ -1,13 +1,19 @@
 .claims
   .filter_bar
     - if is_admin? or is_boss? or is_supervisor?
-      = label_tag :office
-      = select_tag :office,  options_from_collection_for_select(current_company.offices, 'id', 'name')
-      = label_tag :user
-      = select_tag :user,  options_from_collection_for_select(current_company.users, 'id', 'first_last_name')
+
+      = label_tag :office_id, t('.office')
+      = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
+        :include_blank => true
+
+      = label_tag :user_id, t('.user')
+      = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'first_last_name', params[:user_id]),
+        :include_blank => true
+
     - else
-      = check_box_tag :only_my
-      = label_tag :only_my
+
+      = check_box_tag :only_my, nil, (params[:only_my] == '1')
+      = label_tag :only_my, t('.only_my')
 
   %table#claims{ :rules => 'all'}
     %tr

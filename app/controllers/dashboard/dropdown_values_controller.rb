@@ -4,7 +4,7 @@ class Dashboard::DropdownValuesController < ApplicationController
   def index
     if params[:list]
       @dropdown_values = DropdownValue.where(:list => params[:list], :company_id => current_user.company_id).accessible_by(current_ability)
-      @dropdown_values += DropdownValue.common if is_admin?
+      @dropdown_values += DropdownValue.common.where(:list => params[:list]) if is_admin?
       render :partial => 'table'
     else
       @dropdown_values = DropdownValue.where(:company_id => current_user.company_id).accessible_by(current_ability)

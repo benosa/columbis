@@ -38,8 +38,15 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claims = Claim.accessible_by(current_ability).search_and_sort(:filter => params[:filter], :column => sort_column,
-      :direction => sort_direction).paginate(:page => params[:page], :per_page => 40)
+    opts = { :filter => params[:filter], :column => sort_column, :direction => sort_direction }
+    if is_admin? or is_boss?
+      opts[:user_id] = params[:user_id] unless params[:user_id].blank?
+      opts[:office_id] = params[:office_id] unless params[:office_id].blank?
+      @claims = Claim.accessible_by(current_ability).search_and_sort(opts).paginate(:page => params[:page], :per_page => 40)
+    else
+      opts[:user_id] = current_user.id if params[:only_my] == '1'
+      @claims = Claim.accessible_by(current_ability).search_and_sort(opts).paginate(:page => params[:page], :per_page => 40)
+    end
     set_list_type
     render :partial => 'list'
   end
@@ -120,9 +127,14 @@ class ClaimsController < ApplicationController
   end
 
   def set_protected_attr
-    @claim.user ||= current_user
     @claim.company ||= current_company
-    @claim.office ||= current_office
+    if is_admin? or is_boss?
+      @claim.user_id = params[:claim][:user_id]
+      @claim.office_id = params[:claim][:office_id]
+    else
+      @claim.user ||= current_user
+      @claim.office ||= current_office
+    end
   end
 
   def check_payments

@@ -71,7 +71,10 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    set_protected_attr
+    @claim.company ||= current_company
+    @claim.user ||= current_user
+    @claim.office ||= current_office
+
     @claim.fill_new
   end
 
@@ -128,6 +131,7 @@ class ClaimsController < ApplicationController
 
   def set_protected_attr
     @claim.company ||= current_company
+
     if is_admin? or is_boss?
       @claim.user_id = params[:claim][:user_id]
       @claim.office_id = params[:claim][:office_id]

@@ -7,6 +7,8 @@ class DropdownValue < ActiveRecord::Base
   validates_presence_of :company_id, :if => Proc.new { |dd| dd.common == false }
   validates_uniqueness_of :value, :scope => [:company_id, :list]
 
+  scope :common, where(:common => true)
+
   def self.available_lists
     {
       :airline => 'Авиакомпания',

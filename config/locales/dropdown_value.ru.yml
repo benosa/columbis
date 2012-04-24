@@ -20,3 +20,4 @@ ru:
       dropdown_value:
         list: 'Список'
         value: 'Значение'
+        common: 'Общее'

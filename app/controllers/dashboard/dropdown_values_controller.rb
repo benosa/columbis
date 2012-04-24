@@ -3,10 +3,12 @@ class Dashboard::DropdownValuesController < ApplicationController
 
   def index
     if params[:list]
-      @dropdown_values = DropdownValue.where(:list => params[:list], :company_id => current_user.company_id)
+      @dropdown_values = DropdownValue.where(:list => params[:list], :company_id => current_user.company_id).accessible_by(current_ability)
+      @dropdown_values += DropdownValue.common if is_admin?
       render :partial => 'table'
     else
-      @dropdown_values = DropdownValue.where(:company_id => current_user.company_id)
+      @dropdown_values = DropdownValue.where(:company_id => current_user.company_id).accessible_by(current_ability)
+      @dropdown_values += DropdownValue.common if is_admin?
     end
   end
 
@@ -26,7 +28,7 @@ class Dashboard::DropdownValuesController < ApplicationController
   end
 
   def update
-    @dropdown_value.company_id ||= current_company.id
+    @dropdown_value.company_id ||= current_company.id unless @dropdown_value.common?
     if @dropdown_value.update_attributes(params[:dropdown_value])
       redirect_to dashboard_dropdown_values_url, :notice  => t('dropdown_values.messages.successfully_updated_dropdown_value')
     else

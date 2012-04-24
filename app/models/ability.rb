@@ -6,8 +6,11 @@ class Ability
 
     if user.role == 'admin'
       can :manage, :all, :company_id => user.company_id
+      can :manage, DropdownValue, :common=> true
     elsif user.role == 'boss'
+      can :switch_view, User
       can :manage, :all, :company_id => user.company_id
+      can :read, DropdownValue, :common=> true
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
       can :users_sign_in_as, :user

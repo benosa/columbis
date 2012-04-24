@@ -419,11 +419,24 @@ $(function(){
 
   var calculate_amount_prim = function(event){
     $tr = $(event.currentTarget).parent().parent();
-    $course = $tr.find('input.course').val();
-    $amount = $tr.find('input.amount').val();
+    course = $tr.find('input.course').val();
+    amount = $tr.find('input.amount').val();
 
-    var amount_prim = Math.round($course * $amount);
+    var amount_prim = Math.round(course * amount);
     $tr.find('input.amount_prim').val(amount_prim);
+  }
+
+  var reversive_calculate_amount = function(event){
+    $tr = $(event.currentTarget).parent().parent();
+    course = $tr.find('input.course').val();
+    amount_prim = $tr.find('input.amount_prim').val();
+
+    if(course > 0) {
+      var amount = Math.round(amount_prim / course);
+      $tr.find('input.amount').val(amount);
+    } else {
+      $tr.find('input.amount').val('0.0');
+    }
   }
 
   $('#payments_in input.amount').change(function(event){
@@ -434,6 +447,11 @@ $(function(){
 	$('#payments_out input.amount, #payments_out input.course').change(function(event){
     calculate_amount_prim(event);
   	get_amount_in_word(event);
+  	calculate_operator_debt(event);
+  });
+
+	$('#payments_out input.amount_prim').change(function(event){
+    reversive_calculate_amount(event);
   	calculate_operator_debt(event);
   });
 
@@ -650,6 +668,11 @@ $(function(){
 	    $('#payments_out input.amount, #payments_out input.course').change(function(event){
         calculate_amount_prim(event);
       	get_amount_in_word(event);
+      	calculate_operator_debt(event);
+      });
+
+	    $('#payments_out input.amount_prim').change(function(event){
+        reversive_calculate_amount(event);
       	calculate_operator_debt(event);
       });
 

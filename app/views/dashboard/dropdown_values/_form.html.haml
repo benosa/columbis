@@ -4,8 +4,12 @@
     %tr
       %th= f.label :list
       %th= f.label :value
+      - if is_admin?
+        %th= f.label :common
     %tr
       %td= f.select :list, DropdownValue.available_lists.map{ |k,v| [v, k] }
       %td= f.text_field :value
+      - if is_admin?
+        %td= f.check_box :common
   %p
     = f.submit

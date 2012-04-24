@@ -2,9 +2,13 @@
   %tr
     %th= t('.list')
     %th= t('.value')
+    - if is_admin?
+      %th= t('.common')
   - for dropdown_value in @dropdown_values
     %tr
       %td= dropdown_value.list
       %td= dropdown_value.value
+      - if is_admin?
+        %td= dropdown_value.common? ? t('yep') : t('nope')
       %td= link_to t('edit'), edit_dashboard_dropdown_value_path(dropdown_value)
       %td= link_to t('destroy'), [:dashboard, dropdown_value], :confirm => t('are_you_sure'), :method => :delete

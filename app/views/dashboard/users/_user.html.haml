@@ -1,6 +1,7 @@
 %tr
   %td= user.role
-  %td= user.login
+  %td{ :style => "background-color:#{user.color}; border: solid 1px black; padding: 0px 8px;" }
+    = user.login
   %td= user.last_name
   %td= user.first_name
   %td= user.middle_name

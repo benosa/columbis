@@ -349,6 +349,8 @@
             %td= f.label :operator_price
             %td.amount= f.text_field :operator_price
             %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+            %td= f.label :operator_maturity
+            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
           %tr.header
             %th{ :style => 'width:12px;' }
             %th= t('.date')
@@ -374,9 +376,7 @@
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td{ :colspan => 2}
-              = f.label :operator_maturity
-            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
+            %td{ :colspan => 3}
             %td= f.label :operator_debt
             %td{ :colspan => 2 }= f.text_field :operator_debt, :disabled => true, :class => 'red'
           %tr.bottom

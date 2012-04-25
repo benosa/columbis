@@ -39,7 +39,7 @@ class ClaimsController < ApplicationController
 
   def search
     opts = { :filter => params[:filter], :column => sort_column, :direction => sort_direction }
-    if is_admin? or is_boss?
+    if is_admin? or is_boss? or is_supervisor?
       opts[:user_id] = params[:user_id] unless params[:user_id].blank?
       opts[:office_id] = params[:office_id] unless params[:office_id].blank?
       @claims = Claim.accessible_by(current_ability).search_and_sort(opts).paginate(:page => params[:page], :per_page => 40)

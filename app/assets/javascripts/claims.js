@@ -469,81 +469,55 @@ $(function(){
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
 
-//  // autocomplete
-//  var $autocomplete = {
-//    touristLastName: {
-//      source: "/claims/autocomplete_tourist_last_name",
-//      select: function(event, ui) {
-//        var tr = $(event.target).parent().parent();
-//        tr.find("input.passport_series").val(ui.item.passport_series);
-//        tr.find("input.passport_number").val(ui.item.passport_number);
-//        tr.find("input.date_of_birth").val(ui.item.date_of_birth);
-//        tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
-//        if(tr.hasClass('applicant')) {
-//          tr = tr.next().next();
-//          tr.find("input.phone_number").val(ui.item.phone_number);
-//          tr.find("input.address").val(ui.item.address);
-//          $('#claim_applicant_id').val(ui.item.id);
-//        } else {
-//          tr.next(".hidden_id").val(ui.item.id);
-//        }
-//      }
-//    },
-//      meals: {
-//      source: "/claims/autocomplete_common/meals"
-//    },
-//      placement: {
-//      source: "/claims/autocomplete_common/placement"
-//    },
-//      hotel: {
-//      source: "/claims/autocomplete_common/hotel"
-//    },
-//      transfer: {
-//      source: "/claims/autocomplete_common/transfer"
-//    },
-//      relocation: {
-//      source: "/claims/autocomplete_common/relocation"
-//    },
-//      service_class: {
-//      source: "/claims/autocomplete_common/service_class"
-//    },
-//      operator: {
-//      source: "/claims/autocomplete_model_common/operator"
-//    },
-//      city: {
-//      source: "/claims/autocomplete_model_common/city",
-//      select: function(event, ui) {
-//        if($('#claim_airport_to').val() == '') {
-//          $('#claim_airport_to').val(ui.item.value);
-//        }
-//      }
-//    },
-//      resort: {
-//      source: "/claims/autocomplete_model_common/resort",
-//      select: function(event, ui) {
-//        if($('#claim_airport_back').val() == '') {
-//          $('#claim_airport_back').val(ui.item.value);
-//        }
-//      }
-//    },
-//      airport: {
-//      source: "/claims/autocomplete_common/airport",
-//      select: function(event, ui) {
-//        $(event.target).attr('value', ui.item.value);
-//      }
-//    }
-//  };
-//  $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
-//  $("input.autocomplete.meals").autocomplete($autocomplete.meals);
-//  $("input.autocomplete.placement").autocomplete($autocomplete.placement);
-//  $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
-//  $("input.autocomplete.operator").autocomplete($autocomplete.operator);
-//  $("input.autocomplete.city").autocomplete($autocomplete.city);
-//  $("input.autocomplete.resort").autocomplete($autocomplete.resort);
-//  $("input.autocomplete.airport").autocomplete($autocomplete.airport);
-//  $("input.autocomplete.transfer").autocomplete($autocomplete.transfer);
-//  $("input.autocomplete.relocation").autocomplete($autocomplete.relocation);
-//  $("input.autocomplete.service_class").autocomplete($autocomplete.service_class);
+  // autocomplete
+  var $autocomplete = {
+    touristLastName: {
+      source: "/claims/autocomplete_tourist_last_name",
+      select: function(event, ui) {
+        var tr = $(event.target).parent().parent();
+        tr.find("input.passport_series").val(ui.item.passport_series);
+        tr.find("input.passport_number").val(ui.item.passport_number);
+        tr.find("input.date_of_birth").val(ui.item.date_of_birth);
+        tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
+        if(tr.hasClass('applicant')) {
+          tr = tr.next().next();
+          tr.find("input.phone_number").val(ui.item.phone_number);
+          tr.find("input.address").val(ui.item.address);
+          $('#claim_applicant_id').val(ui.item.id);
+        } else {
+          tr.next(".hidden_id").val(ui.item.id);
+        }
+      }
+    },
+      meals: {
+      source: "/claims/autocomplete_common/meals"
+    },
+      hotel: {
+      source: "/claims/autocomplete_common/hotel"
+    },
+      transfer: {
+      source: "/claims/autocomplete_common/transfer"
+    },
+      relocation: {
+      source: "/claims/autocomplete_common/relocation"
+    },
+      service_class: {
+      source: "/claims/autocomplete_common/service_class"
+    },
+      airport: {
+      source: "/claims/autocomplete_common/airport",
+      select: function(event, ui) {
+        $(event.target).attr('value', ui.item.value);
+      }
+    }
+  };
+  $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
+  $("input.autocomplete.meals").autocomplete($autocomplete.meals);
+  $("input.autocomplete.hotel").autocomplete($autocomplete.hotel);
+  $("input.autocomplete.airport").autocomplete($autocomplete.airport);
+  $("input.autocomplete.transfer").autocomplete($autocomplete.transfer);
+  $("input.autocomplete.relocation").autocomplete($autocomplete.relocation);
+  $("input.autocomplete.service_class").autocomplete($autocomplete.service_class);
 
   // add tourist
 	var add_tourist = function(e){

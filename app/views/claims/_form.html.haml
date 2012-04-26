@@ -345,10 +345,13 @@
         %h2= t('.payments_out')
         %table#payments_out
           %tr
-            %td{ :colspan => 2 }
+            %td
             %td= f.label :operator_price
             %td.amount= f.text_field :operator_price
             %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+            %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+            %td= f.label :operator_maturity
+            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
           %tr.header
             %th{ :style => 'width:12px;' }
             %th= t('.date')

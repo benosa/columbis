@@ -369,7 +369,7 @@
                 {}, :class => 'currency'
               %td.amount
                 = builder.check_box :reversed_course, :class => 'reversed_course', :title => Payment.human_attribute_name(:reversed_course)
-                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?, :style => 'width:65px'
+                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?, :style => 'width:60px'
               %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
               %td= builder.select :form, current_company.dropdown_values_for('form'),
                 { :disabled => @claim.new_record? }, :class => 'payment_form', :disabled => @claim.new_record?

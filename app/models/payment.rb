@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id, :course,
+  attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id, :course, :reversed_course,
                   :recipient_type, :currency, :amount, :amount_prim, :description, :approved
   attr_protected :company_id
 
@@ -8,9 +8,12 @@ class Payment < ActiveRecord::Base
   belongs_to :payer, :polymorphic => true
   belongs_to :recipient, :polymorphic => true
 
-  validates_presence_of :amount, :amount_prim, :form, :currency, :claim_id, :date_in
+  validates_presence_of :amount, :amount_prim, :form, :currency, :claim_id, :date_in, :course
   validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
+
+  validates_numericality_of :course, :greater_than => 0
   validates_numericality_of :amount, :amount_prim
+
   validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
 
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
@@ -24,7 +27,8 @@ class Payment < ActiveRecord::Base
   before_save :fill_fields
   def fill_fields
     # we also store amount in primary currency
-    self.amount_prim = (self.course * self.amount).round
+    crs = reversed_course ? (1 / course) : course
+    self.amount_prim = (crs * amount).round(2)
     self.description = RuPropisju.amount_in_word(self.amount, self.currency).mb_chars.capitalize.to_s
   end
 end

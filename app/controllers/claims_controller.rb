@@ -26,17 +26,6 @@ class ClaimsController < ApplicationController
     render :json => current_company.dropdown_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
   end
 
-  def autocomplete_model_common
-    if %w[airline operator country city resort].include?(params[:model])
-      if params[:model] == 'resort'
-        cls = City
-      else
-        cls = eval("#{params[:model].classify}")
-      end
-      render :json => cls.accessible_by(current_ability).where(["name ILIKE '%' || ? || '%'", params[:term]]).map { |o| { :label => o.name, :value => o.name } }
-    end
-  end
-
   def search
     opts = { :filter => params[:filter], :column => sort_column, :direction => sort_direction }
     if is_admin? or is_boss? or is_supervisor?

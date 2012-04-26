@@ -8,3 +8,5 @@ ru:
         description: 'Примечание'
         form: 'Форма расчетов'
         amount_prim: 'Сумма осн.'
+        approved: 'Подтверждено'
+        reversed_course: 'Обратный курс'

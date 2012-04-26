@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120420101039) do
+ActiveRecord::Schema.define(:version => 20120426104431) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -231,21 +231,22 @@ ActiveRecord::Schema.define(:version => 20120420101039) do
 
   create_table "payments", :force => true do |t|
     t.integer  "claim_id"
-    t.date     "date_in",                           :null => false
-    t.integer  "payer_id",                          :null => false
-    t.string   "payer_type",                        :null => false
-    t.integer  "recipient_id",                      :null => false
-    t.string   "recipient_type",                    :null => false
-    t.string   "currency",                          :null => false
-    t.float    "amount",         :default => 0.0
+    t.date     "date_in",                            :null => false
+    t.integer  "payer_id",                           :null => false
+    t.string   "payer_type",                         :null => false
+    t.integer  "recipient_id",                       :null => false
+    t.string   "recipient_type",                     :null => false
+    t.string   "currency",                           :null => false
+    t.float    "amount",          :default => 0.0
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "form",                              :null => false
-    t.float    "amount_prim",    :default => 0.0
-    t.boolean  "approved",       :default => false
-    t.float    "course",         :default => 1.0
+    t.string   "form",                               :null => false
+    t.float    "amount_prim",     :default => 0.0
+    t.boolean  "approved",        :default => false
+    t.float    "course",          :default => 1.0
     t.integer  "company_id"
+    t.boolean  "reversed_course", :default => false
   end
 
   add_index "payments", ["approved"], :name => "index_payments_on_approved"

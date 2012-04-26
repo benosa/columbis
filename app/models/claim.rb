@@ -178,7 +178,6 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = self.operator.class.try(:name)
       payment_hash[:payer_id] = Company.first.try(:id)
       payment_hash[:payer_type] = Company.first.class.try(:name)
-      payment_hash[:currency] = self.operator_price_currency
 
       process_payment_hash(payment_hash, self.payments_out)
     end
@@ -285,8 +284,9 @@ class Claim < ActiveRecord::Base
   end
 
   def update_debts
-    self.operator_advance = self.payments_out.sum('amount')
-    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
+    self.operator_advance = self.payments_out.sum('amount_prim')
+    # no sense here anymore
+#    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
     self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
 
     self.operator_debt = self.operator_price - self.operator_advance

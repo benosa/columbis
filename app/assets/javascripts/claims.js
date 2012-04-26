@@ -411,13 +411,13 @@ $(function(){
     var paid = 0.0;
     if (isFinite(price)) {
       $('#payments_out tr.fields').each(function (i) {
-        var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount').val());
+        var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount_prim').val());
         if (isFinite(val)) {
           paid += val;
         }
       });
     }
-    $('#claim_operator_debt').val(price - paid);
+    $('#claim_operator_debt').val((price - paid).toFixed(2));
   }
 
   $('#claim_operator_price_currency').change(function (event){
@@ -432,22 +432,43 @@ $(function(){
   var calculate_amount_prim = function(event){
     $tr = $(event.currentTarget).parent().parent();
     course = $tr.find('input.course').val();
-    amount = $tr.find('input.amount').val();
+    if ($tr.find('input.reversed_course').length > 0){
+      var reversed_course = $tr.find('input.reversed_course')[0].checked;
+      if (reversed_course) {
+        if (isFinite(course) && course > 0 ) {
+          course = 1 / course;
+        } else {
+          course = 0;
+        }
+      }
+    }
 
-    var amount_prim = Math.round(course * amount);
+    amount = $tr.find('input.amount').val();
+    var amount_prim = (course * amount).toFixed(2);
     $tr.find('input.amount_prim').val(amount_prim);
   }
 
   var reversive_calculate_amount = function(event){
     $tr = $(event.currentTarget).parent().parent();
     course = $tr.find('input.course').val();
+    if ($tr.find('input.reversed_course').length > 0){
+      var reversed_course = $tr.find('input.reversed_course')[0].checked;
+      if (reversed_course) {
+        if (isFinite(course) && course > 0 ) {
+          course = 1 / course;
+        } else {
+          course = 0;
+        }
+      }
+    }
+
     amount_prim = $tr.find('input.amount_prim').val();
 
     if(course > 0) {
-      var amount = Math.round(amount_prim / course);
+      var amount = (amount_prim / course).toFixed(2);
       $tr.find('input.amount').val(amount);
     } else {
-      $tr.find('input.amount').val('0.0');
+      $tr.find('input.amount').val('0.00');
     }
   }
 
@@ -456,7 +477,7 @@ $(function(){
   	calculate_tourist_debt(event);
   });
 
-	$('#payments_out input.amount, #payments_out input.course').change(function(event){
+	$('#payments_out input.amount, #payments_out input.course, #payments_out input.reversed_course').change(function(event){
     calculate_amount_prim(event);
   	get_amount_in_word(event);
   	calculate_operator_debt(event);
@@ -602,8 +623,8 @@ $(function(){
 
     $(t_id + ' .fields:last').find('input').each(function(n){
       if($(this).hasClass('amount') || $(this).hasClass('amount_prim') || $(this).hasClass('course')) {
-        $(this).val('0.0');
-        $(this).attr('value', '0.0');
+        $(this).val('0.00');
+        $(this).attr('value', '0.00');
       } else if ($(this).hasClass('approved')) {
         this.checked = false;
       } else {
@@ -651,7 +672,7 @@ $(function(){
       	calculate_tourist_debt(event);
       });
 
-	    $('#payments_out input.amount, #payments_out input.course').change(function(event){
+	    $('#payments_out input.amount, #payments_out input.course, #payments_out input.reversed_course').change(function(event){
         calculate_amount_prim(event);
       	get_amount_in_word(event);
       	calculate_operator_debt(event);
@@ -682,7 +703,7 @@ $(function(){
         if ($(this).hasClass('approved')) {
           this.checked = false;
         } else {
-          $(this).val($(this).hasClass('amount') ? '0.0' : '');
+          $(this).val($(this).hasClass('amount') ? '' : '');
         }
       });
       $tr.next().removeAttr('value');

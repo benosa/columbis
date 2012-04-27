@@ -77,8 +77,10 @@
             %th= t('.back')
           %tr
             %td.text_right= f.label :airport_to, t('.airport')
-            %td= f.text_field :airport_to, :class => 'autocomplete airport'
-            %td= f.text_field :airport_back, :class => 'autocomplete airport'
+            %td= f.select :airport_to, current_company.dropdown_values_for('airport'), {},
+              :class => 'editable-select', :style => 'width: 197px;'
+            %td= f.select :airport_back, current_company.dropdown_values_for('airport'), {},
+              :class => 'editable-select', :style => 'width: 197px;'
           %tr
             %td.text_right= f.label :flight_to, t('.flight')
             %td= f.text_field :flight_to
@@ -165,7 +167,7 @@
           %tr
             %td{ :colspan => 2 }
               = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-                :class => 'city editable-select', :style => 'width:340px'
+                :class => 'city editable-select', :style => 'width:344px'
             %td{ :colspan => 2 }
               = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
                 :class => 'operator editable-select', :style => 'width:205px'
@@ -176,21 +178,24 @@
               = f.label :hotel
           %tr
             %td= f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'country editable-select', :style => 'width:174px'
+              :class => 'country editable-select', :style => 'width:168px'
             %td= f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'resort editable-select', :style => 'width:162px'
+              :class => 'resort editable-select', :style => 'width:168px'
             %td{ :colspan => 2 }
-              = f.text_field :hotel, :class => 'autocomplete hotel'
+              = f.select :hotel, current_company.dropdown_values_for('hotel'), {},
+              :class => 'editable-select', :style => 'width:205px;';
           %tr
             %th= f.label :meals
             %th= f.label :medical_insurance
             %th= f.label :placement
             %th= f.label :nights
           %tr
-            %td= f.text_field :meals, :class => 'autocomplete meals'
-            %td= f.text_field :medical_insurance
+            %td= f.select :meals, current_company.dropdown_values_for('meals'), {},
+              :class => 'editable-select', :style => 'width:168px;';
+            %td= f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
+              :class => 'editable-select', :style => 'width:168px;';
             %td= f.select :placement, current_company.dropdown_values_for('placement'), {},
-              :class => 'editable-select', :style => 'width: 160px;'
+              :class => 'editable-select', :style => 'width: 162px;'
             %td= f.select :nights, (1..30).to_a, {}, :class => 'editable-select'
           %tr
             %th= f.label :transfer
@@ -198,10 +203,13 @@
             %th{ :colspan => 2 }
               = f.label :relocation
           %tr
-            %td= f.text_field :transfer, :class => 'autocomplete transfer'
-            %td= f.text_field :service_class, :class => 'autocomplete service_class'
+            %td= f.select :transfer, current_company.dropdown_values_for('transfer'), {},
+              :class => 'editable-select', :style => 'width: 168px;'
+            %td= f.select :service_class, current_company.dropdown_values_for('service_class'), {},
+              :class => 'editable-select', :style => 'width: 168px;'
             %td{ :colspan => 2 }
-              = f.text_field :relocation, :class => 'autocomplete relocation'
+              = f.select :relocation, current_company.dropdown_values_for('relocation'), {},
+              :class => 'editable-select', :style => 'width: 205px;'
           %tr
             %th{ :colspan => 4 }
               = f.label :additional_services

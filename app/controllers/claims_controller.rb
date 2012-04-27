@@ -9,7 +9,7 @@ class ClaimsController < ApplicationController
   def autocomplete_tourist_last_name
     render :json => Tourist.accessible_by(current_ability).where(["last_name ILIKE '%' || ? || '%'", params[:term]]).map { |tourist|
       {
-        :label => tourist.last_name,
+        :label => tourist.full_name,
         :value => tourist.full_name,
         :id => tourist.id,
         :passport_series => tourist.passport_series,
@@ -132,7 +132,7 @@ class ClaimsController < ApplicationController
 
   def check_payments
     @claim.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_in.empty?
-    @claim.payments_out << Payment.new(:currency => @claim.operator_price_currency) if @claim.payments_out.empty?
+    @claim.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_out.empty?
   end
 
   def sort_column

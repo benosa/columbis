@@ -178,6 +178,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:recipient_type] = self.operator.class.try(:name)
       payment_hash[:payer_id] = Company.first.try(:id)
       payment_hash[:payer_type] = Company.first.class.try(:name)
+      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:reversed_course] = (payment_hash[:currency] == 'rur')
 
       process_payment_hash(payment_hash, self.payments_out)

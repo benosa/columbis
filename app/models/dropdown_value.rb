@@ -20,7 +20,12 @@ class DropdownValue < ActiveRecord::Base
       :meals => 'Питание',
       :service_class => 'Класс',
       :tourist_stat => 'Откуда турист',
-      :placement => 'Размещение'
+      :placement => 'Размещение',
+	    :medical_insurance => 'Медстраховка',
+	    :transfer => 'Трансфер',
+      :nights => 'Кол-во ночей',
+			:service_class => 'Класс',
+			:relocation => 'Переезд'
     }
   end
 

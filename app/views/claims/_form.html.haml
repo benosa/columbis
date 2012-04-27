@@ -146,7 +146,7 @@
             %td= f.label :office_id, t('.office')
           %tr
             - if is_admin? or is_boss?
-              %td= f.select :user_id, current_company.users.map {|o| [ o.first_last_name, o.id ] }, {}, :class => 'small'
+              %td= f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ] }, {}, :class => 'small'
               %td= f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ] }, {}, :class => 'small'
             - else
               %td
@@ -349,8 +349,8 @@
             %td= f.label :operator_price
             %td.amount= f.text_field :operator_price
             %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td= f.label :operator_maturity
+            %td{ :colspan => 2 }
+              = f.label :operator_maturity
             %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
           %tr.header
             %th{ :style => 'width:12px;' }
@@ -358,7 +358,7 @@
             %th= t('.paid')
             %th= t('.currency')
             %th= t('.course')
-            %th= t('.paid') + " (#{@claim.operator_price_currency})"
+            %th.paid= t('.paid') + " (#{@claim.operator_price_currency})"
             %th= t('.paid_type')
           - ind = 0
           = f.fields_for :payments_out do |builder|
@@ -369,10 +369,9 @@
                 :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
               %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
-                {}, :class => 'currency'
+                {}, :class => 'currency', :disabled => true
               %td.amount
-                = builder.check_box :reversed_course, :class => 'reversed_course', :title => Payment.human_attribute_name(:reversed_course)
-                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?, :style => 'width:60px'
+                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?
               %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
               %td= builder.select :form, current_company.dropdown_values_for('form'),
                 { :disabled => @claim.new_record? }, :class => 'payment_form', :disabled => @claim.new_record?
@@ -380,9 +379,7 @@
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td{ :colspan => 2}
-              = f.label :operator_maturity
-            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
+            %td{ :colspan => 3 }
             %td= f.label :operator_debt
             %td{ :colspan => 2 }= f.text_field :operator_debt, :disabled => true, :class => 'red'
           %tr.bottom

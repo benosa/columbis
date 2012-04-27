@@ -214,6 +214,11 @@ $(function(){
     });
   });
 
+  //  operator_price_currency change
+  $('#claim_operator_price_currency').change(function(){
+    $('th.paid').text($('th.paid').text().replace(/(eur|rur|usd)/, $(this).val()));
+  });
+
   // closed
   $('#claim_closed').click(function(e) {
     this.checked ? $('#claim_check_date').removeClass('red_back') : $('#claim_check_date').addClass('red_back');
@@ -420,26 +425,16 @@ $(function(){
     $('#claim_operator_debt').val((price - paid).toFixed(2));
   }
 
-  $('#claim_operator_price_currency').change(function (event){
-    $('#payments_out tr.fields').each(function (i) {
-      $('#claim_payments_out_attributes_' + i + '_currency').val($('#claim_operator_price_currency').val());
-    });
-    calculate_operator_debt(event);
-  });
-
   $('#claim_operator_price').change(calculate_operator_debt);
 
   var calculate_amount_prim = function(event){
     $tr = $(event.currentTarget).parent().parent();
     course = $tr.find('input.course').val();
-    if ($tr.find('input.reversed_course').length > 0){
-      var reversed_course = $tr.find('input.reversed_course')[0].checked;
-      if (reversed_course) {
-        if (isFinite(course) && course > 0 ) {
-          course = 1 / course;
-        } else {
-          course = 0;
-        }
+    if ($tr.find('input.course').length > 0){
+      if (isFinite(course) && course > 0 ) {
+        course = 1 / course;
+      } else {
+        course = 0;
       }
     }
 
@@ -451,14 +446,11 @@ $(function(){
   var reversive_calculate_amount = function(event){
     $tr = $(event.currentTarget).parent().parent();
     course = $tr.find('input.course').val();
-    if ($tr.find('input.reversed_course').length > 0){
-      var reversed_course = $tr.find('input.reversed_course')[0].checked;
-      if (reversed_course) {
-        if (isFinite(course) && course > 0 ) {
-          course = 1 / course;
-        } else {
-          course = 0;
-        }
+    if ($tr.find('input.course').length > 0){
+      if (isFinite(course) && course > 0 ) {
+        course = 1 / course;
+      } else {
+        course = 0;
       }
     }
 

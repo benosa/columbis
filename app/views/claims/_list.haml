@@ -20,6 +20,8 @@
       %th= sortable 'id', t('claims.index.num')
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th.medium= sortable 'tourist_stat', t('claims.index.tourist_stat')
+      - if is_admin? or is_boss? or is_supervisor? and current_company.offices.count > 1
+        %th= sortable 'offices.name', t('claims.index.office')
       %th= sortable 'user_id', t('claims.index.manager')
       %th.w75= sortable 'applicant.last_name', t('claims.index.full_name')
       %th= t('claims.index.phone_number')
@@ -56,6 +58,9 @@
         %td= l( claim.reservation_date, :format => :default )
         %td{ :full_value => claim.tourist_stat }
           = truncate(claim.tourist_stat, :length => 4)
+        - if is_admin? or is_boss? or is_supervisor? and current_company.offices.count > 1
+          %td{ :full_value => claim.office.name }
+            = truncate(claim.office.name, :length => 8)
         %td{ :full_value => claim.user.login, :style => "background-color:#{claim.user.color}" }
           = truncate(claim.user.login, :length => 8)
         %td{ :full_value => tourists_list(claim) }
@@ -96,8 +101,8 @@
           = claim.operator_debt.to_money
         - if params[:list_type] == 'accountant_list'
           %td.thick_border= approved_advance(claim, :tourist)
-          %td= approved_advance(claim, :operator)
           %td= approved_advance(claim, :operator_prim)
+          %td= approved_advance(claim, :operator)
           %td= claim.profit.to_money if claim.profit > 0
           %td= claim.profit_in_percent.to_percent if claim.profit > 0
         %td.thick_border{ :class => !claim.canceled? && claim.documents_status }

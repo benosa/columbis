@@ -13,9 +13,9 @@ module ClaimsHelper
     when :tourist
       claim.approved_tourist_advance.to_money + CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
     when :operator
-      claim.approved_operator_advance.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
+      claim.approved_operator_advance.to_money
     when :operator_prim
-      claim.approved_operator_advance_prim.to_money
+      claim.approved_operator_advance_prim.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
     end
   end
 

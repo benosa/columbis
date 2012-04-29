@@ -112,9 +112,9 @@ class Claim < ActiveRecord::Base
       drop_reflections
       check_dropdowns(claim_params)
 
-      self.assign_applicant(claim_params[:applicant])
-      self.assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
-      self.assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes]) unless self.new_record?
+      assign_applicant(claim_params[:applicant])
+      assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
+      assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes]) unless self.new_record?
 
       unless self.errors.any?
         remove_unused_payments
@@ -122,6 +122,46 @@ class Claim < ActiveRecord::Base
       end
     end
   end
+
+  def documents_ready?
+    self.documents_status == 'all_done'
+  end
+
+  def has_tourist_debt?
+    self.tourist_debt != 0
+  end
+
+  def has_operator_debt?
+    self.operator_debt != 0
+  end
+
+  def has_memo?
+    !self.memo.blank?
+  end
+
+  def fill_new
+    self.applicant = Tourist.new
+    self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
+    self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
+
+    self.operator_price_currency = CurrencyCourse::PRIMARY_CURRENCY
+    self.reservation_date = Date.today
+    self.maturity = Date.today + 3.days
+  end
+
+  def self.next_id
+    Claim.last.try(:id).to_i + 1
+  end
+
+  def print_contract
+    company.contract_printer.prepare_template(printable_fields, printable_collections)
+  end
+
+  def print_memo
+    company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
+  end
+
+  private
 
   def assign_applicant(applicant_params)
     if applicant_params[:id].blank?
@@ -185,110 +225,10 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def documents_ready?
-    self.documents_status == 'all_done'
-  end
-
-  def has_tourist_debt?
-    self.tourist_debt != 0
-  end
-
-  def has_operator_debt?
-    self.operator_debt != 0
-  end
-
-  def has_memo?
-    !self.memo.blank?
-  end
-
-  def fill_new
-    self.applicant = Tourist.new
-    self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
-    self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
-
-    self.operator_price_currency = CurrencyCourse::PRIMARY_CURRENCY
-    self.reservation_date = Date.today
-    self.maturity = Date.today + 3.days
-  end
-
-  def self.next_id
-    Claim.last.try(:id).to_i + 1
-  end
-
-  def print_contract
-    company.contract_printer.prepare_template(printable_fields, printable_collections)
-  end
-
-  def print_memo
-    company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
-  end
-
-  private
-
-  def printable_fields
-    {
-      'Номер' => id,
-      'Город' => city.try(:name),
-      'Страна' => country.try(:name),
-      'Курорт' => resort.try(:name),
-      'Отправление' => (depart_to.strftime('%d/%m/%Y') if depart_to),
-      'Возврат' => (depart_back.strftime('%d/%m/%Y %H:%M') if depart_back),
-      'Отель' => hotel,
-      'Размещение' => placement,
-      'КоличествоТуристов' => (dependents.count + 1),
-      'КоличествоНочей' => nights,
-      'Переезд' => relocation,
-      'Класс' => service_class,
-      'Питание' => meals,
-      'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
-      'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
-      'Трансфер' => transfer,
-      'СтраховкаОтНевыезда' => (additional_insurance_price > 0 ? 'Да' : 'Нет'),
-      'ДополнительныеУслуги' => additional_services,
-      'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
-      'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
-      'Компания' => company.try(:name),
-      'Банк' => company.try(:bank),
-      'БИК' => company.try(:bik),
-      'РасчетныйСчет' => company.try(:curr_account),
-      'КорреспондентскийСчет' => company.try(:corr_account),
-      'ОГРН' => company.try(:ogrn),
-      'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
-      'Телефон' => (company.address.phone_number if company.address.present?),
-      'ФИО' => applicant.try(:full_name),
-      'ДатаРождения' => applicant.try(:date_of_birth),
-      'СерияПаспорта' => applicant.try(:passport_series),
-      'НомерПаспорта' => applicant.try(:passport_number),
-      'СрокПаспорта' => applicant.try(:passport_valid_until),
-      'АэропортТуда' => airport_to,
-      'АэропортОбратно' => airport_back,
-      'РейсТуда' => flight_to,
-      'РейсОбратно' => flight_back,
-      'ВылетТуда' => (depart_to.strftime('%d/%m/%Y') if depart_to),
-      'ВылетОбратно' => (depart_back.strftime('%d/%m/%Y') if depart_back),
-      'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
-      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
-    }
-  end
-
-  def printable_collections
-    {
-      'Туристы' =>
-        {
-          :collection => dependents,
-          'Турист.ФИО' => :full_name,
-          'Турист.ДатаРождения' => :date_of_birth,
-          'Турист.СерияПаспорта' => :passport_series,
-          'Турист.НомерПаспорта' => :passport_number,
-          'Турист.СрокПаспорта' => :passport_valid_until
-        }
-    }
-  end
-
   def update_debts
     self.operator_advance = self.payments_out.sum('amount_prim')
     # no sense here anymore
-#    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
+    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
     self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
 
     self.operator_debt = self.operator_price - self.operator_advance
@@ -302,13 +242,13 @@ class Claim < ActiveRecord::Base
     self.tourist_paid = create_paid_string(:in)
 
     # profit amount available only full payment
-    if approved_operator_advance >= operator_price
+    if approved_operator_advance_prim >= operator_price
 
-      self.profit = primary_currency_price - approved_operator_advance_prim
+      self.profit = primary_currency_price - approved_operator_advance
 
       self.profit_in_percent =
         begin
-          perc = approved_operator_advance_prim / 100
+          perc = approved_operator_advance / 100
           perc > 0 ? profit/perc : 0
         rescue
           0
@@ -440,5 +380,65 @@ class Claim < ActiveRecord::Base
 
   def correctness_of_maturity
     self.errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
+  end
+
+  def printable_fields
+    {
+      'Номер' => id,
+      'Город' => city.try(:name),
+      'Страна' => country.try(:name),
+      'Курорт' => resort.try(:name),
+      'Отправление' => (depart_to.strftime('%d/%m/%Y') if depart_to),
+      'Возврат' => (depart_back.strftime('%d/%m/%Y %H:%M') if depart_back),
+      'Отель' => hotel,
+      'Размещение' => placement,
+      'КоличествоТуристов' => (dependents.count + 1),
+      'КоличествоНочей' => nights,
+      'Переезд' => relocation,
+      'Класс' => service_class,
+      'Питание' => meals,
+      'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
+      'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
+      'Трансфер' => transfer,
+      'СтраховкаОтНевыезда' => (additional_insurance_price > 0 ? 'Да' : 'Нет'),
+      'ДополнительныеУслуги' => additional_services,
+      'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
+      'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+      'Компания' => company.try(:name),
+      'Банк' => company.try(:bank),
+      'БИК' => company.try(:bik),
+      'РасчетныйСчет' => company.try(:curr_account),
+      'КорреспондентскийСчет' => company.try(:corr_account),
+      'ОГРН' => company.try(:ogrn),
+      'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
+      'Телефон' => (company.address.phone_number if company.address.present?),
+      'ФИО' => applicant.try(:full_name),
+      'ДатаРождения' => applicant.try(:date_of_birth),
+      'СерияПаспорта' => applicant.try(:passport_series),
+      'НомерПаспорта' => applicant.try(:passport_number),
+      'СрокПаспорта' => applicant.try(:passport_valid_until),
+      'АэропортТуда' => airport_to,
+      'АэропортОбратно' => airport_back,
+      'РейсТуда' => flight_to,
+      'РейсОбратно' => flight_back,
+      'ВылетТуда' => (depart_to.strftime('%d/%m/%Y') if depart_to),
+      'ВылетОбратно' => (depart_back.strftime('%d/%m/%Y') if depart_back),
+      'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
+      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
+    }
+  end
+
+  def printable_collections
+    {
+      'Туристы' =>
+        {
+          :collection => dependents,
+          'Турист.ФИО' => :full_name,
+          'Турист.ДатаРождения' => :date_of_birth,
+          'Турист.СерияПаспорта' => :passport_series,
+          'Турист.НомерПаспорта' => :passport_number,
+          'Турист.СрокПаспорта' => :passport_valid_until
+        }
+    }
   end
 end

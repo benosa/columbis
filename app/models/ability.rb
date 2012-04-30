@@ -15,12 +15,14 @@ class Ability
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
       can :users_sign_in_as, :user
+      can :claims_all, :user
     elsif user.role == 'accountant'
       can :switch_view, User
       can :search, Claim
       can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id
       can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
+      can :claims_all, :user
     elsif user.role == 'supervisor'
       can :manage, [Client, Tourist], :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
@@ -28,6 +30,7 @@ class Ability
       can :read, Claim, :company_id => user.company_id
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
+      can :claims_all, :user
     elsif user.role == 'manager'
       can :manage, [Client, Tourist], :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id

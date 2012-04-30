@@ -6,4 +6,6 @@
   %div.user{ :style => "background-color:#{current_user.color}" }
     = "#{current_user.first_last_name} [#{current_user.role}]"
   = text_field_tag :full_value
+
+= hidden_field_tag :columns_info,  Claim.columns_info.join(', ')
 = render :partial => 'list'

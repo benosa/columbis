@@ -161,7 +161,22 @@ class Claim < ActiveRecord::Base
     company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
   end
 
+  def self.columns_info
+    Claim.columns.sort!{ |x,y| x.name <=> y.name }.map{ |c| c.name + ' ' + to_js_type(c.type) }
+  end
+
   private
+
+  def self.to_js_type(column_type)
+    case column_type
+    when :integer
+      'INTEGER'
+    when :float
+      'REAL'
+    else
+      'TEXT'
+    end
+  end
 
   def assign_applicant(applicant_params)
     if applicant_params[:id].blank?

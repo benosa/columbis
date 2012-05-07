@@ -7,7 +7,8 @@ $(function(){
       db = openDatabase('tourism', '1.0', 'Local storage', 20000);
       if (!db)
         alert("Failed to open the database on disk.  This is probably because the version was bad or there is not enough space left in this domain's quota");
-      } else
+      }
+      // else
         //alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
   } catch(err) {
     db = null;

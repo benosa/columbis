@@ -11,7 +11,7 @@ $(function(){
         alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
   } catch(err) {
     db = null;
-    alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
+    //alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
   }
 
   function drop_table(table) {
@@ -34,7 +34,7 @@ $(function(){
 
   function fill_storage() {
     $.ajax({
-      url: 'dashboard/claims/all/'
+      url: '/dashboard/claims/all/'
     });
   }
 

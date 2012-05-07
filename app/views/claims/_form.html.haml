@@ -316,6 +316,11 @@
       .data_block
         %h2= t('.payments_in')
         %table#payments_in
+          %tr
+            %td{ :colspan => 2}
+              = f.label :maturity
+            %td.datepicker= f.text_field :maturity, :class => 'datepicker', :value => l(@claim.maturity, :format => :long)
+            %td
           %tr.header
             %th{ :style => 'width:12px;' }
             %th= t('.date')
@@ -338,9 +343,7 @@
             = builder.hidden_field :id
             - ind += 1
           %tr.footer
-            %td{ :colspan => 2}
-              = f.label :maturity
-            %td.datepicker= f.text_field :maturity, :class => 'datepicker', :value => l(@claim.maturity, :format => :long)
+            %td{ :colspan => 3}
             %td= f.label :tourist_debt
             %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
           %tr.bottom

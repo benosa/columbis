@@ -54,7 +54,10 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in
   accepts_nested_attributes_for :payments_out
 
-  validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id, :check_date
+  validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
+#  validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
+#                        :operator_maturity, :airline, :airport_to, :airport_back, :flight_to, :flight_back,
+#                        :hotel, :meals, :medical_insurance, :placement, :transfer, :service_class, :relocation
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
     validates_presence_of a
@@ -403,8 +406,6 @@ class Claim < ActiveRecord::Base
       'Город' => city.try(:name),
       'Страна' => country.try(:name),
       'Курорт' => resort.try(:name),
-      'Отправление' => (depart_to.strftime('%d/%m/%Y') if depart_to),
-      'Возврат' => (depart_back.strftime('%d/%m/%Y %H:%M') if depart_back),
       'Отель' => hotel,
       'Размещение' => placement,
       'КоличествоТуристов' => (dependents.count + 1),
@@ -436,8 +437,8 @@ class Claim < ActiveRecord::Base
       'АэропортОбратно' => airport_back,
       'РейсТуда' => flight_to,
       'РейсОбратно' => flight_back,
-      'ВылетТуда' => (depart_to.strftime('%d/%m/%Y') if depart_to),
-      'ВылетОбратно' => (depart_back.strftime('%d/%m/%Y') if depart_back),
+      'ВылетТуда' => depart_to,
+      'ВылетОбратно' => depart_back,
       'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
       'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
     }

@@ -19,7 +19,7 @@ class Printer < ActiveRecord::Base
 
     fields.each do |key, value|
       value ||= ''
-      @text.gsub!(/\#\{#{key.mb_chars.upcase}\}/, value.to_s)
+      @text.gsub!(/\#\{#{key.mb_chars.upcase}\}/, (value.respond_to?(:strftime) ? value.strftime('%d/%m/%Y') : value.to_s))
     end
 
     @text

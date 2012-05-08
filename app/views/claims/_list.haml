@@ -96,9 +96,9 @@
         %td{ :full_value => l(claim.operator_maturity, :format => :short) }
           = l( claim.operator_maturity, :format => :short )
         %td{ :full_value => claim.operator_advance.to_money, :class =>  !claim.canceled? && color_for_operator_advance(claim) }
-          = claim.operator_advance.to_money
+          = operator_advance(claim)
         %td{ :full_value => claim.operator_debt.to_money, :class =>  (!claim.canceled? && claim.operator_debt != 0) && 'red_back' }
-          = claim.operator_debt.to_money
+          = operator_debt(claim)
         - if params[:list_type] == 'accountant_list'
           %td.thick_border= approved_advance(claim, :tourist)
           %td= approved_advance(claim, :operator_prim)

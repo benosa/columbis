@@ -8,6 +8,14 @@ module ClaimsHelper
     claim.operator_price.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
   end
 
+  def operator_advance(claim)
+    claim.operator_advance.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
+  end
+
+  def operator_debt(claim)
+    claim.operator_debt.to_money + CurrencyCourse.currency_symbol(claim.operator_price_currency)
+  end
+
   def approved_advance(claim, who)
     case who
     when :tourist

@@ -31,13 +31,14 @@ $(function(){
     });
   }
 
-  create_storage();
-
   function fill_storage() {
     $.ajax({
       url: '/dashboard/claims/all/'
     });
   }
 
-  fill_storage();
+  if (db) {
+    create_storage();
+    fill_storage();
+  }
 });

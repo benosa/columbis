@@ -423,6 +423,7 @@ class Claim < ActiveRecord::Base
       'Питание' => meals,
       'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
       'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
+      'ТопливныйСбор' => ((fuel_tax_count * fuel_tax_price) > 0 ? 'Да' : 'Нет'),
       'Трансфер' => transfer,
       'СтраховкаОтНевыезда' => (additional_insurance_price > 0 ? 'Да' : 'Нет'),
       'ДополнительныеУслуги' => additional_services,

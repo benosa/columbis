@@ -5,9 +5,9 @@ class Client < ActiveRecord::Base
   attr_protected :company_id
   belongs_to :company
 
-  validates :passport_series, :passport_number, :numericality => true
-  validates :passport_series, :length => { :is => 4 }
-  validates :passport_number, :length => { :is => 6 }
+#  validates :passport_series, :passport_number, :numericality => true
+#  validates :passport_series, :length => { :is => 4 }
+#  validates :passport_number, :length => { :is => 6 }
   validate :presence_of_fields
 
   def presence_of_fields

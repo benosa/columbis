@@ -24,16 +24,40 @@ $(function(){
   function create_storage() {
     drop_table('tourism_claims');
     db.transaction(function(tx) {
-      tx.executeSql('SELECT COUNT(*) FROM tourism_claims', [], function(result) { },
-        function(tx, error) {
-          tx.executeSql('CREATE TABLE tourism_claims (' + columns_info + ')');
-      });
+      tx.executeSql('CREATE TABLE IF NOT EXISTS tourism_claims (' + columns_info + ')');
     });
   }
 
   function fill_storage() {
     $.ajax({
-      url: '/dashboard/claims/all/'
+      url: '/dashboard/claims/all/',
+      success: function(resp) {
+        columns = columns_info.split(', ');
+
+        for (var i = 0; i < resp.length; i++) {
+          var obj = resp[i];
+          var fields = '';
+          var values = '';
+
+          for (method in obj) {
+            if (obj[method] != '') {
+              fields += method + ', ';
+              if (columns.indexOf(method + ' TEXT') > 0) {
+                values += '\'' + obj[method] + '\', ';
+              } else {
+                values += obj[method] + ', ';
+              }
+            }
+          }
+
+          fields = '(' + fields.replace(/, $/, ')');
+          values = '(' + values.replace(/, $/, ')');
+
+          db.transaction(function(tx) {
+            tx.executeSql("INSERT INTO tourism_claims " + fields + " VALUES " + values);
+          });
+        }
+      }
     });
   }
 

@@ -1,6 +1,9 @@
 class Dashboard::ClaimsController < ApplicationController
   def all
     authorize! :claims_all, current_user
-    @claims = current_company.claims
+    columns =  Claim.column_names
+    render :json => current_company.claims.map{ |cl|
+      cl.attributes
+    }
   end
 end

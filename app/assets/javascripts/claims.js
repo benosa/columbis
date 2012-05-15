@@ -254,6 +254,14 @@ $(function(){
       if (isFinite(val)) {
         str = str + val + 'rur = ';
 
+        if ($('#claim_tour_price_currency').val() != 'rur'){
+          course = $('#claim_course_' + $('#claim_tour_price_currency').val()).val();
+          if (isFinite(course) && course > 0) {
+            total_in_curr = val / course;
+            str = str + total_in_curr + $('#claim_tour_price_currency').val() + ' = ';
+          }
+        }
+
         val = parseFloat($('#claim_tour_price').val());
         if (isFinite(val) && val > 0) {
           str = str + val + $('#claim_tour_price_currency').val() + '(тур) + ';

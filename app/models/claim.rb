@@ -168,6 +168,14 @@ class Claim < ActiveRecord::Base
     Claim.columns.sort!{ |x,y| x.name <=> y.name }.map{ |c| c.name + ' ' + to_js_type(c.type) }
   end
 
+  def total_tour_price_in_curr
+    begin
+      (calculate_tour_price / course(tour_price_currency)).round
+    rescue
+      0
+    end
+  end
+
   private
 
   def self.to_js_type(column_type)
@@ -420,6 +428,8 @@ class Claim < ActiveRecord::Base
       'ДополнительныеУслуги' => additional_services,
       'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
       'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+      'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
+      'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
       'Компания' => company.try(:name),
       'Банк' => company.try(:bank),
       'БИК' => company.try(:bik),

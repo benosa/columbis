@@ -255,9 +255,9 @@ $(function(){
         str = str + val + 'rur = ';
 
         if ($('#claim_tour_price_currency').val() != 'rur'){
-          course = $('#claim_course_' + $('#claim_tour_price_currency').val()).val();
-          if (isFinite(course) && course > 0) {
-            total_in_curr = val / course;
+          cour = parseFloat($('#claim_course_' + $('#claim_tour_price_currency').val()).val());
+          if (isFinite(cour) && cour > 0) {
+            total_in_curr = Math.round(val / cour);
             str = str + total_in_curr + $('#claim_tour_price_currency').val() + ' = ';
           }
         }

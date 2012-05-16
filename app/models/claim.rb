@@ -408,9 +408,15 @@ class Claim < ActiveRecord::Base
     self.errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
+  def primary_currency_price_in_word
+    str = RuPropisju.amount_in_word(primary_currency_price, CurrencyCourse::PRIMARY_CURRENCY)
+    str.mb_chars.capitalize.to_s
+  end
+
   def printable_fields
     {
       'Номер' => id,
+      'Туроператор' => operator.try(:name),
       'Город' => city.try(:name),
       'Страна' => country.try(:name),
       'Курорт' => resort.try(:name),
@@ -422,13 +428,25 @@ class Claim < ActiveRecord::Base
       'Класс' => service_class,
       'Питание' => meals,
       'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
+      'ВизаВзрослаяСум' => (visa_count > 0 ?
+        (visa_count.to_s + 'x' + visa_price.round.to_s + ' ' + visa_price_currency) : 'Нет'),
+      'ВизаДетскаяСум' => (children_visa_count > 0 ?
+        (children_visa_count.to_s + 'x' + children_visa_price.round.to_s + ' ' + children_visa_price_currency) : 'Нет'),
       'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
-      'ТопливныйСбор' => ((fuel_tax_count * fuel_tax_price) > 0 ? 'Да' : 'Нет'),
+      'ТопливныйСборСум' => ((fuel_tax_count * fuel_tax_price) > 0 ?
+         (fuel_tax_count.to_s + 'x' + fuel_tax_price.round.to_s + ' ' + fuel_tax_price_currency) : 'Нет'),
       'Трансфер' => transfer,
-      'СтраховкаОтНевыезда' => (additional_insurance_price > 0 ? 'Да' : 'Нет'),
+      'СтраховкаОтНевыезда' => (insurance_price > 0 ? 'Да' : 'Нет'),
+      'СтраховкаОтНевыездаСум' => (insurance_price > 0 ?
+        (insurance_count.to_s + 'x' + insurance_price.round.to_s + ' ' + insurance_price_currency) : 'Нет'),
+      'СтраховкаДополнительнаяСум' => (additional_insurance_price > 0 ?
+        (additional_insurance_count.to_s + 'x' + additional_insurance_price.round.to_s + ' ' + additional_insurance_price_currency) : 'Нет'),
       'ДополнительныеУслуги' => additional_services,
+      'ДополнительныеУслугиСум' => additional_services_price > 0 ?
+        (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
       'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
       'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+      'СуммаПрописью' => primary_currency_price_in_word,
       'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
       'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
       'Компания' => company.try(:name),
@@ -438,8 +456,10 @@ class Claim < ActiveRecord::Base
       'КорреспондентскийСчет' => company.try(:corr_account),
       'ОГРН' => company.try(:ogrn),
       'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
-      'Телефон' => (company.address.phone_number if company.address.present?),
+      'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
       'ФИО' => applicant.try(:full_name),
+      'Адрес' => applicant.try(:address),
+      'ТелефонТуриста' => applicant.try(:phone_number),
       'ДатаРождения' => applicant.try(:date_of_birth),
       'СерияПаспорта' => applicant.try(:passport_series),
       'НомерПаспорта' => applicant.try(:passport_number),

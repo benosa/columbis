@@ -61,7 +61,7 @@ $(function(){
     });
   }
 
-  if (db) {
+  if (db && $('#columns_info').length > 0) {
     create_storage();
     fill_storage();
   }

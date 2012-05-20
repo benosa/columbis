@@ -21,6 +21,41 @@ $(function(){
     });
   }
 
+  function create_settings() {
+    db.transaction(function(tx) {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS tourism_settings (id INTEGER PRIMARY KEY, name TEXT, value TEXT)');
+    });
+
+    var now = new Date();
+    setting('updated_at', now.toUTCString());
+  }
+
+  function setting(name, value) {
+    if(value == undefined){
+      // getter
+      var value;
+      db.transaction(function(tx) {
+        tx.executeSql('SELECT * FROM tourism_settings WHERE name = ?', [name], function (tx, results) {
+          if (results.rows.length == 1) {
+            value = results.rows.item(0).value;
+          }
+        });
+      });
+      return value;
+    } else {
+      // setter
+      db.transaction(function(tx) {
+        tx.executeSql('SELECT * FROM tourism_settings WHERE name = ?', [name], function (tx, results) {
+          if (results.rows.length == 1) {
+            tx.executeSql("UPDATE tourism_settings SET value = ? WHERE name = ?", [value, name]);
+          } else {
+            tx.executeSql("INSERT INTO tourism_settings (name, value) VALUES (?, ?)", [name, value]);
+          }
+        });
+      });
+    }
+  }
+
   function create_storage() {
     drop_table('tourism_claims');
     db.transaction(function(tx) {
@@ -28,9 +63,10 @@ $(function(){
     });
   }
 
-  function fill_storage() {
+  function fill_storage(updated_at) {
     $.ajax({
       url: '/dashboard/claims/all/',
+      data: { updated_at : updated_at },
       success: function(resp) {
         columns = columns_info.split(', ');
 
@@ -62,6 +98,8 @@ $(function(){
   }
 
   if (db && $('#columns_info').length > 0) {
+    drop_table('tourism_settings');
+    create_settings()
     create_storage();
     fill_storage();
   }

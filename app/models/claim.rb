@@ -169,11 +169,7 @@ class Claim < ActiveRecord::Base
   end
 
   def total_tour_price_in_curr
-    begin
-      (calculate_tour_price / course(tour_price_currency)).round
-    rescue
-      0
-    end
+    course(tour_price_currency).round > 0 ? (calculate_tour_price / course(tour_price_currency)).round : 0
   end
 
   private

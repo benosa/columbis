@@ -1,6 +1,17 @@
-$(function(){
+$(function() {
   var columns_info = $('#columns_info').val();
   var db = null;
+  var success, error;
+
+  success = function (tx, results) {
+    if (results.rows.length == 1) {
+      return results.rows.item(0).value;
+    }
+  };
+
+  error = function (tx, error) {
+    console.log("Error: ", error);
+  };
 
   try {
     if (window.openDatabase) {
@@ -28,20 +39,15 @@ $(function(){
 
     var now = new Date();
     setting('updated_at', now.toUTCString());
+    alert(setting('updated_at'));
   }
 
   function setting(name, value) {
     if(value == undefined){
       // getter
-      var value;
       db.transaction(function(tx) {
-        tx.executeSql('SELECT * FROM tourism_settings WHERE name = ?', [name], function (tx, results) {
-          if (results.rows.length == 1) {
-            value = results.rows.item(0).value;
-          }
-        });
+        tx.executeSql('SELECT * FROM tourism_settings WHERE name = ?', [name], success);
       });
-      return value;
     } else {
       // setter
       db.transaction(function(tx) {
@@ -98,9 +104,11 @@ $(function(){
   }
 
   if (db && $('#columns_info').length > 0) {
+    drop_table('tourism_claims');
     drop_table('tourism_settings');
-    create_settings()
-    create_storage();
-    fill_storage();
+
+//    create_settings()
+//    create_storage();
+//    fill_storage();
   }
 });

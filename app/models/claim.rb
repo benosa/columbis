@@ -180,8 +180,10 @@ class Claim < ActiveRecord::Base
       'INTEGER'
     when :float
       'REAL'
-    else
+    when :text
       'TEXT'
+    else
+      'VARCHAR(255)'
     end
   end
 

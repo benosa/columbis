@@ -1,4 +1,18 @@
 - title t('.claims'), false
+- if is_admin?
+  #sync_bar
+    = link_to 'Reset Local Database', '#', :id => 'reset'
+    %p
+      Delete all rows from the employee table in the local SQLite database. Does not require network connectivity
+    = link_to 'Sync with Server', '#', :id => 'sync'
+    %p
+      Get changes from server and update local database accordingly. Requires network connectivity.
+    = link_to 'Render List', '#', :id => 'render'
+    %p
+      Render the employee list using the data from the local SQLite database. Does not require network
+    = link_to 'Clear Log', '#', :id => 'clearLog'
+    = text_area_tag :log, nil, :cols => 100, :rows => 8
+
 .bar
   = text_field_tag :filter
   %div

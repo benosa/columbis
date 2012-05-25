@@ -138,18 +138,36 @@ $(function() {
 
   applyChanges: function(employees, callback) {
 
+    var self = this;
+    var fields = '';
+
     this.db.transaction(
       function(tx) {
         var l = employees.length;
-        var sql =
-          "INSERT OR REPLACE INTO claims (id ) " +
-          "VALUES (?)";
         log('Inserting or Updating in local database:');
         var e;
+        var columns = self.columnsInfo.split(', ');
         for (var i = 0; i < l; i++) {
           e = employees[i];
-          log(e.id);
-          var params = [e.id];
+
+          if (fields == '') {
+            for (var key in e) {
+              fields += key + ', ';
+            }
+            fields = '(' + fields.replace(/, $/, ')');
+          }
+          var params = [];
+          var values = '';
+          for (attr in e) {
+            values += '?, ';
+            params.push(e[attr]);
+          }
+          values = '(' + values.replace(/, $/, ')');
+          var sql =
+            "INSERT OR REPLACE INTO claims " + fields +
+            "VALUES " + values;
+
+          log('#' + e.id + ' is loaded.');
           tx.executeSql(sql, params);
         }
         log('Synchronization complete (' + l + ' items synchronized)');

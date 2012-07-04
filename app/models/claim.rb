@@ -430,7 +430,7 @@ class Claim < ActiveRecord::Base
       'ТуроператорОГРН' => operator.try(:ogrn),
       'ТуроператорСайт' => operator.try(:site),
       'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : 'Нет адреса'),
-      'ТуроператорФинОбеспечение' => operator.try(:insurer_provision).gsub!(/\d+/) { |sum| "#{sum} (#{RuPropisju.propisju(sum.to_i)})" },
+      'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{RuPropisju.propisju(sum.to_i)})" } : '',
       'Страховщик' => operator.try(:insurer),
       'СтраховщикАдрес' => operator.try(:insurer_address),
       'ДоговорСтрахования' => operator.try(:insurer_contract),

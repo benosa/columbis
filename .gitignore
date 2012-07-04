@@ -18,7 +18,7 @@ config/database.yml
 *.swh
 *.swa
 .sass-cache
-Capfile
+.rvmrc
 config/development.sphinx.conf
 config/production.sphinx.conf
 db/sphinx/

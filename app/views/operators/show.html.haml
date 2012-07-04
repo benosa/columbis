@@ -1,8 +1,11 @@
-- title t('.operator')
+- title @operator.name
 
+- for att in [:register_number, :register_series, :inn, :ogrn]
+  %p
+    #{Operator.human_attribute_name(att)}: #{@operator[att]}
+  
 %p
-  %strong= t('.name')
-  = @operator.name
+  Адрес: #{@operator.address.present? ? @operator.address.pretty_full_address : ''}  
 
 %p
   = link_to t('edit'), edit_operator_path(@operator)

@@ -15,7 +15,8 @@ class Claim < ActiveRecord::Base
                   :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
-  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back
+  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :arrive_to, :depart_back,
+                  :arrive_to, :arrive_back
 
   # marchroute block
   attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
@@ -162,6 +163,14 @@ class Claim < ActiveRecord::Base
 
   def print_memo
     company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
+  end
+
+  def print_permit
+    company.permit_printer.prepare_template(printable_fields, printable_collections)
+  end
+
+  def print_warranty
+    company.warranty_printer.prepare_template(printable_fields, printable_collections)
   end
 
   def self.columns_info
@@ -415,6 +424,19 @@ class Claim < ActiveRecord::Base
     {
       'Номер' => id,
       'Туроператор' => operator.try(:name),
+      'ТуроператорНомер' => operator.try(:register_number),
+      'ТуроператорСерия' => operator.try(:register_series),
+      'ТуроператорИНН' => operator.try(:inn),
+      'ТуроператорОГРН' => operator.try(:ogrn),
+      'ТуроператорСайт' => operator.try(:site),
+      'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : 'Нет адреса'),
+      'ТуроператорФинОбеспечение' => operator.try(:insurer_provision).gsub!(/\d+/) { |sum| "#{sum} (#{RuPropisju.propisju(sum.to_i)})" },
+      'Страховщик' => operator.try(:insurer),
+      'СтраховщикАдрес' => operator.try(:insurer_address),
+      'ДоговорСтрахования' => operator.try(:insurer_contract),
+      'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : 'Нет даты',
+      'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : 'Нет даты',
+      'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : 'Нет даты',
       'Город' => city.try(:name),
       'Страна' => country.try(:name),
       'Курорт' => resort.try(:name),
@@ -453,8 +475,11 @@ class Claim < ActiveRecord::Base
       'РасчетныйСчет' => company.try(:curr_account),
       'КорреспондентскийСчет' => company.try(:corr_account),
       'ОГРН' => company.try(:ogrn),
-      'Адрес' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
+      'ОКПО' => company.try(:okpo),
+      'ИНН' => company.try(:inn),
+      'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : 'Нет адреса'),
       'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
+      'СайтКомпании' => company.try(:site),
       'ФИО' => applicant.try(:full_name),
       'Адрес' => applicant.try(:address),
       'ТелефонТуриста' => applicant.try(:phone_number),
@@ -469,7 +494,11 @@ class Claim < ActiveRecord::Base
       'ВылетТуда' => depart_to,
       'ВылетОбратно' => depart_back,
       'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
-      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
+      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
+      'ПрибытиеТуда' => arrive_to,
+      'ПрибытиеОбратно' => arrive_back,
+      'ВремяПрибытияТуда' => (arrive_to.strftime('%H:%M') if arrive_to),
+      'ВремяПрибытияОбратно' => (arrive_back.strftime('%H:%M') if arrive_back)
     }
   end
 

@@ -77,6 +77,7 @@ ru:
       airport: 'Аэропорт'
       flight: 'Номер рейса'
       depart: 'Время вылета'
+      arrive: 'Время прибытия'
 
       full_name: 'ФИО туриста'
       tourists_full_name_hint: '(на кого составлен Договор)'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120426104431) do
+ActiveRecord::Schema.define(:version => 20120703114743) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -130,6 +130,8 @@ ActiveRecord::Schema.define(:version => 20120426104431) do
     t.string   "tourist_stat"
     t.float    "approved_operator_advance_prim",      :default => 0.0,            :null => false
     t.integer  "company_id"
+    t.datetime "arrive_to"
+    t.datetime "arrive_back"
   end
 
   create_table "clients", :force => true do |t|
@@ -160,6 +162,9 @@ ActiveRecord::Schema.define(:version => 20120426104431) do
     t.string   "curr_account"
     t.string   "corr_account"
     t.string   "ogrn"
+    t.string   "okpo"
+    t.string   "site"
+    t.string   "inn"
   end
 
   create_table "countries", :force => true do |t|
@@ -227,6 +232,17 @@ ActiveRecord::Schema.define(:version => 20120426104431) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
+    t.string   "register_number"
+    t.string   "register_series"
+    t.string   "inn"
+    t.string   "ogrn"
+    t.string   "site"
+    t.string   "insurer"
+    t.string   "insurer_address"
+    t.string   "insurer_contract"
+    t.date     "insurer_contract_date"
+    t.date     "insurer_contract_start"
+    t.date     "insurer_contract_end"
   end
 
   create_table "payments", :force => true do |t|

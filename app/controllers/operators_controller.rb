@@ -9,6 +9,7 @@ class OperatorsController < ApplicationController
   end
 
   def new
+    @operator.build_address
   end
 
   def create
@@ -21,6 +22,9 @@ class OperatorsController < ApplicationController
   end
 
   def edit
+    if !@operator.address.present?
+      @operator.build_address
+    end
   end
 
   def update

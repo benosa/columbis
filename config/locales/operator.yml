@@ -4,15 +4,36 @@ ru:
       operators: 'Операторы'
       new_operator: 'Добавить оператора'
       name: 'Название'
+      address: 'Адрес'
     new:
       new_operator: 'Добавить оператора'
     edit:
-      edit_operator: 'Редактировать оператора'
+      edit_operator: 'Редактировать оператора'      
     show:
       operator: 'Оператор'
       name: 'Название'
+    form:
+      insurer: 'Страховщик'
+      name: 'Название'
+      address: 'Адрес'
+      provision: 'Фин. обеспечение (руб.)'
+      contract: 'Договор'
+      contract_date: 'Дата договора'
+      contract_start: 'Дата начала действия договора'
+      contract_end: 'Дата конца действия договора'
 
   activerecord:
     attributes:
       operator:
         name: 'Название'
+        register_number: 'Номер в реестре'
+        register_series: 'Серия в реестре'
+        inn: 'ИНН'
+        ogrn: 'ОГРН'
+        site: 'Сайт'
+        insurer: 'Страховщик'
+        insurer_address: 'Адрес страховщика'
+        insurer_contract: 'Договор со страховщиком'
+        insurer_contract_date: 'Дата договора со страховщиком'
+        insurer_contract_start: 'Дата начала действия договора со страховщиком'
+        insurer_contract_end: 'Дата конца действия договора со страховщиком'

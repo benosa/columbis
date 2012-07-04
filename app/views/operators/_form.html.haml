@@ -1,8 +1,58 @@
 = form_for @operator do |f|
   = f.error_messages
-  %p
-    = f.label :name
-    %br
-    = f.text_field :name
-  %p
-    = f.submit
+  .left
+
+    %table
+      %tr
+        %td= f.label :name
+        %td= f.text_field :name
+      %tr
+        %td= f.label :register_number
+        %td= f.text_field :register_number
+      %tr
+        %td= f.label :register_series
+        %td= f.text_field :register_series
+      %tr
+        %td= f.label :inn
+        %td= f.text_field :inn
+      %tr
+        %td= f.label :ogrn
+        %td= f.text_field :ogrn
+      %tr
+        %td= f.label :site
+        %td= f.text_field :site     
+  
+    %h3= t('.address')
+    = f.fields_for :address do |address|
+      = render :partial => 'shared/address', :locals => { :f => address }
+
+    %p
+      = f.submit
+
+  .center
+
+    %h3= t('.insurer')
+    %table
+      %tr
+        %td= f.label t('.name')
+        %td= f.text_field :insurer
+      %tr
+        %td= f.label t('.address')
+        %td= f.text_field :insurer_address
+      %tr
+        %td= f.label t('.provision')
+        %td= f.text_field :insurer_provision
+      %tr
+        %td= f.label t('.contract')
+        %td= f.text_field :insurer_contract
+      %tr
+        %td= f.label t('.contract_date')
+        %td.datepicker= f.text_field :insurer_contract_date, :value => l(@operator.insurer_contract_date, :format => :long)
+      %tr
+        %td= f.label t('.contract_start')
+        %td.datepicker= f.text_field :insurer_contract_start, :value => l(@operator.insurer_contract_start, :format => :long)
+      %tr
+        %td= f.label t('.contract_end')
+        %td.datepicker= f.text_field :insurer_contract_end, :value => l(@operator.insurer_contract_end, :format => :long)
+
+  .clear

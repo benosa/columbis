@@ -1,5 +1,5 @@
 class Printer < ActiveRecord::Base
-  MODES = %w[contract memo].freeze
+  MODES = %w[contract memo permit warranty].freeze
 
   attr_accessible :country_id, :template, :mode
   attr_protected :company_id
@@ -29,13 +29,14 @@ class Printer < ActiveRecord::Base
 
   def setup_collections(collections)
     collections.each do |key, value|
-      collection_name = key.mb_chars.upcase.to_s
-      if (/\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%/m).match(@text)
+      collection_name = key.mb_chars.upcase.to_s        
+      @text.scan(/(\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%)/m).each do |matches|
         collection = value[:collection]
-        match = Regexp.last_match[0].clone
-        partial = ''<< Regexp.last_match[1].clone
+        match = matches[0].clone        
+        partial = ''<< matches[1].clone
         result = ''
 
+        index = 0
         collection.each do |ob|
           row = partial.clone
           value.each  do |collection_key, collection_field|
@@ -44,7 +45,16 @@ class Printer < ActiveRecord::Base
             field = ob.try(collection_field)
             row.gsub!(/\#\{#{collection_key.mb_chars.upcase}\}/, (field.respond_to?(:strftime) ? field.strftime('%d/%m/%Y') : field.to_s))
           end
+          # Computed expressions
+          row.gsub!(/\=\{(.+?)\}/) do |m|
+            begin
+              eval($1)
+            rescue Exception => e
+              ''
+            end
+          end          
           result += row
+          index += 1
         end
         @text.gsub!(match, result)
       end

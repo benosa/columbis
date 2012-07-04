@@ -91,6 +91,12 @@
               = f.text_field :depart_to, :class => 'datetimepicker', :value => l(@claim.depart_to, :format => :long)
             %td.datepicker
               = f.text_field :depart_back, :class => 'datetimepicker', :value => l(@claim.depart_back, :format => :long)
+          %tr
+            %td.text_right= f.label :arrive_to, t('.arrive')
+            %td.datepicker
+              = f.text_field :arrive_to, :class => 'datetimepicker', :value => l(@claim.arrive_to, :format => :long)
+            %td.datepicker
+              = f.text_field :arrive_back, :class => 'datetimepicker', :value => l(@claim.arrive_back, :format => :long)
 
         %h2= t('.trip_documents')
         %p

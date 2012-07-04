@@ -23,7 +23,11 @@
           %li= link_to 'Новая заявка', new_claim_path, :class => ((params[:controller] == 'claims' and params[:action] == 'new') ? 'selected' : ' ')
           %li{ :class => li_class(@claim, :contract) }
             = (@claim && !@claim.new_record? && @claim.company.try(:contract_printer)) ? (link_to 'Договор', claim_path(@claim.id, :print => 'contract'), :target => '_blank') : 'Договор'
-          %li= link_to 'Путевка', '#'
+          %li{ :class => li_class(@claim, :permit) }
+            = (@claim && !@claim.new_record? && @claim.company.try(:permit_printer)) ? (link_to 'Путевка', claim_path(@claim.id, :print => 'permit'), :target => '_blank') : 'Путевка'
+          %li{ :class => li_class(@claim, :warranty) }
+            = (@claim && !@claim.new_record? && @claim.company.try(:warranty_printer)) ? (link_to 'Фингарантии',
+              claim_path(@claim.id, :print => 'warranty'), :target => '_blank') : 'Фингарантии'          
           %li{ :class => li_class(@claim, :memo) }
             = (@claim && !@claim.new_record? && @claim.company.try(:memo_printer_for, @claim.country)) ? (link_to 'Памятка', claim_path(@claim.id, :print => 'memo'), :target => '_blank') : 'Памятка'
           %li= link_to 'Приходник', '#'

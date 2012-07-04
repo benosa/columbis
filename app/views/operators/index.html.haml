@@ -2,10 +2,24 @@
 
 %table
   %tr
-    %th= t('.name')
+    %th= Operator.human_attribute_name(:name)
+    %th= Operator.human_attribute_name(:register_number)
+    %th= Operator.human_attribute_name(:register_series)
+    %th= Operator.human_attribute_name(:inn)
+    %th= Operator.human_attribute_name(:ogrn)
+    %th= t('.address')
+    %th
+    %th
+    %th
+
   - for operator in @operators
     %tr
       %td= operator.name
+      %td= operator.register_number
+      %td= operator.register_series
+      %td= operator.inn
+      %td= operator.ogrn
+      %td= operator.address.present? ? operator.address.pretty_full_address : ''
       %td= link_to t('show'), operator
       %td= link_to t('edit'), edit_operator_path(operator)
       %td= link_to t('destroy'), operator, :confirm => t('are_you_sure'), :method => :delete

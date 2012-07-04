@@ -9,7 +9,7 @@ class Address < ActiveRecord::Base
 
   def pretty_full_address(with_phone = true)
     str = "#{region}, #{street}, #{house_number}, #{housing}, #{office_number}, #{zip_code}".strip
-    str.gsub!(', ,', ',')
+    str.gsub!(/,\W*,/, ',')
     str.chomp(',')
   end
 end

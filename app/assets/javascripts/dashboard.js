@@ -19,7 +19,7 @@ $(function(){
   //prepare fields
   function process($fields) {
     if ($fields.parent('.nested_attributes').hasClass('printers')) {
-      if ($fields.find('.mode_select').val() == 'contract') {
+      if ($.inArray($fields.find('.mode_select').val(), ['contract', 'warranty', 'permit']) != -1) {
         $fields.find('.country_label').hide();
         $fields.find('.country_select').hide();
       } else {
@@ -67,8 +67,7 @@ $(function(){
 
   // show-hide country when mode changed
   $('.printers .mode_select').live('change', function(e) {
-    $(this).closest('.fields').find('.country_label').toggle();
-    $(this).closest('.fields').find('.country_select').toggle();
+    process($(this).closest('.fields'));
 	});
 
   // select regions

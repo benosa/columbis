@@ -47,12 +47,16 @@ class ClaimsController < ApplicationController
   end
 
   def show
-    if %w[contract memo].include? params[:print]
+    if %w[contract memo permit warranty].include? params[:print]
       case params[:print]
       when 'contract'
         render :text => @claim.print_contract, :layout => false
       when 'memo'
         render :text => @claim.print_memo, :layout => false
+      when 'permit'
+        render :text => @claim.print_permit, :layout => false
+      when 'warranty'
+        render :text => @claim.print_warranty, :layout => false
       end
     else
       redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:print]}'"

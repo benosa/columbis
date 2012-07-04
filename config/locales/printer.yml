@@ -5,5 +5,7 @@ ru:
         mode: 'Тип'
         contract: 'Договор'
         memo: 'Памятка'
+        permit: 'Путевка'
+        warranty: 'Фингарантии'
         template: 'Шаблон'
         country_id: 'Страна'

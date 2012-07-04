@@ -1,6 +1,7 @@
 class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
-                  :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids
+                  :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
+                  :site, :inn
 
   attr_accessor :company_id
 
@@ -38,6 +39,14 @@ class Company < ActiveRecord::Base
 
   def memo_printer_for(country)
     printers.where(:mode => 'memo', :country_id => country).last
+  end
+
+  def permit_printer
+    printers.where(:mode => 'permit').last
+  end
+
+  def warranty_printer
+    printers.where(:mode => 'warranty').last
   end
 
   def check_and_save_dropdown(list, value)

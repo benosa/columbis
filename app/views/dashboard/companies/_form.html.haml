@@ -9,6 +9,9 @@
         %td= f.label :email
         %td= f.text_field :email
       %tr
+        %td= f.label :site
+        %td= f.text_field :site
+      %tr
         %td= f.label :oficial_letter_signature
         %td= f.text_field :oficial_letter_signature
       %tr
@@ -26,6 +29,12 @@
       %tr
         %td= f.label :ogrn
         %td= f.text_field :ogrn
+      %tr
+        %td= f.label :okpo
+        %td= f.text_field :okpo
+      %tr
+        %td= f.label :inn
+        %td= f.text_field :inn
 
     %h3= t('.address')
     = f.fields_for :address do |address|

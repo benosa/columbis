@@ -29,10 +29,13 @@ ru:
         name: 'Название'
         oficial_letter_signature: 'Подпись'
         email: 'Электронная почта'
+        site: 'Веб-сайт'
         bank: 'Банк'
         bik: 'БИК'
         curr_account: 'Расчетный счет'
         corr_account: 'Корреспондентский счет'
         ogrn: 'ОРГН'
+        okpo: 'ОКПО'
+        inn: 'ИНН'
       company/printers:
           template: 'Шаблон'

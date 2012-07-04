@@ -1,5 +1,8 @@
 class SiteController < ApplicationController
   def index
   end
-end
 
+  def online
+    render :text => 'online'
+  end
+end

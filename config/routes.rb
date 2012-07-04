@@ -3,6 +3,10 @@ Tourism::Application.routes.draw do
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)
   match 'get_currency_course' => ApplicationController.action(:get_currency_course)
 
+  resources :offline, :only => :index do
+
+  end
+
   resources :airlines
   resources :currency_courses
 
@@ -50,5 +54,6 @@ Tourism::Application.routes.draw do
   end
 
   match 'dashboard' => "dashboard#index"
+  match 'online' => "site#online"
   root :to => 'claims#index'
 end

@@ -21,6 +21,7 @@ after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:uploads"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
+after "deploy:update_code", "deploy:create_manifest"
 
 #after "deploy:update_code", "deploy:repair_sequences"
 after "deploy:update_code", "thinking_sphinx:configure"
@@ -54,5 +55,10 @@ namespace :deploy do
   desc "secuenses changes when need generate new value for relaten table"
   task :repair_sequences do
     run "cd #{current_path}; bundle exec rake repair:sequences RAILS_ENV=#{rails_env}"
+  end
+
+  desc "generate cache manifest file"
+  task :create_manifest do
+    run "cd #{current_path}; bundle exec rake manifest:create RAILS_ENV=#{rails_env}"
   end
 end

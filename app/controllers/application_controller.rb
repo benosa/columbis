@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
   include SignInAs::Concerns::RememberAdmin
 
   CURRENTS = %w[company office]
@@ -16,6 +17,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :check_company_office
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
+
+  before_filter :set_current_controller
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -55,6 +58,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  class << self
+
+    attr_accessor :current
+
+  end
+
   protected
 
   def check_company_office
@@ -80,6 +89,10 @@ class ApplicationController < ActionController::Base
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
+  end
+
+  def set_current_controller    
+    ApplicationController.current = self
   end
 end
 

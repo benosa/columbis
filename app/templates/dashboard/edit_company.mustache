@@ -1,0 +1,126 @@
+<h1>Редактирование данных компании</h1>
+<form accept-charset="UTF-8" action="/dashboard/companies/1" class="edit_company" enctype="multipart/form-data" id="edit_company_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="9qz30ju6owadKPdd9RCSwBPuEtNRALtDDJAYR8/5aws=" /></div>
+  
+  <div class='left'>
+    <table>
+      <tr>
+        <td><label for="company_name">Название</label></td>
+        <td><input id="company_name" name="company[name]" size="30" type="text" value="{{name}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_email">Электронная почта</label></td>
+        <td><input id="company_email" name="company[email]" size="30" type="text" value="{{email}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_site">Веб-сайт</label></td>
+        <td><input id="company_site" name="company[site]" size="30" type="text" value="{{site}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_oficial_letter_signature">Подпись</label></td>
+        <td><input id="company_oficial_letter_signature" name="company[oficial_letter_signature]" size="30" type="text" value="{{oficial_letter_signature}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_bank">Банк</label></td>
+        <td><input id="company_bank" name="company[bank]" size="30" type="text" value="{{bank}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_bik">БИК</label></td>
+        <td><input id="company_bik" name="company[bik]" size="30" type="text" value="{{bik}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_curr_account">Расчетный счет</label></td>
+        <td><input id="company_curr_account" name="company[curr_account]" size="30" type="text" value="{{curr_account}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_corr_account">Корреспондентский счет</label></td>
+        <td><input id="company_corr_account" name="company[corr_account]" size="30" type="text" value="{{corr_account}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_ogrn">ОРГН</label></td>
+        <td><input id="company_ogrn" name="company[ogrn]" size="30" type="text" value="{{ogrn}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_okpo">ОКПО</label></td>
+        <td><input id="company_okpo" name="company[okpo]" size="30" type="text" value="{{okpo}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="company_inn">ИНН</label></td>
+        <td><input id="company_inn" name="company[inn]" size="30" type="text" value="{{inn}}" /></td>
+      </tr>
+    </table>
+    {{#address}}
+    <h3>Адрес</h3>
+    <p>
+      <label for="company_address_attributes_region">Регион</label>
+      <br>
+      <input id="company_address_attributes_region" name="company[address_attributes][region]" size="30" type="text" value="{{region}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_street">Улица</label>
+      <br>
+      <input id="company_address_attributes_street" name="company[address_attributes][street]" size="30" type="text" value="{{street}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_house_number">Номер дома</label>
+      <br>
+      <input id="company_address_attributes_house_number" name="company[address_attributes][house_number]" size="30" type="text" value="{{house_number}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_housing">Корпус</label>
+      <br>
+      <input id="company_address_attributes_housing" name="company[address_attributes][housing]" size="30" type="text" value="{{housing}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_office_number">Номер офиса</label>
+      <br>
+      <input id="company_address_attributes_office_number" name="company[address_attributes][office_number]" size="30" type="text" value="{{office_number}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_phone_number">Номер телефона</label>
+      <br>
+      <input id="company_address_attributes_phone_number" name="company[address_attributes][phone_number]" size="30" type="text" value="{{phone_number}}" />
+    </p>
+    <p>
+      <label for="company_address_attributes_zip_code">Индекс</label>
+      <br>
+      <input id="company_address_attributes_zip_code" name="company[address_attributes][zip_code]" size="30" type="text" value="{{zip_code}}" />
+    </p>
+    <input id="company_address_attributes_id" name="company[address_attributes][id]" type="hidden" value="{{id}}" />
+    {{/address}}
+    <p>
+      <input name="commit" type="submit" value="Сохранить" />
+    </p>    
+  </div>
+  <div class='center'>
+    <h3>Города</h3>    
+    <table id='selected_cities'>
+      <tr id='etalon' style='display:none;'>
+        <td></td>
+        <td><a href="#" class="del" id="del_etalon">Удалить</a></td>
+        <input id="hid_etalon" name="" type="hidden" value="" />
+      </tr>
+      {{#cities}}
+      <tr id='tr_{{id}}'>
+        <td>{{name}}</td>
+        <td><a href="#" class="del" id="del_264">Удалить</a></td>
+        <input id="hid_{{id}}" name="company[city_ids][]" type="hidden" value="{{id}}" />
+      </tr>
+      {{/cities}}     
+    </table>    
+    
+    <h3>Офисы</h3>
+    <div class='nested_attributes'>
+      {{#offices}}
+      <p class='fields'>
+        <label for="company_offices_attributes_0_name">Название</label>
+        <input id="company_offices_attributes_0_name" name="company[offices_attributes][0][name]" size="30" type="text" value="{{name}}" />
+        <label for="company_offices_attributes_0_default_password">Пароль по умолчанию</label>
+        <input id="company_offices_attributes_0_default_password" name="company[offices_attributes][0][default_password]" size="30" type="text" value="{{default_password}}" />
+        <input id="company_offices_attributes_0__destroy" name="company[offices_attributes][0][_destroy]" type="hidden" value="false" /><a href="#" class="remove">Удалить</a>
+      </p>
+      <input id="company_offices_attributes_0_id" name="company[offices_attributes][0][id]" type="hidden" value="{{id}}" />
+      {{/offices}}    
+    </div>    
+  </div>
+  <div class='clear'></div>
+</form>

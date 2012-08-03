@@ -1,0 +1,113 @@
+<h1>Редактировать оператора</h1>
+<form accept-charset="UTF-8" action="/operators/{{id}}" class="edit_operator" id="edit_operator_{{id}}" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="9qz30ju6owadKPdd9RCSwBPuEtNRALtDDJAYR8/5aws=" /></div>
+  
+  <div class='left'>
+    <table>
+      <tr>
+        <td><label for="operator_name">Название</label></td>
+        <td><input id="operator_name" name="operator[name]" size="30" type="text" value="{{name}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_register_number">Номер в реестре</label></td>
+        <td><input id="operator_register_number" name="operator[register_number]" size="30" type="text" value="{{register_number}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_register_series">Серия в реестре</label></td>
+        <td><input id="operator_register_series" name="operator[register_series]" size="30" type="text" value="{{register_series}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_inn">ИНН</label></td>
+        <td><input id="operator_inn" name="operator[inn]" size="30" type="text" value="{{inn}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_ogrn">ОГРН</label></td>
+        <td><input id="operator_ogrn" name="operator[ogrn]" size="30" type="text" value="{{ogrn}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_site">Сайт</label></td>
+        <td><input id="operator_site" name="operator[site]" size="30" type="text" value="{{site}}" /></td>
+      </tr>
+    </table>
+    {{#address}}
+    <h3>Адрес</h3>
+    <p>
+      <label for="operator_address_attributes_region">Регион</label>
+      <br>
+      <input id="operator_address_attributes_region" name="operator[address_attributes][region]" size="30" type="text" value="{{region}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_street">Улица</label>
+      <br>
+      <input id="operator_address_attributes_street" name="operator[address_attributes][street]" size="30" type="text" value="{{street}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_house_number">Номер дома</label>
+      <br>
+      <input id="operator_address_attributes_house_number" name="operator[address_attributes][house_number]" size="30" type="text" value="{{house_number}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_housing">Корпус</label>
+      <br>
+      <input id="operator_address_attributes_housing" name="operator[address_attributes][housing]" size="30" type="text" value="{{housing}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_office_number">Номер офиса</label>
+      <br>
+      <input id="operator_address_attributes_office_number" name="operator[address_attributes][office_number]" size="30" type="text" value="{{office_number}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_phone_number">Номер телефона</label>
+      <br>
+      <input id="operator_address_attributes_phone_number" name="operator[address_attributes][phone_number]" size="30" type="text" value="{{phone_number}}" />
+    </p>
+    <p>
+      <label for="operator_address_attributes_zip_code">Индекс</label>
+      <br>
+      <input id="operator_address_attributes_zip_code" name="operator[address_attributes][zip_code]" size="30" type="text" value="{{zip_code}}" />
+    </p>
+    <input id="operator_address_attributes_id" name="operator[address_attributes][id]" type="hidden" value="{{id}}" />  
+    <p>
+      <input name="commit" type="submit" value="Сохранить" />
+    </p>
+    {{/address}}
+  </div>
+  <div class='center'>
+    <h3>Страховщик</h3>
+    <table>
+      <tr>
+        <td><label for="operator_Название">Название</label></td>
+        <td><input id="operator_insurer" name="operator[insurer]" size="30" type="text" value="{{insurer}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Адрес">Адрес</label></td>
+        <td><input id="operator_insurer_address" name="operator[insurer_address]" size="30" type="text" value="{{insurer_address}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Фин. обеспечение (руб.)">Фин. обеспечение (руб.)</label></td>
+        <td><input id="operator_insurer_provision" name="operator[insurer_provision]" size="30" type="text" value="{{insurer_provision}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Договор">Договор</label></td>
+        <td><input id="operator_insurer_contract" name="operator[insurer_contract]" size="30" type="text" value="{{insurer_contract}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Дата договора">Дата договора</label></td>
+        <td class='datepicker'><input id="operator_insurer_contract_date" name="operator[insurer_contract_date]" size="30" type="text" value="{{insurer_contract_date}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Дата начала действия договора">Дата начала действия договора</label></td>
+        <td class='datepicker'><input id="operator_insurer_contract_start" name="operator[insurer_contract_start]" size="30" type="text" value="{{insurer_contract_start}}" /></td>
+      </tr>
+      <tr>
+        <td><label for="operator_Дата конца действия договора">Дата конца действия договора</label></td>
+        <td class='datepicker'><input id="operator_insurer_contract_end" name="operator[insurer_contract_end]" size="30" type="text" value="{{insurer_contract_end}}" /></td>
+      </tr>
+    </table>
+  </div>
+  <div class='clear'></div>
+</form>
+<p>
+  <a href="/operators/{{id}}">Показать</a>
+  |
+  <a href="/operators">Показать все</a>
+</p>

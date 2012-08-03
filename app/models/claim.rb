@@ -89,6 +89,10 @@ class Claim < ActiveRecord::Base
     set_property :delta => true
   end
 
+  local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data,
+            :columns_filter => :local_data_columns_filter,
+            :scope => :local_data_scope
+
   def self.search_and_sort(options = {})
     options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
 
@@ -179,6 +183,180 @@ class Claim < ActiveRecord::Base
 
   def total_tour_price_in_curr
     course(tour_price_currency).round > 0 ? (calculate_tour_price / course(tour_price_currency)).round : 0
+  end
+
+  def self.local_data_extra_columns
+    helpers = ClaimsController.helpers
+    c = ApplicationController.current
+
+    columns = [
+      :tourist_stat_short,
+      :user,   
+      :login,
+      :login_short,
+      :tourists_list,
+      :initials_name,
+      :phone_number,
+      :phone_number_short,
+      :color_for_flight,      
+      :depart_to_short,      
+      :depart_back_short,
+      :country,
+      :country_short,
+      :city,
+      :city_short,
+      :resort,
+      :resort_short,
+      :text_for_visa,
+      :class_for_visa,      
+      :visa_check_short,
+      :operator,      
+      :operator_confirmation_short,      
+      :calculation_short,
+      :tourist_advance_class,      
+      :tourist_debt_class,
+      :operator_price_short,
+      :operator_price_class,      
+      :operator_maturity_short,      
+      :operator_advance_short,
+      :operator_advance_class,
+      :operator_debt_short,
+      :operator_debt_class,
+      :documents_ready,          
+      :documents_status_class,
+      :price_as_string,
+      :memo_short,
+      :memo_class,      
+      :check_date_class,      
+
+      :applicant_id,
+      :dependent_ids
+    ]
+
+    if c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1
+      columns += [
+        :office,
+        :office_short
+      ]
+    end
+
+    if c.can? :switch_view, c.current_user
+      columns += [
+        :approved_advance_tourist,
+        :approved_advance_operator_prim,
+        :approved_advance_operator,
+        :profit,
+        :profit_in_percent
+      ]
+    end
+
+    columns
+  end
+
+  def self.local_data_scope
+    c = ApplicationController.current
+    self.accessible_by(c.current_ability).search_and_sort
+  end
+
+  def self.local_data_columns_filter(column)
+    c = ApplicationController.current
+    selected = true;
+
+    if column == :office_id
+      selected = (c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1)
+    elsif [:profit, :profit_in_percent].include? column
+      selected = c.can? :switch_view, c.current_user
+    end
+
+    selected
+  end
+
+  def local_extra_data
+    helpers = ClaimsController.helpers
+    c = ApplicationController.current
+    claim = self
+    
+    data = {
+      :id => id,
+      :reservation_date => helpers.l(claim.reservation_date, :format => :default),
+      :tourist_stat => claim.tourist_stat,
+      :tourist_stat_short => helpers.truncate(claim.tourist_stat, :length => 4),
+      :user => claim.user.try(:first_last_name),
+      :login => claim.user.login,
+      :login_short => helpers.truncate(claim.user.login, :length => 8),
+      :tourists_list => helpers.tourists_list(claim),
+      :initials_name => helpers.truncate(claim.applicant.try(:initials_name), :length => 8),
+      :phone_number => claim.applicant.try(:phone_number),
+      :phone_number_short => helpers.truncate(claim.applicant.try(:phone_number), :length => 10),
+      :color_for_flight => helpers.color_for_flight(claim),
+      :depart_to_full => helpers.l(claim.depart_to, :format => :long),
+      :depart_to_short => helpers.l(claim.depart_to, :format => :short_date),
+      :depart_back => helpers.l(claim.depart_back, :format => :long),
+      :depart_back_short => helpers.l(claim.depart_back, :format => :short_date),
+      :country => claim.country.try(:name),
+      :country_short => helpers.truncate(claim.country.try(:name), :length => 8),
+      :city => claim.city.try(:name),
+      :city_short => helpers.truncate(claim.city.try(:name), :length => 6),      
+      :resort => claim.resort.try(:name),
+      :resort_short => helpers.truncate(claim.resort.try(:name), :length => 6),      
+      :text_for_visa => helpers.text_for_visa(claim),
+      :class_for_visa => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa,
+      :visa_check => helpers.l( claim.visa_check, :format => :long ),
+      :visa_check_short => helpers.l( claim.visa_check, :format => :short ),
+      :operator => claim.operator.try(:name),
+      :operator_confirmation => claim.operator_confirmation,
+      :operator_confirmation_short => helpers.truncate(claim.operator_confirmation, :length => 10),
+      # :primary_currency_price => claim.primary_currency_price.to_money,
+      :calculation => claim.calculation,
+      :calculation_short => helpers.truncate(claim.calculation, :length => 8),
+      # :tourist_advance => claim.tourist_advance.to_money,
+      :tourist_advance_class => helpers.color_for_tourist_advance(claim),
+      # :tourist_debt => claim.tourist_debt.to_money,
+      :tourist_debt_class => !claim.canceled? && helpers.color_for_tourist_advance(claim),
+      # :operator_price => claim.operator_price.to_money,
+      :operator_price_short => claim.operator_price > 0 ? helpers.truncate(helpers.operator_price(claim), :length => 6) : '',
+      :operator_price_class => !claim.canceled? && helpers.color_for_operator_debt(claim),
+      :operator_maturity => helpers.l( claim.operator_maturity, :format => :long ),
+      :operator_maturity_short => helpers.l( claim.operator_maturity, :format => :short ),
+      # :operator_advance => claim.operator_advance.to_money,
+      :operator_advance_short => helpers.operator_advance(claim),
+      :operator_advance_class => !claim.canceled? && helpers.color_for_operator_advance(claim),
+      # :operator_debt => claim.operator_debt.to_money,
+      :operator_debt_short => helpers.operator_debt(claim),
+      :operator_debt_class => (!claim.canceled? && claim.operator_debt != 0) && 'red_back',
+      :documents_ready => claim.documents_ready?,     
+      :documents_status => helpers.t('claims.form.documents_statuses.' << claim.documents_status),
+      :documents_status_class => !claim.canceled? && claim.documents_status,
+      :price_as_string => claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY),
+      :memo => claim.memo,
+      :memo_short => helpers.truncate(claim.memo, :length => 8),
+      :memo_class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back',
+      :check_date => helpers.l( claim.check_date, :format => :default ),      
+      :check_date_class => helpers.check_date_status(claim),
+      :docs_note => claim.docs_note,
+
+      :applicant_id => claim.applicant.try(:id),
+      :dependent_ids => claim.dependents.map(&:id).join(',')
+    }
+
+    if c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1
+      data.merge!({
+        :office => claim.office.name,
+        :office_short => c.truncate(claim.office.name, :length => 8)
+      })
+    end
+
+    if c.can? :switch_view, c.current_user
+      data.merge!({
+        :approved_advance_tourist => helpers.approved_advance(claim, :tourist),
+        :approved_advance_operator_prim => helpers.approved_advance(claim, :operator_prim),
+        :approved_advance_operator => helpers.approved_advance(claim, :operator),
+        :profit => claim.profit > 0 ? claim.profit.to_money : '',
+        :profit_in_percent => claim.profit > 0 ? claim.profit_in_percent.to_percent : ''
+      })
+    end
+
+    data
   end
 
   private
@@ -515,4 +693,5 @@ class Claim < ActiveRecord::Base
         }
     }
   end
+
 end

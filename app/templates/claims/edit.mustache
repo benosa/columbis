@@ -1,0 +1,672 @@
+<div class='wrapper'>
+  <form accept-charset="UTF-8" action="/claims/{{id}}" class="edit_claim" id="edit_claim_{{id}}" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="9LAna9gq/685oepWuMo1xtfW7l36+fpLxjxlluSVzwU=" /></div>
+    
+    <div id='left_block'>
+      <div class='data_block'>
+        <table>
+          <tr>
+            <th class='id'><label for="claim_id">Номер</label></th>
+            <th colspan='2'>
+              <label for="claim_operator_confirmation">Подтверждение оператора</label>
+            </th>
+            <th colspan='2'>
+              <label for="claim_visa">Виза</label>
+            </th>
+            <th colspan='2'>
+              <label for="claim_check_date">Контрольная дата</label>
+            </th>
+          </tr>
+          <tr>
+            <td><input disabled="disabled" id="claim_id" name="claim[id]" size="30" type="text" value="{{id}}" /></td>
+            <td><input name="claim[operator_confirmation_flag]" type="hidden" value="0" /><input id="claim_operator_confirmation_flag" name="claim[operator_confirmation_flag]" style="width:12px;" type="checkbox"
+              value="1" {{#operator_confirmation_flag}}checked="checked"{{/operator_confirmation_flag}} /></td>
+            <td><input class="blue_back" id="claim_operator_confirmation" name="claim[operator_confirmation]" size="30" type="text" value="{{operator_confirmation}}" /></td>
+            <td><input name="claim[visa_confirmation_flag]" type="hidden" value="0" /><input id="claim_visa_confirmation_flag" name="claim[visa_confirmation_flag]" style="width:12px;" type="checkbox"
+              value="1" {{#visa_confirmation_flag}}checked="checked"{{/visa_confirmation_flag}} /></td>
+            <td class='datepicker'>
+              <input class="datepicker docs_got" id="claim_visa_check" name="claim[visa_check]" size="30" type="text" value="{{visa_check}}" />
+            </td>
+            <td><input name="claim[closed]" type="hidden" value="0" /><input id="claim_closed" name="claim[closed]" style="width:12px;" type="checkbox" value="1" {{#closed}}checked="checked"{{/closed}} /></td>
+            <td class='datepicker'>
+              <input class="datepicker departed" id="claim_check_date" name="claim[check_date]" size="30" type="text" value="{{check_date}}" />
+            </td>
+          </tr>
+          <input id="claim_visa" name="claim[visa]" type="hidden" value="docs_got" />
+        </table>
+        <div class='lamp_block' style=''>
+          <label for="claim_early_reservation">Раннее бронирование</label>
+          <input name="claim[early_reservation]" type="hidden" value="0" /><input id="claim_early_reservation" name="claim[early_reservation]" style="width:12px;" type="checkbox" value="1"
+          {{#early_reservation}}checked="checked"{{/early_reservation}} />
+        </div>
+        <h2>Туристы</h2>
+        <table id='tourists'>
+          <tr>
+            <th style='width: 10px;'></th>
+            <th style='width: 150px;'>
+              ФИО туриста
+              <div class='hint'>
+                (на кого составлен Договор)
+              </div>
+            </th>
+            <th>Дата рождения</th>
+            <th colspan='2'>
+              Паспорт
+            </th>
+            <th>Действителен до</th>
+            <th></th>
+          </tr>
+          <tr class='applicant'>
+            <td class='num'>1</td>
+            <td><input autocomplete="/claims/autocomplete_tourist_last_name" class="autocomplete full_name" id="claim_applicant_full_name" name="claim[applicant][full_name]" size="20" type="text" value="{{applicant.full_name}}" /></td>
+            <td class='datepicker'><input class="datepicker date_of_birth" id="claim_applicant_date_of_birth" name="claim[applicant][date_of_birth]" size="30" type="text" value="{{applicant.date_of_birth}}" /></td>
+            <td><input class="passport_series" id="claim_applicant_passport_series" name="claim[applicant][passport_series]" size="30" style="width: 90%;" type="text" value="{{applicant.passport_series}}" /></td>
+            <td><input class="passport_number" id="claim_applicant_passport_number" name="claim[applicant][passport_number]" size="30" type="text" value="{{applicant.passport_number}}" /></td>
+            <td class='datepicker'><input class="datepicker passport_valid_until" id="claim_applicant_passport_valid_until" name="claim[applicant][passport_valid_until]" size="30" type="text" value="{{applicant.passport_valid_until}}" /></td>
+            <td class='del'>
+              {{#can_edit}}
+              <a href="#" class="del" id="del1"><span class="translation_missing" title="translation missing: ru.claims.tourist.x">X</span></a>
+              {{/can_edit}}
+            </td>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Телефон</th>
+            <th colspan='4'>
+              Адрес
+            </th>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input class="phone_number" id="claim_applicant_phone_number" name="claim[applicant][phone_number]" size="30" type="text" value="{{applicant.phone_number}}" /></td>
+            <td colspan='4'>
+              <input class="address" id="claim_applicant_address" name="claim[applicant][address]" size="30" type="text" value="{{applicant.address}}" />
+            </td>
+          </tr>
+          <input id="claim_applicant_id" name="claim[applicant][id]" type="hidden" value="{{applicant.id}}" />
+          {{#dependents}}
+          <tr class='dependent' id='dependent{{ind}}'>
+            <td class='num'>{{ind}}</td>
+            <td><input autocomplete="/claims/autocomplete_tourist_last_name" class="autocomplete full_name" id="claim_dependents_attributes_{{n}}_full_name" name="claim[dependents_attributes][{{n}}][full_name]" size="20" type="text" value="{{full_name}}" /></td>
+            <td class='datepicker'><input class="datepicker date_of_birth" id="claim_dependents_attributes_{{n}}_date_of_birth" name="claim[dependents_attributes][{{n}}][date_of_birth]" size="30" type="text" value="{{date_of_birth}}" /></td>
+            <td><input class="passport_series" id="claim_dependents_attributes_{{n}}_passport_series" name="claim[dependents_attributes][{{n}}][passport_series]" size="30" style="width: 90%;" type="text" value="{{passport_series}}" /></td>
+            <td><input class="passport_number" id="claim_dependents_attributes_{{n}}_passport_number" name="claim[dependents_attributes][{{n}}][passport_number]" size="30" type="text" value="{{passport_number}}" /></td>
+            <td class='datepicker'><input class="datepicker passport_valid_until" id="claim_dependents_attributes_{{n}}_passport_valid_until" name="claim[dependents_attributes][{{n}}][passport_valid_until]" size="30" type="text" value="{{passport_valid_until}}" /></td>
+            <td class='del'>
+              {{#can_edit}}
+              <a href="#" class="del" id="del2"><span class="translation_missing" title="translation missing: ru.claims.tourist.x">X</span></a>
+              {{/can_edit}}
+            </td>
+          </tr>
+          <input id="claim_dependents_attributes_{{n}}_id" name="claim[dependents_attributes][{{n}}][id]" type="hidden" value="{{id}}" />
+          {{/dependents}}
+          {{#can_edit}}      
+          <tr class='footer'>
+            <td colspan='6'>
+              <a href="#" class="add">Добавить туриста</a>
+            </td>
+          </tr>
+          {{/can_edit}}      
+        </table>
+        <h2>Вылеты</h2>
+        <table id='flights'>
+          <tr>
+            <td class='text_right'><label for="claim_airline">Авиакомпания</label></td>
+            <td colspan='2'>
+              <select class="editable-select" id="claim_airline" name="claim[airline]" style="width:396px;"><option value="{{airline}}" selected="selected">{{airline}}</option></select>
+            </td>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Туда</th>
+            <th>Обратно</th>
+          </tr>
+          <tr>
+            <td class='text_right'><label for="claim_airport_to">Аэропорт</label></td>
+            <td>
+              <select class="editable-select" id="claim_airport_to" name="claim[airport_to]" style="width: 197px;">
+              <option value="{{airport_to}}" selected="selected">{{airport_to}}</option></select>
+            </td>
+            <td>
+              <select class="editable-select" id="claim_airport_back" name="claim[airport_back]" style="width: 197px;">
+              <option value="{{airport_back}}" selected="selected">{{airport_back}}</option></select>
+            </td>
+          </tr>
+          <tr>
+            <td class='text_right'><label for="claim_flight_to">Номер рейса</label></td>
+            <td><input id="claim_flight_to" name="claim[flight_to]" size="30" type="text" value="{{flight_to}}" /></td>
+            <td><input id="claim_flight_back" name="claim[flight_back]" size="30" type="text" value="{{flight_back}}" /></td>
+          </tr>
+          <tr>
+            <td class='text_right'><label for="claim_depart_to">Время вылета</label></td>
+            <td class='datepicker'>
+              <input class="datetimepicker" id="claim_depart_to" name="claim[depart_to]" size="30" type="text" value="{{depart_to}}" />
+            </td>
+            <td class='datepicker'>
+              <input class="datetimepicker" id="claim_depart_back" name="claim[depart_back]" size="30" type="text" value="{{depart_back}}" />
+            </td>
+          </tr>
+          <tr>
+            <td class='text_right'><label for="claim_arrive_to">Время прибытия</label></td>
+            <td class='datepicker'>
+              <input class="datetimepicker" id="claim_arrive_to" name="claim[arrive_to]" size="30" type="text" value="{{arrive_to}}" />
+            </td>
+            <td class='datepicker'>
+              <input class="datetimepicker" id="claim_arrive_back" name="claim[arrive_back]" size="30" type="text" value="{{arrive_back}}" />
+            </td>
+          </tr>
+        </table>
+        <h2>Документы в дорогу</h2>
+        <p>
+          <label for="claim_documents_status">Готовность документов</label>
+          <select class="all_done" id="claim_documents_status" name="claim[documents_status]">
+            <option value="{{documents_status}}">{{documents_status}}</option>
+          </select>
+        </p>
+        <h2>Статистика</h2>
+        <p>
+          <label for="claim_tourist_stat">Откуда пришел клиент</label>
+          <select class="editable-select" id="claim_tourist_stat" name="claim[tourist_stat]">
+            <option value="{{tourist_stat}}">{{tourist_stat}}</option>
+          </select>
+        </p>
+        <p>
+          <br>
+          <br>
+          <label for="claim_docs_note">Заметки менеджера</label>
+          <br>
+          <textarea cols="40" id="claim_docs_note" name="claim[docs_note]" rows="6">{{docs_note}}</textarea>
+        </p>
+        <p>
+          <input name="commit" type="submit" value="Сохранить" />
+          <a href="/claims/1" class="button_delete" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+        </p>
+      </div>
+    </div>
+    <div id='center_block'>
+      <div class='clr'>
+        <table class='left_inside' id='indicators'>
+          <tr>
+            <td class='framed red_back tourist_debt_ind'>
+              {{#tourist_debt}}Да{{/tourist_debt}}
+              {{^tourist_debt}}Нет{{/tourist_debt}}
+            </td>
+            <td>Долг туриста</td>
+          </tr>
+          <tr>
+            <td class='blue_back framed operator_debt_ind'>
+              {{#operator_debt}}Да{{/operator_debt}}
+              {{^operator_debt}}Нет{{/operator_debt}}
+            </td>
+            <td>Долг оператору</td>
+          </tr>
+          <tr>
+            <td class='all_done documents_ready_ind framed'>
+              {{#documents_ready}}Да{{/documents_ready}}
+              {{^documents_ready}}Нет{{/documents_ready}}
+            </td>
+            <td>Документы</td>
+          </tr>
+          <tr>
+            <td class='blue_back framed has_notes_ind'>
+              {{#memo}}Да{{/memo}}
+              {{^memo}}Нет{{/memo}}
+            </td>
+            <td>Примечание</td>
+          </tr>
+        </table>
+        <table id='registration'>
+          <tr>
+            <td>
+              <input name="claim[canceled]" type="hidden" value="0" /><input id="claim_canceled" name="claim[canceled]" style="width:12px;" type="checkbox" value="1"
+              {{#canceled}}checked="checked"{{/canceled}} />
+              <label for="claim_canceled">Аннулирована</label>
+            </td>
+            <td><label for="claim_reservation_date">Дата резервирования</label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class='datepicker'><input class="datepicker" id="claim_reservation_date" name="claim[reservation_date]" size="30" type="text" value="{{reservation_date}}" /></td>
+          </tr>
+          <tr>
+            <td><label for="claim_user_id">Менеджер</label></td>
+            <td><label for="claim_office_id">Офис</label></td>
+          </tr>
+          <tr>
+            <td><select class="small" id="claim_user_id" name="claim[user_id]">
+              <option value="{{user_id}}" selected="selected">{{user}}</option></select></td>
+            <td><select class="small" id="claim_office_id" name="claim[office_id]">
+              <option value="{{canceled}}" selected="selected">{{office}}</option></select></td>
+          </tr>
+        </table>
+      </div>
+      <div class='data_block'>
+        <h2>Маршрут</h2>
+        <table id='marchroute'>
+          <tr>
+            <th colspan='2'>
+              Вылет из города
+            </th>
+            <th colspan='2'>
+              <label for="claim_operator_id">Туроператор</label>
+            </th>
+          </tr>
+          <tr>
+            <td colspan='2'>
+              <select class="city editable-select" id="claim_city_id" name="claim[city_id]" style="width:344px">
+                <option value="{{city}}" selected="selected">{{city}}</option>
+              </select>
+            </td>
+            <td colspan='2'>
+              <select class="operator editable-select" id="claim_operator_id" name="claim[operator_id]" style="width:205px">
+                <option value="{{operator}}" selected="selected">{{operator}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th><label for="claim_country">Направление</label></th>
+            <th><label for="claim_resort">Курорт</label></th>
+            <th colspan='2'>
+              <label for="claim_hotel">Отель</label>
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <select class="country editable-select" id="claim_country_id" name="claim[country_id]" style="width:168px">
+              <option value="{{country_id}}" selected="selected">{{country}}</option></select>
+            </td>
+            <td>
+              <select class="resort editable-select" id="claim_resort_id" name="claim[resort_id]" style="width:168px">
+              <option value="{{resort_id}}" selected="selected">{{resort}}</option></select>
+            </td>
+            <td colspan='2'>
+              <select class="editable-select" id="claim_hotel" name="claim[hotel]" style="width:205px;"><option value="{{hotel}}" selected="selected">{{hotel}}</option></select>
+            </td>
+          </tr>
+          <tr>
+            <th><label for="claim_meals">Питание</label></th>
+            <th><label for="claim_medical_insurance">Медстраховка</label></th>
+            <th><label for="claim_placement">Размещение</label></th>
+            <th><label for="claim_nights">Ночей</label></th>
+          </tr>
+          <tr>
+            <td><select class="editable-select" id="claim_meals" name="claim[meals]" style="width:168px;">
+              <option value="{{meals}}" selected="selected">{{meals}}</option></select></td>
+            <td><select class="editable-select" id="claim_medical_insurance" name="claim[medical_insurance]" style="width:168px;">  <option value="{{medical_insurance}}" selected="selected">{{medical_insurance}}</option></select></td>
+            <td>
+              <select class="editable-select" id="claim_placement" name="claim[placement]" style="width: 162px;">
+                <option value="{{placement}}" selected="selected">{{placement}}</option>
+              </select>
+            </td>
+            <td>
+              <select class="editable-select" id="claim_nights" name="claim[nights]">
+                <option value="{{nights}}" selected="selected">{{nights}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th><label for="claim_transfer">Трансфер</label></th>
+            <th><label for="claim_service_class">Класс</label></th>
+            <th colspan='2'>
+              <label for="claim_relocation">Переезд</label>
+            </th>
+          </tr>
+          <tr>
+            <td><select class="editable-select" id="claim_transfer" name="claim[transfer]" style="width: 168px;">
+              <option value="{{transfer}}" selected="selected">{{transfer}}</option></select></td>
+            <td><select class="editable-select" id="claim_service_class" name="claim[service_class]" style="width: 168px;">
+              <option value="{{service_class}}" selected="selected">{{service_class}}</option></select></td>
+            <td colspan='2'>
+              <select class="editable-select" id="claim_relocation" name="claim[relocation]" style="width: 205px;">
+                <option value="{{relocation}}" selected="selected">{{relocation}}</option></select>
+            </td>
+          </tr>
+          <tr>
+            <th colspan='4'>
+              <label for="claim_additional_services">Дополнительные услуги</label>
+            </th>
+          </tr>
+          <tr class='countable'>
+            <td colspan='4'>
+              <input id="claim_additional_services" name="claim[additional_services]" size="30" type="text" value="{{additional_services}}" />
+            </td>
+          </tr>
+          <tr>
+            <td class='left'>
+              <input name="claim[memo_tasks_done]" type="hidden" value="0" /><input checked="checked" id="claim_memo_tasks_done" name="claim[memo_tasks_done]" style="width:12px;" type="checkbox" value="1"
+              {{#memo_tasks_done}}checked="checked"{{/memo_tasks_done}} />
+              <label for="claim_memo_tasks_done">Примечания учтены</label>
+            </td>
+            <th colspan='3'>
+              <label for="claim_memo">Примечание</label>
+            </th>
+          </tr>
+          <tr>
+            <td colspan='4'>
+              <input id="claim_memo" name="claim[memo]" size="30" type="text" value="{{memo}}" />
+            </td>
+          </tr>
+        </table>
+        <table id='palm_block'>
+          <tr>
+            <td rowspan='6' width='250px'>
+              <img alt="Palm" src="/assets/palm.png" />
+            </td>
+          </tr>
+          <tr>
+            <th colspan='4'>Даты заезда</th>
+          </tr>
+          <tr>
+            <td class='text_right'>с</td>
+            <td>
+              <input class="datepicker red" id="claim_arrival_date" name="claim[arrival_date]" size="30" type="text" value="{{arrival_date}}" />
+            </td>
+            <td class='text_right'>по</td>
+            <td>
+              <input class="datepicker red" id="claim_departure_date" name="claim[departure_date]" size="30" type="text" value="{{departure_date}}" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan='4'>
+              <h2>Стоимость тура</h2>
+            </td>
+          </tr>
+          <tr>
+            <td colspan='2'></td>
+            <td colspan='2'>
+              <label for="claim_course_eur">Курс EUR</label>
+              <input class="countable amount" id="claim_course_eur" name="claim[course_eur]" size="30" type="text" value="{{course_eur}}" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan='2'></td>
+            <td colspan='2'>
+              <label for="claim_course_usd">Курс USD</label>
+              <input class="countable amount" id="claim_course_usd" name="claim[course_usd]" size="30" type="text" value="{{course_usd}}" />
+            </td>
+          </tr>
+          <table id='tour_price' style='float:none'>
+            <tr>
+              <th colspan='3'>
+                <label for="claim_tour_price">Цена тура</label>
+              </th>
+              <th colspan='2'>
+                <label for="claim_visa_price">Виза</label>
+              </th>
+              <td><label for="claim_visa_count">К-во виз</label></td>
+              <th colspan='2'>
+                <label for="claim_children_visa_price">Виза детск.</label>
+              </th>
+              <td><label for="claim_visa_count">К-во виз</label></td>
+            </tr>
+            <tr class='countable'>
+              <td><input class="red" id="claim_tour_price" name="claim[tour_price]" size="30" type="text" value="{{tour_price}}" /></td>
+              <td colspan='2'>
+                <select id="claim_tour_price_currency" name="claim[tour_price_currency]"><option value="{{tour_price_currency}}" selected="selected">{{tour_price_currency_up}}</option>
+                </select>
+              </td>
+              <td class='amount'><input id="claim_visa_price" name="claim[visa_price]" size="30" type="text" value="{{visa_price}}" /></td>
+              <td>
+                <select id="claim_visa_price_currency" name="claim[visa_price_currency]"><option value="{{visa_price_currency}}" selected="selected">{{visa_price_currency_up}}</option>
+                </select>
+              </td>
+              <td>
+                <select id="claim_visa_count" name="claim[visa_count]"><option value="{{visa_count}}" selected="selected">{{visa_count}}</option>
+                </select>
+              </td>
+              <td class='amount'><input id="claim_children_visa_price" name="claim[children_visa_price]" size="30" type="text" value="{{children_visa_price}}" /></td>
+              <td>
+                <select id="claim_children_visa_price_currency" name="claim[children_visa_price_currency]"><option value="{{children_visa_price_currency}}" selected="selected">{{children_visa_price_currency_up}}</option>
+                </select>
+              </td>
+              <td>
+                <select id="claim_children_visa_count" name="claim[children_visa_count]">
+                  <option value="{{children_visa_count}}" selected="selected">{{children_visa_count}}</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th colspan='3'>
+                <label for="claim_insurance_price">Страховка от невыезда</label>
+              </th>
+              <th colspan='3'>
+                <label for="claim_additional_insurance_price">Страховка дополнит.</label>
+              </th>
+              <th colspan='3'>
+                <label for="claim_fuel_tax_price">Топливный сбор</label>
+              </th>
+            </tr>
+            <tr class='countable'>
+              <td class='amount'><input id="claim_insurance_price" name="claim[insurance_price]" size="30" type="text" value="{{children_visa_count}}" /></td>
+              <td>
+                <select id="claim_insurance_price_currency" name="claim[insurance_price_currency]"><option value="{{insurance_price_currency}}" selected="selected">{{insurance_price_currency_up}}</option>
+                </select>
+              </td>
+              <td>
+                <select id="claim_insurance_count" name="claim[insurance_count]">
+                  <option value="{{insurance_count}}" selected="selected">{{insurance_count}}</option>
+                </select>
+              </td>
+              <td class='amount'><input id="claim_additional_insurance_price" name="claim[additional_insurance_price]" size="30" type="text" value="{{additional_insurance_price}}" /></td>
+              <td>
+                <select id="claim_additional_insurance_price_currency" name="claim[additional_insurance_price_currency]">
+                  <option value="{{additional_insurance_price_currency}}" selected="selected">{{additional_insurance_price_currency_up}}</option>
+                </select>
+              </td>
+              <td>
+                <select id="claim_additional_insurance_count" name="claim[additional_insurance_count]">
+                  <option value="{{additional_insurance_count}}" selected="selected">{{additional_insurance_count}}</option>
+                </select>
+              </td>
+              <td class='amount'><input id="claim_fuel_tax_price" name="claim[fuel_tax_price]" size="30" type="text" value="{{fuel_tax_price}}" /></td>
+              <td>
+                <select id="claim_fuel_tax_price_currency" name="claim[fuel_tax_price_currency]">
+                <option value="{{fuel_tax_price_currency}}" selected="selected">{{fuel_tax_price_currency_up}}</option>
+                </select>
+              </td>
+              <td>
+                <select id="claim_fuel_tax_count" name="claim[fuel_tax_count]">
+                  <option value="{{fuel_tax_count}}" selected="selected">{{fuel_tax_count}}</option>
+                </select>
+              </td>
+            </tr>
+            <tr class='countable'>
+              <th colspan='6' style='text-align:right; padding-right:6px;'>
+                <label for="claim_additional_services_price">Стоимость дополнительных услуг</label>
+              </th>
+              <td class='amount'><input id="claim_additional_services_price" name="claim[additional_services_price]" size="30" type="text" value="{{additional_services_price}}" /></td>
+              <td>
+                <select id="claim_additional_services_price_currency" name="claim[additional_services_price_currency]">
+                <option value="{{additional_services_price_currency}}"
+                  selected="selected">{{additional_services_price_currency_up}}</option>
+                </select>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan='9'>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan='9'>
+                <label for="claim_primary_currency_price">Полная стоимость тура</label>
+              </th>
+            </tr>
+            <tr>
+              <td class='amount'><input class="red" id="claim_primary_currency_price" name="claim[primary_currency_price]" size="30" type="text" value="{{primary_currency_price}}" /></td>
+              <td colspan='8'>
+                <input class="red" disabled="disabled" id="price_as_string" name="price_as_string" type="text" value="{{price_as_string}}" />
+              </td>
+            </tr>
+            <tr>
+              <th colspan='9'>
+                <label for="claim_calculation">Расчет</label>
+              </th>
+            </tr>
+            <tr>
+              <td colspan='9'>
+                <textarea cols="40" id="claim_calculation" name="claim[calculation]" rows="4">{{calculation}}</textarea>
+              </td>
+            </tr>
+          </table>
+        </table>
+      </div>
+    </div>
+    <div id='payments_block'>
+      <div class='data_block'>
+        <h2>Оплата туристом</h2>
+        <table id='payments_in'>
+          <tr>
+            <td colspan='2'>
+              <label for="claim_maturity">Срок оплаты</label>
+            </td>
+            <td class='datepicker'><input class="datepicker" id="claim_maturity" name="claim[maturity]" size="30" type="text" value="{{maturity}}" /></td>
+            <td></td>
+          </tr>
+          <tr class='header'>
+            <th style='width:12px;'></th>
+            <th>Дата</th>
+            <th>Оплачено</th>
+            <th>Валюта</th>
+            <th>Сумма прописью</th>
+            <th>Форма оплаты</th>
+          </tr>
+          {{#payments_in}}
+          <tr class='fields' id='payment_in_{{n}}'>
+            <td><input name="claim[payments_in_attributes][{{n}}][approved]" type="hidden" value="0" /><input class="approved" id="claim_payments_in_attributes_{{n}}_approved" name="claim[payments_in_attributes][{{n}}][approved]" type="checkbox" value="1" {{#approved}}checked="checked"{{/approved}} /></td>
+            <td class='datepicker'><div class="field_with_errors"><input class="datepicker date_in" id="claim_payments_in_attributes_{{n}}_date_in" name="claim[payments_in_attributes][{{n}}][date_in]" size="30" type="text" value="{{date_in}}" /></div></td>
+            <td class='amount'><input class="amount" id="claim_payments_in_attributes_{{n}}_amount" name="claim[payments_in_attributes][{{n}}][amount]" size="30" type="text" value="{{amount}}" /></td>
+            <td>
+              <select class="currency" disabled="disabled" id="claim_payments_in_attributes_{{n}}_currency" name="claim[payments_in_attributes][{{n}}][currency]">
+                <option value="{{currency}}" selected="selected">{{currency_up}}</option>
+              </select>
+            </td>
+            <td><input class="description" disabled="disabled" id="claim_payments_in_attributes_{{n}}_description" name="claim[payments_in_attributes][{{n}}][description]" size="30" type="text" value="{{description}}" /></td>
+            <td colspan='2'>
+              <div class="field_with_errors"><select class="payment_form" id="claim_payments_in_attributes_{{n}}_form" name="claim[payments_in_attributes][{{n}}][form]">
+                <option value="{{form}}" selected="selected">{{form}}</option>
+              </select></div>
+            </td>
+            <td>{{#can_edit}}<a href="#" class="del" id="del{{n}}">X</a>{{/can_edit}}</td>
+          </tr>
+          <input id="claim_payments_in_attributes_{{n}}_id" name="claim[payments_in_attributes][{{n}}][id]" type="hidden" />
+          {{/payments_in}}
+          {{^payments_in}}
+          <tr class='fields' id='payment_in_0'>
+            <td><input name="claim[payments_in_attributes][0][approved]" type="hidden" value="0" /><input class="approved" id="claim_payments_in_attributes_0_approved" name="claim[payments_in_attributes][0][approved]" type="checkbox" value="1" /></td>
+            <td class='datepicker'><div class="field_with_errors"><input class="datepicker date_in" id="claim_payments_in_attributes_0_date_in" name="claim[payments_in_attributes][0][date_in]" size="30" type="text" /></div></td>
+            <td class='amount'><input class="amount" id="claim_payments_in_attributes_0_amount" name="claim[payments_in_attributes][0][amount]" size="30" type="text" value="0.0" /></td>
+            <td>
+              <select class="currency" disabled="disabled" id="claim_payments_in_attributes_0_currency" name="claim[payments_in_attributes][0][currency]">
+                <option value="{{currency}}" selected="selected">{{currency_up}}</option>                
+              </select>
+            </td>
+            <td><input class="description" disabled="disabled" id="claim_payments_in_attributes_0_description" name="claim[payments_in_attributes][0][description]" size="30" type="text" /></td>
+            <td colspan='2'>
+              <div class="field_with_errors"><select class="payment_form" id="claim_payments_in_attributes_0_form" name="claim[payments_in_attributes][0][form]"><option value="Безналичный">Безналичный</option>
+              <option value="Наличный">Наличный</option></select></div>
+            </td>
+            <td>{{#can_edit}}<a href="#" class="del" id="del0">X</a>{{/can_edit}}</td>
+          </tr>
+          <input id="claim_payments_in_attributes_0_id" name="claim[payments_in_attributes][0][id]" type="hidden" />
+          {{/payments_in}}
+          <tr class='footer'>
+            <td colspan='3'></td>
+            <td><label for="claim_tourist_debt">Долг туристов</label></td>
+            <td><input class="red" disabled="disabled" id="claim_tourist_debt" name="claim[tourist_debt]" size="30" type="text" value="{{tourist_debt}}" /></td>
+          </tr>
+          {{#can_edit}}
+          <tr class='bottom'>
+            <td colspan='5'>
+              <a href="#" class="add">Добавить платеж</a>
+            </td>
+          </tr>
+          {{/can_edit}}
+        </table>
+        <h2>Оплата оператору</h2>
+        <table id='payments_out'>
+          <tr>
+            <td></td>
+            <td><label for="claim_operator_price">К оплате</label></td>
+            <td class='amount'><input id="claim_operator_price" name="claim[operator_price]" size="30" type="text" value="{{operator_price}}" /></td>
+            <td>
+              <select id="claim_operator_price_currency" name="claim[operator_price_currency]">
+                <option value="{{operator_price_currency}}" selected="selected">{{operator_price_currency_up}}</option>
+              </select>
+            </td>
+            <td colspan='2'>
+              <label for="claim_operator_maturity">Срок оплаты оператору</label>
+            </td>
+            <td class='datepicker'><input class="datepicker" id="claim_operator_maturity" name="claim[operator_maturity]" size="30" type="text" value="{{operator_maturity}}" /></td>
+          </tr>
+          <tr class='header'>
+            <th style='width:12px;'></th>
+            <th>Дата</th>
+            <th>Оплачено</th>
+            <th>Валюта</th>
+            <th>Курс</th>
+            <th class='paid'>Оплачено (rur)</th>
+            <th>Форма оплаты</th>
+          </tr>
+          {{#payments_out}}
+          <tr class='fields' id='payment_out_{{n}}'>
+            <td><input name="claim[payments_out_attributes][{{n}}][approved]" type="hidden" value="0" /><input class="approved" id="claim_payments_out_attributes_{{n}}_approved" name="claim[payments_out_attributes][{{n}}][approved]" title="Подтверждено" type="checkbox" value="1" {{#approved}}checked="checked"{{/approved}} /></td>
+            <td class='datepicker'><div class="field_with_errors"><input class="datepicker date_in" id="claim_payments_out_attributes_{{n}}_date_in" name="claim[payments_out_attributes][{{n}}][date_in]" size="30" type="text" value="{{date_in}}" /></div></td>
+            <td class='amount'><input class="amount" id="claim_payments_out_attributes_{{n}}_amount" name="claim[payments_out_attributes][{{n}}][amount]" size="30" type="text" value="{{amount}}" /></td>
+            <td>
+              <select class="currency" disabled="disabled" id="claim_payments_out_attributes_{{n}}_currency" name="claim[payments_out_attributes][{{n}}][currency]">
+                <option value="{{currency}}" selected="selected">{{currency_up}}</option>
+              </select>
+            </td>
+            <td class='amount'>
+              <input class="course" id="claim_payments_out_attributes_{{n}}_course" name="claim[payments_out_attributes][{{n}}][course]" size="30" type="text" value="{{course}}" />
+            </td>
+            <td class='amount'><input class="amount_prim" id="claim_payments_out_attributes_{{n}}_amount_prim" name="claim[payments_out_attributes][{{n}}][amount_prim]" size="30" type="text" value="{{amount_prim}}" /></td>
+            <td>
+              <div class="field_with_errors"><select class="payment_form" id="claim_payments_out_attributes_{{n}}_form" name="claim[payments_out_attributes][{{n}}][form]">
+                <option value="{{form}}" selected="selected">{{form}}</option>
+              </select></div>
+            </td>
+            <td>{{#can_edit}}<a href="#" class="del" id="del{{n}}">X</a>{{/can_edit}}</td>
+          </tr>
+          <input id="claim_payments_out_attributes_{{n}}_id" name="claim[payments_out_attributes][{{n}}][id]" type="hidden" />
+          {{/payments_out}}
+          {{^payments_out}}
+          <tr class='fields' id='payment_out_0'>
+            <td><input name="claim[payments_out_attributes][0][approved]" type="hidden" value="0" /><input class="approved" id="claim_payments_out_attributes_0_approved" name="claim[payments_out_attributes][0][approved]" title="Подтверждено" type="checkbox" value="1" /></td>
+            <td class='datepicker'><div class="field_with_errors"><input class="datepicker date_in" id="claim_payments_out_attributes_0_date_in" name="claim[payments_out_attributes][0][date_in]" size="30" type="text" /></div></td>
+            <td class='amount'><input class="amount" id="claim_payments_out_attributes_0_amount" name="claim[payments_out_attributes][0][amount]" size="30" type="text" value="0.0" /></td>
+            <td>
+              <select class="currency" disabled="disabled" id="claim_payments_out_attributes_0_currency" name="claim[payments_out_attributes][0][currency]">
+                <option value="{{currency}}" selected="selected">{{currency_up}}</option>
+              </select>
+            </td>
+            <td class='amount'>
+              <input class="course" id="claim_payments_out_attributes_0_course" name="claim[payments_out_attributes][0][course]" size="30" type="text" value="1.0" />
+            </td>
+            <td class='amount'><input class="amount_prim" id="claim_payments_out_attributes_0_amount_prim" name="claim[payments_out_attributes][0][amount_prim]" size="30" type="text" value="0.0" /></td>
+            <td>
+              <div class="field_with_errors"><select class="payment_form" id="claim_payments_out_attributes_0_form" name="claim[payments_out_attributes][0][form]"><option value="Безналичный">Безналичный</option>
+              <option value="Наличный">Наличный</option></select></div>
+            </td>
+            <td>{{#can_edit}}<a href="#" class="del" id="del0">X</a>{{/can_edit}}</td>
+          </tr>
+          <input id="claim_payments_out_attributes_0_id" name="claim[payments_out_attributes][0][id]" type="hidden" />
+          {{/payments_out}}
+          <tr class='footer'>
+            <td colspan='3'></td>
+            <td><label for="claim_operator_debt">Долг оператору</label></td>
+            <td colspan='2'><input class="red" disabled="disabled" id="claim_operator_debt" name="claim[operator_debt]" size="30" type="text" value="{{operator_debt}}" /></td>
+          </tr>
+          {{#can_edit}}
+          <tr class='bottom'>
+            <td colspan='6'>
+              <a href="#" class="add">Добавить платеж</a>
+            </td>
+          </tr>
+          {{/can_edit}}
+        </table>
+      </div>
+    </div>
+  </form>
+</div>

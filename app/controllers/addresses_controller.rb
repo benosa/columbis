@@ -17,11 +17,11 @@ class AddressesController < ApplicationController
   end
 
   def edit
-    @address = Address.find(params[:id])
+    @address = Address.accessible_by(current_ability).find(params[:id])
   end
 
   def update
-    @address = Address.find(params[:id])
+    @address = Address.accessible_by(current_ability).find(params[:id])
 
     respond_to do |format|
       if @address.update_attributes(params[:address])
@@ -33,15 +33,15 @@ class AddressesController < ApplicationController
   end
 
   def index
-    @addresses = Address.find(:all)
+    @addresses = Address.accessible_by(current_ability).find(:all)
   end
 
   def show
-    @address = Address.find(params[:id])
+    @address = Address.accessible_by(current_ability).find(params[:id])
   end
 
   def destroy
-    @address = Address.find(params[:id])
+    @address = Address.accessible_by(current_ability).find(params[:id])
     @address.destroy
 
     respond_to do |format|

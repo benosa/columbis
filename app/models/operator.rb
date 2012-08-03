@@ -14,4 +14,18 @@ class Operator < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
+
+  local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data            
+
+  def self.local_data_extra_columns
+    [ :address, :address_id ]
+  end
+
+  def local_extra_data
+    { 
+      :address => self.address.try(:pretty_full_address),
+      :address_id => self.address.try(:id),
+    }
+  end
+
 end

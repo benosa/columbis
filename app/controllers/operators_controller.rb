@@ -14,6 +14,7 @@ class OperatorsController < ApplicationController
 
   def create
     @operator.company = current_company
+    @operator.address.company = current_company
     if @operator.save
       redirect_to @operator, :notice => "Successfully created operator."
     else
@@ -29,6 +30,7 @@ class OperatorsController < ApplicationController
 
   def update
     @operator.company ||= current_company
+    @operator.address.company ||= current_company
     if @operator.update_attributes(params[:operator])
       redirect_to @operator, :notice  => "Successfully updated operator."
     else

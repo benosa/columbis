@@ -1,0 +1,25 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    (function() {
+
+      function set_last_cache_update(event) {
+        localStorage.setItem('<%= "tourism-#{current_user.login}-last_cache_update" %>', new Date());
+      };
+
+      applicationCache.addEventListener('cached', set_last_cache_update);
+      applicationCache.addEventListener('noupdate', set_last_cache_update);
+      applicationCache.addEventListener('updateready', function(event) {
+        if (applicationCache.status == applicationCache.UPDATEREADY) {
+          set_last_cache_update();
+          applicationCache.swapCache();
+        }
+      });        
+
+    })();
+  </script>
+<% end %>
+<h1>Оффлайн режим</h1>
+<p>
+Приложение находится в оффлайновом режиме и страница, на которую вы пытаетесь перейти, локально не доступна.
+Дождитесь, когда у вас появится связь с сервером.
+</p>

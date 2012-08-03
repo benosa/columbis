@@ -1,0 +1,27 @@
+<h1>Операторы</h1>
+<table>
+  <tr>
+    <th>Название</th>
+    <th>Номер в реестре</th>
+    <th>Серия в реестре</th>
+    <th>ИНН</th>
+    <th>ОГРН</th>
+    <th>Адрес</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  {{#operators}}
+  <tr>
+    <td>{{name}}</td>
+    <td>{{register_number}}</td>
+    <td>{{register_series}}</td>
+    <td>{{inn}}</td>
+    <td>{{ogrn}}</td>
+    <td>{{address}}</td>
+    <td><a href="/operators/{{id}}">Показать</a></td>
+    <td><a href="/operators/{{id}}/edit">Изменить</a></td>
+    <td><a href="/operators/{{id}}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a></td>
+  </tr>
+  {{/operators}}  
+</table>

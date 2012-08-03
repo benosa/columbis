@@ -11,8 +11,15 @@
       %th= t('.date_of_birth')
       %th
       %th
-  %tbody
+  %tbody.tourist-collection
     =render :partial => 'tourist', :collection => @tourists
+    / - unless params[:offline]
+    /   =render :partial => 'tourist', :collection => @tourists
+    / - else
+    /   - @tourists.each do |tourist|      
+    /     = render 'tourists/tourist_smt', :mustache => tourist.local_data.merge({:show_link => link_to(t('show'), tourist),
+    /       :edit_link => link_to(t('edit'), edit_tourist_path(tourist)),
+    /       :destroy_link => link_to(t('destroy'), tourist, :method => :delete, :confirm => t('are_you_sure')),
+    /     })      
 
 = link_to t('.add_tourist'), new_tourist_path
-

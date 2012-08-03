@@ -8,10 +8,11 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def create
-    @company = Company.new(params[:company])
+    @company = Company.new(params[:company])    
     if @company.save
       current_user.update_attribute(:company_id, @company.id)
       current_user.update_attribute(:office_id, @company.offices.first.id) unless @company.offices.empty?
+      @company.address.update_attribute(:company_id, @company.id)
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_created_company')
     else
       render :action => "new"
@@ -28,9 +29,10 @@ class Dashboard::CompaniesController < ApplicationController
     end
   end
 
-  def update
+  def update    
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
+      @company.address.update_attribute(:company_id, @company.id)
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
       render :action => "edit"

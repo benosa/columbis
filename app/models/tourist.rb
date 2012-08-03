@@ -11,6 +11,8 @@ class Tourist < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :company_id
 
+  local_data :full_name, :initials_name, :attributes => :all
+
   def first_last_name
     "#{first_name} #{last_name}".strip
   end
@@ -31,4 +33,5 @@ class Tourist < ActiveRecord::Base
   end
 
   alias_method :name, :full_name
+
 end

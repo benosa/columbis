@@ -1,0 +1,46 @@
+<h1>Редактирование туриста</h1>
+<form accept-charset="UTF-8" action="/tourists/{{id}}" class="edit_tourist" id="edit_tourist_{{id}}" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="5E9RF7Zm0GJ62MN3seGZRhXg1MpnoMKrUGc1JnWUbUQ=" /></div>
+  <table>
+    <tr>
+      <th>
+        <label for="tourist_ФИО">ФИО</label>
+        <br>
+        <div class='hint'>
+          (На кого оформляется договор)
+        </div>
+      </th>
+      <td><label for="tourist_date_of_birth">Дата рождения</label></td>
+      <td colspan='2'>
+        <label for="tourist_Паспорт">Паспорт</label>
+      </td>
+      <td><label for="tourist_passport_valid_until">Действителен до</label></td>
+    </tr>
+    <tr>
+      <td><input id="tourist_full_name" name="tourist[full_name]" size="30" type="text" value="{{full_name}}" /></td>
+      <td><input class="datepicker" id="tourist_date_of_birth" name="tourist[date_of_birth]" size="30" style="width: 85%;" type="text" value="{{date_of_birth}}" /></td>
+      <td><input id="tourist_passport_series" name="tourist[passport_series]" size="30" type="text" value="{{passport_series}}" /></td>
+      <td><input id="tourist_passport_number" name="tourist[passport_number]" size="30" type="text" value="{{passport_number}}" /></td>
+      <td><input class="datepicker" id="tourist_passport_valid_until" name="tourist[passport_valid_until]" size="30" style="width: 85%;" type="text" value="{{passport_valid_until}}" /></td>
+    </tr>
+    <tr>
+      <th><label for="tourist_phone_number">Номер телефона</label></th>
+    </tr>
+    <tr>
+      <td><input id="tourist_phone_number" name="tourist[phone_number]" size="30" type="text" value="{{phone_number}}" /></td>
+    </tr>
+    <tr>
+      <th><label for="tourist_address">Адрес</label></th>
+    </tr>
+    <tr>
+      <td><input id="tourist_address" name="tourist[address]" size="30" type="text" value="{{address}}" /></td>
+    </tr>
+  </table>
+  <div class='actions'>
+    <input name="commit" type="submit" value="Сохранить" />
+  </div>
+</form>
+<p>
+  <a href="/tourists/{{id}}">Показать</a>
+  |
+  <a href="/tourists">Список туристов</a>
+</p>

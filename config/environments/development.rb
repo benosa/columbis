@@ -49,4 +49,15 @@ Tourism::Application.configure do
     :password => "mailer.devmen",
     :enable_starttls_auto => true
   }
+
+  # Thinking sphinx starter
+  # unless defined?(IRB)
+  #   config.after_initialize do
+  #     require 'rake'
+  #     Tourism::Application.load_tasks
+  #     # Rake::Task['ts:start'].reenable # in case you're going to invoke the same task second time.
+  #     Rake::Task['ts:start'].invoke
+  #   end
+  # end
+  
 end

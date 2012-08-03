@@ -1,0 +1,27 @@
+<h1>{{full_name}}</h1>
+  <p>
+    Серия паспорта: {{passport_series}}
+  </p>
+  <p>
+    Номер паспорта: {{passport_number}}
+  </p>
+  <p>
+    Действителен до: {{passport_valid_until}}
+  </p>
+  <p>
+    Номер телефона: {{phone_number}}
+  </p>
+  <p>
+    Адрес: {{address}}
+  </p>
+  <p>
+    Дата рождения: {{date_of_birth}}
+  </p>
+  <p>
+    <a href="/tourists/{{id}}/edit">Изменить</a>
+    |
+    <a href="/tourists/{{id}}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+    |
+    <a href="/tourists">Список туристов</a>
+  </p>
+</div>

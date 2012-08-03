@@ -1,0 +1,33 @@
+<h1>Туристы</h1>
+<table id='tourists'>
+  <thead>
+    <tr>
+      <th>ФИО</th>
+      <th>Серия паспорта</th>
+      <th>Номер паспорта</th>
+      <th>Действителен до</th>
+      <th>Номер телефона</th>
+      <th>Адрес</th>
+      <th>Дата рождения</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class='tourist-collection'>
+    {{#tourists}}
+    <tr class="tourist"> 
+      <td>{{full_name}}</td>
+      <td>{{passport_series}}</td>
+      <td>{{passport_number}}</td>
+      <td>{{passport_valid_until}}</td>
+      <td>{{phone_number}}</td>
+      <td>{{address}}</td>
+      <td>{{date_of_birth}}</td>
+
+      <td><a href="/tourists/{{id}}">Показать</a></td>
+      <td><a href="/tourists/{{id}}/edit">Изменить</a></td>
+      <td><a href="/tourists/{{id}}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a></td>  
+    </tr>
+    {{/tourists}}
+  </tbody>
+</table>

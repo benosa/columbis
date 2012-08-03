@@ -19,6 +19,7 @@ gem 'stringex'
 
 gem 'thinking-sphinx', '2.0.10'
 gem 'carrierwave'
+gem 'smt_rails', '~> 0.2.1'
 
 # Gems used only for assets and not required
 # in production environments by default.

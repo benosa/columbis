@@ -752,3 +752,12 @@ input.editable-select {
     .editable-select-options li.selected {
       background: #EAEAEA;
     }
+
+#offline_text_box {
+  background-color: #F6E7C0;
+  border: 1px solid #5C1C03;
+  padding: 5px;
+  position: absolute;
+  left: 47%; 
+  top: 0;
+}

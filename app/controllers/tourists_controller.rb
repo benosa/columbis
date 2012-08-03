@@ -1,5 +1,5 @@
 class TouristsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource  
 
   def index
   end
@@ -16,7 +16,7 @@ class TouristsController < ApplicationController
     end
   end
 
-  def edit
+  def edit    
   end
 
   def update
@@ -28,11 +28,21 @@ class TouristsController < ApplicationController
     end
   end
 
-  def show
+  def show    
   end
 
   def destroy
     @tourist.destroy
     redirect_to tourists_url
   end
+
+  private
+
+    def check_offline
+      if params[:offline] && params[:id] == '0'
+        @tourist = Tourist.new
+        @tourist.id = 0
+      end
+    end
+
 end

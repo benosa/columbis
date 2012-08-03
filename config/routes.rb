@@ -3,10 +3,6 @@ Tourism::Application.routes.draw do
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)
   match 'get_currency_course' => ApplicationController.action(:get_currency_course)
 
-  resources :offline, :only => :index do
-
-  end
-
   resources :airlines
   resources :currency_courses
 
@@ -42,6 +38,8 @@ Tourism::Application.routes.draw do
     match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
     match 'claims/all' => 'claims#all'
+    match 'local_tables' => 'dashboard#local_tables'
+    match 'local_data' => 'dashboard#local_data'
 
     resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show
@@ -53,7 +51,18 @@ Tourism::Application.routes.draw do
     end
   end
 
+  scope 'offline', :defaults => {:offline => 1} do
+    resources :tourists
+    resources :claims
+    resources :operators
+    match '/' => "dashboard#offline"
+  end
+  constraints(:ip => "127.0.0.1") do
+    match 'create_manifest' => "dashboard#create_manifest", :via => :post
+  end
+
   match 'dashboard' => "dashboard#index"
   match 'online' => "site#online"
+
   root :to => 'claims#index'
 end

@@ -1,0 +1,141 @@
+<div class='claims'>
+ 
+  <table id='claims' rules='all'>
+    <tr>
+      <th><a href="/claims?direction=asc&amp;sort=id" class="current desc">№<span class="sort_span current desc" /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=reservation_date">Дата<span class="sort_span " /></a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=tourist_stat">Откуда<span class="sort_span " /></a></th>
+      {{#columns.office}}
+        <th><a href="/claims?direction=asc&amp;sort=office">Офис<span class="sort_span " /></a></th>
+      {{/columns.office}}
+      <th><a href="/claims?direction=asc&amp;sort=user_id">Менедж.<span class="sort_span " /></a></th>
+      <th class='w75'><a href="/claims?direction=asc&amp;sort=applicant.last_name">ФИО<span class="sort_span " /></a></th>
+      <th>Тел.</th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_to">Вылет<span class="sort_span " /></a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_back">Возврат<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=countries.name">Куда<span class="sort_span " /></a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=airport_back">Откуда<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=visa">Виза<span class="sort_span " /></a></th>
+      <th class='short_date'><a href="/claims?direction=asc&amp;sort=visa_check">Срок по визе<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operators.name">Оператор<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_confirmation">Подтвержд.<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=primary_currency_price">Цена<span class="sort_span " /></a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=calculation">Расчет<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=tourist_advance">Аванс<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=tourist_debt">Долг<span class="sort_span " /></a></th>
+      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=operator_price">Cумма оп-ру<span class="sort_span " /></a></th>
+      <th class='short_date'><a href="/claims?direction=asc&amp;sort=operator_maturity">Срок оплаты оп-ру<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_advance">Оплачено оп-ру<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_debt">Долг оп-ру<span class="sort_span " /></a></th>
+      {{#columns.accountant_list}}
+        <th class='w45px thick_border green_back'><a href="/claims?direction=asc&amp;sort=approved_tourist_advance">Аванс<span class="sort_span " /></a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance">Оплачено оп-ру<span class="sort_span " /></a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance_prim">Оплачено оп-ру руб.<span class="sort_span " /></a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit">Нац-ка<span class="sort_span " /></a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit_in_percent">%<span class="sort_span " /></a></th>
+      {{/columns.accountant_list}}
+      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=docs_ticket">Документы<span class="sort_span " /></a></th>
+      <th class='w50'><a href="/claims?direction=asc&amp;sort=docs_note">Примeчание<span class="sort_span " /></a></th>
+      <th class='w50'><a href="/claims?direction=asc&amp;sort=check_date">Контроль<span class="sort_span " /></a></th>
+      <th class='last_cols'></th>
+      <th class='last_cols'></th>
+    </tr>
+    {{#claims}}
+      <tr {{#canceled}}class="gray_back"{{/canceled}}>
+        <td>{{id}}</td>
+        <td>{{reservation_date}}</td>
+        <td full_value='{{tourist_stat}}'>
+          {{tourist_stat_short}}
+        </td>
+        {{#columns.office}}
+          <td full_value='{{office}}'>
+            {{office}}
+          </td>
+        {{/columns.office}}
+        <td full_value='{{login}}' {{#settings.color}}style='background-color:{{settings.color}}'{{/settings.color}}>
+          {{login}}
+        </td>
+        <td full_value='{{tourists_list}}'>
+          {{initials_name}}
+        </td>
+        <td full_value='{{phone_number}}'>
+          {{phone_number}}
+        </td>
+        <td class='{{color_for_flight}}' full_value='{{depart_to}}'>
+          {{depart_to_short}}
+        </td>
+        <td full_value='{{depart_back}}'>
+          {{depart_back_short}}
+        </td>
+        <td full_value='{{country}}'>
+          {{country_short}}
+        </td>
+        <td full_value='{{city}}'>
+          {{city_short}}
+        </td>
+        <td class='{{class_for_visa}}' full_value='{{text_for_visa}}'>
+          {{text_for_visa}}
+        </td>
+        <td class='{{class_for_visa}}' full_value='{{visa_check}}'>
+          {{visa_check_short}}
+        </td>
+        <td full_value='{{operator}}'>
+          {{operator}}
+        </td>
+        <td full_value='{{operator_confirmation}}' class="{{operator_confirmation_class}}">
+          {{operator_confirmation_short}}
+        </td>
+        <td full_value='{{primary_currency_price}}'>
+          {{primary_currency_price}}
+        </td>
+        <td full_value='{{calculation}}'>
+          {{calculation_short}}
+        </td>
+        <td class='{{tourist_advance_class}}' full_value='{{tourist_advance}}'>
+          {{tourist_advance}}
+        </td>
+        <td class='{{tourist_debt_class}}' full_value='{{tourist_debt}}'>
+          {{tourist_debt}}
+        </td>
+        <td class='{{operator_price_class}} thick_border' full_value='{{operator_price}}'>
+          {{operator_price_short}}
+        </td>
+        <td full_value='{{operator_maturity}}'>
+          {{operator_maturity_short}}
+        </td>
+        <td full_value='{{operator_advance}}'>
+          {{operator_advance_short}}
+        </td>
+        <td full_value='{{operator_debt}}'>
+          {{operator_debt_short}}
+        </td>
+        {{#columns.accountant_list}}
+          <td class='thick_border'>{{approved_advance_tourist}}</td>
+          <td>{{approved_advance_operator_prim}}</td>
+          <td>{{approved_advance_operator}}</td>
+          <td>{{profit}}</td>
+          <td>{{profit_in_percent}}</td>
+        {{/columns.accountant_list}}
+        <td class='{{documents_status_class}} thick_border'>
+          {{documents_status}}
+        </td>
+        <td class='{{memo_class}}' full_value='{{memo}}'>
+          {{memo_short}}
+        </td>
+        <td class='{{check_date}}' full_value='{{check_date}}'>
+          {{check_date}}
+        </td>
+        <td full_value='{{docs_note}}'>
+          {{#docs_note}}
+            <strong style='padding: 0pt 4pt;'>!</strong>
+          {{/docs_note}}
+        </td>
+        <td>
+          <a href="/claims/{{id}}/edit"><img alt="Edit_icon" src="/assets/edit_icon.png" title="Изменить" />
+          </a>
+        </td>
+      </tr>
+    {{/claims}}
+  </table>
+  
+</div>

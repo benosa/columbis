@@ -8,6 +8,8 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require vendor
+//= require mustache
+//= require_tree ../../templates
 //= require_tree .
 
 $(function(){

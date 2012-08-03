@@ -21,12 +21,12 @@ after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:uploads"
 after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
-after "deploy:update_code", "deploy:create_manifest"
 
 #after "deploy:update_code", "deploy:repair_sequences"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
+#after "thinking_sphinx:start", "deploy:create_manifest"
 
 namespace :deploy do
   task :start do
@@ -59,6 +59,6 @@ namespace :deploy do
 
   desc "generate cache manifest file"
   task :create_manifest do
-    run "cd #{current_path}; bundle exec rake manifest:create RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; bundle exec rake manifest:create RAILS_ENV=#{rails_env} --trace"
   end
 end

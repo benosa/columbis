@@ -342,7 +342,7 @@ class Claim < ActiveRecord::Base
     if c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1
       data.merge!({
         :office => claim.office.name,
-        :office_short => c.truncate(claim.office.name, :length => 8)
+        :office_short => helpers.truncate(claim.office.name, :length => 8)
       })
     end
 

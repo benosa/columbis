@@ -501,10 +501,9 @@
       }, deferred);
     },
 
-    drop_tables: function(tables, deferred) {
-      var self = this;
+    drop_tables: function(tables, deferred) {      
       if (typeof tables == 'string')
-        tables = [tables];
+        tables = tables == 'all' ? this.tables : [tables];
       this.transaction(function(tx) {
         for (var i = 0; i < tables.length; i++)
           tx.executeSql('DROP TABLE IF EXISTS ' + tables[i]);      

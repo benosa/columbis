@@ -100,8 +100,11 @@
             var f = parseFloat(value);
             value = !isNaN(f) ? f : 0;
           }        
-        } else if (type == 'TEXT')
-          value = '"' + value + '"';
+        } else if (type == 'TEXT') {
+          if (typeof value == 'string' && value.indexOf("'") != -1)
+            value = value.replace(/'/g, "''");
+          value = "'" + value + "'";
+        }
       // while select    
       } else {
         if (value === null && (type == 'INTEGER' || type == 'REAL'))

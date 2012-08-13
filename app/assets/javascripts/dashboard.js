@@ -19,7 +19,7 @@ $(function(){
   //prepare fields
   function process($fields) {
     if ($fields.parent('.nested_attributes').hasClass('printers')) {
-      if ($.inArray($fields.find('.mode_select').val(), ['contract', 'warranty', 'permit']) != -1) {
+      if ($.inArray($fields.find('.mode_select').val(), ['contract', 'warranty', 'permit', 'act']) != -1) {
         $fields.find('.country_label').hide();
         $fields.find('.country_select').hide();
       } else {

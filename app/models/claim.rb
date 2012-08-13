@@ -177,6 +177,10 @@ class Claim < ActiveRecord::Base
     company.warranty_printer.prepare_template(printable_fields, printable_collections)
   end
 
+  def print_act
+    company.act_printer.prepare_template(printable_fields, printable_collections)
+  end
+
   def self.columns_info
     Claim.columns.sort!{ |x,y| x.name <=> y.name }.map{ |c| c.name + ' ' + to_js_type(c.type) }
   end

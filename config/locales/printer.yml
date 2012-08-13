@@ -7,5 +7,6 @@ ru:
         memo: 'Памятка'
         permit: 'Путевка'
         warranty: 'Фингарантии'
+        act: 'Акт'
         template: 'Шаблон'
         country_id: 'Страна'

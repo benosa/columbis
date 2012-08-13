@@ -49,6 +49,10 @@ class Company < ActiveRecord::Base
     printers.where(:mode => 'warranty').last
   end
 
+  def act_printer
+    printers.where(:mode => 'act').last
+  end
+
   def check_and_save_dropdown(list, value)
     DropdownValue.check_and_save(list, value, id)
   end

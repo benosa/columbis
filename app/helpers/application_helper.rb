@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def li_class(claim, target)
-    if [:contract, :permit, :warranty].include? target
+    if [:contract, :permit, :warranty, :act].include? target
       printer = "#{target}_printer".to_sym
       (claim && !claim.new_record? && claim.company.try(printer)) ? 'enabled' : 'disabled'
     elsif target == :memo

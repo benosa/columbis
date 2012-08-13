@@ -25,6 +25,7 @@ ru:
   view_all: 'Показать все'
   add: 'Добавить'
   delete: 'Удалить'
+  download: 'Скачать'
 
   logout: 'Выйти'
   login: 'Войти'

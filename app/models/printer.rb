@@ -1,5 +1,5 @@
 class Printer < ActiveRecord::Base
-  MODES = %w[contract memo permit warranty].freeze
+  MODES = %w[contract memo permit warranty act].freeze
 
   attr_accessible :country_id, :template, :mode
   attr_protected :company_id

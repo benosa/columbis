@@ -1,3 +1,7 @@
+/*
+*= require dropdown
+*/
+
 html, body {
   background-color: #4B7399;
   font-family: Verdana, Helvetica, Arial;
@@ -179,6 +183,8 @@ h2 {
 #documents_to_print_menu ul {
   margin: 0;
 }
+
+#documents_to_print_menu ul.right { float: right; }
 
 #documents_to_print_menu ul li, #databases_menu ul li{
   display: inline;
@@ -533,7 +539,7 @@ form .data_block input.narrow {
 }
 
 .red_back, .nothing_done, .hot, .not_ready, .received {
-  background-color: #ed2222;
+  background-color: #ff8888;
 }
 
 .orange_back, .docs_got, .soon {
@@ -761,3 +767,7 @@ input.editable-select {
   left: 47%; 
   top: 0;
 }
+
+/* Dropdown lists */
+/*ul.dropdown .dropdown-li > a { background: url("arrow-down.gif") no-repeat scroll right center; }*/
+ul.dropdown .dropdown-li li.disabled, ul.dropdown .dropdown-li li a { width: 95px; }

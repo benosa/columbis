@@ -539,7 +539,7 @@ form .data_block input.narrow {
 }
 
 .red_back, .nothing_done, .hot, .not_ready, .received {
-  background-color: #ff8888;
+  background-color: #ED2222;
 }
 
 .orange_back, .docs_got, .soon {

@@ -61,8 +61,8 @@
         - if is_admin? or is_boss? or is_supervisor? and current_company.offices.count > 1
           %td{ :full_value => claim.office.name }
             = truncate(claim.office.name, :length => 8)
-        %td{ :full_value => claim.user.login, :style => "background-color:#{claim.user.color}" }
-          = truncate(claim.user.login, :length => 8)
+        %td{ :full_value => claim.user.try(:login), :style => "background-color:#{claim.user.try(:color)}" }
+          = truncate(claim.user.try(:login), :length => 8)
         %td{ :full_value => tourists_list(claim) }
           = truncate(claim.applicant.try(:initials_name), :length => 8)
         %td{ :full_value => claim.applicant.try(:phone_number) }

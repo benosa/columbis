@@ -10,7 +10,7 @@
       %h2.firsth
         = "ДОГОВОР на реализацию права на турпродукт №#{@claim.id}"
     %p.firstp
-      %b><Туристическая компания #{@claim.user.company.try(:name)}
+      %b><Туристическая компания #{@claim.user.try(:company).try(:name)}
       , представляющая интересы Туроператора, именуемая в дальнейшем
       = succeed "," do
         %b
@@ -162,7 +162,7 @@
     %p
       %b
         1.2. Компанией, оказывающей потребителю услуги по данному договору является ТУРОПЕРАТОР
-        %span.red.operator= @claim.user.company.try(:name)
+        %span.red.operator= @claim.user.try(:company).try(:name)
     %p
       Туроператор полностью обеспечивает оказание туристам всех услуг, входящих в указанный туристический продукт самостоятельно или с привличением третих
       лиц, независимо от того, кем эти услуги оказываются.
@@ -171,14 +171,14 @@
         1.3. Полную ответственность за надлежащее выполнение настоящего договора по оказанию туристических услуг в соответствие с Федеральным законом
         \"Об основах туристической деятельности в РФ" несет ТУРОПЕРАТОР.
     %p
-      %b> 1.4. Компания #{@claim.user.company.try(:name)}
+      %b> 1.4. Компания #{@claim.user.try(:company).try(:name)}
       , выступающая по данному договору, как АГЕНТ туропрератора, отвечает за правильность и полноту представления КЛИЕНТУ
       информации о заказываемом туристическим продукте.
     %h2 2. СВЕДЕНИЯ О ТУРОПЕРАТОРЕ
     %p
       %b 2.1.ТУРОПЕРАТОР‐ИСПОЛНИТЕЛЬ
       туристических услуг является компания
-      %b.red.operator= @claim.user.company.try(:name)
+      %b.red.operator= @claim.user.try(:company).try(:name)
     %p
       2.2. Полная информация о
       = succeed "," do
@@ -316,20 +316,20 @@
         %td.la{:colpsan => "3"}
           %b
             АГЕНТ
-            = @claim.user.company.try(:name)
+            = @claim.user.try(:company).try(:name)
         %td.ca{:colspan => "2"}
           %b КЛИЕНТ
       %tr
         %td.la{:colpsan => "3"}
           %b
-            - if @claim.user.company.address.present?
+            - if @claim.user.try(:company).try(:address)
               = @claim.user.company.address.pretty_full_address
             - else
               Нет адреса
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b= @claim.user.company.bank
+          %b= @claim.user.try(:company).try(:bank)
         %td.ca{:colpsan => "2"}
           ФИО
           %b= @claim.applicant.full_name
@@ -337,27 +337,27 @@
         %td.la{:colpsan => "3"}
           %b
             БИК
-            = @claim.user.company.try(:bik)
+            = @claim.user.try(:company).try(:bik)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
           %b
             к/сч
-            = @claim.user.company.try(:corr_account)
+            = @claim.user.try(:company).try(:corr_account)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
           %b
             р/сч
-            = @claim.user.company.try(:curr_account)
+            = @claim.user.try(:company).try(:curr_account)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
           %b
             ОГРН
-            = @claim.user.company.try(:ogrn)
+            = @claim.user.try(:company).try(:ogrn)
         %td{:colpsan => "2"}
       %tr
         %td.la{:colpsan => "3"}
-          %b= @claim.user.company.address.phone_number if @claim.user.company.address
+          %b= @claim.user.company.address.phone_number if @claim.user.try(:company).try(:address)
         %td{:colpsan => "2"}

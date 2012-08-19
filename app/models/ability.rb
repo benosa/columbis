@@ -14,6 +14,8 @@ class Ability
       can :switch_view, User
       can :search, Claim
       can :manage, :all, :company_id => user.company_id
+      cannot :manage, Company
+      can :manage, Company, :id => user.company_id
       can :read, DropdownValue, :common=> true
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
@@ -26,6 +28,8 @@ class Ability
       can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id
       can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
+      cannot :read, Company
+      can :read, Company, :id => user.company_id
       can :claims_all, :user
       can :offline_version, User
     elsif user.role == 'supervisor'

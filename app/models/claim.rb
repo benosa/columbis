@@ -574,7 +574,7 @@ class Claim < ActiveRecord::Base
     else
       self.city_id = claim_params[:city_id]
     end
-    company.cities << self.city
+    company.cities << self.city if self.city
 
     if claim_params[:resort_id].blank?
       unless claim_params[:resort].blank?
@@ -584,7 +584,7 @@ class Claim < ActiveRecord::Base
     else
       self.resort_id = claim_params[:resort_id]
     end
-    company.cities << self.resort
+    company.cities << self.resort if self.resort
 
     self.company.city_ids = self.company.city_ids.uniq
   end

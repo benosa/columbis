@@ -20,6 +20,7 @@
     content_selector: '#content',
     online: null,
     current_user: window.tourism_current_user || '',
+    current_company: window.tourism_current_company || '',
     prefix: 'tourism-' + window.tourism_current_user + '-',
 
     defer: function(obj) {
@@ -279,6 +280,10 @@
 
       localStorage.setItem(this.prefix + "settings", str);
     },
+
+    offline_available: function() {
+      return this.current_user.length && this.current_company.length;
+    }
       
   };
 
@@ -585,7 +590,8 @@
             self.save_data(json.data, deferred);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-          self.error(textStatus);
+          if (jqXHR.status == 200)
+            self.error(textStatus);
           deferred.reject();
         }
       });      
@@ -693,8 +699,8 @@
   }); 
 
   Tourism.init = function() {
-    // Initialize offline site version only for logged users
-    if (!this.current_user.length) return;
+    // Check availability of offline site version
+    if (!this.offline_available()) return;
 
     var self = this;
 

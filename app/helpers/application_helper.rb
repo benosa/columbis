@@ -51,6 +51,7 @@ module ApplicationHelper
       text = "";
       text += "window.tourism_offline = true;" if params[:offline]
       text += "window.tourism_current_user = '#{current_user.login}';" if current_user
+      text += "window.tourism_current_company = '#{current_company.name}';" if current_company
 
       @javascript_local_data = text.length > 0 ? text : false
     end

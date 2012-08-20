@@ -154,8 +154,12 @@
             %td= f.label :office_id, t('.office')
           %tr
             - if is_admin? or is_boss?
-              %td= f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ] }, {}, :class => 'small'
-              %td= f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ] }, {}, :class => 'small'
+              %td= f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ] },
+                            {:include_blank => @claim.user.nil?},
+                            :class => 'small' 
+              %td= f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ] },
+                            {:include_blank => @claim.office.nil?},
+                            :class => 'small'
             - else
               %td
                 %strong.small= @claim.user.try(:first_last_name)

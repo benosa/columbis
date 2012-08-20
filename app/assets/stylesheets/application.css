@@ -545,6 +545,12 @@ form .data_block input.narrow {
 .claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }
 
+/* reset colors for options in selects with color classes */
+option {
+  color: black;
+  background-color: white;
+}
+
 .orange_back, .docs_got, .soon {
   background-color: #ff8888;
 }

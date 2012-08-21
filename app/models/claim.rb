@@ -57,8 +57,10 @@ class Claim < ActiveRecord::Base
 
   validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
-                        :operator_maturity, :airline, :airport_to, :airport_back,
+                        :airline, :airport_to, :airport_back,
                         :hotel, :meals, :medical_insurance, :placement, :transfer, :service_class, :relocation
+
+  validates_presence_of :operator_confirmation, :operator_maturity, :if => Proc.new { |claim| claim.operator_confirmation_flag }
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
     validates_presence_of a

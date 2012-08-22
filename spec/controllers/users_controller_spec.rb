@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UsersController do
+describe Dashboard::UsersController do
   include Devise::TestHelpers
 
   def create_users

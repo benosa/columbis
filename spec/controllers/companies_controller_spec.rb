@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CompaniesController do
+describe Dashboard::CompaniesController do
 
   def create_company
     @company = Factory(:company)

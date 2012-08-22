@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CountriesController do
+describe Dashboard::CountriesController do
   def create_country
     @country = Factory(:country)
   end

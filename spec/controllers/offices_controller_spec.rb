@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OfficesController do
+describe Dashboard::OfficesController do
 
   before (:each) do
     @company = Factory(:company)

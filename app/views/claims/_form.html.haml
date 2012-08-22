@@ -343,12 +343,12 @@
             %tr.fields{ :id => "payment_in_#{ind}"}
               %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?)
               %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
-                :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
-              %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
+                  :value => l(builder.object.date_in, :format => :long)
+              %td.amount= builder.text_field :amount, :class => 'amount'
               %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
               %td= builder.text_field :description, :class => 'description', :disabled => true
               %td{ :colspan => 2 }
-                = builder.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form', :disabled => @claim.new_record?
+                = builder.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form'
               %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
             = builder.hidden_field :id
             - ind += 1
@@ -358,10 +358,7 @@
             %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
           %tr.bottom
             %td{ :colspan => 5}
-              - if @claim.new_record?
-                .hint= t('.save_before_pay')
-              - else
-                = link_to t('.add_another_payment'), '#', :class => 'add'
+              = link_to t('.add_another_payment'), '#', :class => 'add'
 
         %h2= t('.payments_out')
         %table#payments_out

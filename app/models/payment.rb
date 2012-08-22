@@ -8,11 +8,12 @@ class Payment < ActiveRecord::Base
   belongs_to :payer, :polymorphic => true
   belongs_to :recipient, :polymorphic => true
 
-  validates_presence_of :amount, :amount_prim, :form, :currency, :claim_id, :date_in, :course
+  validates_presence_of :claim # in claim inveres_of option must be used
+  validates_presence_of :amount, :amount_prim, :form, :currency, :date_in, :course  
   validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
 
-  validates_numericality_of :course, :greater_than => 0
-  validates_numericality_of :amount, :amount_prim
+  validates_numericality_of :course, :amount, :greater_than => 0  
+  validates_numericality_of :amount
 
   validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
 
@@ -20,8 +21,8 @@ class Payment < ActiveRecord::Base
 
   validate :check_counteragents
   def check_counteragents
-    errors.add(:payer, I18n.t('.payer_blank')) unless self.payer
-    errors.add(:recipient, I18n.t('.recipient_blank')) unless self.recipient
+    errors.add(:payer, I18n.t('errors.messages.blank')) unless self.payer
+    errors.add(:recipient, I18n.t('errors.messages.blank')) unless self.recipient
   end
 
   before_save :fill_fields

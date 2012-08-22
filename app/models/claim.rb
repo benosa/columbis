@@ -33,6 +33,7 @@ class Claim < ActiveRecord::Base
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance
+                  #:payments_in_attributes, :payments_out_attributes
 
   belongs_to :company
   belongs_to :user
@@ -48,12 +49,12 @@ class Claim < ActiveRecord::Base
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
 
-  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
-  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
+  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :inverse_of => :claim
+  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :inverse_of => :claim
 
   accepts_nested_attributes_for :dependents
-  accepts_nested_attributes_for :payments_in
-  accepts_nested_attributes_for :payments_out
+  accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?
+  accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?
 
   validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
@@ -70,7 +71,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :correctness_of_maturity
 
-  before_save :update_debts
+  before_save :update_debts  
 
   define_index do
     indexes airport_to, airport_back, flight_to, flight_back, meals, placement
@@ -124,7 +125,8 @@ class Claim < ActiveRecord::Base
 
       assign_applicant(claim_params[:applicant])
       assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
-      assign_payments(claim_params[:payments_in_attributes], claim_params[:payments_out_attributes]) unless self.new_record?
+      assign_payments_in(claim_params[:payments_in_attributes]) # can be created for a new claim
+      assign_payments_out(claim_params[:payments_out_attributes]) unless self.new_record?
 
       unless self.errors.any?
         remove_unused_payments
@@ -412,7 +414,7 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def assign_payments(payments_in, payments_out)
+  def assign_payments_in(payments_in)
     payments_in.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
@@ -425,8 +427,10 @@ class Claim < ActiveRecord::Base
       payment_hash[:course] = 1
 
       process_payment_hash(payment_hash, self.payments_in)
-    end
+    end    
+  end
 
+  def assign_payments_out(payments_out)
     payments_out.each do |key, payment_hash|
       next if empty_payment_hash?(payment_hash)
 
@@ -519,7 +523,7 @@ class Claim < ActiveRecord::Base
   def process_payment_hash(ph, in_out_payments)
     company.check_and_save_dropdown('form', ph[:form])
     if ph[:id].blank?
-      payment = Payment.create(ph)
+      payment = self.new_record? ? Payment.new(ph) : Payment.create(ph)
     else
       payment = Payment.find(ph[:id])
       payment.update_attributes(ph)

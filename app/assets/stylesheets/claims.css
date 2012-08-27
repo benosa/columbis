@@ -1,0 +1,52 @@
+.reservations { margin-top: 0; }
+
+.reservations th { min-width: 36px; }
+
+.reservations th.double_sort span:first-child {
+    margin-top: 2px;
+}
+.reservations th.double_sort span {    
+    margin: 5px 0;
+    padding: 0 12px 0 4px;
+    text-align: left;
+}
+.reservations th span {    
+    color: #666666;
+    display: block;
+    padding-top: 21px;
+    text-align: center;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.reservations th a.active {
+  font-weight: bold;
+  color: #222222;
+  text-decoration: underline;
+}
+
+/*
+.reservations th a.active.asc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right -5px transparent; }
+.reservations th a.active.desc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right 5px transparent; }
+*/
+
+.reservations th.medium { width: 65px; }
+.reservations th.w75 { width: 75px; }
+.reservations th.w50px { width: 50px; }
+.reservations th.w45px { width: 45px; }
+.reservations th.last_cols { width: 14px; min-width: 0; }
+.reservations th.short_date { width: 45px; min-width: 0; }
+
+.reservations td p {
+  min-height: 1em;
+}
+
+.reservations td.user_bg { background: none; }
+
+.claim .red_back, .claim .nothing_done, .claim .hot,
+.claim .not_ready, .claim .received { color: white !important; }
+
+/* reset colors for options in selects with color classes */
+option {
+  color: black;
+  background-color: white;
+}

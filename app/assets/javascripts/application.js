@@ -96,4 +96,17 @@ $(function(){
     show_popup(e);
   });
 
+  // view switcher
+  $('#view_switcher').change(function(e) {
+    var claims_path = $('#claims_link').attr('href');
+    var $option = $('option:selected', this);
+    location.href = $(this).val();
+  });
+
+  // use ikSelect for selects
+  $("select").ikSelect({
+    autoWidth: false
+  });
+
 });
+

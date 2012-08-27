@@ -1,4 +1,32 @@
 module ClaimsHelper
+  def sort_column
+    accesible_column_names = Claim.column_names + ['applicant.last_name', 'countries.name', 'operators.name', 'offices.name']
+    accesible_column_names.include?(params[:sort]) ? params[:sort] : 'id'
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+  end
+
+  def sortable(column, title = nil)
+    title ||= column.titleize
+    css_class = column == sort_column ? "active #{sort_direction}" : nil
+    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+    link_to(claims_params, { :class => css_class }) do
+      raw(title.to_s) # + tag('span', :class => 'sort_span ' << css_class.to_s))
+    end
+  end
+
+  def claims_params(refresh = false)
+    return @claims_params if @claims_params.present? and !refresh
+    @claims_params = {
+      :sort => sort_column,
+      :direction => sort_direction
+    }
+    [:filter, :office_id, :user_id, :list_type, :page].each { |param| @claims_params[param] = params[param] }
+    @claims_params
+  end
+
   def truncate(text, options = {})
     options.reverse_merge!(:omission => '')
     super
@@ -112,5 +140,6 @@ module ClaimsHelper
     else
       'departed'
     end
-  end
+  end  
+
 end

@@ -45,9 +45,22 @@ $(function(){
   }
 
   // claims filter
-	$('.filter_bar select, .filter_bar input').live('change', function(){
+	$('#filter_bar select, #filter_bar input').live('change', function(){
 	  loadList(getCurrentSortParams($('#claims th a.current'), true));
 	});
+
+  // redefine default submition of filter form
+  $('#filter_bar').submit(function(event) {
+    event.preventDefault();
+    loadList(getCurrentSortParams($('#claims th a.current'), true));
+    return false;
+  });
+
+  // change claims per page
+  $('#per_page').live('change', function() {
+    var link = $('option:selected', this).data('link')
+    loadList(null, link);
+  });
 
   // dates colors
   $('#claim_arrival_date').change(function(e){
@@ -167,13 +180,21 @@ $(function(){
   });
 
   // load list
-  function loadList(currentParams){
+  function loadList(params, url){
     $.ajax({
-      url: 'claims/search',
-      data: currentParams,
+      url: url || 'claims/search',
+      data: params,
       success: function(resp){
         $('.claims').replaceWith(resp);
+        afterLoadList();
       }
+    });
+  }
+
+  function afterLoadList() {
+    // reset ikSelect for selects
+    $("select").ikSelect({
+      autoWidth: false
     });
   }
 
@@ -189,7 +210,7 @@ $(function(){
   $('#filter').keyup(function(){
     delay(function(){
       loadList(getCurrentSortParams($('#claims th a.current'), true));
-    }, 200 );
+    }, 300 );
   });
 
   // sort
@@ -206,12 +227,7 @@ $(function(){
 
   $('.pagination a').live('click', function(e) {
     e.preventDefault();
-    $.ajax({
-      url: $(e.currentTarget).attr('href'),
-      success: function(resp){
-        $('.claims').replaceWith(resp);
-      }
-    });
+    loadList(null, $(e.currentTarget).attr('href'));
   });
 
   //  operator_price_currency change

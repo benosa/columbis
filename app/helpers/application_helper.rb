@@ -1,13 +1,4 @@
 module ApplicationHelper
-  def sortable(column, title = nil)
-    title ||= column.titleize
-    css_class = column == sort_column ? "current #{sort_direction}" : nil
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to({ :sort => column, :direction => direction, :filter => params[:filter] }, { :class => css_class }) do
-      raw(title.to_s + tag('span', :class => 'sort_span ' << css_class.to_s))
-    end
-  end
-
   def link_for_view_switcher
     label = params[:list_type] == 'manager_list' ? 'accountant_list' : 'manager_list'
     link_to t('claims.index.' << label), claims_path(:list_type => label), :class =>  'accountant_login', :list_type => params[:list_type]
@@ -24,6 +15,12 @@ module ApplicationHelper
     elsif target == :memo
       (claim && !claim.new_record? && claim.company.try(:memo_printer_for, claim.country)) ? 'enabled' : 'disabled'
     end
+  end
+
+  def per_page(default = 30)    
+    per_page = "#{current_user.login}-per_page".to_sym
+    cookies[per_page] = params[:per_page] if params[:per_page].present?
+    (cookies[per_page] || default).to_i
   end
 
   def write_manifest_file
@@ -154,6 +151,38 @@ module ActionView
       alias l localize
     end
   end
+end
+
+class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
+
+  protected
+
+    def page_number(page)
+      id = "#{@options[:link_id] || @collection.to_s}_#{page}"
+      unless page == current_page
+        tag(:li, link(page, page, :rel => rel_value(page), :id => id))
+      else
+        tag(:li, tag(:span, page, :class => 'active'), :id => id, :class => "active")
+      end
+    end
+
+    def previous_or_next_page(page, text, classname)
+      if page
+        tag(:li, link(text, page), :class => classname)
+      else
+        tag(:li, tag(:span, text), :class => classname + ' disabled')
+      end
+    end
+
+    def gap
+      text = @template.will_paginate_translate(:page_gap) { '&hellip;' }
+      %(<li class="disabled"><a>#{text}</a></li>)
+    end
+
+    def html_container(html)
+      tag(:ul, html, container_attributes)
+    end
+
 end
 
 module ActiveRecord

@@ -27,3 +27,11 @@ ru:
     edit:
       edit_user: 'Редактирование профиля'
       users: 'Пользователи'
+
+  user:
+    roles:
+      admin: Администратор
+      boss: Директор
+      supervisor: Главный менеджер
+      manager: Менеджер
+      accountant: Бухгалтер

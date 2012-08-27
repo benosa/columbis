@@ -2,6 +2,10 @@ ru:
   claims:
     index:
       claims: 'Заявки'
+      search: 'Поиск'
+      only_my: 'Только мои'
+      office: 'Отбор по офису'
+      user: 'Отбор по пользователю'
       reservation_date: 'Дата'
       manager: 'Менедж.'
       full_name: 'ФИО'
@@ -42,6 +46,7 @@ ru:
       phone_number: 'Тел.'
       sent: 'Отпр.'
       tourist_stat: 'Откуда'
+      rows_on_page: 'Строк на страницу:'
     form:
       reset: 'Сброс'
       office: 'Офис'
@@ -113,11 +118,8 @@ ru:
     messages:
       successfully_created_claim: 'Заявка создана'
       successfully_updated_claim: 'Заявка изменена'
-      successfully_destroyed_claim: 'Заявка удалена'
-    list:
-      only_my: 'Только мои'
-      office: 'Отбор по офису'
-      user: 'Отбор по пользователю'
+      successfully_destroyed_claim: 'Заявка удалена'    
+      
   activerecord:
     errors:
       messages:

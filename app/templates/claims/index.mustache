@@ -2,41 +2,41 @@
  
   <table id='claims' rules='all'>
     <tr>
-      <th><a href="/claims?direction=asc&amp;sort=id" class="current desc">№<span class="sort_span current desc" /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=reservation_date">Дата<span class="sort_span " /></a></th>
-      <th class='medium'><a href="/claims?direction=asc&amp;sort=tourist_stat">Откуда<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=id" class="current desc">№<span class="current desc" /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=reservation_date">Дата</a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=tourist_stat">Откуда</a></th>
       {{#columns.office}}
-        <th><a href="/claims?direction=asc&amp;sort=office">Офис<span class="sort_span " /></a></th>
+        <th><a href="/claims?direction=asc&amp;sort=office">Офис</a></th>
       {{/columns.office}}
-      <th><a href="/claims?direction=asc&amp;sort=user_id">Менедж.<span class="sort_span " /></a></th>
-      <th class='w75'><a href="/claims?direction=asc&amp;sort=applicant.last_name">ФИО<span class="sort_span " /></a></th>
+      <th><a href="/claims?direction=asc&amp;sort=user_id">Менедж.</a></th>
+      <th class='w75'><a href="/claims?direction=asc&amp;sort=applicant.last_name">ФИО</a></th>
       <th>Тел.</th>
-      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_to">Вылет<span class="sort_span " /></a></th>
-      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_back">Возврат<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=countries.name">Куда<span class="sort_span " /></a></th>
-      <th class='medium'><a href="/claims?direction=asc&amp;sort=airport_back">Откуда<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=visa">Виза<span class="sort_span " /></a></th>
-      <th class='short_date'><a href="/claims?direction=asc&amp;sort=visa_check">Срок по визе<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=operators.name">Оператор<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=operator_confirmation">Подтвержд.<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=primary_currency_price">Цена<span class="sort_span " /></a></th>
-      <th class='medium'><a href="/claims?direction=asc&amp;sort=calculation">Расчет<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=tourist_advance">Аванс<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=tourist_debt">Долг<span class="sort_span " /></a></th>
-      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=operator_price">Cумма оп-ру<span class="sort_span " /></a></th>
-      <th class='short_date'><a href="/claims?direction=asc&amp;sort=operator_maturity">Срок оплаты оп-ру<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=operator_advance">Оплачено оп-ру<span class="sort_span " /></a></th>
-      <th><a href="/claims?direction=asc&amp;sort=operator_debt">Долг оп-ру<span class="sort_span " /></a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_to">Вылет</a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=depart_back">Возврат</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=countries.name">Куда</a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=airport_back">Откуда</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=visa">Виза</a></th>
+      <th class='short_date'><a href="/claims?direction=asc&amp;sort=visa_check">Срок по визе</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operators.name">Оператор</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_confirmation">Подтвержд.</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=primary_currency_price">Цена</a></th>
+      <th class='medium'><a href="/claims?direction=asc&amp;sort=calculation">Расчет</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=tourist_advance">Аванс</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=tourist_debt">Долг</a></th>
+      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=operator_price">Cумма оп-ру</a></th>
+      <th class='short_date'><a href="/claims?direction=asc&amp;sort=operator_maturity">Срок оплаты оп-ру</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_advance">Оплачено оп-ру</a></th>
+      <th><a href="/claims?direction=asc&amp;sort=operator_debt">Долг оп-ру</a></th>
       {{#columns.accountant_list}}
-        <th class='w45px thick_border green_back'><a href="/claims?direction=asc&amp;sort=approved_tourist_advance">Аванс<span class="sort_span " /></a></th>
-        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance">Оплачено оп-ру<span class="sort_span " /></a></th>
-        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance_prim">Оплачено оп-ру руб.<span class="sort_span " /></a></th>
-        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit">Нац-ка<span class="sort_span " /></a></th>
-        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit_in_percent">%<span class="sort_span " /></a></th>
+        <th class='w45px thick_border green_back'><a href="/claims?direction=asc&amp;sort=approved_tourist_advance">Аванс</a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance">Оплачено оп-ру</a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=approved_operator_advance_prim">Оплачено оп-ру руб.</a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit">Нац-ка</a></th>
+        <th class='w45px green_back'><a href="/claims?direction=asc&amp;sort=profit_in_percent">%</a></th>
       {{/columns.accountant_list}}
-      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=docs_ticket">Документы<span class="sort_span " /></a></th>
-      <th class='w50'><a href="/claims?direction=asc&amp;sort=docs_note">Примeчание<span class="sort_span " /></a></th>
-      <th class='w50'><a href="/claims?direction=asc&amp;sort=check_date">Контроль<span class="sort_span " /></a></th>
+      <th class='thick_border'><a href="/claims?direction=asc&amp;sort=docs_ticket">Документы</a></th>
+      <th class='w50'><a href="/claims?direction=asc&amp;sort=docs_note">Примeчание</a></th>
+      <th class='w50'><a href="/claims?direction=asc&amp;sort=check_date">Контроль</a></th>
       <th class='last_cols'></th>
       <th class='last_cols'></th>
     </tr>

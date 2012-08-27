@@ -15,7 +15,7 @@ class Claim < ActiveRecord::Base
                   :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
-  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :arrive_to, :depart_back,
+  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back,
                   :arrive_to, :arrive_back
 
   # marchroute block

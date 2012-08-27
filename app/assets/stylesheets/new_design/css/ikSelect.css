@@ -1,0 +1,66 @@
+.ik_select select{float: left;margin:0; padding:0; width:100%; opacity:0; filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0); position:absolute;}
+.ik_select{
+	display: inline-block;
+	height: 20px;
+	position: relative;
+	vertical-align: middle;
+	width: 180px;
+}
+.ik_select_link{
+	background: #fff url(../images/select.png) right center no-repeat;
+	border: 1px #d5d5d5 solid;
+	border-radius: 3px;
+	cursor: default;
+	height: 20px;
+	overflow: hidden;
+	position: relative;
+	white-space: nowrap;
+	width: 180px;
+}
+.ik_select_link_text{
+	display: block;
+	font-size: 13px;
+	height: 18px;
+	line-height: 14px;
+	overflow: hidden;
+	padding: 2px 20px 0 5px;
+	text-overflow: ellipsis;
+	width: 155px;
+}
+.ik_select_block{
+	display: none;
+	left: 0;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 9999;
+}
+.ik_select_list{
+	background-color: #fff;
+	border: 1px #030303 solid;
+	border-radius: 3px;
+	padding: 4px 0;
+	position: relative;
+	width: 180px;
+}
+.ik_select_list ul{margin: 0; padding: 0;}
+.ik_select_list li{
+	cursor: default;
+	font-size: 13px;
+	line-height: 14px;
+	margin: 0;
+	padding: 5px 21px;
+	position: relative;
+}
+.ik_select_list li.ik_select_hover{color: #999;}
+.ik_select_list li.ik_select_option_disabled{color: #999;}
+/* Type */
+.type .ik_select_list{border: 1px #030303 solid;}
+.type .ik_select_link{
+	background: #fff url(../images/select_dark.png) right center no-repeat;
+	border: 1px #030303 solid;
+}
+/* Filter */
+.filter .ik_select{
+	margin-right: 17px;
+}

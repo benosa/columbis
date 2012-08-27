@@ -1,0 +1,76 @@
+.clear { clear: both; }
+
+.header { overflow: visible; }
+
+/* Redefinition styles of new design */
+.logout {    
+    width: auto;
+    padding-left: 19px;
+}
+
+.reservation .dropdown-li li {
+  background: url("/assets/new_design/images/html.png") repeat-x scroll left top transparent;    
+}
+
+.reservation .dropdown-li li a, .reservation .dropdown-li li span {
+  background: none;
+}
+
+.reservation .dropdown-li li a:hover {
+  background: url("/assets/new_design/images/reservation_hover.png") no-repeat scroll left top transparent;    
+}
+
+.reservation .dropdown-li li span {  
+  color: #CCC;
+  display: block;
+  font-size: 13px;
+  height: 33px;
+  line-height: 14px;
+  padding: 15px 21px 0 19px;
+  text-align: center;
+  text-shadow: 0 -1px 0 #004D6E;
+}
+
+.databases li span {
+    background: url("/assets/new_design/images/databases_border.png") no-repeat scroll right center transparent;
+    color: #FFFFFF;
+    display: block;
+    font-size: 13px;
+    height: 33px;
+    line-height: 14px;
+    padding: 15px 22px 0 17px;
+    text-align: center;
+    text-shadow: 0 -1px 0 #000000;
+}
+
+.red_back, .nothing_done, .hot, .not_ready, .received {
+  background: url(/assets/new_design/images/red_box.png) right no-repeat !important;
+  background-color: #ED2222;
+}
+
+.orange_back, .docs_got, .soon {
+  background: url(/assets/new_design/images/sand_box.png) right no-repeat !important;
+  background-color: #ff8888;
+}
+
+.green_back, .docs_sent {
+  background: url(/assets/new_design/images/green_box.png) right no-repeat !important;
+  background-color: #21d00c;
+}
+
+.navy_back, .visa_approved {
+  background: url(/assets/new_design/images/blue_box.png) right no-repeat !important;
+  background-color: #96B1F0;
+}
+
+.blue_back, .all_done, .departed {
+  background: url(/assets/new_design/images/dark_blue_box.png) right no-repeat !important;
+  background-color: #bde0fa;
+}
+
+.gray_back {
+  background: url(/assets/new_design/images/grey_box.png) right no-repeat !important;
+  background-color: #ccc;
+}
+
+.ui-datepicker { display: none; }

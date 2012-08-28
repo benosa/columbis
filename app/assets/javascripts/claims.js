@@ -187,16 +187,11 @@ $(function(){
       success: function(resp){
         $('.claims').replaceWith(resp);
         afterLoadList();
+        // reset select customization
+        customizeSelect();
       }
     });
-  }
-
-  function afterLoadList() {
-    // reset ikSelect for selects
-    $("select").ikSelect({
-      autoWidth: false
-    });
-  }
+  }  
 
   // quick search
   var delay = (function(){

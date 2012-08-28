@@ -1,2 +1,3 @@
+uncustomizeSelect('#regions, #cities');
 $('#regions').replaceWith("#{ j(select_tag :regions, options_for_select(@country.regions.map{ |o| [o.name, o.id] })) }");
 $('#cities').replaceWith("#{ j(select_tag :cities, options_for_select(@country.regions.first.cities.map{ |o| [o.name, o.id] })) }");

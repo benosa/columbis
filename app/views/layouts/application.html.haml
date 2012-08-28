@@ -7,13 +7,13 @@
     - if javascript_local_data
       = javascript_tag(javascript_local_data)    
     = stylesheet_link_tag 'application'
-    - if (params[:controller] == 'claims' and params[:action] == 'index')
-      = stylesheet_link_tag 'new_design/css/ikSelect'
-      = stylesheet_link_tag 'new_design/css/style'
-      = stylesheet_link_tag 'common'
-      = stylesheet_link_tag 'claims'
-    - else
-      = stylesheet_link_tag 'old_style'      
+    / - if (params[:controller] == 'claims' and params[:action] == 'index')
+    /   = stylesheet_link_tag 'new_design/css/ikSelect'
+    /   = stylesheet_link_tag 'new_design/css/style'
+    /   = stylesheet_link_tag 'common'
+    /   = stylesheet_link_tag 'claims'
+    / - else
+    /   = stylesheet_link_tag 'old_style'      
     = javascript_include_tag 'application'    
     = csrf_meta_tag
     = yield(:head)

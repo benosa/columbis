@@ -103,10 +103,18 @@ $(function(){
     location.href = $(this).val();
   });
 
-  // use ikSelect for selects
-  $("select").ikSelect({
-    autoWidth: false
-  });
+  // customize all selects
+  customizeSelect();
 
 });
+
+function customizeSelect(selector) {  
+  $(selector || "select").ikSelect({
+    autoWidth: false
+  });
+}
+
+function uncustomizeSelect(selector) {  
+  $(selector || "select").ikSelect('detach');
+}
 

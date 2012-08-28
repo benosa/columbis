@@ -73,7 +73,11 @@ $(function(){
   // select regions
 	function loadRegions(country_id){
     $.ajax({
-      url: '/dashboard/get_regions/' + country_id
+      url: '/dashboard/get_regions/' + country_id,
+      success: function() {
+        // reset regions select customization
+        customizeSelect('#regions, #cities');        
+      }
     });
   }
 
@@ -84,7 +88,11 @@ $(function(){
   // select cities
   function loadCities(region_id){
     $.ajax({
-      url: '/dashboard/get_cities/' + region_id
+      url: '/dashboard/get_cities/' + region_id,
+      success: function() {
+        // reset cities select customization
+        customizeSelect('#cities');        
+      }
     });
   }
 
@@ -97,16 +105,16 @@ $(function(){
 		e.preventDefault();
 
     var id = $('#cities').val();
-    if ($('#tr_' + id).length == 0) {
-      var $tr = $('#etalon').clone(true);
-      $tr.attr('id', 'tr_' + id);
+    if ($('#li_' + id).length == 0) {
+      var $li = $('#etalon').clone(true);
+      $li.attr('id', 'li_' + id);
 
-      $tr.find('td:first').text($('#cities option:selected').text());
-      $tr.find('a').attr('id', 'del_' + id);
-      $tr.find('input[type=hidden]').attr('name', 'company[city_ids][]').val(id);
+      $li.find(':first').text($('#cities option:selected').text());
+      $li.find('a').attr('id', 'del_' + id);
+      $li.find('input[type=hidden]').attr({id: 'hid_' + id, name: 'company[city_ids][]'}).val(id);
 
-      $tr.removeAttr('style');
-      $('#selected_cities').append($tr);
+      $li.removeAttr('style');
+      $('#selected_cities').append($li);
     }
 	});
 
@@ -115,7 +123,7 @@ $(function(){
 		e.preventDefault();
 
     var id = $(this).attr('id').replace(/del_/, '');
-    $('#tr_'+id).remove();
+    $('#li_'+id).remove();
 	});
 
 });

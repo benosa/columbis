@@ -74,7 +74,7 @@
             %strong= t("activerecord.attributes.printer.#{builder.object.mode}")
             = builder.object.country.try(:name) if builder.object.mode == 'memo'
             = builder.object.template.file.identifier
-            = link_to t('download'), template_dashboard_company_path(@company, builder.object), :class => 'download'
+            = link_to t('download'), dashboard_template_path(builder.object), :class => 'download'
             = link_to_remove_fields t('delete'), builder
 
       = link_to t('add'), '#', :class => 'add'

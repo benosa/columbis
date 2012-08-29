@@ -58,7 +58,7 @@
 
     %h3= t('.printers')
     .nested_attributes.printers
-      = f.fields_for :printers do |builder|
+      = f.fields_for :printers, sort_printers(f.object.printers) do |builder|
         - if builder.object.new_record?
           %p.fields
             = builder.label :template

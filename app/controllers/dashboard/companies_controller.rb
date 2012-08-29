@@ -21,12 +21,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   def edit
     @company = current_company unless @company
-
-    @company.offices.build
-    @company.printers.build
-    if !@company.address.present?
-      @company.build_address
-    end
+    build_empty_associations
   end
 
   def update    
@@ -35,7 +30,18 @@ class Dashboard::CompaniesController < ApplicationController
       @company.address.update_attribute(:company_id, @company.id)
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
+      build_empty_associations
       render :action => "edit"
     end
   end
+
+  private
+
+    def build_empty_associations
+      @company.offices.build
+      @company.printers.build
+      if !@company.address.present?
+        @company.build_address
+      end
+    end
 end

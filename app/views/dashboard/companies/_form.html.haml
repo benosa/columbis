@@ -48,7 +48,7 @@
     %h3= t('.offices')
     .nested_attributes
       = f.fields_for :offices do |builder|
-        %p.fields
+        %p.fields{ :class => builder.object.new_record? && 'new_record' }
           = builder.label :name
           = builder.text_field :name
           = builder.label :default_password
@@ -58,9 +58,10 @@
 
     %h3= t('.printers')
     .nested_attributes.printers
-      = f.fields_for :printers do |builder|
-        - if builder.object.new_record?
-          %p.fields
+      - index = 0
+      = f.fields_for :printers, sort_printers(f.object.printers) do |builder|
+        - if builder.object.new_record?          
+          %p.fields.new_record
             = builder.label :template
             = builder.file_field :template
             = builder.label :mode
@@ -70,12 +71,16 @@
             /= builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
             = link_to_remove_fields t('delete'), builder
         - else
-          %p.fields
+          %p.fields{ :id => "printers_row_#{index}", :data => { :mode => builder.object.mode } }
             %strong= t("activerecord.attributes.printer.#{builder.object.mode}")
-            = builder.object.country.try(:name) if builder.object.mode == 'memo'
+            - if builder.object.mode == 'memo'
+              %span.country{ :id => "country_#{builder.object.country.try(:id)}" }
+                = builder.object.country.try(:name)            
             = builder.object.template.file.identifier
-            = link_to t('download'), template_dashboard_company_path(@company, builder.object), :class => 'download'
+            = link_to t('download'), dashboard_template_path(builder.object), :class => 'download'
+            = link_to t('edit'), '#', :class => 'edit'
             = link_to_remove_fields t('delete'), builder
+        - index += 1
 
       = link_to t('add'), '#', :class => 'add'
 

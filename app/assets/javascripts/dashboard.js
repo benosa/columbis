@@ -17,9 +17,10 @@ $(function(){
 	$('#list_filter').change(filter_table);
 
   //prepare fields
-  function process($fields) {
+  function process($fields, mode) {
     if ($fields.parent('.nested_attributes').hasClass('printers')) {
-      if ($.inArray($fields.find('.mode_select').val(), ['contract', 'warranty', 'permit', 'act']) != -1) {
+      mode = mode || $fields.find('.mode_select').val();
+      if ($.inArray(mode, ['contract', 'warranty', 'permit', 'act']) != -1) {
         $fields.find('.country_label').hide();
         $fields.find('.country_select').hide();
       } else {
@@ -30,14 +31,15 @@ $(function(){
   }
 
 	// add nested fields
-  $('.nested_attributes a.add').live('click', function(e) {
-		e.preventDefault();
+  function new_nested_fields(el, id) {
+    var $fields = $(el).closest('.nested_attributes').find('.fields.new_record').clone(true);
+    $fields.removeClass('new_record').css('display', 'block');
 
-    $fields = $(this).prev('.fields').clone(true);
-    $fields.css('display', '');
+    if (!id) {
+      id = parseInt($fields.find('input:first').attr('id').replace(/_attributes_/, ''));
+      id += 1;
+    }
 
-    var id = parseInt(/_attributes_(\d+)/.exec($fields.find('input:first').attr('id'))[1]);
-    id += 1;
     $fields.find('*').each(function (i) {
       if (!$(this).is('option')) {
         $(this).val('');
@@ -52,18 +54,53 @@ $(function(){
         $(this).attr('for', $(this).attr('for').replace(/_attributes_(\d+)/, '_attributes_' + id));
       }
     });
+    return $fields;
+  }
 
+  $('.nested_attributes a.add').live('click', function(e) {
+		e.preventDefault();
+    var $fields = new_nested_fields(this);
     $(this).before($fields);
     process($fields);
 	});
 
+  function remove_nested_fields(el, only_remove) {
+    if (!only_remove) {
+      $(el).prev('input[type=hidden]').val('1');
+      $(el).closest('.fields').hide();
+    } else
+      $(el).closest('.fields').remove();
+  }
+
 	// delete nested fields
   $('.nested_attributes a.remove').live('click', function(e) {
 		e.preventDefault();
-
-    $(this).prev('input[type=hidden]').val('1');
-    $(this).closest('.fields').hide();
+    remove_nested_fields(this);    
 	});
+
+  // add new file field for printer changing
+  $('.printers .edit').live('click', function(e) {
+    e.preventDefault();
+    var $fields, $parent = $(this).closest('.fields');
+    var parent_id = $parent.attr('id');
+
+    $fields = $parent.next('#' + parent_id + '_edit');
+    if (!$fields.length) {
+      $fields = new_nested_fields(this, parent_id.replace(/\D+/, ''));
+      $fields.attr('id', parent_id + '_edit');
+      $fields.find('.mode_select').val($parent.data('mode'));      
+      $fields.find('a.remove').die('click').click(function(e) {
+        e.preventDefault();
+        remove_nested_fields(this, true);
+      });
+      var $country = $parent.find('.country');
+      if ($country.length)
+        $fields.find('.country_select').val($country.attr('id').replace(/\D+/, ''));      
+    }
+
+    $parent.after($fields);
+    process($fields);
+  });
 
   // show-hide country when mode changed
   $('.printers .mode_select').live('change', function(e) {

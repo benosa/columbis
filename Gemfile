@@ -13,7 +13,7 @@ gem 'jquery-rails', '1.0.19'
 gem 'therubyracer'
 
 gem 'will_paginate', '~> 3.0'
-gem 'rails3-jquery-autocomplete', :git => 'https://github.com/etehtsea/rails3-jquery-autocomplete.git'
+gem 'rails3-jquery-autocomplete', '~> 1.0.9'
 gem 'ru_propisju', :git => 'https://github.com/terraplane/ru_propisju.git'
 gem 'stringex'
 

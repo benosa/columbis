@@ -25,7 +25,7 @@ class Company < ActiveRecord::Base
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :offices, :reject_if => proc { |attributes| attributes['name'].blank? }, :allow_destroy => true
-  accepts_nested_attributes_for :printers, :reject_if => proc { |attributes| attributes['template'].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
 
@@ -64,4 +64,16 @@ class Company < ActiveRecord::Base
   def dropdown_values_for(list)
     DropdownValue.values_for(list, id)
   end
+
+  private
+
+    def check_printers_attributes(attributes)
+      if attributes['id'].present?
+        # Will not update template field if it is blank
+        attributes.delete 'template' if attributes['template'].blank?
+        false
+      else
+        attributes['template'].blank?
+      end      
+    end
 end

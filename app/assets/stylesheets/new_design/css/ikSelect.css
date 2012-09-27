@@ -29,30 +29,38 @@
 }
 .ik_select_block{
 	display: none;
-	left: 0;
+	left: 1px;
 	position: absolute;
-	top: 0px;
+	top: 21px;
 	width: 100%;
 	z-index: 9999;
 }
 .ik_select_list{
 	background-color: #fff;
-	border: 1px #030303 solid;
+	border: 1px #d5d5d5 solid;
 	border-radius: 3px;
-	padding: 4px 0;
+	max-height: 117px;
+	padding-top: 2px;
 	position: relative;
-	width: 180px;
+	width: 178px;
 }
-.ik_select_list ul{margin: 0; padding: 0;}
+.ik_select_list ul{
+	display: block;
+	max-height: 112px;
+	overflow: auto;
+}
 .ik_select_list li{
 	cursor: default;
-	font-size: 13px;
-	line-height: 14px;
+	font-size: 12px;
+	line-height: 13px;
 	margin: 0;
-	padding: 5px 21px;
+	padding: 4px 10px 5px 10px;
 	position: relative;
 }
-.ik_select_list li.ik_select_hover{color: #999;}
+.ik_select_list li.ik_select_hover{
+	background-color: #4577bd;
+	color: #fff;
+}
 .ik_select_list li.ik_select_option_disabled{color: #999;}
 /* Type */
 .type .ik_select_list{border: 1px #030303 solid;}
@@ -61,6 +69,37 @@
 	border: 1px #030303 solid;
 }
 /* Filter */
-.filter .ik_select{
-	margin-right: 17px;
-}
+.filter .ik_select,.two_line .ik_select{margin-right: 17px;}
+.two_line .highlighted .ik_select{margin-right: 0px;}
+.fake_row .ik_select{margin-bottom: 6px;}
+.edit_page .filter .ik_select,.edit_page .filter .ik_select_link{width: 185px;}
+.edit_page .filter .ik_select_link_text{width: 160px;}
+.filter_select .ik_select_list{width: 183px;}
+
+.airline_select.ik_select,.airline_select .ik_select_link{width: 200px;}
+.airline_select .ik_select_link_text{width: 185px;}/* -15 */
+.airline_select .ik_select_list{width: 198px;}/* -2 */
+
+.payment_select.ik_select,.payment_select .ik_select_link{width: 119px;}
+.payment_select .ik_select_link_text{width: 104px;}/* -15 */
+.payment_select .ik_select_list{width: 117px;}/* -2 */
+
+.flight_from_select.ik_select,.flight_from_select .ik_select_link{width: 177px;}
+.flight_from_select .ik_select_link_text{width: 162px;}/* -15 */
+.flight_from_select .ik_select_list{width: 175px;}/* -2 */
+
+.tour_operator_select.ik_select,.tour_operator_select .ik_select_link{width: 154px;}
+.tour_operator_select .ik_select_link_text{width: 139px;}/* -15 */
+.tour_operator_select .ik_select_list{width: 152px;}/* -2 */
+
+.route_select.ik_select,.route_select .ik_select_link{width: 163px;}
+.route_select .ik_select_link_text{width: 148px;}/* -15 */
+.route_select .ik_select_list{width: 161px;}/* -2 */
+
+.resort_select.ik_select,.resort_select .ik_select_link{width: 174px;}
+.resort_select .ik_select_link_text{width: 159px;}/* -15 */
+.resort_select .ik_select_list{width: 171px;}/* -2 */
+
+.pagination_select.ik_select,.pagination_select .ik_select_link{width: 72px;}
+.pagination_select .ik_select_link_text{width: 57px;}/* -15 */
+.pagination_select .ik_select_list{width: 70px;}/* -2 */

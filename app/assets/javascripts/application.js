@@ -104,7 +104,7 @@ $(function(){
   });
 
   // customize all selects
-  customizeSelect();
+  // customizeSelect();
 
 });
 

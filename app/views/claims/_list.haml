@@ -9,7 +9,7 @@
           = sortable 'user_id', t('claims.index.manager')
           = sortable 'offices.name', t('claims.index.office')
       - else
-        %th.blue_box= sortable 'user_id', t('claims.index.manager')      
+        %th.blue_box= sortable 'user_id', t('claims.index.manager')
       %th.double_sort.w75.blue_box
         = sortable 'applicant.last_name', t('claims.index.full_name')
         %span= t('claims.index.phone_number')
@@ -21,7 +21,7 @@
         = sortable 'airport_back', t('claims.index.from')
       %th.double_sort.medium.sand_box
         = sortable 'visa_check', t('claims.index.term')
-        = sortable 'visa', t('claims.index.visa')        
+        = sortable 'visa', t('claims.index.visa')
       %th= sortable 'operators.name', t('claims.index.operator')
       %th= sortable 'operator_confirmation', t('claims.index.operator_confirmation')
       %th.purple_box= sortable 'primary_currency_price', t('claims.index.price')
@@ -51,35 +51,39 @@
         %td{ :full_value => claim.tourist_stat }
           = truncate(claim.tourist_stat, :length => 4)
         - if is_admin? or is_boss? or is_supervisor?
-          %td{ :class =>  claim.user.try(:color) && 'user_bg', :style => "background-color:#{claim.user.try(:color)}" }
-            %p{ :full_value => claim.user.try(:login) }
+          / %td{ :class =>  claim.user.try(:color) && 'user_bg', :style => "background-color:#{claim.user.try(:color)}" }
+          %td
+            %p{ :full_value => claim.user.try(:full_name), :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
               = truncate(claim.user.try(:login), :length => 8)
             %p{ :full_value => claim.office.name }
               = truncate(claim.office.name, :length => 8)
         - else
-          %td{ :full_value => claim.user.try(:login), :style => "background-color:#{claim.user.try(:color)}",
-            :class =>  claim.user.try(:color) && 'user_bg' }
-            = truncate(claim.user.try(:login), :length => 8)        
+          / %td{ :full_value => claim.user.try(:full_name), :style => "background-color:#{claim.user.try(:color)}",
+          /   :class =>  claim.user.try(:color) && 'user_bg' }
+          %td{ :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
+            = truncate(claim.user.try(:login), :length => 8)
+
         %td
           %p{ :full_value => tourists_list(claim) }
             = truncate(claim.applicant.try(:initials_name), :length => 8)
           %p{ :full_value => claim.applicant.try(:phone_number) }
-            = truncate(claim.applicant.try(:phone_number), :length => 10)
+            = text_value truncate(claim.applicant.try(:phone_number), :length => 10)
         %td{ :class => color_for_flight(claim) }
           %span{ :full_value => l(claim.depart_to, :format => :long) }
-            = l( claim.depart_to, :format => :short_date )
+            = text_value l( claim.depart_to, :format => :short_date )
           %p{ :full_value => claim.country.try(:name) }
-            = truncate(claim.country.try(:name), :length => 8)
+            = text_value truncate(claim.country.try(:name), :length => 8)
         %td
           %span{ :full_value => l(claim.depart_back, :format => :long) }
-            = l( claim.depart_back, :format => :short_date )        
+            = text_value l( claim.depart_back, :format => :short_date )
           %p{ :full_value => claim.city.try(:name) }
-            = truncate(claim.city.try(:name), :length => 6)
+            = text_value truncate(claim.city.try(:name), :length => 6)
         %td{ :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
           %span{ :full_value => l( claim.visa_check, :format => :short ) }
-            = l( claim.visa_check, :format => :short )
+            = text_value l( claim.visa_check, :format => :short )
           %p{ :full_value => text_for_visa(claim) }
             = text_for_visa(claim)
+
         %td{ :full_value => claim.operator.try(:name) }
           = claim.operator.try(:name)
         %td{ :full_value => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
@@ -123,7 +127,7 @@
       - [1, 5, 30, 50].each do |count|
         %option{ :data => { :link => search_claims_path(claims_params.merge({ :per_page => count })) },
           :selected => (count == per_page) && 'selected' }
-          = count          
+          = count
 
   - if @claims.next_page || @claims.previous_page
     .pagination

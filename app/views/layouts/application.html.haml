@@ -1,11 +1,11 @@
 !!!
-%html{ :manifest => params[:offline] && '/tourism.manifest' }
+%html{ :manifest => params[:offline] && '/tourism.manifest', :class => yield(:html_class) }
   %head
     %title
       = yield(:title) || 'Untitled'
     %meta{'http-equiv'=>'Content-Type', :content=>'text/html; charset=utf-8'}/
     - if javascript_local_data
-      = javascript_tag(javascript_local_data)    
+      = javascript_tag(javascript_local_data)
     = stylesheet_link_tag 'application'
     / - if (params[:controller] == 'claims' and params[:action] == 'index')
     /   = stylesheet_link_tag 'new_design/css/ikSelect'
@@ -13,30 +13,32 @@
     /   = stylesheet_link_tag 'common'
     /   = stylesheet_link_tag 'claims'
     / - else
-    /   = stylesheet_link_tag 'old_style'      
-    = javascript_include_tag 'application'    
+    /   = stylesheet_link_tag 'old_style'
+    = javascript_include_tag 'application'
+    / [if lt IE 9]
+      = javascript_include_tag 'css3-mediaqueries'
     = csrf_meta_tag
     = yield(:head)
 
   %body
-    #container
-      
+    #container.all
+
       .header
 
-        %ul#documents_to_print_menu.reservation.dropdown
+        %ul#documents_to_print_menu.reservation
           %li{:class => (params[:controller] == 'claims' and params[:action] == 'index') ? 'active' : ' '}
             = link_to 'Брони', claims_path, :id => 'claims_link'
           %li{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
             = link_to 'Новая заявка', new_claim_path
-          %li.dropdown-li
-            %a{:href => '#'} Документы &#9662;
+          %li.dropdown
+            %a{:href => '#'} Документы
             %ul
               - { :contract => 'Договор',
               :permit => 'Путевка',
               :warranty => 'Фингарантии',
               :memo => ['Памятка', :memo_printer_for, :country],
               :act => 'Акт' }.each do |mode, value|
-                %li{ :class => li_class(@claim, mode) }                  
+                %li{ :class => li_class(@claim, mode) }
                   - unless value.is_a?(Array)
                     - if @claim && !@claim.new_record? && @claim.company.try("#{mode}_printer".to_sym)
                       = link_to(value, claim_path(@claim.id, :print => mode), :target => '_blank')
@@ -55,34 +57,48 @@
               /   = (@claim && !@claim.new_record? && @claim.company.try(:permit_printer)) ? (link_to 'Путевка', claim_path(@claim.id, :print => 'permit'), :target => '_blank') : 'Путевка'
               / %li{ :class => li_class(@claim, :warranty) }
               /   = (@claim && !@claim.new_record? && @claim.company.try(:warranty_printer)) ? (link_to 'Фингарантии',
-              /     claim_path(@claim.id, :print => 'warranty'), :target => '_blank') : 'Фингарантии'          
+              /     claim_path(@claim.id, :print => 'warranty'), :target => '_blank') : 'Фингарантии'
               / %li{ :class => li_class(@claim, :memo) }
               /   = (@claim && !@claim.new_record? && @claim.company.try(:memo_printer_for, @claim.country)) ? (link_to 'Памятка', claim_path(@claim.id, :print => 'memo'), :target => '_blank') : 'Памятка'
               / %li{ :class => li_class(@claim, :act) }
               /   = (@claim && !@claim.new_record? && @claim.company.try(:act_printer)) ? (link_to 'Акт',
-              /     claim_path(@claim.id, :print => 'act'), :target => '_blank') : 'Акт'  
+              /     claim_path(@claim.id, :print => 'act'), :target => '_blank') : 'Акт'
               %li= link_to 'Приходник', '#'
           %li= link_to 'Справка', '#'
-          %li          
+          / %li
 
-          - if can? :switch_view, current_user
-            %li= link_for_view_switcher
-          
-      
+          / - if can? :switch_view, current_user
+          /   %li= link_for_view_switcher
+
+
         %ul.user_panel
           = render 'devise/menu/registration_items'
           = render 'devise/menu/login_items'
-          
+
         .clear
 
         %ul#databases_menu.databases
-          %li
-            %span Базы
-          %li= link_to 'Управление', dashboard_path, :class => (controller.controller_name == 'dashboard' ? 'active' : ' ')
-          %li= link_to 'Реквизиты фирмы', dashboard_edit_company_path, :class => (controller.controller_name == 'addresses' ? 'active' : ' ')
-          %li= link_to 'Туристы', tourists_path, :class => (controller.controller_name == 'tourists' ? 'active' : ' ')
-          %li= link_to 'Туроператоры', operators_path, :class => (params[:controller] == 'operators' ? 'active' : ' ')
-          %li= link_to 'Потенц. клиенты', clients_path, :class => (controller.controller_name == 'clients' ? 'active' : ' ')
+          / %li
+          /   %span Базы
+          %li.dropdown
+            %a{:href => '#'} Управление
+            %ul
+              %li= link_to t('.company'), dashboard_edit_company_path
+              %li= link_to t('.users'), dashboard_users_path
+              %li= link_to t('.operators'), operators_path
+              %li= link_to t('.dropdown_values'), dashboard_dropdown_values_path
+              %li= link_to t('.tourists'), tourists_path
+              %li= link_to t('.clients'), clients_path
+              %li= link_to t('.addresses'), addresses_path
+              %li= link_to t('.catalogs'), catalogs_path
+          %li{ :class => controller.controller_name == 'addresses' && 'active' }
+            = link_to 'Реквизиты фирмы', dashboard_edit_company_path
+          %li{ :class => controller.controller_name == 'tourists' && 'active' }
+            = link_to 'Туристы', tourists_path
+          %li{ :class => params[:controller] == 'operators' && 'active' }
+            = link_to 'Туроператоры', operators_path
+          %li{ :class => controller.controller_name == 'clients' && 'active' }
+            = link_to 'Потенц. клиенты', clients_path
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
 
@@ -109,9 +125,9 @@
 
           = yield
 
-      .footer
-        .footer_content
-          %p.copy &copy; Devmen. All rights reserved, 2012
-          %p.right tourism.devmen.com
+    .footer
+      .footer_content
+        %p.copy &copy; Devmen. All rights reserved, 2012
+        %p.right tourism.devmen.com
 
     #popup

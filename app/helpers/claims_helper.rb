@@ -10,9 +10,9 @@ module ClaimsHelper
 
   def sortable(column, title = nil)
     title ||= column.titleize
-    css_class = column == sort_column ? "active #{sort_direction}" : nil
+    css_class = column == sort_column ? "sort_active #{sort_direction}" : nil
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to(claims_params, { :class => css_class }) do
+    link_to(claims_params.merge({ :sort => column, :direction => direction }), { :class => css_class }) do
       raw(title.to_s) # + tag('span', :class => 'sort_span ' << css_class.to_s))
     end
   end
@@ -140,6 +140,11 @@ module ClaimsHelper
     else
       'departed'
     end
-  end  
+  end
+
+  def text_value(value)
+    return I18n.t(:nope) if value.nil? or value.is_a?(String) and value.blank?
+    value.to_s
+  end
 
 end

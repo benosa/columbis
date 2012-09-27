@@ -7,13 +7,13 @@ body, input, textarea {
 .header { overflow: visible; }
 
 /* Redefinition styles of new design */
-.logout {    
+.logout {
     width: auto;
     padding-left: 19px;
 }
 
-.reservation .dropdown-li li {
-  background: url("/assets/new_design/images/html.png") repeat-x scroll left top transparent;    
+/*.reservation .dropdown-li li {
+  background: url("/assets/new_design/images/html.png") repeat-x scroll left top transparent;
 }
 
 .reservation .dropdown-li li a, .reservation .dropdown-li li span {
@@ -21,10 +21,10 @@ body, input, textarea {
 }
 
 .reservation .dropdown-li li a:hover {
-  background: url("/assets/new_design/images/reservation_hover.png") no-repeat scroll left top transparent;    
+  background: url("/assets/new_design/images/reservation_hover.png") no-repeat scroll left top transparent;
 }
 
-.reservation .dropdown-li li span {  
+.reservation .dropdown-li li span {
   color: #CCC;
   display: block;
   font-size: 13px;
@@ -33,6 +33,18 @@ body, input, textarea {
   padding: 15px 21px 0 19px;
   text-align: center;
   text-shadow: 0 -1px 0 #004D6E;
+}*/
+
+.reservation li.dropdown ul li span {
+    display: block;
+    font-size: 13px;
+    line-height: 14px;
+    background: none repeat scroll 0 0 transparent;
+    color: #CCC;
+    height: auto;
+    padding: 5px 0 7px;
+    text-align: left;
+    text-shadow: 0 -1px 0 #FBFBFB;
 }
 
 .databases li span {
@@ -79,20 +91,22 @@ body, input, textarea {
 
 .ui-datepicker { display: none; }
 
-.wrapper h1 { 
+.wrapper h1 {
   margin: 4px 0;
 }
 
-.wrapper h2 {  
+.wrapper h2 {
   font-size: 15px;
   line-height: 16px;
-  margin: 8px 0;  
+  margin: 8px 0;
 }
 
-.wrapper h3 {  
+.wrapper h3 {
   font-weight: bold;
   margin: 4px 0;
 }
+
+.footer { min-height: 100px; }
 
 /*** Colors ***/
 .orange{color: #cc3300;}
@@ -105,8 +119,8 @@ body, input, textarea {
 
 /*** Tables ***/
 table {
-  background-color: #fff;  
-  font-size: 11px;  
+  background-color: #fff;
+  font-size: 11px;
 }
   table th{
     background: url(/assets/new_design/images/th.png) repeat-x left #CCCCCC;
@@ -115,7 +129,7 @@ table {
     padding: 0 4px;
     text-align: center;
     vertical-align: middle;
-    color: #666;    
+    color: #666;
     text-shadow: #fff 0px 1px 0px;
   }
     table th.sort a{

@@ -1,7 +1,7 @@
 ru:
   claims:
     index:
-      claims: 'Заявки'
+      claims: 'Бронирования'
       search: 'Поиск'
       only_my: 'Только мои'
       office: 'Отбор по офису'

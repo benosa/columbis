@@ -186,12 +186,11 @@ $(function(){
       data: params,
       success: function(resp){
         $('.claims').replaceWith(resp);
-        afterLoadList();
         // reset select customization
         customizeSelect();
       }
     });
-  }  
+  }
 
   // quick search
   var delay = (function(){

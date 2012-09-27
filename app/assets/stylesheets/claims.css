@@ -1,16 +1,16 @@
-.reservations { margin-top: 0; }
+.reservations { min-height: 300px; }
 
 .reservations th { min-width: 36px; }
 
 .reservations th.double_sort span:first-child {
     margin-top: 2px;
 }
-.reservations th.double_sort span {    
+.reservations th.double_sort span {
     margin: 5px 0;
     padding: 0 12px 0 4px;
     text-align: left;
 }
-.reservations th span {    
+.reservations th span {
     color: #666666;
     display: block;
     padding-top: 21px;
@@ -18,11 +18,17 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
-.reservations th a.active {
+.reservations th a.sort_active {
   font-weight: bold;
-  color: #222222;
-  text-decoration: underline;
+  /*color: #222222;
+  text-decoration: underline;*/
 }
+
+.reservations th a.sort_active.desc,.reservations th.double_sort a.sort_active.desc {
+  background: url(/assets/new_design/images/sort_active_desc.gif) right center no-repeat;
+}
+
+.reservations td .attention { margin-left: 2px; }
 
 /*
 .reservations th a.active.asc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right -5px transparent; }
@@ -33,8 +39,8 @@
 .reservations th.w75 { width: 75px; }
 .reservations th.w50px { width: 50px; }
 .reservations th.w45px { width: 45px; }
-.reservations th.last_cols { width: 14px; min-width: 0; }
-.reservations th.short_date { width: 45px; min-width: 0; }
+.reservations th.last_cols { width: 25px; }
+.reservations th.short_date { width: 45px; }
 
 .reservations td p {
   min-height: 1em;

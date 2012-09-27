@@ -1,3 +1,5 @@
+- content_for(:html_class) { 'main_page' }
+
 - title t('.claims')
 
 - content_for :top do
@@ -5,7 +7,7 @@
   %form#filter_bar.filter
     = label_tag :filter, t('.search')
     = text_field_tag :filter, nil, :class => 'search'
-    = submit_tag "", :class => 'go_search'    
+    = submit_tag "", :class => 'go_search'
 
     - if is_admin? or is_boss? or is_supervisor?
 

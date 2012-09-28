@@ -17,10 +17,19 @@ module ApplicationHelper
     end
   end
 
-  def per_page(default = 30)    
+  def per_page(default = 30)
     per_page = "#{current_user.login}-per_page".to_sym
     cookies[per_page] = params[:per_page] if params[:per_page].present?
     (cookies[per_page] || default).to_i
+  end
+
+  def current_path(args = {})
+    url_params = args.dup
+    if args[:save_params]
+      url_params.delete(:save_params)
+      url_params.reverse_merge!(params)
+    end
+    url_for(url_params)
   end
 
   def write_manifest_file
@@ -29,8 +38,8 @@ module ApplicationHelper
       :css => parse_css_paths_from_tags([view_context.stylesheet_link_tag('application'), view_context.stylesheet_link_tag('jquery-ui')].join),
       :img => get_asset_paths[:img]
     }
-    manifest_path = File.join(Rails.root, "public/tourism.manifest")    
-    File.open(manifest_path, 'w') do |file|      
+    manifest_path = File.join(Rails.root, "public/tourism.manifest")
+    File.open(manifest_path, 'w') do |file|
       file.puts manifest_default_text
       assets[:js].sort.each { |js| file.puts js }
       file.puts "\n"
@@ -40,7 +49,7 @@ module ApplicationHelper
         img = k == v ? "/assets/#{k}" : "/assets/#{k}\n/assets/#{v}"
         file.puts img
       end
-    end    
+    end
   end
 
   def javascript_local_data
@@ -62,7 +71,7 @@ module ApplicationHelper
         CACHE MANIFEST
         # #{Time.now.utc}
 
-        FALLBACK:        
+        FALLBACK:
         / /offline.html
 
         NETWORK:
@@ -103,7 +112,7 @@ module ApplicationHelper
         asset = Sprockets::Asset.new(assets, logical_path, pathname)
 
         key = File.extname(logical_path)[1..-1].to_sym
-        key = :img unless [:js, :css].include?(key)        
+        key = :img unless [:js, :css].include?(key)
         paths[key] = {} unless paths[key]
         paths[key][logical_path] = app.config.assets.digest ? asset.digest_path : asset.logical_path
       end
@@ -193,16 +202,16 @@ module ActiveRecord
         settings = {
           :options => options,
           :args => args.dup
-        }        
+        }
 
         # Check extra data hash or method
         if options[:extra_data].present?
-          settings[:extra_data] = options[:extra_data]         
+          settings[:extra_data] = options[:extra_data]
         end
 
         # Check extra data hash or method
         if options[:columns_filter].present?
-          settings[:columns_filter] = options[:columns_filter]         
+          settings[:columns_filter] = options[:columns_filter]
         end
 
         # Check data filter
@@ -216,7 +225,7 @@ module ActiveRecord
         end
 
         @local_data_setting = settings
-        
+
       elsif @local_data.nil?
         @local_data = []
         @local_data_setting ||= {}
@@ -224,9 +233,9 @@ module ActiveRecord
         settings = @local_data_setting
         options = settings[:options] || {}
         args = settings[:args] || []
-        
+
         # Add attributes
-        if options[:attributes].nil? || options[:attributes] == :all          
+        if options[:attributes].nil? || options[:attributes] == :all
           @local_data += attribute_names.map(&:to_sym)
         elsif options[:attributes]
           @local_data += options[:attributes]
@@ -234,7 +243,7 @@ module ActiveRecord
 
         # Add methods
         @local_data += args
-        
+
         # To add extra columns, if they are defined
         # All associations have to defined there
         if options[:extra_columns].present?
@@ -247,14 +256,14 @@ module ActiveRecord
 
         @local_data.uniq!
 
-        # To filter columns, if a columns filter is given        
+        # To filter columns, if a columns filter is given
         if settings[:columns_filter].present? and settings[:columns_filter].is_a? Symbol and self.respond_to? settings[:columns_filter]
           @local_data = @local_data.select { |column| self.send(settings[:columns_filter], column) }
-        end               
+        end
       end
 
       # Return all attribute names by default
-      @local_data || attribute_names.map(&:to_sym)     
+      @local_data || attribute_names.map(&:to_sym)
     end
 
     def self.local_data_settings
@@ -283,15 +292,15 @@ module ActiveRecord
       extra_data = settings[:extra_data]
       extra_data = self.send(extra_data) if extra_data.is_a?(Symbol)
       extra_data = {} unless extra_data.is_a? Hash
-      
-      self.class.local_data.each do |atr|        
+
+      self.class.local_data.each do |atr|
         if extra_data[atr].present?
           value = origin_value = extra_data[atr]
         elsif self.respond_to? atr
           origin_value = self.send atr
           value = local_data_default_value_handler(origin_value)
         end
-        
+
         # Use data filter, if it's defined
         data_filter = settings[:data_filter]
         if data_filter.respond_to?(:call)
@@ -301,7 +310,7 @@ module ActiveRecord
         end
 
         # Skip attribute if value is nil
-        data[atr] = value unless value.nil?          
+        data[atr] = value unless value.nil?
       end
 
       data
@@ -318,6 +327,6 @@ module ActiveRecord
           value
         end
       end
-    
+
   end
 end

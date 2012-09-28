@@ -214,12 +214,12 @@ $(function(){
   });
 
   // pagination
-  $(".pagination a").each(function(i){
+  $("#claims .pagination a").each(function(i){
     href = $(this).attr('href');
     $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
   });
 
-  $('.pagination a').live('click', function(e) {
+  $('#claims .pagination a').live('click', function(e) {
     e.preventDefault();
     loadList(null, $(e.currentTarget).attr('href'));
   });

@@ -59,6 +59,13 @@ body, input, textarea {
     text-shadow: 0 -1px 0 #000000;
 }
 
+.user_panel {
+    background: url("/assets/new_design/images/reservation_border.png") no-repeat scroll left top transparent;
+    padding-left: 10px;
+}
+
+.user_panel li { background-position: right top; }
+
 .red_back, .nothing_done, .hot, .not_ready, .received {
   background: url(/assets/new_design/images/red_box.png) right no-repeat !important;
   background-color: #ED2222;
@@ -91,7 +98,7 @@ body, input, textarea {
 
 .ui-datepicker { display: none; }
 
-.wrapper h1 {
+/*.wrapper h1 {
   margin: 4px 0;
 }
 
@@ -104,7 +111,7 @@ body, input, textarea {
 .wrapper h3 {
   font-weight: bold;
   margin: 4px 0;
-}
+}*/
 
 .footer { min-height: 100px; }
 
@@ -118,7 +125,7 @@ body, input, textarea {
 /*** END Colors ***/
 
 /*** Tables ***/
-table {
+/*table {
   background-color: #fff;
   font-size: 11px;
 }
@@ -186,10 +193,23 @@ table {
     table td span,table td p{
       display: block;
       margin: 4px 0;
-    }
+    }*/
+
+.reservations.tour_operators th { max-width: 350px; }
 /*** END Tables ***/
 
 div.left {
   float: left;
   margin-right: 2em;
 }
+
+/*** Float panel ***/
+.panel_content button, .panel_content input {
+    color: #FFFFFF;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 14px;
+}
+/*** END Float panel ***/

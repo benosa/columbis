@@ -3,11 +3,10 @@
 - title t('.claims')
 
 - content_for :top do
-  / = text_field_tag :full_value
+  -#
+    / = text_field_tag :full_value
   %form#filter_bar.filter
-    = label_tag :filter, t('.search')
-    = text_field_tag :filter, nil, :class => 'search'
-    = submit_tag "", :class => 'go_search'
+    = render 'shared/search_field'
 
     - if is_admin? or is_boss? or is_supervisor?
 

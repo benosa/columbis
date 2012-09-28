@@ -1,27 +1,49 @@
+- content_for(:body_class) { 'low_resolution panel' }
+
 - title t('.operators')
 
-%table
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+
+%table.reservations.tour_operators
   %tr
-    %th= Operator.human_attribute_name(:name)
-    %th= Operator.human_attribute_name(:register_number)
-    %th= Operator.human_attribute_name(:register_series)
-    %th= Operator.human_attribute_name(:inn)
-    %th= Operator.human_attribute_name(:ogrn)
-    %th= t('.address')
     %th
+      %a= Operator.human_attribute_name(:name)
     %th
+      %a= Operator.human_attribute_name(:register_number)
     %th
+      %a= Operator.human_attribute_name(:register_series)
+    %th
+      %a= Operator.human_attribute_name(:inn)
+    %th
+      %a= Operator.human_attribute_name(:ogrn)
+    %th{ :style => 'width: 350px;' }
+      %a= t('.address')
+    %th
+      %span= t('actions')
 
   - for operator in @operators
     %tr
-      %td= operator.name
-      %td= operator.register_number
-      %td= operator.register_series
-      %td= operator.inn
-      %td= operator.ogrn
-      %td= operator.address.present? ? operator.address.pretty_full_address : ''
-      %td= link_to t('show'), operator
-      %td= link_to t('edit'), edit_operator_path(operator)
-      %td= link_to t('destroy'), operator, :confirm => t('are_you_sure'), :method => :delete
+      %td
+        %p= operator.name
+      %td
+        %p= operator.register_number
+      %td
+        %p= operator.register_series
+      %td
+        %p= operator.inn
+      %td
+        %p= operator.ogrn
+      %td
+        %p= operator.address.present? ? operator.address.pretty_full_address : ''
+      %td
+        = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit')
+        = link_to '', operator, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
 
-%p= link_to t('.new_operator'), new_operator_path
+= render :partial => 'shared/pagination', :locals => { :collection => @operators }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_operator'), new_operator_path, :class => 'add_operator'
+

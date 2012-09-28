@@ -7,20 +7,15 @@
     - if javascript_local_data
       = javascript_tag(javascript_local_data)
     = stylesheet_link_tag 'application'
-    / - if (params[:controller] == 'claims' and params[:action] == 'index')
-    /   = stylesheet_link_tag 'new_design/css/ikSelect'
-    /   = stylesheet_link_tag 'new_design/css/style'
-    /   = stylesheet_link_tag 'common'
-    /   = stylesheet_link_tag 'claims'
-    / - else
-    /   = stylesheet_link_tag 'old_style'
+    - if low_resolution?
+      = stylesheet_link_tag 'new_design/css/low'
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
     = csrf_meta_tag
     = yield(:head)
 
-  %body
+  %body{ :class => yield(:body_class) }
     #container.all
 
       .header
@@ -49,20 +44,6 @@
                       = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
                     - else
                       %span= value[0]
-
-
-              / %li{ :class => li_class(@claim, :contract) }
-              /   = (@claim && !@claim.new_record? && @claim.company.try(:contract_printer)) ? (link_to 'Договор', claim_path(@claim.id, :print => 'contract'), :target => '_blank') : 'Договор'
-              / %li{ :class => li_class(@claim, :permit) }
-              /   = (@claim && !@claim.new_record? && @claim.company.try(:permit_printer)) ? (link_to 'Путевка', claim_path(@claim.id, :print => 'permit'), :target => '_blank') : 'Путевка'
-              / %li{ :class => li_class(@claim, :warranty) }
-              /   = (@claim && !@claim.new_record? && @claim.company.try(:warranty_printer)) ? (link_to 'Фингарантии',
-              /     claim_path(@claim.id, :print => 'warranty'), :target => '_blank') : 'Фингарантии'
-              / %li{ :class => li_class(@claim, :memo) }
-              /   = (@claim && !@claim.new_record? && @claim.company.try(:memo_printer_for, @claim.country)) ? (link_to 'Памятка', claim_path(@claim.id, :print => 'memo'), :target => '_blank') : 'Памятка'
-              / %li{ :class => li_class(@claim, :act) }
-              /   = (@claim && !@claim.new_record? && @claim.company.try(:act_printer)) ? (link_to 'Акт',
-              /     claim_path(@claim.id, :print => 'act'), :target => '_blank') : 'Акт'
               %li= link_to 'Приходник', '#'
           %li= link_to 'Справка', '#'
           / %li
@@ -91,8 +72,8 @@
               %li= link_to t('.clients'), clients_path
               %li= link_to t('.addresses'), addresses_path
               %li= link_to t('.catalogs'), catalogs_path
-          %li{ :class => controller.controller_name == 'addresses' && 'active' }
-            = link_to 'Реквизиты фирмы', dashboard_edit_company_path
+          / %li{ :class => controller.controller_name == 'addresses' && 'active' }
+          /   = link_to 'Реквизиты фирмы', dashboard_edit_company_path
           %li{ :class => controller.controller_name == 'tourists' && 'active' }
             = link_to 'Туристы', tourists_path
           %li{ :class => params[:controller] == 'operators' && 'active' }
@@ -102,13 +83,14 @@
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
 
-        .type
-          %p Вид:
-          %select#view_switcher
-            %option{ :value => claims_path(:list_type => 'manager_list'), :selected => params[:list_type] == 'manager_list' && 'selected' }
-              = t('claims.index.manager_list')
-            %option{ :value => claims_path(:list_type => 'accountant_list'), :selected => params[:list_type] == 'accountant_list' && 'selected' }
-              = t('claims.index.accountant_list')
+        - if view_switcher?
+          .type
+            %p Вид:
+            %select#view_switcher
+              %option{ :value => current_path(:list_type => 'manager_list'), :selected => params[:list_type] == 'manager_list' && 'selected' }
+                = t('claims.index.manager_list')
+              %option{ :value => current_path(:list_type => 'accountant_list'), :selected => params[:list_type] == 'accountant_list' && 'selected' }
+                = t('claims.index.accountant_list')
 
       .clear
         - flash.each do |name, msg|
@@ -124,6 +106,11 @@
           .clear
 
           = yield
+
+    - if content_for? :float_panel
+      .float_panel
+        .panel_content
+          = yield :float_panel
 
     .footer
       .footer_content

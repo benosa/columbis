@@ -3,7 +3,8 @@
     %span
       = t('user.roles.' + current_user.role)
       = link_to current_user.first_last_name, edit_user_registration_path
-      = ", офис #{current_office.name}"
+      - unless low_resolution?
+        = ", офис #{current_office.name}"
 - else
   %li
     = link_to(t('register'), new_user_registration_path)

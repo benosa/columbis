@@ -2,8 +2,8 @@
 *= require new_design/css/reset
 *= require jquery-ui
 * require dropdown
-*= require new_design/css/ikSelect
 *= require new_design/css/style
+*= require new_design/css/ikSelect
 *= require common
 *= require claims
 * require old_style

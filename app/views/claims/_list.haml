@@ -121,14 +121,17 @@
         %td
           = link_to '', edit_claim_path(claim), :class => 'edit_row'
 
-  .pagination
-    %p= t('claims.index.rows_on_page')
-    %select#per_page
-      - [1, 5, 30, 50].each do |count|
-        %option{ :data => { :link => search_claims_path(claims_params.merge({ :per_page => count })) },
-          :selected => (count == per_page) && 'selected' }
-          = count
+  -#
+    / .pagination
+    /   %p= t('claims.index.rows_on_page')
+    /   %select#per_page
+    /     - [1, 5, 30, 50].each do |count|
+    /       %option{ :data => { :link => search_claims_path(claims_params.merge({ :per_page => count })) },
+    /         :selected => (count == per_page) && 'selected' }
+    /         = count
 
-  - if @claims.next_page || @claims.previous_page
-    .pagination
-      = will_paginate @claims, :params => claims_params, :renderer => WillPaginateLinkRenderer, :class => nil
+    / - if @claims.next_page || @claims.previous_page
+    /   .pagination
+    /     = will_paginate @claims, :params => claims_params, :renderer => WillPaginateLinkRenderer, :class => nil
+
+  = render :partial => 'shared/pagination', :locals => { :path_helper => :search_claims_path, :pager_params => claims_params, :collection => @claims }

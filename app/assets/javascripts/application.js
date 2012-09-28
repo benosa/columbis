@@ -13,7 +13,11 @@
 //= require_tree .
 
 $(function(){
-  $('input.datepicker').datepicker({ dateFormat: 'dd.mm.yy' });
+  $('input.datepicker').datepicker({
+    showOn: 'focus',
+    buttonImage: false,
+    dateFormat: 'dd.mm.yy'
+  });
   $('input.datetimepicker').datetimepicker({
     timeOnlyTitle: 'Выберите время',
     timeText: 'Время',

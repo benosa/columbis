@@ -1,5 +1,13 @@
+- content_for(:body_class) { 'low_resolution panel edit_operator' }
+
 - title t('.new_operator')
 
-= render 'form'
+= form_for @operator do |form|
+  = render :partial => 'form', :locals => { :f => form }
 
-%p= link_to t('back_to_list'), operators_path
+  - content_for(:float_panel) do
+    = link_to t('back'), :back, :class => 'back'
+    = link_to t('save'), new_operator_path, :class => 'save'
+    / = form.submit t('save'), :class => 'save'
+    / = button_tag t('save'), :type => :submit, :value => t('save'), :class => 'save'
+    = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'

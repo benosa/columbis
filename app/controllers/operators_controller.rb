@@ -2,7 +2,7 @@ class OperatorsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @operators = current_company.operators
+    @operators = current_company.operators.paginate(:page => params[:page], :per_page => per_page)
   end
 
   def show

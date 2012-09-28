@@ -19,4 +19,12 @@ module LayoutHelper
   def javascript(*args)
     content_for(:head) { javascript_include_tag(*args) }
   end
+
+  def low_resolution?
+    content_for(:body_class).to_s =~ /low_resolution/
+  end
+
+  def view_switcher?
+    params[:controller] == 'claims' and params[:action] == 'index'
+  end
 end

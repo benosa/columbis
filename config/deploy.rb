@@ -1,20 +1,16 @@
+require 'capistrano_colors'
 require 'bundler/capistrano'
 require 'thinking_sphinx/deploy/capistrano'
 
-set :application, 'tourism'
-set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"
+require 'capistrano/ext/multistage'
+set :default_stage, "staging"
 
 set :scm, :git
+set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"
 
-role :app, "devmen.com"
-role :web, "devmen.com"
-role :db,  "devmen.com", :primary => true
-
-set :deploy_to, "/opt/apps/tourism"
 set :user, "deploy"
 set :use_sudo, false
 set :rails_env, "production"
-set :shared_host, "tourism.devmen.com"
 
 before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"

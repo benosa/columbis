@@ -10,3 +10,7 @@ production:
   <<: *my_settings
   port: 9333
   bin_path: '/usr/local/bin'
+staging:
+  <<: *my_settings
+  port: 9334
+  bin_path: '/usr/local/bin'

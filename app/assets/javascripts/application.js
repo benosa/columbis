@@ -107,18 +107,43 @@ $(function(){
     location.href = $(this).val();
   });
 
+  // trigger function exclusively after corresponding timeout
+  window.exclusive_delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
+
+  // bind submitting form for links with data-submit attribute
+  $('a[data-submit]').on('click', function(e) {
+    e.preventDefault();
+    var form_id = $(this).data('submit'),
+        $form = $('#' + form_id);
+    if (form_id && $form.length)
+      $form.submit();
+  });
+
   // customize all selects
-  // customizeSelect();
+  customizeSelect();
 
 });
 
-function customizeSelect(selector) {  
-  $(selector || "select").ikSelect({
+function customizeSelect(selector, is_container) {
+  var sel = selector || 'select',
+      $sel = $(sel);
+  if (is_container)
+    $sel = $sel.find('select');
+  $sel.ikSelect({
     autoWidth: false
   });
 }
 
-function uncustomizeSelect(selector) {  
-  $(selector || "select").ikSelect('detach');
+function uncustomizeSelect(selector, is_container) {
+  var sel = selector || 'select',
+      $sel = $(sel);
+  if (is_container)
+    $sel = $sel.find('select');
+  $sel.ikSelect('detach');
 }
-

@@ -64,6 +64,82 @@ module ApplicationHelper
     @javascript_local_data
   end
 
+  # Helper to filter and order the search results for model class based on params
+  def search_and_sort(model, *args)
+    options = search_and_sort_options(args)
+
+    if model.respond_to?(:search_and_sort)
+      model.send(:search_and_sort, options)
+    else
+      filter = options.delete(:filter)
+      model.search(filter, options)
+    end
+  end
+
+  def search_and_sort_options(*args)
+    options = args.extract_options!
+    defaults = options.delete(:defaults)
+    defaults = {} if defaults.nil?
+    defaults.reverse_merge!({
+      :star => true,
+      :filter => params[:filter] || '',
+      :page => params[:page],
+      :per_page => per_page
+    })
+    if params[:sort].present?
+      defaults.merge!({
+        :order => sort_col,
+        :sort_mode => sort_dir,
+        :ignore_default => true
+      })
+      # defaults[:sql_order] = "#{sort_col} #{sort_dir.upcase}"
+    end
+    options.reverse_merge!(defaults)
+  end
+
+  def search_or_sort?
+    params[:filter].present? or params[:sort].present?
+  end
+
+  def search_paginate(rel, options = {})
+    if rel.respond_to? :search_info
+      search_info = rel.search_info
+    elsif rel.respond_to?(:klass) && rel.klass.respond_to?(:search_info)
+      search_info = rel.klass.search_info
+    else
+      search_info = {
+        :total_pages => options[:total_pages],
+        :total_entries => options[:total_entries]
+      }
+    end
+    rel.paginate({
+      :page => options[:page],
+      :per_page => options[:per_page],
+      :count => search_info[:total_pages],
+      :total_entries => search_info[:total_entries]
+    }).offset(0) # use it to skip offset provided by will_paginate, because shinking sphinx return 1 page
+  end
+
+  def sort_col(default = :id)
+    params[:sort] ? params[:sort].to_sym : default
+  end
+
+  def sort_dir
+    %w[asc desc].include?(params[:dir]) ? params[:dir].to_sym : :asc
+  end
+
+  def sort_toggle_direction(dir)
+    dir.to_sym == :asc ? :desc : :asc
+  end
+
+  def sort_link(column, title = nil, default = nil)
+    col = column.to_sym
+    title ||= col.titleize
+    css_class = col == sort_col(default ? col : nil) ? "sort_active #{sort_dir}" : nil
+    dir = col == sort_col(default ? col : nil) ? sort_dir : :asc
+    link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
+  end
+
   private
 
     def manifest_default_text
@@ -167,9 +243,15 @@ class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
   protected
 
     def page_number(page)
-      id = "#{@options[:link_id] || @collection.to_s}_#{page}"
+      if @options[:link_id]
+        id = "#{@options[:link_id]}_page#{page}"
+      else
+        prefix = @collection.to_s
+        prefix = @collection.klass.to_s if @collection.try(:klass)
+        id = "#{prefix.tableize}_page#{page}"
+      end
       unless page == current_page
-        tag(:li, link(page, page, :rel => rel_value(page), :id => id))
+        tag(:li, link(page, page, :rel => rel_value(page), :id => id, 'data-param' => 'page', 'data-value' => page))
       else
         tag(:li, tag(:span, page, :class => 'active'), :id => id, :class => "active")
       end
@@ -177,7 +259,7 @@ class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
 
     def previous_or_next_page(page, text, classname)
       if page
-        tag(:li, link(text, page), :class => classname)
+        tag(:li, link(text, page, 'data-param' => 'page', 'data-value' => page), :class => classname)
       else
         tag(:li, tag(:span, text), :class => classname + ' disabled')
       end
@@ -196,6 +278,8 @@ end
 
 module ActiveRecord
   class Base
+
+    # Set the columns and values used for local data
     def self.local_data(*args)
       if args && args.length > 0
         options = args.extract_options!

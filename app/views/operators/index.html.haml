@@ -6,42 +6,7 @@
   %form.filter
     = render 'shared/search_field'
 
-%table.reservations.tour_operators
-  %tr
-    %th
-      %a= Operator.human_attribute_name(:name)
-    %th
-      %a= Operator.human_attribute_name(:register_number)
-    %th
-      %a= Operator.human_attribute_name(:register_series)
-    %th
-      %a= Operator.human_attribute_name(:inn)
-    %th
-      %a= Operator.human_attribute_name(:ogrn)
-    %th{ :style => 'width: 350px;' }
-      %a= t('.address')
-    %th
-      %span= t('actions')
-
-  - for operator in @operators
-    %tr
-      %td
-        %p= operator.name
-      %td
-        %p= operator.register_number
-      %td
-        %p= operator.register_series
-      %td
-        %p= operator.inn
-      %td
-        %p= operator.ogrn
-      %td
-        %p= operator.address.present? ? operator.address.pretty_full_address : ''
-      %td
-        = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit')
-        = link_to '', operator, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
-
-= render :partial => 'shared/pagination', :locals => { :collection => @operators }
+= render 'list'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

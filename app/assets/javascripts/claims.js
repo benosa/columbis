@@ -57,7 +57,7 @@ $(function(){
   });
 
   // change claims per page
-  $('#per_page').live('change', function() {
+  $('.claims #per_page').live('change', function() {
     var link = $('option:selected', this).data('link')
     loadList(null, link);
   });
@@ -193,16 +193,8 @@ $(function(){
   }
 
   // quick search
-  var delay = (function(){
-    var timer = 0;
-    return function(callback, ms){
-      clearTimeout (timer);
-      timer = setTimeout(callback, ms);
-    };
-  })();
-
-  $('#filter').keyup(function(){
-    delay(function(){
+  $('#filter_bar #filter').keyup(function(){
+    exclusive_delay(function(){
       loadList(getCurrentSortParams($('#claims th a.current'), true));
     }, 300 );
   });
@@ -214,12 +206,12 @@ $(function(){
   });
 
   // pagination
-  $("#claims .pagination a").each(function(i){
+  $(".claims .pagination a").each(function(i){
     href = $(this).attr('href');
     $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
   });
 
-  $('#claims .pagination a').live('click', function(e) {
+  $('.claims .pagination a').live('click', function(e) {
     e.preventDefault();
     loadList(null, $(e.currentTarget).attr('href'));
   });

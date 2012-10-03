@@ -1,3 +1,4 @@
 = label_tag :filter, t('search')
-= text_field_tag :filter, nil, :class => 'search'
+= text_field_tag :filter, nil, :class => 'search', :value => params[:filter],
+    :data => { :param => 'filter', :filter => 1, :event => 'keyup' }
 = submit_tag "", :class => 'go_search'

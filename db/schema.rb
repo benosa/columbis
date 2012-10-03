@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120720175112) do
+ActiveRecord::Schema.define(:version => 20120928212626) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -25,7 +25,10 @@ ActiveRecord::Schema.define(:version => 20120720175112) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
+    t.text     "joint_address"
   end
+
+  add_index "addresses", ["joint_address"], :name => "index_addresses_on_joint_address"
 
   create_table "catalogs", :force => true do |t|
     t.string   "name"

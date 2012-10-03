@@ -3,12 +3,11 @@
 - title t('.edit_operator', :operator => @operator.name)
 
 = form_for @operator do |form|
+  - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 
-  - content_for(:float_panel) do
-    = link_to t('back'), :back, :class => 'back'
-    = link_to t('delete'), operators_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
-    = link_to t('save'), new_operator_path, :class => 'save'
-    / = form.submit t('save'), :class => 'save'
-    / = button_tag t('save'), :type => :submit, :value => t('save'), :class => 'save'
-    = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), operators_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'

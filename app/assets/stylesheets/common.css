@@ -125,11 +125,11 @@ body, input, textarea {
 /*** END Colors ***/
 
 /*** Tables ***/
-/*table {
+.table {
   background-color: #fff;
   font-size: 11px;
 }
-  table th{
+  .table th{
     background: url(/assets/new_design/images/th.png) repeat-x left #CCCCCC;
     border: 1px #d5d5d5 solid;
     height: 67px;
@@ -139,7 +139,7 @@ body, input, textarea {
     color: #666;
     text-shadow: #fff 0px 1px 0px;
   }
-    table th.sort a{
+    .table th.sort a{
       background: url(/assets/new_design/images/sort.png) right top no-repeat;
       color: #666;
       display: block;
@@ -147,53 +147,53 @@ body, input, textarea {
       text-align: center;
       text-shadow: #fff 0px 1px 0px;
     }
-    table th.double_sort { vertical-align: middle; }
-    table th.double_sort a{
+    .table th.double_sort { vertical-align: middle; }
+    .table th.double_sort a{
       background-position: right 2px;
       padding: 0px 12px 0px 4px;
       margin: 5px 0;
       text-align: left;
     }
-    table th.double_sort a:first-child {margin-top: 2px;}
+    .table th.double_sort a:first-child {margin-top: 2px;}
 
-    table th.sand_box{background: url(/assets/new_design/images/sand_box.png) right no-repeat;}
-    table th.blue_box{background: url(/assets/new_design/images/blue_box.png) right no-repeat;}
-    table th.purple_box{background: url(/assets/new_design/images/purple_box.png) right no-repeat;}
-      table th.purple_box a{
+    .table th.sand_box{background: url(/assets/new_design/images/sand_box.png) right no-repeat;}
+    .table th.blue_box{background: url(/assets/new_design/images/blue_box.png) right no-repeat;}
+    .table th.purple_box{background: url(/assets/new_design/images/purple_box.png) right no-repeat;}
+      .table th.purple_box a{
         color: #666b99;
         padding-top: 16px;
       }
-    table th.purple_box.three_lines a{padding-top: 9px;}
-    table th.green_box{background: url(/assets/new_design/images/green_box.png) right no-repeat;}
-      table th.green_box a{
+    .table th.purple_box.three_lines a{padding-top: 9px;}
+    .table th.green_box{background: url(/assets/new_design/images/green_box.png) right no-repeat;}
+      .table th.green_box a{
         color: #587d57;
         padding-top: 16px;
       }
-  table td{
+  .table td{
     background: none;
     border: 1px #d5d5d5 solid;
     height: 52px;
     padding: 0 4px;
     vertical-align: middle;
   }
-  table .odd td { background: url(/assets/new_design/images/grey_box.png) right no-repeat; }
-  table tr td.red_box{background: url(/assets/new_design/images/red_box.png) right no-repeat;}
-  table tr td.chlorine_box{background: url(/assets/new_design/images/chlorine_box.png) right no-repeat;}
-  table tr td.purple_box{background: url(/assets/new_design/images/purple_box.png) right no-repeat;}
-  table tr td.dark_blue_box{background: url(/assets/new_design/images/dark_blue_box.png) right no-repeat;}
-    table td a{
+  .table .odd td { background: url(/assets/new_design/images/grey_box.png) right no-repeat; }
+  .table tr td.red_box{background: url(/assets/new_design/images/red_box.png) right no-repeat;}
+  .table tr td.chlorine_box{background: url(/assets/new_design/images/chlorine_box.png) right no-repeat;}
+  .table tr td.purple_box{background: url(/assets/new_design/images/purple_box.png) right no-repeat;}
+  .table tr td.dark_blue_box{background: url(/assets/new_design/images/dark_blue_box.png) right no-repeat;}
+    .table td a{
       color: #000;
       text-decoration: underline;
     }
-    table td a:hover{text-decoration: none;}
-    table td span{
+    .table td a:hover{text-decoration: none;}
+    .table td span{
       color: #666;
     }
-    table td span.red{color: #990000; text-shadow: #fff 0px 1px 0px;}
-    table td span,table td p{
+    .table td span.red{color: #990000; text-shadow: #fff 0px 1px 0px;}
+    .table td span,.table td p{
       display: block;
       margin: 4px 0;
-    }*/
+    }
 
 .reservations.tour_operators th { max-width: 350px; }
 /*** END Tables ***/

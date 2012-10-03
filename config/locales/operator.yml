@@ -4,7 +4,6 @@ ru:
       operators: 'Туроператоры'
       new_operator: 'Добавить оператора'
       name: 'Название'
-      address: 'Адрес'
     new:
       new_operator: 'Новый оператор'
       list_of_operator: 'Список операторов'
@@ -25,6 +24,8 @@ ru:
       contract_start: 'Дата начала действия договора'
       contract_end: 'Дата конца действия договора'
       common: 'Общие данные'
+    list:
+      address: 'Адрес'
 
   activerecord:
     attributes:

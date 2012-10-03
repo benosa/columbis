@@ -53,3 +53,6 @@
         %p= f.label t('.contract_end')
         = f.text_field :insurer_contract_end, :value => l(f.object.insurer_contract_end, :format => :long),
           :class => 'website datepicker'
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

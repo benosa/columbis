@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done].freeze
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze

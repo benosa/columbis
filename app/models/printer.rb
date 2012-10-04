@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Printer < ActiveRecord::Base
   MODES = %w[contract memo permit warranty act].freeze
 

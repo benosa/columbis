@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddOperatorPriceToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :operator_price, :float, :null => false, :default => 0.0

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeAirlineTypeInClaims < ActiveRecord::Migration
   def up
   	change_column :claims, :airline, :string

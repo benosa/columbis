@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CurrencyCourse < ActiveRecord::Base
   CURRENCIES = %w[rur eur usd].freeze
   PRIMARY_CURRENCY = CURRENCIES[0]

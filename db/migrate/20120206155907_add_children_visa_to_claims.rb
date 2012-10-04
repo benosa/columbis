@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddChildrenVisaToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :children_visa_price, :float, :default => 0.0, :null => false

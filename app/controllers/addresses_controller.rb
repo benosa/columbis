@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddressesController < ApplicationController
   def new
     @address = Address.new

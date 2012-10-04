@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateCountries < ActiveRecord::Migration
   def self.up
     create_table :countries do |t|

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class NotesController < ApplicationController
   def new
     @note = Note.new(:item_id => params[:item_id])

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddTransferToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :transfer, :string

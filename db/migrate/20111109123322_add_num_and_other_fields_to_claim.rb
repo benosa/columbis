@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddNumAndOtherFieldsToClaim < ActiveRecord::Migration
   def change
     add_column :claims, :airline_id, :integer

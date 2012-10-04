@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveDocsFrom_claims < ActiveRecord::Migration
   def up
     remove_column :claims, :docs_memo

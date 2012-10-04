@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Dashboard::ClaimsController < ApplicationController
   def all
     authorize! :claims_all, current_user

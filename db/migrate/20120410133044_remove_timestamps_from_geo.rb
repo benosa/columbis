@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveTimestampsFromGeo < ActiveRecord::Migration
   def up
     [:cities, :countries].each do |tab|

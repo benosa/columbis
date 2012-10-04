@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateTouristClaims < ActiveRecord::Migration
   def self.up
     create_table :tourist_claims do |t|

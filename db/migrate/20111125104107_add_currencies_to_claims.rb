@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddCurrenciesToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :visa_price_currency, :string, :null => false, :default => 'eur'

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class DashboardController < ApplicationController
   TABLES = %w[claims tourists payments operators addresses companies cities offices].freeze  
   

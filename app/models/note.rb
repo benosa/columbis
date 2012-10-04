@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Note < ActiveRecord::Base
   attr_accessible :value, :item_id, :item_field_id
   attr_protected :company_id

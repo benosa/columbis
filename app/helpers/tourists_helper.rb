@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module TouristsHelper
   def tourist_mustache_data(tourist)
     {

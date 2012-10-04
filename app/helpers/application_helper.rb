@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize

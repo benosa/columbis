@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddFieldsToClaim < ActiveRecord::Migration
   def change
     add_column :claims, :office_id, :integer

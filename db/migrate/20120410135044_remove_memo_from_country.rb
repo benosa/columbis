@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveMemoFromCountry < ActiveRecord::Migration
   def up
     remove_column :countries, :memo

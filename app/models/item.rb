@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Item < ActiveRecord::Base
   attr_protected :company_id
   belongs_to :company

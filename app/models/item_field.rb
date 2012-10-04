@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ItemField < ActiveRecord::Base
   attr_accessible :name, :catalog_id
   attr_protected :company_id

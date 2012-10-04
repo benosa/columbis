@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ItemFieldsController < ApplicationController
   before_filter :get_catalog
   before_filter :load_item_field, :only => [:edit, :update, :show, :destroy]

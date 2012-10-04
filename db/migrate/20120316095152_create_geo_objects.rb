@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateGeoObjects < ActiveRecord::Migration
   def self.up
     create_table :regions do |t|

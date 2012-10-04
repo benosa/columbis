@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveTitleFromCompanies < ActiveRecord::Migration
   def up
     remove_column :companies, :title

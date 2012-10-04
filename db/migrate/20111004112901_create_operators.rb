@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateOperators < ActiveRecord::Migration
   def self.up
     create_table :operators do |t|

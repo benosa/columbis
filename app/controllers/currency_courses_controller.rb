@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CurrencyCoursesController < ApplicationController
   def index
     @actual_courses = CurrencyCourse.actual_courses

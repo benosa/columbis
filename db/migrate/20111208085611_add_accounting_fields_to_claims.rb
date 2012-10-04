@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddAccountingFieldsToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :primary_currency_operator_price, :float, :null => false, :default => 0.0

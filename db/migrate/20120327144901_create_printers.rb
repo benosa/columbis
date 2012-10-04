@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreatePrinters < ActiveRecord::Migration
   def self.up
     create_table :printers do |t|

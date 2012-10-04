@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveCompanyFromCities < ActiveRecord::Migration
   def up
     remove_column :cities, :company_id

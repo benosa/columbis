@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeDateTypeInClaims < ActiveRecord::Migration
   def self.up
     change_column :claims, :arrival_date, :date

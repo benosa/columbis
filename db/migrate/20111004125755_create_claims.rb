@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateClaims < ActiveRecord::Migration
   def self.up
     create_table :claims do |t|

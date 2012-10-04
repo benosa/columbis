@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateCityCompanies < ActiveRecord::Migration
   def self.up
     create_table :city_companies do |t|

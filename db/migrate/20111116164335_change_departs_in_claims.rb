@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeDepartsInClaims < ActiveRecord::Migration
   def self.up
     remove_column :claims, :depart_to

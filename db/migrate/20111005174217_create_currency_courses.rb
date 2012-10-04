@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateCurrencyCourses < ActiveRecord::Migration
   def self.up
     create_table :currency_courses do |t|

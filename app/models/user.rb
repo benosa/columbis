@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
   ROLES = %w[admin boss supervisor manager accountant]
 

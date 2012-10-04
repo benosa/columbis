@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeDocsReadyInClaims < ActiveRecord::Migration
   def up
     add_column :claims, :documents_status, :string, :default => 'not_ready'

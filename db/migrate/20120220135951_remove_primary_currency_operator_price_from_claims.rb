@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemovePrimaryCurrencyOperatorPriceFromClaims < ActiveRecord::Migration
   def up
     remove_column :claims, :primary_currency_operator_price

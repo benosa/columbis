@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # module MustacheTemplateHandler
 #   def self.call(template)
 #     haml = "Haml::Engine.new(#{template.source.inspect}).render"

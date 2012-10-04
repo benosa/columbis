@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeVisaTypeToString < ActiveRecord::Migration
   def up
     change_column :claims, :visa, :string, :null => false

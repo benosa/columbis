@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Mailer < ActionMailer::Base
   def registrations_info(user)
     @user = user

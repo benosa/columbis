@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateTourists < ActiveRecord::Migration
   def change
     create_table :tourists do |t|

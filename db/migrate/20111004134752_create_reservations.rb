@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateReservations < ActiveRecord::Migration
   def self.up
     create_table :reservations do |t|

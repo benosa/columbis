@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
   match 'amount_in_word' => ApplicationController.action(:amount_in_word)

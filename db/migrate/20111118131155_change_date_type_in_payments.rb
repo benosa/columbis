@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeDateTypeInPayments < ActiveRecord::Migration
   def self.up
     change_column :payments, :date_in, :date

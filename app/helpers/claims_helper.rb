@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module ClaimsHelper
   def truncate(text, options = {})
     options.reverse_merge!(:omission => '')

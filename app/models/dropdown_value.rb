@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class DropdownValue < ActiveRecord::Base
   attr_accessible :list, :value
   attr_protected :company_id

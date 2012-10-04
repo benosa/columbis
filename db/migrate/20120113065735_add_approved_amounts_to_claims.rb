@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddApprovedAmountsToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :approved_operator_advance, :float, :null => false, :default => 0.0

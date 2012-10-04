@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateDropdownValues < ActiveRecord::Migration
   def self.up
     create_table :dropdown_values do |t|

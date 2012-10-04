@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Office < ActiveRecord::Base
   attr_accessible :name, :default_password
   attr_protected :company_id

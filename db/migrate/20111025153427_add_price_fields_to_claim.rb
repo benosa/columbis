@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddPriceFieldsToClaim < ActiveRecord::Migration
   def change
     add_column :claims, :tour_price, :float, :default => 0.0

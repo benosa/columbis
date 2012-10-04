@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   before_filter :get_catalog
   before_filter :load_item, :only => [:edit, :update, :show, :destroy]

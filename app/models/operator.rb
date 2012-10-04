@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Operator < ActiveRecord::Base
   attr_accessible :name, :register_number, :register_series, :inn, :ogrn, :site,
   				  :insurer, :insurer_address, :insurer_provision, :insurer_contract,

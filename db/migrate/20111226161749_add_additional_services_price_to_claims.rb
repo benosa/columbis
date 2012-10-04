@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddAdditionalServicesPriceToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :additional_services_price, :float, :default => 0.0, :null => false

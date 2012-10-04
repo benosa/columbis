@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAirlines < ActiveRecord::Migration
   def self.up
     create_table :airlines do |t|

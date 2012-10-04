@@ -9,7 +9,7 @@ html, body {height: 100%;}
 }
 .header{
 	height: 100px;
-	width: 1531px;
+	width: 1560px;
 }
 	.reservation{float: left;}
 		.reservation li,.user_panel li{
@@ -115,7 +115,7 @@ html, body {height: 100%;}
 			}
 				.databases li.dropdown ul{
 					background: #f4f4f4 url(../images/databases_dropdown.png) top no-repeat;
-					/*top: 49px;*/
+					top: 49px;
 					width: 141px;
 				}
 			.databases li:hover,.databases li.active{background: url(../images/databases_hover.png) repeat-x;}
@@ -170,7 +170,7 @@ html, body {height: 100%;}
 	margin: 18px 0 20px 0;
 	overflow: hidden;
 	padding: 0 0 78px 23px;
-	width: 1508px;
+	width: 1537px;
 }
 
 	.wrapper h1{
@@ -182,7 +182,7 @@ html, body {height: 100%;}
 	}
 /*** END wrapper ***/
 /*** Filter ***/
-.filter{
+.filter,.importance{
 	background: #e0e0e0;
 	background: -moz-linear-gradient(top,  #e0e0e0 0%, #e3e3e3 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0e0e0), color-stop(100%,#e3e3e3));
@@ -200,14 +200,14 @@ html, body {height: 100%;}
 	height: 27px;
 	padding: 4px 21px 0 20px;
 }
-	.filter label{
+	.filter label,.importance label{
 		display: inline-block;
 		font-size: 11px;
 		line-height: 12px;
 		margin: 5px 7px 0 0;
 		text-shadow: #fff 0px 1px 0px;
 	}
-		.filter label:first-child{float: left;}
+		.filter label:first-child,.importance label:first-child{float: left;}
 	input[type="text"].search{
 		border: 1px #d5d5d5 solid;
 		border-radius: 3px 0 0 3px;
@@ -241,6 +241,44 @@ html, body {height: 100%;}
 			text-shadow: #fff 0px 1px 0px;
 		}
 /*** END filter ***/
+/*** Switch_type ***/
+.switch_type{
+	background: url(../images/switch_type.png) no-repeat;
+	float: left;
+	height: 33px;
+	padding: 1px 0 0 2px;
+	width: 298px;
+}
+	.client{
+		color: #919191;
+		display: inline-block;
+		font-size: 13px;
+		font-weight: bold;
+		height: 23px;
+		line-height: 14px;
+		padding: 7px 11px 0px 14px;
+		text-align: center;
+		text-shadow: #fff 0px 1px 0px;
+	}
+	.client.active{ 
+		background: url(../images/client_right.png) right top no-repeat;
+		color: #fff;
+		display: inline-block;
+		font-size: 13px;
+		font-weight: bold;
+		height: 30px;
+		line-height: 14px;
+		padding: 0px 4px 0px 0px;
+		text-align: center;
+		text-shadow: #345a80 0px -1px 0px;
+	}
+		.client.active span{
+			background: url(../images/client.png) no-repeat;
+			display: block;
+			height: 23px;
+			padding: 7px 11px 0px 14px;
+		}
+/*** END switch_type ***/
 .reservations{
 	background-color: #fff;
 	border-radius: 3px 3px 0 0;
@@ -284,6 +322,17 @@ html, body {height: 100%;}
 		}
 			.reservations th.double_sort a:first-child{margin-top: 2px;}
 		.reservations th.two_row a{padding-top: 15px;}
+		.reservations th.colspan span{
+			float: left;
+			padding: 11px 0px 0px 10px;
+			width: 43px;
+		}
+		.reservations th.colspan a{
+			float: right;
+			padding-top: 36px;
+			width: 51px;
+		}
+			.reservations th.colspan a.sort_active{background-position: right 6px;}
 .reservations th.sand_box{background: url(../images/sand_box.png) right top no-repeat;}
 .reservations th.blue_box{background: url(../images/blue_box.png) right top no-repeat;}
 .reservations th.purple_box{background: url(../images/purple_box.png) right top no-repeat;}
@@ -305,6 +354,7 @@ html, body {height: 100%;}
 		vertical-align: middle;
 	}
 		.reservations .odd td{background: none;}
+		.reservations tr:hover,.reservations tr:hover td,.reservations tr:hover td.odd{background: #eaf0f7;}
 		.reservations tr td.red_box{background: url(../images/red_box.png) right top no-repeat;}
 		.reservations tr td.chlorine_box{background: url(../images/chlorine_box.png) right top no-repeat;}
 		.reservations tr td.purple_box{background: url(../images/purple_box.png) right top no-repeat;}
@@ -341,6 +391,31 @@ html, body {height: 100%;}
 			width: 14px;
 		}
 			.edit_row:hover{background: url(../images/attention.png) -42px 0 no-repeat;}
+		.lock{
+			background: url(../images/attention.png) -69px 0 no-repeat;
+			display: block;
+			float: left;
+			height: 14px;
+			margin-left: 19px;
+			width: 12px;
+		}
+			.lock:hover{background: url(../images/attention.png) -57px 0 no-repeat;}
+		.power{
+			background: url(../images/attention.png) -81px 0 no-repeat;
+			display: block;
+			float: left;
+			height: 14px;
+			margin-left: 20px;
+			width: 12px;
+		}
+			.power:hover{background: url(../images/attention.png) -93px 0 no-repeat;}
+		.download{
+			background: url(../images/attention.png) -105px 0 no-repeat;
+			display: block;
+			height: 14px;
+			width: 10px;
+		}
+			.download:hover{background: url(../images/attention.png) -115px 0 no-repeat;}
 .reservations td p span.hide_text{
 	background-color: #e6e6e6;
 	border-bottom: 1px #fff solid;
@@ -368,6 +443,18 @@ html, body {height: 100%;}
 		top: -5px;
 		width: 9px;
 	}
+.reservations td.big_row{
+	background: url(../images/big_row.png) right top repeat-x;
+	font-size: 18px;
+	text-shadow: #fff 0px 1px 0px;
+}
+	.reservations tr td.user_purple{background-color: #ccccff;}
+	.reservations tr td.user_green{background-color: #99cc99;}
+	.reservations tr td.user_orange{background-color: #ffcc99;}
+	.reservations tr td.user_beige{background-color: #f5f5dc;}
+	.reservations tr td.user_blue{background-color: #afeeee;}
+	.reservations tr td.user_light_green{background-color: #e7f6c0;}
+	.reservations tr td.user_grey{background-color: #ccc;}
 /*** Pagination ***/
 .pagination{
 	background: #e0e0e0;
@@ -444,7 +531,7 @@ html, body {height: 100%;}
 			.pagination li a.btn{padding: 4px 15px 0 15px;}
 /*** END pagination ***/
 /*** Inputs ***/
-input[type="text"]{
+input[type="text"],input[type="password"],textarea{
 	background-color: #fff;
 	border: 1px #d5d5d5 solid;
 	border-radius: 3px;
@@ -478,12 +565,41 @@ input[type="checkbox"]{display: none;}
 	.sum{width: 205px;}
 	.debt{width: 122px;}
 	.website{width: 266px;}
-	input.error,.error input{
+	.type_user{width: 430px;}
+	.value_input{width: 512px;}
+	.bank{width: 183px;}
+	.additional_services{width: 260px;}
+	.notes{width: 563px;}
+	.number_visas{width: 60px;}
+	.children_visa{width: 63px;}
+	.insurance{width: 38px;}
+	.paid{width: 92px;}
+	.credit{width: 139px;}
+	input.error,.error input,.error_message input{
 		background-color: #fce8e9;
 		color: #990000;
 	}
 	input.valid{background-color: #e7f9e9;}
 	input.disabled{background-color: #e7e7e7;}
+	.error_message input{border-color: #cd6a6a;}
+		.fake_row .error_message p{
+			color: #990000;
+			margin: -6px 0 11px 0;
+		}
+			.fake_row .error_message p:first-child{
+				color: #666;
+				margin: 0px 0 8px 0;
+			}
+	input.blue_input{background-color: #e6eff8;}
+	input.grey_input,textarea.grey_input{background-color: #e7e7e7;}
+	.fake_row textarea{
+		height: 39px;
+		line-height: 18px;
+		margin-bottom: 9px;
+		padding: 10px 19px 0 19px;
+		width: 628px;
+	}
+		.small .fake_row textarea{width: 707px;}
 /*** END inputs ***/
 /*** Edit_page ***/
 .edit_page .filter{
@@ -524,6 +640,7 @@ input[type="checkbox"]{display: none;}
 				padding-right: 25px;
 			}
 				.checkbox.right_checkbox.active{background: url(../images/checkbox.png) right -30px no-repeat;}
+			.checkbox.left_checkbox{padding-left: 25px;}
 		.float_right{float: right;}
 /*** END edit_page ***/
 /*** Check_list ***/
@@ -564,7 +681,7 @@ input[type="checkbox"]{display: none;}
 /*** Form_block ***/
 .form_block{
 	background-color: #fafafa;
-	border-radius: 3px;
+	border-radius: 4px;
 	clear: both;
 	display: inline-block;
 	margin-bottom: 10px;
@@ -600,18 +717,43 @@ input[type="checkbox"]{display: none;}
 			border-left: none;
 			border-right: none;
 			border-top: 1px #7bafda solid;
+			overflow: hidden;
 			width: 690px;
 		}
 		.block_title h2{
 			font-size: 18px;
 			line-height: 19px;
 			padding-top: 7px;
-			text-shadow: #fff 0px 1px 0px;
+			text-shadow: #fff 0px -1px 0px;
 		}
+			.blue_block .block_title h2{
+				color: #fff;
+				float: left;
+				text-shadow: #0f6284 0px -1px 0px;
+			}
+			.rates{
+				float: right;
+				height: 20px;
+				margin-right: 22px;
+				padding-top: 7px;
+			}
+				.rates p{
+					color: #fff;
+					float: left;
+					font-size: 13px;
+					line-height: 14px;
+					margin: 3px 9px 0 0;
+				}
+				.rates input.expires_date{
+					float: left;
+					text-align: center;
+				}
 	.form_block_content{
 		border: 1px #d5d5d5 solid;
 		border-top: none;
+		border-radius: 0 0 4px 4px;
 	}
+		.blue_block .form_block_content{background: url(../images/blue_box_content.png);}
 .fake_table{
 	overflow: hidden;
 	width: 708px;
@@ -627,6 +769,10 @@ input[type="checkbox"]{display: none;}
 		text-shadow: #fff 0px 1px 0px;
 	}
 		.fake_table span:first-child{background: #f4f4f4;}
+		.fake_table span em{
+			font-size: 11px;
+			line-height: 16px;
+		}
 		.fake_table span.fio{
 			padding-left: 20px;
 			width: 265px;
@@ -636,6 +782,7 @@ input[type="checkbox"]{display: none;}
 		.fake_table span.expires{width: 110px;}
 	.fake_row{
 		border-top: 1px #d5d5d5 solid;
+		border-radius: 0 0 4px 4px;
 		padding: 11px 0 7px 20px;
 		width: 688px;
 	}
@@ -648,6 +795,9 @@ input[type="checkbox"]{display: none;}
 			.fake_row .two_line label.checkbox{margin: 4px 8px 0 -5px;}
 			.fake_row .two_line .delete{margin: 5px 0 0 0;}
 			.due_date.two_line{margin: 0 123px 0 107px;}
+			.big_select.two_line{margin-left: 8px;}
+			.add_paying .two_line{margin-left: 32px;}
+			.add_paying .error.two_line{margin-left: 12px;}
 			.error.two_line p{color: #990000;}
 		.fake_row p,.fake_row label{
 			color: #666;
@@ -655,6 +805,11 @@ input[type="checkbox"]{display: none;}
 			line-height: 14px;
 			text-shadow: #fff 0px 1px 0px;
 		}
+			.fake_row p em{
+				color: #000;
+				font-size: 18px;
+				text-shadow: #fff 0px 1px 0px;
+			}
 		.fake_row label{
 			display: inline-block;
 			margin: 3px 14px 0 0;
@@ -708,12 +863,17 @@ input[type="checkbox"]{display: none;}
 	position: relative;
 	width: 720px;
 }
+	.order .form_column{
+		display: block;
+		float: left;
+	}
 	.form_column.small{
 		float: right;
 		width: 783px;
 	}
 		.form_column.small .form_block{width: 783px;}
-		.form_column.small .block_title,.form_column.small .fake_row{width: 761px;}
+		.form_column.small .block_title{width: 763px;}
+		.form_column.small .fake_row{width: 762px;}
 .highlighted{
 	background: url(../images/highlighted.png) repeat-x;
 	border-radius: 3px;
@@ -788,23 +948,109 @@ input[type="checkbox"]{display: none;}
 			.delete_operator{
 				background: url(../images/delete_operator.png) no-repeat;
 				float: right;
-				margin-left: 19px;
+				margin-left: 8px;
 				padding: 9px 0 0 43px;
 				text-shadow: #345a80 0px -1px 0px;
 				width: 73px;
 			}
+			.switch_user{
+				background: url(../images/switch_user.png) no-repeat;
+				float: right;
+				margin-left: 8px;
+				padding: 9px 0 0 45px;
+				text-shadow: #345a80 0px -1px 0px;
+				width: 211px;
+			}
+			.lost_pass{
+				background: url(../images/lost_pass.png) no-repeat;
+				float: right;
+				padding: 9px 0 0 0px;
+				text-align: center;
+				text-shadow: #3b3b3b 0px -1px 0px;
+				width: 150px;
+			}
 /*** END float_panel ***/
+/*** Calendar ***/
+.ui-datepicker{
+	background: url(../images/calendar.png) no-repeat;
+	display: none;
+	height: 227px;
+	padding: 5px 6px;
+	width: 240px;
+}
+	.ui-datepicker-header{
+		background: url(../images/calendar_header.png) no-repeat;
+		height: 30px;
+		padding: 5px 5px 0px 5px;
+		width: 230px;
+	}
+		.ui-datepicker-prev,.ui-datepicker-next{
+			float: left;
+			height: 25px;
+			width: 25px;
+		}
+			.ui-datepicker-prev span,.ui-datepicker-next span{display: none;}
+			.ui-datepicker-prev{
+				background: url(../images/calendar_left.png) no-repeat;
+				margin-right: 5px;
+			}
+			.ui-datepicker-next{
+				background: url(../images/calendar_right.png) no-repeat;
+				float: right;
+				margin-left: 5px;
+			}
+	.ui-datepicker-calendar{
+		background-color: #fff;
+		border: 1px #bec0c4 solid;
+		border-collapse: separate;
+		border-radius: 3px;
+		margin-top: 7px;
+		width: 240px;
+	}
+		.ui-datepicker-calendar th{
+			border-bottom: 1px #ebebeb solid;
+			color: #6f7276;
+			font-size: 9px;
+			font-weight: bold;
+			height: 25px;
+			text-align: center;
+			text-transform: uppercase; 
+			vertical-align: middle;
+		}
+		.ui-datepicker-calendar td{
+			color: #393b3c;
+			font-size: 11px;
+			font-weight: bold;
+			height: 31px;
+			text-align: center;
+			vertical-align: middle;
+			width: 30px;
+		}
+			.ui-datepicker-calendar td a{color: #393b3c;}
+			.ui-datepicker-calendar td.ui-datepicker-today a,.ui-datepicker-calendar td:hover a{
+				background: url(../images/today.png) no-repeat;
+				color: #fff;
+				display: block;
+				height: 19px;
+				margin: 0 auto;
+				padding-top: 4px;
+				text-align: center;
+				width: 24px;
+			}
+				.ui-datepicker-calendar td:hover a{background: url(../images/today_hover.png) no-repeat;color: #393b3c;}
+/*** END calendar ***/
 /*** Footer ***/
 .footer{
 	background-color: #e7e7e7;
 	border-top: 1px #d5d5d5 solid;
 	clear: both;
 	margin-top: -100px;
+	width: 1570px;
 }
 	.footer_content{
 		overflow: hidden;
 		padding: 20px 0 30px 23px;
-		width: 1508px;
+		width: 1537px;
 	}
 		.footer_content p{
 			color: #666;
@@ -813,9 +1059,7 @@ input[type="checkbox"]{display: none;}
 			text-shadow: #fff 0px 1px 0px;
 		}
 			.footer_content a{color: #666;}
-			.copy{
-				float: left;
-			}
+			.copy{float: left;}
 			.right{
 				float: right;
 				text-align: right;

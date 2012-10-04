@@ -17,6 +17,10 @@
 	white-space: nowrap;
 	width: 180px;
 }
+	.error .ik_select_link{
+		background-color: #fce8e9;
+		color: #990000;
+	}
 .ik_select_link_text{
 	display: block;
 	font-size: 13px;
@@ -62,6 +66,9 @@
 	color: #fff;
 }
 .ik_select_list li.ik_select_option_disabled{color: #999;}
+.small_margin .ik_select{margin-left: -13px;}
+.number_visas_block{margin: 0 6px 0 -9px;}
+.value_in_words{margin-left: 23px;}
 /* Type */
 .type .ik_select_list{border: 1px #030303 solid;}
 .type .ik_select_link{
@@ -101,5 +108,102 @@
 .resort_select .ik_select_list{width: 171px;}/* -2 */
 
 .pagination_select.ik_select,.pagination_select .ik_select_link{width: 72px;}
-.pagination_select .ik_select_link_text{width: 57px;}/* -15 */
+.pagination_select .ik_select_link_text{
+	padding-right: 40px;
+	text-align: right;
+	width: 37px;
+}/* -15 */
 .pagination_select .ik_select_list{width: 70px;}/* -2 */
+
+.single_row.ik_select,.single_row .ik_select_link{
+	margin-bottom: 12px;
+	width: 441px;
+}
+.highlighted .single_row.ik_select{margin-bottom: 0px;}
+.single_row .ik_select_link_text{width: 426px;}/* -15 */
+.single_row .ik_select_list{width: 439px;}/* -2 */
+
+.color_select.ik_select,.color_select .ik_select_link{width: 211px;}
+.color_select .ik_select_link_text{width: 196px;}/* -15 */
+.color_select .ik_select_list{width: 209px;}/* -2 */
+
+.importance_select.ik_select,.importance_select .ik_select_link{width: 257px;}
+.importance_select .ik_select_link_text{width: 242px;}/* -15 */
+.importance_select .ik_select_list{width: 255px;}/* -2 */
+
+.list_select.ik_select,.list_select .ik_select_link{width: 287px;}
+.list_select.ik_select{margin: 0px 38px 0 0;}
+.list_select .ik_select_link_text{width: 272px;}/* -15 */
+.list_select .ik_select_list{width: 285px;}/* -2 */
+
+.company_select.ik_select,.company_select .ik_select_link{width: 194px;}
+.company_select.ik_select{margin: 0px 0px 13px 0;}
+.company_select .ik_select_link_text{width: 179px;}/* -15 */
+.company_select .ik_select_list{width: 192px;}/* -2 */
+
+.company .list_select.ik_select,.company .list_select .ik_select_link{width: 205px;}
+.company .list_select.ik_select{
+	float: right;
+	margin: 0px 20px 0 0;
+}
+.company .list_select .ik_select_link_text{width: 190px;}/* -15 */
+.company .list_select .ik_select_list{width: 203px;}/* -2 */
+
+.food_select.ik_select,.food_select .ik_select_link{width: 102px;}
+.food_select .ik_select_link_text{width: 87px;}/* -15 */
+.food_select .ik_select_list{width: 100px;}/* -2 */
+
+.medical_insurance_select.ik_select,.medical_insurance_select .ik_select_link{width: 111px;}
+.medical_insurance_select .ik_select_link_text{width: 96px;}/* -15 */
+.medical_insurance_select .ik_select_list{width: 109px;}/* -2 */
+
+.placement_select.ik_select,.placement_select .ik_select_link{width: 152px;}
+.placement_select .ik_select_link_text{width:  137px;}/* -15 */
+.placement_select .ik_select_list{width: 150px;}/* -2 */
+
+.nights_select.ik_select,.nights_select .ik_select_link{width: 74px;}
+.nights_select .ik_select_link_text{width:  59px;}/* -15 */
+.nights_select .ik_select_list{width: 72px;}/* -2 */
+
+.crossing_select.ik_select,.crossing_select .ik_select_link{width: 92px;}
+.crossing_select .ik_select_link_text{width:  77px;}/* -15 */
+.crossing_select .ik_select_list{width: 90px;}/* -2 */
+
+.price_select.ik_select,.price_select .ik_select_link{width: 78px;}
+.price_select.ik_select{margin-bottom: 0px;}
+.price_select .ik_select_link_text{width:  63px;}/* -15 */
+.price_select .ik_select_list{width: 76px;}/* -2 */
+
+.number_visas_select.ik_select,.number_visas_select .ik_select_link{width: 65px;}
+.number_visas_select.ik_select{margin-bottom: 0px;}
+.number_visas_select .ik_select_link_text{width:  50px;}/* -15 */
+.number_visas_select .ik_select_list{width: 63px;}/* -2 */
+
+.insurance_select.ik_select,.insurance_select .ik_select_link{width: 49px;}
+.insurance_select.ik_select{margin-bottom: 0px;}
+.insurance_select .ik_select_link_text{width:  34px;}/* -15 */
+.insurance_select .ik_select_list{width: 47px;}/* -2 */
+
+.big_payment_select.ik_select,.big_payment_select .ik_select_link{width: 139px;}
+.big_payment_select .ik_select_link_text{width:  124px;}/* -15 */
+.big_payment_select .ik_select_list{width: 137px;}/* -2 */
+
+.documentation_select.ik_select,.documentation_select .ik_select_link{width: 248px;}
+.documentation_select .ik_select_link_text{width:  233px;}/* -15 */
+.documentation_select .ik_select_list{width: 246px;}/* -2 */
+
+.calendar_select.ik_select,.calendar_select .ik_select_link{width: 70px;}
+.calendar_select.ik_select{
+	float: left;
+	margin: 0 5px;
+}
+	.calendar_select .ik_select_link_text{
+		font-size: 12px;
+		line-height: 17px;
+	}
+.calendar_select .ik_select_link{
+	background: #fff url(../images/calendar_select.png) right center no-repeat;
+	border-color: #324873;
+}
+.calendar_select .ik_select_link_text{width: 55px;}/* -15 */
+.calendar_select .ik_select_list{width: 68px;}/* -2 */

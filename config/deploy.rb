@@ -1,16 +1,24 @@
+# -*- encoding : utf-8 -*-
 require 'capistrano_colors'
+require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'thinking_sphinx/deploy/capistrano'
 
 require 'capistrano/ext/multistage'
 set :default_stage, "staging"
 
+ssh_options[:forward_agent] = true
+default_run_options[:pty] = true
+
+set :rvm_ruby_string, "ree@tourism"
+set :rvm_type, :user
+
 set :scm, :git
+set :keep_releases, 5
 set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"
 
 set :user, "deploy"
 set :use_sudo, false
-set :rails_env, "production"
 
 before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"
@@ -19,10 +27,12 @@ after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
 
 #after "deploy:update_code", "deploy:repair_sequences"
+# after "deploy:update_code", "deploy:symlink_sphinx_indexes"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
 after "thinking_sphinx:start", "deploy:create_manifest"
+after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
   task :start do
@@ -41,6 +51,11 @@ namespace :deploy do
 
   task :uploads do
     run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
+  end
+
+  desc "Link up Sphinx's indexes"
+  task :symlink_sphinx_indexes, :roles => [:app] do
+    run "ln -nfs #{shared_path}/db/sphinx #{release_path}/db/sphinx" # If current_path doesn't work for you, use release_path.
   end
 
   desc "reload the database with seed data"

@@ -4,7 +4,7 @@ gem 'rails', '3.1.8'
 
 gem 'pg'
 gem 'haml'
-gem 'rack', '1.3.6'
+# gem 'rack', '1.3.6'
 
 gem 'devise'
 gem 'cancan'

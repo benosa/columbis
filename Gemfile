@@ -1,10 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.8'
+gem 'rails', '3.1.3'
 
 gem 'pg'
 gem 'haml'
-# gem 'rack', '1.3.6'
+gem 'rack', '1.3.5'
 
 gem 'devise'
 gem 'cancan'

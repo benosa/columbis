@@ -1,10 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+gem 'rails', '3.1.8'
 
 gem 'pg'
 gem 'haml'
-gem 'rack', '1.3.5'
+gem 'rack', '1.3.6'
 
 gem 'devise'
 gem 'cancan'
@@ -17,7 +17,7 @@ gem 'rails3-jquery-autocomplete', '~> 1.0.9'
 gem 'ru_propisju', :git => 'https://github.com/terraplane/ru_propisju.git'
 gem 'stringex'
 
-gem 'thinking-sphinx', '2.0.10'
+gem 'thinking-sphinx', '2.0.13'
 gem 'carrierwave'
 gem 'smt_rails', '~> 0.2.1'
 

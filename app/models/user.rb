@@ -20,7 +20,27 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :login
   validates_presence_of :login, :role
   validates_presence_of :company_id, :office_id, :unless => Proc.new{ %w[admin boss].include? self.role }
+  validates_presence_of :last_name, :first_name, :if => Proc.new{ self.role == 'admin' }
 
+  before_save do |user|
+    for attribute in [:last_name, :first_name, :middle_name]
+      user.send "#{attribute}=", user.send(attribute).strip
+    end
+  end
+
+  define_index do
+    indexes [:last_name, :first_name, :middle_name], :as => :fio, :sortable => true
+    indexes :login, :role, :email, :sortable => true
+    indexes office(:name), :as => :office, :sortable => true
+    has :company_id
+    has :office_id
+    # set_property :delta => true
+  end
+
+  sphinx_scope(:by_fio) { { :order => [:last_name, :first_name, :middle_name] } }
+  default_sphinx_scope :by_fio
+
+  default_scope :order => [:last_name, :first_name, :middle_name]
 
   def last_boss?
     User.where('role = \'boss\' AND company_id = ? AND id != ?', company_id, id).empty?
@@ -39,8 +59,8 @@ class User < ActiveRecord::Base
   end
 
   def self.available_colors
-    colors = YAML.load_file("#{Rails.root}/app/assets/colors.yml")
-    colors['colors'].sort
+    @available_colors = YAML.load_file("#{Rails.root}/app/assets/colors.yml")['colors'].sort unless @available_colors
+    @available_colors
   end
 
   def available_roles
@@ -52,6 +72,21 @@ class User < ActiveRecord::Base
     else
       [role]
     end
+  end
+
+  def update_by_params(params = {})
+    if params[:password].present?
+      update_with_password(params)
+    else
+      params.delete(:current_password)
+      update_without_password(params)
+    end
+  end
+
+  # Redefine Devise method for refining fields, that can't be deleted without asking for the current password
+  def update_without_password(params = {}, *options)
+    params.delete(:email)
+    super(params)
   end
 
   private

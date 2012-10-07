@@ -21,7 +21,7 @@
         %p= f.label :site
         = f.text_field :site, :class => 'website'
 
-%fieldset.form_column.first
+%fieldset.form_column
   .form_block
     .block_title
       %h2= t('.address')
@@ -30,7 +30,7 @@
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
 
-%fieldset.form_column.first
+%fieldset.form_column
   .form_block
     .block_title
       %h2= t('.insurer')

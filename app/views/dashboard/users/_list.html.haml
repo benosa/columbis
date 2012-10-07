@@ -1,0 +1,41 @@
+.current_container
+  %table.reservations.tour_operators
+    %tr
+      %th{ :style => 'width: 350px;' }
+        = sort_link(:fio, t('.fio'), :default)
+      %th.two_row= sort_link(:login, User.human_attribute_name(:login))
+      %th.two_row= sort_link(:role, User.human_attribute_name(:role))
+      %th= sort_link(:email, User.human_attribute_name(:email))
+      %th{ :style => 'width: 130px;' }
+        %span= t('actions')
+
+    - office_id = nil
+    - available_colors = Hash[User.available_colors]
+    - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
+    - @users.each do |user|
+      - if office_id != user.office_id
+        - office_id = user.office_id
+        - reset_cycle
+        %tr
+          %td.big_row{ :colspan => 5 }
+            %p= user.office.name
+      %tr{ :class => cycle('even', 'odd') }
+        %td
+          %p= user.full_name
+        %td{ :style => "background-color:#{user.color};", :class => "user_#{available_colors.send(key_method, user.color).underscore}" }
+          %p= user.login
+        %td
+          %p= user.role
+        %td
+          %p= user.email
+        %td
+          - if can? :update, user
+            = link_to '', edit_dashboard_user_path(user), :class => 'edit_row', :title => t('edit')
+          - if can? :destroy, user
+            = link_to '', [:dashboard, user], :method => :delete, :confirm => t('are_you_sure'), :class => 'delete', :title => t('delete')
+          - if can? :create, user
+            = link_to '', edit_password_dashboard_user_path(user), :class => 'lock', :title => t('.reset_password')
+          - if user != current_user and can?(:manage, user)
+            = link_to '', dashboard_sign_in_as_path(user), :class => 'power', :title => t('.sign_in_as')
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @users }

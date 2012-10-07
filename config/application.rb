@@ -50,5 +50,15 @@ module Tourism
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Use custom html wrapper for field with errors
+    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+      errors = Array(instance.error_message).join(',')
+      if html_tag =~ /^<label/
+        %(<div class="error_message">#{html_tag}).html_safe
+      else
+        %(#{html_tag}<p>#{errors}</p></div>).html_safe
+      end
+    end
   end
 end

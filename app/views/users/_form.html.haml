@@ -1,0 +1,71 @@
+= f.error_messages
+
+%fieldset.form_column.first
+  .form_block
+    .block_title
+      %h2= t('.credentials')
+    .form_block_content
+      .fake_row.single_row
+        %p= f.label :login
+        = f.text_field :login, :class => 'type_user'
+        %p= f.label :role
+        - if is_admin? or is_boss?
+          = f.collection_select :role, f.object.available_roles, :to_s, :humanize
+        - else
+          = f.text_field :role, :value => f.object.role, :disabled => true
+        %p= f.label :office_id
+        - if is_admin? or is_boss?
+          = f.select :office_id, f.object.company.offices.map {|o| [ o.name, o.id ] }
+        - else
+          = f.text_field :office, :value => f.object.office.try(:name), :disabled => true
+        %p= f.label :company
+        - if is_admin?
+          = f.select :company_id, Company.all.map{ |c| [c.name, c.id] }
+        - else
+          = f.text_field :company, :value => f.object.company.try(:name), :disabled => true
+
+  .form_block.grey_block
+    .block_title
+      %h2= t('.view_settings')
+    .form_block_content
+      .fake_row
+        - available_colors = Hash[User.available_colors]
+        - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
+        .two_line
+          %p= t('.color_for_lists')
+          = f.select :color, User.available_colors
+        .two_line
+          %p= t('.selected_color')
+          = text_field_tag nil, nil, :disabled => true,
+            :class => 'color color_sample', :style => "background-color: #{f.object.color};"
+
+%fieldset.form_column.last
+  .form_block
+    .block_title
+      %h2= t('.personal_data')
+    .form_block_content
+      .fake_row
+        %p= f.label :first_name
+        = f.text_field :first_name, :class => 'type_user'
+        %p= f.label :last_name
+        = f.text_field :last_name, :class => 'type_user'
+        %p= f.label :middle_name
+        = f.text_field :middle_name, :class => 'type_user'
+        %p= f.label :email
+        = f.text_field :email, :class => 'type_user'
+
+  .form_block.grey_block
+    .block_title
+      %h2= t('.change_password')
+    .form_block_content
+      .fake_row
+        %p= f.label :password
+        = f.password_field :password
+        %p= f.label :password_confirmation
+        = f.password_field :password_confirmation
+        %p= f.label :current_password
+        = f.password_field :current_password
+
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

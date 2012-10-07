@@ -93,8 +93,11 @@
                 = t('claims.index.accountant_list')
 
       .clear
-        - flash.each do |name, msg|
-          = content_tag :div, msg, :id => "flash_#{name}"
+        - if content_for? :messages
+          = yield :messages
+        - else
+          - flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_#{name}"
 
       .wrapper
         #content.content

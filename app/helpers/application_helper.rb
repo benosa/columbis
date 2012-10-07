@@ -65,9 +65,8 @@ module ApplicationHelper
   end
 
   # Helper to filter and order the search results for model class based on params
-  def search_and_sort(model, *args)
-    options = search_and_sort_options(args)
-
+  def search_and_sort(model, _options = {})
+    options = search_and_sort_options(_options)
     if model.respond_to?(:search_and_sort)
       model.send(:search_and_sort, options)
     else
@@ -76,8 +75,7 @@ module ApplicationHelper
     end
   end
 
-  def search_and_sort_options(*args)
-    options = args.extract_options!
+  def search_and_sort_options(options = {})
     defaults = options.delete(:defaults)
     defaults = {} if defaults.nil?
     defaults.reverse_merge!({
@@ -101,6 +99,7 @@ module ApplicationHelper
     params[:filter].present? or params[:sort].present?
   end
 
+  # To paginate scoped relation after it was searched by thinking sphinx
   def search_paginate(rel, options = {})
     if rel.respond_to? :search_info
       search_info = rel.search_info

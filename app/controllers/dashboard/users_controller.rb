@@ -40,8 +40,25 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def index
-    @offices = Office.accessible_by(current_ability).order(:name)
-    @users = User.accessible_by(current_ability).order(:role)
+    @can_search_by_office = (is_admin? or is_boss? or is_supervisor?)
+    @can_search_by_office = false
+    @users =
+      if search_or_sort?
+        search_options = {
+          :with => { :company_id => current_company.id }, # duplicate CanCan abilities
+          :include => :office,
+          :order => "office asc, #{sort_col} #{sort_dir}",
+          :sort_mode => :extended
+        }
+        # duplicate CanCan abilities
+        search_options[:with][:office_id] = current_office.id unless @can_search_by_office
+        search_and_sort(User, search_options)
+      else
+        User.accessible_by(current_ability).
+            includes(:office).reorder(['offices.name', :last_name, :first_name, :middle_name]).
+            paginate(:page => params[:page], :per_page => per_page)
+      end
+    render :partial => 'list' if request.xhr?
   end
 
   def show
@@ -53,7 +70,7 @@ class Dashboard::UsersController < ApplicationController
   def update
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
     params[:user][:role] = @user.role
-    if @user.update_attributes(params[:user])
+    if @user.update_by_params(params[:user])
       redirect_to dashboard_users_url, :notice => 'User was successfully updated.'
     else
       render :action => 'edit'

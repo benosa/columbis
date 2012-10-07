@@ -59,6 +59,10 @@ body, input, textarea {
     text-shadow: 0 -1px 0 #000000;
 }
 
+.databases li.dropdown ul {
+  top: 48px; /* fix dropdown blinking */
+}
+
 .user_panel {
     background: url("/assets/new_design/images/reservation_border.png") no-repeat scroll left top transparent;
     padding-left: 10px;
@@ -205,11 +209,16 @@ div.left {
 
 /*** Float panel ***/
 .panel_content button, .panel_content input {
-    color: #FFFFFF;
-    display: block;
-    font-size: 13px;
-    font-weight: bold;
-    height: 25px;
-    line-height: 14px;
+  color: #FFFFFF;
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  height: 25px;
+  line-height: 14px;
 }
 /*** END Float panel ***/
+
+/*** Filter bar ***/
+.small_filter { width: 150px !important; }
+.filter_margin { margin-right: 17px !important; }
+/*** END Filter bar ***/

@@ -15,11 +15,11 @@ class Operator < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  # default_scope :order => :name
+  default_scope :order => :name
 
   define_index do
     indexes :name, :register_number, :register_series, :inn, :ogrn, :sortable => true
-    indexes address(:joint_address), as => :joint_address, :sortable => true
+    indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :company_id
     # set_property :delta => true
   end

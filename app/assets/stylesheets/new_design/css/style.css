@@ -923,6 +923,10 @@ input[type="checkbox"]{display: none;}
 				text-shadow: #345a80 0px -1px 0px;
 				width: 86px;
 			}
+				.back:hover{
+					background: url(../images/back_hover.png) no-repeat;
+					text-shadow: #0d4b77 0px -1px 0px;
+				}
 			.add_operator{
 				background: url(../images/add_operator.png) no-repeat;
 				float: right;
@@ -945,6 +949,10 @@ input[type="checkbox"]{display: none;}
 				text-shadow: #345a80 0px -1px 0px;
 				width: 90px;
 			}
+				.save:hover{
+					background: url(../images/save_hover.png) no-repeat;
+					text-shadow: #406326 0px -1px 0px;
+				}
 			.delete_operator{
 				background: url(../images/delete_operator.png) no-repeat;
 				float: right;
@@ -953,6 +961,10 @@ input[type="checkbox"]{display: none;}
 				text-shadow: #345a80 0px -1px 0px;
 				width: 73px;
 			}
+				.delete_operator:hover{
+					background: url(../images/delete_operator_hover.png) no-repeat;
+					text-shadow: #7d2c2c 0px -1px 0px;
+				}
 			.switch_user{
 				background: url(../images/switch_user.png) no-repeat;
 				float: right;

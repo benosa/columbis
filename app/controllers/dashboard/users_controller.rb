@@ -11,15 +11,21 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def edit_password
-    render :partial => 'edit_password'
+    unless can? :create, User
+      redirect_to dashboard_users_url
+    end
   end
 
   def update_password
-    if @user.update_attributes(params[:user])
-      Mailer.registrations_info(@user).deliver
-    else
-      render :action => 'edit'
+    if can? :create, User
+      if @user.update_attributes(params[:user])
+        Mailer.registrations_info(@user).deliver
+      else
+        render :edit_password
+        return
+      end
     end
+    redirect_to dashboard_users_url
   end
 
   def new

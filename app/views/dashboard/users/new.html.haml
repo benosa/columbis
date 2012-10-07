@@ -1,2 +1,12 @@
+- content_for(:body_class) { 'low_resolution panel profile_edit' }
+
 - title t('.title')
-= render 'form'
+
+= form_for [:dashboard, @user] do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'users/form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+

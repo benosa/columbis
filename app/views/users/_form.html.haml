@@ -10,12 +10,12 @@
         = f.text_field :login, :class => 'type_user'
         %p= f.label :role
         - if is_admin? or is_boss?
-          = f.collection_select :role, f.object.available_roles, :to_s, :humanize
+          = f.select :role, current_user.available_roles.map{|r| [t("user.roles.#{r}"), r]}
         - else
-          = f.text_field :role, :value => f.object.role, :disabled => true
+          = f.text_field :role, :value => t("user.roles.#{f.object.role}"), :disabled => true
         %p= f.label :office_id
         - if is_admin? or is_boss?
-          = f.select :office_id, f.object.company.offices.map {|o| [ o.name, o.id ] }
+          = f.select :office_id, current_user.company.offices.map {|o| [ o.name, o.id ] }
         - else
           = f.text_field :office, :value => f.object.office.try(:name), :disabled => true
         %p= f.label :company
@@ -54,17 +54,18 @@
         %p= f.label :email
         = f.text_field :email, :class => 'type_user'
 
-  .form_block.grey_block
-    .block_title
-      %h2= t('.change_password')
-    .form_block_content
-      .fake_row
-        %p= f.label :password
-        = f.password_field :password
-        %p= f.label :password_confirmation
-        = f.password_field :password_confirmation
-        %p= f.label :current_password
-        = f.password_field :current_password
+  - if f.object == current_user and !f.object.new_record?
+    .form_block.grey_block
+      .block_title
+        %h2= t('.change_password')
+      .form_block_content
+        .fake_row
+          %p= f.label :password
+          = f.password_field :password
+          %p= f.label :password_confirmation
+          = f.password_field :password_confirmation
+          %p= f.label :current_password
+          = f.password_field :current_password
 
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }

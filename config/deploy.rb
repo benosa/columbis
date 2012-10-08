@@ -27,10 +27,10 @@ after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
 
 #after "deploy:update_code", "deploy:repair_sequences"
-# after "deploy:update_code", "deploy:symlink_sphinx_indexes"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
+# after 'deploy:finalize_update', 'deploy:symlink_sphinx_indexes'
 after "thinking_sphinx:start", "deploy:create_manifest"
 after "deploy:restart", "deploy:cleanup"
 
@@ -60,16 +60,16 @@ namespace :deploy do
 
   desc "reload the database with seed data"
   task :seed do
-    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && bundle exec rake db:seed RAILS_ENV=#{rails_env}"
   end
 
   desc "secuenses changes when need generate new value for relaten table"
   task :repair_sequences do
-    run "cd #{current_path}; bundle exec rake repair:sequences RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && bundle exec rake repair:sequences RAILS_ENV=#{rails_env}"
   end
 
   desc "generate cache manifest file"
   task :create_manifest do
-    run "cd #{release_path}; bundle exec rake manifest:create RAILS_ENV=#{rails_env}"
+    run "cd #{release_path} && bundle exec rake manifest:create RAILS_ENV=#{rails_env}"
   end
 end

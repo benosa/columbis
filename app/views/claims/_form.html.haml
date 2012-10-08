@@ -1,408 +1,65 @@
-.wrapper.claim
-  = form_for @claim do |f|
-    = f.error_messages
-    #left_block
-      .data_block
-        %table
-          %tr
-            %th.id= f.label :id
-            %th{ :colspan => 2 }
-              = f.label :operator_confirmation
-            %th{ :colspan => 2 }
-              = f.label :visa
-            %th{ :colspan => 2 }
-              = f.label :check_date
-          %tr
-            %td= f.text_field :id, :disabled => true, :value => (@claim.new_record? ? Claim.next_id : @claim.id)
-            %td= f.check_box :operator_confirmation_flag, { :style => 'width:12px;'}
-            %td= f.text_field :operator_confirmation, :class => @claim.operator_confirmation_flag ? 'blue_back' : 'red_back'
-            %td= f.check_box :visa_confirmation_flag, { :style => 'width:12px;'}
-            %td.datepicker
-              = f.text_field :visa_check, :class => ('datepicker ' << color_for_visa(@claim)), :value => l(@claim.visa_check, :format => :long)
-            %td= f.check_box :closed, { :style => 'width:12px;'}
-            %td.datepicker
-              = f.text_field :check_date, :class => "datepicker #{ check_date_status(@claim) }",
-                :value => l(@claim.check_date, :format => :long)
-          = f.hidden_field :visa
-        .lamp_block{ :style => "#{ 'background-position:top left;' if @claim.early_reservation}" }
-          = f.label :early_reservation
-          = f.check_box :early_reservation, { :style => 'width:12px;'}
+- claim = f.object
+= f.error_messages
 
-        %h2= t('.tourists')
-        %table#tourists
-          %tr
-            %th{ :style => 'width: 10px;' }
-            %th{ :style => 'width: 150px;' }
-              = t('.full_name')
-              .hint
-                = t('.tourists_full_name_hint')
-            %th= t('.date_of_birth')
-            %th{ :colspan => 2 }
-              = t('.passport')
-            %th= t('.passport_expire')
-            %th
-          = f.fields_for :applicant, @claim.applicant do |builder|
-            %tr.applicant
-              = render :partial => 'tourist', :locals => { :builder => builder }
-            %tr
-              %th
-              %th= t('.phone')
-              %th{ :colspan => 4 }
-                = t('.address')
-            %tr
-              %td
-              %td= builder.text_field :phone_number, :class => 'phone_number'
-              %td{ :colspan => 4 }
-                = builder.text_field :address, :class => 'address'
-            = builder.hidden_field :id
-          - ind = 2
-          = f.fields_for :dependents, @claim.dependents do |builder|
-            %tr.dependent{ :id => "dependent#{ind}"}
-              = render :partial => 'tourist', :locals => { :builder => builder, :ind => ind }
-              - ind += 1
+%fieldset.filter
+  .filter_row
+    = f.label :id
+    = f.text_field :id, :disabled => true, :value => (claim.new_record? ? Claim.next_id : claim.id), :class => 'number'
+    = f.label :operator_confirmation
+    = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back')
+    = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
+    = f.check_box :operator_confirmation_flag
 
-          %tr.footer
-            %td{ :colspan => 6 }
-              = link_to t('.add_another_tourist'), '#', :class => 'add'
+    .float_right
+      = f.label :visa
+      = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long)
+      = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
+      = f.check_box :visa_confirmation_flag
+      = f.label :check_date
+      = f.text_field :check_date, :class => 'visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long)
+      = f.label :reservation_date
+      = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
 
-        %h2= t('.flights')
-        %table#flights
-          %tr
-            %td.text_right= f.label :airline
-            %td{ :colspan => 2 }
-              = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select', :style => 'width:396px;';
-          %tr
-            %th
-            %th= t('.there')
-            %th= t('.back')
-          %tr
-            %td.text_right= f.label :airport_to, t('.airport')
-            %td= f.select :airport_to, current_company.dropdown_values_for('airport'), {},
-              :class => 'editable-select', :style => 'width: 197px;'
-            %td= f.select :airport_back, current_company.dropdown_values_for('airport'), {},
-              :class => 'editable-select', :style => 'width: 197px;'
-          %tr
-            %td.text_right= f.label :flight_to, t('.flight')
-            %td= f.text_field :flight_to
-            %td= f.text_field :flight_back
-          %tr
-            %td.text_right= f.label :depart_to, t('.depart')
-            %td.datepicker
-              = f.text_field :depart_to, :class => 'datetimepicker', :value => l(@claim.depart_to, :format => :long)
-            %td.datepicker
-              = f.text_field :depart_back, :class => 'datetimepicker', :value => l(@claim.depart_back, :format => :long)
-          %tr
-            %td.text_right= f.label :arrive_to, t('.arrive')
-            %td.datepicker
-              = f.text_field :arrive_to, :class => 'datetimepicker', :value => l(@claim.arrive_to, :format => :long)
-            %td.datepicker
-              = f.text_field :arrive_back, :class => 'datetimepicker', :value => l(@claim.arrive_back, :format => :long)
+  .filter_row
+    = f.label :user_id, t('.user')
+    - if is_admin? or is_boss?
+      = f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => @claim.user.nil?}
+    - else
+      = f.text_field :user_id, :value => @claim.user.try(:first_last_name), :disabled => true
 
-        %h2= t('.trip_documents')
-        %p
-          = f.label :documents_status
-          = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('claims.form.documents_statuses.' << o), o ] },
-            {}, :class => @claim.documents_status
-        %h2= t('.tourist_stat')
-        %p
-          = f.label :tourist_stat
-          = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat'), {}, :class => 'editable-select'
+    = f.label :office_id, t('.office')
+    - if is_admin? or is_boss?
+      = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => @claim.office.nil?}
+    - else
+      = f.text_field :office_id, :value => @claim.office.try(:name), :disabled => true
 
-        %p
-          %br
-          %br
-          = f.label :docs_note
-          %br
-          = f.text_area :docs_note, :rows => 6
+    .float_right
+      = f.label :early_reservation, :class => 'checkbox right_checkbox'
+      = f.check_box :early_reservation
+      = f.label :canceled, :class => 'checkbox right_checkbox'
+      = f.check_box :canceled
 
-        %p
-          = f.submit
-          - if (!@claim.new_record? && (can? :destroy, @claim))
-            = link_to t('destroy'), @claim, :confirm => t('are_you_sure'), :method => :delete, :class => 'button_delete'
+%fieldset.check_list
+  %ul
+    %li{ :class => !@claim.tourist_debt? && 'checked' }
+      = t('.tourist_debt')
+      %span= @claim.tourist_debt? ? t('yep') : t('nope')
+    %li{ :class => !@claim.operator_debt? && 'checked' }
+      = t('.operator_debt')
+      %span= @claim.operator_debt? ? t('yep') : t('nope')
+    %li{ :class => @claim.documents_ready? && 'checked' }
+      = t('.documents_ready')
+      %span= @claim.documents_ready? ? t('yep') : t('nope')
+    %li{ :class => @claim.has_memo? && 'checked' }
+      = t('.has_notes')
+      %span= @claim.has_memo? ? t('yep') : t('nope')
 
-    #center_block
-      %div.clr
-        %table#indicators.left_inside
-          %tr
-            %td.framed.tourist_debt_ind{ :class => color_for_tourist_advance(@claim) }
-              = (@claim.tourist_debt? ? t('yep') : t('nope'))
-            %td= t('.tourist_debt')
-          %tr
-            %td.framed.operator_debt_ind{ :class => color_for_operator_debt(@claim) }
-              = (@claim.operator_debt? ? t('yep') : t('nope'))
-            %td= t('.operator_debt')
-          %tr
-            %td.framed.documents_ready_ind{ :class => @claim.documents_status}
-              = (@claim.documents_ready? ? t('yep') : t('nope'))
-            %td= t('.documents_ready')
-          %tr
-            %td.framed.has_notes_ind{ :class => (!@claim.memo_tasks_done and @claim.memo != '') ? 'red_back' : 'blue_back'  }
-              = (@claim.has_memo? ? t('yep') : t('nope'))
-            %td= t('.has_notes')
-
-        %table#registration
-          %tr
-            %td
-              = f.check_box :canceled, { :style => 'width:12px;'}
-              = f.label :canceled
-            %td= f.label :reservation_date
-          %tr
-            %td
-            %td.datepicker= f.text_field :reservation_date, :class => ('datepicker'), :value => l(@claim.reservation_date, :format => :long)
-          %tr
-            %td= f.label :user_id, t('.user')
-            %td= f.label :office_id, t('.office')
-          %tr
-            - if is_admin? or is_boss?
-              %td= f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ] },
-                            {:include_blank => @claim.user.nil?},
-                            :class => 'small' 
-              %td= f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ] },
-                            {:include_blank => @claim.office.nil?},
-                            :class => 'small'
-            - else
-              %td
-                %strong.small= @claim.user.try(:first_last_name)
-              %td
-                %strong.small= @claim.office.try(:name)
-
-      .data_block
-        %h2= t('.marchroute')
-        %table#marchroute
-          %tr
-            %th{ :colspan => 2 }
-              Вылет из города
-            %th{ :colspan => 2 }
-              = f.label :operator_id, t('.operator')
-          %tr
-            %td{ :colspan => 2 }
-              = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-                :class => 'city editable-select', :style => 'width:344px'
-            %td{ :colspan => 2 }
-              = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
-                :class => 'operator editable-select', :style => 'width:205px'
-          %tr
-            %th= f.label :country, t('.direction')
-            %th= f.label :resort
-            %th{ :colspan => 2 }
-              = f.label :hotel
-          %tr
-            %td= f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'country editable-select', :style => 'width:168px'
-            %td= f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'resort editable-select', :style => 'width:168px'
-            %td{ :colspan => 2 }
-              = f.select :hotel, current_company.dropdown_values_for('hotel'), {},
-              :class => 'editable-select', :style => 'width:205px;';
-          %tr
-            %th= f.label :meals
-            %th= f.label :medical_insurance
-            %th= f.label :placement
-            %th= f.label :nights
-          %tr
-            %td= f.select :meals, current_company.dropdown_values_for('meals'), {},
-              :class => 'editable-select', :style => 'width:168px;';
-            %td= f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
-              :class => 'editable-select', :style => 'width:168px;';
-            %td= f.select :placement, current_company.dropdown_values_for('placement'), {},
-              :class => 'editable-select', :style => 'width: 162px;'
-            %td= f.select :nights, (1..30).to_a, {}, :class => 'editable-select'
-          %tr
-            %th= f.label :transfer
-            %th= f.label :service_class
-            %th{ :colspan => 2 }
-              = f.label :relocation
-          %tr
-            %td= f.select :transfer, current_company.dropdown_values_for('transfer'), {},
-              :class => 'editable-select', :style => 'width: 168px;'
-            %td= f.select :service_class, current_company.dropdown_values_for('service_class'), {},
-              :class => 'editable-select', :style => 'width: 168px;'
-            %td{ :colspan => 2 }
-              = f.select :relocation, current_company.dropdown_values_for('relocation'), {},
-              :class => 'editable-select', :style => 'width: 205px;'
-          %tr
-            %th{ :colspan => 4 }
-              = f.label :additional_services
-          %tr{ :class => 'countable' }
-            %td{ :colspan => 4 }
-              = f.text_field :additional_services
-          %tr
-            %td.left
-              = f.check_box :memo_tasks_done, { :style => 'width:12px;'}
-              = f.label :memo_tasks_done
-            %th{ :colspan => 3 }
-              = f.label :memo
-          %tr
-            %td{ :colspan => 4 }
-              = f.text_field :memo
-
-        %table#palm_block
-          %tr
-            %td{ :rowspan => 6, :width => '250px' }
-              = image_tag 'palm.png'
-          %tr
-            %th{ :colspan => 4 }= t('.arrival_date')
-          %tr
-            %td.text_right= t('.from')
-            %td= f.text_field :arrival_date, :class => 'datepicker red', :value => l(@claim.arrival_date, :format => :long)
-            %td.text_right= t('.til')
-            %td= f.text_field :departure_date, :class => 'datepicker red', :value => l(@claim.departure_date, :format => :long)
-          %tr
-            %td{ :colspan => 4 }
-              %h2= t('.tour_price')
-          %tr
-            %td{ :colspan => 2 }
-            %td{ :colspan => 2 }
-              = f.label :course_eur
-              = f.text_field :course_eur, :class => 'countable amount'
-          %tr
-            %td{ :colspan => 2 }
-            %td{ :colspan => 2 }
-              = f.label :course_usd
-              = f.text_field :course_usd, :class => 'countable amount'
-
-          %table#tour_price{ :style => 'float:none'}
-            %tr
-              %th{ :colspan => 3 }
-                = f.label :tour_price
-              %th{ :colspan => 2 }
-                = f.label :visa_price
-              %td= f.label :visa_count
-              %th{ :colspan => 2 }
-                = f.label :children_visa_price
-              %td= f.label :visa_count
-            %tr{ :class => 'countable' }
-              %td= f.text_field :tour_price, :class => 'red'
-              %td{ :colspan => 2 }
-                = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td.amount= f.text_field :visa_price
-              %td= f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td= f.select :visa_count, (0..30).to_a
-              %td.amount= f.text_field :children_visa_price
-              %td= f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td= f.select :children_visa_count, (0..30).to_a
-            %tr
-              %th{ :colspan => 3 }
-                = f.label :insurance_price
-              %th{ :colspan => 3 }
-                = f.label :additional_insurance_price
-              %th{ :colspan => 3 }
-                = f.label :fuel_tax_price
-            %tr{ :class => 'countable' }
-              %td.amount= f.text_field :insurance_price
-              %td= f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td= f.select :insurance_count, (0..30).to_a
-              %td.amount= f.text_field :additional_insurance_price
-              %td= f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td= f.select :additional_insurance_count, (0..30).to_a
-              %td.amount= f.text_field :fuel_tax_price
-              %td= f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td= f.select :fuel_tax_count, (0..30).to_a
-            %tr{ :class => 'countable' }
-              %th{ :colspan => 6, :style => 'text-align:right; padding-right:6px;' }
-                = f.label :additional_services_price
-              %td.amount= f.text_field :additional_services_price
-              %td= f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-              %td
-            %tr
-              %td{ :colspan => 9 }
-                %br
-            %tr
-              %th{ :colspan => 9 }
-                = f.label :primary_currency_price
-            %tr
-              %td.amount= f.text_field :primary_currency_price, :class => 'red'
-              %td{ :colspan => 8 }
-                = text_field_tag :price_as_string,
-                  @claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY), :class => 'red', :disabled => true
-            %tr
-              %th{ :colspan => 9 }
-                = f.label :calculation
-            %tr
-              %td{ :colspan => 9 }
-                = f.text_area :calculation, :rows => 4
-
-    #payments_block
-      .data_block
-        %h2= t('.payments_in')
-        %table#payments_in
-          %tr
-            %td{ :colspan => 2}
-              = f.label :maturity
-            %td.datepicker= f.text_field :maturity, :class => 'datepicker', :value => l(@claim.maturity, :format => :long)
-            %td
-          %tr.header
-            %th{ :style => 'width:12px;' }
-            %th= t('.date')
-            %th= t('.paid')
-            %th= t('.currency')
-            %th= t('.paid_in_word')
-            %th= t('.paid_type')
-          - ind = 0
-          = f.fields_for :payments_in do |builder|
-            %tr.fields{ :id => "payment_in_#{ind}"}
-              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?)
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
-                  :value => l(builder.object.date_in, :format => :long)
-              %td.amount= builder.text_field :amount, :class => 'amount'
-              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
-              %td= builder.text_field :description, :class => 'description', :disabled => true
-              %td{ :colspan => 2 }
-                = builder.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form'
-              %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
-            = builder.hidden_field :id
-            - ind += 1
-          %tr.footer
-            %td{ :colspan => 3}
-            %td= f.label :tourist_debt
-            %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
-          %tr.bottom
-            %td{ :colspan => 5}
-              = link_to t('.add_another_payment'), '#', :class => 'add'
-
-        %h2= t('.payments_out')
-        %table#payments_out
-          %tr
-            %td
-            %td= f.label :operator_price
-            %td.amount= f.text_field :operator_price
-            %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
-            %td{ :colspan => 2 }
-              = f.label :operator_maturity
-            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
-          %tr.header
-            %th{ :style => 'width:12px;' }
-            %th= t('.date')
-            %th= t('.paid')
-            %th= t('.currency')
-            %th= t('.course')
-            %th.paid= t('.paid') + " (#{@claim.operator_price_currency})"
-            %th= t('.paid_type')
-          - ind = 0
-          = f.fields_for :payments_out do |builder|
-            %tr.fields{ :id => "payment_out_#{ind}"}
-              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?),
-                :title => Payment.human_attribute_name(:approved)
-              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
-                :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
-              %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
-              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
-                {}, :class => 'currency', :disabled => true
-              %td.amount
-                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?
-              %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
-              %td= builder.select :form, current_company.dropdown_values_for('form'),
-                { :disabled => @claim.new_record? }, :class => 'payment_form', :disabled => @claim.new_record?
-              %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
-            = builder.hidden_field :id
-            - ind += 1
-          %tr.footer
-            %td{ :colspan => 3 }
-            %td= f.label :operator_debt
-            %td{ :colspan => 2 }= f.text_field :operator_debt, :disabled => true, :class => 'red'
-          %tr.bottom
-            %td{ :colspan => 6}
-              - if @claim.new_record?
-                .hint= t('.save_before_pay')
-              - else
-                = link_to t('.add_another_payment'), '#', :class => 'add'
+%fieldset.form_column
+  .form_block
+  .form_block.yellow_block
+  .form_block.green_block
+  .form_block.grey_block
+%fieldset.form_column.small
+  .form_block.yellow_block
+  .form_block.blue_block
+  .form_block.green_block

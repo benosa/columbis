@@ -13,11 +13,39 @@
 //= require_tree .
 
 $(function(){
-  $('input.datepicker').datepicker({
+  $(".datepicker").datepicker({
     showOn: 'focus',
     buttonImage: false,
-    dateFormat: 'dd.mm.yy'
+    changeMonth: true,
+    changeYear: true,
+    dateFormat: 'dd.mm.yy',
+    beforeShow: function(input, inst) {
+      var $dpdiv = $(inst.dpDiv),
+          opts = {
+            autoWidth: false,
+            customClass: "calendar_select",
+            ddCustomClass: "calendar_select"
+          },
+          timer;
+
+      if (!$dpdiv.data('_init'))
+        timer = setInterval(function() {
+          var $header = $dpdiv.find(".ui-datepicker-header");
+          if ($header.length) {
+            customizeSelect($header, true, opts);
+            $dpdiv.data('_init', true);
+            clearInterval(timer);
+          }
+        }, 13);
+      else
+        customizeSelect($dpdiv.find(".ui-datepicker-header"), true, opts);
+    },
+    onClose: function(dateText, inst) {
+      var $dpdiv = $(inst.dpDiv);
+      uncustomizeSelect($dpdiv.find(".ui-datepicker-header"), true);
+    }
   });
+
   $('input.datetimepicker').datetimepicker({
     timeOnlyTitle: 'Выберите время',
     timeText: 'Время',
@@ -130,14 +158,13 @@ $(function(){
 
 });
 
-function customizeSelect(selector, is_container) {
+function customizeSelect(selector, is_container, options) {
   var sel = selector || 'select',
-      $sel = $(sel);
+      $sel = $(sel)
+      opts = options || { autoWidth: false };
   if (is_container)
     $sel = $sel.find('select');
-  $sel.ikSelect({
-    autoWidth: false
-  });
+  $sel.ikSelect(opts);
 }
 
 function uncustomizeSelect(selector, is_container) {

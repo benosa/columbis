@@ -9,7 +9,7 @@ class Ability
       cannot :manage, Company
       can :manage, Company, :id => user.company_id
       can :manage, DropdownValue, :common=> true
-      can :offline_version, User      
+      can :offline_version, User
     elsif user.role == 'boss'
       can :switch_view, User
       can :search, Claim

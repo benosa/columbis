@@ -50,15 +50,12 @@ class Dashboard::UsersController < ApplicationController
     @can_search_by_office = false
     @users =
       if search_or_sort?
-        search_options = {
-          :with => { :company_id => current_company.id }, # duplicate CanCan abilities
+        search_and_sort(User, {
+          :with_current_abilities => true,
           :include => :office,
           :order => "office asc, #{sort_col} #{sort_dir}",
           :sort_mode => :extended
-        }
-        # duplicate CanCan abilities
-        search_options[:with][:office_id] = current_office.id unless @can_search_by_office
-        search_and_sort(User, search_options)
+        })
       else
         User.accessible_by(current_ability).
             includes(:office).reorder(['offices.name', :last_name, :first_name, :middle_name]).

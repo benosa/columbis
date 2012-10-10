@@ -67,6 +67,16 @@ module ApplicationHelper
   # Helper to filter and order the search results for model class based on params
   def search_and_sort(model, _options = {})
     options = search_and_sort_options(_options)
+    if options[:with_current_abilities]
+      options.delete(:with_current_abilities)
+      abilities_hash = current_ability.attributes_for(:read, model) || {}
+      if options[:with].present? and options[:with].kind_of? Hash
+        options[:with].reverse_merge!(abilities_hash)
+      else
+        options[:with] = abilities_hash
+      end
+    end
+    Rails.logger.debug "options: #{options.to_yaml}"
     if model.respond_to?(:search_and_sort)
       model.send(:search_and_sort, options)
     else

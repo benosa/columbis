@@ -4,16 +4,7 @@ class OperatorsController < ApplicationController
   def index
     @operators =
       if search_or_sort?
-        # search_and_sort(Operator, {
-        #   # Use company_id facet for operators instead of accessible_by(current_ability) of CanCan
-        #   # To use with CanCan maybe useful this gem https://github.com/sylogix/can_sphinx
-        #   :with => { :company_id => current_company.id }
-        #   :include => :address,
-        #   :per_page => per_page
-        # })
-        # Use company_id facet for operators instead of accessible_by(current_ability) of CanCan
-        # To use with CanCan maybe useful this gem https://github.com/sylogix/can_sphinx
-        options = search_and_sort_options(:with => { :company_id => current_company.id })
+        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Operator))
         search_paginate(Operator.search_and_sort(options).includes(:address), options)
       else
         Operator.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)

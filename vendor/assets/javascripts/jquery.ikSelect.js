@@ -96,7 +96,7 @@
         if(fakeSelect.data("ik_select_disabled")){
           return this;
         }
-        if ( !(ikselect.editable && $(e.target).is('.ik_select_link_text')) ) {
+        if (!ikselect.editable) {
           if(selectOpened.length){
             selectOpened.data("plugin_ikSelect").hide_block();
           }
@@ -104,7 +104,7 @@
             ikselect.show_block();
           }
           select.focus();
-        } else
+        } else if (!$(e.target).is('.ik_select_link_text'))
           linkText.focus();
       });
 
@@ -285,6 +285,7 @@
             ikselect.show_block();
           }
           link.addClass("ik_select_focus");
+          $(this).select();
         });
 
         // when focus left from input clear it, if there is no options with input value

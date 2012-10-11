@@ -52,6 +52,12 @@ ru:
       user: 'Менеджер'
       operator_confirmation: 'Подтверждение оператора'
       visa: 'Виза'
+      visa_statuses:
+        nothing_done: 'Не готова'
+        docs_got: 'Получена'
+        docs_sent: 'Отправлена'
+        visa_approved: 'Подтверждена'
+        all_done: 'Готова'
       check_date: 'Контрольная дата'
       operator: 'Туроператор'
       tourist: 'Турист'
@@ -78,13 +84,14 @@ ru:
       there: 'Туда'
       back: 'Обратно'
 
+      airline: 'Авиакомпания'
       airport: 'Аэропорт'
       flight: 'Номер рейса'
       depart: 'Время вылета'
       arrive: 'Время прибытия'
 
       full_name: 'ФИО туриста'
-      tourists_full_name_hint: '(на кого составлен Договор)'
+      tourists_full_name_hint: 'Договор оформлен на'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
       passport_expire: 'Действителен до'
@@ -112,6 +119,7 @@ ru:
       title: 'Новая заявка'
     edit:
       title: 'Редактировать заявку'
+      list_of_claim: 'Список заявок'
     show:
       title: 'Редактировать заявку'
     messages:

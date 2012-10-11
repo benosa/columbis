@@ -3,7 +3,7 @@
 
 - title t('.title', :id => @claim.id, :created_at => @claim.created_at)
 
-= form_for @claim do |form|
+= form_for @claim, :builder => TourismFormBuilder do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 

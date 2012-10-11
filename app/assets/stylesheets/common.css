@@ -71,32 +71,32 @@ body, input, textarea {
 .user_panel li { background-position: right top; }
 
 .red_back, .nothing_done, .hot, .not_ready, .received {
-  background: url(/assets/new_design/images/red_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/red_box.png) right repeat-x !important;
   background-color: #ED2222;
 }
 
 .orange_back, .docs_got, .soon {
-  background: url(/assets/new_design/images/sand_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/sand_box.png) right repeat-x !important;
   background-color: #ff8888;
 }
 
 .green_back, .docs_sent {
-  background: url(/assets/new_design/images/green_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/green_box.png) right repeat-x !important;
   background-color: #21d00c;
 }
 
 .navy_back, .visa_approved {
-  background: url(/assets/new_design/images/blue_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/blue_box.png) right repeat-x !important;
   background-color: #96B1F0;
 }
 
 .blue_back, .all_done, .departed {
-  background: url(/assets/new_design/images/dark_blue_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/dark_blue_box.png) right repeat-x !important;
   background-color: #bde0fa;
 }
 
 .gray_back {
-  background: url(/assets/new_design/images/grey_box.png) right no-repeat !important;
+  background: url(/assets/new_design/images/grey_box.png) right repeat-x !important;
   background-color: #ccc;
 }
 
@@ -222,3 +222,24 @@ div.left {
 .small_filter { width: 150px !important; }
 .filter_margin { margin-right: 17px !important; }
 /*** END Filter bar ***/
+
+/*** ikSelect ***/
+.ik_select_disabled { color: #999; }
+.ik_select_editable .ik_select_link_text {
+    border: none;
+    margin: 0;
+    padding: 0 10px 0 5px;
+    width: 135px;
+}
+/*** END ikSelect ***/
+
+/*** highlighted ***/
+.highlighted, .highlighted .ik_select { margin-right: 0; }
+.form_column .highlighted,
+.filter .highlighted.select, .two_line .highlighted.select { margin-right: 17px; }
+/*** END highlighted ***/
+
+/*** forms ***/
+.fake_row .two_line p label { margin: 0; }
+/*** END forms ***/
+

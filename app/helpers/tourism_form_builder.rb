@@ -3,7 +3,7 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
     define_method(method_name) do |name, *args|
       options = args.dup.extract_options!
       if !options[:not_highlighted] and @object.class.validators_on(name).any? { |v| v.instance_of? ActiveModel::Validations::PresenceValidator }
-        @template.content_tag('div', super(name, *args), :class => "highlighted #{method_name}")
+        @template.content_tag('div', super(name, *args), :class => "highlighted")
       else
         super(name, *args)
       end

@@ -49,6 +49,13 @@ ru:
   you_must_add_company_info: 'Для продолжения необходимо указать реквизиты компании'
   you_must_add_office: 'Для продолжения необходимо указать офис'
 
+  rur: 'руб.'
+  eur: '€'
+  usd: '$'
+  RUR: 'руб.'
+  EUR: 'EUR'
+  USD: 'USD'
+
   helpers:
     submit:
       create: 'Сохранить'

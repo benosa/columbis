@@ -11,8 +11,12 @@
     = f.check_box :operator_confirmation_flag
 
     .float_right
-      = f.label :visa
-      = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long)
+      = f.hidden_field :visa
+      = f.label :visa_check
+      = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long),
+          :disabled => !claim.visa_confirmation_flag
+      = select_tag '', options_for_select(Claim::VISA_STATUSES.map {|s| [ t(".visa_statuses.#{s}"), s ]}, claim.visa),
+          :id => 'claim_visa_status', :class => 'visa_status', :disabled => !claim.visa_confirmation_flag
       = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
       = f.check_box :visa_confirmation_flag
       = f.label :check_date
@@ -23,15 +27,17 @@
   .filter_row
     = f.label :user_id, t('.user')
     - if is_admin? or is_boss?
-      = f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => @claim.user.nil?}
+      = f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => claim.user.nil?},
+          :class => 'filter_select'
     - else
-      = f.text_field :user_id, :value => @claim.user.try(:first_last_name), :disabled => true
+      = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
 
     = f.label :office_id, t('.office')
     - if is_admin? or is_boss?
-      = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => @claim.office.nil?}
+      = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => claim.office.nil?},
+          :class => 'filter_select'
     - else
-      = f.text_field :office_id, :value => @claim.office.try(:name), :disabled => true
+      = f.text_field :office_id, :value => claim.office.try(:name), :disabled => true
 
     .float_right
       = f.label :early_reservation, :class => 'checkbox right_checkbox'
@@ -41,25 +47,181 @@
 
 %fieldset.check_list
   %ul
-    %li{ :class => !@claim.tourist_debt? && 'checked' }
+    %li{ :class => !claim.tourist_debt? && 'checked' }
       = t('.tourist_debt')
-      %span= @claim.tourist_debt? ? t('yep') : t('nope')
-    %li{ :class => !@claim.operator_debt? && 'checked' }
+      %span= claim.tourist_debt? ? t('yep') : t('nope')
+    %li{ :class => !claim.operator_debt? && 'checked' }
       = t('.operator_debt')
-      %span= @claim.operator_debt? ? t('yep') : t('nope')
-    %li{ :class => @claim.documents_ready? && 'checked' }
+      %span= claim.operator_debt? ? t('yep') : t('nope')
+    %li{ :class => claim.documents_ready? && 'checked' }
       = t('.documents_ready')
-      %span= @claim.documents_ready? ? t('yep') : t('nope')
-    %li{ :class => @claim.has_memo? && 'checked' }
+      %span= claim.documents_ready? ? t('yep') : t('nope')
+    %li{ :class => claim.has_memo? && 'checked' }
       = t('.has_notes')
-      %span= @claim.has_memo? ? t('yep') : t('nope')
+      %span= claim.has_memo? ? t('yep') : t('nope')
 
 %fieldset.form_column
-  .form_block
-  .form_block.yellow_block
-  .form_block.green_block
+  #tourists.form_block
+    .block_title
+      %h2= t('.tourists')
+    .form_block_content
+      .fake_table
+        %span.fio= t('.full_name')
+        %span.dob= t('.date_of_birth')
+        %span.passport= t('.passport')
+        %span.expires= t('.passport_expire')
+
+      = f.fields_for :applicant, claim.applicant do |af|
+        .fake_row
+          %p= t('.tourists_full_name_hint') + ':'
+          .applicant
+            = render :partial => 'tourist', :locals => { :f => af }
+
+          = af.label :phone_number, t('.phone') + ':'
+          = af.text_field :phone_number, :class => 'phone_number phone'
+          = af.label :address, t('.address') + ':', :class => 'address_label'
+          = af.text_field :address, :class => 'address'
+          = af.hidden_field :id
+
+      - ind = 2
+      = f.fields_for :dependents, claim.dependents do |df|
+        .fake_row.dependent{ :id => "dependent#{ind}"}
+          = render :partial => 'tourist', :locals => { :f => df, :ind => ind }
+          - ind += 1
+
+      .fake_row.add_row
+        .add_btn
+          = link_to t('.add_another_tourist'), '#', :class => 'add add_tourist'
+
+  #flights.form_block.yellow_block
+    .block_title
+      %h2= t('.flights')
+    .form_block_content
+      .fake_row
+        %p= t('.airline')
+        = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
+      .fake_row
+        .two_line
+          %p
+            %strong= t('.there')
+          = f.select :airport_to, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
+              :not_highlighted => true
+        .two_line
+          %p= f.label :flight_to, t('.flight')
+          = f.text_field :flight_to, :class => 'expires_date'
+        .two_line
+          %p= f.label :depart_to, t('.depart')
+          = f.text_field :depart_to, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
+        .two_line
+          %p= f.label :arrive_to, t('.arrive')
+          = f.text_field :arrive_to, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)
+      .fake_row
+        .two_line
+          %p
+            %strong= t('.back')
+          = f.select :airport_back, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
+              :not_highlighted => true
+        .two_line
+          %p= f.label :flight_back, t('.flight')
+          = f.text_field :flight_back, :class => 'expires_date'
+        .two_line
+          %p= f.label :depart_back, t('.depart')
+          = f.text_field :depart_back, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
+        .two_line
+          %p= f.label :arrive_back, t('.arrive')
+          = f.text_field :arrive_back, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)
+
+  #payments_in.form_block.green_block
+    .block_title
+      %h2= t('.payments_in')
+    .form_block_content
+      = f.fields_for :payments_in do |pif|
+        - payment_in = pif.object
+        .fake_row.fields{ :class => payment_in.new_record? && 'new_record' }
+          .two_line
+            %p= pif.label :date_in, t('.date')
+            = pif.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_in.date_in, :format => :long),
+                :not_highlighted => true
+          .two_line
+            %p= pif.label :amount, t('.paid')
+            = pif.text_field :amount, :class => 'amount date'
+            %label= t('rur')
+            -# pif.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
+          .two_line
+            %p= pif.label :description, t('.paid_in_word')
+            = pif.text_field :description, :class => 'description sum disabled', :disabled => true
+          .two_line
+            %p= pif.label :form, t('.paid_type')
+            = pif.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
+                :class => 'payment_form payment_select', :not_highlighted => true
+            - if is_admin? or is_boss? or is_accountant?
+              = pif.label :approved, '&nbsp;'.html_safe, :class => 'checkbox', :title => Payment.human_attribute_name(:approved)
+              = pif.check_box :approved, :class => 'approved' #, :disabled => (!is_admin? and !is_boss? and !is_accountant?)
+            = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_in.new_record?
+          = pif.hidden_field :id
+
+      .fake_row.add_row
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+        .two_line.due_date
+          %p= f.label :maturity
+          = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
+        .two_line.error
+          %p= f.label :tourist_debt
+          = f.text_field :tourist_debt, :disabled => true, :class => 'debt text_right'
+          %label= t('rur')
+
   .form_block.grey_block
 %fieldset.form_column.small
   .form_block.yellow_block
   .form_block.blue_block
-  .form_block.green_block
+
+  #payments_out.form_block.green_block
+    .block_title
+      %h2= t('.payments_out')
+    .form_block_content
+      = f.fields_for :payments_out do |pof|
+        - payment_out = pof.object
+        .fake_row.fields{ :class => payment_out.new_record? && 'new_record' }
+          .two_line
+            %p= pof.label :date_in, t('.date')
+            = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long),
+                :disabled => claim.new_record?, :not_highlighted => true
+          .two_line
+            %p= pof.label :amount, t('.paid')
+            = pof.text_field :amount, :class => 'amount paid', :disabled => claim.new_record?
+            %label= t('rur')
+          .two_line.big_select
+            %p= pof.label :course, t('.course')
+            = pof.text_field :course, :class => 'course date', :disabled => claim.new_record?, :not_highlighted => true
+          .two_line
+            %p= pof.label :amount_prim, t('.paid')
+            = pof.text_field :amount_prim, :class => 'amount_prim paid', :disabled => claim.new_record?, :not_highlighted => true
+            %label.operator_currency= t(claim.operator_price_currency.upcase)
+            -# pof.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
+          .two_line.big_select
+            %p= pof.label :form, t('.paid_type')
+            = pof.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
+                :class => 'payment_form big_payment_select', :not_highlighted => true, :disabled => claim.new_record?
+            - if is_admin? or is_boss? or is_accountant?
+              = pof.label :approved, '&nbsp;'.html_safe, :class => 'checkbox', :title => Payment.human_attribute_name(:approved)
+              = pof.check_box :approved, :class => 'approved' #, :disabled => (!is_admin? and !is_boss? and !is_accountant?)
+            = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_out.new_record?
+          = pof.hidden_field :id
+
+      .fake_row.add_row.add_paying
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+        .two_line
+          %p= f.label :operator_maturity
+          = f.text_field :operator_maturity, :class => 'datepicker date', :value => l(claim.operator_maturity, :format => :long),
+              :not_highlighted => true
+        .two_line.small_margin
+          %p= f.label :operator_price
+          = f.text_field :operator_price, :class => 'number_visas'
+          = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {},
+              :class => 'price_select', :not_highlighted => true, :disabled => !claim.new_record?
+        .two_line.error
+          %p= f.label :operator_debt
+          = f.text_field :operator_debt, :disabled => true, :class => 'credit text_right'
+          %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)

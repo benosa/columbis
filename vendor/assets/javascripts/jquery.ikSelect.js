@@ -246,7 +246,7 @@
             case 13: //enter
               if(type === "keyup"){
                 event.preventDefault();
-                var value = this.value,
+                var value = ikselect._escape_html_entities(this.value),
                     real_option = ikselect._search_real_option(value);
                 if (!real_option) {
                   var options = {};
@@ -886,6 +886,13 @@
 
       var option = $('option[value="' + text + '"]', select);
       return option.length > 0 ? option : false;
+    },
+
+    _escape_html_entities: function(str) {
+      // escaping html charachters in input value by native browser escape, but it requeres replacing quotes and double qoutes explicitly
+      // return $('<div>').text(str).html().replace(/['"]/g, '&quot;'),
+      var esc = {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'};
+      return str.replace( /[&<>'"]/g, function(s) { return esc[s]; } );
     }
 
   });

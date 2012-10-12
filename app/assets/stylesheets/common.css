@@ -225,11 +225,12 @@ div.left {
 
 /*** ikSelect ***/
 .ik_select_disabled { color: #999; }
+.ik_select_editable .ik_select_link_inner { margin: 0 30px 0 5px; }
 .ik_select_editable .ik_select_link_text {
     border: none;
     margin: 0;
-    padding: 0 10px 0 5px;
-    width: 135px;
+    padding: 0;
+    width: 100%;
 }
 /*** END ikSelect ***/
 
@@ -237,9 +238,10 @@ div.left {
 .highlighted, .highlighted .ik_select { margin-right: 0; }
 .form_column .highlighted,
 .filter .highlighted.select, .two_line .highlighted.select { margin-right: 17px; }
+.highlighted.last { margin-right: 0 !important; }
 /*** END highlighted ***/
 
 /*** forms ***/
 .fake_row .two_line p label { margin: 0; }
+.fake_row textarea { height: 41px; }
 /*** END forms ***/
-

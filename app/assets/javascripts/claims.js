@@ -1,5 +1,6 @@
 $(function(){
-  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
+  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'],
+      DOCUMENTS_STATUSES = ['not_ready', 'received', 'all_done'];
 
   function trim(str) {
      return str.replace(/^\s+|\s+$/g, '');
@@ -72,12 +73,15 @@ $(function(){
   });
 
   // documents colors
-  $('#claim_documents_status').change(function(e){
-    $('#claim_documents_status').removeClass('not_ready received all_done');
-    $('#claim_documents_status').addClass($('#claim_documents_status').val());
+  $('#claim_documents_status').change(function(e) {
+    var $t = $(this),
+        value = $t.val();
+    $t.removeClass(DOCUMENTS_STATUSES.join(' '));
+    $t.addClass(value);
+    $t.closest('.highlighted')[value != 'all_done' ? 'addClass' : 'removeClass']('error');
   });
 
-  function check_marchroute_memo(){
+  function check_route_memo(){
    if($('#claim_memo_tasks_done')[0].checked){
       $('#claim_memo, .has_notes_ind').removeClass('red_back');
       $('#claim_memo, .has_notes_ind').addClass('blue_back');
@@ -93,10 +97,10 @@ $(function(){
       }
     }
   }
-  $('#claim_memo, #claim_memo_tasks_done').change(check_marchroute_memo);
+  $('#claim_memo, #claim_memo_tasks_done').change(check_route_memo);
 
   if($('#claim_memo_tasks_done').length > 0) {
-    check_marchroute_memo();
+    check_route_memo();
   }
 
   // operator confirm check flag
@@ -683,7 +687,7 @@ $(function(){
       $(this).find('select.payment_form').attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_form');
       $(this).find('select.payment_form').attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][form]');
 
-      // if using clone(true, true), it copies all events of element and its children
+      // if using clone(true, true) for .fields block, it copies all events of element and its children
      //  $('#payments_in input.amount').unbind('change.tourism').bind('change.tourism', function(event){
      //    get_amount_in_word(event);
      //  	calculate_tourist_debt(event);

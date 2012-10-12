@@ -135,7 +135,7 @@
     .block_title
       %h2= t('.payments_in')
     .form_block_content
-      = f.fields_for :payments_in do |pif|
+      = f.fields_for :payments_in, :highlight_only => [:amount] do |pif|
         - payment_in = pif.object
         .fake_row.fields{ :class => payment_in.new_record? && 'new_record' }
           .two_line
@@ -172,21 +172,171 @@
           %label= t('rur')
 
   .form_block.grey_block
+    .block_title
+      %h2= t('.additional_information')
+    .form_block_content
+      .fake_row
+        .two_line
+          %p= f.label :documents_status, t('.trip_documents')
+          .highlighted{ :class => (claim.documents_status != Claim::DOCUMENTS_STATUSES.last) && 'error' }
+            = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('.documents_statuses.' << o), o ] }, {},
+                :class => "#{claim.documents_status} documentation_select"
+        .two_line
+          %p= f.label :tourist_stat, t('.tourist_stat')
+          = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat'), {}, :class => 'editable-select documentation_select'
+      .fake_row
+        .two_line
+          %p= f.label :docs_note
+          = f.text_area :docs_note, :rows => 6
+
 %fieldset.form_column.small
-  .form_block.yellow_block
-  .form_block.blue_block
+  #route.form_block.yellow_block
+    .block_title
+      %h2= t('.route')
+    .form_block_content
+      .fake_row.dates
+        %p= t('.arrival_date')
+        %label= t('.from')
+        = f.text_field :arrival_date, :class => 'datepicker date', :value => l(claim.arrival_date, :format => :long)
+        %label= t('.till')
+        = f.text_field :departure_date, :class => 'datepicker date', :value => l(claim.departure_date, :format => :long)
+      .fake_row
+        .two_line
+          %p=t('.departure_from_city')
+          = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
+                :class => 'city editable-select flight_from_select', :not_highlighted => true
+        .two_line
+          %p= f.label :operator_id, t('.operator')
+          = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
+                :class => 'operator editable-select tour_operator_select', :not_highlighted => true
+        .two_line
+          %p= f.label :country, t('.direction')
+          = f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
+              :class => 'country editable-select route_select', :not_highlighted => true
+        .two_line
+          %p= f.label :resort
+          .highlighted.last
+            = f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
+                :class => 'resort editable-select resort_select', :not_highlighted => true
+      .fake_row
+        .two_line
+          %p= f.label :hotel
+          = f.select :hotel, current_company.dropdown_values_for('hotel'), {}, :class => 'editable-select color_select',
+            :not_highlighted => true
+        .two_line
+          %p= f.label :meals
+          = f.select :meals, current_company.dropdown_values_for('meals'), {}, :class => 'editable-select food_select',
+            :not_highlighted => true
+        .two_line
+          %p= f.label :medical_insurance
+          = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
+              :class => 'editable-select medical_insurance_select', :not_highlighted => true
+        .two_line
+          %p= f.label :placement
+          = f.select :placement, current_company.dropdown_values_for('placement'), {}, :class => 'editable-select placement_select',
+            :not_highlighted => true
+        .two_line
+          %p= f.label :nights
+          = f.select :nights, (1..30).to_a, {}, :class => 'editable-select nights_select'
+      .fake_row
+        .two_line
+          %p= f.label :transfer
+          = f.select :transfer, current_company.dropdown_values_for('transfer'), {}, :class => 'editable-select airline_select',
+            :not_highlighted => true
+        .two_line
+          %p= f.label :service_class
+          = f.select :service_class, current_company.dropdown_values_for('service_class'), {},
+              :class => 'editable-select medical_insurance_select', :not_highlighted => true
+        .two_line
+          %p= f.label :relocation
+          = f.select :relocation, current_company.dropdown_values_for('relocation'), {}, :class => 'editable-select crossing_select',
+            :not_highlighted => true
+        .two_line
+          %p= f.label :additional_services
+          = f.text_field :additional_services, :class => 'additional_services'
+      .fake_row
+        .two_line
+          %p= f.label :memo
+          = f.text_field :memo, :class => 'notes blue_input'
+          = f.label :memo_tasks_done, :class => 'checkbox right_checkbox'
+          = f.check_box :memo_tasks_done
+
+  #tour_price.form_block.blue_block
+    .block_title
+      %h2= t('.tour_price')
+      .rates
+        %p=f.label :course_eur
+        = f.text_field :course_eur, :class => 'countable amount expires_date'
+      .rates
+        %p= f.label :course_usd
+        = f.text_field :course_usd, :class => 'countable amount expires_date'
+    .form_block_content
+      .fake_row
+        .two_line.small_margin
+          %p= f.label :tour_price
+          = f.text_field :tour_price, :class => 'phone'
+          = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
+        .two_line.small_margin
+          %p= f.label :visa_price
+          = f.text_field :visa_price, :class => 'number_visas'
+          = f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
+        .two_line.number_visas_block
+          %p= f.label :visa_count
+          = f.select :visa_count, (0..30).to_a, {}, :class => 'number_visas_select'
+        .two_line.small_margin
+          %p= f.label :children_visa_price
+          = f.text_field :children_visa_price, :class => 'children_visa'
+          = f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [t(o.upcase), o]}, {}, :class => 'price_select'
+        .two_line.number_visas_block
+          %p= f.label :visa_count
+          = f.select :children_visa_count, (0..30).to_a, {}, :class => 'number_visas_select'
+      .fake_row
+        .two_line.small_margin
+          %p= f.label :insurance_price
+          = f.text_field :insurance_price, :class => 'insurance'
+          = f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
+          = f.select :insurance_count, (0..30).to_a, {}, :class => 'insurance_select'
+        .two_line.small_margin
+          %p= f.label :additional_insurance_price
+          = f.text_field :additional_insurance_price, :class => 'insurance'
+          = f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
+          = f.select :additional_insurance_count, (0..30).to_a, {}, :class => 'insurance_select'
+        .two_line.small_margin
+          %p= f.label :fuel_tax_price
+          = f.text_field :fuel_tax_price, :class => 'insurance'
+          = f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
+          = f.select :fuel_tax_count, (0..30).to_a, {}, :class => 'insurance_select'
+        .two_line.small_margin
+          %p= f.label :additional_services_price
+          = f.text_field :additional_services_price, :class => 'insurance'
+          = f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
+      .fake_row
+        .two_line
+          %p= f.label :primary_currency_price
+          %p
+            %em= claim.primary_currency_price
+            = f.hidden_field :primary_currency_price
+            = t('rur')
+        .two_line.value_in_words
+          %p= f.label t('.price_as_string')
+          = text_field_tag :price_as_string,
+              claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY),
+              :class => 'notes grey_input', :disabled => true
+      .fake_row
+        .two_line
+          %p= f.label :calculation
+          = f.text_area :calculation, :rows => 4, :class => 'grey_input'
 
   #payments_out.form_block.green_block
     .block_title
       %h2= t('.payments_out')
     .form_block_content
-      = f.fields_for :payments_out do |pof|
+      = f.fields_for :payments_out, :highlight_only => [:amount] do |pof|
         - payment_out = pof.object
         .fake_row.fields{ :class => payment_out.new_record? && 'new_record' }
           .two_line
             %p= pof.label :date_in, t('.date')
-            = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long),
-                :disabled => claim.new_record?, :not_highlighted => true
+            = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long), :disabled => claim.new_record?, :not_highlighted => true
           .two_line
             %p= pof.label :amount, t('.paid')
             = pof.text_field :amount, :class => 'amount paid', :disabled => claim.new_record?

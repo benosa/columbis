@@ -59,7 +59,8 @@ class Claim < ActiveRecord::Base
   validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
                         :airline, :airport_to, :airport_back,
-                        :hotel, :meals, :medical_insurance, :placement, :transfer, :service_class, :relocation
+                        :tour_price, :hotel, :meals, :medical_insurance,
+                        :placement, :transfer, :service_class, :relocation
 
   validates_presence_of :operator_confirmation, :operator_maturity, :if => Proc.new { |claim| claim.operator_confirmation_flag }
 

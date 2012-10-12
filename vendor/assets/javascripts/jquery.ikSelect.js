@@ -42,7 +42,7 @@
       ikselect.editable = ikselect.options.editable
 
     if (ikselect.editable && ikselect.options.syntax == defaults.syntax)
-      ikselect.options.syntax = "<div class=\"ik_select_link\"><input class=\"ik_select_link_text\" /></div><div class=\"ik_select_block\"><div class=\"ik_select_list\"></div></div>";
+      ikselect.options.syntax = "<div class=\"ik_select_link\"><div class=\"ik_select_link_inner\"><input class=\"ik_select_link_text\" /></div></div><div class=\"ik_select_block\"><div class=\"ik_select_list\"></div></div>";
 
     ikselect.fakeSelect = $("<div class=\"ik_select" + (ikselect.editable ? " ik_select_editable" : "") + "\">" + ikselect.options.syntax + "</div>"); // fake select object made with passed syntax
     ikselect.select = $(ikselect.element); // original select

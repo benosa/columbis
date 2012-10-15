@@ -104,9 +104,11 @@ $(function(){
   }
 
   // operator confirm check flag
-  $('#claim_operator_confirmation_flag').click(function(e){
-    $('#claim_operator_confirmation').toggleClass('red_back');
-    $('#claim_operator_confirmation').toggleClass('blue_back');
+  $('#claim_operator_confirmation_flag').change(function(e){
+    if ($(this).is(':checked'))
+      $('#claim_operator_confirmation').addClass('blue_back').removeClass('red_back');
+    else
+      $('#claim_operator_confirmation').removeClass('blue_back').addClass('red_back');
   });
 
   // visa check flag

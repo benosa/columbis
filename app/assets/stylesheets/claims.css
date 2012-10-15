@@ -48,8 +48,8 @@
 
 .reservations td.user_bg { background: none; }
 
-.claim .red_back, .claim .nothing_done, .claim .hot,
-.claim .not_ready, .claim .received { color: white !important; }
+/*.claim .red_back, .claim .nothing_done, .claim .hot,
+.claim .not_ready, .claim .received { color: white !important; }*/
 
 /* reset colors for options in selects with color classes */
 option {

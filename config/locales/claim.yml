@@ -31,7 +31,7 @@ ru:
       paid: 'Оплачено в валюте'
       docs: 'Документы'
       memo: 'Примeчание'
-      new_claim: 'Новая заявка'
+      new_claim: 'Новая бронь'
       ready: 'Готово'
       not_ready: 'Не готово'
       calculation: 'Расчет'
@@ -45,6 +45,7 @@ ru:
       phone_number: 'Тел.'
       sent: 'Отпр.'
       tourist_stat: 'Откуда'
+      add_claim: 'Добавить бронь'
 
     form:
       reset: 'Сброс'
@@ -119,16 +120,18 @@ ru:
       add_another_tourist: 'Добавить туриста'
       add_another_payment: 'Добавить платеж'
     new:
-      title: 'Новая заявка'
+      title: 'Новая бронь'
+      list_of_claim: 'Список броней'
     edit:
-      title: 'Редактирование заявки №%{id} от %{created_at}'
-      list_of_claim: 'Список заявок'
+      title: 'Редактирование брони №%{id} от %{created_at}'
+      list_of_claim: 'Список броней'
     show:
-      title: 'Редактировать заявку'
+      title: 'Редактирование брони №%{id} от %{created_at}'
+      list_of_claim: 'Список броней'
     messages:
-      successfully_created_claim: 'Заявка создана'
-      successfully_updated_claim: 'Заявка изменена'
-      successfully_destroyed_claim: 'Заявка удалена'
+      successfully_created_claim: 'Бронь создана'
+      successfully_updated_claim: 'Бронь изменена'
+      successfully_destroyed_claim: 'Бронь удалена'
 
   activerecord:
     errors:

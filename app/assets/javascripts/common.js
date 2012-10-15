@@ -122,7 +122,7 @@ function customizeSelect(selector, is_container, options) {
   if (is_container)
     $sel = $sel.find(defsel);
   $sel.ikSelect(opts);
-}
+};
 
 function uncustomizeSelect(selector, is_container) {
   var defsel = 'select',
@@ -131,7 +131,52 @@ function uncustomizeSelect(selector, is_container) {
   if (is_container)
     $sel = $sel.find(defsel);
   $sel.ikSelect('detach');
-}
+};
+
+function dpikOptions() {
+  var ikopts = {
+    autoWidth: false,
+    customClass: "calendar_select",
+    ddCustomClass: "calendar_select",
+    block_container: '#ui-datepicker-div'
+  };
+
+  return {
+    beforeShow: function(input, inst) {
+      var $dpdiv = $(inst.dpDiv),
+          timer;
+
+      timer = setInterval(function() {
+        var $header = $dpdiv.find(".ui-datepicker-header");
+        if ($header.length) {
+          customizeSelect($header, true, ikopts);
+          clearInterval(timer);
+        }
+      }, 13);
+    },
+    onChangeMonthYear: function(year, month, inst) {
+      var $dpdiv = $(inst.dpDiv),
+          timer;
+
+      var $header = $dpdiv.find(".ui-datepicker-header"),
+          offset = $header.offset();
+      $header.appendTo(document.body).css({
+        "left": offset.left,
+        "top": offset.top,
+        "position": 'absolute',
+        "z-index": 10000
+      });
+      timer = setInterval(function() {
+        var $new_header = $dpdiv.find(".ui-datepicker-header");
+        if ($new_header.length && $new_header[0] != $header[0]) {
+          customizeSelect($new_header, true, ikopts);
+          $header.remove();
+          clearInterval(timer);
+        }
+      }, 13);
+    }
+  }
+};
 
 function setDatepicker(selector, is_container, options) {
   var sel = selector || '.datepicker',
@@ -139,43 +184,19 @@ function setDatepicker(selector, is_container, options) {
   if (is_container)
     $sel = $sel.find('.datepicker');
 
-  var opts = {
+  var opts = $.extend({
     showOn: 'focus',
     buttonImage: false,
     changeMonth: true,
     changeYear: true,
+    yearRange: 'c-10:c+10',
     dateFormat: 'dd.mm.yy',
-    beforeShow: function(input, inst) {
-      var $dpdiv = $(inst.dpDiv),
-          opts = {
-            autoWidth: false,
-            customClass: "calendar_select",
-            ddCustomClass: "calendar_select"
-          },
-          timer;
-
-      if (!$dpdiv.data('_init'))
-        timer = setInterval(function() {
-          var $header = $dpdiv.find(".ui-datepicker-header");
-          if ($header.length) {
-            customizeSelect($header, true, opts);
-            $dpdiv.data('_init', true);
-            clearInterval(timer);
-          }
-        }, 13);
-      else
-        customizeSelect($dpdiv.find(".ui-datepicker-header"), true, opts);
-    },
-    onClose: function(dateText, inst) {
-      var $dpdiv = $(inst.dpDiv);
-      uncustomizeSelect($dpdiv.find(".ui-datepicker-header"), true);
-    }
-  };
+  }, dpikOptions());
   if (options)
     $.extend(opts, options);
 
   $sel.datepicker(opts);
-}
+};
 
 function setDatetimepicker(selector, is_container, options) {
   var sel = selector || '.datetimepicker',
@@ -183,11 +204,12 @@ function setDatetimepicker(selector, is_container, options) {
   if (is_container)
     $sel = $sel.find('.datetimepicker');
 
-  var opts = {
+  var opts = $.extend({
     showOn: 'focus',
     buttonImage: false,
     changeMonth: true,
     changeYear: true,
+    yearRange: 'c-10:c+10',
     timeOnlyTitle: 'Выберите время',
     timeText: 'Время',
     hourText: 'Часы',
@@ -195,9 +217,9 @@ function setDatetimepicker(selector, is_container, options) {
     secondText: 'Секунды',
     currentText: 'Сейчас',
     closeText: 'Закрыть'
-  };
+  }, dpikOptions());
   if (options)
     $.extend(opts, options);
 
   $sel.datetimepicker(opts);
-}
+};

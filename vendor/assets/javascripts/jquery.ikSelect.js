@@ -12,7 +12,8 @@
     ddCustomClass: "",
     ddMaxHeight: 200,
     editable: false, // can be a string, means selector wich has to match this select
-    useSelectClasses: false
+    useSelectClasses: false,
+    block_container: "body" // container for options block
   };
 
   var selectOpened = $([]); // currently opened select
@@ -337,7 +338,7 @@
 
         if(scrollbarWidth === -1){
           var calculationContent = $("<div style=\"width:50px; height:50px; overflow:hidden; position:absolute; top:-200px; left:-200px;\"><div style=\"height:100px;\"></div>");
-          $("body").append(calculationContent);
+          $(ikselect.options.block_container).append(calculationContent);
           var w1 = $("div", calculationContent).innerWidth();
           calculationContent.css("overflow", "auto");
           var w2 = $("div", calculationContent).innerWidth();
@@ -535,20 +536,33 @@
         block.css("top", ((block.offset().top + block.outerHeight(true) - parseInt(block.css("top"), 10)) - ($window.scrollTop() + $window.height())) * (-1));
       }
 
-      var left = block.offset().left;
-      if(left < 0){
-        left = 0;
+      var $container = $(ikselect.options.block_container)
+          $default_container = $(ikselect._defaults.block_container);
+      var left, top;
+      if ($container[0] == $default_container[0]) {
+        left = block.offset().left;
+        top  = block.offset().top;
+      } else {
+        var offset  = block.offset(),
+            coffset = $container.offset();
+        left = offset.left - coffset.left;
+        top = offset.top - coffset.top;
       }
-      var top = block.offset().top;
+      if (left < 0)
+        left = 0;
+      if (top < 0)
+        top = 0;
+
       block.width(block.width());
-      block.appendTo("body").css({
+      block.appendTo($container).css({
         "left": left,
         "top": top
       });
 
       var scrollTop = $(".ik_select_active", list).position().top - list.height()/2;
       list.data("ik_select_scrollTop", scrollTop);
-      listInner.scrollTop(scrollTop);
+      // listInner.scrollTop(scrollTop);
+      listInner.find('ul').scrollTop(scrollTop);
 
       selectOpened = select;
     },

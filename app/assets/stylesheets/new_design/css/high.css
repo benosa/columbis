@@ -142,5 +142,182 @@
 	width: 93px;
 }
 /* END company */
+/* Order */
+.order .wrapper h1{width: 1400px;}
+.edit_page .filter{width: 1184px;}
+	.edit_page .filter_row{width: 1143px;}
+.check_list{
+	float: left;
+	margin: 25px 11px 0 11px;
+}
+.order .form_column{width: 730px;}
+	.order .form_block{width: 720px;}
+	.order .block_title{width: 698px;}
+		.order .blue_block .block_title{width: 700px;}
+	.order .fake_row{width: 700px;}
+	.order .fake_table,.order .form_block_content{width: 718px;}
+.order .form_block.grey_block{
+	clear: none;
+	float: right;
+	margin-top: -26px;
+	width: 426px;
+}
+	.order .form_block.grey_block .block_title{width: 404px;}
+	.order .form_block.grey_block .fake_row{width: 406px;}
+	.order .form_block.grey_block .form_block_content{width: 424px;}
+.form_block.route{
+	clear: none;
+	float: left;
+	overflow: hidden;
+	width: 679px;
+}
+	.form_block.route .block_title{width: 657px;}
+	.form_block.route .fake_row{width: 659px;}
+	.form_block.route .form_block_content{width: 677px;}
+.form_block.departures{
+	clear: none;
+	float: right;
+	overflow: hidden;
+	width: 426px;
+}
+	.form_block.departures .block_title{width: 404px;}
+	.form_block.departures .fake_row{width: 406px;}
+	.form_block.departures .form_block_content{width: 424px;}
+.form_block.payment_tourist{
+	clear: none;
+	float: left;
+	overflow: hidden;
+	width: 532px;
+}
+	.form_block.payment_tourist .block_title{width: 510px;}
+	.form_block.payment_tourist .fake_row{width: 512px;}
+	.form_block.payment_tourist .form_block_content{width: 530px;}
+.form_block.payment_operator{
+	clear: none;
+	float: right;
+	overflow: hidden;
+	width: 574px;
+}
+	.form_block.payment_operator .block_title{width: 552px;}
+	.form_block.payment_operator .fake_row{width: 554px;}
+	.form_block.payment_operator .form_block_content{width: 572px;}
+.delete{margin-left: -10px;}
+.margin_small .ik_select,.payment_tourist .fake_row label{margin-right: 7px;}
+.route label.checkbox.right_checkbox{margin-top: 50px;}
+.green_block .ik_select,.green_block input{margin-right: 11px;}
+.green_block .highlighted input{margin-right: 0px;}
+.green_block input.debt,.green_block input.paid,.green_block input.credit{margin-right: 17px;}
+.due_date.two_line{margin: 0 265px 0 0;}
+.paying.add_btn{
+	border: none;
+	height: auto;
+	margin: 4px 0px 5px 0px;
+	padding: 0px;
+}
+	.paying.add_btn .add_tourist{margin: 0px;}
+.payment_operator .big_select{margin: 0 -5px 0 -7px;}
+.add_paying .two_line{margin-left: 0px;}
+.add_paying .due_date.two_line{margin: 0px;}
+.add_paying .small_margin{margin-left: 25px;}
+
+.fake_table span.expires{width: 120px;}
+.expires_date{width: 85px;}
+.block_title .expires_date{width: 65px;}
+.address{width: 366px;}
+.blue_block .phone{width: 80px;}
+.number_visas{width: 46px;}
+.children_visa{width: 65px;}
+.insurance{width: 29px;}
+.notes{width: 498px;}
+.blue_input.notes{
+	height: 64px;
+	width: 462px;
+}
+.fake_row textarea{width: 636px;}
+.dates .date{width: 69px;}
+.additional_services{width: 200px;}
+.grey_block .fake_row textarea{width: 345px;}
+.departures .expires_date,.time_departure{width: 170px;}
+.green_block .date{width: 52px;}
+.green_block .two_line:first-child .date{width: 62px;}
+.big_select .date{width: 42px;}
+.sum{width: 125px;}
+.due_date .date{width: 82px;}
+.debt,.credit{width: 96px;}
+.paid{width: 72px;}
+.add_paying .small_margin .number_visas{
+	margin-right: 19px;
+	width: 101px;
+}
+
+.price_select.ik_select,.price_select .ik_select_link{width: 66px;}
+.price_select .ik_select_link_text{width:  51px;}/* -15 */
+.price_select .ik_select_list{width: 64px;}/* -2 */
+
+.small_margin .number_visas_select.ik_select,.small_margin .number_visas_select .ik_select_link{width: 58px;}
+.small_margin .number_visas_select .ik_select_link_text{width:  43px;}/* -15 */
+.small_margin .number_visas_select .ik_select_list{width: 56px;}/* -2 */
+
+.flight_from_select.ik_select,.flight_from_select .ik_select_link{width: 147px;}
+.flight_from_select .ik_select_link_text{width: 132px;}/* -15 */
+.flight_from_select .ik_select_list{width: 145px;}/* -2 */
+
+.tour_operator_select.ik_select,.tour_operator_select .ik_select_link{width: 121px;}
+.tour_operator_select .ik_select_link_text{width: 106px;}/* -15 */
+.tour_operator_select .ik_select_list{width: 119px;}/* -2 */
+
+.route_select.ik_select,.route_select .ik_select_link{width: 153px;}
+.route_select .ik_select_link_text{width: 138px;}/* -15 */
+.route_select .ik_select_list{width: 151px;}/* -2 */
+
+.resort_select.ik_select,.resort_select .ik_select_link{width: 164px;}
+.resort_select .ik_select_link_text{width: 149px;}/* -15 */
+.resort_select .ik_select_list{width: 161px;}/* -2 */
+
+.yellow_block .color_select.ik_select,.yellow_block .color_select .ik_select_link{width: 190px;}
+.yellow_block .color_select .ik_select_link_text{width: 175px;}/* -15 */
+.yellow_block .color_select .ik_select_list{width: 188px;}/* -2 */
+
+.food_select.ik_select,.food_select .ik_select_link{width: 62px;}
+.food_select .ik_select_link_text{width: 47px;}/* -15 */
+.food_select .ik_select_list{width: 60px;}/* -2 */
+
+.medical_insurance_select.ik_select,.medical_insurance_select .ik_select_link{width: 91px;}
+.medical_insurance_select .ik_select_link_text{width: 76px;}/* -15 */
+.medical_insurance_select .ik_select_list{width: 89px;}/* -2 */
+
+.placement_select.ik_select,.placement_select .ik_select_link{width: 122px;}
+.placement_select .ik_select_link_text{width:  107px;}/* -15 */
+.placement_select .ik_select_list{width: 120px;}/* -2 */
+
+.airline_select.ik_select,.airline_select .ik_select_link{width: 190px;}
+.airline_select .ik_select_link_text{width: 175px;}/* -15 */
+.airline_select .ik_select_list{width: 188px;}/* -2 */
+
+.crossing_select.ik_select,.crossing_select .ik_select_link{width: 72px;}
+.crossing_select .ik_select_link_text{width:  57px;}/* -15 */
+.crossing_select .ik_select_list{width: 70px;}/* -2 */
+
+.documentation_select.ik_select,.documentation_select .ik_select_link{width: 176px;}
+.documentation_select .ik_select_link_text{width:  161px;}/* -15 */
+.documentation_select .ik_select_list{width: 174px;}/* -2 */
+
+.big_airline_select.ik_select,.big_airline_select .ik_select_link{width: 375px;}
+.big_airline_select .ik_select_link_text{width: 360px;}/* -15 */
+.big_airline_select .ik_select_list{width: 373px;}/* -2 */
+
+.payment_select.ik_select,.payment_select .ik_select_link{width: 93px;}
+.payment_select .ik_select_link_text{width: 78px;}/* -15 */
+.payment_select .ik_select_list{width: 91px;}/* -2 */
+
+.big_payment_select.ik_select,.big_payment_select .ik_select_link{width: 93px;}
+.big_payment_select .ik_select_link_text{width:  78px;}/* -15 */
+.big_payment_select .ik_select_list{width: 91px;}/* -2 */
+
+.payment_operator .price_select.ik_select,.payment_operator .price_select .ik_select_link{width: 75px;}
+.payment_operator .price_select.ik_select{margin-right: 5px;}
+.payment_operator .price_select .ik_select_link_text{width:  60px;}/* -15 */
+.payment_operator .price_select .ik_select_list{width: 73px;}/* -2 */
+/* END order */
 /* Footer */
 .footer_content{width: 1845px;}

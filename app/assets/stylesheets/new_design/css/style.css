@@ -1,5 +1,5 @@
 ﻿@charset 'utf-8';
-@import url(reset.css);
+/*@import url(reset.css);*/
 html{background: #e7e7e7 url(../images/html.png) top repeat-x;}
 html.main_page{background-color: #f4f4f4;}
 html, body {height: 100%;}
@@ -354,7 +354,7 @@ html, body {height: 100%;}
 		vertical-align: middle;
 	}
 		.reservations .odd td{background: none;}
-		.reservations tr:hover,.reservations tr:hover td,.reservations tr:hover td.odd{background: #eaf0f7;}
+		/*.reservations tr:hover,.reservations tr:hover td,.reservations tr:hover td.odd{background: #eaf0f7;}*/
 		.reservations tr td.red_box{background: url(../images/red_box.png) right top no-repeat;}
 		.reservations tr td.chlorine_box{background: url(../images/chlorine_box.png) right top no-repeat;}
 		.reservations tr td.purple_box{background: url(../images/purple_box.png) right top no-repeat;}

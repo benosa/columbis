@@ -150,6 +150,27 @@ module ApplicationHelper
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 
+  # Client resolution parameters base on cookie
+  def client_resolution
+    return @client_resolution if @client_resolution.present?
+    @client_resolution = if cookies[:screen_size]
+      ActiveSupport::JSON.decode(cookies[:screen_size]) rescue { :width => 1024, :height => 768 }
+    else
+      { :width => 1024, :height => 768 }
+    end
+  end
+
+  # Current site width calculated relative to client resolution
+  # available site resolutions: 1024x768 1600x900 1920x1080
+  def current_width
+    case client_resolution[:width].to_i
+      when 0...1600 then :small
+      when 1600...1920 then :medium
+      else :big
+    end
+    :small
+  end
+
   private
 
     def manifest_default_text

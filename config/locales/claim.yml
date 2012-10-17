@@ -1,5 +1,17 @@
 ru:
   claims:
+    visa_statuses:
+      nothing_done: 'Не готова'
+      docs_got: 'Получена'
+      docs_sent: 'Отправлена'
+      visa_approved: 'Подтверждена'
+      all_done: 'Готова'
+
+    documents_statuses:
+      not_ready: 'Не готовы'
+      received: 'Готовы'
+      all_done: 'Выданы'
+
     index:
       claims: 'Бронирования'
       only_my: 'Только мои'
@@ -51,74 +63,87 @@ ru:
       reset: 'Сброс'
       office: 'Офис'
       user: 'Менеджер'
-      operator_confirmation: 'Подтверждение оператора'
       visa: 'Виза'
-      visa_statuses:
-        nothing_done: 'Не готова'
-        docs_got: 'Получена'
-        docs_sent: 'Отправлена'
-        visa_approved: 'Подтверждена'
-        all_done: 'Готова'
       check_date: 'Контрольная дата'
-      operator: 'Туроператор'
+
       tourist: 'Турист'
-      tourist_stat: 'Статистика'
 
       tourist_debt: 'Долг туриста'
       operator_debt: 'Долг оператору'
       documents_ready: 'Документы'
       has_notes: 'Примечание'
 
-      additional_information: 'Дополнительная информация'
-      trip_documents: 'Документы в дорогу'
-      documents_statuses:
-        not_ready: 'Не готовы'
-        received: 'Готовы'
-        all_done: 'Выданы'
+      currency: 'Валюта'
+      paid_rur: 'Оплачено руб.'
+      resort: 'Курорт'
 
-      tour_price: 'Стоимость тура'
-      flights: 'Вылеты'
+      operator_confirmation: 'Подтверждение оператора'
+      reservation_date: 'Дата резервирования'
+      early_reservation: 'Раннее бронирование'
+      check_date: 'Контрольная дата'
+      operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
+      reservation_date_two_line: 'Дата<br/>резерв.'
+      early_reservation_two_line: 'Раннее<br/>бронир.'
+      check_date_two_line: 'Контр.<br/>дата'
+
+    tourists:
       tourists: 'Туристы'
-      route: 'Маршрут'
-      departure_from_city: 'Вылет из города'
-      payments_in: 'Оплата туристом'
-      payments_out: 'Оплата оператору'
+      full_name: 'ФИО туриста'
+      tourists_full_name_hint: 'Договор оформлен на'
+      date_of_birth: 'Дата рождения'
+      passport: 'Паспорт'
+      passport_expire: 'Действит. до'
+      phone: 'Телефон'
+      address: 'Адрес'
+      add_another_tourist: 'Добавить туриста'
 
+    flights:
+      flights: 'Вылеты'
+      airline: 'Авиакомпания'
       there: 'Туда'
       back: 'Обратно'
-
-      airline: 'Авиакомпания'
       airport: 'Аэропорт'
       flight: 'Номер рейса'
       depart: 'Время вылета'
       arrive: 'Время прибытия'
 
-      full_name: 'ФИО туриста'
-      tourists_full_name_hint: 'Договор оформлен на'
-      date_of_birth: 'Дата рождения'
-      passport: 'Паспорт'
-      passport_expire: 'Действителен до'
-      phone: 'Телефон'
-      address: 'Адрес'
-
+    payments_in:
+      payments_in: 'Оплата туристом'
       date: 'Дата'
       paid: 'Оплачено'
-      paid_rur: 'Оплачено руб.'
-      currency: 'Валюта'
-      course: 'Курс'
       paid_type: 'Форма оплаты'
       paid_in_word: 'Сумма прописью'
-      price_as_string: 'Стоимость прописью'
+      add_another_payment: 'Добавить платеж'
+      tourist_debt_short: 'Долг'
 
-      direction: 'Направление'
-      resort: 'Курорт'
+    payments_out:
+      payments_out: 'Оплата оператору'
+      date: 'Дата'
+      paid: 'Оплачено'
+      course: 'Курс'
+      paid_type: 'Форма оплаты'
+      add_another_payment: 'Добавить платеж'
+      save_before_pay: 'Добавление платежей будет доступно после сохранения'
+      operator_debt_short: 'Долг'
 
+    information:
+      additional_information: 'Дополнительная информация'
+      trip_documents: 'Документы в дорогу'
+      tourist_stat: 'Статистика'
+
+    route:
+      route: 'Маршрут'
+      departure_from_city: 'Вылет из города'
       arrival_date: 'Даты заезда'
       from: 'с'
       till: 'по'
-      save_before_pay: 'Добавление платежей будет доступно после сохранения'
-      add_another_tourist: 'Добавить туриста'
-      add_another_payment: 'Добавить платеж'
+      operator: 'Туроператор'
+      direction: 'Направление'
+
+    tour_price:
+      tour_price: 'Стоимость тура'
+      price_as_string: 'Стоимость прописью'
+
     new:
       title: 'Новая бронь'
       list_of_claim: 'Список броней'

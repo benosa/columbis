@@ -536,7 +536,7 @@ $(function(){
     touristLastName: {
       source: "/claims/autocomplete_tourist_last_name",
       select: function(event, ui) {
-        var tr = $(this).parent().parent();
+        var tr = $(this).closest('.fake_row');
         tr.find("input.passport_series").val(ui.item.passport_series);
         tr.find("input.passport_number").val(ui.item.passport_number);
         tr.find("input.date_of_birth").val(ui.item.date_of_birth);
@@ -558,15 +558,20 @@ $(function(){
 	var add_tourist = function(e){
     e.preventDefault();
 
-    $('#tourists .add_row').before($('#tourists .applicant').clone(true, true));
-    $('#tourists .applicant:last').after('<input type="hidden" class="hidden_id">');
-    $('#tourists .applicant:last input').each(function(n){
+    var $common_fields = $('#tourists .applicant .common_fields');
+    $('#tourists .add_row').before($('<div class="fake_row dependent"></div>'));
+    var $new_dependent = $('#tourists .dependent:last');
+    $new_dependent.append($common_fields.html());
+    $new_dependent.after('<input type="hidden" class="hidden_id">');
+    $new_dependent.find('input').each(function(n){
       $(this).removeClass('hasDatepicker');
       $(this).next('img').remove();
       $(this).val('');
       $(this).attr('value', '');
     });
-    $('#tourists .applicant:last').attr('id', '').addClass('fake_row dependent').removeClass('applicant');
+    $new_dependent.attr('id', '');
+    if (!$new_dependent.find('.delete').length)
+      $new_dependent.append($('#tourists .applicant .delete').clone());
 
     var last_ind = 0;
     $('#tourists .dependent').each(function(i){
@@ -609,12 +614,9 @@ $(function(){
 
     var id = $(this).attr('id').replace(/del/,'');
     var $tr = $('#dependent' + id);
-    if (id == 1) {
-      // $('.applicant input').val('');
-      // $('.applicant').next().next().find('input').val('');
-      // $('#claim_applicant_id').removeAttr('value');
+    if (id == 1)
       $('.applicant').closest('.fake_row').find(':input').val('');
-    } else {
+    else {
       $tr.next('input[type=hidden]').remove();
       $tr.remove();
     }

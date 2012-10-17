@@ -108,6 +108,8 @@ $(function(){
   setDatepicker();
   setDatetimepicker();
 
+  // define screen resolution into browser cookie
+  defineScreenResolution();
 });
 
 function customizeSelect(selector, is_container, options) {
@@ -223,3 +225,16 @@ function setDatetimepicker(selector, is_container, options) {
 
   $sel.datetimepicker(opts);
 };
+
+function defineScreenResolution() {
+  $.cookie.json = true;
+  var size = $.cookie('screen_size');
+  if (!size) {
+    size = {
+      width: screen.width,
+      height: screen.height
+    };
+    $.cookie('screen_size', size, { expires: 364, path: '/' });
+  }
+  return size;  
+}

@@ -94,6 +94,7 @@ class ApplicationController < ActionController::Base
   def set_current_controller    
     ::ApplicationController.current = self
   end
+  
 end
 
 class Float

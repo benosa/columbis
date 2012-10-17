@@ -1,0 +1,37 @@
+#flights.form_block.yellow_block
+  .block_title
+    %h2= t('.flights')
+  .form_block_content
+    .fake_row
+      %p= t('.airline')
+      = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
+    .fake_row
+      .two_line
+        %p
+          %strong= t('.there')
+        = f.select :airport_to, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
+            :not_highlighted => true
+      .two_line
+        %p= f.label :flight_to, t('.flight')
+        = f.text_field :flight_to, :class => 'expires_date'
+      .two_line
+        %p= f.label :depart_to, t('.depart')
+        = f.text_field :depart_to, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
+      .two_line
+        %p= f.label :arrive_to, t('.arrive')
+        = f.text_field :arrive_to, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)
+    .fake_row
+      .two_line
+        %p
+          %strong= t('.back')
+        = f.select :airport_back, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
+            :not_highlighted => true
+      .two_line
+        %p= f.label :flight_back, t('.flight')
+        = f.text_field :flight_back, :class => 'expires_date'
+      .two_line
+        %p= f.label :depart_back, t('.depart')
+        = f.text_field :depart_back, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
+      .two_line
+        %p= f.label :arrive_back, t('.arrive')
+        = f.text_field :arrive_back, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)

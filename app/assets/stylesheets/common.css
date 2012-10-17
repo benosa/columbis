@@ -72,33 +72,33 @@ body, input, textarea {
 
 .red_back, .nothing_done, .hot, .not_ready, .received {
   /*background: url(/assets/new_design/images/red_box.png) right repeat-x !important;*/
-  background-color: #FCE8E9 !important;
+  background: #FCE8E9 !important;
   color: #990000 !important;
 }
 
 .orange_back, .docs_got, .soon {
   /*background: url(/assets/new_design/images/sand_box.png) right repeat-x #ff8888 !important;*/
-  background-color: #f1e3d0 !important;
+  background: #f1e3d0 !important;
 }
 
 .green_back, .docs_sent {
   /*background: url(/assets/new_design/images/green_box.png) right repeat-x !important;*/
-  background-color: #E7F9E9 !important;
+  background: #E7F9E9 !important;
 }
 
 .navy_back, .visa_approved {
   /*background: url(/assets/new_design/images/blue_box.png) right repeat-x #96B1F0 !important;*/
-  background-color: #edf4fa !important;
+  background: #edf4fa !important;
 }
 
 .blue_back, .all_done, .departed {
   /*background: url(/assets/new_design/images/dark_blue_box.png) right repeat-x #BDE0FA !important;*/
-  background-color: #e6eff8 !important;
+  background: #e6eff8 !important;
 }
 
 .gray_back {
   /*background: url(/assets/new_design/images/grey_box.png) right repeat-x !important;*/
-  background-color: #e0e0e0 !important;
+  background: #e0e0e0 !important;
 }
 
 .ui-datepicker { display: none; }
@@ -231,7 +231,7 @@ div.left {
     border: none;
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: 100% !important;
 }
 /*** END ikSelect ***/
 

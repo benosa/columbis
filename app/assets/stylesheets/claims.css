@@ -77,3 +77,13 @@ option {
 .edit_page .low_resolution .filter .filter_select .ik_select_link_text {
     width: 135px !important;
 }
+
+/* high_resolution */
+.edit_page .high_resolution .filter label { margin-left: 10px; }
+.edit_page .high_resolution .filter label:first-child { margin-left: 0; }
+.edit_page .high_resolution .filter label.checkbox { margin-left: 3px; }
+.edit_page .high_resolution .filter label.checkbox.right_checkbox { margin-left: 14px; }
+.edit_page .high_resolution .green_block .two_line:first-child .date {
+    width: 68px !important;
+}
+.edit_page .high_resolution .grey_block .fake_row .two_line + .two_line { margin-left: 17px; }

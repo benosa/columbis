@@ -7,15 +7,17 @@
     - if javascript_local_data
       = javascript_tag(javascript_local_data)
     = stylesheet_link_tag 'application'
-    - if low_resolution?
+    - if small_width?
       = stylesheet_link_tag 'new_design/css/low'
+    - elsif large_width?
+      = stylesheet_link_tag 'new_design/css/high'
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
     = csrf_meta_tag
     = yield(:head)
 
-  %body{ :class => yield(:body_class) }
+  %body{ :class => "#{body_class} #{yield(:body_class)}" }
     #container.all
 
       .header

@@ -3,14 +3,14 @@
     %h2= t('.tourists')
   .form_block_content
     .fake_table
-      - if current_width == :small
+      - if small_width?
         %span.fio= t('.full_name')
         %span.dob= t('.date_of_birth')
         %span.passport= t('.passport')
         %span.expires= t('.passport_expire')
         %span.tel= t('.phone')
         %span.tourist_address= t('.address')
-      - elsif current_width == :medium
+      - elsif medium_width?
         %span.fio= t('.full_name')
         %span.dob= t('.date_of_birth')
         %span.passport= t('.passport')
@@ -18,7 +18,7 @@
 
     = f.fields_for :applicant, claim.applicant do |af|
       .fake_row.applicant
-        - if current_width = :small
+        - if small_width?
           / %p= t('.tourists_full_name_hint') + ':'
           %span.common_fields
             = render :partial => 'tourist', :locals => { :f => af }
@@ -26,7 +26,7 @@
           = af.text_field :phone_number, :class => 'phone_number phone'
           = af.text_field :address, :class => 'address'
           = link_to '', '#', :class => 'delete', :id => "del1"
-        - elsif current_width = :medium
+        - else
           %p= t('.tourists_full_name_hint') + ':'
           %span.common_fields
             = render :partial => 'tourist', :locals => { :f => af }
@@ -36,7 +36,7 @@
           = af.text_field :phone_number, :class => 'phone_number phone'
           = af.label :address, t('.address') + ':', :class => 'address_label'
           = af.text_field :address, :class => 'address'
-        
+
       = af.hidden_field :id
 
     - ind = 2

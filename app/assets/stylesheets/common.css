@@ -237,6 +237,7 @@ div.left {
 
 /*** highlighted ***/
 .highlighted, .highlighted .ik_select { margin-right: 0; }
+.highlighted + label { margin-left: 0 !important; }
 .form_column .highlighted,
 .filter .highlighted.select, .two_line .highlighted.select { margin-right: 17px; }
 .highlighted.last { margin-right: 0 !important; }

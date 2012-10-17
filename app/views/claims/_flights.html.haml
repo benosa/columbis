@@ -1,10 +1,13 @@
-#flights.form_block.yellow_block
+#flights.form_block.yellow_block{ :class => large_width? && 'departures' }
   .block_title
     %h2= t('.flights')
   .form_block_content
     .fake_row
       %p= t('.airline')
-      = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
+      - if small_width? or medium_width?
+        = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
+      - elsif large_width?
+        = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select big_airline_select'
     .fake_row
       .two_line
         %p

@@ -5,7 +5,7 @@
   .filter_row
     = f.label :id
     = f.text_field :id, :disabled => true, :value => (claim.new_record? ? Claim.next_id : claim.id), :class => 'number'
-    - if current_width == :small
+    - if small_width?
       = f.label :operator_confirmation, t('.operator_confirmation_two_line').html_safe, :class => 'two_row',
           :title => t('.operator_confirmation')
     - else
@@ -23,7 +23,7 @@
           :id => 'claim_visa_status', :class => 'visa_status', :disabled => !claim.visa_confirmation_flag
       = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
       = f.check_box :visa_confirmation_flag
-      - if current_width == :small
+      - if small_width?
         = f.label :check_date, t('.check_date_two_line').html_safe, :class => 'two_row',
             :title => t('.check_date')
       - else
@@ -31,12 +31,12 @@
       = f.text_field :check_date, :class => 'visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long)
       = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
       = f.check_box :closed
-      - if current_width == :medium
+      - if medium_width? or large_width?
         = f.label :reservation_date
         = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
 
   .filter_row
-    - if current_width == :small
+    - if small_width?
       = f.label :reservation_date, t('.reservation_date_two_line').html_safe, :class => 'two_row',
           :title => t('.reservation_date')
       = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
@@ -55,7 +55,7 @@
       = f.text_field :office_id, :value => claim.office.try(:name), :disabled => true
 
     .float_right
-      - if current_width == :small
+      - if small_width?
         = f.label :early_reservation, t('.early_reservation_two_line').html_safe, :class => 'checkbox right_checkbox two_row',
             :title => t('.early_reservation')
       - else
@@ -79,7 +79,7 @@
       = t('.has_notes')
       %span= claim.has_memo? ? t('yep') : t('nope')
 
-- if current_width == :small
+- if small_width?
   %fieldset.form_column
     = render :partial => 'tourists', :locals => { :f => f, :claim => claim }
     = render :partial => 'route', :locals => { :f => f, :claim => claim }
@@ -89,7 +89,7 @@
     = render :partial => 'payments_out', :locals => { :f => f, :claim => claim }
     = render :partial => 'information', :locals => { :f => f, :claim => claim }
 
-- elsif current_width == :medium
+- elsif medium_width?
   %fieldset.form_column
     = render :partial => 'tourists', :locals => { :f => f, :claim => claim }
     = render :partial => 'flights', :locals => { :f => f, :claim => claim }
@@ -101,5 +101,12 @@
     = render :partial => 'tour_price', :locals => { :f => f, :claim => claim }
     = render :partial => 'payments_out', :locals => { :f => f, :claim => claim }
 
-- elsif current_width == :big
+- elsif large_width?
+  = render :partial => 'information', :locals => { :f => f, :claim => claim }
   %fieldset.form_column
+    = render :partial => 'tourists', :locals => { :f => f, :claim => claim }
+    = render :partial => 'tour_price', :locals => { :f => f, :claim => claim }
+  = render :partial => 'route', :locals => { :f => f, :claim => claim }
+  = render :partial => 'flights', :locals => { :f => f, :claim => claim }
+  = render :partial => 'payments_in', :locals => { :f => f, :claim => claim }
+  = render :partial => 'payments_out', :locals => { :f => f, :claim => claim }

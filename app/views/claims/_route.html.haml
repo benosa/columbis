@@ -1,4 +1,4 @@
-#route.form_block.yellow_block
+#route.form_block.yellow_block{ :class => large_width? && 'route' }
   .block_title
     %h2= t('.route')
   .form_block_content
@@ -8,7 +8,7 @@
       = f.text_field :arrival_date, :class => 'datepicker date', :value => l(claim.arrival_date, :format => :long)
       %label= t('.till')
       = f.text_field :departure_date, :class => 'datepicker date', :value => l(claim.departure_date, :format => :long)
-    .fake_row
+    .fake_row{ :class => large_width? && 'margin_small' }
       .two_line
         %p=t('.departure_from_city')
         = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},

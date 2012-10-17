@@ -166,9 +166,16 @@ module ApplicationHelper
     case client_resolution[:width].to_i
       when 0...1600 then :small
       when 1600...1920 then :medium
-      else :big
+      else :large
     end
-    :small
+    :large
+  end
+
+  # Define helpers: small_width?, medium_width?, large_width?
+  [:small, :medium, :large].each do |w|
+    define_method :"#{w}_width?" do
+      current_width == w
+    end
   end
 
   private

@@ -1,8 +1,5 @@
 - content_for(:html_class) { 'edit_page' }
-- if current_width == :small
-  - content_for(:body_class) { 'low_resolution order panel edit_tourists' }
-- else
-  - content_for(:body_class) { 'order panel' }
+- content_for(:body_class) { 'order panel' << (small_width? ? ' edit_tourists' : '') }
 
 - title t('.title', :id => @claim.id, :created_at => l(@claim.created_at, :format => :long))
 

@@ -1,4 +1,4 @@
-#payments_in.form_block.green_block
+#payments_in.form_block.green_block{ :class => large_width? && 'payment_tourist' }
   .block_title
     %h2= t('.payments_in')
   .form_block_content
@@ -28,20 +28,32 @@
           = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_in.new_record?
         = pif.hidden_field :id
 
-    .fake_row.add_row
-      .add_btn.paying
-        = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+    - content_for(:pi_last_fields) do
       .two_line.due_date
-        - if current_width = :small
+        - if small_width?
           = f.label :maturity
         - else
           %p= f.label :maturity
         = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
       .two_line.error
-        - if current_width = :small
+        - if small_width?
           = f.label :tourist_debt, t('.tourist_debt_short')
         - else
           %p= f.label :tourist_debt
         = f.text_field :tourist_debt, :disabled => true, :class => 'debt text_right'
         %label= t('rur')
+
+    - if small_width? or medium_width?
+      .fake_row.add_row
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+        = yield :pi_last_fields
+
+    - elsif large_width?
+      .fake_row.add_row
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+      .fake_row
+        = yield :pi_last_fields
+
     - ind += 1

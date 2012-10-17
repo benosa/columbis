@@ -19,7 +19,7 @@
         = f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
       .two_line.number_visas_block
         %p= f.label :visa_count
-        - if current_width = :small
+        - if small_width?
           = f.select :visa_count, (0..30).to_a, {}, :class => 'first_number_visas_select'
         - else
           = f.select :visa_count, (0..30).to_a, {}, :class => 'number_visas_select'
@@ -29,7 +29,7 @@
         = f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [t(o.upcase), o]}, {}, :class => 'price_select'
       .two_line.number_visas_block
         %p= f.label :visa_count
-        - if current_width = :small
+        - if small_width?
           = f.select :children_visa_count, (0..30).to_a, {}, :class => 'last_number_visas_select'
         - else
           = f.select :children_visa_count, (0..30).to_a, {}, :class => 'number_visas_select'

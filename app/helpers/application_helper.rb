@@ -154,7 +154,7 @@ module ApplicationHelper
   def client_resolution
     return @client_resolution if @client_resolution.present?
     @client_resolution = if cookies[:screen_size]
-      ActiveSupport::JSON.decode(cookies[:screen_size]) rescue { :width => 1024, :height => 768 }
+      ActiveSupport::JSON.decode(cookies[:screen_size], :symbolize_keys => true) rescue { :width => 1024, :height => 768 }
     else
       { :width => 1024, :height => 768 }
     end
@@ -168,7 +168,6 @@ module ApplicationHelper
       when 1600...1920 then :medium
       else :large
     end
-    :large
   end
 
   # Define helpers: small_width?, medium_width?, large_width?

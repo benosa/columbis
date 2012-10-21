@@ -1,0 +1,19 @@
+- id_prefix = 'company_offices_attributes_{{id}}'
+- name_prefix = 'company[offices_attributes][{{id}}]'
+.fake_row.fields{ :class => 'new_record' }
+  {{#name}}
+  %p
+    %label{ :for => "#{id_prefix}_name" }
+      {{label}}
+  .highlighted
+    = text_field_tag "#{name_prefix}[name]", '{{value}}', :id => "#{id_prefix}_name",
+        :class => 'office_input'
+  {{/name}}
+  = link_to '', '#', :class => 'del delete', :title => I18n.t('delete')
+  {{#default_password}}
+  %p
+    %label{ :for => "#{id_prefix}_default_password" }
+      {{label}}
+  = text_field_tag "#{name_prefix}[default_password]", '{{value}}',
+      :id => 'company_offices_attributes_{{id}}_default_password', :class => 'office_input'
+  {{/default_password}}

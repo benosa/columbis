@@ -253,3 +253,38 @@ div.left {
 .fake_row textarea { height: 41px; }
 .address_input { width: 266px; } /* default styles of adress fields */
 /*** END forms ***/
+
+/*** messages ***/
+.messages {
+  overflow: hidden;
+  padding: 0 0 0 23px;
+  width: 1537px;
+}
+.messages .alert {
+  margin-bottom: 0;
+  float: left;
+  line-height: 20px;
+  font-size: 13px;
+  line-height: 16px;
+  padding-right: 45px;
+  margin: 18px 0 0;
+}
+.messages .alert .close {
+  /* original styles */
+  color: #000000;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  opacity: 0.2;
+  text-shadow: 0 1px 0 #FFFFFF;
+  /* end original styles */
+  /*top: 0;*/
+  right: -31px;
+}
+.messages .alert h2 {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 24px;
+}
+/*** END messages ***/

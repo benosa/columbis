@@ -98,11 +98,23 @@
                 = t('claims.index.accountant_list')
 
       .clear
-        - if content_for? :messages
-          = yield :messages
-        - else
-          - flash.each do |name, msg|
-            = content_tag :div, msg, :id => "flash_#{name}"
+
+      - if content_for? :success_messages or content_for? :error_messages or !flash.empty?
+        .messages
+          - if content_for? :success_messages
+            .alert.alert-success
+              = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
+              = yield :success_messages
+          - elsif content_for? :error_messages
+            .alert.alert-error
+              = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
+              = yield :error_messages
+          - else
+            - alert_classes = { :notice => :success, :alert => :error }
+            - flash.each do |name, msg|
+              = content_tag :div, :id => "flash_#{name}", :class => "alert alert-#{alert_classes[name]}" do
+                = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
+                = msg
 
       .wrapper
         #content.content

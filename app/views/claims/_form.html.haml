@@ -1,5 +1,6 @@
 - claim = f.object
-= f.error_messages
+- content_for(:error_messages) do
+  = f.error_messages
 
 %fieldset.filter
   .filter_row

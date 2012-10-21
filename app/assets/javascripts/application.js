@@ -10,5 +10,7 @@
 //= require vendor
 //= require mustache
 //= require_tree ../../templates
+//= require hogan
+//= require_tree ./templates
 //= require common
 //= require_tree .

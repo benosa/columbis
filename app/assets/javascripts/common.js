@@ -236,5 +236,5 @@ function defineScreenResolution() {
     };
     $.cookie('screen_size', size, { expires: 364, path: '/' });
   }
-  return size;  
+  return size;
 }

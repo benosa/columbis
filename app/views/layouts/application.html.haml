@@ -9,15 +9,18 @@
     = stylesheet_link_tag 'application'
     - if small_width?
       = stylesheet_link_tag 'new_design/css/low'
+    - elsif medium_width?
+      = stylesheet_link_tag 'new_design/css/middle'
     - elsif large_width?
       = stylesheet_link_tag 'new_design/css/high'
+    = stylesheet_link_tag 'common'
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
     = csrf_meta_tag
     = yield(:head)
 
-  %body{ :class => "#{body_class} #{yield(:body_class)}" }
+  %body{ :class => "#{body_class} #{yield(:body_class)}".strip }
     #container.all
 
       .header

@@ -1,3 +1,12 @@
+- content_for(:body_class) { 'company panel' }
+
 - title t('.add_company')
-= render 'form'
-= link_to t('.companies'), dashboard_companies_path
+
+= form_for [:dashboard, @company], :builder => TourismFormBuilder, :html => { :multipart => true } do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.companies'), dashboard_companies_path, :class => 'list_operator'

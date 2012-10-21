@@ -19,9 +19,25 @@ ru:
       cities:
         our_cities: 'Города'
       form:
+        common: 'Общие данные'
         address: 'Адрес'
+        cities: 'Города'
+        country: 'Страна'
+        region: 'Регион'
+        city: 'Город'
+        add_city: 'Добавить город'
+        add_city_fail_message: 'Такой город уже есть в списке'
         offices: 'Офисы'
+        add_office: 'Добавить офис'
         printers: 'Печатные формы'
+        memos: 'Памятки:'
+        type: 'Тип'
+        file: 'Файл'
+        file_type: 'Тип файла'
+        choose_file: 'Выберите файл'
+        add_file: 'Добавить файл'
+        mode_select_tooltip: 'Печатная форма с таким типом уже существует'
+        country_select_tooltip: 'Памятка для данной страны уже существует'
 
     activerecord:
       attributes:

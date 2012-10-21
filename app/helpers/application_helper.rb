@@ -163,11 +163,26 @@ module ApplicationHelper
   # Current site width calculated relative to client resolution
   # available site resolutions: 1024x768 1600x900 1920x1080
   def current_width
-    case client_resolution[:width].to_i
+    return @current_width if @current_width.present?
+    @current_width = case client_resolution[:width].to_i
       when 0...1600 then :small
       when 1600...1920 then :medium
       else :large
     end
+  end
+
+  # Set current width explicitly
+  def current_width=(width)
+    if [:small, :medium, :large].include?(width)
+      @current_width = width
+    else
+      @current_width = current_width
+    end
+  end
+
+  # For using in views
+  def set_current_width(width)
+    self.current_width = (width)
   end
 
   # Define helpers: small_width?, medium_width?, large_width?

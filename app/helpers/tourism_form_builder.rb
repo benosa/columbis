@@ -5,7 +5,6 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
       :only => @options[:highlight_only].present? ? @options[:highlight_only].to_a : nil,
       :except => @options[:highlight_except].present? ? @options[:highlight_except].to_a : nil
     }
-    Rails.logger.debug "@highlighted_options: #{@highlighted_options.to_yaml}"
 end
 
   def self.create_wrapped_field(method_name)

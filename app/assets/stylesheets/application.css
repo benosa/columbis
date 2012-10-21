@@ -2,9 +2,11 @@
 *= require new_design/css/reset
 * require jquery-ui
 * require dropdown
+*= require bootstrap
 *= require new_design/css/style
 *= require new_design/css/ikSelect
-*= require common
-*= require claims
+* require common
+* require claims
+* require company
 * require old_style
 */

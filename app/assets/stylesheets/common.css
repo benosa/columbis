@@ -1,3 +1,8 @@
+/*
+*= require claims
+*= require company
+*/
+
 body, input, textarea {
   font-size: 12px;
 }
@@ -246,4 +251,5 @@ div.left {
 /*** forms ***/
 .fake_row .two_line p label { margin: 0; }
 .fake_row textarea { height: 41px; }
+.address_input { width: 266px; } /* default styles of adress fields */
 /*** END forms ***/

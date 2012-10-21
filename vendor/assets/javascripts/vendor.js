@@ -6,3 +6,4 @@
 //= require jquery.ui.slider
 //= require jquery.ui.timepicker.addon
 //= require jquery.cookie
+//= require bootstrap

@@ -18,14 +18,16 @@
 .company .new_file_form .list_select.ik_select {
   left: 140px;
   top: 20px;
+  position: absolute;
 }
 .company .new_file_form .country_select.ik_select {
   left: 322px;
-  position: absolute;
   top: 20px;
+  position: absolute;
 }
 .company .new_file_form .file {
   top: 20px;
+  width: 245px;
 }
 .company .new_file_form label {
   color: #666666;
@@ -54,6 +56,7 @@
     position: absolute;
     right: 20px;
     top: 20px;
+    margin: 0;
 }
 .company .file_block .add_file {
     padding: 4px 0 0 21px;
@@ -71,6 +74,8 @@
   padding: 0 10px 0 8px;
   width: 262px;
 }
+.company.low_resolution .edit_file_form { width: 688px; }
+.company.high_resolution .edit_file_form { width: 562px; }
 .company .edit_file_form .select_file {
   color: #FFFFFF;
   font-size: 11px;
@@ -82,7 +87,13 @@
   float: none;
   width: 245px;
 }
+.company.low_resolution .edit_file_form .file { width: 666px; }
+.company.high_resolution .edit_file_form .file { width: 540px; }
 .company .edit_file_form .file input {
   width: 245px;
   left: -20px;
+}
+.company .edit_file_form .del_file {
+  margin: 0;
+  float: none;
 }

@@ -42,8 +42,8 @@ ru:
   registration_data: 'Регистрационные данные'
   record_successfuly_saved: 'Запись успешно сохранена'
 
-  invalid_fields: 'Ошибка при заполнении полей'
-  correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'
+  invalid_fields: 'Ошибка при заполнении полей!'
+  correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова:'
   print_partial_not_found: 'Не найдена форма печати'
 
   you_must_add_company_info: 'Для продолжения необходимо указать реквизиты компании'

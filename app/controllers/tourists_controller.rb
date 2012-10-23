@@ -1,7 +1,20 @@
 class TouristsController < ApplicationController
-  load_and_authorize_resource  
+  load_and_authorize_resource
 
   def index
+    @tourists =
+      if search_or_sort?
+        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
+        if options[:order] == :full_name
+          options[:sql_order] = %w[last_name first_name middle_name].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
+        elsif options[:order] == :passport
+          options[:sql_order] = %w[passport_series passport_number].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
+        end
+        search_paginate(Tourist.search_and_sort(options).includes(:address), options)
+      else
+        Tourist.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
+      end
+    render :partial => 'list' if request.xhr?
   end
 
   def new
@@ -16,7 +29,7 @@ class TouristsController < ApplicationController
     end
   end
 
-  def edit    
+  def edit
   end
 
   def update
@@ -28,7 +41,7 @@ class TouristsController < ApplicationController
     end
   end
 
-  def show    
+  def show
   end
 
   def destroy

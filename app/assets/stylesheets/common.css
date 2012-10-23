@@ -1,6 +1,7 @@
 /*
 *= require claims
 *= require company
+*= require tourists
 */
 
 body, input, textarea {
@@ -206,6 +207,9 @@ body, input, textarea {
     }
 
 .reservations.tour_operators th { max-width: 350px; }
+.reservations th a.sort_active, .reservations th.double_sort a.sort_active {
+    background-position: right top !important;
+}
 /*** END Tables ***/
 
 div.left {

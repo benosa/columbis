@@ -60,5 +60,8 @@ module Tourism
         %(#{html_tag}<p>#{errors}</p></div>).html_safe
       end
     end
+
+    # For extending models with search_and_sort method
+    require 'search_and_sort'
   end
 end

@@ -1,0 +1,18 @@
+.tourists .full_name { width: 244px; }
+.tourists .passport { width:124px; }
+.tourists .passport_series, .tourists .passport_number { width: 62px; }
+.tourists .passport_valid_until { width: 96px; }
+.tourists .date_of_birth { width: 88px; }
+.tourists .phone_number { width: 110px; }
+/*.tourists .address { width: 300px; }*/
+.tourists .actions { width: 68px; }
+
+.tourists th.colspan a {
+    float: none;
+    padding-top: 15px !important;
+    width: auto;
+}
+.tourists th.colspan span {
+  width: 52px;
+  text-align: left;
+}

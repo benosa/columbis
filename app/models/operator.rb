@@ -29,27 +29,7 @@ class Operator < ActiveRecord::Base
 
   local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data
 
-  def self.search_and_sort(options = {})
-    filter = options.delete(:filter)
-    search_results = search_for_ids(filter, options)
-    @search_info = {
-      :total_entries => search_results.total_entries,
-      :total_pages => search_results.total_pages
-    }
-    scoped = where(:id => search_results)
-    if options[:order].present?
-      if options[:order].to_sym == :joint_address
-        scoped = scoped.joins(Address.left_join(self)).reorder(Address.order_text(:joint_address, options[:sort_mode]))
-      else
-        scoped = scoped.reorder("#{options[:order]} #{options[:sort_mode]}")
-      end
-    end
-    scoped
-  end
-
-  def self.search_info
-    @search_info
-  end
+  extend SearchAndSort
 
   def self.local_data_extra_columns
     [ :address, :address_id ]

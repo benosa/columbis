@@ -1,6 +1,9 @@
 class Tourist < ActiveRecord::Base
-  attr_accessible :full_name, :passport_series, :passport_number, :first_name, :last_name,
-                  :date_of_birth, :passport_valid_until, :phone_number, :address
+  attr_accessible :first_name, :last_name, :middle_name,
+                  :passport_series, :passport_number, :passport_valid_until,
+                  :date_of_birth, :phone_number,
+                  :address_attributes
+
   attr_protected :company_id
 
   belongs_to :company
@@ -8,8 +11,28 @@ class Tourist < ActiveRecord::Base
 
   has_many :tourist_claims
   has_many :claims, :through => :tourist_claims
+  has_one :address, :as => :addressable, :dependent => :destroy
+
+  accepts_nested_attributes_for :address
 
   validates_presence_of :first_name, :last_name, :company_id
+
+  default_scope :order => [:last_name, :first_name, :middle_name]
+
+  define_index do
+    indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
+    indexes :phone_number, :sortable => true
+    indexes address(:joint_address), :as => :joint_address, :sortable => true
+    has [:passport_series, :passport_number], :as => :passport
+    has :passport_valid_until, :date_of_birth, :type => :datetime
+    has :company_id
+    # set_property :delta => true
+  end
+
+  sphinx_scope(:by_full_name) { { :order => :full_name } }
+  default_sphinx_scope :by_full_name
+
+  extend SearchAndSort
 
   local_data :full_name, :initials_name, :attributes => :all
 

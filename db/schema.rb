@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928212626) do
+ActiveRecord::Schema.define(:version => 20121022123828) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -303,7 +303,6 @@ ActiveRecord::Schema.define(:version => 20120928212626) do
     t.date     "date_of_birth"
     t.date     "passport_valid_until"
     t.string   "phone_number"
-    t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"

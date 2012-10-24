@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121022123828) do
+ActiveRecord::Schema.define(:version => 20121023125428) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -135,21 +135,6 @@ ActiveRecord::Schema.define(:version => 20121022123828) do
     t.integer  "company_id"
     t.datetime "arrive_to"
     t.datetime "arrive_back"
-  end
-
-  create_table "clients", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "middle_name"
-    t.integer  "passport_series"
-    t.integer  "passport_number"
-    t.string   "phone_number"
-    t.string   "address"
-    t.date     "passport_valid_until"
-    t.date     "date_of_birth"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "company_id"
   end
 
   create_table "companies", :force => true do |t|
@@ -306,7 +291,10 @@ ActiveRecord::Schema.define(:version => 20121022123828) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
+    t.boolean  "potential",            :default => false, :null => false
   end
+
+  add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false

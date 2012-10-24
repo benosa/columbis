@@ -18,10 +18,10 @@ class Tourist < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :company_id
 
   scope :clients, where(:potential => false)
-  scope :potential, where(:potential => true)
+  scope :potentials, where(:potential => true)
   scope :by_full_name, order([:last_name, :first_name, :middle_name])
 
-  default_scope clients.by_full_name
+  default_scope by_full_name
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true

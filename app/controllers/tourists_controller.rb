@@ -6,23 +6,24 @@ class TouristsController < ApplicationController
       if search_or_sort?
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
         checkout_order(options)
-        Rails.logger.debug "options: #{options.inspect}"
         scoped = Tourist.search_and_sort(options).includes(:address)
         scoped = scoped.potential if params[:potential].present?
         search_paginate(scoped, options)
       else
-        Tourist.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        scoped = Tourist.send(!params[:potential] ? :clients : :potentials)
+        scoped.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
 
   def new
+    @tourist.build_address
   end
 
   def create
     @tourist.company = current_company
     if @tourist.save
-      redirect_to @tourist, :notice => 'Tourist was successfully created.'
+      redirect_to tourists_url, :notice => t('tourists.messages.created')
     else
       render :action => "new"
     end
@@ -34,7 +35,7 @@ class TouristsController < ApplicationController
   def update
     @tourist.company = current_company
     if @tourist.update_attributes(params[:tourist])
-      redirect_to @tourist, :notice => 'Tourist was successfully updated.'
+      redirect_to tourists_url, :notice => t('tourists.messages.updated')
     else
       render :action => "edit"
     end
@@ -45,7 +46,7 @@ class TouristsController < ApplicationController
 
   def destroy
     @tourist.destroy
-    redirect_to tourists_url
+    redirect_to tourists_url, :notice => t('tourists.messages.destroyed')
   end
 
   private

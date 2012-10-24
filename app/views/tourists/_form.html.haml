@@ -1,34 +1,39 @@
-= form_for(@tourist) do |f|
-  - if @tourist.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@tourist.errors.count, "error")
-        prohibited this user from being saved:
-      %ul
-        - @tourist.errors.full_messages.each do |msg|
-          %li= msg
-  %table
-    %tr
-      %th
-        = f.label 'ФИО'
-        %br/
-        / .hint
-        (На кого оформляется договор)      
-      %th= f.label :date_of_birth
-      %th{:colspan => "2"}
-        = f.label 'Паспорт'
-      %th= f.label :passport_valid_until
-      %th= f.label :phone_number
-      %th= f.label :address
-    %tr
-      %td= f.text_field :full_name
-      %td= f.text_field :date_of_birth, :class => 'datepicker', :style => 'width: 75%;', :value => l(@tourist.date_of_birth, :format => :long)
-      %td= f.text_field :passport_series
-      %td= f.text_field :passport_number
-      %td= f.text_field :passport_valid_until, :class => 'datepicker', :style => 'width: 75%;', :value => l(@tourist.passport_valid_until, :format => :long)
+- content_for(:error_messages) do
+  = f.error_messages
 
-      %td= f.text_field :phone_number
-      %td= f.text_field :address
-    
-  .actions
-    = f.submit
+%fieldset.form_column.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p= f.label :last_name
+        = f.text_field :last_name, :class => 'wide'
+        %p= f.label :first_name
+        = f.text_field :first_name, :class => 'wide'
+        %p= f.label :middle_name
+        = f.text_field :middle_name, :class => 'wide'
+        %p= f.label :date_of_birth
+        = f.text_field :date_of_birth, :class => 'datepicker wide', :value => l(f.object.date_of_birth, :format => :long)
+        %p= f.label t('.passport')
+        = f.text_field :passport_series, :class => 'passport_series'
+        = f.text_field :passport_number, :class => 'passport_number'
+        %p= f.label :passport_valid_until
+        = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(f.object.passport_valid_until, :format => :long)
+        %p= f.label :phone_number
+        = f.text_field :phone_number, :class => 'wide'
+        %p
+          = f.check_box :potential
+          = f.label :potential, :class => 'checkbox right_checkbox'
+
+%fieldset.form_column
+  .form_block
+    .block_title
+      %h2= t('.address')
+    .form_block_content
+      .fake_row
+        = f.fields_for :address do |address|
+          = render :partial => 'shared/address', :locals => { :f => address }
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

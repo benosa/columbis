@@ -245,7 +245,8 @@ div.left {
 /*** END ikSelect ***/
 
 /*** highlighted ***/
-.highlighted, .highlighted .ik_select { margin-right: 0; }
+.highlighted { margin-right: 0; margin-bottom: 6px; }
+.highlighted .ik_select { margin-right: 0; }
 .highlighted + label { margin-left: 0 !important; }
 .form_column .highlighted,
 .filter .highlighted.select, .two_line .highlighted.select { margin-right: 17px; }
@@ -261,17 +262,12 @@ div.left {
 /*** messages ***/
 .messages {
   overflow: hidden;
-  padding: 0 0 0 23px;
-  width: 1537px;
 }
 .messages .alert {
-  margin-bottom: 0;
-  /*float: left;*/
   line-height: 20px;
   font-size: 13px;
   line-height: 16px;
   padding-right: 45px;
-  margin: 18px 0 0;
 }
 .messages .alert .close {
   /* original styles */

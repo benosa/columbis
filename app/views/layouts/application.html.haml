@@ -74,14 +74,17 @@
               %li= link_to t('.operators'), operators_path
               %li= link_to t('.dropdown_values'), dashboard_dropdown_values_path
               %li= link_to t('.tourists'), tourists_path
+              %li= link_to t('.potentials'), tourists_path(:potential => true)
               %li= link_to t('.addresses'), addresses_path
               %li= link_to t('.catalogs'), catalogs_path
           / %li{ :class => controller.controller_name == 'addresses' && 'active' }
           /   = link_to 'Реквизиты фирмы', dashboard_edit_company_path
-          %li{ :class => controller.controller_name == 'tourists' && 'active' }
-            = link_to 'Туристы', tourists_path
+          %li{ :class => (params[:controller] == 'tourists' && params[:potential].blank?) && 'active' }
+            = link_to t('.tourists'), tourists_path
+          %li{ :class => (params[:controller] == 'tourists' && params[:potential].present?) && 'active' }
+            = link_to t('.potentials'), tourists_path(:potential => true)
           %li{ :class => params[:controller] == 'operators' && 'active' }
-            = link_to 'Туроператоры', operators_path
+            = link_to t('.operators'), operators_path
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
 
@@ -96,25 +99,9 @@
 
       .clear
 
-      - if content_for? :success_messages or content_for? :error_messages or !flash.empty?
-        .messages
-          - if content_for? :success_messages
-            .alert.alert-success
-              = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
-              = yield :success_messages
-          - elsif content_for? :error_messages
-            .alert.alert-error
-              = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
-              = yield :error_messages
-          - else
-            - alert_classes = { :notice => :success, :alert => :error }
-            - flash.each do |name, msg|
-              = content_tag :div, :id => "flash_#{name}", :class => "alert alert-#{alert_classes[name]}" do
-                = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
-                = msg
-
       .wrapper
         #content.content
+          = render 'shared/messages'
           .top
             - if show_title?
               %h1= yield :title

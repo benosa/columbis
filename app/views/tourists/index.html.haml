@@ -5,9 +5,12 @@
 
 - content_for :top do
   .switch_type
-    %a{ :href => "#", :class => 'client active' }
+    %a.client.potential-switcher{ :href => "#", :class => params[:potential].blank? && 'active',
+      :data => { :param=> 'potential', :filter => 1 } }
       %span= t('.clients')
-    %a{ :href => "#", :class => 'client' }= t('.potential_clients')
+    %a.client.potential-switcher{ :href => "#", :class => params[:potential].present? && 'active',
+      :data => { :param=> 'potential', :filter => 1, :value => 1 } }
+      %span= t('.potential_clients')
 
   %form.filter
     = render 'shared/search_field'

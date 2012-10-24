@@ -16,7 +16,7 @@ $(function(){
   function getFilter(selector) {
     var filter = {},
         param, value
-        $s = $(selector || ':input[data-filter]');
+        $s = $(selector || ':input[data-filter], a[data-filter].active');
     if (!$s.is('[data-param]'))
       return filter;
     $s.each(function() {
@@ -81,12 +81,21 @@ $(function(){
           event = $t.data('event') || ($(this).is(':input') ? 'change' : 'click');
 
       $t.bind(event, function(e) {
-        if (e.type == 'click')
-          e.preventDefault();
-
         var $t = $(this),
             toggle_dir = $t.is('a.sort_active'),
-            data = $.extend(getParamsData(), getFilter(this), getSort(this, toggle_dir));
+            param = $t.data('param');
+
+        if (e.type == 'click') {
+          e.preventDefault();
+
+          var as = 'a[data-filter][data-param=' + param + ']';
+          if ($t.is(as)) {
+            $(as).removeClass('active');
+            $t.addClass('active');
+          }
+        }
+
+        var data = $.extend(getParamsData(), getFilter(this), getSort(this, toggle_dir));
 
         if (e.type == 'keyup')
           exclusive_delay(function() {

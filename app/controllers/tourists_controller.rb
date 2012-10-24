@@ -5,12 +5,11 @@ class TouristsController < ApplicationController
     @tourists =
       if search_or_sort?
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
-        if options[:order] == :full_name
-          options[:sql_order] = %w[last_name first_name middle_name].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
-        elsif options[:order] == :passport
-          options[:sql_order] = %w[passport_series passport_number].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
-        end
-        search_paginate(Tourist.search_and_sort(options).includes(:address), options)
+        checkout_order(options)
+        Rails.logger.debug "options: #{options.inspect}"
+        scoped = Tourist.search_and_sort(options).includes(:address)
+        scoped = scoped.potential if params[:potential].present?
+        search_paginate(scoped, options)
       else
         Tourist.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
@@ -55,6 +54,15 @@ class TouristsController < ApplicationController
       if params[:offline] && params[:id] == '0'
         @tourist = Tourist.new
         @tourist.id = 0
+      end
+    end
+
+    def checkout_order(options)
+      options[:with].merge!(:potential => params[:potential].present?)
+      if options[:order] == :full_name
+        options[:sql_order] = %w[last_name first_name middle_name].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
+      elsif options[:order] == :passport
+        options[:sql_order] = %w[passport_series passport_number].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
       end
     end
 

@@ -4,8 +4,9 @@
       %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
       %th.passport.two_row.colspan{ :colspan => 2 }
         = sort_link(:passport, t('.passport'))
-        %span= t('.series')
-        %span= t('.number')
+        .passport
+          %span= t('.series')
+          %span= t('.number')
       %th.passport_valid_until.two_row
         = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
       %th.date_of_birth.two_row
@@ -14,7 +15,7 @@
       %th.address
         = sort_link(:joint_address, t('.address'))
       %th.actions
-        %p= t('actions')
+        %span= t('actions')
 
     - for tourist in @tourists
       %tr{ :class => cycle('even', 'odd') }

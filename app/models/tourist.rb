@@ -1,7 +1,7 @@
 class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
-                  :date_of_birth, :phone_number,
+                  :date_of_birth, :phone_number, :potential,
                   :address_attributes
 
   attr_protected :company_id
@@ -17,7 +17,11 @@ class Tourist < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :company_id
 
-  default_scope :order => [:last_name, :first_name, :middle_name]
+  scope :clients, where(:potential => false)
+  scope :potential, where(:potential => true)
+  scope :by_full_name, order([:last_name, :first_name, :middle_name])
+
+  default_scope clients.by_full_name
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
@@ -25,12 +29,18 @@ class Tourist < ActiveRecord::Base
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has [:passport_series, :passport_number], :as => :passport
     has :passport_valid_until, :date_of_birth, :type => :datetime
+    has :potential, :type => :boolean
     has :company_id
     # set_property :delta => true
   end
 
-  sphinx_scope(:by_full_name) { { :order => :full_name } }
-  default_sphinx_scope :by_full_name
+  sphinx_scope(:clients_by_full_name) do
+    {
+      :with => { :potential => false },
+      :order => :full_name
+    }
+  end
+  default_sphinx_scope :clients_by_full_name
 
   extend SearchAndSort
 

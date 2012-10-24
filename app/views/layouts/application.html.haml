@@ -74,7 +74,6 @@
               %li= link_to t('.operators'), operators_path
               %li= link_to t('.dropdown_values'), dashboard_dropdown_values_path
               %li= link_to t('.tourists'), tourists_path
-              %li= link_to t('.clients'), clients_path
               %li= link_to t('.addresses'), addresses_path
               %li= link_to t('.catalogs'), catalogs_path
           / %li{ :class => controller.controller_name == 'addresses' && 'active' }
@@ -83,8 +82,6 @@
             = link_to 'Туристы', tourists_path
           %li{ :class => params[:controller] == 'operators' && 'active' }
             = link_to 'Туроператоры', operators_path
-          %li{ :class => controller.controller_name == 'clients' && 'active' }
-            = link_to 'Потенц. клиенты', clients_path
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
 

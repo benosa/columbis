@@ -23,7 +23,6 @@ Tourism::Application.routes.draw do
     match ':id' => :edit, :constraints => {:id => /\d+/}, :on => :collection, :via => :get
   end
   resources :tourists
-  resources :clients
   resources :addresses
   resources :notes
 

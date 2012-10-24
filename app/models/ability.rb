@@ -25,7 +25,7 @@ class Ability
     elsif user.role == 'accountant'
       can :switch_view, User
       can :search, Claim
-      can :manage, [CurrencyCourse, Client, Claim, Tourist, Payment], :company_id => user.company_id
+      can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
       can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
       cannot :read, Company
@@ -33,7 +33,7 @@ class Ability
       can :claims_all, :user
       can :offline_version, User
     elsif user.role == 'supervisor'
-      can :manage, [Client, Tourist], :company_id => user.company_id
+      can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
       can :search, Claim
       can :read, Claim, :company_id => user.company_id
@@ -42,7 +42,7 @@ class Ability
       can :claims_all, :user
       can :offline_version, User
     elsif user.role == 'manager'
-      can :manage, [Client, Tourist], :company_id => user.company_id
+      can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
       can :read, Claim, :company_id => user.company_id, :office_id => user.office_id
       can :search, Claim

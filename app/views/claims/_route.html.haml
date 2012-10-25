@@ -23,7 +23,7 @@
             :class => 'country editable-select route_select', :not_highlighted => true
       .two_line
         %p= f.label :resort
-        .highlighted.last
+        .last
           = f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
               :class => 'resort editable-select resort_select', :not_highlighted => true
     .fake_row

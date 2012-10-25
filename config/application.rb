@@ -53,11 +53,12 @@ module Tourism
 
     # Use custom html wrapper for field with errors
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
-      errors = Array(instance.error_message).join(',')
+      errors = Array(instance.error_message).join(', ')
       if html_tag =~ /^<label/
-        %(<div class="error_message">#{html_tag}).html_safe
+        %(<span class="error_message">#{html_tag}</span>).html_safe
       else
-        %(#{html_tag}<p>#{errors}</p></div>).html_safe
+        cls = html_tag[/class="(.+?)"/, 1]
+        %(<div class="error_message input_wrapper" title="#{errors}">#{html_tag}</div>).html_safe
       end
     end
 

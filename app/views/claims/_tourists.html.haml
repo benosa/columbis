@@ -35,7 +35,7 @@
           = af.label :phone_number, t('.phone') + ':'
           = af.text_field :phone_number, :class => 'phone_number phone'
           = af.label :address, t('.address') + ':', :class => 'address_label'
-          = af.text_field :address, :class => 'address'
+          = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
 
       = af.hidden_field :id
 

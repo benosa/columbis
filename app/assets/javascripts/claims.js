@@ -75,10 +75,13 @@ $(function(){
   // documents colors
   $('#claim_documents_status').change(function(e) {
     var $t = $(this),
-        value = $t.val();
-    $t.removeClass(DOCUMENTS_STATUSES.join(' '));
-    $t.addClass(value);
-    $t.closest('.highlighted')[value != 'all_done' ? 'addClass' : 'removeClass']('error');
+        value = $t.val()
+        $ikselect = $t.closest('.ik_select'),
+        $block = $ikselect.find('.ik_select_block'),
+        statuses = DOCUMENTS_STATUSES.join(' ');
+    $block.removeClass(statuses).addClass(value);
+    $ikselect.removeClass(statuses).addClass(value);
+    $ikselect[value != 'all_done' ? 'addClass' : 'removeClass']('error');
   });
 
   function check_route_memo(){

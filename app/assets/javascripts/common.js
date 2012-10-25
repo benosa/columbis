@@ -110,6 +110,20 @@ $(function(){
 
   // define screen resolution into browser cookie
   defineScreenResolution();
+
+  $('.error_message.input_wrapper').each(function() {
+    var $t = $(this)
+        errors = $t.attr('title');
+    if (errors.length) {
+      $t.css('width', $t.width());
+      var $ell = $('<div class="errors ellipsis">' + errors + '</div>').appendTo($t);
+      $ell.dotdotdot({ wrap: 'letter' });
+      if ($ell.triggerHandler("isTruncated"))
+        $t.tooltip();
+      else
+        $t.attr('title', '');
+    }
+  });
 });
 
 function customizeSelect(selector, is_container, options) {

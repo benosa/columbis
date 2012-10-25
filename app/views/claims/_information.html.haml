@@ -5,9 +5,8 @@
     .fake_row
       .two_line
         %p= f.label :documents_status, t('.trip_documents')
-        .highlighted{ :class => (claim.documents_status != Claim::DOCUMENTS_STATUSES.last) && 'error' }
-          = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('claims.documents_statuses.' << o), o ] }, {},
-              :class => "#{claim.documents_status} documentation_select"
+        = f.select :documents_status , (Claim::DOCUMENTS_STATUSES).collect {|o| [ t('claims.documents_statuses.' << o), o ] }, {},
+            :class => "#{claim.documents_status} documentation_select #{'error' if claim.documents_status != Claim::DOCUMENTS_STATUSES.last}"
       .two_line
         %p= f.label :tourist_stat, t('.tourist_stat')
         = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat'), {}, :class => 'editable-select documentation_select'

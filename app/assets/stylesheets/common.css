@@ -254,7 +254,26 @@ div.left {
 /*** END highlighted ***/
 
 /*** forms ***/
+.fake_row .error_message {
+  display: inline-block;
+  float: none !important;
+}
+.fake_row .error_message .errors {
+  color: #990000;
+  margin: -6px 0 11px;
+  font-size: 13px;
+  line-height: 14px;
+  height: 14px;
+  text-shadow: 0 1px 0 #FFFFFF;
+  display: block;
+  float: none;
+  /*overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  */
+}
 .fake_row .two_line p label { margin: 0; }
+.fake_row .ik_select { margin-bottom: 11px; }
 .fake_row textarea { height: 41px; }
 .address_input { width: 266px; } /* default styles of adress fields */
 /*** END forms ***/

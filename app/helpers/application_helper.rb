@@ -273,7 +273,8 @@ end
 
 class String
   def initial
-    self.chars.first + '.'
+    f = self.chars.first
+    f ? "#{f}." : ""
   end
 end
 

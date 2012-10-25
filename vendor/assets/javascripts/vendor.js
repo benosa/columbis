@@ -7,3 +7,4 @@
 //= require jquery.ui.timepicker.addon
 //= require jquery.cookie
 //= require bootstrap
+//= require jquery.dotdotdot

@@ -22,6 +22,7 @@ ru:
   back: 'Вернуться'
   search: 'Поиск'
   view_all: 'Показать все'
+  required_field: 'Обязательное поле'
 
   actions: 'Действия'
   show: 'Показать'

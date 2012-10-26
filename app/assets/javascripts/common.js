@@ -98,7 +98,7 @@ $(function(){
     var form_id = $(this).data('submit'),
         $form = $('#' + form_id);
     if (form_id && $form.length)
-      $form.submit();
+      $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
   });
 
   // customize all selects
@@ -112,9 +112,14 @@ $(function(){
   defineScreenResolution();
 
   $('.error_message.input_wrapper').each(function() {
-    var $t = $(this)
-        errors = $t.attr('title');
+    var $t = $(this),
+        errors = $t.attr('title'),
+        $i = $t.find(':input');
     if (errors.length) {
+      if ($i.data('errors-text') === false) {
+        $t.tooltip();
+        return;
+      }
       $t.css('width', $t.width());
       var $ell = $('<div class="errors ellipsis">' + errors + '</div>').appendTo($t);
       $ell.dotdotdot({ wrap: 'letter' });
@@ -124,6 +129,8 @@ $(function(){
         $t.attr('title', '');
     }
   });
+
+  $('label.required').tooltip();
 });
 
 function customizeSelect(selector, is_container, options) {

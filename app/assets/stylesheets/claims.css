@@ -1,4 +1,5 @@
 .reservations { min-height: 300px; }
+.middle_resoluition .reservations { width: 1536px; }
 
 .reservations th { min-width: 36px; }
 
@@ -57,6 +58,15 @@ option {
   background-color: white;
 }
 
+.due_date input {
+  border-color: #D5D5D5;
+}
+
+.main_page .type .ik_select { width: 180px; }
+.main_page .type .ik_select_link { width: 180px; }
+.main_page .type .ik_select_link_text { width: 165px; }
+.main_page .type .ik_select_list { width: 178px; }
+
 /* visa status select */
 .visa_status.ik_select{ width: 120px !important; margin-right: 0px; margin-bottom: 4px; }
 .visa_status .ik_select_link{width: 120px !important;}
@@ -66,6 +76,15 @@ option {
 .operator_currency { width: 28px; }
 
 /* low_resolution */
+.main_page .low_resolution .filter .search { width: 150px; }
+.main_page .low_resolution .filter .ik_select { width: 120px; }
+.main_page .low_resolution .filter .ik_select_link { width: 120px; }
+.main_page .low_resolution .filter .ik_select_link_text { width: 105px; }
+.main_page .low_resolution .filter .ik_select_list { width: 118px; }
+.main_page .low_resolution .filter .go_search { margin-right: 11px; }
+.main_page .low_resolution .filter .ik_select { margin-right: 11px; }
+.main_page .low_resolution .filter .settings { padding-left: 0px; width: 26px; height: 14px; }
+
 .edit_page .low_resolution .filter .float_right { margin-left: 0; }
 .edit_page .low_resolution .filter label { margin-left: 14px; }
 .edit_page .low_resolution .filter label:first-child { margin-left: 0; }

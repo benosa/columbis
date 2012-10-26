@@ -58,6 +58,7 @@ ru:
       sent: 'Отпр.'
       tourist_stat: 'Откуда'
       add_claim: 'Добавить бронь'
+      column_settings: 'Настройки столбцов'
 
     form:
       reset: 'Сброс'

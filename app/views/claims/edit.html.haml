@@ -4,8 +4,7 @@
 - title t('.title', :id => @claim.id, :created_at => l(@claim.created_at, :format => :long))
 
 -# highlighted_fields = [:airline, :documents_status, :arrival_date, :departure_date, :resort, :tour_price, :visa_price]
--# form_for @claim, :builder => TourismFormBuilder, :highlight_only => highlighted_fields do |form|
-= form_for @claim do |form|
+= form_for @claim, :builder => TourismFormBuilder do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 

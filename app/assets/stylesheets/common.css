@@ -218,6 +218,10 @@ div.left {
 }
 
 /*** Float panel ***/
+.panel_content {
+  padding: 10px 23px 0;
+  width: auto;
+}
 .panel_content button, .panel_content input {
   color: #FFFFFF;
   display: block;
@@ -234,6 +238,7 @@ div.left {
 /*** END Filter bar ***/
 
 /*** ikSelect ***/
+.ik_select { vertical-align: inherit; }
 .ik_select_disabled { color: #999; }
 .ik_select_editable .ik_select_link_inner { margin: 0 30px 0 5px; }
 .ik_select_editable .ik_select_link_text {
@@ -242,6 +247,7 @@ div.left {
     padding: 0;
     width: 100% !important;
 }
+.ik_select_list { width: auto; }
 /*** END ikSelect ***/
 
 /*** highlighted ***/
@@ -254,11 +260,17 @@ div.left {
 /*** END highlighted ***/
 
 /*** forms ***/
-.fake_row .error_message {
-  display: inline-block;
+/*input.required, .ik_select.required .ik_select_link { border-color: #4272BB; }*/
+label.required:after { content: "*"; }
+
+.error_message {
+  display: inline-block !important;
   float: none !important;
 }
-.fake_row .error_message .errors {
+.error_message input {
+  border-color: #CD6A6A !important;
+}
+.error_message .errors {
   color: #990000;
   margin: -6px 0 11px;
   font-size: 13px;
@@ -272,9 +284,17 @@ div.left {
   white-space: nowrap;
   */
 }
+.edit_page .filter span.error_message { margin-left: 31px; }
+
+input.error, .error input, .error_message input { background-color: #FCE8E9 !important; }
+
 .fake_row .two_line p label { margin: 0; }
 .fake_row .ik_select { margin-bottom: 11px; }
 .fake_row textarea { height: 41px; }
+.fake_row p strong label {
+  color: #3F6DB8;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
 .address_input { width: 266px; } /* default styles of adress fields */
 /*** END forms ***/
 
@@ -283,9 +303,8 @@ div.left {
   overflow: hidden;
 }
 .messages .alert {
-  line-height: 20px;
   font-size: 13px;
-  line-height: 16px;
+  line-height: 17px;
   padding-right: 45px;
 }
 .messages .alert .close {

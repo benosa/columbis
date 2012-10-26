@@ -108,10 +108,13 @@ $(function(){
 
   // operator confirm check flag
   $('#claim_operator_confirmation_flag').change(function(e){
-    if ($(this).is(':checked'))
-      $('#claim_operator_confirmation').addClass('blue_back').removeClass('red_back');
-    else
-      $('#claim_operator_confirmation').removeClass('blue_back').addClass('red_back');
+    if ($(this).is(':checked')) {
+      $('#claim_operator_confirmation').addClass('blue_back required').removeClass('red_back');
+      $('label[for=claim_operator_confirmation]').addClass('required').tooltip({ title: function() { return $(this).data('required-title'); } });
+    } else {
+      $('#claim_operator_confirmation').removeClass('blue_back required').addClass('red_back');
+      $('label[for=claim_operator_confirmation]').removeClass('required').tooltip('destroy');
+    }
   });
 
   // visa check flag
@@ -155,10 +158,6 @@ $(function(){
     var status = $(this).val();
     $('#claim_visa').val(status);
     $('#claim_visa_check').removeClass(VISA_STATUSES.join(' ')).addClass(status);
-  }).ikSelect({
-    autoWidth: false,
-    customClass: "visa_status",
-    ddCustomClass: "visa_status"
   });
 
   $('#claim_visa_confirmation_flag').change(function(e){

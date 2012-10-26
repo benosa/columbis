@@ -8,10 +8,12 @@
     = f.text_field :id, :disabled => true, :value => (claim.new_record? ? Claim.next_id : claim.id), :class => 'number'
     - if small_width?
       = f.label :operator_confirmation, t('.operator_confirmation_two_line').html_safe, :class => 'two_row',
-          :title => t('.operator_confirmation')
+          :title => t('.operator_confirmation'), :required => claim.operator_confirmation_flag,
+          :data => { :required_title => I18n.t('required_field') }
     - else
-      = f.label :operator_confirmation
-    = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back')
+      = f.label :operator_confirmation, :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
+    = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back'),
+        :required => claim.operator_confirmation_flag, :data => { :errors_text => 'false' }
     = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
     = f.check_box :operator_confirmation_flag
 
@@ -41,14 +43,14 @@
       = f.label :reservation_date, t('.reservation_date_two_line').html_safe, :class => 'two_row',
           :title => t('.reservation_date')
       = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
-    = f.label :user_id, t('.user')
+    = f.label :user_id, t('.user'), :required => false
     - if is_admin? or is_boss?
       = f.select :user_id, current_company.users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => claim.user.nil?},
           :class => 'filter_select'
     - else
       = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
 
-    = f.label :office_id, t('.office')
+    = f.label :office_id, t('.office'), :required => false
     - if is_admin? or is_boss?
       = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => claim.office.nil?},
           :class => 'filter_select'

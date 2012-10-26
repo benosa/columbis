@@ -27,6 +27,6 @@ module LayoutHelper
   def body_class
     return 'low_resolution' if small_width?
     return 'high_resolution' if large_width?
-    ''
+    'middle_resoluition'
   end
 end

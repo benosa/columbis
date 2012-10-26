@@ -19,7 +19,7 @@
           %p= pif.label :description, t('.paid_in_word')
           = pif.text_field :description, :class => 'description sum disabled', :disabled => true
         .two_line
-          %p= pif.label :form, t('.paid_type')
+          %p= pif.label :form, t('.paid_type'), :required => false
           = pif.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
               :class => 'payment_form payment_select', :not_highlighted => true
           - if is_admin? or is_boss? or is_accountant?

@@ -1,3 +1,4 @@
+- set_current_width(:medium) if small_width?
 - content_for(:html_class) { 'main_page' }
 
 - title t('.claims')
@@ -12,11 +13,11 @@
 
       = label_tag :office_id, t('.office')
       = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
-        :prompt => t('nope')
+        :prompt => t('nope'), :class => 'filter_select'
 
       = label_tag :user_id, t('.user')
       = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'name_for_list', params[:user_id]),
-        :prompt => t('nope')
+        :prompt => t('nope'), :class => 'filter_select'
 
     - else
 
@@ -24,7 +25,10 @@
       = label_tag :only_my, t('.only_my')
 
     %fieldset
-      %a.settings{ :href => "#" } Настройки столбцов
+      - if small_width?
+        %a.settings{ :href => "#", :title => t('.column_settings') }
+      - else
+        %a.settings{ :href => "#" }= t('.column_settings')
 
 = render :partial => 'list'
 

@@ -25,7 +25,7 @@
           %label.operator_currency= t(claim.operator_price_currency.upcase)
           -# pof.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
         .two_line.big_select
-          %p= pof.label :form, t('.paid_type')
+          %p= pof.label :form, t('.paid_type'), :required => false
           = pof.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
               :class => 'payment_form big_payment_select', :not_highlighted => true, :disabled => claim.new_record?
           - if is_admin? or is_boss? or is_accountant?
@@ -37,11 +37,11 @@
     - content_for(:po_last_fields) do
       .two_line
         - if small_width?
-          = f.label :operator_maturity
+          = f.label :operator_maturity, :required => claim.operator_confirmation_flag
         - else
-          %p= f.label :operator_maturity
+          %p= f.label :operator_maturity, :required => claim.operator_confirmation_flag
         = f.text_field :operator_maturity, :class => 'datepicker date', :value => l(claim.operator_maturity, :format => :long),
-            :not_highlighted => true
+            :not_highlighted => true, :required => claim.operator_confirmation_flag
       .two_line.small_margin
         - if small_width?
           = f.label :operator_price

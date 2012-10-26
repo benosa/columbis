@@ -91,7 +91,7 @@
         - if view_switcher?
           .type
             %p Вид:
-            %select#view_switcher
+            %select#view_switcher.view_switcher
               %option{ :value => current_path(:list_type => 'manager_list'), :selected => params[:list_type] == 'manager_list' && 'selected' }
                 = t('claims.index.manager_list')
               %option{ :value => current_path(:list_type => 'accountant_list'), :selected => params[:list_type] == 'accountant_list' && 'selected' }

@@ -10,7 +10,8 @@
       = f.text_field :departure_date, :class => 'datepicker date', :value => l(claim.departure_date, :format => :long)
     .fake_row{ :class => large_width? && 'margin_small' }
       .two_line
-        %p=t('.departure_from_city')
+        %p
+          %label.required= t('.departure_from_city')
         = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
               :class => 'city editable-select flight_from_select', :not_highlighted => true
       .two_line
@@ -18,11 +19,11 @@
         = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
               :class => 'operator editable-select tour_operator_select', :not_highlighted => true
       .two_line
-        %p= f.label :country, t('.direction')
+        %p= f.label :country, t('.direction'), :required => true
         = f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
             :class => 'country editable-select route_select', :not_highlighted => true
       .two_line
-        %p= f.label :resort
+        %p= f.label :resort, :required => true
         .last
           = f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
               :class => 'resort editable-select resort_select', :not_highlighted => true

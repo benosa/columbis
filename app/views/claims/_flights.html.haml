@@ -3,7 +3,7 @@
     %h2= t('.flights')
   .form_block_content
     .fake_row
-      %p= t('.airline')
+      %p= f.label :airline, t('.airline'), :required => true
       - if small_width? or medium_width?
         = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
       - elsif large_width?
@@ -11,7 +11,7 @@
     .fake_row
       .two_line
         %p
-          %strong= t('.there')
+          %strong= f.label :airport_to, t('.there'), :required => true
         = f.select :airport_to, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
             :not_highlighted => true
       .two_line
@@ -26,7 +26,7 @@
     .fake_row
       .two_line
         %p
-          %strong= t('.back')
+          %strong= f.label :airport_back, t('.back'), :required => true
         = f.select :airport_back, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
             :not_highlighted => true
       .two_line

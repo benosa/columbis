@@ -36,6 +36,11 @@ ru:
       personal_data: Личные данные
       change_password: Сменить пароль
 
+    messages:
+      created: 'Пользователь создан'
+      updated: 'Пользователь обновлен'
+      destroyed: 'Пользователь удален'
+
   user:
     roles:
       admin: Администратор

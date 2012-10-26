@@ -22,8 +22,10 @@
       %tr{ :class => cycle('even', 'odd') }
         %td
           %p= user.full_name
-        %td{ :style => "background-color:#{user.color};", :class => "user_#{available_colors.send(key_method, user.color).underscore}" }
-          %p= user.login
+        %td{ :class => "user_#{available_colors.send(key_method, user.color).underscore}" }
+          %p
+            %span.colored.circular{ :style => "background-color: #{user.color};" }
+            = user.login
         %td
           %p= user.role
         %td

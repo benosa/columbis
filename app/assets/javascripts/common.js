@@ -31,6 +31,11 @@ $(function(){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
   });
   $('.color_sample').css('background-color', $('#user_color').val());
+  $('#user_color option').each(function() {
+    var $t = $(this);
+    $t.html('<span class="circular colored" style="background-color: ' + $t.val() + ';"></span> ' + $t.text());
+    // $t.ikSelect('reset');
+  });
 
   $('#tour_price input, #payments_in input, #payments_out input').click(function(e){
     e.currentTarget.select();

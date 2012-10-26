@@ -126,6 +126,24 @@ body, input, textarea {
 
 .footer { min-height: 100px; }
 
+.circular {
+  -webkit-border-radius: 500px;
+  -moz-border-radius: 500px;
+  border-radius: 500px;
+}
+
+.colored {
+  display: inline-block;
+  vertical-align: baseline;
+  width: 7px;
+  height: 7px;
+}
+.ik_select .ik_select_link_text .colored {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /*** Colors ***/
 .orange{color: #cc3300;}
 .purple{color: #6666ff;}

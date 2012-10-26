@@ -49,6 +49,13 @@
 
 .reservations td.user_bg { background: none; }
 
+.reservations span.colored {
+  display: inline-block;
+  margin: 0;
+  position: static;
+  vertical-align: baseline;
+}
+
 /*.claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }*/
 

@@ -34,7 +34,7 @@
         - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
         .two_line
           %p= t('.color_for_lists')
-          = f.select :color, User.available_colors
+          = f.select :color, User.available_colors, {}, :class => 'color_select'
         .two_line
           %p= t('.selected_color')
           = text_field_tag nil, nil, :disabled => true,

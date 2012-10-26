@@ -51,9 +51,9 @@
         %td{ :full_value => claim.tourist_stat }
           = truncate(claim.tourist_stat, :length => 4)
         - if is_admin? or is_boss? or is_supervisor?
-          / %td{ :class =>  claim.user.try(:color) && 'user_bg', :style => "background-color:#{claim.user.try(:color)}" }
           %td
-            %p{ :full_value => claim.user.try(:full_name), :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
+            %p{ :full_value => claim.user.try(:full_name) }
+              %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
               = truncate(claim.user.try(:login), :length => 8)
             %p{ :full_value => claim.office.name }
               = truncate(claim.office.name, :length => 8)

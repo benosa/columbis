@@ -282,6 +282,7 @@
 
     // Drop database, clear localStorage data for current user and init one more
     reset_local_data: function() {
+      $.ajaxSetup({ cache: false }); // don't use cached ajax responses
       localStorage.removeItem(this.prefix + "last_sync");
       localStorage.removeItem(this.prefix + "last_cache_update");
       localStorage.removeItem(this.prefix + "settings");

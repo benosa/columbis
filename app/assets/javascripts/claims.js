@@ -70,7 +70,7 @@ $(function(){
       $('#claim_memo, .has_notes_ind').addClass('blue_back');
     } else {
       $('#claim_memo, .has_notes_ind').removeClass('blue_back');
-      if(trim($('#claim_memo').val()) == ''){
+      if(trim($('#claim_memo').val()) === ''){
         $('#claim_memo, .has_notes_ind').removeClass('red_back');
         $('.has_notes_ind').addClass('blue_back');
         $('.has_notes_ind').text('Нет');
@@ -96,7 +96,7 @@ $(function(){
   $('#claim_visa_confirmation_flag').click(function(e){
     $('#claim_visa_check').removeClass($('#claim_visa').val());
     if (!this.checked) {
-      for (i in VISA_STATUSES) {
+      for (var i in VISA_STATUSES) {
         $('#claim_visa_check').removeClass(VISA_STATUSES[i]);
       }
 
@@ -139,7 +139,7 @@ $(function(){
     if ($('#claim_closed')[0].checked) {
       $('#claim_check_date').addClass('departed');
       return;
-    } else if ($('#claim_check_date').val() == '') {
+    } else if ($('#claim_check_date').val() === '') {
       $('#claim_check_date').addClass('hot');
       return;
     }
@@ -229,7 +229,7 @@ $(function(){
     if (this.checked) {
       $('.lamp_block').css('background-position','top left');
     } else {
-      $('.lamp_block').css('background-position','0% -36px')
+      $('.lamp_block').css('background-position','0% -36px');
     }
   });
 
@@ -247,7 +247,7 @@ $(function(){
   }
 
   function update_calculation() {
-    if ($('#claim_calculation').val() == '' || /\*$/.test($('#claim_calculation').val())) {
+    if ($('#claim_calculation').val() === '' || /\*$/.test($('#claim_calculation').val())) {
       var str = '';
       var count = '';
       var val = parseFloat($('#claim_primary_currency_price').val());
@@ -312,7 +312,7 @@ $(function(){
           $('#claim_additional_services').val() + ') + ';
         }
 
-        if (str != '') {
+        if (str !== '') {
           $('#claim_calculation').val(str.slice(0, -2) + '*');
         }
       }
@@ -350,7 +350,7 @@ $(function(){
     sum_price = Math.round(sum_price + total);
 
     return sum_price;
-  }
+  };
 
   $('#claim_course_eur, claim_course_usd, tr.countable input, tr.countable select').change(function(){
     var total = calculate_tour_price();
@@ -362,13 +362,13 @@ $(function(){
 
   // city, resort, flights
   $('#claim_city').change(function(){
-    if($('#claim_airport_to').val() == '') {
+    if($('#claim_airport_to').val() === '') {
       $('#claim_airport_to').val($('#claim_city').val());
     }
   });
 
   $('#claim_resort').change(function(){
-    if($('#claim_airport_back').val() == '') {
+    if($('#claim_airport_back').val() === '') {
       $('#claim_airport_back').val($('#claim_resort').val());
     }
   });
@@ -404,7 +404,7 @@ $(function(){
         }
       }
     });
-	}
+	};
   var calculate_tourist_debt = function(event){
     var price = parseFloat($('#claim_primary_currency_price').val());
     var paid = 0.0;
@@ -417,7 +417,7 @@ $(function(){
       });
     }
     $('#claim_tourist_debt').val(price - paid);
-  }
+  };
 
   var calculate_operator_debt = function(event){
     var price = parseFloat($('#claim_operator_price').val());
@@ -431,7 +431,7 @@ $(function(){
       });
     }
     $('#claim_operator_debt').val((price - paid).toFixed(2));
-  }
+  };
 
   $('#claim_operator_price').change(calculate_operator_debt);
 
@@ -449,7 +449,7 @@ $(function(){
     amount = $tr.find('input.amount').val();
     var amount_prim = (course * amount).toFixed(2);
     $tr.find('input.amount_prim').val(amount_prim);
-  }
+  };
 
   var reversive_calculate_amount = function(event){
     $tr = $(event.currentTarget).parent().parent();
@@ -470,7 +470,7 @@ $(function(){
     } else {
       $tr.find('input.amount').val('0.00');
     }
-  }
+  };
 
   $('#payments_in input.amount').change(function(event){
     get_amount_in_word(event);
@@ -534,7 +534,7 @@ $(function(){
       $(this).find('a.del').click(del_tourist);
       $(this).find('a.del').attr('id','del'+(i+2));
 
-      $(this).find('.num').text(i+2)
+      $(this).find('.num').text(i+2);
 
       $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
       $(this).find('input.autocomplete.full_name').attr('id', 'claim_dependents_attributes_' + i + '_full_name');
@@ -559,7 +559,7 @@ $(function(){
       hidden_id.attr('name', 'claim[dependents_attributes][' + i + '][id]');
       last_ind = i+1;
     });
-	}
+	};
 	$('#tourists a.add').click(add_tourist);
 
   // del tourist
@@ -578,9 +578,9 @@ $(function(){
     }
 
     $('#tourists tr.dependent').each(function(i){
-      $(this).find('.num').text(i+2)
+      $(this).find('.num').text(i+2);
     });
-  }
+  };
 	$('#tourists a.del').click(del_tourist);
 
   // add payment
@@ -661,7 +661,7 @@ $(function(){
       hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');
       hidden_id.attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][id]');
     });
-	}
+	};
 	$('#payments_in a.add').live('click', add_payment);
 	$('#payments_out a.add').live('click', add_payment);
 
@@ -672,7 +672,7 @@ $(function(){
     var id = $(this).attr('id').replace(/del/,'');
     var $tr = $(t_id.replace(/payments/,'payment') + '_' + id);
 
-    if (id == 0) {
+    if (id === 0) {
       $tr.find('input').each(function(){
         if ($(this).hasClass('approved')) {
           this.checked = false;
@@ -688,7 +688,7 @@ $(function(){
 
     calculate_tourist_debt();
     calculate_operator_debt();
-  }
+  };
 	$('#payments_in a.del').click(del_payment);
 	$('#payments_out a.del').click(del_payment);
 });

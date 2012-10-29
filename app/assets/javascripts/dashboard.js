@@ -13,7 +13,7 @@ $(function(){
         $('#dropdowns').replaceWith(resp);
       }
     });
-	}
+	};
 	$('#list_filter').change(filter_table);
 
   //prepare fields
@@ -44,13 +44,13 @@ $(function(){
       if (!$(this).is('option')) {
         $(this).val('');
       }
-      if ($(this).attr('id') != undefined) {
+      if ($(this).attr('id') !== undefined) {
         $(this).attr('id', $(this).attr('id').replace(/_attributes_(\d+)/, '_attributes_' + id));
       }
-      if ($(this).attr('name') != undefined) {
+      if ($(this).attr('name') !== undefined) {
         $(this).attr('name', $(this).attr('name').replace(/_attributes\]\[(\d+)/, '_attributes][' + id));
       }
-      if ($(this).attr('for') != undefined) {
+      if ($(this).attr('for') !== undefined) {
         $(this).attr('for', $(this).attr('for').replace(/_attributes_(\d+)/, '_attributes_' + id));
       }
     });
@@ -134,7 +134,7 @@ $(function(){
 		e.preventDefault();
 
     var id = $('#cities').val();
-    if ($('#tr_' + id).length == 0) {
+    if ($('#tr_' + id).length === 0) {
       var $tr = $('#etalon').clone(true);
       $tr.attr('id', 'tr_' + id);
 

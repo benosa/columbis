@@ -9,7 +9,7 @@
       args.push(deferred);
       func.apply(this, args);
       return deferred.promise();
-    }
+    };
   };
 
   var Tourism = {
@@ -55,7 +55,7 @@
     transaction: function(callback, deferred) {
       if (deferred)
         this.db.transaction(callback, function(err) {
-          self.error(err)
+          self.error(err);
           deferred.reject();
         }, function() {
           deferred.resolve();
@@ -152,10 +152,10 @@
         table: null,
         id: null,
         action: null
-      }
+      };
 
       var chunks = path != '/' ? path.split('/') : [];
-      if (chunks[0] == '') chunks.shift();
+      if (chunks[0] === '') chunks.shift();
       if (chunks[0] == 'offline') chunks.shift();
 
       if (chunks.length) {
@@ -267,7 +267,7 @@
     },
 
     set_settings: function(settings) {
-      var settings = settings || {};
+      settings = settings || {};
       var str = '';
       for (var p in settings)
         str += p + '=' + settings[p] + '&';
@@ -310,7 +310,7 @@
               }
               return data;
             }
-          }
+          };
         },
 
         show: function(id) {
@@ -318,7 +318,7 @@
             sql: 'SELECT * FROM tourists WHERE id = ?',
             params: [id],
             data: function (results) { return self.get_first_row('tourists', results.rows); }
-          }
+          };
         },
 
         edit: function(id) { return self.actions.tourists.show(id); }
@@ -344,7 +344,7 @@
               }
               return data;
             }
-          }
+          };
         },
 
         show: function(id) { return $.extend(self.actions.claims.edit(id), { view: 'edit' }); },
@@ -412,7 +412,7 @@
               }
               return data;
             }
-          }
+          };
         },
 
         show: function(id) {
@@ -420,7 +420,7 @@
             sql: 'SELECT * FROM operators WHERE id = ?',
             params: [id],
             data: function (results) { return self.first_row(results.rows); }
-          }
+          };
         },
 
         edit: defer_func(function(id, deferred) {
@@ -627,8 +627,8 @@
             var fields = '';
             var values = '';
 
-            for (field in obj) {
-              if (self.tables_info[table][field] && obj[field] != '') {
+            for (var field in obj) {
+              if (self.tables_info[table][field] && obj[field] !== '') {
                 fields += field + ', ';
                 values += self.cast_type(obj[field], table, field, true) + ', ';
               }
@@ -641,7 +641,7 @@
           }
         }
       }, function(err) {
-        self.error(err)
+        self.error(err);
         deferred.reject();
       }, function() {
         deferred.resolve();

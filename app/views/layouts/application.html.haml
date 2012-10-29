@@ -77,8 +77,8 @@
               %li= link_to t('.potentials'), tourists_path(:potential => true)
               %li= link_to t('.addresses'), addresses_path
               %li= link_to t('.catalogs'), catalogs_path
-          / %li{ :class => controller.controller_name == 'addresses' && 'active' }
-          /   = link_to 'Реквизиты фирмы', dashboard_edit_company_path
+          %li{ :class => request.url == dashboard_edit_company_url && 'active' }
+            = link_to t('.company'), dashboard_edit_company_path
           %li{ :class => (params[:controller] == 'tourists' && params[:potential].blank?) && 'active' }
             = link_to t('.tourists'), tourists_path
           %li{ :class => (params[:controller] == 'tourists' && params[:potential].present?) && 'active' }

@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class Tourist < ActiveRecord::Base
-  attr_accessible :full_name, :passport_series, :passport_number, :first_name, :last_name,
+  attr_accessible :full_name, :passport_series, :passport_number, :first_name, :last_name, :middle_name,
                   :date_of_birth, :passport_valid_until, :phone_number, :address
   attr_protected :company_id
 
@@ -23,7 +23,7 @@ class Tourist < ActiveRecord::Base
   end
 
   def initials_name
-    "#{last_name} #{first_name.initial}#{middle_name.initial if middle_name}".strip
+    "#{last_name} #{first_name.try(:initial)}#{middle_name.try(:initial) if middle_name}".strip
   end
 
   def full_name=(name)

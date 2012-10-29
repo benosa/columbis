@@ -140,7 +140,8 @@ end
 
 class String
   def initial
-    self.chars.first + '.'
+    f = self.chars.first
+    f ? "#{f}." : ""
   end
 end
 
@@ -285,7 +286,7 @@ module ActiveRecord
         if value.is_a? Time or value.is_a? Date or value.is_a? DateTime
           I18n.l(value, :format => :long)
         elsif value.is_a? ActiveRecord::Associations
-          value.try(:name) || value.try(:id)
+          (value.name if value.respond_to?(:name)) || value.id
         else
           value
         end

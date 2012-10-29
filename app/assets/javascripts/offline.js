@@ -14,7 +14,7 @@
 
   var Tourism = {
 
-    db: null,    
+    db: null,
     tables: [],
     tables_info: {},
     content_selector: '#content',
@@ -45,7 +45,7 @@
             if (!this.db)
               this.message("Failed to open the database on disk. This is probably because there is not enough space left in this domain's quota");
           }
-        } catch(err) {        
+        } catch(err) {
           this.message("Couldn't open the database. This is probably because your browser doesn't support a local database (WebSQL)");
         }
       }
@@ -67,11 +67,11 @@
     parse_table_columns: function (table, columns) {
       var info = {};
       var fields = columns.split(', ');
-      
+
       for (var j = 0; j < fields.length; j++) {
         var chunks = fields[j].split(' ');
-        var field = chunks[0], type = chunks[1];      
-        info[field] = type;              
+        var field = chunks[0], type = chunks[1];
+        info[field] = type;
       }
 
       return info;
@@ -79,34 +79,29 @@
 
     cast_type: function (value, table, field, to_storage) {
       var type = this.tables_info[table][field];
-      if (to_storage && (
-        value == 'eur' && type != 'TEXT'
-        || value.match && value.match(/2012/) && type != 'TEXT'
-      ))
-        console.log(table + '[' + field + ']:' + type + ' = ' + value);
 
-      // while insert    
-      if (to_storage) {      
+      // while insert
+      if (to_storage) {
         if (type == 'INTEGER') {
           if (typeof value == 'number');
           else if (typeof value == 'boolean')
             value = value ? 1 : 0;
           else {
             var i = parseInt(value);
-            value = !isNaN(i) ? i : 0;        
+            value = !isNaN(i) ? i : 0;
           }
         } else if (type == 'REAL') {
-          if (typeof value == 'number');        
+          if (typeof value == 'number');
           else {
             var f = parseFloat(value);
             value = !isNaN(f) ? f : 0;
-          }        
+          }
         } else if (type == 'TEXT') {
           if (typeof value == 'string' && value.indexOf("'") != -1)
             value = value.replace(/'/g, "''");
           value = "'" + value + "'";
         }
-      // while select    
+      // while select
       } else {
         if (value === null && (type == 'INTEGER' || type == 'REAL'))
           value = 0;
@@ -120,7 +115,7 @@
       var row = $.extend({}, r);
 
       // Cast types
-      for (var k in row)        
+      for (var k in row)
         row[k] = this.cast_type(row[k], table, k);
 
       return row;
@@ -144,7 +139,7 @@
     },
 
     last_sync: function () {
-      return localStorage.getItem(this.prefix + "last_sync");      
+      return localStorage.getItem(this.prefix + "last_sync");
     },
 
     set_last_sync: function (time) {
@@ -155,7 +150,7 @@
     route: function (path) {
       var route = {
         table: null,
-        id: null,      
+        id: null,
         action: null
       }
 
@@ -186,14 +181,14 @@
       return route;
     },
 
-    render: function (template, data) {      
+    render: function (template, data) {
       if (!SMT[template]) {
         this.error('Could not find "' + template + '" template');
         return;
       }
 
       data = $.extend(this.process(data), { settings: this.settings() });
-      var content = SMT[template](data);    
+      var content = SMT[template](data);
       $(this.content_selector).html(content);
       if (typeof this.after_render == 'function')
         this.after_render();
@@ -213,21 +208,21 @@
 
     process: function (data) {
 
-      function _process_data(o, level) {      
+      function _process_data(o, level) {
         for (var k in o) {
           if (!o[k] || typeof o[k] != 'object' || typeof o[k] == 'string') {
             _process_value(data, o, k, o[k]);
           } else if (o[k].constructor == Array) {
             for (var i = 0; i < o[k].length; i++)
-              _process_data(o[k][i], level + 1);   
+              _process_data(o[k][i], level + 1);
           } else
             _process_data(o[k], level + 1);
         }
       };
 
-      function _process_value(data, o, key, value) { 
+      function _process_value(data, o, key, value) {
         if (/(^|_)currency$/.test(key))
-          o[key + '_up'] = value.toUpperCase();      
+          o[key + '_up'] = value.toUpperCase();
       };
 
       _process_data(data, 0);
@@ -240,7 +235,7 @@
     },
 
     last_cache_update: function() {
-      return localStorage.getItem(this.prefix + "last_cache_update");      
+      return localStorage.getItem(this.prefix + "last_cache_update");
     },
 
     set_last_cache_update: function(time) {
@@ -267,7 +262,7 @@
           var parts = chunks[i].split('=');
           settings[parts[0]] = parts[1];
         }
-      }      
+      }
       return settings;
     },
 
@@ -283,8 +278,18 @@
 
     offline_available: function() {
       return this.current_user.length && this.current_company.length;
+    },
+
+    // Drop database, clear localStorage data for current user and init one more
+    reset_local_data: function() {
+      localStorage.removeItem(this.prefix + "last_sync");
+      localStorage.removeItem(this.prefix + "last_cache_update");
+      localStorage.removeItem(this.prefix + "settings");
+      this.drop_tables('all').done(function() {
+        Tourism.init();
+      });
     }
-      
+
   };
 
   (function() {
@@ -297,7 +302,7 @@
         index: function() {
           return {
             sql: 'SELECT * FROM tourists ORDER BY full_name',
-            data: function (results) {        
+            data: function (results) {
               var data = { tourists: [] };
               for (var i = 0; i < results.rows.length; i++) {
                 var row = self.get_row('tourists', results.rows.item(i));
@@ -325,9 +330,9 @@
         index: function() {
           return {
             sql: 'SELECT * FROM claims ORDER BY id',
-            data: function (results) {        
+            data: function (results) {
               var data = {
-                columns: { 
+                columns: {
                   office: !!self.tables_info['claims']['office'],
                   accountant_list: !!self.tables_info['claims']['profit']
                 },
@@ -347,50 +352,50 @@
         edit: defer_func(function(id, deferred) {
           var self = Tourism;
           var claim;
-          
-          self.db.transaction(function(tx) {              
+
+          self.db.transaction(function(tx) {
             tx.executeSql('SELECT * FROM claims WHERE id = ?', [id], function (tx, results) {
 
-              claim = self.get_first_row('claims', results.rows);        
-              
+              claim = self.get_first_row('claims', results.rows);
+
               if (claim.id && self.tables_info['tourists']) {
                 tx.executeSql('SELECT * FROM tourists WHERE id = ?', [claim.applicant_id], function (tx, results) {
-                  claim.applicant = self.get_first_row('claims', results.rows.item(0));          
+                  claim.applicant = self.get_first_row('claims', results.rows);
                 });
-                
+
                 tx.executeSql('SELECT * FROM tourists WHERE id in (' + claim.dependent_ids + ')', [], function (tx, results) {
-                  claim.dependents = []; 
+                  claim.dependents = [];
                   for (var i = 0; i < results.rows.length; i++) {
                     var row = self.get_row('claims', results.rows.item(i));
                     row.n = i;
                     row.ind = i + 2;
                     claim.dependents.push(row);
-                  }          
+                  }
                 });
               }
-              
+
               if (claim.id && self.tables_info['payments']) {
                 tx.executeSql('SELECT * FROM payments WHERE claim_id = ?', [id], function (tx, results) {
                   claim.payments_in = [];
-                  claim.payments_out = []; 
+                  claim.payments_out = [];
                   for (var i = 0; i < results.rows.length; i++) {
                     var row = self.get_row('claims', results.rows.item(i));
                     if (row['recipient_type'] == 'Company')
                       claim.payments_in.push(row);
                     else
                       claim.payments_out.push(row);
-                  }          
+                  }
                 });
               }
 
-            });      
+            });
           }, function(err) {
             self.error(err);
             deferred.reject();
-          }, function() {      
+          }, function() {
             deferred.resolve(claim);
           });
-          
+
         })
       },
 
@@ -399,7 +404,7 @@
         index: function() {
           return {
             sql: 'SELECT * FROM operators ORDER BY name',
-            data: function (results) {        
+            data: function (results) {
               var data = { operators: [] };
               for (var i = 0; i < results.rows.length; i++) {
                 var row = self.get_row('operators', results.rows.item(i));
@@ -421,24 +426,24 @@
         edit: defer_func(function(id, deferred) {
           var self = Tourism;
           var operator;
-          
-          self.db.transaction(function(tx) {              
+
+          self.db.transaction(function(tx) {
             tx.executeSql('SELECT * FROM operators WHERE id = ?', [id], function (tx, results) {
 
-              operator = self.get_first_row('operators', results.rows);        
-              
+              operator = self.get_first_row('operators', results.rows);
+
               if (operator.id && self.tables_info['addresses']) {
                 tx.executeSql('SELECT * FROM addresses WHERE id = ?', [operator.address_id], function (tx, results) {
-                  operator.address = self.get_first_row('addresses', results.rows);          
+                  operator.address = self.get_first_row('addresses', results.rows);
                 });
-              }              
-            });      
+              }
+            });
           }, function(err) {
             self.error(err);
             deferred.reject();
-          }, function() {      
+          }, function() {
             deferred.resolve(operator);
-          });          
+          });
         })
 
       },
@@ -447,33 +452,33 @@
         edit_company: defer_func(function(id, deferred) {
           var self = Tourism;
           var company;
-          
-          self.db.transaction(function(tx) {              
+
+          self.db.transaction(function(tx) {
             tx.executeSql('SELECT * FROM companies LIMIT 1', [], function (tx, results) {
 
-              company = self.get_first_row('companies', results.rows);        
-              
+              company = self.get_first_row('companies', results.rows);
+
               if (company.id) {
                 tx.executeSql('SELECT * FROM addresses WHERE addressable_type = ? AND addressable_id = ?', ['Company', company.id],
                 function (tx, results) {
-                  company.address = self.get_first_row('addresses', results.rows);          
+                  company.address = self.get_first_row('addresses', results.rows);
                 });
 
                 tx.executeSql('SELECT * FROM cities', [], function (tx, results) {
-                  company.cities = self.get_rows('cities', results.rows);          
+                  company.cities = self.get_rows('cities', results.rows);
                 });
 
                 tx.executeSql('SELECT * FROM offices WHERE company_id = ?', [company.id], function (tx, results) {
-                  company.offices = self.get_rows('offices', results.rows);          
+                  company.offices = self.get_rows('offices', results.rows);
                 });
-              }             
-            });      
+              }
+            });
           }, function(err) {
             self.error(err);
             deferred.reject();
-          }, function() {      
+          }, function() {
             deferred.resolve(company);
-          });          
+          });
         }),
 
         index: function() { return {}; }
@@ -482,39 +487,55 @@
       users: {
         edit: function() { return {}; }
       }
-      
+
     };
   })();
 
   Tourism.defer({
 
     check_db: function (deferred) {
-      var self = this;      
+      var self = this;
 
       this.transaction(function(tx) {
         tx.executeSql('SELECT name, sql FROM sqlite_master WHERE type = "table"', [], function (tx, results) {
           var tables = [];
           for (var i = 0; i < results.rows.length; i++) {
             var row = results.rows.item(i);
-            var table = row['name'];            
+            var table = row['name'];
             if (!table.match(/^__/)) {
               self.tables.push(row['name']);
               var start = row['sql'].indexOf('(') + 1;
               var end = row['sql'].indexOf(')') - 1;
               var columns = row['sql'].substr(start, end - start + 1);
               self.tables_info[table] = self.parse_table_columns(table, columns);
-            }         
-          }      
+            }
+          }
         });
       }, deferred);
     },
 
-    drop_tables: function(tables, deferred) {      
-      if (typeof tables == 'string')
-        tables = tables == 'all' ? this.tables : [tables];
+    drop_tables: function(tables, deferred) {
+      var self = this,
+          drop_all = false;
+      if (typeof tables == 'string') {
+        drop_all = tables == 'all';
+        tables = drop_all ? this.tables : [tables];
+      }
       this.transaction(function(tx) {
-        for (var i = 0; i < tables.length; i++)
-          tx.executeSql('DROP TABLE IF EXISTS ' + tables[i]);      
+        for (var i in tables) {
+          tx.executeSql('DROP TABLE IF EXISTS ' + tables[i]);
+          delete self.tables_info[tables[i]];
+        }
+
+        if (drop_all) {
+          self.tables = [];
+        } else {
+          var tmp = [];
+          for (var i in self.tables)
+            if ($.inArray(table, tables) == -1)
+              tmp.push(table);
+          self.tables = tmp;
+        }
       }, deferred);
     },
 
@@ -525,25 +546,25 @@
       if (tables)
         data['tables'] = tables;
 
-      $.ajax({        
+      $.ajax({
         url: '/dashboard/local_tables/',
         data: data,
-        dataType: 'json',    
+        dataType: 'json',
         success: function(json) {
           self.transaction(function(tx) {
-            for (var table in json) {              
+            for (var table in json) {
               var columns = json[table].join(', ');
               var sql = 'CREATE TABLE IF NOT EXISTS ' + table + ' (' + columns + ')';
               tx.executeSql(sql);
-              self.tables_info[table] = self.parse_table_columns(table, columns);            
-            }                
-          }, deferred);        
+              self.tables_info[table] = self.parse_table_columns(table, columns);
+            }
+          }, deferred);
         }
-      });      
+      });
     },
 
     get_data: function (tables, updated_at, deferred) {
-      var self = this;      
+      var self = this;
       var data = {};
       var data_present = false;
 
@@ -553,7 +574,7 @@
         data['tables'] = tables;
 
       $.ajax({
-        context: this,       
+        context: this,
         url: '/dashboard/local_data/',
         data: data,
         dataType: 'json',
@@ -579,7 +600,7 @@
               var d1 = self.save_data(data);
 
               var d2 = self.get_data(new_tables, false);
-              
+
               $.when(d1, d2).done(function() {
                 deferred.resolve();
               }).fail(function() {
@@ -594,31 +615,31 @@
             self.error(textStatus);
           deferred.reject();
         }
-      });      
+      });
     },
 
     save_data: function(data, deferred) {
       var self = this;
-      self.db.transaction(function(tx) {        
+      self.db.transaction(function(tx) {
         for (var table in data) {
           for (var i = 0; i < data[table].length; i++) {
             var obj = data[table][i];
             var fields = '';
             var values = '';
 
-            for (field in obj) {                            
-              if (obj[field] != '') {
+            for (field in obj) {
+              if (self.tables_info[table][field] && obj[field] != '') {
                 fields += field + ', ';
-                values += self.cast_type(obj[field], table, field, true) + ', ';                  
+                values += self.cast_type(obj[field], table, field, true) + ', ';
               }
             }
 
             fields = '(' + fields.replace(/, $/, ')');
             values = '(' + values.replace(/, $/, ')');
             var sql = 'INSERT OR REPLACE INTO ' + table + ' ' + fields + ' VALUES ' + values;
-            tx.executeSql(sql);            
+            tx.executeSql(sql);
           }
-        }          
+        }
       }, function(err) {
         self.error(err)
         deferred.reject();
@@ -637,7 +658,7 @@
       // In Chrome navigator.onLine property always is true
       else if ($.browser.webkit) {
         // Check connection by ajax-request
-        $.ajax({          
+        $.ajax({
           url: '/dashboard/edit_company',
           success: function(data, textStatus, jqXHR) {
             deferred.resolve(true);
@@ -650,7 +671,7 @@
 
       // In a common case check navigator.onLine value
       } else
-        deferred.resolve(window.navigator.onLine);      
+        deferred.resolve(window.navigator.onLine);
     },
 
     offline: function (path, deferred) {
@@ -666,7 +687,7 @@
         var action = this.actions[route['table']][route['action']];
         if (typeof action == 'function')
           res = action(route['id'] || undefined);
-      }      
+      }
 
       if (!res) {
         deferred.reject();
@@ -681,14 +702,14 @@
         res.done(function(data) {
           self.render(template, data);
           deferred.resolve();
-        });      
-      } else if (res.sql && res.data) {      
+        });
+      } else if (res.sql && res.data) {
         this.transaction(function(tx) {
-          tx.executeSql(res.sql, res.params || [], function (tx, results) {          
+          tx.executeSql(res.sql, res.params || [], function (tx, results) {
             var data = res.data(results);
             self.render(template, data);
-            deferred.resolve();       
-          });      
+            deferred.resolve();
+          });
         });
       } else {
         this.render(template, res);
@@ -696,7 +717,7 @@
       }
     }
 
-  }); 
+  });
 
   Tourism.init = function() {
     // Check availability of offline site version
@@ -704,7 +725,7 @@
 
     var self = this;
 
-    // Check current mode  
+    // Check current mode
     self.check_online().done(function(online) {
 
       self.online = online;
@@ -713,15 +734,15 @@
       if (self.init_db()) {
 
         // Online
-        if (self.online) {       
-       
+        if (self.online) {
+
           // Check necessary information
           self.check_db().done(function() {
             // Get last data
             self.get_data(false, self.last_sync()).done(function() {
               // Update synchronization time
               self.set_last_sync();
-            });          
+            });
           });
 
           // Get offline site version one time a day
@@ -738,22 +759,22 @@
           $('<div id="offline_text_box">Оффлайн режим</div>').appendTo(document.body);
 
           // Can use a local database
-          if (self.init_db()) {          
+          if (self.init_db()) {
             self.check_db().done(function() {
               self.offline(location.pathname).always(function() {
                 $(self.content_selector).css('visibility', 'visible');
               });
-            });        
+            });
           } else
             $(self.content_selector).css('visibility', 'visible');
 
         }
-      } 
-    
-    });
-  };  
+      }
 
-  window.Tourism = Tourism;  
+    });
+  };
+
+  window.Tourism = Tourism;
 
 })();
 

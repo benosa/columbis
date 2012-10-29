@@ -1,5 +1,5 @@
 ru:
-  addresses:   
+  addresses:
     index:
       add_address: 'Добавить адрес'
       addresses: 'Адреса'
@@ -14,7 +14,7 @@ ru:
     show:
       addresses: 'Список адресов'
       address: 'Адрес'
-   
+
     new:
       add_address: 'Добавление адреса'
       addresses: 'Список адресов'
@@ -23,7 +23,7 @@ ru:
       edit_address: 'Редактирование адреса'
       addresses: 'Список адресов'
 
-      
+
   activerecord:
     attributes:
       address:

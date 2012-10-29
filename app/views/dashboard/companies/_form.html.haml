@@ -69,10 +69,10 @@
       = f.fields_for :offices do |of|
         - unless of.object.new_record?
           .fake_row.fields
-            %p= of.label :name
+            %p= of.label :name, t('.office.name')
             = of.text_field :name, :class => 'office_input'
             = link_to '', '#', :class => 'del delete', :title => t('delete')
-            %p= of.label :default_password
+            %p= of.label :default_password, t('.office.default_password')
             = of.text_field :default_password, :class => 'office_input'
             = of.hidden_field(:_destroy)
         - else

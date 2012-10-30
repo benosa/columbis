@@ -90,7 +90,7 @@ $(function(){
       $('#claim_memo, .has_notes_ind').addClass('blue_back');
     } else {
       $('#claim_memo, .has_notes_ind').removeClass('blue_back');
-      if(trim($('#claim_memo').val()) == ''){
+      if(trim($('#claim_memo').val()) === ''){
         $('#claim_memo, .has_notes_ind').removeClass('red_back');
         $('.has_notes_ind').addClass('blue_back');
         $('.has_notes_ind').text('Нет');
@@ -191,7 +191,7 @@ $(function(){
     if ($('#claim_closed')[0].checked) {
       $('#claim_check_date').addClass('departed');
       return;
-    } else if ($('#claim_check_date').val() == '') {
+    } else if ($('#claim_check_date').val() === '') {
       $('#claim_check_date').addClass('hot');
       return;
     }
@@ -271,7 +271,7 @@ $(function(){
     if (this.checked) {
       $('.lamp_block').css('background-position','top left');
     } else {
-      $('.lamp_block').css('background-position','0% -36px')
+      $('.lamp_block').css('background-position','0% -36px');
     }
   });
 
@@ -289,7 +289,7 @@ $(function(){
   }
 
   function update_calculation() {
-    if ($('#claim_calculation').val() == '' || /\*$/.test($('#claim_calculation').val())) {
+    if ($('#claim_calculation').val() === '' || /\*$/.test($('#claim_calculation').val())) {
       var str = '';
       var count = '';
       var val = parseFloat($('#claim_primary_currency_price').val());
@@ -354,7 +354,7 @@ $(function(){
           $('#claim_additional_services').val() + ') + ';
         }
 
-        if (str != '') {
+        if (str !== '') {
           $('#claim_calculation').val(str.slice(0, -2) + '*');
         }
       }
@@ -404,13 +404,13 @@ $(function(){
 
   // city, resort, flights
   $('#claim_city').change(function(){
-    if($('#claim_airport_to').val() == '') {
+    if($('#claim_airport_to').val() === '') {
       $('#claim_airport_to').val($('#claim_city').val());
     }
   });
 
   $('#claim_resort').change(function(){
-    if($('#claim_airport_back').val() == '') {
+    if($('#claim_airport_back').val() === '') {
       $('#claim_airport_back').val($('#claim_resort').val());
     }
   });
@@ -447,7 +447,7 @@ $(function(){
         }
       }
     });
-	}
+	};
   var calculate_tourist_debt = function(event){
     var price = parseFloat($('#claim_primary_currency_price').val() || 0);
     var paid = 0.0;
@@ -474,7 +474,7 @@ $(function(){
       });
     }
     $('#claim_operator_debt').val((price - paid).toFixed(2));
-  }
+  };
 
   $('#claim_operator_price').change(calculate_operator_debt);
 
@@ -492,7 +492,7 @@ $(function(){
     amount = $tr.find('input.amount').val();
     var amount_prim = (course * amount).toFixed(2);
     $tr.find('input.amount_prim').val(amount_prim);
-  }
+  };
 
   var reversive_calculate_amount = function(event){
     $tr = $(event.currentTarget).parent().parent();
@@ -513,7 +513,7 @@ $(function(){
     } else {
       $tr.find('input.amount').val('0.00');
     }
-  }
+  };
 
   $('#payments_in input.amount').change(function(event){
     get_amount_in_word(event);
@@ -607,7 +607,7 @@ $(function(){
       hidden_id.attr('name', 'claim[dependents_attributes][' + i + '][id]');
       last_ind = i+1;
     });
-	}
+	};
 	$('#tourists a.add').click(add_tourist);
 
   // del tourist
@@ -715,7 +715,7 @@ $(function(){
       hidden_id.attr('id', 'claim_payments_' + p_type + '_attributes_' + i + '_id');
       hidden_id.attr('name', 'claim[payments_' + p_type + '_attributes][' + i + '][id]');
     });
-	}
+	};
 	$('#payments_in a.add').live('click', add_payment);
 	$('#payments_out a.add').live('click', add_payment);
 
@@ -726,7 +726,7 @@ $(function(){
     var id = $(this).attr('id').replace(/del/,'');
     var $tr = $(t_id.replace(/payments/,'payment') + '_' + id);
 
-    if (id == 0) {
+    if (id === 0) {
       $tr.find('input').each(function(){
         if ($(this).hasClass('approved')) {
           this.checked = false;
@@ -742,7 +742,7 @@ $(function(){
 
     calculate_tourist_debt();
     calculate_operator_debt();
-  }
+  };
 	$('#payments_in a.delete').click(del_payment);
 	$('#payments_out a.delete').click(del_payment);
 });

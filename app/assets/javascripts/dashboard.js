@@ -13,7 +13,7 @@ $(function(){
         $('#dropdowns').replaceWith(resp);
       }
     });
-	}
+	};
 	$('#list_filter').change(filter_table);
 
   //prepare fields

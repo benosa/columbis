@@ -72,7 +72,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :correctness_of_maturity
 
-  before_save :update_debts  
+  before_save :update_debts
 
   define_index do
     indexes airport_to, airport_back, flight_to, flight_back, meals, placement
@@ -200,15 +200,15 @@ class Claim < ActiveRecord::Base
 
     columns = [
       :tourist_stat_short,
-      :user,   
+      :user,
       :login,
       :login_short,
       :tourists_list,
       :initials_name,
       :phone_number,
       :phone_number_short,
-      :color_for_flight,      
-      :depart_to_short,      
+      :color_for_flight,
+      :depart_to_short,
       :depart_back_short,
       :country,
       :country_short,
@@ -217,26 +217,26 @@ class Claim < ActiveRecord::Base
       :resort,
       :resort_short,
       :text_for_visa,
-      :class_for_visa,      
+      :class_for_visa,
       :visa_check_short,
-      :operator,      
-      :operator_confirmation_short,      
+      :operator,
+      :operator_confirmation_short,
       :calculation_short,
-      :tourist_advance_class,      
+      :tourist_advance_class,
       :tourist_debt_class,
       :operator_price_short,
-      :operator_price_class,      
-      :operator_maturity_short,      
+      :operator_price_class,
+      :operator_maturity_short,
       :operator_advance_short,
       :operator_advance_class,
       :operator_debt_short,
       :operator_debt_class,
-      :documents_ready,          
+      :documents_ready,
       :documents_status_class,
       :price_as_string,
       :memo_short,
-      :memo_class,      
-      :check_date_class,      
+      :memo_class,
+      :check_date_class,
 
       :applicant_id,
       :dependent_ids
@@ -272,7 +272,7 @@ class Claim < ActiveRecord::Base
     selected = true;
 
     if column == :office_id
-      selected = (c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1)
+      selected = (c.is_admin? or c.is_boss? or c.is_supervisor?) # and c.current_company.offices.count > 1)
     elsif [:profit, :profit_in_percent].include? column
       selected = c.can? :switch_view, c.current_user
     end
@@ -284,7 +284,7 @@ class Claim < ActiveRecord::Base
     helpers = ClaimsController.helpers
     c = ApplicationController.current
     claim = self
-    
+
     data = {
       :id => id,
       :reservation_date => helpers.l(claim.reservation_date, :format => :default),
@@ -305,9 +305,9 @@ class Claim < ActiveRecord::Base
       :country => claim.country.try(:name),
       :country_short => helpers.truncate(claim.country.try(:name), :length => 8),
       :city => claim.city.try(:name),
-      :city_short => helpers.truncate(claim.city.try(:name), :length => 6),      
+      :city_short => helpers.truncate(claim.city.try(:name), :length => 6),
       :resort => claim.resort.try(:name),
-      :resort_short => helpers.truncate(claim.resort.try(:name), :length => 6),      
+      :resort_short => helpers.truncate(claim.resort.try(:name), :length => 6),
       :text_for_visa => helpers.text_for_visa(claim),
       :class_for_visa => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa,
       :visa_check => helpers.l( claim.visa_check, :format => :long ),
@@ -333,14 +333,14 @@ class Claim < ActiveRecord::Base
       # :operator_debt => claim.operator_debt.to_money,
       :operator_debt_short => helpers.operator_debt(claim),
       :operator_debt_class => (!claim.canceled? && claim.operator_debt != 0) && 'red_back',
-      :documents_ready => claim.documents_ready?,     
+      :documents_ready => claim.documents_ready?,
       :documents_status => helpers.t('claims.form.documents_statuses.' << claim.documents_status),
       :documents_status_class => !claim.canceled? && claim.documents_status,
       :price_as_string => claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY),
       :memo => claim.memo,
       :memo_short => helpers.truncate(claim.memo, :length => 8),
       :memo_class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back',
-      :check_date => helpers.l( claim.check_date, :format => :default ),      
+      :check_date => helpers.l( claim.check_date, :format => :default ),
       :check_date_class => helpers.check_date_status(claim),
       :docs_note => claim.docs_note,
 
@@ -348,7 +348,7 @@ class Claim < ActiveRecord::Base
       :dependent_ids => claim.dependents.map(&:id).join(',')
     }
 
-    if c.is_admin? or c.is_boss? or c.is_supervisor? and c.current_company.offices.count > 1
+    if c.is_admin? or c.is_boss? or c.is_supervisor? # and c.current_company.offices.count > 1
       data.merge!({
         :office => claim.office.name,
         :office_short => helpers.truncate(claim.office.name, :length => 8)
@@ -428,7 +428,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:course] = 1
 
       process_payment_hash(payment_hash, self.payments_in)
-    end    
+    end
   end
 
   def assign_payments_out(payments_out)

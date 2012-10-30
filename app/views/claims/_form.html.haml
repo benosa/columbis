@@ -69,12 +69,12 @@
 
 %fieldset.check_list
   %ul
-    %li{ :class => !claim.tourist_debt? && 'checked' }
+    %li{ :class => !claim.has_tourist_debt? && 'checked' }
       = t('.tourist_debt')
       %span= claim.tourist_debt? ? t('yep') : t('nope')
     %li{ :class => !claim.operator_debt? && 'checked' }
       = t('.operator_debt')
-      %span= claim.operator_debt? ? t('yep') : t('nope')
+      %span= claim.has_operator_debt? ? t('yep') : t('nope')
     %li{ :class => claim.documents_ready? && 'checked' }
       = t('.documents_ready')
       %span= claim.documents_ready? ? t('yep') : t('nope')
@@ -113,3 +113,148 @@
   = render :partial => 'flights', :locals => { :f => f, :claim => claim }
   = render :partial => 'payments_in', :locals => { :f => f, :claim => claim }
   = render :partial => 'payments_out', :locals => { :f => f, :claim => claim }
+          %table#tour_price{ :style => 'float:none'}
+            %tr
+              %th{ :colspan => 3 }
+                = f.label :tour_price
+              %th{ :colspan => 2 }
+                = f.label :visa_price
+              %td= f.label :visa_count
+              %th{ :colspan => 2 }
+                = f.label :children_visa_price
+              %td= f.label :visa_count
+            %tr{ :class => 'countable' }
+              %td= f.text_field :tour_price, :class => 'red'
+              %td{ :colspan => 2 }
+                = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td.amount= f.text_field :visa_price
+              %td= f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :visa_count, (0..30).to_a
+              %td.amount= f.text_field :children_visa_price
+              %td= f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :children_visa_count, (0..30).to_a
+            %tr
+              %th{ :colspan => 3 }
+                = f.label :insurance_price
+              %th{ :colspan => 3 }
+                = f.label :additional_insurance_price
+              %th{ :colspan => 3 }
+                = f.label :fuel_tax_price
+            %tr{ :class => 'countable' }
+              %td.amount= f.text_field :insurance_price
+              %td= f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :insurance_count, (0..30).to_a
+              %td.amount= f.text_field :additional_insurance_price
+              %td= f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :additional_insurance_count, (0..30).to_a
+              %td.amount= f.text_field :fuel_tax_price
+              %td= f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td= f.select :fuel_tax_count, (0..30).to_a
+            %tr{ :class => 'countable' }
+              %th{ :colspan => 6, :style => 'text-align:right; padding-right:6px;' }
+                = f.label :additional_services_price
+              %td.amount= f.text_field :additional_services_price
+              %td= f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+              %td
+            %tr
+              %td{ :colspan => 9 }
+                %br
+            %tr
+              %th{ :colspan => 9 }
+                = f.label :primary_currency_price
+            %tr
+              %td.amount= f.text_field :primary_currency_price, :class => 'red'
+              %td{ :colspan => 8 }
+                = text_field_tag :price_as_string,
+                  @claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY), :class => 'red', :disabled => true
+            %tr
+              %th{ :colspan => 9 }
+                = f.label :calculation
+            %tr
+              %td{ :colspan => 9 }
+                = f.text_area :calculation, :rows => 4
+
+    #payments_block
+      .data_block
+        %h2= t('.payments_in')
+        %table#payments_in
+          %tr
+            %td{ :colspan => 2}
+              = f.label :maturity
+            %td.datepicker= f.text_field :maturity, :class => 'datepicker', :value => l(@claim.maturity, :format => :long)
+            %td
+          %tr.header
+            %th{ :style => 'width:12px;' }
+            %th= t('.date')
+            %th= t('.paid')
+            %th= t('.currency')
+            %th= t('.paid_in_word')
+            %th= t('.paid_type')
+          - ind = 0
+          = f.fields_for :payments_in do |builder|
+            %tr.fields{ :id => "payment_in_#{ind}"}
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?)
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
+                  :value => l(builder.object.date_in, :format => :long)
+              %td.amount= builder.text_field :amount, :class => 'amount'
+              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
+              %td= builder.text_field :description, :class => 'description', :disabled => true
+              %td{ :colspan => 2 }
+                = builder.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ] }, {}, :class => 'payment_form'
+              %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
+            = builder.hidden_field :id
+            - ind += 1
+          %tr.footer
+            %td{ :colspan => 3}
+            %td= f.label :tourist_debt
+            %td= f.text_field :tourist_debt, :disabled => true, :class => 'red'
+          %tr.bottom
+            %td{ :colspan => 5}
+              = link_to t('.add_another_payment'), '#', :class => 'add'
+
+        %h2= t('.payments_out')
+        %table#payments_out
+          %tr
+            %td
+            %td= f.label :operator_price
+            %td.amount= f.text_field :operator_price
+            %td= f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }
+            %td{ :colspan => 2 }
+              = f.label :operator_maturity
+            %td.datepicker= f.text_field :operator_maturity, :class => 'datepicker', :value => l(@claim.operator_maturity, :format => :long)
+          %tr.header
+            %th{ :style => 'width:12px;' }
+            %th= t('.date')
+            %th= t('.paid')
+            %th= t('.currency')
+            %th= t('.course')
+            %th.paid= t('.paid') + " (#{@claim.operator_price_currency})"
+            %th= t('.paid_type')
+          - ind = 0
+          = f.fields_for :payments_out do |builder|
+            %tr.fields{ :id => "payment_out_#{ind}"}
+              %td= builder.check_box :approved, :class => 'approved', :disabled => (!is_admin? and !is_boss? and !is_accountant?),
+                :title => Payment.human_attribute_name(:approved)
+              %td.datepicker= builder.text_field :date_in, :class => 'datepicker date_in',
+                :disabled => @claim.new_record?, :value => l(builder.object.date_in, :format => :long)
+              %td.amount= builder.text_field :amount, :class => 'amount', :disabled => @claim.new_record?
+              %td= builder.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] },
+                {}, :class => 'currency', :disabled => true
+              %td.amount
+                = builder.text_field :course, :class => 'course', :disabled => @claim.new_record?
+              %td.amount= builder.text_field :amount_prim, :class => 'amount_prim', :disabled => @claim.new_record?
+              %td= builder.select :form, current_company.dropdown_values_for('form'),
+                { :disabled => @claim.new_record? }, :class => 'payment_form', :disabled => @claim.new_record?
+              %td= link_to 'X', '#', :class => 'del', :id => "del#{ind}" unless @claim.new_record?
+            = builder.hidden_field :id
+            - ind += 1
+          %tr.footer
+            %td{ :colspan => 3 }
+            %td= f.label :operator_debt
+            %td{ :colspan => 2 }= f.text_field :operator_debt, :disabled => true, :class => 'red'
+          %tr.bottom
+            %td{ :colspan => 6}
+              - if @claim.new_record?
+                .hint= t('.save_before_pay')
+              - else
+                = link_to t('.add_another_payment'), '#', :class => 'add'

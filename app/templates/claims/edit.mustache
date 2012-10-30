@@ -187,15 +187,15 @@
         <table class='left_inside' id='indicators'>
           <tr>
             <td class='framed red_back tourist_debt_ind'>
-              {{#tourist_debt}}Да{{/tourist_debt}}
-              {{^tourist_debt}}Нет{{/tourist_debt}}
+              {{#has_tourist_debt}}Да{{/has_tourist_debt}}
+              {{^has_tourist_debt}}Нет{{/has_tourist_debt}}
             </td>
             <td>Долг туриста</td>
           </tr>
           <tr>
             <td class='blue_back framed operator_debt_ind'>
-              {{#operator_debt}}Да{{/operator_debt}}
-              {{^operator_debt}}Нет{{/operator_debt}}
+              {{#has_operator_debt}}Да{{/has_operator_debt}}
+              {{^has_operator_debt}}Нет{{/has_operator_debt}}
             </td>
             <td>Долг оператору</td>
           </tr>

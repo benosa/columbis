@@ -141,11 +141,11 @@ class Claim < ActiveRecord::Base
   end
 
   def has_tourist_debt?
-    self.tourist_debt != 0
+    self.tourist_debt > 0
   end
 
   def has_operator_debt?
-    self.operator_debt != 0
+    self.operator_debt > 0
   end
 
   def has_memo?
@@ -224,6 +224,7 @@ class Claim < ActiveRecord::Base
       :calculation_short,
       :tourist_advance_class,
       :tourist_debt_class,
+      :has_tourist_debt,
       :operator_price_short,
       :operator_price_class,
       :operator_maturity_short,
@@ -231,6 +232,7 @@ class Claim < ActiveRecord::Base
       :operator_advance_class,
       :operator_debt_short,
       :operator_debt_class,
+      :has_operator_debt,
       :documents_ready,
       :documents_status_class,
       :price_as_string,
@@ -322,6 +324,7 @@ class Claim < ActiveRecord::Base
       :tourist_advance_class => helpers.color_for_tourist_advance(claim),
       # :tourist_debt => claim.tourist_debt.to_money,
       :tourist_debt_class => !claim.canceled? && helpers.color_for_tourist_advance(claim),
+      :has_tourist_debt => claim.has_tourist_debt?,
       # :operator_price => claim.operator_price.to_money,
       :operator_price_short => claim.operator_price > 0 ? helpers.truncate(helpers.operator_price(claim), :length => 6) : '',
       :operator_price_class => !claim.canceled? && helpers.color_for_operator_debt(claim),
@@ -333,6 +336,7 @@ class Claim < ActiveRecord::Base
       # :operator_debt => claim.operator_debt.to_money,
       :operator_debt_short => helpers.operator_debt(claim),
       :operator_debt_class => (!claim.canceled? && claim.operator_debt != 0) && 'red_back',
+      :has_operator_debt => claim.has_operator_debt?,
       :documents_ready => claim.documents_ready?,
       :documents_status => helpers.t('claims.form.documents_statuses.' << claim.documents_status),
       :documents_status_class => !claim.canceled? && claim.documents_status,

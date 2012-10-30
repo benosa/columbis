@@ -18,6 +18,7 @@ ru:
       office: 'Отбор по офису'
       user: 'Отбор по пользователю'
       reservation_date: 'Дата'
+      office: 'Офис'
       manager: 'Менедж.'
       full_name: 'ФИО'
       to: 'Куда'

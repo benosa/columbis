@@ -33,7 +33,13 @@ class AddressesController < ApplicationController
   end
 
   def index
-    @addresses = Address.accessible_by(current_ability).find(:all)
+    @addresses =
+      if search_or_sort?
+        search_and_sort(Address, { :with_current_abilities => true })
+      else
+        Address.accessible_by(current_ability).paginate(:page => params[:page], :per_page => per_page)
+      end
+    render :partial => 'list' if request.xhr?
   end
 
   def show

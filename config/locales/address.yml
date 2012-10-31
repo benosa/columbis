@@ -10,6 +10,8 @@ ru:
       office_number: 'Номер офиса'
       phone_number: 'Номер телефона'
       zip_code: 'Индекс'
+    list:
+      presentation: 'Представление'
 
     show:
       addresses: 'Список адресов'
@@ -17,11 +19,11 @@ ru:
 
     new:
       add_address: 'Добавление адреса'
-      addresses: 'Список адресов'
+      list_of_address: 'Список адресов'
 
     edit:
       edit_address: 'Редактирование адреса'
-      addresses: 'Список адресов'
+      list_of_address: 'Список адресов'
 
 
   activerecord:

@@ -1,29 +1,14 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
 - title t('.addresses')
 
-%table#addresses
-  %thead
-    %tr
-      %th= t('.region')
-      %th= t('.street')
-      %th= t('.house_number')
-      %th= t('.housing')
-      %th= t('.office_number')
-      %th= t('.phone_number')
-      %th= t('.zip_code')
-      %th
-      %th
-  %tbody
-    - for address in @addresses
-      %tr
-        %td= address.region
-        %td= address.street
-        %td= address.house_number
-        %td= address.housing
-        %td= address.office_number
-        %td= address.phone_number
-        %td= address.zip_code
-        %td= link_to t('show'), address
-        %td= link_to t('edit'), edit_address_path(address)
-        %td= link_to t('destroy'), address, :confirm => t('are_you_sure'), :method => :delete
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
 
-%p= link_to t('.add_address'), new_address_path
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.add_address'), new_address_path, :class => 'add_operator'

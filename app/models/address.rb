@@ -7,6 +7,19 @@ class Address < ActiveRecord::Base
     self.joint_address = pretty_full_address
   end
 
+  default_scope :order => :joint_address
+
+  define_index do
+    indexes :region, :house_number, :housing, :office_number,
+            :street, :phone_number, :joint_address, :sortable => true
+    has :zip_code
+    has :company_id
+    # set_property :delta => true
+  end
+
+  sphinx_scope(:by_joint) { { :order => :joint_address } }
+  default_sphinx_scope :by_joint
+
   def full_address
     "#{region} #{street} #{house_number} #{housing} #{office_number} #{phone_number} #{zip_code}".strip
   end

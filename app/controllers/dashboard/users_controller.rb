@@ -47,15 +47,16 @@ class Dashboard::UsersController < ApplicationController
 
   def index
     @can_search_by_office = (is_admin? or is_boss? or is_supervisor?)
-    @can_search_by_office = false
     @users =
       if search_or_sort?
-        search_and_sort(User, {
+        options = {
           :with_current_abilities => true,
           :include => :office,
           :order => "office asc, #{sort_col} #{sort_dir}",
           :sort_mode => :extended
-        })
+        }
+        options[:with] = { :office_id => params[:office_id] } if params[:office_id].present?
+        search_and_sort(User, options)
       else
         User.accessible_by(current_ability).
             includes(:office).reorder(['offices.name', :last_name, :first_name, :middle_name]).

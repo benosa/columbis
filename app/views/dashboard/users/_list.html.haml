@@ -3,8 +3,8 @@
     %tr
       %th{ :style => 'width: 350px;' }
         = sort_link(:fio, t('.fio'), :default)
-      %th.two_row= sort_link(:login, User.human_attribute_name(:login))
-      %th.two_row= sort_link(:role, User.human_attribute_name(:role))
+      %th= sort_link(:login, User.human_attribute_name(:login))
+      %th= sort_link(:role, User.human_attribute_name(:role))
       %th= sort_link(:email, User.human_attribute_name(:email))
       %th{ :style => 'width: 130px;' }
         %span= t('actions')

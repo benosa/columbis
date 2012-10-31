@@ -10,7 +10,7 @@
         :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
       = label_tag :office_id, t('.office')
       = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
-        :prompt => t('nope')
+        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'office_id', :filter => '1' }
 
     - else
       = render :partial => 'shared/search_field'

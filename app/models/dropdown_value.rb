@@ -9,7 +9,19 @@ class DropdownValue < ActiveRecord::Base
 
   scope :common, where(:common => true)
 
+  define_index do
+    indexes :list, :value, :sortable => true
+    has :common, :type => :boolean
+    has :company_id
+    # set_property :delta => true
+  end
+
+  sphinx_scope(:by_list) { { :order => [:list, :id] } }
+  default_sphinx_scope :by_list
+
   def self.available_lists
+    return @available_lists unless @available_lists.nil?
+    @available_lists =
     {
       :airline => 'Авиакомпания',
       :relocation => 'Переезд',

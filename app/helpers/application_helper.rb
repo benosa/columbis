@@ -291,6 +291,9 @@ module ActionView
   end
 end
 
+# Set default form builder
+ActionView::Base.default_form_builder = TourismFormBuilder
+
 class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
 
   protected

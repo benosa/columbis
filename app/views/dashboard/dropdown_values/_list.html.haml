@@ -1,0 +1,24 @@
+.current_container
+  %table.dropdown_values.reservations.tour_operators
+    %tr
+      %th.list= sort_link(:list, t('.list'), :default)
+      %th.value= sort_link(:value, t('.value'))
+      - if is_admin?
+        %th.common= sort_link(:common, t('.common'))
+      %th.actions
+        %span= t('actions')
+
+    - for dropdown_value in @dropdown_values
+      %tr{ :class => cycle('even', 'odd') }
+        %td
+          %p= DropdownValue.available_lists[dropdown_value.list.to_sym]
+        %td
+          %p= dropdown_value.value
+        - if is_admin?
+          %td
+            %p= dropdown_value.common? ? t('yep') : t('nope')
+        %td
+          = link_to '', edit_dashboard_dropdown_value_path(dropdown_value), :class => 'edit_row', :title => t('edit')
+          = link_to '', [:dashboard, dropdown_value], :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @dropdown_values }

@@ -64,5 +64,6 @@ module Tourism
 
     # For extending models with search_and_sort method
     require 'search_and_sort'
+
   end
 end

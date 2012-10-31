@@ -3,18 +3,18 @@
 $(function(){
 
   // dropdown filter
-	var filter_table = function(event){
-    $.ajax({
-      url: '/dashboard/dropdown_values',
-      type: 'GET',
-      data:  { 'list':$(this).val() },
-      cache: false,
-      success: function(resp){
-        $('#dropdowns').replaceWith(resp);
-      }
-    });
-	};
-	$('#list_filter').change(filter_table);
+	// var filter_table = function(event){
+ //    $.ajax({
+ //      url: '/dashboard/dropdown_values',
+ //      type: 'GET',
+ //      data:  { 'list':$(this).val() },
+ //      cache: false,
+ //      success: function(resp){
+ //        $('#dropdowns').replaceWith(resp);
+ //      }
+ //    });
+	// };
+	// $('#list_filter').change(filter_table);
 
   //prepare fields
   // function process($fields, mode) {

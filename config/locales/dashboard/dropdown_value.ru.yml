@@ -4,6 +4,12 @@ ru:
       index:
         title: 'Списки значений'
         new_dropdown_value: 'Новое значение'
+        importance: 'Значение'
+        list: 'Список'
+      list:
+        list: 'Список'
+        value: 'Значение'
+        common: 'Общее'
       new:
         title: 'Новое значение'
       edit:

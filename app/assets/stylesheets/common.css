@@ -2,6 +2,7 @@
 *= require claims
 *= require company
 *= require tourists
+*= require dropdown_values
 */
 
 body, input, textarea {

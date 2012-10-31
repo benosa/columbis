@@ -34,3 +34,12 @@ ru:
         office_number: 'Номер офиса'
         phone_number: 'Номер телефона'
         zip_code: 'Индекс'
+
+  address_attributes:
+    region: 'Регион'
+    street: 'Улица'
+    house_number: 'Номер дома'
+    housing: 'Корпус'
+    office_number: 'Номер офиса'
+    phone_number: 'Номер телефона'
+    zip_code: 'Индекс'

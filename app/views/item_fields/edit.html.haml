@@ -1,8 +1,14 @@
-- title t'.edit_item_field'
+- set_current_width(:small)
+- content_for(:body_class) { 'low_resolution panel edit_operator' }
 
-= render 'form'
+- title t('.edit_item_field', :item_field => @item_field.name)
 
-%p
-  = link_to t('show'), catalog_item_path(@item_field.catalog_id, @item_field)
-  |
-  = link_to t('.view_all'), catalog_path(@item_field.catalog_id)
+= form_for [@catalog, @item_field] do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), catalog_item_field_path(@catalog, @item_field), :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_item_field'), catalog_path(@item_field.catalog_id), :class => 'list_operator'

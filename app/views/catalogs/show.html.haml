@@ -1,25 +1,31 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
 - title "#{@catalog.name}"
 
-%table
+%table.reservations.tour_operators
   %thead
     %tr
       - for item_field in @catalog.item_fields
-        %th= item_field.name
-      %th
-      %th
+        %th
+          %span= item_field.name
+      %th{ :style => 'width: 70px;' }
+        %span= t('actions')
   %tbody
     - for item in @catalog.items
       %tr
-        - for note in item.notes
-          %td= note.value
-        %td= link_to t('edit'), edit_catalog_item_path(@catalog,item)
-        %td= link_to t('destroy'), catalog_item_path(@catalog,item), :confirm => t('are_you_sure'), :method => :delete
+        - @catalog.item_fields.each_index do |i|
+          %td= item.notes[i].try(:value)
+        %td
+          = link_to  '', edit_catalog_item_path(@catalog, item), :class => 'edit_row', :title => t('edit')
+          = link_to '', catalog_item_path(@catalog, item), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
 
-
-%p
-  = link_to t('.add_columns'), new_catalog_item_field_path(@catalog)
-  |
-  = link_to t('.add_values'), new_catalog_item_path(@catalog)
-  |
-  = link_to t('.view_all'), catalogs_path
-
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), @catalog, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('edit'), edit_catalog_path(@catalog), :class => 'save'
+  = link_to t('.add_values'), new_catalog_item_path(@catalog), :class => 'add_operator'
+  = link_to t('.add_columns'), new_catalog_item_field_path(@catalog), :class => 'add_operator'
+  = link_to t('.list_of_item_field'), catalog_item_fields_path(@catalog), :class => 'list_operator'
+  - if !small_width?
+    = link_to t('.list_of_catalog'), catalogs_path, :class => 'list_operator'

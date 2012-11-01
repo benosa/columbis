@@ -1,13 +1,22 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
 - title t('.catalogs')
 
-%table
+%table.reservations.tour_operators{ :style => 'width: 500px;' }
   %tr
-    %th= t('.name')
+    %th
+      %span= t('.name')
+    %th{ :style => 'width: 70px;' }
+      %span= t('actions')
   - for catalog in @catalogs
     %tr
-      %td= catalog.name
-      %td= link_to t('show'), catalog
-      %td= link_to t('edit'), edit_catalog_path(catalog)
-      %td= link_to t('destroy'), catalog, :confirm => t('are_you_sure'), :method => :delete
+      %td
+        = link_to catalog.name, catalog
+      %td
+        = link_to '', edit_catalog_path(catalog), :class => 'edit_row', :title => t('edit')
+        = link_to '', catalog, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
 
-%p= link_to t('.new_catalog'), new_catalog_path
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_catalog'), new_catalog_path, :class => 'add_operator'

@@ -3,6 +3,7 @@
 *= require company
 *= require tourists
 *= require dropdown_values
+*= require catalogs
 */
 
 body, input, textarea {
@@ -249,6 +250,7 @@ div.left {
   height: 25px;
   line-height: 14px;
 }
+.add_operator { margin-left: 19px; }
 /*** END Float panel ***/
 
 /*** Filter bar ***/

@@ -1,5 +1,5 @@
 ru:
-  catalogs:   
+  catalogs:
     index:
       new_catalog: 'Создать каталог'
       name: 'Название'
@@ -8,17 +8,17 @@ ru:
     show:
       add_columns: 'Добавить колонку'
       add_values: 'Добавить значения'
-      view_all: 'Все каталоги'
-   
+      list_of_catalog: 'Список каталогов'
+      list_of_item_field: 'Список колонок'
+
     new:
       new_catalog: 'Создание каталога'
-      view_all: 'Все каталоги'
+      list_of_catalog: 'Список каталогов'
 
     edit:
-      edit_catalog: 'Редактирование каталога'
-      view_all: 'Все каталоги'
+      edit_catalog: 'Редактирование каталога %{catalog}'
+      list_of_catalog: 'Список каталогов'
 
-      
   activerecord:
     attributes:
       catalog:

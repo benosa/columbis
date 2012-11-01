@@ -1,0 +1,23 @@
+- content_for(:body_class) { 'edit_operator' }
+
+= form_for(resource, :as => resource_name, :url => session_path(resource_name), :builder => ActionView::Helpers::FormBuilder) do |f|
+
+  - content_for(:error_messages) do
+    = f.error_messages
+
+  %fieldset.form_column.first.sign_form
+    .form_block
+      .block_title
+        %h2= t('.title')
+      .form_block_content
+        .fake_row
+          %p= f.label :login
+          = f.text_field :login
+          %p= f.label :password
+          = f.password_field :password
+          - if devise_mapping.rememberable?
+            %p= f.label :remember_me, :class => 'checkbox left_checkbox'
+            = f.check_box :remember_me
+          %p.submit_row= f.submit 'Войти', :class => 'btn'
+          %p.links
+            = render :partial => "devise/shared/links"

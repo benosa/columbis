@@ -1,23 +1,10 @@
-%p
-  = f.label :login
-  %br
-  = f.text_field :login
-%p
-  = f.label :first_name
-  %br
-  = f.text_field :first_name
-%p
-  = f.label :last_name
-  %br
-  = f.text_field :last_name
-%p
-  = f.label :middle_name
-  %br
-  = f.text_field :middle_name
-%p
-  = f.label :email
-  %br
-  = f.email_field :email
-%p
-  %span.color_sample= f.label :color
-  = f.select :color, User.available_colors
+%p= f.label :email
+= f.text_field :email
+%p= f.label :login
+= f.text_field :login
+%p= f.label :first_name, :required => false
+= f.text_field :first_name
+%p= f.label :last_name, :required => false
+= f.text_field :last_name
+%p= f.label :middle_name
+= f.text_field :middle_name

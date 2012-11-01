@@ -1,13 +1,18 @@
-- title t('.title')
+- content_for(:body_class) { 'edit_operator' }
 
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-  = f.error_messages
 
-  = render :partial => 'users/user_attributes', :locals => { :f => f }
-  = render :partial => 'users/password', :locals => { :f => f }
+  - content_for(:error_messages) do
+    = f.error_messages
 
-  .actions
-    = f.submit t('.submit')
-
-= link_to "Назад", :back
-= render :partial => "devise/shared/links"
+  %fieldset.form_column.first.sign_form
+    .form_block
+      .block_title
+        %h2= t('.title')
+      .form_block_content
+        .fake_row
+          = render :partial => 'users/user_attributes', :locals => { :f => f }
+          = render :partial => 'users/password', :locals => { :f => f }
+          %p.submit_row= f.submit t('.submit'), :class => 'btn'
+          %p.links
+            = render :partial => "devise/shared/links"

@@ -6,5 +6,5 @@
       - unless small_width?
         = ", офис #{current_office.name}"
 - else
-  %li
+  %li.reglink
     = link_to(t('register'), new_user_registration_path)

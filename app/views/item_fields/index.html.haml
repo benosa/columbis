@@ -10,7 +10,7 @@
     %th{ :style => 'width: 70px;' }
       %span= t('actions')
   - for item_field in @catalog.item_fields
-    %tr
+    %tr{ :class => cycle('odd', 'even') }
       %td
         = item_field.name
       %td

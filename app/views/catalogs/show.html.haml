@@ -13,7 +13,7 @@
         %span= t('actions')
   %tbody
     - for item in @catalog.items
-      %tr
+      %tr{ :class => cycle('odd', 'even') }
         - @catalog.item_fields.each_index do |i|
           %td= item.notes[i].try(:value)
         %td

@@ -10,7 +10,7 @@
     %th{ :style => 'width: 70px;' }
       %span= t('actions')
   - for catalog in @catalogs
-    %tr
+    %tr{ :class => cycle('odd', 'even') }
       %td
         = link_to catalog.name, catalog
       %td

@@ -226,7 +226,10 @@ body, input, textarea {
       margin: 4px 0;
     }
 
-.reservations.tour_operators th { max-width: 350px; }
+.reservations.tour_operators th {
+  max-width: 350px;
+  background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
+}
 .reservations th a.sort_active, .reservations th.double_sort a.sort_active {
     background-position: right top !important;
 }

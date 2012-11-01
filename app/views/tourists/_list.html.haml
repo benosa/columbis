@@ -18,7 +18,7 @@
         %span= t('actions')
 
     - for tourist in @tourists
-      %tr{ :class => cycle('even', 'odd') }
+      %tr{ :class => cycle('odd', 'even') }
         %td
           %p= tourist.name
         %td.passport_series

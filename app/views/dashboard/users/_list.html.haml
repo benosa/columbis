@@ -19,7 +19,7 @@
         %tr
           %td.big_row{ :colspan => 5 }
             %p= user.office.name
-      %tr{ :class => cycle('even', 'odd') }
+      %tr{ :class => cycle('odd', 'even') }
         %td
           %p= user.full_name
         %td{ :class => "user_#{available_colors.send(key_method, user.color).underscore}" }

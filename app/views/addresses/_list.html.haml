@@ -14,7 +14,7 @@
         %span= t('actions')
 
     - for address in @addresses
-      %tr{ :class => cycle('even', 'odd') }
+      %tr{ :class => cycle('odd', 'even') }
         %td
           %p= address.region
         %td

@@ -12,7 +12,7 @@
         %span= t('actions')
 
     - for operator in @operators
-      %tr{ :class => cycle('even', 'odd') }
+      %tr{ :class => cycle('odd', 'even') }
         %td
           %p= operator.name
         %td

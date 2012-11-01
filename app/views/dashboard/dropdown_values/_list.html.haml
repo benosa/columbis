@@ -9,7 +9,7 @@
         %span= t('actions')
 
     - for dropdown_value in @dropdown_values
-      %tr{ :class => cycle('even', 'odd') }
+      %tr{ :class => cycle('odd', 'even') }
         %td
           %p= DropdownValue.available_lists[dropdown_value.list.to_sym]
         %td

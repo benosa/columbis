@@ -34,11 +34,11 @@ class ApplicationController < ActionController::Base
   end
 
   def amount_in_word
-    render :text => params[:amount].to_f.amount_in_word(params[:currency])
+    render :text => params[:amount].to_f.amount_in_word(params[:currency] || CurrencyCourse.PRIMARY_CURRENCY)
   end
 
   def get_currency_course
-    render :text => CurrencyCourse.actual_course(params[:currency])
+    render :text => CurrencyCourse.actual_course(params[:currency] || CurrencyCourse.PRIMARY_CURRENCY)
   end
 
   CURRENTS.each do |elem|
@@ -93,8 +93,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_controller    
-    ApplicationController.current = self
+    ::ApplicationController.current = self
   end
+  
 end
 
 class Float

@@ -48,8 +48,9 @@ ru:
         title: 'Регистрация'
         submit: 'Регистрация'
       edit:
-        title: 'Редактировать учетную запись'
+        title: 'Редактирование профиля'
         submit: 'Отредактировать'
+        forgot_password: 'Забыли пароль?'
       reasons:
         inactive: 'неактивна'
         unconfirmed: 'не подтверждена'

@@ -1,3 +1,13 @@
-- title t('.add_tourist')
-= render 'form'
-= link_to t('.tourists'), tourists_path
+- set_current_width(:small)
+- content_for(:body_class) { 'panel tourist edit_operator' }
+
+- title t('.new_tourist')
+
+= form_for @tourist do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'

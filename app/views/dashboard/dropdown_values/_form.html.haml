@@ -1,15 +1,20 @@
-= form_for [:dashboard, @dropdown_value] do |f|
+- content_for(:error_messages) do
   = f.error_messages
-  %table
-    %tr
-      %th= f.label :list
-      %th= f.label :value
+
+.form_block
+  .block_title
+    .fake_table
+      %span.list= f.label :list
+      %span.value= f.label :value
       - if is_admin?
-        %th= f.label :common
-    %tr
-      %td= f.select :list, DropdownValue.available_lists.map{ |k,v| [v, k] }
-      %td= f.text_field :value
+        %span= label_tag t('.common')
+  .form_block_content
+    .fake_row
+      = f.select :list, DropdownValue.available_lists.map{ |k,v| [v, k] }.sort{ |l1, l2| l1[0] <=> l2[0] }, {}, :class => 'list_select'
+      = f.text_field :value, :class => 'value_input'
       - if is_admin?
-        %td= f.check_box :common
-  %p
-    = f.submit
+        = f.label :common, '&nbsp;'.html_safe, :class => 'checkbox total'
+        = f.check_box :common
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

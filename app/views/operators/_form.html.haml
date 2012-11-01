@@ -1,58 +1,59 @@
-= form_for @operator do |f|
+- content_for(:error_messages) do
   = f.error_messages
-  .left
 
-    %table
-      %tr
-        %td= f.label :name
-        %td= f.text_field :name
-      %tr
-        %td= f.label :register_number
-        %td= f.text_field :register_number
-      %tr
-        %td= f.label :register_series
-        %td= f.text_field :register_series
-      %tr
-        %td= f.label :inn
-        %td= f.text_field :inn
-      %tr
-        %td= f.label :ogrn
-        %td= f.text_field :ogrn
-      %tr
-        %td= f.label :site
-        %td= f.text_field :site     
-  
-    %h3= t('.address')
-    = f.fields_for :address do |address|
-      = render :partial => 'shared/address', :locals => { :f => address }
+%fieldset.form_column.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p= f.label :name
+        = f.text_field :name, :class => 'website'
+        %p= f.label :register_number
+        = f.text_field :register_number, :class => 'website'
+        %p= f.label :register_series
+        = f.text_field :register_series, :class => 'website'
+        %p= f.label :inn
+        = f.text_field :inn, :class => 'website'
+        / %p= f.label :kpp
+        / = f.text_field :kpp, :class => 'website'
+        %p= f.label :ogrn
+        = f.text_field :ogrn, :class => 'website'
+        %p= f.label :site
+        = f.text_field :site, :class => 'website'
 
-    %p
-      = f.submit
+%fieldset.form_column
+  .form_block
+    .block_title
+      %h2= t('.address')
+    .form_block_content
+      .fake_row
+        = f.fields_for :address do |address|
+          = render :partial => 'shared/address', :locals => { :f => address }
 
-  .center
+%fieldset.form_column
+  .form_block
+    .block_title
+      %h2= t('.insurer')
+    .form_block_content
+      .fake_row
+        %p= f.label t('.name')
+        = f.text_field :insurer, :class => 'website'
+        %p= f.label t('.address')
+        = f.text_field :insurer_address, :class => 'website'
+        %p= f.label t('.provision')
+        = f.text_field :insurer_provision, :class => 'website'
+        %p= f.label t('.contract')
+        = f.text_field :insurer_contract, :class => 'website'
+        %p= f.label t('.contract_date')
+        = f.text_field :insurer_contract_date, :value => l(f.object.insurer_contract_date, :format => :long),
+          :class => 'website datepicker'
+        %p= f.label t('.contract_start')
+        = f.text_field :insurer_contract_start, :value => l(f.object.insurer_contract_start, :format => :long),
+          :class => 'website datepicker'
+        %p= f.label t('.contract_end')
+        = f.text_field :insurer_contract_end, :value => l(f.object.insurer_contract_end, :format => :long),
+          :class => 'website datepicker'
 
-    %h3= t('.insurer')
-    %table
-      %tr
-        %td= f.label t('.name')
-        %td= f.text_field :insurer
-      %tr
-        %td= f.label t('.address')
-        %td= f.text_field :insurer_address
-      %tr
-        %td= f.label t('.provision')
-        %td= f.text_field :insurer_provision
-      %tr
-        %td= f.label t('.contract')
-        %td= f.text_field :insurer_contract
-      %tr
-        %td= f.label t('.contract_date')
-        %td.datepicker= f.text_field :insurer_contract_date, :value => l(@operator.insurer_contract_date, :format => :long)
-      %tr
-        %td= f.label t('.contract_start')
-        %td.datepicker= f.text_field :insurer_contract_start, :value => l(@operator.insurer_contract_start, :format => :long)
-      %tr
-        %td= f.label t('.contract_end')
-        %td.datepicker= f.text_field :insurer_contract_end, :value => l(@operator.insurer_contract_end, :format => :long)
-
-  .clear
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

@@ -1,5 +1,15 @@
-- title t('.edit_item')
+- set_current_width(:small)
+- content_for(:body_class) { 'panel edit_tourists' }
 
-= render 'form'
+- title t('.edit_item', :catalog => @catalog.name)
 
+= form_for [@catalog, @item] do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), [@catalog, @item], :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to @catalog.name, catalog_path(@catalog), :class => 'list_operator'
 

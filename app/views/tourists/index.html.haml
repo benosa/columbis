@@ -1,25 +1,22 @@
-- title t('.tourists')
-%table#tourists
-  %thead
-    %tr
-      %th= t('.full_name')
-      %th= t('.passport_series')
-      %th= t('.passport_number')
-      %th= t('.passport_valid_until')
-      %th= t('.phone_number')
-      %th= t('.address')
-      %th= t('.date_of_birth')
-      %th
-      %th
-  %tbody.tourist-collection
-    =render :partial => 'tourist', :collection => @tourists
-    / - unless params[:offline]
-    /   =render :partial => 'tourist', :collection => @tourists
-    / - else
-    /   - @tourists.each do |tourist|      
-    /     = render 'tourists/tourist_smt', :mustache => tourist.local_data.merge({:show_link => link_to(t('show'), tourist),
-    /       :edit_link => link_to(t('edit'), edit_tourist_path(tourist)),
-    /       :destroy_link => link_to(t('destroy'), tourist, :method => :delete, :confirm => t('are_you_sure')),
-    /     })      
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
 
-= link_to t('.add_tourist'), new_tourist_path
+- title t('.tourists')
+
+- content_for :top do
+  .switch_type
+    %a.client.potential-switcher{ :href => "#", :class => params[:potential].blank? && 'active',
+      :data => { :param=> 'potential', :filter => 1 } }
+      %span= t('.clients')
+    %a.client.potential-switcher{ :href => "#", :class => params[:potential].present? && 'active',
+      :data => { :param=> 'potential', :filter => 1, :value => 1 } }
+      %span= t('.potential_clients')
+
+  %form.filter
+    = render 'shared/search_field'
+
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.add_tourist'), new_tourist_path, :class => 'add_operator'

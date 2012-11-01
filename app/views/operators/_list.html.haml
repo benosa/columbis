@@ -1,0 +1,32 @@
+.current_container
+  %table.reservations.tour_operators
+    %tr
+      %th= sort_link(:name, Operator.human_attribute_name(:name), :default)
+      %th= sort_link(:register_number, Operator.human_attribute_name(:register_number))
+      %th= sort_link(:register_series, Operator.human_attribute_name(:register_series))
+      %th= sort_link(:inn, Operator.human_attribute_name(:inn))
+      %th= sort_link(:ogrn, Operator.human_attribute_name(:ogrn))
+      %th{ :style => 'width: 350px;' }
+        = sort_link(:joint_address, t('.address'))
+      %th
+        %span= t('actions')
+
+    - for operator in @operators
+      %tr{ :class => cycle('odd', 'even') }
+        %td
+          %p= operator.name
+        %td
+          %p= operator.register_number
+        %td
+          %p= operator.register_series
+        %td
+          %p= operator.inn
+        %td
+          %p= operator.ogrn
+        %td
+          %p= operator.address.try(:joint_address)
+        %td
+          = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit')
+          = link_to '', operator, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @operators }

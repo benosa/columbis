@@ -10,7 +10,7 @@ Tourism::Application.routes.draw do
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'
-      get 'search'
+      match 'search' => 'claims#search', :as => :search
       match 'autocomplete_common/:list' => 'claims#autocomplete_common'
       match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
     end
@@ -20,9 +20,10 @@ Tourism::Application.routes.draw do
   end
 
   resources :payments
-  resources :operators
+  resources :operators do
+    match ':id' => :edit, :constraints => {:id => /\d+/}, :on => :collection, :via => :get
+  end
   resources :tourists
-  resources :clients
   resources :addresses
   resources :notes
 
@@ -39,7 +40,7 @@ Tourism::Application.routes.draw do
     match 'edit_company' => 'companies#edit'
     match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
-    match 'claims/all' => 'claims#all'    
+    match 'claims/all' => 'claims#all'
 
     resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show

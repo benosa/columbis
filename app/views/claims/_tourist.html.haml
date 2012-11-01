@@ -1,13 +1,8 @@
 - ind ||= 1
-- tourist = builder.object
+- tourist = f.object
 
-%td.num= ind
-%td= builder.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path,
-  :size => 20, :class => 'autocomplete full_name'
-%td.datepicker= builder.text_field :date_of_birth,
-  :class => 'datepicker date_of_birth', :value => l(tourist.date_of_birth, :format => :long)
-%td= builder.text_field :passport_series, :class => 'passport_series', :style => 'width: 90%;'
-%td= builder.text_field :passport_number, :class => 'passport_number'
-%td.datepicker= builder.text_field :passport_valid_until,
-  :class => 'datepicker passport_valid_until', :value => l(tourist.passport_valid_until, :format => :long)
-%td.del= link_to t('.x'), '#', :class => 'del', :id => "del#{ind}"
+= f.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path, :class => 'autocomplete full_name name'
+= f.text_field :date_of_birth, :class => 'datepicker date_of_birth date', :value => l(tourist.date_of_birth, :format => :long)
+= f.text_field :passport_series, :class => 'passport_series number_password'
+= f.text_field :passport_number, :class => 'passport_number date'
+= f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.passport_valid_until, :format => :long)

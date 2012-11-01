@@ -19,21 +19,76 @@ ru:
       cities:
         our_cities: 'Города'
       form:
+        common: 'Общие данные'
         address: 'Адрес'
+        cities: 'Города'
+        country: 'Страна'
+        region: 'Регион'
+        city: 'Город'
+        add_city: 'Добавить город'
+        add_city_fail_message: 'Такой город уже есть в списке'
         offices: 'Офисы'
+        add_office: 'Добавить офис'
         printers: 'Печатные формы'
-
-    activerecord:
-      attributes:
-        company:
+        memos: 'Памятки:'
+        type: 'Тип'
+        file: 'Файл'
+        file_type: 'Тип файла'
+        choose_file: 'Выберите файл'
+        add_file: 'Добавить файл'
+        mode_select_tooltip: 'Печатная форма с таким типом уже существует'
+        country_select_tooltip: 'Памятка для данной страны уже существует'
+        office:
           name: 'Название'
-          oficial_letter_signature: 'Подпись'
-          email: 'Электронная почта'
-          site: 'Веб-сайт'
-          bank: 'Банк'
-          bik: 'БИК'
-          curr_account: 'Расчетный счет'
-          corr_account: 'Корреспондентский счет'
-          ogrn: 'ОРГН'
-          okpo: 'ОКПО'
-          inn: 'ИНН'
+          default_password: 'Пароль по умолчанию'
+
+  activerecord:
+    models:
+      company: 'Компания'
+    attributes:
+      company:
+        name: 'Название'
+        oficial_letter_signature: 'Подпись'
+        email: 'Электронная почта'
+        site: 'Веб-сайт'
+        bank: 'Банк'
+        bik: 'БИК'
+        curr_account: 'Расчетный счет'
+        corr_account: 'Корреспондентский счет'
+        ogrn: 'ОРГН'
+        okpo: 'ОКПО'
+        inn: 'ИНН'
+        address:
+          region: 'Регион'
+          street: 'Улица'
+          house_number: 'Номер дома'
+          housing: 'Корпус'
+          office_number: 'Номер офиса'
+          phone_number: 'Номер телефона'
+          zip_code: 'Индекс'
+        office:
+          name: 'Название'
+          default_password: 'Пароль по умолчанию'
+
+      # it's useful only for rails >= 3.2.0
+      company/address:
+        region: 'Регион'
+        street: 'Улица'
+        house_number: 'Номер дома'
+        housing: 'Корпус'
+        office_number: 'Номер офиса'
+        phone_number: 'Номер телефона'
+        zip_code: 'Индекс'
+      company/office:
+        name: 'Название'
+        default_password: 'Пароль по умолчанию'
+
+  helpers:
+    label:
+      # this help for has_one nested attributes in rails 3.1.0
+      company[address_attributes]:
+        <<: *address_attributes
+      # this can't help
+      company[offices_attributes]:
+        name: 'Название'
+        default_password: 'Пароль по умолчанию'

@@ -1,0 +1,4 @@
+.fake_row.delete_right{ :id => "city_{{id}}" }
+  %p {{name}}
+  = link_to '', '#', :id => "del_{{id}}", :class => 'del delete', :title => I18n.t('delete')
+  = hidden_field_tag 'company[city_ids][]', '{{id}}', :id => "hid_{{id}}"

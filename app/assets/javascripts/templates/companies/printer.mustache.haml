@@ -1,0 +1,19 @@
+- id_prefix = 'company_printers_attributes_{{id}}'
+- name_prefix = 'company[printers_attributes][{{id}}]'
+- i18n_prefix = 'dashboard.companies.form'
+.fake_row.fields.file_block.odd
+  .new_file_form
+    .file
+      = file_field_tag "#{name_prefix}[template]", :id => "#{id_prefix}_template"
+      = link_to I18n.t("#{i18n_prefix}.choose_file"), '#', :class => 'select_file'
+    %label{ :for => "#{id_prefix}_mode", :class => 'mode_label' }
+      = I18n.t("#{i18n_prefix}.type")
+    = select_tag "#{name_prefix}[mode]", options_for_select(Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }),
+        :id => "#{id_prefix}_mode", :class => 'mode_select list_select', :not_highlighted => true,
+        :data => { :tooltip => I18n.t("#{i18n_prefix}.mode_select_tooltip") }
+    %label{ :for => "#{id_prefix}_country_id", :class => 'country_label' }
+      = I18n.t("activerecord.attributes.printer.country_id")
+    = select_tag "#{name_prefix}[country_id]", options_for_select(Country.all.map{ |c| [c.name, c.id] }),
+        :id => "#{id_prefix}_country_id", :class => 'country_select', :style => 'display:none;', :not_highlighted => true,
+        :data => { :tooltip => I18n.t("#{i18n_prefix}.country_select_tooltip") }
+    = link_to '', '#', :class => 'del delete', :title => I18n.t('delete')

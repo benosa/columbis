@@ -27,3 +27,24 @@ ru:
     edit:
       edit_user: 'Редактирование профиля'
       users: 'Пользователи'
+    form:
+      credentials: Учетные данные
+      view_settings: Настройки отображения
+      color_for_lists: Цвет для списков
+      selected_color: Выбранный цвет
+      current_color: Текущий цвет
+      personal_data: Личные данные
+      change_password: Сменить пароль
+
+    messages:
+      created: 'Пользователь создан'
+      updated: 'Пользователь обновлен'
+      destroyed: 'Пользователь удален'
+
+  user:
+    roles:
+      admin: Администратор
+      boss: Директор
+      supervisor: Главный менеджер
+      manager: Менеджер
+      accountant: Бухгалтер

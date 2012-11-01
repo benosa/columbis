@@ -1,0 +1,4 @@
+= label_tag :filter, t('search')
+= text_field_tag :filter, nil, :class => local_assigns[:filter_class] || 'search', :value => params[:filter],
+    :data => { :param => 'filter', :filter => 1, :event => 'keyup' }
+= submit_tag "", :class => local_assigns[:submit_class] || 'go_search'

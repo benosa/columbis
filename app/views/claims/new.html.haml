@@ -1,2 +1,15 @@
-- title t('.title'), false
-= render 'form'
+- content_for(:html_class) { 'edit_page' }
+- content_for(:body_class) { 'order panel' << (small_width? ? ' edit_tourists' : '') }
+
+- title t('.title')
+
+-# highlighted_fields = [:airline, :documents_status, :arrival_date, :departure_date, :resort, :tour_price, :visa_price]
+-# form_for @claim, :builder => TourismFormBuilder, :highlight_only => highlighted_fields do |form|
+= form_for @claim, :builder => TourismFormBuilder do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_claim'), claims_path, :class => 'list_operator'

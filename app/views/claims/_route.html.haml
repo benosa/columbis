@@ -1,0 +1,71 @@
+#route.form_block.yellow_block{ :class => large_width? && 'route' }
+  .block_title
+    %h2= t('.route')
+  .form_block_content
+    .fake_row.dates
+      %p= t('.arrival_date')
+      %label= t('.from')
+      = f.text_field :arrival_date, :class => 'datepicker date', :value => l(claim.arrival_date, :format => :long)
+      %label= t('.till')
+      = f.text_field :departure_date, :class => 'datepicker date', :value => l(claim.departure_date, :format => :long)
+    .fake_row{ :class => large_width? && 'margin_small' }
+      .two_line
+        %p
+          %label.required= t('.departure_from_city')
+        = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
+              :class => 'city editable-select flight_from_select', :not_highlighted => true
+      .two_line
+        %p= f.label :operator_id, t('.operator')
+        = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
+              :class => 'operator editable-select tour_operator_select', :not_highlighted => true
+      .two_line
+        %p= f.label :country, t('.direction'), :required => true
+        = f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
+            :class => 'country editable-select route_select', :not_highlighted => true
+      .two_line
+        %p= f.label :resort, :required => true
+        .last
+          = f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
+              :class => 'resort editable-select resort_select', :not_highlighted => true
+    .fake_row
+      .two_line
+        %p= f.label :hotel
+        = f.select :hotel, current_company.dropdown_values_for('hotel'), {}, :class => 'editable-select color_select',
+          :not_highlighted => true
+      .two_line
+        %p= f.label :meals
+        = f.select :meals, current_company.dropdown_values_for('meals'), {}, :class => 'editable-select food_select',
+          :not_highlighted => true
+      .two_line
+        %p= f.label :medical_insurance
+        = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
+            :class => 'editable-select medical_insurance_select', :not_highlighted => true
+      .two_line
+        %p= f.label :placement
+        = f.select :placement, current_company.dropdown_values_for('placement'), {}, :class => 'editable-select placement_select',
+          :not_highlighted => true
+      .two_line
+        %p= f.label :nights
+        = f.select :nights, (1..30).to_a, {}, :class => 'editable-select nights_select'
+    .fake_row
+      .two_line
+        %p= f.label :transfer
+        = f.select :transfer, current_company.dropdown_values_for('transfer'), {}, :class => 'editable-select airline_select',
+          :not_highlighted => true
+      .two_line
+        %p= f.label :service_class
+        = f.select :service_class, current_company.dropdown_values_for('service_class'), {},
+            :class => 'editable-select medical_insurance_select', :not_highlighted => true
+      .two_line
+        %p= f.label :relocation
+        = f.select :relocation, current_company.dropdown_values_for('relocation'), {}, :class => 'editable-select crossing_select',
+          :not_highlighted => true
+      .two_line
+        %p= f.label :additional_services
+        = f.text_field :additional_services, :class => 'additional_services'
+    .fake_row
+      .two_line
+        %p= f.label :memo
+        = f.text_field :memo, :class => 'notes blue_input'
+        = f.label :memo_tasks_done, :class => 'checkbox right_checkbox'
+        = f.check_box :memo_tasks_done

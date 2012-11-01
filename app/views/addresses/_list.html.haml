@@ -1,0 +1,38 @@
+.current_container
+  %table.reservations.tour_operators
+    %tr
+      %th= sort_link(:region, Address.human_attribute_name(:region))
+      %th= sort_link(:street, Address.human_attribute_name(:street))
+      %th= sort_link(:house_number, Address.human_attribute_name(:house_number))
+      %th= sort_link(:housing, Address.human_attribute_name(:housing))
+      %th= sort_link(:office_number, Address.human_attribute_name(:office_number))
+      %th= sort_link(:phone_number, Address.human_attribute_name(:phone_number))
+      %th= sort_link(:zip_code, Address.human_attribute_name(:zip_code))
+      %th{ :style => 'width: 350px;' }
+        = sort_link(:joint_address, t('.presentation'), :default)
+      %th
+        %span= t('actions')
+
+    - for address in @addresses
+      %tr{ :class => cycle('odd', 'even') }
+        %td
+          %p= address.region
+        %td
+          %p= address.street
+        %td
+          %p= address.house_number
+        %td
+          %p= address.housing
+        %td
+          %p= address.office_number
+        %td
+          %p= address.phone_number
+        %td
+          %p= address.zip_code
+        %td
+          %p= address.joint_address
+        %td
+          = link_to '', edit_address_path(address), :class => 'edit_row', :title => t('edit')
+          = link_to '', address, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @addresses }

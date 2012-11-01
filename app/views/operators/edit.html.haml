@@ -1,8 +1,14 @@
-- title t('.edit_operator')
+- set_current_width(:small)
+- content_for(:body_class) { 'low_resolution panel edit_operator' }
 
-= render 'form'
+- title t('.edit_operator', :operator => @operator.name)
 
-%p
-  = link_to t('show'), @operator
-  |
-  = link_to t('view_all'), operators_path
+= form_for @operator do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), @operator, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'

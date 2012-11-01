@@ -1,6 +1,10 @@
 - if user_signed_in?
   %li
-    = link_to(t('profile'), edit_user_registration_path)
+    %span
+      = t('user.roles.' + current_user.role)
+      = link_to current_user.first_last_name, edit_user_registration_path
+      - unless small_width?
+        = ", офис #{current_office.name}"
 - else
   %li
     = link_to(t('register'), new_user_registration_path)

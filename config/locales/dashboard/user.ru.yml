@@ -14,11 +14,17 @@ ru:
       new:
         title: 'Новый сотрудник'
       edit:
-        edit_user: 'Редактирование профиля'
+        edit_user: 'Редактирование профиля %{user}'
         users: 'Сотрудники'
-      user:
+        sign_in_as: 'Войти этим пользователем'
+        reset_password: Сменить пароль
+      list:
+        fio: 'ФИО'
         reset_password: 'Переустановить пароль'
         sign_in_as: 'Войти этим пользователем'
+      edit_password:
+        edit_password: 'Изменение пароля пользователя %{user}'
+        reset_password: Сменить пароль
 
     activerecord:
       attributes:

@@ -1,5 +1,13 @@
-- title t('.title')
+- set_current_width(:small)
+- content_for(:body_class) { 'panel edit_tourists' }
 
-= render 'form'
+- title t('.title', :value => "#{@dropdown_value.list}: #{@dropdown_value.value}")
 
-%p= link_to t('back_to_list'), dashboard_dropdown_values_path
+= form_for [:dashboard, @dropdown_value] do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_dropdown_values'), dashboard_dropdown_values_path, :class => 'list_operator'

@@ -3,14 +3,21 @@ ru:
     dropdown_values:
       index:
         title: 'Списки значений'
-        new_dropdown_value: 'Новое значение'
-      new:
-        title: 'Новое значение'
-      edit:
-        title: 'Изменить значение'
-      table:
+        add_dropdown_value: 'Добавить значение'
+        importance: 'Значение'
+        list: 'Список'
+      list:
         list: 'Список'
         value: 'Значение'
+        common: 'Общее'
+      new:
+        title: 'Новое значение'
+        list_of_dropdown_values: 'Список значений'
+      edit:
+        title: 'Изменить значение %{value}'
+        list_of_dropdown_values: 'Список значений'
+      form:
+        common: 'Общий'
 
     activerecord:
       attributes:

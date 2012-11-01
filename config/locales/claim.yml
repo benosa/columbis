@@ -1,8 +1,24 @@
 ru:
   claims:
+    visa_statuses:
+      nothing_done: 'Не готова'
+      docs_got: 'Получена'
+      docs_sent: 'Отправлена'
+      visa_approved: 'Подтверждена'
+      all_done: 'Готова'
+
+    documents_statuses:
+      not_ready: 'Не готовы'
+      received: 'Готовы'
+      all_done: 'Выданы'
+
     index:
-      claims: 'Заявки'
+      claims: 'Бронирования'
+      only_my: 'Только мои'
+      office: 'Отбор по офису'
+      user: 'Отбор по пользователю'
       reservation_date: 'Дата'
+      office: 'Офис'
       manager: 'Менедж.'
       full_name: 'ФИО'
       to: 'Куда'
@@ -28,7 +44,7 @@ ru:
       paid: 'Оплачено в валюте'
       docs: 'Документы'
       memo: 'Примeчание'
-      new_claim: 'Новая заявка'
+      new_claim: 'Новая бронь'
       ready: 'Готово'
       not_ready: 'Не готово'
       calculation: 'Расчет'
@@ -42,82 +58,108 @@ ru:
       phone_number: 'Тел.'
       sent: 'Отпр.'
       tourist_stat: 'Откуда'
+      add_claim: 'Добавить бронь'
+      column_settings: 'Настройки столбцов'
+
     form:
       reset: 'Сброс'
       office: 'Офис'
       user: 'Менеджер'
-      operator_confirmation: 'Подтверждение оператора'
       visa: 'Виза'
       check_date: 'Контрольная дата'
-      operator: 'Туроператор'
+
       tourist: 'Турист'
-      tourist_stat: 'Статистика'
 
       tourist_debt: 'Долг туриста'
       operator_debt: 'Долг оператору'
       documents_ready: 'Документы'
       has_notes: 'Примечание'
 
-      trip_documents: 'Документы в дорогу'
-      documents_statuses:
-        not_ready: 'Не готовы'
-        received: 'Готовы'
-        all_done: 'Выданы'
+      currency: 'Валюта'
+      paid_rur: 'Оплачено руб.'
+      resort: 'Курорт'
 
-      tour_price: 'Стоимость тура'
-      flights: 'Вылеты'
+      operator_confirmation: 'Подтверждение оператора'
+      reservation_date: 'Дата резервирования'
+      early_reservation: 'Раннее бронирование'
+      check_date: 'Контрольная дата'
+      operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
+      reservation_date_two_line: 'Дата<br/>резерв.'
+      early_reservation_two_line: 'Раннее<br/>бронир.'
+      check_date_two_line: 'Контр.<br/>дата'
+
+    tourists:
       tourists: 'Туристы'
-      marchroute: 'Маршрут'
-      payments_in: 'Оплата туристом'
-      payments_out: 'Оплата оператору'
+      full_name: 'ФИО туриста'
+      tourists_full_name_hint: 'Договор оформлен на'
+      date_of_birth: 'Дата рождения'
+      passport: 'Паспорт'
+      passport_expire: 'Действит. до'
+      phone: 'Телефон'
+      address: 'Адрес'
+      add_another_tourist: 'Добавить туриста'
 
+    flights:
+      flights: 'Вылеты'
+      airline: 'Авиакомпания'
       there: 'Туда'
       back: 'Обратно'
-
       airport: 'Аэропорт'
       flight: 'Номер рейса'
       depart: 'Время вылета'
       arrive: 'Время прибытия'
 
-      full_name: 'ФИО туриста'
-      tourists_full_name_hint: '(на кого составлен Договор)'
-      date_of_birth: 'Дата рождения'
-      passport: 'Паспорт'
-      passport_expire: 'Действителен до'
-      phone: 'Телефон'
-      address: 'Адрес'
-
+    payments_in:
+      payments_in: 'Оплата туристом'
       date: 'Дата'
       paid: 'Оплачено'
-      paid_rur: 'Оплачено руб.'
-      currency: 'Валюта'
-      course: 'Курс'
       paid_type: 'Форма оплаты'
       paid_in_word: 'Сумма прописью'
+      add_another_payment: 'Добавить платеж'
+      tourist_debt_short: 'Долг'
 
-      direction: 'Направление'
-      resort: 'Курорт'
+    payments_out:
+      payments_out: 'Оплата оператору'
+      date: 'Дата'
+      paid: 'Оплачено'
+      course: 'Курс'
+      paid_type: 'Форма оплаты'
+      add_another_payment: 'Добавить платеж'
+      save_before_pay: 'Добавление платежей будет доступно после сохранения'
+      operator_debt_short: 'Долг'
 
+    information:
+      additional_information: 'Дополнительная информация'
+      trip_documents: 'Документы в дорогу'
+      tourist_stat: 'Статистика'
+
+    route:
+      route: 'Маршрут'
+      departure_from_city: 'Вылет из города'
       arrival_date: 'Даты заезда'
       from: 'с'
-      til: 'по'
-      save_before_pay: 'Добавление платежей будет доступно после сохранения'
-      add_another_tourist: 'Добавить туриста'
-      add_another_payment: 'Добавить платеж'
+      till: 'по'
+      operator: 'Туроператор'
+      direction: 'Направление'
+
+    tour_price:
+      tour_price: 'Стоимость тура'
+      price_as_string: 'Стоимость прописью'
+
     new:
-      title: 'Новая заявка'
+      title: 'Новая бронь'
+      list_of_claim: 'Список броней'
     edit:
-      title: 'Редактировать заявку'
+      title: 'Редактирование брони №%{id} от %{created_at}'
+      list_of_claim: 'Список броней'
     show:
-      title: 'Редактировать заявку'
+      title: 'Редактирование брони №%{id} от %{created_at}'
+      list_of_claim: 'Список броней'
     messages:
-      successfully_created_claim: 'Заявка создана'
-      successfully_updated_claim: 'Заявка изменена'
-      successfully_destroyed_claim: 'Заявка удалена'
-    list:
-      only_my: 'Только мои'
-      office: 'Отбор по офису'
-      user: 'Отбор по пользователю'
+      successfully_created_claim: 'Бронь создана'
+      successfully_updated_claim: 'Бронь изменена'
+      successfully_destroyed_claim: 'Бронь удалена'
+
   activerecord:
     errors:
       messages:
@@ -130,12 +172,12 @@ ru:
         operator_id: 'Туроператор'
         operator_confirmation: 'Подтверждение оператора'
         visa: 'Виза'
-        children_visa_price: 'Виза детск.'
+        children_visa_price: 'Виза детская'
         visa_check: 'Виза'
         tour_price: 'Цена тура'
         visa_price: 'Виза'
         insurance_price: 'Страховка от невыезда'
-        additional_insurance_price: 'Страховка дополнит.'
+        additional_insurance_price: 'Страховка дополнительная'
         fuel_tax_price: 'Топливный сбор'
         total_tour_price: 'Стоимость'
         primary_currency_price: 'Полная стоимость тура'
@@ -144,7 +186,7 @@ ru:
         currency: 'Валюта'
         airline: 'Авиакомпания'
         id: 'Номер'
-        visa_count: 'К-во виз'
+        visa_count: 'Кол-во виз'
         meals: 'Питание'
         placement: 'Размещение'
         nights: 'Ночей'
@@ -179,7 +221,7 @@ ru:
         relocation: 'Переезд'
         service_class: 'Класс'
         additional_services: 'Дополнительные услуги'
-        additional_services_price: 'Стоимость дополнительных услуг'
+        additional_services_price: 'Доп. услуги'
         medical_insurance: 'Медстраховка'
         canceled: 'Аннулирована'
         memo_tasks_done: 'Примечания учтены'

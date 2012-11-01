@@ -1,0 +1,59 @@
+#payments_in.form_block.green_block{ :class => large_width? && 'payment_tourist' }
+  .block_title
+    %h2= t('.payments_in')
+  .form_block_content
+    - ind = 0
+    = f.fields_for :payments_in, :highlight_only => [:amount] do |pif|
+      - payment_in = pif.object
+      .fake_row.fields{ :id => "payment_in_#{ind}", :class => payment_in.new_record? && 'new_record' }
+        .two_line
+          %p= pif.label :date_in, t('.date')
+          = pif.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_in.date_in, :format => :long),
+              :not_highlighted => true
+        .two_line
+          %p= pif.label :amount, t('.paid')
+          = pif.text_field :amount, :class => 'amount date'
+          %label= t('rur')
+          -# pif.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
+        .two_line
+          %p= pif.label :description, t('.paid_in_word')
+          = pif.text_field :description, :class => 'description sum disabled', :disabled => true
+        .two_line
+          %p= pif.label :form, t('.paid_type'), :required => false
+          = pif.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
+              :class => 'payment_form payment_select', :not_highlighted => true
+          - if is_admin? or is_boss? or is_accountant?
+            = pif.label :approved, '&nbsp;'.html_safe, :class => 'checkbox', :title => Payment.human_attribute_name(:approved)
+            = pif.check_box :approved, :class => 'approved' #, :disabled => (!is_admin? and !is_boss? and !is_accountant?)
+          = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_in.new_record?
+        = pif.hidden_field :id
+
+    - content_for(:pi_last_fields) do
+      .two_line.due_date
+        - if small_width?
+          = f.label :maturity
+        - else
+          %p= f.label :maturity
+        = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
+      .two_line.error
+        - if small_width?
+          = f.label :tourist_debt, t('.tourist_debt_short')
+        - else
+          %p= f.label :tourist_debt
+        = f.text_field :tourist_debt, :disabled => true, :class => 'debt text_right'
+        %label= t('rur')
+
+    - if small_width? or medium_width?
+      .fake_row.add_row
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+        = yield :pi_last_fields
+
+    - elsif large_width?
+      .fake_row.add_row
+        .add_btn.paying
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+      .fake_row
+        = yield :pi_last_fields
+
+    - ind += 1

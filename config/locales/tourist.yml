@@ -11,23 +11,34 @@ ru:
         address: "Адрес"
         passport_valid_until: "Действителен до"
         date_of_birth: "Дата рождения"
+        potential: "Потенциальный клиент"
 
   tourists:
     index:
       tourists: 'Туристы'
       add_tourist: 'Добавить туриста'
+      clients: 'Клиенты'
+      potential_clients: 'Потенциальные клиенты'
+    list:
       full_name: "ФИО"
-      passport_series: "Серия паспорта"
-      passport_number: "Номер паспорта"
-      phone_number: "Номер телефона"
       address: "Адрес"
-      passport_valid_until: "Действителен до"
-      date_of_birth: "Дата рождения"
+      passport: 'Паспорт'
+      series: 'Серия'
+      number: 'Номер'
     show:
       tourists: 'Список туристов'
     edit:
-      edit_tourist: 'Редактирование туриста'
-      tourists: 'Список туристов'
+      edit_tourist: 'Редактирование туриста %{tourist}'
+      list_of_tourist: 'Список туристов'
     new:
-      add_tourist: 'Добавление туриста'
-      tourists: 'Список туристов'
+      new_tourist: 'Новый турист'
+      list_of_tourist: 'Список туристов'
+    form:
+      common: 'Общие данные'
+      passport: 'Паспорт (серия, номер)'
+      address: 'Адрес'
+
+    messages:
+      created: 'Турист создан'
+      updated: 'Турист обновлен'
+      destroyed: 'Турист удален'

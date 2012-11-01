@@ -1,1 +1,2 @@
-$('#cities').replaceWith("#{ j(select_tag :cities, options_for_select(@region.cities.map{ |o| [o.name, o.id] })) }");
+uncustomizeSelect('#cities');
+$('#cities').replaceWith("#{ j(select_tag :cities, options_for_select(@region.cities.map{ |o| [o.name, o.id] }), :class => 'company_select') }");

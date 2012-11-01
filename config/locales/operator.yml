@@ -1,17 +1,19 @@
 ru:
   operators:
     index:
-      operators: 'Операторы'
+      operators: 'Туроператоры'
       new_operator: 'Добавить оператора'
       name: 'Название'
-      address: 'Адрес'
     new:
-      new_operator: 'Добавить оператора'
+      new_operator: 'Новый оператор'
+      list_of_operator: 'Список операторов'
     edit:
-      edit_operator: 'Редактировать оператора'      
+      edit_operator: 'Редактирование оператора %{operator}'
+      list_of_operator: 'Список операторов'
     show:
-      operator: 'Оператор'
+      operator: 'Туроператор'
       name: 'Название'
+      list_of_operator: 'Список операторов'
     form:
       insurer: 'Страховщик'
       name: 'Название'
@@ -21,6 +23,9 @@ ru:
       contract_date: 'Дата договора'
       contract_start: 'Дата начала действия договора'
       contract_end: 'Дата конца действия договора'
+      common: 'Общие данные'
+    list:
+      address: 'Адрес'
 
   activerecord:
     attributes:

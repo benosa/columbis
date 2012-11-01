@@ -1,0 +1,12 @@
+ru:
+  layouts:
+    application:
+      company: 'Моя компания'
+      users: 'Сотрудники'
+      dropdown_values: 'Списки значений'
+      tourists: 'Туристы'
+      potentials: 'Потенциальные клиенты'
+      addresses: 'Адреса'
+      catalogs: 'Каталоги'
+      operators: 'Туроператоры'
+      airlines: 'Авиалинии'

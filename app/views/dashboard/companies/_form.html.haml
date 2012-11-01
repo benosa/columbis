@@ -1,87 +1,132 @@
-= form_for [:dashboard, @company], :html => { :multipart => true } do |f|
+- company = f.object
+- content_for(:error_messages) do
   = f.error_messages
-  .left
-    %table
-      %tr
-        %td= f.label :name
-        %td= f.text_field :name
-      %tr
-        %td= f.label :email
-        %td= f.text_field :email
-      %tr
-        %td= f.label :site
-        %td= f.text_field :site
-      %tr
-        %td= f.label :oficial_letter_signature
-        %td= f.text_field :oficial_letter_signature
-      %tr
-        %td= f.label :bank
-        %td= f.text_field :bank
-      %tr
-        %td= f.label :bik
-        %td= f.text_field :bik
-      %tr
-        %td= f.label :curr_account
-        %td= f.text_field :curr_account
-      %tr
-        %td= f.label :corr_account
-        %td= f.text_field :corr_account
-      %tr
-        %td= f.label :ogrn
-        %td= f.text_field :ogrn
-      %tr
-        %td= f.label :okpo
-        %td= f.text_field :okpo
-      %tr
-        %td= f.label :inn
-        %td= f.text_field :inn
 
-    %h3= t('.address')
-    = f.fields_for :address do |address|
-      = render :partial => 'shared/address', :locals => { :f => address }
+.form_column.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p= f.label :name
+        = f.text_field :name, :class => 'bank'
+        %p= f.label :email
+        = f.text_field :email, :class => 'bank'
+        %p= f.label :site
+        = f.text_field :site, :class => 'bank'
+        %p= f.label :oficial_letter_signature
+        = f.text_field :oficial_letter_signature, :class => 'bank'
+        %p= f.label :bank
+        = f.text_field :bank, :class => 'bank'
+        %p= f.label :bik
+        = f.text_field :bik, :class => 'bank'
+        %p= f.label :curr_account
+        = f.text_field :curr_account, :class => 'bank'
+        %p= f.label :corr_account
+        = f.text_field :corr_account, :class => 'bank'
+        %p= f.label :ogrn
+        = f.text_field :ogrn, :class => 'bank'
+        %p= f.label :okpo
+        = f.text_field :okpo, :class => 'bank'
+        %p= f.label :inn
+        = f.text_field :inn, :class => 'bank'
 
-    %p
-      = f.submit
-  .center
-    = render :partial => 'cities', :locals => { :f => f }
+.form_column
+  .form_block
+    .block_title
+      %h2= t('.address')
+    .form_block_content
+      .fake_row
+        = f.fields_for :address do |address|
+          = render :partial => 'shared/address', :locals => { :f => address }
 
-    %h3= t('.offices')
-    .nested_attributes
-      = f.fields_for :offices do |builder|
-        %p.fields{ :class => builder.object.new_record? && 'new_record' }
-          = builder.label :name
-          = builder.text_field :name
-          = builder.label :default_password
-          = builder.text_field :default_password
-          = link_to_remove_fields t('delete'), builder
-      = link_to t('add'), '#', :class => 'add'
+#cities_block.form_column
+  .form_block
+    .block_title
+      %h2= t('.cities')
+    .form_block_content
+      - company.cities.each do |city|
+        .fake_row.delete_right{ :id => "city_#{city.id}" }
+          %p= city.name
+          = link_to '', '#', :id => "del_#{city.id}", :class => 'del delete', :title => t('delete')
+          = hidden_field_tag 'company[city_ids][]', city.id, :id => "hid_#{city.id}"
 
-    %h3= t('.printers')
-    .nested_attributes.printers
-      - index = 0
-      = f.fields_for :printers, sort_printers(f.object.printers) do |builder|
-        - if builder.object.new_record?          
-          %p.fields.new_record
-            = builder.label :template
-            = builder.file_field :template
-            = builder.label :mode
-            = builder.select :mode, Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }, {}, :class => 'mode_select'
-            = builder.label :country_id, nil, :class => 'country_label', :style => 'display:none;'
-            = builder.select :country_id, Country.all.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
-            /= builder.select :country_id, @company.countries.map{ |c| [c.name, c.id] }, {}, :class => 'country_select', :style => 'display:none;'
-            = link_to_remove_fields t('delete'), builder
+      #add_city_block.fake_row.white
+        %p= label_tag :countries, t('.country')
+        = select_tag :countries, options_for_select(Country.all.map{ |o| [o.name, o.id] }), :class => 'company_select'
+        %p= label_tag :regions, t('.region')
+        = select_tag :regions, options_for_select(Country.first.regions.map{ |o| [o.name, o.id] }), :class => 'company_select'
+        %p= label_tag :cities, t('.city')
+        = select_tag :cities, options_for_select(Country.first.regions.first.cities.map{ |o| [o.name, o.id] }), :class => 'company_select'
+
+        = link_to t('.add_city'), '#', :class => 'add add_city', :data => { :fail_message => t('.add_city_fail_message') }
+
+#offices_block.form_column
+  .form_block
+    .block_title
+      %h2= t('.offices')
+    .form_block_content
+      = f.fields_for :offices do |of|
+        - unless of.object.new_record?
+          .fake_row.fields
+            %p= of.label :name, t('.office.name')
+            = of.text_field :name, :class => 'office_input'
+            = link_to '', '#', :class => 'del delete', :title => t('delete')
+            %p= of.label :default_password, t('.office.default_password')
+            = of.text_field :default_password, :class => 'office_input'
+            = of.hidden_field(:_destroy)
         - else
-          %p.fields{ :id => "printers_row_#{index}", :data => { :mode => builder.object.mode } }
-            %strong= t("activerecord.attributes.printer.#{builder.object.mode}")
-            - if builder.object.mode == 'memo'
-              %span.country{ :id => "country_#{builder.object.country.try(:id)}" }
-                = builder.object.country.try(:name)            
-            = builder.object.template.file.identifier
-            = link_to t('download'), dashboard_template_path(builder.object), :class => 'download'
-            = link_to t('edit'), '#', :class => 'edit'
-            = link_to_remove_fields t('delete'), builder
-        - index += 1
+          #add_office_block.fake_row.white
+            = link_to t('.add_office'), '#', :class => 'add add_city'
 
-      = link_to t('add'), '#', :class => 'add'
 
-  .clear
+#printers_block.form_block.grey_block
+  .block_title
+    %h2= t('.printers')
+  .form_block_content.nested_attributes.printers
+    .fake_table
+      %span.type_form= t('.type')
+      %span.file_form= t('.file')
+      %span.activity= t('actions')
+
+    - index = 0
+    - first_memo = nil
+    = f.fields_for :printers, sort_printers(f.object.printers) do |pf|
+      - unless pf.object.new_record?
+        - if pf.object.mode == 'memo'
+          - unless first_memo
+            .fake_row{ :id => "memo_row", :class => cycle('even', 'odd') }
+              %span.type_form= t('.memos')
+            .fake_row.fields{ :id => "country_#{pf.object.country.try(:id)}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+              %span.type_form= pf.object.country.try(:name)
+              %span.file_form= pf.object.template.file.identifier
+              %span.activity
+                = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+                = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+                = pf.hidden_field(:_destroy)
+                = link_to '', '#', :class => 'del delete', :title => t('delete')
+            - first_memo = true
+          - else
+            .fake_row.fields{ :id => "country_#{pf.object.country.try(:id)}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+              %span.type_form= pf.object.country.try(:name)
+              %span.file_form= pf.object.template.file.identifier
+              %span.activity
+                = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+                = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+                = pf.hidden_field(:_destroy)
+                = link_to '', '#', :class => 'del delete', :title => t('delete')
+        - else
+          .fake_row.fields{ :id => "printers_row_#{index}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+            %span.type_form= t("activerecord.attributes.printer.#{pf.object.mode}")
+            %span.file_form= pf.object.template.file.identifier
+            %span.activity
+              = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+              = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+              = pf.hidden_field(:_destroy)
+              = link_to '', '#', :class => 'del delete', :title => t('delete')
+
+      - else
+        #add_printer_block.fake_row.file_block.odd
+          = link_to t('.add_file'), '#', :class => 'add add_file'
+
+      - index += 1

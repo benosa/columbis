@@ -1,43 +1,37 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'low_resolution panel' }
+
 - title t('.users')
 
-#info{ :style => 'display:none' }
-  %table
-    %th
-      %td{ :colspan => 2 }
-        = t('record_successfuly_saved')
-    %tr
-      %td
-        %strong= t('activerecord.attributes.user.login')
-      %td#login= @user.try(:login)
-    %tr
-      %td
-        %strong= t('activerecord.attributes.user.password')
-      %td#password= @user.try(:password)
+- content_for :top do
+  %form.filter
+    - if @can_search_by_office
+      = render :partial => 'shared/search_field',
+        :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
+      = label_tag :office_id, t('.office')
+      = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
+        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'office_id', :filter => '1' }
 
-%table#users
-  %thead
-    %tr
-      %th= t('.role')
-      %th= t('.login')
-      %th= t('.last_name')
-      %th= t('.first_name')
-      %th= t('.middle_name')
-      %th= t('.email')
+    - else
+      = render :partial => 'shared/search_field'
+
+- content_for :top do
+  #info{ :style => 'display:none' }
+    %table
       %th
-      %th
-  %tbody
-    - @offices.each do |office|
-      %tr
         %td{ :colspan => 2 }
-          %h2= office.try(:name)
+          = t('record_successfuly_saved')
       %tr
-        %td{ :colspan => 4 }
-      = render :partial => 'user', :collection => office.users
-%p
-  = link_to t('.add_user'), new_dashboard_user_path
+        %td
+          %strong= t('activerecord.attributes.user.login')
+        %td#login= @user.try(:login)
+      %tr
+        %td
+          %strong= t('activerecord.attributes.user.password')
+        %td#password= @user.try(:password)
 
-.window#password_reset_form{ :style => 'display:none' }
-  .title
-    = t('dashboard.users.user.reset_password')
-    .close X
-  .content
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.add_user'), new_dashboard_user_path, :class => 'add_operator'

@@ -1,5 +1,5 @@
 ru:
-  addresses:   
+  addresses:
     index:
       add_address: 'Добавить адрес'
       addresses: 'Адреса'
@@ -10,20 +10,22 @@ ru:
       office_number: 'Номер офиса'
       phone_number: 'Номер телефона'
       zip_code: 'Индекс'
+    list:
+      presentation: 'Представление'
 
     show:
       addresses: 'Список адресов'
       address: 'Адрес'
-   
+
     new:
       add_address: 'Добавление адреса'
-      addresses: 'Список адресов'
+      list_of_address: 'Список адресов'
 
     edit:
       edit_address: 'Редактирование адреса'
-      addresses: 'Список адресов'
+      list_of_address: 'Список адресов'
 
-      
+
   activerecord:
     attributes:
       address:
@@ -34,3 +36,12 @@ ru:
         office_number: 'Номер офиса'
         phone_number: 'Номер телефона'
         zip_code: 'Индекс'
+
+  address_attributes:
+    region: 'Регион'
+    street: 'Улица'
+    house_number: 'Номер дома'
+    housing: 'Корпус'
+    office_number: 'Номер офиса'
+    phone_number: 'Номер телефона'
+    zip_code: 'Индекс'

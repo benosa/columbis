@@ -13,17 +13,23 @@ ru:
 
   yep: 'Да'
   nope: 'Нет'
+  yes: 'Да'
+  no: 'Нет'
   got: 'Есть'
   home: 'Домой'
+  are_you_sure: 'Вы уверены?'
+  back_to_list: 'Вернуться к списку'
+  back: 'Вернуться'
+  search: 'Поиск'
+  view_all: 'Показать все'
+  required_field: 'Обязательное поле'
+
+  actions: 'Действия'
   show: 'Показать'
   edit: 'Изменить'
   destroy: 'Удалить'
-  are_you_sure: 'Вы уверены?'
-  back_to_list: 'Назад к списку'
-  back: 'Назад'
-
-  view_all: 'Показать все'
   add: 'Добавить'
+  save: 'Сохранить'
   delete: 'Удалить'
   download: 'Скачать'
 
@@ -37,12 +43,19 @@ ru:
   registration_data: 'Регистрационные данные'
   record_successfuly_saved: 'Запись успешно сохранена'
 
-  invalid_fields: 'Ошибка при заполнении полей'
-  correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова'
+  invalid_fields: 'Ошибка при заполнении полей!'
+  correct_the_following_errors_and_try_again: 'Исправьте следующие ошибки и попробуйте снова:'
   print_partial_not_found: 'Не найдена форма печати'
 
   you_must_add_company_info: 'Для продолжения необходимо указать реквизиты компании'
   you_must_add_office: 'Для продолжения необходимо указать офис'
+
+  rur: 'руб.'
+  eur: '€'
+  usd: '$'
+  RUR: 'руб.'
+  EUR: 'EUR'
+  USD: 'USD'
 
   helpers:
     submit:
@@ -52,6 +65,8 @@ ru:
   will_paginate:
     previous_label: 'Предыдущая'
     next_label: 'Следующая'
+    page_gap: '&hellip;'
+  rows_on_page: 'Строк на страницу'
 
   errors:
     # The default format to use in full error messages.

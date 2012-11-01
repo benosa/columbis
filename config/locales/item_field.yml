@@ -1,22 +1,22 @@
 ru:
-  item_fields:   
+  item_fields:
     index:
       back_to_catalog: 'К каталогу'
-      catalog_item_fields: 'Колонки текущего каталога'
+      catalog_item_fields: 'Колонки каталога %{catalog}'
       add_column: 'Добавить колонку'
+      columns: 'Колонки'
 
     show:
       view_all: 'Все колонки'
-   
+
     new:
       new_item: 'Создание колонки'
-      view_all: 'Все колонки'
+      list_of_item_field: 'Список колонок'
 
     edit:
-      edit_item_field: 'Редактирование колонки'
-      view_all: 'Все колонки'
+      edit_item_field: 'Редактирование колонки %{item_field}'
+      list_of_item_field: 'Список колонок'
 
-      
   activerecord:
     attributes:
       item_field:

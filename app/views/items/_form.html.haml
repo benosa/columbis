@@ -1,9 +1,18 @@
-= form_for [@catalog, @item] do |f|
+- content_for(:error_messages) do
   = f.error_messages
-  %p
-    = f.hidden_field :catalog_id
 
-  = f.fields_for :notes do |note|
-    = render :partial => 'notes/note', :locals => {:f => note}
-  %p
-    = f.submit
+.form_block
+  .block_title
+    .fake_table
+      - for item_field in @catalog.item_fields
+        %span.item_field= item_field.name
+  .form_block_content
+    .fake_row
+      = f.fields_for :notes do |nf|
+        = nf.text_field :value, :class => 'note'
+        = nf.hidden_field :item_id
+        = nf.hidden_field :item_field_id
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.hidden_field :catalog_id
+  = f.submit

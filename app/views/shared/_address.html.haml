@@ -1,28 +1,14 @@
-%p
-  = f.label :region
-  %br/
-  = f.text_field :region
-%p
-  = f.label :street
-  %br/
-  = f.text_field :street
-%p
-  = f.label :house_number
-  %br/
-  = f.text_field :house_number
-%p
-  = f.label :housing
-  %br/
-  = f.text_field :housing
-%p
-  = f.label :office_number
-  %br/
-  = f.text_field :office_number
-%p
-  = f.label :phone_number
-  %br/
-  = f.text_field :phone_number
-%p
-  = f.label :zip_code
-  %br/
-  = f.text_field :zip_code
+%p= f.label :region, t('address_attributes.region')
+= f.text_field :region, :class => 'address_input'
+%p= f.label :street, t('address_attributes.street')
+= f.text_field :street, :class => 'address_input'
+%p= f.label :house_number, t('address_attributes.house_number')
+= f.text_field :house_number, :class => 'address_input'
+%p= f.label :housing, t('address_attributes.housing')
+= f.text_field :housing, :class => 'address_input'
+%p= f.label :office_number, t('address_attributes.office_number')
+= f.text_field :office_number, :class => 'address_input'
+%p= f.label :phone_number, t('address_attributes.phone_number')
+= f.text_field :phone_number, :class => 'address_input'
+%p= f.label :zip_code, t('address_attributes.zip_code')
+= f.text_field :zip_code, :class => 'address_input'

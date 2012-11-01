@@ -1,8 +1,15 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel edit_operator' }
+
 - title t('.edit_address')
 
-= render 'form'
+= form_for @address do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
 
-%p
-  = link_to t('show'), @address
-  |
-  = link_to t('.addresses'), addresses_path
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), @address, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('.list_of_address'), addresses_path, :class => 'list_operator'
+

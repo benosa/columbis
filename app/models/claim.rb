@@ -75,21 +75,36 @@ class Claim < ActiveRecord::Base
 
   before_save :update_debts
 
+  default_scope :order => 'id DESC'
+
   define_index do
-    indexes airport_to, airport_back, flight_to, flight_back, meals, placement
-    indexes hotel, memo, transfer, relocation, service_class, additional_services
+    indexes :airport_to, :airport_back, :visa, :calculation, :docs_note, :flight_to, :flight_back, :meals, :placement,
+            :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services, :sortable => true
 
-    indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true
+    # indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true
+    # indexes user(:last_name), :as => :last_name, :sortable => true
 
-    indexes user(:last_name), :as => :last_name, :sortable => true
     indexes office(:name), :as => :office, :sortable => true
     indexes operator(:name), :as => :operator, :sortable => true
     indexes country(:name), :as => :country, :sortable => true
     indexes city(:name), :as => :city, :sortable => true
     indexes resort(:name), :as => :resort, :sortable => true
 
+    indexes user(:login), :as => :user, :sortable => true
     indexes [dependents.last_name, dependents.first_name], :as => :dependents, :sortable => true
-    indexes [applicant.last_name, applicant.first_name], :as => :applicant
+    indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
+    indexes applicant(:phone_number), :as => :phone_number, :sortable => true
+
+    has :id
+    has :company_id
+    has :office_id
+    has :user_id
+
+    has :reservation_date, :depart_to, :depart_back, :visa_check, :check_date,
+        :arrival_date, :departure_date, :maturity, :operator_maturity, :type => :datetime
+    has :operator_confirmation, :type => :boolean
+    has :primary_currency_price, :tourist_advance, :tourist_debt, :operator_price, :operator_advance, :operator_debt,
+        :approved_tourist_advance, :approved_operator_advance, :approved_operator_advance_prim, :profit, :profit_in_percent, :type => :float
 
     set_property :delta => true
   end
@@ -98,27 +113,28 @@ class Claim < ActiveRecord::Base
             :columns_filter => :local_data_columns_filter,
             :scope => :local_data_scope
 
-  def self.search_and_sort(options = {})
-    options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
+  extend SearchAndSort
+  # def self.search_and_sort(options = {})
+  #   options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
 
-    ids = search(options[:filter]).map{ |obj| obj.id if obj }
+  #   ids = search(options[:filter]).map{ |obj| obj.id if obj }
 
-    opts = {}
-    opts[:user_id] = options[:user_id] if options[:user_id]
-    opts[:office_id] = options[:office_id] if options[:office_id]
+  #   opts = {}
+  #   opts[:user_id] = options[:user_id] if options[:user_id]
+  #   opts[:office_id] = options[:office_id] if options[:office_id]
 
-    claims = where('claims.id in(?)', ids).where(opts)
+  #   claims = where('claims.id in(?)', ids).where(opts)
 
-    return claims if claims.empty?
+  #   return claims if claims.empty?
 
-    if options[:column] == 'applicant.last_name'
-      claims.joins(:applicant).order('tourists.last_name ' + options[:direction])
-    elsif %w[countries.name offices.name operators.name].include?(options[:column])
-      claims.joins(options[:column].sub('.name', '').singularize.to_sym).order(options[:column] + ' ' + options[:direction])
-    else
-      claims.order(options[:column] + ' ' + options[:direction])
-    end
-  end
+  #   if options[:column] == 'applicant.last_name'
+  #     claims.joins(:applicant).order('tourists.last_name ' + options[:direction])
+  #   elsif %w[countries.name offices.name operators.name].include?(options[:column])
+  #     claims.joins(options[:column].sub('.name', '').singularize.to_sym).order(options[:column] + ' ' + options[:direction])
+  #   else
+  #     claims.order(options[:column] + ' ' + options[:direction])
+  #   end
+  # end
 
   def assign_reflections_and_save(claim_params)
     self.transaction do

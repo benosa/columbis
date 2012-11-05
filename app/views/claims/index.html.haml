@@ -1,4 +1,3 @@
-- set_current_width(:medium) if small_width?
 - content_for(:html_class) { 'main_page' }
 
 - title t('.claims')
@@ -13,11 +12,11 @@
 
       = label_tag :office_id, t('.office')
       = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
-        :prompt => t('nope'), :class => 'filter_select'
+        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'office_id', :filter => true }
 
       = label_tag :user_id, t('.user')
       = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'name_for_list', params[:user_id]),
-        :prompt => t('nope'), :class => 'filter_select'
+        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'user_id', :filter => true }
 
     - else
 

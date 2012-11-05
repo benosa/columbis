@@ -45,23 +45,23 @@ $(function(){
     return currentParams;
   }
 
-  // claims filter
-	$('#filter_bar select, #filter_bar input').live('change', function(){
-	  loadList(getCurrentSortParams($('#claims th a.current'), true));
-	});
+ //  // claims filter
+	// $('#filter_bar select, #filter_bar input').live('change', function(){
+	//   loadList(getCurrentSortParams($('#claims th a.current'), true));
+	// });
 
-  // redefine default submition of filter form
-  $('#filter_bar').submit(function(event) {
-    event.preventDefault();
-    loadList(getCurrentSortParams($('#claims th a.current'), true));
-    return false;
-  });
+ //  // redefine default submition of filter form
+ //  $('#filter_bar').submit(function(event) {
+ //    event.preventDefault();
+ //    loadList(getCurrentSortParams($('#claims th a.current'), true));
+ //    return false;
+ //  });
 
-  // change claims per page
-  $('.claims #per_page').live('change', function() {
-    var link = $('option:selected', this).data('link')
-    loadList(null, link);
-  });
+ //  // change claims per page
+ //  $('.claims #per_page').live('change', function() {
+ //    var link = $('option:selected', this).data('link')
+ //    loadList(null, link);
+ //  });
 
   // dates colors
   $('#claim_arrival_date').change(function(e){
@@ -232,28 +232,28 @@ $(function(){
   }
 
   // quick search
-  $('#filter_bar #filter').keyup(function(){
-    exclusive_delay(function(){
-      loadList(getCurrentSortParams($('#claims th a.current'), true));
-    }, 300 );
-  });
+  // $('#filter_bar #filter').keyup(function(){
+  //   exclusive_delay(function(){
+  //     loadList(getCurrentSortParams($('#claims th a.current'), true));
+  //   }, 300 );
+  // });
 
-  // sort
-  $('#claims th a').live('click', function(e){
-    e.preventDefault();
-    loadList(getCurrentSortParams($(e.currentTarget), false));
-  });
+  // // sort
+  // $('#claims th a').live('click', function(e){
+  //   e.preventDefault();
+  //   loadList(getCurrentSortParams($(e.currentTarget), false));
+  // });
 
-  // pagination
-  $(".claims .pagination a").each(function(i){
-    href = $(this).attr('href');
-    $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
-  });
+  // // pagination
+  // $(".claims .pagination a").each(function(i){
+  //   href = $(this).attr('href');
+  //   $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
+  // });
 
-  $('.claims .pagination a').live('click', function(e) {
-    e.preventDefault();
-    loadList(null, $(e.currentTarget).attr('href'));
-  });
+  // $('.claims .pagination a').live('click', function(e) {
+  //   e.preventDefault();
+  //   loadList(null, $(e.currentTarget).attr('href'));
+  // });
 
   //  operator_price_currency change
   $('#claim_operator_price_currency').change(function(){

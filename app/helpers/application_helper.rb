@@ -135,19 +135,26 @@ module ApplicationHelper
     params[:sort] ? params[:sort].to_sym : default
   end
 
-  def sort_dir
-    %w[asc desc].include?(params[:dir]) ? params[:dir].to_sym : :asc
+  def sort_dir(default = :asc)
+    %w[asc desc].include?(params[:dir]) ? params[:dir].to_sym : default
   end
 
   def sort_toggle_direction(dir)
     dir.to_sym == :asc ? :desc : :asc
   end
 
-  def sort_link(column, title = nil, default = nil)
+  def sort_link(column, title = nil, _default = nil)
+    if _default.kind_of? Hash
+      default = true
+      default_dir = _default[:default]
+    else
+      default = _default
+      default_dir = :asc
+    end
     col = column.to_sym
     title ||= col.titleize
-    css_class = col == sort_col(default ? col : nil) ? "sort_active #{sort_dir}" : nil
-    dir = col == sort_col(default ? col : nil) ? sort_dir : :asc
+    dir ||= col == sort_col(default ? col : nil) ? sort_dir(default_dir) : default_dir
+    css_class = col == sort_col(default ? col : nil) ? "sort_active #{dir}" : nil
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 
@@ -304,7 +311,7 @@ class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
         id = "#{@options[:link_id]}_page#{page}"
       else
         prefix = @collection.to_s
-        prefix = @collection.klass.to_s if @collection.try(:klass)
+        prefix = @collection.klass.to_s if @collection.respond_to?(:klass)
         id = "#{prefix.tableize}_page#{page}"
       end
       unless page == current_page
@@ -413,7 +420,6 @@ module ActiveRecord
 
     def self.local_data_scoped
       scope = self.local_data_settings[:scope]
-      # Rails.logger.debug "settings: #{self.local_data_settings.map{|k,v| k.to_s + ' => ' + v.to_s}.join(', ')}"
       if scope.respond_to?(:call)
         scoped = scope.bind(self).call
       elsif scope.is_a? Symbol and self.respond_to? scope

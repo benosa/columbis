@@ -1,6 +1,20 @@
 .reservations { min-height: 300px; }
 .middle_resoluition .reservations { width: 1536px; }
 
+.claims { overflow: auto; }
+.claims .reservations_wrapper {
+  overflow: auto;
+  margin: 19px 0 20px 0;
+  border-left: 1px #D5D5D5 solid;
+  border-right: 1px #D5D5D5 solid;
+}
+.low_resoluition .claims .reservations_wrapper { width: 980px; }
+.middle_resoluition .claims .reservations_wrapper { width: 1534px; }
+.height_resoluition .claims .reservations_wrapper { width: 1843px; }
+.claims .reservations { margin: 0; width: 100% !important; }
+.claims .reservations th:first-child, .claims .reservations th:last-child,
+.claims .reservations td:first-child, .claims .reservations td:last-child { border-left: none; border-right: none; }
+
 .reservations th { min-width: 36px; }
 
 .reservations th.double_sort span:first-child {

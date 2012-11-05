@@ -57,7 +57,7 @@ module ClaimsHelper
   end
 
   def tourists_list(claim)
-    ([claim.applicant.full_name] + claim.dependents.map{ |o| o.full_name }).join(', ')
+    ([claim.applicant.try(:full_name)] + claim.dependents.map{ |o| o.try(:full_name) }).join(', ')
   end
 
   def text_for_visa(claim)

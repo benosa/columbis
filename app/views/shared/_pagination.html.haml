@@ -8,8 +8,11 @@
         :selected => (count == per_page) && 'selected' }
         = count
 
-- if collection.is_a? WillPaginate and (collection.next_page || collection.previous_page)
+-# if collection.is_a? WillPaginate and (collection.next_page || collection.previous_page)
+- content_for(:pagination) do
+  - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
+  - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
+  = will_paginate collection, will_paginate_params
+- if content_for?(:pagination)
   .pagination
-    - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
-    - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
-    = will_paginate collection, will_paginate_params
+    = yield :pagination

@@ -1,6 +1,6 @@
 ﻿@charset 'utf-8';
 /*@import url(reset.css);*/
-html{background: #e7e7e7 url(../images/html.png) top repeat-x;}
+html{background: #e7e7e7 url(/assets/new_design/images/html.png) top repeat-x;}
 html.main_page{background-color: #f4f4f4;}
 html, body {height: 100%;}
 .all {
@@ -17,11 +17,11 @@ html, body {height: 100%;}
 			height: 48px;
 		}
 			.reservation li.dropdown{
-				background: url(../images/dropdown.gif) right 21px no-repeat;
+				background: url(/assets/new_design/images/dropdown.gif) right 21px no-repeat;
 				position: relative;
 			}
 			.reservation li a{
-				background: url(../images/reservation_border.png) right top no-repeat;
+				background: url(/assets/new_design/images/reservation_border.png) right top no-repeat;
 				color: #fff;
 				display: block;
 				font-size: 13px;
@@ -31,17 +31,17 @@ html, body {height: 100%;}
 				text-align: center;
 				text-shadow: #004d6e 0px -1px 0px;
 			}
-				.reservation li a:hover{background: url(../images/reservation_hover.png) right no-repeat;}
-				.reservation li.dropdown a:hover{background: url(../images/reservation_border.png) right top no-repeat;}
+				.reservation li a:hover{background: url(/assets/new_design/images/reservation_hover.png) right no-repeat;}
+				.reservation li.dropdown a:hover{background: url(/assets/new_design/images/reservation_border.png) right top no-repeat;}
 				.reservation li.active a{
-					background: url(../images/reservation_active.png) right no-repeat;
+					background: url(/assets/new_design/images/reservation_active.png) right no-repeat;
 					color: #006591;
 					font-weight: bold;
 					text-shadow: none;
 				}
 				.reservation li.dropdown a,.databases li.dropdown a{padding-right: 30px;}
 		.reservation li.dropdown ul,.databases li.dropdown ul{
-			background: #f4f4f4 url(../images/reservation_dropdown.png) top no-repeat;
+			background: #f4f4f4 url(/assets/new_design/images/reservation_dropdown.png) top no-repeat;
 			border: 1px #c4c4c4 solid;
 			border-top: none;
 			box-shadow: #c4c4c4 0px 1px 3px;
@@ -74,7 +74,7 @@ html, body {height: 100%;}
 				}
 	.user_panel{float: right;}
 		.user_panel li{
-			background: url(../images/reservation_border.png) right no-repeat;
+			background: url(/assets/new_design/images/reservation_border.png) right no-repeat;
 			color: #fff;
 			font-size: 13px;
 			height: 33px;
@@ -84,7 +84,7 @@ html, body {height: 100%;}
 			text-shadow: #004d6e 0px -1px 0px;
 		}
 			.user_panel li span{
-				background: url(../images/user_ico.png) left bottom no-repeat;
+				background: url(/assets/new_design/images/user_ico.png) left bottom no-repeat;
 				display: block;
 				margin-left: -10px;
 				padding-left: 19px;
@@ -95,7 +95,7 @@ html, body {height: 100%;}
 			}
 				.user_panel li a:hover{text-decoration: none;}
 				.logout{
-					background: url(../images/logout.png) no-repeat;
+					background: url(/assets/new_design/images/logout.png) no-repeat;
 					display: block;
 					height: 17px;
 					margin-right: -10px;
@@ -110,18 +110,18 @@ html, body {height: 100%;}
 			height: 48px;
 		}
 			.databases li.dropdown,.databases li.dropdown:hover{
-				background: url(../images/dropdown_black.png) right 21px no-repeat;
+				background: url(/assets/new_design/images/dropdown_black.png) right 21px no-repeat;
 				position: relative;
 			}
 				.databases li.dropdown ul{
-					background: #f4f4f4 url(../images/databases_dropdown.png) top no-repeat;
+					background: #f4f4f4 url(/assets/new_design/images/databases_dropdown.png) top no-repeat;
 					top: 49px;
 					width: 141px;
 				}
-			.databases li:hover,.databases li.active{background: url(../images/databases_hover.png) repeat-x;}
+			.databases li:hover,.databases li.active{background: url(/assets/new_design/images/databases_hover.png) repeat-x;}
 			.databases li.dropdown ul li:hover{background: none;}
 			.databases li a{
-				background: url(../images/databases_border.png) right no-repeat;
+				background: url(/assets/new_design/images/databases_border.png) right no-repeat;
 				color: #fff;
 				display: block;
 				font-size: 13px;
@@ -217,7 +217,7 @@ html, body {height: 100%;}
 		width: 150px;
 	}
 	.go_search{
-		background: url(../images/search.png) no-repeat;
+		background: url(/assets/new_design/images/search.png) no-repeat;
 		border: 1px #d5d5d5 solid;
 		border-radius: 0px 3px 3px 0;
 		float: left;
@@ -226,14 +226,14 @@ html, body {height: 100%;}
 		width: 23px;
 	}
 	.filter fieldset{
-		background: url(../images/filter_border.png) no-repeat;
+		background: url(/assets/new_design/images/filter_border.png) no-repeat;
 		display: inline-block;
 		height: 25px;
 		margin-top: -3px;
 		padding: 6px 0 0 23px;
 	}
 		.settings{
-			background: url(../images/settings.png) no-repeat;
+			background: url(/assets/new_design/images/settings.png) no-repeat;
 			color: #000;
 			display: block;
 			font-size: 11px;
@@ -243,7 +243,7 @@ html, body {height: 100%;}
 /*** END filter ***/
 /*** Switch_type ***/
 .switch_type{
-	background: url(../images/switch_type.png) no-repeat;
+	background: url(/assets/new_design/images/switch_type.png) no-repeat;
 	float: left;
 	height: 33px;
 	padding: 1px 0 0 2px;
@@ -261,7 +261,7 @@ html, body {height: 100%;}
 		text-shadow: #fff 0px 1px 0px;
 	}
 	.client.active{ 
-		background: url(../images/client_right.png) right top no-repeat;
+		background: url(/assets/new_design/images/client_right.png) right top no-repeat;
 		color: #fff;
 		display: inline-block;
 		font-size: 13px;
@@ -273,7 +273,7 @@ html, body {height: 100%;}
 		text-shadow: #345a80 0px -1px 0px;
 	}
 		.client.active span{
-			background: url(../images/client.png) no-repeat;
+			background: url(/assets/new_design/images/client.png) no-repeat;
 			display: block;
 			height: 23px;
 			padding: 7px 11px 0px 14px;
@@ -288,7 +288,7 @@ html, body {height: 100%;}
 	width: 1508px;
 }
 	.reservations th{
-		background: url(../images/grey_box.png) right top no-repeat;
+		background: url(/assets/new_design/images/grey_box.png) right top no-repeat;
 		border: 1px #d5d5d5 solid;
 		height: 67px;
 		padding: 5px 0px 0 0;
@@ -302,7 +302,7 @@ html, body {height: 100%;}
 			text-shadow: #fff 0px 1px 0px;
 		}
 		.reservations th a{
-			background: url(../images/sort.png) right top no-repeat;
+			background: url(/assets/new_design/images/sort.png) right top no-repeat;
 			color: #666;
 			display: block;
 			padding-top: 21px;
@@ -310,7 +310,7 @@ html, body {height: 100%;}
 			text-shadow: #fff 0px 1px 0px;
 		}
 			.reservations th a.sort_active,.reservations th.double_sort a.sort_active{
-				background: url(../images/sort_active.gif) right center no-repeat;
+				background: url(/assets/new_design/images/sort_active.gif) right center no-repeat;
 				color: #000;
 			}
 	.reservations th.double_sort{vertical-align: middle;}
@@ -333,21 +333,21 @@ html, body {height: 100%;}
 			width: 51px;
 		}
 			.reservations th.colspan a.sort_active{background-position: right 6px;}
-.reservations th.sand_box{background: url(../images/sand_box.png) right top no-repeat;}
-.reservations th.blue_box{background: url(../images/blue_box.png) right top no-repeat;}
-.reservations th.purple_box{background: url(../images/purple_box.png) right top no-repeat;}
+.reservations th.sand_box{background: url(/assets/new_design/images/sand_box.png) right top no-repeat;}
+.reservations th.blue_box{background: url(/assets/new_design/images/blue_box.png) right top no-repeat;}
+.reservations th.purple_box{background: url(/assets/new_design/images/purple_box.png) right top no-repeat;}
 	.reservations th.purple_box a{
 		color: #666b99;
 		padding-top: 16px;
 	}
 	.reservations th.purple_box.three_lines a{padding-top: 9px;}
-.reservations th.green_box{background: url(../images/green_box.png) right top no-repeat;}
+.reservations th.green_box{background: url(/assets/new_design/images/green_box.png) right top no-repeat;}
 	.reservations th.green_box a{
 		color: #587d57;
 		padding-top: 16px;
 	}
 	.reservations td{
-		background: url(../images/light_grey_box.png) right top repeat-x;
+		background: url(/assets/new_design/images/light_grey_box.png) right top repeat-x;
 		border: 1px #d5d5d5 solid;
 		height: 52px;
 		padding: 0 4px;
@@ -355,10 +355,10 @@ html, body {height: 100%;}
 	}
 		.reservations .odd td{background: none;}
 		/*.reservations tr:hover,.reservations tr:hover td,.reservations tr:hover td.odd{background: #eaf0f7;}*/
-		.reservations tr td.red_box{background: url(../images/red_box.png) right top no-repeat;}
-		.reservations tr td.chlorine_box{background: url(../images/chlorine_box.png) right top no-repeat;}
-		.reservations tr td.purple_box{background: url(../images/purple_box.png) right top no-repeat;}
-		.reservations tr td.dark_blue_box{background: url(../images/dark_blue_box.png) right top no-repeat;}
+		.reservations tr td.red_box{background: url(/assets/new_design/images/red_box.png) right top no-repeat;}
+		.reservations tr td.chlorine_box{background: url(/assets/new_design/images/chlorine_box.png) right top no-repeat;}
+		.reservations tr td.purple_box{background: url(/assets/new_design/images/purple_box.png) right top no-repeat;}
+		.reservations tr td.dark_blue_box{background: url(/assets/new_design/images/dark_blue_box.png) right top no-repeat;}
 		.reservations td a{
 			color: #000;
 			text-decoration: underline;
@@ -377,45 +377,45 @@ html, body {height: 100%;}
 			.green{color: #006600;}
 			.red,.reservations td span.red{color: #990000; text-shadow: #fff 0px 1px 0px;}
 		.attention{
-			background: url(../images/attention.png) left bottom no-repeat;
+			background: url(/assets/new_design/images/attention.png) left bottom no-repeat;
 			display: block;
 			height: 12px;
 			margin-left: 2px;
 			width: 15px;
 		}
 		.edit_row{
-			background: url(../images/attention.png) -28px 0 no-repeat;
+			background: url(/assets/new_design/images/attention.png) -28px 0 no-repeat;
 			display: block;
 			height: 14px;
 			margin-left: 2px;
 			width: 14px;
 		}
-			.edit_row:hover{background: url(../images/attention.png) -42px 0 no-repeat;}
+			.edit_row:hover{background: url(/assets/new_design/images/attention.png) -42px 0 no-repeat;}
 		.lock{
-			background: url(../images/attention.png) -69px 0 no-repeat;
+			background: url(/assets/new_design/images/attention.png) -69px 0 no-repeat;
 			display: block;
 			float: left;
 			height: 14px;
 			margin-left: 19px;
 			width: 12px;
 		}
-			.lock:hover{background: url(../images/attention.png) -57px 0 no-repeat;}
+			.lock:hover{background: url(/assets/new_design/images/attention.png) -57px 0 no-repeat;}
 		.power{
-			background: url(../images/attention.png) -81px 0 no-repeat;
+			background: url(/assets/new_design/images/attention.png) -81px 0 no-repeat;
 			display: block;
 			float: left;
 			height: 14px;
 			margin-left: 20px;
 			width: 12px;
 		}
-			.power:hover{background: url(../images/attention.png) -93px 0 no-repeat;}
+			.power:hover{background: url(/assets/new_design/images/attention.png) -93px 0 no-repeat;}
 		.download{
-			background: url(../images/attention.png) -105px 0 no-repeat;
+			background: url(/assets/new_design/images/attention.png) -105px 0 no-repeat;
 			display: block;
 			height: 14px;
 			width: 10px;
 		}
-			.download:hover{background: url(../images/attention.png) -115px 0 no-repeat;}
+			.download:hover{background: url(/assets/new_design/images/attention.png) -115px 0 no-repeat;}
 .reservations td p span.hide_text{
 	background-color: #e6e6e6;
 	border-bottom: 1px #fff solid;
@@ -435,7 +435,7 @@ html, body {height: 100%;}
 	z-index: 99;
 }
 	.reservations td p span.hide_text dfn{
-		background: url(../images/hide_text.gif) no-repeat;
+		background: url(/assets/new_design/images/hide_text.gif) no-repeat;
 		display: block;
 		height: 5px;
 		left: 10px;
@@ -444,7 +444,7 @@ html, body {height: 100%;}
 		width: 9px;
 	}
 .reservations td.big_row{
-	background: url(../images/big_row.png) right top repeat-x;
+	background: url(/assets/new_design/images/big_row.png) right top repeat-x;
 	font-size: 18px;
 	text-shadow: #fff 0px 1px 0px;
 }
@@ -629,17 +629,17 @@ input[type="checkbox"]{display: none;}
 		.edit_page .filter label.checkbox{margin: 4px 0 0 3px;}
 		.edit_page .filter label.checkbox.right_checkbox{margin: 4px 0 0 30px;}
 		.checkbox{
-			background: url(../images/checkbox.png) no-repeat;
+			background: url(/assets/new_design/images/checkbox.png) no-repeat;
 			display: inline-block;
 			min-height: 15px;
 			min-width: 15px;
 		}
-			.checkbox.active{background: url(../images/checkbox.png) left -30px no-repeat;}
+			.checkbox.active{background: url(/assets/new_design/images/checkbox.png) left -30px no-repeat;}
 			.checkbox.right_checkbox{
 				background-position: right 0px;
 				padding-right: 25px;
 			}
-				.checkbox.right_checkbox.active{background: url(../images/checkbox.png) right -30px no-repeat;}
+				.checkbox.right_checkbox.active{background: url(/assets/new_design/images/checkbox.png) right -30px no-repeat;}
 			.checkbox.left_checkbox{padding-left: 25px;}
 		.float_right{float: right;}
 /*** END edit_page ***/
@@ -676,7 +676,7 @@ input[type="checkbox"]{display: none;}
 			float: right;
 			width: 41px;
 		}
-		.check_list li.checked span{background: url(../images/checked.png) right no-repeat;}
+		.check_list li.checked span{background: url(/assets/new_design/images/checked.png) right no-repeat;}
 /*** END check_list ***/
 /*** Form_block ***/
 .form_block{
@@ -688,7 +688,7 @@ input[type="checkbox"]{display: none;}
 	width: 710px;
 }
 	.block_title{
-		background: url(../images/block_title.png) repeat-x;
+		background: url(/assets/new_design/images/block_title.png) repeat-x;
 		border: 1px #bed1e9 solid;
 		border-top: 1px #f9fbfd solid;
 		border-radius: 3px 3px 0 0;
@@ -697,22 +697,22 @@ input[type="checkbox"]{display: none;}
 		width: 688px;
 	}
 		.yellow_block .block_title{
-			background: url(../images/yellow_title.png) repeat-x;
+			background: url(/assets/new_design/images/yellow_title.png) repeat-x;
 			border: 1px #eddbc2 solid;
 			border-top: 1px #fdfbf9 solid;
 		}
 		.green_block .block_title{
-			background: url(../images/green_title.png) repeat-x;
+			background: url(/assets/new_design/images/green_title.png) repeat-x;
 			border: 1px #c5e4bf solid;
 			border-top: 1px #fafcfa solid;
 		}
 		.grey_block .block_title{
-			background: url(../images/grey_title.png) repeat-x;
+			background: url(/assets/new_design/images/grey_title.png) repeat-x;
 			border: 1px #d1d2d3 solid;
 			border-top: 1px #fbfbfc solid;
 		}
 		.blue_block .block_title{
-			background: url(../images/blue_title.png) repeat-x;
+			background: url(/assets/new_design/images/blue_title.png) repeat-x;
 			border-bottom: 1px #3f6db8 solid;
 			border-left: none;
 			border-right: none;
@@ -753,13 +753,13 @@ input[type="checkbox"]{display: none;}
 		border-top: none;
 		border-radius: 0 0 4px 4px;
 	}
-		.blue_block .form_block_content{background: url(../images/blue_box_content.png);}
+		.blue_block .form_block_content{background: url(/assets/new_design/images/blue_box_content.png);}
 .fake_table{
 	overflow: hidden;
 	width: 708px;
 }
 	.fake_table span{
-		background: #f4f4f4 url(../images/grey_border.gif) left center repeat-y;
+		background: #f4f4f4 url(/assets/new_design/images/grey_border.gif) left center repeat-y;
 		color: #666;
 		float: left;
 		font-size: 13px;
@@ -831,7 +831,7 @@ input[type="checkbox"]{display: none;}
 				margin-right: 2px;
 			}
 		.delete{
-			background: url(../images/delete.png) no-repeat;
+			background: url(/assets/new_design/images/delete.png) no-repeat;
 			display: inline-block;
 			height: 13px;
 			margin: 4px 0 0 -5px;
@@ -846,7 +846,7 @@ input[type="checkbox"]{display: none;}
 		}
 			.paying.add_btn{height: 55px;}
 		.add_tourist{
-			background: url(../images/add_tourist.png) no-repeat;
+			background: url(/assets/new_design/images/add_tourist.png) no-repeat;
 			color: #fff;
 			display: block;
 			font-size: 11px;
@@ -875,7 +875,7 @@ input[type="checkbox"]{display: none;}
 		.form_column.small .block_title{width: 763px;}
 		.form_column.small .fake_row{width: 762px;}
 .highlighted{
-	background: url(../images/highlighted.png) repeat-x;
+	background: url(/assets/new_design/images/highlighted.png) repeat-x;
 	border-radius: 3px;
 	display: inline-block;
 	height: 26px;
@@ -900,7 +900,7 @@ input[type="checkbox"]{display: none;}
 /*** END form_block ***/
 /*** Float_panel ***/
 .float_panel{
-	background: url(../images/float_panel.png) repeat-x;
+	background: url(/assets/new_design/images/float_panel.png) repeat-x;
 	height: 53px;
 	width: 100%;
 }
@@ -917,32 +917,32 @@ input[type="checkbox"]{display: none;}
 			line-height: 14px;
 		}
 			.back{
-				background: url(../images/back.png) no-repeat;	
+				background: url(/assets/new_design/images/back.png) no-repeat;	
 				float: left;
 				padding: 9px 0 0 27px;
 				text-shadow: #345a80 0px -1px 0px;
 				width: 86px;
 			}
 				.back:hover{
-					background: url(../images/back_hover.png) no-repeat;
+					background: url(/assets/new_design/images/back_hover.png) no-repeat;
 					text-shadow: #0d4b77 0px -1px 0px;
 				}
 			.add_operator{
-				background: url(../images/add_operator.png) no-repeat;
+				background: url(/assets/new_design/images/add_operator.png) no-repeat;
 				float: right;
 				padding: 9px 0 0 37px;
 				text-shadow: #345a80 0px -1px 0px;
 				width: 152px;
 			}
 			.list_operator{
-				background: url(../images/list_operator.png) no-repeat;
+				background: url(/assets/new_design/images/list_operator.png) no-repeat;
 				float: right;
 				padding: 9px 0 0 43px;
 				text-shadow: #4b4b4b 0px -1px 0px;
 				width: 148px;
 			}
 			.save{
-				background: url(../images/save.png) no-repeat;
+				background: url(/assets/new_design/images/save.png) no-repeat;
 				float: right;
 				margin-left: 19px;
 				padding: 9px 0 0 45px;
@@ -950,11 +950,11 @@ input[type="checkbox"]{display: none;}
 				width: 90px;
 			}
 				.save:hover{
-					background: url(../images/save_hover.png) no-repeat;
+					background: url(/assets/new_design/images/save_hover.png) no-repeat;
 					text-shadow: #406326 0px -1px 0px;
 				}
 			.delete_operator{
-				background: url(../images/delete_operator.png) no-repeat;
+				background: url(/assets/new_design/images/delete_operator.png) no-repeat;
 				float: right;
 				margin-left: 8px;
 				padding: 9px 0 0 43px;
@@ -962,11 +962,11 @@ input[type="checkbox"]{display: none;}
 				width: 73px;
 			}
 				.delete_operator:hover{
-					background: url(../images/delete_operator_hover.png) no-repeat;
+					background: url(/assets/new_design/images/delete_operator_hover.png) no-repeat;
 					text-shadow: #7d2c2c 0px -1px 0px;
 				}
 			.switch_user{
-				background: url(../images/switch_user.png) no-repeat;
+				background: url(/assets/new_design/images/switch_user.png) no-repeat;
 				float: right;
 				margin-left: 8px;
 				padding: 9px 0 0 45px;
@@ -974,7 +974,7 @@ input[type="checkbox"]{display: none;}
 				width: 211px;
 			}
 			.lost_pass{
-				background: url(../images/lost_pass.png) no-repeat;
+				background: url(/assets/new_design/images/lost_pass.png) no-repeat;
 				float: right;
 				padding: 9px 0 0 0px;
 				text-align: center;
@@ -993,7 +993,7 @@ input[type="checkbox"]{display: none;}
 	width: 240px;
 }
 	.ui-datepicker-header{
-		background: url(../images/calendar_header.png) no-repeat;
+		background: url(/assets/new_design/images/calendar_header.png) no-repeat;
 		height: 30px;
 		padding: 5px 5px 0px 5px;
 		width: 230px;
@@ -1005,11 +1005,11 @@ input[type="checkbox"]{display: none;}
 		}
 			.ui-datepicker-prev span,.ui-datepicker-next span{display: none;}
 			.ui-datepicker-prev{
-				background: url(../images/calendar_left.png) no-repeat;
+				background: url(/assets/new_design/images/calendar_left.png) no-repeat;
 				margin-right: 5px;
 			}
 			.ui-datepicker-next{
-				background: url(../images/calendar_right.png) no-repeat;
+				background: url(/assets/new_design/images/calendar_right.png) no-repeat;
 				float: right;
 				margin-left: 5px;
 			}
@@ -1042,7 +1042,7 @@ input[type="checkbox"]{display: none;}
 		}
 			.ui-datepicker-calendar td a{color: #393b3c;}
 			.ui-datepicker-calendar td.ui-datepicker-today a,.ui-datepicker-calendar td:hover a{
-				background: url(../images/today.png) no-repeat;
+				background: url(/assets/new_design/images/today.png) no-repeat;
 				color: #fff;
 				display: block;
 				height: 19px;
@@ -1051,7 +1051,7 @@ input[type="checkbox"]{display: none;}
 				text-align: center;
 				width: 24px;
 			}
-				.ui-datepicker-calendar td:hover a{background: url(../images/today_hover.png) no-repeat;color: #393b3c;}
+				.ui-datepicker-calendar td:hover a{background: url(/assets/new_design/images/today_hover.png) no-repeat;color: #393b3c;}
 /*** END calendar ***/
 /*** Footer ***/
 .footer{

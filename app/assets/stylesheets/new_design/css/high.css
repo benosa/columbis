@@ -26,7 +26,7 @@
 }
 	.delete_right .delete{margin-top: 2px;}
 .add_city{
-	background: url(../images/add_city.png) no-repeat;
+	background: url(/assets/new_design/images/add_city.png) no-repeat;
 	color: #fff;
 	display: block;
 	font-size: 11px;
@@ -101,7 +101,7 @@
   		width: 315px;
 	}
 	.file .select_file{
-		background: url(../images/select_file.png) no-repeat;
+		background: url(/assets/new_design/images/select_file.png) no-repeat;
 		color: #fff;
 		float: left;
 		height: 19px;
@@ -130,7 +130,7 @@
 			font-weight: normal;
 		}
 .fake_row .add_file{
-	background: url(../images/add_file.png) 0 0 no-repeat;
+	background: url(/assets/new_design/images/add_file.png) 0 0 no-repeat;
 	color: #fff;
 	float: right;
 	font-size: 11px;

@@ -7,7 +7,7 @@
 	width: 180px;
 }
 .ik_select_link{
-	background: #fff url(../images/select.png) right center no-repeat;
+	background: #fff url(/assets/new_design/images/select.png) right center no-repeat;
 	border: 1px #d5d5d5 solid;
 	border-radius: 3px;
 	cursor: default;
@@ -72,7 +72,7 @@
 /* Type */
 .type .ik_select_list{border: 1px #030303 solid;}
 .type .ik_select_link{
-	background: #fff url(../images/select_dark.png) right center no-repeat;
+	background: #fff url(/assets/new_design/images/select_dark.png) right center no-repeat;
 	border: 1px #030303 solid;
 }
 /* Filter */
@@ -202,7 +202,7 @@
 		line-height: 17px;
 	}
 .calendar_select .ik_select_link{
-	background: #fff url(../images/calendar_select.png) right center no-repeat;
+	background: #fff url(/assets/new_design/images/calendar_select.png) right center no-repeat;
 	border-color: #324873;
 }
 .calendar_select .ik_select_link_text{width: 55px;}/* -15 */

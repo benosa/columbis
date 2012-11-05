@@ -780,5 +780,5 @@
 })();
 
 $(function() {
-  Tourism.init();
+  // Tourism.init();
 });

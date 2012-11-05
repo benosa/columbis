@@ -27,16 +27,18 @@ after "deploy:update_code", "deploy:migrate"
 #after "deploy:migrate", "deploy:seed"
 
 #after "deploy:update_code", "deploy:repair_sequences"
+after "deploy:update_code", "deploy:sphinx_config"
 after "deploy:update_code", "thinking_sphinx:configure"
 after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
 # after 'deploy:finalize_update', 'deploy:symlink_sphinx_indexes'
-after "thinking_sphinx:start", "deploy:create_manifest"
+after "deploy:update_code", "deploy:create_manifest"
 after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
   task :start do
   end
+
 
   task :stop do
   end
@@ -56,6 +58,11 @@ namespace :deploy do
   desc "Link up Sphinx's indexes"
   task :symlink_sphinx_indexes, :roles => [:app] do
     run "ln -nfs #{shared_path}/db/sphinx #{release_path}/db/sphinx" # If current_path doesn't work for you, use release_path.
+  end
+
+  desc "Symlink Sphinx config"
+  task :sphinx_config, :roles => [:app] do
+    run "ln -nfs #{shared_path}/config/sphinx.yml #{release_path}/config/sphinx.yml"
   end
 
   desc "reload the database with seed data"

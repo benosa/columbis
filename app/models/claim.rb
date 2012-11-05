@@ -78,7 +78,7 @@ class Claim < ActiveRecord::Base
   default_scope :order => 'id DESC'
 
   define_index do
-    indexes :airport_to, :airport_back, :visa, :calculation, :docs_note, :flight_to, :flight_back, :meals, :placement,
+    indexes :airport_to, :airport_back, :visa, :calculation, :documents_status, :docs_note, :flight_to, :flight_back, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services, :sortable => true
 
     # indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true

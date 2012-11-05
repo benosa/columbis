@@ -1,20 +1,20 @@
 # -*- encoding : utf-8 -*-
 class DashboardController < ApplicationController
-  TABLES = %w[claims tourists payments operators addresses companies cities offices].freeze  
-  
+  TABLES = %w[claims tourists payments operators addresses companies cities offices].freeze
+
   before_filter :only => [:offline, :local_tables, :local_data] do
     authorize! :offline_version, current_user
   end
-  
+
   def index
-    authorize! :dasboard_index, current_user   
+    authorize! :dasboard_index, current_user
   end
 
   def offline
     render :file => Rails.root.join("public/offline.html.erb"), :layout => 'application', :locals => { :assets => !(request.url =~ /\.html$/) }
   end
 
-  def local_tables    
+  def local_tables
     data = Hash[*local_table_list.map{ |table| [table, table_columns(table)] }.flatten(1)]
     render :json => data
   end
@@ -26,11 +26,12 @@ class DashboardController < ApplicationController
   end
 
   def create_manifest
-    write_manifest_file
+    require 'lib/tourism_manifest'
+    TourismManifest.write_manifest_file(view_context)
     render :text => 'OK' if request.present?
   end
 
-  private    
+  private
 
     def table_columns(table)
       model = table.classify.constantize
@@ -46,7 +47,7 @@ class DashboardController < ApplicationController
       end.sort!
     end
 
-    def to_js_type(column)      
+    def to_js_type(column)
       case column.try(:type)
       when :integer
         'INTEGER' + (' PRIMARY KEY' if column.primary).to_s
@@ -76,15 +77,15 @@ class DashboardController < ApplicationController
     end
 
     def get_local_data(updated_at = nil)
-      data = {      
+      data = {
         :tables => [],
         :data => {}
       }
 
       local_table_list.each do |table|
-        data[:tables] << table     
+        data[:tables] << table
         scoped = local_data_scoped(table, updated_at)
-        data[:data][table] = scoped.all.map(&:local_data)      
+        data[:data][table] = scoped.all.map(&:local_data)
       end
 
       if (updated_at.nil? or current_user.updated_at > updated_at) and params[:tables].nil?
@@ -96,9 +97,9 @@ class DashboardController < ApplicationController
 
     def local_data_scoped(table, updated_at = nil)
       model = table.classify.constantize
-      scoped = model.local_data_scoped      
-      scoped = model.scoped_by_ability(current_ability) if scoped.nil?      
-      
+      scoped = model.local_data_scoped
+      scoped = model.scoped_by_ability(current_ability) if scoped.nil?
+
       if updated_at.present?
         if model.attribute_names.include?('updated_at')
           scoped = scoped.where('updated_at > ?', updated_at)

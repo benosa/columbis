@@ -65,11 +65,21 @@ $(function(){
         container: $container[0]
       },
       success: function(resp){
-        $(this.container).replaceWith(resp);
+        $(this.selector).replaceWith(resp);
+        var $t = $(this.selector);
         // reset params changing
         bindParams(this.selector);
         // reset select customization in current list container
         customizeSelect(this.selector, true);
+        // check refresh callbacks, wich are binded to container parent
+        var callbacks = $t.parent().data('after-refresh');
+        if (callbacks) {
+          if (callbacks.constructor !== Array)
+            callbacks = [callbacks];
+          for (var i in callbacks)
+            if (typeof callbacks[i] == 'function')
+              callbacks[i].call($t);
+        }
       }
     });
   }

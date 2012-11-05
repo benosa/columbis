@@ -745,4 +745,15 @@ $(function(){
   };
 	$('#payments_in a.delete').click(del_payment);
 	$('#payments_out a.delete').click(del_payment);
+
+  // set tooltip to blocks with full_value attribute
+  var claims_after_refresh = function() {
+    $(this).find('*[full_value]').tooltip({
+      title: function() { return $(this).attr('full_value'); },
+      delay: { show: 500, hide: 0 }
+    });
+  };
+  var $claims = $('.claims');
+  $claims.parent().data('after-refresh', claims_after_refresh);
+  claims_after_refresh.call($claims);
 });

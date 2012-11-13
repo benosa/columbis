@@ -70,12 +70,12 @@ Tourism::Application.configure do
       :domain => "tourism.devmen.com",
       :authentication => "plain",
       :user_name => "mailer.devmen.com@gmail.com",
-      :password => "mailer.devmen",
+      :password => "devmen.mailer",
       :enable_starttls_auto => true
     }
 
   config.middleware.use ExceptionNotifier,
     :email_prefix => '[Tourism] ',
     :sender_address => %{ "notifier" <mailer.devmen.com@gmail.com> },
-    :exception_recipients => %w{ alexzammer@gmail.com }
+    :exception_recipients => %w{ alexzammer@gmail.com pchipiga@devmen.com }
 end

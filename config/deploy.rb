@@ -86,7 +86,8 @@ namespace :deploy do
   task :precompile_assets, :roles => :app do
     from = source.next_revision(current_revision)
     if capture("cd #{release_path} && #{source.local.log(from)} vendor/assets/ app/assets/ lib/assets | wc -l").to_i > 0
-      run "cd #{release_path} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
+      # run "cd #{release_path} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
+      run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
     else
       logger.info "Skipping asset pre-compilation because there were no asset changes"
     end

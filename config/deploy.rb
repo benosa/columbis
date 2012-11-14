@@ -33,7 +33,7 @@ after "deploy:update_code", "thinking_sphinx:index"
 after "deploy:update_code", "thinking_sphinx:start"
 # after 'deploy:finalize_update', 'deploy:symlink_sphinx_indexes'
 after "deploy:update_code", "deploy:precompile_assets"
-after "deploy:precompile_assets", "deploy:create_manifest"
+after "deploy:update_code", "deploy:create_manifest"
 # load 'deploy/assets' # assets:precompile etc
 after "deploy:restart", "deploy:cleanup"
 
@@ -84,14 +84,7 @@ namespace :deploy do
 
   desc "precompile assets"
   task :precompile_assets, :roles => :app do
-    from = source.next_revision(current_revision)
-    if capture("cd #{release_path} && #{source.local.log(from)} vendor/assets/ app/assets/ lib/assets | wc -l").to_i > 0
-      # run "cd #{release_path} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
-      run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
-    else
-      logger.info "Skipping asset pre-compilation because there were no asset changes"
-    end
-    # run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   # Redefine precompile assets task for skipping asset pre-compilation if there were no assets changes

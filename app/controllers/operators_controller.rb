@@ -22,8 +22,11 @@ class OperatorsController < ApplicationController
 
   def create
     @operator.company = current_company
-    @operator.address.company = current_company
     if @operator.save
+      if @operator.address.present? and @operator.address.company.nil?
+        @operator.address.company = current_company
+        @operator.address.save
+      end
       redirect_to @operator, :notice => "Successfully created operator."
     else
       render :action => 'new'
@@ -38,8 +41,11 @@ class OperatorsController < ApplicationController
 
   def update
     @operator.company ||= current_company
-    @operator.address.company ||= current_company if @operator.address.present?
     if @operator.update_attributes(params[:operator])
+      if @operator.address.present? and @operator.address.company.nil?
+        @operator.address.company = current_company
+        @operator.address.save
+      end
       redirect_to @operator, :notice  => "Successfully updated operator."
     else
       render :action => 'edit'

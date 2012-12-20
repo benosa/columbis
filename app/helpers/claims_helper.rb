@@ -1,19 +1,18 @@
 # -*- encoding : utf-8 -*-
 module ClaimsHelper
   def sort_column
-    accesible_column_names = Claim.column_names + ['applicant.last_name', 'countries.name', 'operators.name', 'offices.name']
-    accesible_column_names.include?(params[:sort]) ? params[:sort] : 'id'
+    params[:sort] ? params[:sort] : Claim::DEFAULT_SORT[:col]
   end
 
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : Claim::DEFAULT_SORT[:dir]
   end
 
   def sortable(column, title = nil)
     title ||= column.titleize
     css_class = column == sort_column ? "sort_active #{sort_direction}" : nil
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to(claims_params.merge({ :sort => column, :direction => direction }), { :class => css_class }) do
+    direction = column == sort_column ? sort_direction : "asc"
+    link_to({ :sort => column, :direction => direction }, { :class => css_class }) do
       raw(title.to_s) # + tag('span', :class => 'sort_span ' << css_class.to_s))
     end
   end
@@ -56,8 +55,12 @@ module ClaimsHelper
     end
   end
 
+  def as_money(amount, currency = nil)
+    amount.to_money + CurrencyCourse.currency_symbol(currency || CurrencyCourse::PRIMARY_CURRENCY)
+  end
+
   def tourists_list(claim)
-    ([claim.applicant.full_name] + claim.dependents.map{ |o| o.full_name }).join(', ')
+    ([claim.applicant.try(:full_name)] + claim.dependents.map{ |o| o.try(:full_name) }).join(', ')
   end
 
   def text_for_visa(claim)
@@ -80,7 +83,7 @@ module ClaimsHelper
 
     if claim.closed?
       'departed'
-    elsif (claim.check_date - 1.day) <= Time.now.to_date
+    elsif claim.check_date <= Time.now.to_date
       'hot'
     else
       'soon'
@@ -146,6 +149,16 @@ module ClaimsHelper
   def text_value(value)
     return I18n.t(:nope) if value.nil? or value.is_a?(String) and value.blank?
     value.to_s
+  end
+
+  def total_years
+    query = <<-QUERY
+      SELECT EXTRACT(YEAR FROM reservation_date) as year
+      FROM claims
+      GROUP BY EXTRACT(YEAR FROM reservation_date)
+      ORDER BY year DESC
+      QUERY
+    years = ActiveRecord::Base.connection.select_values(query)
   end
 
 end

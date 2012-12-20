@@ -2,12 +2,13 @@
 class Claim < ActiveRecord::Base
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done].freeze
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
+  DEFAULT_SORT = { :col => 'reservation_date', :dir => 'desc' }.freeze
 
   # relations
   attr_protected :user_id, :company_id, :office_id, :operator_id, :resort_id, :city_id, :country_id
 
   # price block
-  attr_accessible :tour_price, :tour_price_currency,
+  attr_accessible :tour_price, :tour_price_currency, :additional_services_price_currency,
                   :visa_price, :visa_count, :visa_price_currency,
                   :children_visa_price, :children_visa_count, :children_visa_price_currency,
                   :insurance_price, :insurance_count, :insurance_price_currency,
@@ -26,18 +27,20 @@ class Claim < ActiveRecord::Base
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
-                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat
+                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id
 
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
-                  :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance
+                  :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance,
+                  :bonus, :bonus_percent
                   #:payments_in_attributes, :payments_out_attributes
 
   belongs_to :company
   belongs_to :user
+  belongs_to :assistant, :class_name => 'User'
   belongs_to :office
   belongs_to :operator
   belongs_to :country
@@ -57,16 +60,17 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?
   accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?
 
-  validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
-  validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
-                        :airline, :airport_to, :airport_back,
-                        :tour_price, :hotel, :meals, :medical_insurance,
-                        :placement, :transfer, :service_class, :relocation
+  validates_presence_of :user_id, :operator_id, :check_date, :arrival_date
+  # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
+  # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
+  #                       :airline, :airport_to, :airport_back,
+  #                       :tour_price, :hotel, :meals, :medical_insurance,
+  #                       :placement, :transfer, :service_class, :relocation
 
-  validates_presence_of :operator_confirmation, :operator_maturity, :if => Proc.new { |claim| claim.operator_confirmation_flag }
+  # validates_presence_of :operator_confirmation, :operator_maturity, :if => Proc.new { |claim| claim.operator_confirmation_flag }
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
-    validates_presence_of a
+    # validates_presence_of a
     validates_inclusion_of a, :in => CurrencyCourse::CURRENCIES
   end
 
@@ -76,20 +80,36 @@ class Claim < ActiveRecord::Base
   before_save :update_debts
 
   define_index do
-    indexes airport_to, airport_back, flight_to, flight_back, meals, placement
-    indexes hotel, memo, transfer, relocation, service_class, additional_services
+    indexes :airport_to, :airport_back, :visa, :calculation, :documents_status, :docs_note, :flight_to, :flight_back, :meals, :placement,
+            :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
+            :operator_confirmation, :sortable => true
 
-    indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true
+    # indexes applicant(:last_name), :as => :applicant_last_name, :sortable => true
+    # indexes user(:last_name), :as => :last_name, :sortable => true
 
-    indexes user(:last_name), :as => :last_name, :sortable => true
     indexes office(:name), :as => :office, :sortable => true
     indexes operator(:name), :as => :operator, :sortable => true
     indexes country(:name), :as => :country, :sortable => true
     indexes city(:name), :as => :city, :sortable => true
     indexes resort(:name), :as => :resort, :sortable => true
 
+    indexes user(:login), :as => :user, :sortable => true
+    indexes assistant(:login), :as => :assistant, :sortable => true
     indexes [dependents.last_name, dependents.first_name], :as => :dependents, :sortable => true
     indexes [applicant.last_name, applicant.first_name], :as => :applicant
+
+    has :id
+    has :company_id
+    has :office_id
+    has :user_id
+    has :assistant_id
+
+    has :reservation_date, :depart_to, :depart_back, :visa_check, :check_date,
+        :arrival_date, :departure_date, :maturity, :operator_maturity, :type => :datetime
+    has :operator_confirmation_flag, :type => :boolean
+    has :primary_currency_price, :tourist_advance, :tourist_debt, :operator_price, :operator_advance, :operator_debt,
+        :approved_tourist_advance, :approved_operator_advance, :approved_operator_advance_prim, :profit, :profit_in_percent,
+        :bonus, :bonus_percent, :type => :float
 
     set_property :delta => true
   end
@@ -98,27 +118,35 @@ class Claim < ActiveRecord::Base
             :columns_filter => :local_data_columns_filter,
             :scope => :local_data_scope
 
-  def self.search_and_sort(options = {})
-    options.reverse_merge!(:filter => '', :column => 'id', :direction => 'asc')
+  extend SearchAndSort
 
-    ids = search(options[:filter]).map{ |obj| obj.id if obj }
+  # def self.search_and_sort(options = {})
+  #   options.reverse_merge!(:filter => '', :column => Claim::DEFAULT_SORT[:col], :direction => Claim::DEFAULT_SORT[:dir])
 
-    opts = {}
-    opts[:user_id] = options[:user_id] if options[:user_id]
-    opts[:office_id] = options[:office_id] if options[:office_id]
+  #   search_options = { :star => true }
+  #   # search_options[:order] = options[:column].to_sym if options[:column]
+  #   # search_options[:sort_mode] = options[:direction].to_sym if options[:direction]
+  #   search_options[:order] = "#{options[:column]} #{options[:direction]}, id DESC"
+  #   search_options[:sort_mode] = :extended
+  #   search_options.merge! Hash[options.select{|k,v| [:page, :per_page, :with, :sphinx_select].include? k }]
 
-    claims = where('claims.id in(?)', ids).where(opts)
+  #   ids = search_for_ids(options[:filter], search_options)
 
-    return claims if claims.empty?
+  #   @search_result = ids.to_a
+  #   @search_info = {
+  #     :page => options[:page],
+  #     :per_page => options[:per_page],
+  #     :count => ids.total_pages,
+  #     :total_entries => ids.total_entries
+  #   }
 
-    if options[:column] == 'applicant.last_name'
-      claims.joins(:applicant).order('tourists.last_name ' + options[:direction])
-    elsif %w[countries.name offices.name operators.name].include?(options[:column])
-      claims.joins(options[:column].sub('.name', '').singularize.to_sym).order(options[:column] + ' ' + options[:direction])
-    else
-      claims.order(options[:column] + ' ' + options[:direction])
-    end
-  end
+  #   claims = where('claims.id in(?)', ids)
+  # end
+
+  # def self.sort_by_search_results(collection)
+  #   return collection unless @search_result
+  #   collection.sort_by{ |o| @search_result.index(o.id) }
+  # end
 
   def assign_reflections_and_save(claim_params)
     self.transaction do
@@ -127,8 +155,8 @@ class Claim < ActiveRecord::Base
 
       assign_applicant(claim_params[:applicant])
       assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
-      assign_payments_in(claim_params[:payments_in_attributes]) # can be created for a new claim
-      assign_payments_out(claim_params[:payments_out_attributes]) unless self.new_record?
+      assign_payments_in(claim_params[:payments_in_attributes]) if claim_params.has_key?(:payments_in_attributes) # can be created for a new claim
+      assign_payments_out(claim_params[:payments_out_attributes]) if claim_params.has_key?(:payments_out_attributes) and !self.new_record?
 
       unless self.errors.any?
         remove_unused_payments
@@ -158,7 +186,13 @@ class Claim < ActiveRecord::Base
     self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
     self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
 
-    self.operator_price_currency = CurrencyCourse::PRIMARY_CURRENCY
+    cur_attrs = Hash[[
+      :tour_price_currency, :visa_price_currency, :children_visa_price_currency, :insurance_price_currency,
+      :additional_insurance_price_currency, :fuel_tax_price_currency, :additional_services_price_currency,
+      :operator_price_currency
+    ].map{|c| [c, CurrencyCourse::PRIMARY_CURRENCY] }]
+    self.attributes = cur_attrs
+
     self.reservation_date = Date.today
     self.maturity = Date.today + 3.days
   end
@@ -195,6 +229,13 @@ class Claim < ActiveRecord::Base
     course(tour_price_currency).round > 0 ? (calculate_tour_price / course(tour_price_currency)).round : 0
   end
 
+  def update_bonus(_percent)
+    percent = BigDecimal.new(_percent)
+    percent = 0 if percent.nan? or percent < 0
+    bonus = profit * percent / 100
+    update_attributes(:bonus => bonus, :bonus_percent => percent)
+  end
+
   def self.local_data_extra_columns
     helpers = ClaimsController.helpers
     c = ApplicationController.current
@@ -204,6 +245,8 @@ class Claim < ActiveRecord::Base
       :user,
       :login,
       :login_short,
+      :assistant,
+      :assistant_short,
       :tourists_list,
       :initials_name,
       :phone_number,
@@ -267,7 +310,7 @@ class Claim < ActiveRecord::Base
 
   def self.local_data_scope
     c = ApplicationController.current
-    self.accessible_by(c.current_ability).search_and_sort
+    self.accessible_by(c.current_ability)
   end
 
   def self.local_data_columns_filter(column)
@@ -296,6 +339,8 @@ class Claim < ActiveRecord::Base
       :user => claim.user.try(:first_last_name),
       :login => claim.user.try(:login),
       :login_short => helpers.truncate(claim.user.try(:login), :length => 8),
+      :assistant => claim.assistant.try(:first_last_name),
+      :assistant_short => helpers.truncate(claim.assistant.try(:login), :length => 8),
       :tourists_list => helpers.tourists_list(claim),
       :initials_name => helpers.truncate(claim.applicant.try(:initials_name), :length => 8),
       :phone_number => claim.applicant.try(:phone_number),
@@ -396,6 +441,7 @@ class Claim < ActiveRecord::Base
       self.applicant = a
     else
       self.applicant = Tourist.find(applicant_params[:id])
+      self.applicant.update_attributes(applicant_params) if self.applicant.present?
     end
   end
 
@@ -408,7 +454,7 @@ class Claim < ActiveRecord::Base
         tourist.company_id = company_id
       else
         tourist = Tourist.find(tourist_hash[:id])
-        tourist.update_attributes(tourist_hash)
+        tourist.update_attributes(tourist_hash) if tourist.present?
       end
 
       tourist.company_id = company_id
@@ -458,14 +504,14 @@ class Claim < ActiveRecord::Base
     self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
     self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
 
-    self.operator_debt = self.operator_price - self.operator_advance
+    self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
     self.operator_paid = create_paid_string(:out)
 
     self.tourist_advance = self.payments_in.sum('amount_prim')
     self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
 
     self.primary_currency_price = calculate_tour_price
-    self.tourist_debt = self.primary_currency_price - self.tourist_advance
+    self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
     self.tourist_paid = create_paid_string(:in)
 
     # profit amount available only full payment
@@ -488,8 +534,8 @@ class Claim < ActiveRecord::Base
 
   def calculate_tour_price
 
-    sum_price = tour_price * course(tour_price_currency)
-    sum_price += additional_services_price * course(additional_services_price_currency);
+    sum_price = tour_price.to_f * course(tour_price_currency)
+    sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
     # some fields are calculated per person
     fields =  ['visa_price', 'children_visa_price', 'insurance_price', 'additional_insurance_price', 'fuel_tax_price'];
@@ -497,7 +543,7 @@ class Claim < ActiveRecord::Base
     total = 0;
     fields.each do |f|
       count = send(f.sub(/_price$/, '_count'))
-      total += send(f) * count * course(send(f + '_currency')) if (count > 0)
+      total += send(f).to_f * count * course(send(f + '_currency')) if (count > 0)
     end
     (sum_price + total).round
   end
@@ -570,14 +616,6 @@ class Claim < ActiveRecord::Base
       self.operator_id = claim_params[:operator_id]
     end
 
-    if claim_params[:country_id].blank?
-      Country.create({ :name => claim_params[:country] }) unless
-        (!claim_params[:country].blank? and Country.find_by_name(claim_params[:country]))
-      self.country = Country.where( :name => claim_params[:country]).first
-    else
-      self.country_id = claim_params[:country_id]
-    end
-
     if claim_params[:city_id].blank?
       unless claim_params[:city].blank?
         City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
@@ -588,13 +626,25 @@ class Claim < ActiveRecord::Base
     end
     company.cities << self.city if self.city
 
-    if claim_params[:resort_id].blank?
-      unless claim_params[:resort].blank?
-        City.create({ :name => claim_params[:resort], :country_id => self.country.id }) unless City.find_by_name(claim_params[:resort])
-        self.resort = City.where( :name => claim_params[:resort]).first
-      end
-    else
-      self.resort_id = claim_params[:resort_id]
+    country_name = claim_params[:country][:name].strip
+    unless country_name.blank?
+      conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+      Country.create({
+        :name => country_name,
+        :company_id => company_id
+      }) unless Country.where(conds).count > 0
+      self.country = Country.where(conds).first
+    end
+
+    resort_name = claim_params[:resort][:name].strip
+    unless resort_name.blank?
+      conds = ['(common = ? OR company_id = ?) AND name = ? AND country_id = ?', true, company_id, resort_name, self.country.id]
+      City.create({
+        :name => resort_name,
+        :country_id => self.country.id,
+        :company_id => company_id
+      }) unless City.where(conds).count > 0
+      self.resort = City.where(conds).first
     end
     company.cities << self.resort if self.resort
 
@@ -603,10 +653,6 @@ class Claim < ActiveRecord::Base
 
   def presence_of_applicant
     self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
-  end
-
-  def correctness_of_maturity
-    self.errors.add(:maturity, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
   end
 
   def primary_currency_price_in_word
@@ -646,7 +692,7 @@ class Claim < ActiveRecord::Base
         (visa_count.to_s + 'x' + visa_price.round.to_s + ' ' + visa_price_currency) : 'Нет'),
       'ВизаДетскаяСум' => (children_visa_count > 0 ?
         (children_visa_count.to_s + 'x' + children_visa_price.round.to_s + ' ' + children_visa_price_currency) : 'Нет'),
-      'СтраховкаМедицинская' => (insurance_price > 0 ? 'Да' : 'Нет'),
+      'СтраховкаМедицинская' => medical_insurance,
       'ТопливныйСборСум' => ((fuel_tax_count * fuel_tax_price) > 0 ?
          (fuel_tax_count.to_s + 'x' + fuel_tax_price.round.to_s + ' ' + fuel_tax_price_currency) : 'Нет'),
       'Трансфер' => transfer,
@@ -711,3 +757,93 @@ class Claim < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: claims
+#
+#  id                                  :integer          not null, primary key
+#  user_id                             :integer
+#  check_date                          :date
+#  created_at                          :datetime
+#  updated_at                          :datetime
+#  office_id                           :integer
+#  operator_id                         :integer
+#  operator_confirmation               :string(255)
+#  visa                                :string(255)      default("nothing_done"), not null
+#  airport_to                          :string(255)
+#  airport_back                        :string(255)
+#  flight_to                           :string(255)
+#  flight_back                         :string(255)
+#  visa_check                          :date
+#  tour_price                          :float            default(0.0)
+#  visa_price                          :float            default(0.0)
+#  insurance_price                     :float            default(0.0)
+#  additional_insurance_price          :float            default(0.0)
+#  fuel_tax_price                      :float            default(0.0)
+#  primary_currency_price              :float            default(0.0)
+#  course_usd                          :float            default(0.0)
+#  tour_price_currency                 :string(255)      not null
+#  airline                             :string(255)
+#  visa_count                          :integer
+#  meals                               :string(255)
+#  placement                           :string(255)
+#  nights                              :integer
+#  hotel                               :string(255)
+#  arrival_date                        :date
+#  departure_date                      :date
+#  early_reservation                   :boolean
+#  docs_note                           :text
+#  reservation_date                    :date
+#  memo                                :text
+#  country_id                          :integer
+#  operator_price                      :float            default(0.0), not null
+#  operator_debt                       :float            default(0.0), not null
+#  tourist_debt                        :float            default(0.0), not null
+#  depart_to                           :datetime
+#  depart_back                         :datetime
+#  maturity                            :date
+#  visa_confirmation_flag              :boolean          default(FALSE)
+#  resort_id                           :integer
+#  city_id                             :integer
+#  visa_price_currency                 :string(255)      default("eur"), not null
+#  insurance_price_currency            :string(255)      default("eur"), not null
+#  additional_insurance_price_currency :string(255)      default("eur"), not null
+#  fuel_tax_price_currency             :string(255)      default("eur"), not null
+#  calculation                         :text
+#  course_eur                          :float            default(0.0)
+#  tourist_advance                     :float            default(0.0), not null
+#  tourist_paid                        :string(255)
+#  operator_price_currency             :string(255)
+#  closed                              :boolean          default(FALSE)
+#  delta                               :boolean          default(TRUE)
+#  operator_advance                    :float            default(0.0), not null
+#  operator_paid                       :string(255)
+#  profit                              :float            default(0.0), not null
+#  profit_in_percent                   :float            default(0.0), not null
+#  transfer                            :string(255)
+#  relocation                          :string(255)
+#  service_class                       :string(255)
+#  additional_services                 :text
+#  additional_services_price           :float            default(0.0), not null
+#  additional_services_price_currency  :string(255)      default("eur"), not null
+#  medical_insurance                   :string(255)
+#  operator_maturity                   :date
+#  approved_operator_advance           :float            default(0.0), not null
+#  approved_tourist_advance            :float            default(0.0), not null
+#  canceled                            :boolean          default(FALSE)
+#  documents_status                    :string(255)      default("not_ready")
+#  memo_tasks_done                     :boolean          default(FALSE)
+#  operator_confirmation_flag          :boolean          default(FALSE)
+#  insurance_count                     :integer
+#  additional_insurance_count          :integer
+#  fuel_tax_count                      :integer
+#  children_visa_price                 :float            default(0.0), not null
+#  children_visa_count                 :integer
+#  children_visa_price_currency        :string(255)      default("eur"), not null
+#  tourist_stat                        :string(255)
+#  approved_operator_advance_prim      :float            default(0.0), not null
+#  company_id                          :integer
+#  arrive_to                           :datetime
+#  arrive_back                         :datetime
+#

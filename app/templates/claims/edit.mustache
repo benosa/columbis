@@ -222,20 +222,24 @@
               <label for="claim_canceled">Аннулирована</label>
             </td>
             <td><label for="claim_reservation_date">Дата резервирования</label></td>
+            <td></td>
           </tr>
           <tr>
             <td></td>
             <td class='datepicker'><input class="datepicker" id="claim_reservation_date" name="claim[reservation_date]" size="30" type="text" value="{{reservation_date}}" /></td>
           </tr>
           <tr>
-            <td><label for="claim_user_id">Менеджер</label></td>
             <td><label for="claim_office_id">Офис</label></td>
+            <td><label for="claim_user_id">Менеджер</label></td>
+            <td><label for="claim_assistant_id">Ассистент</label></td>
           </tr>
           <tr>
-            <td><select class="small" id="claim_user_id" name="claim[user_id]">
-              <option value="{{user_id}}" selected="selected">{{user}}</option></select></td>
             <td><select class="small" id="claim_office_id" name="claim[office_id]">
               <option value="{{canceled}}" selected="selected">{{office}}</option></select></td>
+            <td><select class="small" id="claim_user_id" name="claim[user_id]">
+              <option value="{{user_id}}" selected="selected">{{user}}</option></select></td>
+            <td><select class="small" id="claim_user_id" name="claim[assistant_id]">
+              <option value="{{assistant_id}}" selected="selected">{{assistant}}</option></select></td>
           </tr>
         </table>
       </div>

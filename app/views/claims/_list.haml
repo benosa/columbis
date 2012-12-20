@@ -4,7 +4,7 @@
       %th= sortable 'id', t('claims.index.num')
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th.medium= sortable 'tourist_stat', t('claims.index.tourist_stat')
-      - if is_admin? or is_boss? or is_supervisor? # and current_company.offices.count > 1
+      - if is_admin? or is_boss? or is_supervisor? or is_accountant? # and current_company.offices.count > 1
         %th.double_sort.blue_box
           = sortable 'user_id', t('claims.index.manager')
           = sortable 'offices.name', t('claims.index.office')
@@ -38,19 +38,27 @@
         %th.w45px.green_back= sortable 'approved_operator_advance_prim', t('claims.index.operator_paid_prim')
         %th.w45px.green_back= sortable 'profit', 'Нац-ка'
         %th.w45px.green_back= sortable 'profit_in_percent', '%'
+        - if is_admin? or is_boss?
+          %th.w45px.green_back= sortable 'bonus_percent', '% премии'
+          %th.w45px.green_back= sortable 'bonus', 'Премия'
       %th.thick_border= sortable 'docs_ticket', t('claims.index.docs')
       %th.w50= sortable 'docs_note', t('claims.index.memo')
       %th.w50= sortable 'check_date', t('claims.index.check_date')
       %th.last_cols
       %th.last_cols
 
+    - cur_month = prev_month = false
     - @claims.each do |claim|
+      - if @totals
+        - cur_month = claim.reservation_date.month
+        - if cur_month != prev_month && (ti = @totals.index{ |t| t.month.to_i == cur_month })
+          = render :partial => 'total', :locals => { :total => @totals[ti], :show_office => show_office, :description => l(@totals[ti].reservation_date, :format => "%B %Y") }
       %tr{ :class => [claim.canceled? && 'gray_back', cycle("odd", "even")] }
         %td= claim.id
         %td= l( claim.reservation_date, :format => :default )
         %td{ :full_value => claim.tourist_stat }
           = truncate(claim.tourist_stat, :length => 4)
-        - if is_admin? or is_boss? or is_supervisor?
+        - if is_admin? or is_boss? or is_supervisor? or is_accountant?
           %td
             %p{ :full_value => claim.user.try(:full_name) }
               %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
@@ -110,8 +118,12 @@
           %td= approved_advance(claim, :operator)
           %td= claim.profit.to_money if claim.profit > 0
           %td= claim.profit_in_percent.to_percent if claim.profit > 0
-        %td.thick_border{ :class => !claim.canceled? && claim.documents_status }
-          = t('claims.documents_statuses.' << claim.documents_status)
+          - if is_admin? or is_boss?
+              %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
+                :display_with => lambda {|b| b.to_percent.html_safe }
+              %td.bonus= claim.bonus.to_money
+        %td.thick_border{ :full_value => t('claims.form.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
+          = t('claims.form.documents_statuses_short.' << claim.documents_status)
         %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :full_value => claim.memo }
           = truncate(claim.memo, :length => 8)
         %td{ :full_value => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }
@@ -120,18 +132,6 @@
           %span{ :class => !claim.docs_note.empty? && 'attention' }
         %td
           = link_to '', edit_claim_path(claim), :class => 'edit_row'
+      - prev_month = cur_month
 
-  -#
-    / .pagination
-    /   %p= t('claims.index.rows_on_page')
-    /   %select#per_page
-    /     - [1, 5, 30, 50].each do |count|
-    /       %option{ :data => { :link => search_claims_path(claims_params.merge({ :per_page => count })) },
-    /         :selected => (count == per_page) && 'selected' }
-    /         = count
-
-    / - if @claims.next_page || @claims.previous_page
-    /   .pagination
-    /     = will_paginate @claims, :params => claims_params, :renderer => WillPaginateLinkRenderer, :class => nil
-
-  = render :partial => 'shared/pagination', :locals => { :path_helper => :search_claims_path, :pager_params => claims_params, :collection => @claims }
+  = render :partial => 'shared/pagination', :locals => { :path_helper => :search_claims_path, :pager_params => claims_params, :collection => @claims_collection || @claims }

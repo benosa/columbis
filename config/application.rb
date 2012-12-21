@@ -31,8 +31,10 @@ module Tourism
     # config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'dashboard', '*.{rb,yml}').to_s]
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :ru
+    # Workaround for I18n.locale setting issue
+    I18n.locale = config.i18n.locale = config.i18n.default_locale
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

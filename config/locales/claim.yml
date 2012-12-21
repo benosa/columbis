@@ -11,12 +11,18 @@ ru:
       not_ready: 'Не готовы'
       received: 'Готовы'
       all_done: 'Выданы'
+    documents_statuses_short:
+      not_ready: 'Н'
+      received: 'Г'
+      all_done: 'В'
 
     index:
       claims: 'Бронирования'
       only_my: 'Только мои'
       office: 'Отбор по офису'
       user: 'Отбор по пользователю'
+      unset_filters: 'Сбросить фильтры'
+      only_totals: 'Только итоги'
       reservation_date: 'Дата'
       office: 'Офис'
       manager: 'Менедж.'
@@ -43,6 +49,7 @@ ru:
       calculation: 'Расчет'
       paid: 'Оплачено в валюте'
       docs: 'Документы'
+      docs_short: 'Док.'
       memo: 'Примeчание'
       new_claim: 'Новая бронь'
       ready: 'Готово'
@@ -60,11 +67,13 @@ ru:
       tourist_stat: 'Откуда'
       add_claim: 'Добавить бронь'
       column_settings: 'Настройки столбцов'
+      options_all: 'Все'
 
     form:
       reset: 'Сброс'
       office: 'Офис'
       user: 'Менеджер'
+      assistant: 'Ассистент'
       visa: 'Виза'
       check_date: 'Контрольная дата'
 
@@ -78,6 +87,7 @@ ru:
       currency: 'Валюта'
       paid_rur: 'Оплачено руб.'
       resort: 'Курорт'
+      new_resort: 'Новый курорт'
 
       operator_confirmation: 'Подтверждение оператора'
       reservation_date: 'Дата резервирования'

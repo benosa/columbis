@@ -4,7 +4,8 @@
       %th= sortable 'id', t('claims.index.num')
       %th= sortable 'reservation_date', t('claims.index.reservation_date')
       %th.medium= sortable 'tourist_stat', t('claims.index.tourist_stat')
-      - if is_admin? or is_boss? or is_supervisor? or is_accountant? # and current_company.offices.count > 1
+      - show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
+      - if show_office
         %th.double_sort.blue_box
           = sortable 'user_id', t('claims.index.manager')
           = sortable 'offices.name', t('claims.index.office')
@@ -58,7 +59,7 @@
         %td= l( claim.reservation_date, :format => :default )
         %td{ :full_value => claim.tourist_stat }
           = truncate(claim.tourist_stat, :length => 4)
-        - if is_admin? or is_boss? or is_supervisor? or is_accountant?
+        - if show_office
           %td
             %p{ :full_value => claim.user.try(:full_name) }
               %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
@@ -119,9 +120,9 @@
           %td= claim.profit.to_money if claim.profit > 0
           %td= claim.profit_in_percent.to_percent if claim.profit > 0
           - if is_admin? or is_boss?
-              %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
-                :display_with => lambda {|b| b.to_percent.html_safe }
-              %td.bonus= claim.bonus.to_money
+            %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
+              :display_with => lambda {|b| b.to_percent.html_safe }
+            %td.bonus= claim.bonus.to_money
         %td.thick_border{ :full_value => t('claims.form.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
           = t('claims.form.documents_statuses_short.' << claim.documents_status)
         %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :full_value => claim.memo }

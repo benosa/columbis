@@ -60,6 +60,7 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
   private
 
     def required?(name)
+      return false unless @object.class.respond_to?(:validators_on)
       @object.class.validators_on(name).any? { |v| v.instance_of? ActiveModel::Validations::PresenceValidator }
     end
 

@@ -205,7 +205,7 @@ class ClaimsController < ApplicationController
   def search_options(page_options)
     opts = { :filter => params[:filter], :column => sort_column, :direction => sort_direction }.merge(page_options)
     # opts[:with] = { :company_id => current_company.id }
-    opts[:with] => current_ability.attributes_for(:read, Claim)
+    opts[:with] = current_ability.attributes_for(:read, Claim)
     if is_admin? or is_boss? or is_supervisor? or is_accountant?
       unless params[:user_id].blank?
         manager = params[:user_id].to_i

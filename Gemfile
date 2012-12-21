@@ -56,5 +56,5 @@ group :test do
 end
 
 group :production do
-  gem 'exception_notification', :git => 'https://github.com/smartinez87/exception_notification.git', , :group => %w(staging staging2)
+  gem 'exception_notification', :git => 'https://github.com/smartinez87/exception_notification.git', :group => %w(staging staging2)
 end

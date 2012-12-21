@@ -1,3 +1,5 @@
+/*jshint sub:true */
+
 (function() {
 
   function defer_func(func) {
@@ -22,6 +24,7 @@
     current_user: window.tourism_current_user || '',
     current_company: window.tourism_current_company || '',
     prefix: 'tourism-' + window.tourism_current_user + '-',
+    per_page: 300,
 
     defer: function(obj) {
       for (var p in obj)
@@ -181,7 +184,7 @@
       return route;
     },
 
-    render: function (template, data) {
+    render: function (template, data, callback) {
       if (!SMT[template]) {
         this.error('Could not find "' + template + '" template');
         return;
@@ -190,6 +193,8 @@
       data = $.extend(this.process(data), { settings: this.settings() });
       var content = SMT[template](data);
       $(this.content_selector).html(content);
+      if (callback && (typeof callback == 'function'))
+        callback();
       if (typeof this.after_render == 'function')
         this.after_render();
     },
@@ -289,6 +294,15 @@
       this.drop_tables('all').done(function() {
         Tourism.init();
       });
+    },
+
+    last_version: function() {
+      return localStorage.getItem(this.prefix + "last_version");
+    },
+
+    set_last_version: function(version) {
+      version = version || 0;
+      localStorage.setItem(this.prefix + "last_version", version);
     }
 
   };
@@ -330,7 +344,7 @@
 
         index: function() {
           return {
-            sql: 'SELECT * FROM claims ORDER BY id',
+            sql: 'SELECT * FROM claims ORDER BY id DESC',
             data: function (results) {
               var data = {
                 columns: {
@@ -346,6 +360,45 @@
               return data;
             }
           };
+        },
+
+        search: function() {
+          var index = $.extend(self.actions.claims.index(), { view: 'index' }),
+              search = location.search.substr(1),
+              params = {};
+          if (search.length) {
+            var pairs = search.split('&');
+            for (var i in pairs) {
+              var pair = pairs[i].split('=');
+              params[pair[0]] = pair[1];
+            }
+
+            if (params['sort'] && params['direction'] && self.tables_info['claims'][params['sort']]) {
+              index.sql = 'SELECT * FROM claims ORDER BY ' + params['sort'] + ' COLLATE NOCASE ' + params['direction'].toUpperCase();
+              $.extend(index, {
+                callback: function(_params) {
+                  return function() {
+                    // var re = new RegExp('sort=' + _params['sort']);
+                    // $('#claims th a').filter(function() { return !!re.exec(this.href) });
+                    var $a = $('#claims th a[href*=' + _params['sort'] + ']');
+                    if ($a.length) {
+                      var href = $a.attr('href'),
+                          next_dir = _params['direction'] == 'asc' ? 'desc' : 'asc',
+                          re = new RegExp('direction=' + _params['direction']);
+                      $a.attr('href', href.replace(re, 'direction=' + next_dir));
+                      $('#claims th a.current').removeClass('current');
+                      $a.addClass('current ' + next_dir);
+                    }
+                  };
+                }(params)
+              });
+            }
+            var page = parseInt(params['page']);
+            if (params['page'] && page > 1)
+              index.sql += ' LIMIT ' + self.per_page + ' OFFSET ' + (page - 1) * self.per_page;
+          }
+
+          return index;
         },
 
         show: function(id) { return $.extend(self.actions.claims.edit(id), { view: 'edit' }); },
@@ -575,11 +628,18 @@
         data['tables'] = tables;
 
       $.ajax({
+        cache: false,
         context: this,
         url: '/dashboard/local_data/',
         data: data,
         dataType: 'json',
         success: function(json) {
+          // Database structure are changed
+          if (self.last_version() != json.last_version) {
+            deferred.reject(json.last_version);
+            return;
+          }
+
           if (json.settings)
             self.set_settings(json.settings);
 
@@ -699,19 +759,22 @@
       var view = res.view || route['action'];
       var template = route['table'] + '/' + view;
 
-      if (typeof res == 'object' && res.done) { // deferred object
-        res.done(function(data) {
-          self.render(template, data);
-          deferred.resolve();
-        });
-      } else if (res.sql && res.data) {
-        this.transaction(function(tx) {
-          tx.executeSql(res.sql, res.params || [], function (tx, results) {
-            var data = res.data(results);
-            self.render(template, data);
+      if (typeof res == 'object') {
+        var callback = res.callback;
+        if (res.done) { // deferred object
+          res.done(function(data) {
+            self.render(template, data, callback);
             deferred.resolve();
           });
-        });
+        } else if (res.sql && res.data) {
+          this.transaction(function(tx) {
+            tx.executeSql(res.sql, res.params || [], function (tx, results) {
+              var data = res.data(results);
+              self.render(template, data, callback);
+              deferred.resolve();
+            });
+          });
+        }
       } else {
         this.render(template, res);
         deferred.resolve();
@@ -743,6 +806,19 @@
             self.get_data(false, self.last_sync()).done(function() {
               // Update synchronization time
               self.set_last_sync();
+            }).fail(function(last_version) {
+              if (last_version) {
+                self.set_last_version(last_version);
+                console.log("Reload database, version = " + last_version);
+                // Drop all tables and reload all data
+                self.drop_tables('all').done(function() {
+                  self.get_data(false, self.last_sync()).done(function() {
+                    // Update synchronization time
+                    self.set_last_sync();
+                  });
+                });
+              } else
+                self.error("getting data is failed");
             });
           });
 

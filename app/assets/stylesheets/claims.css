@@ -56,6 +56,10 @@
   vertical-align: baseline;
 }
 
+.reservations .id_link { text-decoration: none; color: inherit; }
+.reservations .bonus_percent form { width: 100%; }
+.reservations .bonus_percent input { width: 100%; padding: 0; border: none; }
+
 /*.claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }*/
 

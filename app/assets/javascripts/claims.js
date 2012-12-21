@@ -1,59 +1,129 @@
+// search
+function getCurrentParams(el){
+  var currentParams = { sort:'reservation_date', direction:'desc', filter: '' },
+      $current_sort = $('#claims th a.current'),
+      $el = $(el);
+  if ($el.is('#claims th a')) {
+    var href = $el.attr('href');
+    href = href.replace(/\/claims.*\?/, '');
+    var params = href.split('&');
+    for (var i = 0, len = params.length; i < len; i++){
+      var pair = params[i].split('=');
+      switch (pair[0]) {
+        case 'sort':
+          currentParams.sort = pair[1];
+          break;
+        case 'direction':
+          if ($el[0] == $current_sort[0]) {  // change direction for current sort column
+            currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc');
+          } else {
+            currentParams.direction = pair[1];
+          }
+          break;
+        case 'filter':
+          currentParams.filter = pair[1];
+          break;
+      }
+    }
+  }
+
+  if ($('#office_id').length > 0 && $('#user_id').length > 0) {
+    currentParams.office_id = $('#office_id').val();
+    currentParams.user_id = $('#user_id').val();
+  } else if ($('#only_my').length > 0) {
+    currentParams.only_my = ($('#only_my')[0].checked ? '1' : '');
+  }
+  currentParams.filter = $('#filter').val();
+  currentParams.list_type = $('.accountant_login').attr('list_type');
+
+  return currentParams;
+}
+
+// load list
+function loadList(currentParams){
+  $.ajax({
+    url: 'claims/search',
+    data: currentParams,
+    success: function(resp){
+      $('.claims').replaceWith(resp);
+      setTitles();
+      set_editable_bonus_percent();
+    }
+  });
+}
+
+// load totals
+function loadTotals(data){
+  $.ajax({
+    url: 'claims/totals',
+    data: data,
+    success: function(resp){
+      $('#claims_body').replaceWith(resp);
+      setTitles();
+      set_editable_bonus_percent();
+    }
+  });
+}
+
+function setFilters(el, inverse_sorting) {
+  var val = $('#total_years').val();
+  // If total filter is set, then office_id and user_id filter totals
+  if (val && val.length > 0 && $(el).is('#total_years, #office_id, #user_id')) {
+    var data = { year: $('#total_years').val() },
+        filter = getCurrentParams(el);
+    for (var p in filter)
+      if ($.inArray(p, ['office_id', 'user_id']) != -1)
+        data[p] = filter[p];
+    loadTotals(data);
+  } else
+    loadList(getCurrentParams(el));
+}
+
+function setTitles() {
+  // Set title attribute for all tags in claim list with full_value attribute
+  $('#claims [full_value]').each(function() {
+    $(this).attr('title', $(this).attr('full_value'));
+  });
+}
+
+// Set editable fields
+function set_editable_bonus_percent(selector) {
+  $('.bonus_percent .best_in_place').best_in_place().bind('ajax:success', function(event, jstr) {
+    var json = $.parseJSON(jstr),
+        bip = $(this).data('bestInPlaceEditor');
+    bip.original_content = json.bonus_percent;
+    $(this).html(json.bonus_percent).attr("data-original-content", json.bonus_percent);
+    $(this).closest('.row').find('.bonus').html(json.bonus);
+  });
+}
+
 $(function(){
-  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'],
-      DOCUMENTS_STATUSES = ['not_ready', 'received', 'all_done'];
+  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
 
   function trim(str) {
      return str.replace(/^\s+|\s+$/g, '');
   }
 
-  // search
-  function getCurrentSortParams($curr, inversion){
-    var currentParams = { sort:'id', direction:'asc', filter: '' };
-    if ($curr.length > 0) {
-      var href = $curr.attr('href');
-      href = href.replace(/\/claims.*\?/, '');
-      var params = href.split('&');
-      for (var i = 0, len = params.length; i < len; i++){
-        var pair = params[i].split('=');
-        switch (pair[0]) {
-          case 'sort':
-    	      currentParams.sort = pair[1];
-  	        break;
-          case 'direction':
-            if ($curr.hasClass('current') && inversion) {
-              currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc'); // cause URL consist a future direction
-            } else {
-              currentParams.direction = pair[1];
-            }
-    	      break;
-          case 'filter':
-    	      currentParams.filter = pair[1];
-    	      break;
-        }
-      }
-    }
+  // claims filter and totals filter
+  $('.filter_bar select, .filter_bar input').live('change', function(){
+    setFilters(this);
+  });
 
-    if ($('#office_id').length > 0 && $('#user_id').length > 0) {
-      currentParams.office_id = $('#office_id').val();
-      currentParams.user_id = $('#user_id').val();
-    } else if ($('#only_my').length > 0) {
-      currentParams.only_my = ($('#only_my')[0].checked ? '1' : '0');
-    }
-    currentParams.filter = $('#filter').val();
-    currentParams.list_type = $('.accountant_login').attr('list_type');
+  // totals filter
+  $('#total_years').live('change', function(){
+    setFilters(this);
+  });
 
-    return currentParams;
-  }
-
-  // claims filter
-	$('#filter_bar select, #filter_bar input').live('change', function(){
-	  loadList(getCurrentSortParams($('#claims th a.current'), true));
-	});
+  $('#unset_filters').live('click', function(e) {
+    e.preventDefault();
+    $('#filter').val('');
+    loadList();
+  });
 
   // redefine default submition of filter form
   $('#filter_bar').submit(function(event) {
     event.preventDefault();
-    loadList(getCurrentSortParams($('#claims th a.current'), true));
+    loadList(getCurrentSortParams());
     return false;
   });
 
@@ -116,43 +186,6 @@ $(function(){
       $('label[for=claim_operator_confirmation]').removeClass('required').tooltip('destroy');
     }
   });
-
-  // visa check flag
-  // $('#claim_visa_confirmation_flag').click(function(e){
-  //   var val = $('#claim_visa').val();
-  //   if (val)
-  //     $('#claim_visa_check').removeClass(val);
-
-  //   if (!this.checked) {
-  //     for (i in VISA_STATUSES)
-  //       $('#claim_visa_check').removeClass(VISA_STATUSES[i]);
-
-  //     $('#claim_visa_check').addClass('all_done');
-  //     $('#claim_visa').val('all_done');
-  //     $('#claim_visa_check').datepicker('disable');
-  //     $('#claim_visa_check').val('');
-  //   } else {
-  //     $('#claim_visa_check').removeClass('all_done');
-  //     $('#claim_visa_check').addClass('nothing_done');
-  //     $('#claim_visa').val('nothing_done');
-  //     $('#claim_visa_check').datepicker('enable');
-  //   }
-  // });
-
-  // // visa_check
-  // $('#claim_visa_check').click(function(){
-  //   if ($('#claim_visa_confirmation_flag')[0].checked) {
-  //     var curr = VISA_STATUSES.indexOf($('#claim_visa').val());
-  //     var next = curr + 1;
-  //     if (VISA_STATUSES[curr] == 'all_done')
-  //       next = 0;
-
-  //     if (VISA_STATUSES[curr])
-  //       $('#claim_visa_check').removeClass(VISA_STATUSES[curr]);
-  //     $('#claim_visa_check').addClass(VISA_STATUSES[next]);
-  //     $('#claim_visa').val(VISA_STATUSES[next]);
-  //   }
-  // });
 
   $('#claim_visa_status').change(function(e) {
     var status = $(this).val();
@@ -218,35 +251,28 @@ $(function(){
     }
   });
 
-  // load list
-  function loadList(params, url){
-    $.ajax({
-      url: url || 'claims/search',
-      data: params,
-      success: function(resp){
-        $('.claims').replaceWith(resp);
-        // reset select customization
-        customizeSelect();
-      }
-    });
-  }
-
   // quick search
   $('#filter_bar #filter').keyup(function(){
+    var self = this
     exclusive_delay(function(){
-      loadList(getCurrentSortParams($('#claims th a.current'), true));
+      loadList(getCurrentSortParams(self));
     }, 300 );
   });
 
   // sort
   $('#claims th a').live('click', function(e){
     e.preventDefault();
-    loadList(getCurrentSortParams($(e.currentTarget), false));
+    if (Tourism.online) {
+      loadList(getCurrentParams(this));
+    } else {
+      var href = $(this).attr('href');
+      location.href = href.replace(/\/claims.*\?/, '/claims/search?');
+    }
   });
 
   // pagination
   $(".claims .pagination a").each(function(i){
-    href = $(this).attr('href');
+    var href = $(this).attr('href');
     $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
   });
 
@@ -394,12 +420,20 @@ $(function(){
     return sum_price;
   };
 
-  $('#claim_course_eur, claim_course_usd, .countable input, .countable select').change(function(){
+  function adjust_calculation() {
     var total = calculate_tour_price();
     $('#claim_primary_currency_price').val(total);
     $('#claim_primary_currency_price').change();
     calculate_tourist_debt();
     update_calculation();
+  };
+
+  $('#claim_course_eur, #claim_course_usd, tr.countable input').bind('keyup, input', function(){
+    adjust_calculation();
+  });
+
+  $('tr.countable select').change(function(){
+    adjust_calculation();
   });
 
   // city, resort, flights
@@ -476,11 +510,12 @@ $(function(){
     $('#claim_operator_debt').val((price - paid).toFixed(2));
   };
 
-  $('#claim_operator_price').change(calculate_operator_debt);
+  // $('#claim_operator_price').change(calculate_operator_debt);
+  $('#claim_operator_price').on('keyup', calculate_operator_debt);
 
   var calculate_amount_prim = function(event){
-    var $tr = $(event.currentTarget).closest('.fields');
-    course = $tr.find('input.course').val();
+    var $tr = $(event.currentTarget).closest('.fields'),
+        course = $tr.find('input.course').val();
     if ($tr.find('input.course').length > 0){
       if (isFinite(course) && course > 0 ) {
         course = 1 / course;
@@ -489,14 +524,14 @@ $(function(){
       }
     }
 
-    amount = $tr.find('input.amount').val();
+    var amount = $tr.find('input.amount').val();
     var amount_prim = (course * amount).toFixed(2);
     $tr.find('input.amount_prim').val(amount_prim);
   };
 
   var reversive_calculate_amount = function(event){
-    $tr = $(event.currentTarget).parent().parent();
-    course = $tr.find('input.course').val();
+    var $tr = $(event.currentTarget).closest('.fields'),
+        course = $tr.find('input.course').val();
     if ($tr.find('input.course').length > 0){
       if (isFinite(course) && course > 0 ) {
         course = 1 / course;
@@ -505,7 +540,7 @@ $(function(){
       }
     }
 
-    amount_prim = $tr.find('input.amount_prim').val();
+    var amount_prim = $tr.find('input.amount_prim').val();
 
     if(course > 0) {
       var amount = (amount_prim / course).toFixed(2);
@@ -515,18 +550,18 @@ $(function(){
     }
   };
 
-  $('#payments_in input.amount').change(function(event){
+  $('#payments_in').on('keyup', 'input.amount', function(event){
     get_amount_in_word(event);
   	calculate_tourist_debt(event);
   });
 
-	$('#payments_out input.amount, #payments_out input.course, #payments_out input.reversed_course').change(function(event){
+  $('#payments_out').on('keyup', 'input.amount, input.course, input.reversed_course', function(event){
     calculate_amount_prim(event);
   	// get_amount_in_word(event);
   	calculate_operator_debt(event);
   });
 
-	$('#payments_out input.amount_prim').change(function(event){
+	$('#payments_out').on('keyup', 'input.amount_prim', function(event){
     reversive_calculate_amount(event);
   	calculate_operator_debt(event);
   });
@@ -551,10 +586,30 @@ $(function(){
         } else {
           tr.next(".hidden_id").val(ui.item.id);
         }
-      }
+      },
+      minLength: 0
+    },
+    country: {
+      source: "/claims/autocomplete_country",
+      select: function(event, ui) {
+        var $resort = $("input.autocomplete.resort");
+        if ($(this).data('val') != ui.item.value)
+          $resort.val('');
+        $resort.autocomplete('option', 'source', '/claims/autocomplete_resort/' + ui.item.id);
+      },
+      change: function(eventn, ui) {
+        $(this).data('val', this.value);
+        $("input.autocomplete.resort").val('').autocomplete('option', 'source', '/claims/autocomplete_resort/' + this.value);
+      },
+      minLength: 0
     }
   };
   $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
+  $("input.autocomplete.country").autocomplete($autocomplete.country);
+  $("input.autocomplete.resort").autocomplete({
+    source: "/claims/autocomplete_resort/" + $('#claim_country_name').data('id'),
+    minLength: 0
+  });
 
   // add tourist
 	var add_tourist = function(e){
@@ -626,7 +681,7 @@ $(function(){
     $('#tourists .dependent').each(function(i){
       $(this).find('.num').text(i+2)
     });
-  }
+  };
 	$('#tourists a.delete').click(del_tourist);
 
   // add payment
@@ -644,6 +699,7 @@ $(function(){
 
     $(t_id + ' .fields:last').find('input').each(function(n){
       if($(this).hasClass('amount') || $(this).hasClass('amount_prim') || $(this).hasClass('course')) {
+        if ($(this).hasClass('course')) return; // Leave last course
         $(this).val('0.00');
         $(this).attr('value', '0.00');
       } else if ($(this).hasClass('approved')) {
@@ -745,4 +801,7 @@ $(function(){
   };
 	$('#payments_in a.delete').click(del_payment);
 	$('#payments_out a.delete').click(del_payment);
+
+  setTitles();
+  set_editable_bonus_percent();
 });

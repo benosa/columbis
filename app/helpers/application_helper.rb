@@ -135,19 +135,19 @@ module ApplicationHelper
     params[:sort] ? params[:sort].to_sym : default
   end
 
-  def sort_dir
-    %w[asc desc].include?(params[:dir]) ? params[:dir].to_sym : :asc
+  def sort_dir(default = :asc)
+    %w[asc desc].include?(params[:dir]) ? params[:dir].to_sym : default
   end
 
   def sort_toggle_direction(dir)
     dir.to_sym == :asc ? :desc : :asc
   end
 
-  def sort_link(column, title = nil, default = nil)
+  def sort_link(column, title = nil, default_and_dir = nil)
     col = column.to_sym
     title ||= col.titleize
-    css_class = col == sort_col(default ? col : nil) ? "sort_active #{sort_dir}" : nil
-    dir = col == sort_col(default ? col : nil) ? sort_dir : :asc
+    css_class = col == sort_col(default_and_dir ? col : nil) ? "sort_active #{sort_dir(default_and_dir == :desc ? :desc : :asc)}" : nil
+    dir = col == sort_col(default_and_dir ? col : nil) ? sort_dir(default_and_dir == :desc ? :desc : :asc) : :asc
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 

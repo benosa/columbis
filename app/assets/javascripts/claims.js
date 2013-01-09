@@ -105,14 +105,14 @@ $(function(){
   }
 
   // claims filter and totals filter
-  $('.filter_bar select, .filter_bar input').live('change', function(){
-    setFilters(this);
-  });
+  // $('.filter_bar select, .filter_bar input').live('change', function(){
+  //   setFilters(this);
+  // });
 
-  // totals filter
-  $('#total_years').live('change', function(){
-    setFilters(this);
-  });
+  // // totals filter
+  // $('#total_years').live('change', function(){
+  //   setFilters(this);
+  // });
 
   $('#unset_filters').live('click', function(e) {
     e.preventDefault();
@@ -121,17 +121,17 @@ $(function(){
   });
 
   // redefine default submition of filter form
-  $('#filter_bar').submit(function(event) {
-    event.preventDefault();
-    loadList(getCurrentSortParams());
-    return false;
-  });
+  // $('#filter_bar').submit(function(event) {
+  //   event.preventDefault();
+  //   loadList(getCurrentSortParams());
+  //   return false;
+  // });
 
   // change claims per page
-  $('.claims #per_page').live('change', function() {
-    var link = $('option:selected', this).data('link')
-    loadList(null, link);
-  });
+  // $('.claims #per_page').live('change', function() {
+  //   var link = $('option:selected', this).data('link')
+  //   loadList(null, link);
+  // });
 
   // dates colors
   $('#claim_arrival_date').change(function(e){
@@ -260,26 +260,26 @@ $(function(){
   });
 
   // sort
-  $('#claims th a').live('click', function(e){
-    e.preventDefault();
-    if (Tourism.online) {
-      loadList(getCurrentParams(this));
-    } else {
-      var href = $(this).attr('href');
-      location.href = href.replace(/\/claims.*\?/, '/claims/search?');
-    }
-  });
+  // $('#claims th a').live('click', function(e){
+  //   e.preventDefault();
+  //   if (Tourism.online) {
+  //     loadList(getCurrentParams(this));
+  //   } else {
+  //     var href = $(this).attr('href');
+  //     location.href = href.replace(/\/claims.*\?/, '/claims/search?');
+  //   }
+  // });
 
   // pagination
-  $(".claims .pagination a").each(function(i){
-    var href = $(this).attr('href');
-    $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
-  });
+  // $(".claims .pagination a").each(function(i){
+  //   var href = $(this).attr('href');
+  //   $(this).attr('href', href.replace(/\/claims.*\?/, '/claims/search?'));
+  // });
 
-  $('.claims .pagination a').live('click', function(e) {
-    e.preventDefault();
-    loadList(null, $(e.currentTarget).attr('href'));
-  });
+  // $('.claims .pagination a').live('click', function(e) {
+  //   e.preventDefault();
+  //   loadList(null, $(e.currentTarget).attr('href'));
+  // });
 
   //  operator_price_currency change
   $('#claim_operator_price_currency').change(function(){

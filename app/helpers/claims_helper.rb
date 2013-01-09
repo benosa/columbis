@@ -1,31 +1,31 @@
 # -*- encoding : utf-8 -*-
 module ClaimsHelper
-  def sort_column
-    params[:sort] ? params[:sort] : Claim::DEFAULT_SORT[:col]
-  end
+  # def sort_column
+  #   params[:sort] ? params[:sort] : Claim::DEFAULT_SORT[:col]
+  # end
 
-  def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : Claim::DEFAULT_SORT[:dir]
-  end
+  # def sort_direction
+  #   %w[asc desc].include?(params[:direction]) ? params[:direction] : Claim::DEFAULT_SORT[:dir]
+  # end
 
-  def sortable(column, title = nil)
-    title ||= column.titleize
-    css_class = column == sort_column ? "sort_active #{sort_direction}" : nil
-    direction = column == sort_column ? sort_direction : "asc"
-    link_to({ :sort => column, :direction => direction }, { :class => css_class }) do
-      raw(title.to_s) # + tag('span', :class => 'sort_span ' << css_class.to_s))
-    end
-  end
+  # def sortable(column, title = nil)
+  #   title ||= column.titleize
+  #   css_class = column == sort_column ? "sort_active #{sort_direction}" : nil
+  #   direction = column == sort_column ? sort_direction : "asc"
+  #   link_to({ :sort => column, :direction => direction }, { :class => css_class }) do
+  #     raw(title.to_s) # + tag('span', :class => 'sort_span ' << css_class.to_s))
+  #   end
+  # end
 
-  def claims_params(refresh = false)
-    return @claims_params if @claims_params.present? and !refresh
-    @claims_params = {
-      :sort => sort_column,
-      :direction => sort_direction
-    }
-    [:filter, :office_id, :user_id, :list_type, :page].each { |param| @claims_params[param] = params[param] }
-    @claims_params
-  end
+  # def claims_params(refresh = false)
+  #   return @claims_params if @claims_params.present? and !refresh
+  #   @claims_params = {
+  #     :sort => sort_column,
+  #     :direction => sort_direction
+  #   }
+  #   [:filter, :office_id, :user_id, :list_type, :page].each { |param| @claims_params[param] = params[param] }
+  #   @claims_params
+  # end
 
   def truncate(text, options = {})
     options.reverse_merge!(:omission => '')

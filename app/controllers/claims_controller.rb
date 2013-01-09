@@ -9,7 +9,7 @@ class ClaimsController < ApplicationController
 
   before_filter :set_protected_attr,  :only => [:create, :update]
   before_filter :set_commit_type,     :only => [:create, :update]
-  before_filter :set_last_search,     :only => [:search, :index]
+  before_filter :set_last_search,     :only => :index
   before_filter :permit_actions,      :only => ADDITIONAL_ACTIONS
 
   def autocomplete_tourist_last_name
@@ -53,33 +53,54 @@ class ClaimsController < ApplicationController
     render :json => current_company.dropdown_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
   end
 
-  def search
-    page_options = { :page => params[:page], :per_page => per_page }
-    opts = search_options(page_options)
-    inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-    # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
-    @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
-    @claims = Claim.sort_by_search_results(@claims_collection)
-    set_list_type
-    @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
-    render :partial => 'list'
-  end
+  # def search
+  #   page_options = { :page => params[:page], :per_page => per_page }
+  #   opts = search_options(page_options)
+  #   inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
+  #   # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
+  #   @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
+  #   @claims = Claim.sort_by_search_results(@claims_collection)
+  #   set_list_type
+  #   @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+  #   render :partial => 'list'
+  # end
+
+  # def index
+  #   page_options = { :page => params[:page], :per_page => per_page }
+  #   default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
+  #   inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
+  #   if @use_last_search # Last search was restored from session
+  #     opts = search_options(page_options)
+  #     # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
+  #     @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
+  #     @claims = Claim.sort_by_search_results(@claims_collection)
+  #   else
+  #     @claims_collection = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables).paginate(page_options)
+  #     @claims = @claims_collection.all
+  #   end
+  #   set_list_type
+  #   @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+  # end
 
   def index
     page_options = { :page => params[:page], :per_page => per_page }
-    default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-    if @use_last_search # Last search was restored from session
+    Rails.logger.debug "last_search: #{session[:last_search].inspect}"
+    if search_or_sort? #or @use_last_search # Last search was restored from session
+      Rails.logger.debug "params1: #{params.inspect}"
       opts = search_options(page_options)
-      # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
+      Rails.logger.debug "opts: #{opts.inspect}"
       @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
       @claims = Claim.sort_by_search_results(@claims_collection)
     else
+      Rails.logger.debug "params2: #{params.inspect}"
+      default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
       @claims_collection = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables).paginate(page_options)
       @claims = @claims_collection.all
     end
     set_list_type
     @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+    render :partial => 'list' if request.xhr?
   end
 
   def totals
@@ -203,8 +224,9 @@ class ClaimsController < ApplicationController
   end
 
   def search_options(page_options)
-    opts = { :filter => params[:filter], :column => sort_column, :direction => sort_direction }.merge(page_options)
+    # opts = { :filter => params[:filter], :column => sort_col, :dir => sort_dir }.merge(page_options)
     # opts[:with] = { :company_id => current_company.id }
+    opts = search_and_sort_options(page_options)
     opts[:with] = current_ability.attributes_for(:read, Claim)
     if is_admin? or is_boss? or is_supervisor? or is_accountant?
       unless params[:user_id].blank?
@@ -224,14 +246,14 @@ class ClaimsController < ApplicationController
   end
 
   def set_last_search
-    if params[:action] == 'search'
+    if search_or_sort?
       setted_params = {}
-      unless params[:sort] == Claim::DEFAULT_SORT[:col] and params[:direction] == Claim::DEFAULT_SORT[:dir]
+      unless params[:sort] == Claim::DEFAULT_SORT[:col] and params[:dir] == Claim::DEFAULT_SORT[:dir]
         setted_params[:sort] = params[:sort] if params[:sort]
-        setted_params[:direction] = params[:direction] if params[:direction]
+        setted_params[:dir] = params[:dir] if params[:dir]
       end
       params.each do |k, v|
-        setted_params[k] = v if ![:controller, :action, :sort, :direction].include?(k.to_sym) and v.present?
+        setted_params[k] = v unless [:controller, :action, :sort, :dir, :per_page].include?(k.to_sym) or v.blank?
       end
       session[:last_search] = !setted_params.empty? ? setted_params : nil;
     elsif session[:last_search].present?
@@ -278,9 +300,9 @@ class ClaimsController < ApplicationController
 
   def get_totals(claims)
     # show totals only if list is sorted by reservation_date
-    if (is_admin? or is_boss?) and sort_column == 'reservation_date' and !claims.empty?
+    if (is_admin? or is_boss?) and sort_col == 'reservation_date' and !claims.empty?
       # Get min and max dates from particular claims
-      period = if sort_direction == 'desc'
+      period = if sort_dir == 'desc'
         claims.last.reservation_date..claims.first.reservation_date
       else
         claims.first.reservation_date..claims.last.reservation_date

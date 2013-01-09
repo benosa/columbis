@@ -9,9 +9,9 @@
 //= require jquery-ui
 //= require vendor
 //= require mustache
+//= require hogan
 //= require best_in_place
 //= require_tree ../../templates
-//= require hogan
 //= require_tree ./templates
 //= require common
 //= require_tree .

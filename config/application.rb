@@ -42,7 +42,7 @@ module Tourism
 
     config.generators do |g|
       g.test_framework :rspec
-      g.template_engine :haml
+      #g.template_engine :haml
       #g.fixture_replacement :fabrication, :dir => "spec/fabricators"
     end
 

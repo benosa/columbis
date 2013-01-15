@@ -1,0 +1,22 @@
+// Place all the styles related to the tasks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.clear{
+  clear: both;
+}
+
+.task_body{
+  margin-top: 17px;
+  textarea {
+    height: 200px;
+    width: 98%;
+  }
+}
+
+.task_btn_submit{
+	float:right;
+}
+
+.task_btn_cancel{
+	margin-top: -29px;
+}

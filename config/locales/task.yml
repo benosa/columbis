@@ -1,0 +1,6 @@
+ru:
+  activerecord:
+    attributes:
+      task:
+        body: 'Задачи'
+        bug: 'Баг'

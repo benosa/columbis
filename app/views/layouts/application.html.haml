@@ -51,6 +51,7 @@
                       %span= value[0]
               %li= link_to 'Приходник', '#'
           %li= link_to 'Справка', '#'
+          %li= link_to 'Оставить отзыв', new_task_path
           / %li
 
           / - if can? :switch_view, current_user
@@ -88,6 +89,7 @@
             = link_to t('.operators'), operators_path
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
+          %li= link_to 'Список задач', tasks_path if current_user.role == 'admin'
 
         - if view_switcher?
           .type

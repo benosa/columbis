@@ -1,0 +1,10 @@
+.span4
+  .task_body
+    = form_for @task, :url => { :action => "create" }, :html => {:class => "form-horizontal"} do |f|
+      = f.error_messages
+      = f.text_area :body, :size => '40x40'
+      .task_btn_submit
+        = f.submit t(:send), :class => 'btn'
+    .clear
+.task_btn_cancel
+  = link_to t('back'), root_path, :class => 'btn btn-inverse'

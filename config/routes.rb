@@ -6,7 +6,11 @@ Tourism::Application.routes.draw do
 
   resources :airlines
   resources :currency_courses
-
+  resources :tasks do
+    member do
+      get 'to_user'
+    end
+  end
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'

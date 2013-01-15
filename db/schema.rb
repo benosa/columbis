@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023125428) do
+ActiveRecord::Schema.define(:version => 20130115091137) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -271,6 +271,18 @@ ActiveRecord::Schema.define(:version => 20121023125428) do
 
   add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
   add_index "regions", ["name"], :name => "index_regions_on_name"
+
+  create_table "tasks", :force => true do |t|
+    t.integer  "author"
+    t.text     "body"
+    t.string   "status"
+    t.integer  "executer"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.boolean  "bug",        :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tourist_claims", :force => true do |t|
     t.integer  "claim_id"

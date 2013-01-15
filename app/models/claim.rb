@@ -96,7 +96,8 @@ class Claim < ActiveRecord::Base
     indexes user(:login), :as => :user, :sortable => true
     indexes assistant(:login), :as => :assistant, :sortable => true
     indexes [dependents.last_name, dependents.first_name], :as => :dependents, :sortable => true
-    indexes [applicant.last_name, applicant.first_name], :as => :applicant
+    indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
+    indexes applicant(:phone_number), :as => :phone_number, :sortable => true
 
     has :id
     has :company_id
@@ -119,34 +120,6 @@ class Claim < ActiveRecord::Base
             :scope => :local_data_scope
 
   extend SearchAndSort
-
-  # def self.search_and_sort(options = {})
-  #   options.reverse_merge!(:filter => '', :column => Claim::DEFAULT_SORT[:col], :direction => Claim::DEFAULT_SORT[:dir])
-
-  #   search_options = { :star => true }
-  #   # search_options[:order] = options[:column].to_sym if options[:column]
-  #   # search_options[:sort_mode] = options[:direction].to_sym if options[:direction]
-  #   search_options[:order] = "#{options[:column]} #{options[:direction]}, id DESC"
-  #   search_options[:sort_mode] = :extended
-  #   search_options.merge! Hash[options.select{|k,v| [:page, :per_page, :with, :sphinx_select].include? k }]
-
-  #   ids = search_for_ids(options[:filter], search_options)
-
-  #   @search_result = ids.to_a
-  #   @search_info = {
-  #     :page => options[:page],
-  #     :per_page => options[:per_page],
-  #     :count => ids.total_pages,
-  #     :total_entries => ids.total_entries
-  #   }
-
-  #   claims = where('claims.id in(?)', ids)
-  # end
-
-  # def self.sort_by_search_results(collection)
-  #   return collection unless @search_result
-  #   collection.sort_by{ |o| @search_result.index(o.id) }
-  # end
 
   def assign_reflections_and_save(claim_params)
     self.transaction do

@@ -53,47 +53,15 @@ class ClaimsController < ApplicationController
     render :json => current_company.dropdown_for(params[:list]).map { |dd| { :label => dd.value, :value => dd.value } }
   end
 
-  # def search
-  #   page_options = { :page => params[:page], :per_page => per_page }
-  #   opts = search_options(page_options)
-  #   inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-  #   # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
-  #   @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
-  #   @claims = Claim.sort_by_search_results(@claims_collection)
-  #   set_list_type
-  #   @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
-  #   render :partial => 'list'
-  # end
-
-  # def index
-  #   page_options = { :page => params[:page], :per_page => per_page }
-  #   default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
-  #   inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-  #   if @use_last_search # Last search was restored from session
-  #     opts = search_options(page_options)
-  #     # @claims_collection = Claim.search_and_sort(opts).includes(inluded_tables).paginate(Claim.search_info).offset(0)
-  #     @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
-  #     @claims = Claim.sort_by_search_results(@claims_collection)
-  #   else
-  #     @claims_collection = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables).paginate(page_options)
-  #     @claims = @claims_collection.all
-  #   end
-  #   set_list_type
-  #   @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
-  # end
-
   def index
     page_options = { :page => params[:page], :per_page => per_page }
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-    Rails.logger.debug "last_search: #{session[:last_search].inspect}"
     if search_or_sort? #or @use_last_search # Last search was restored from session
-      Rails.logger.debug "params1: #{params.inspect}"
       opts = search_options(page_options)
-      Rails.logger.debug "opts: #{opts.inspect}"
-      @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options)
+      # remover any sql order by reorder(nil), because there are might be composed columns
+      @claims_collection = search_paginate(Claim.search_and_sort(opts).includes(inluded_tables), page_options).reorder(nil)
       @claims = Claim.sort_by_search_results(@claims_collection)
     else
-      Rails.logger.debug "params2: #{params.inspect}"
       default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
       @claims_collection = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables).paginate(page_options)
       @claims = @claims_collection.all

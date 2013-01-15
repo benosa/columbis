@@ -128,7 +128,7 @@ module ApplicationHelper
       :per_page => options[:per_page],
       :count => search_info[:total_pages],
       :total_entries => search_info[:total_entries]
-    }).offset(0) # use it to skip offset provided by will_paginate, because shinking sphinx return 1 page
+    }).offset(0) # use it to skip offset provided by will_paginate, because thinking sphinx return 1 page
   end
 
   def sort_col(default = :id)

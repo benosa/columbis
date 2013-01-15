@@ -114,12 +114,6 @@ $(function(){
   //   setFilters(this);
   // });
 
-  $('#unset_filters').live('click', function(e) {
-    e.preventDefault();
-    $('#filter').val('');
-    loadList();
-  });
-
   // redefine default submition of filter form
   // $('#filter_bar').submit(function(event) {
   //   event.preventDefault();
@@ -252,12 +246,12 @@ $(function(){
   });
 
   // quick search
-  $('#filter_bar #filter').keyup(function(){
-    var self = this
-    exclusive_delay(function(){
-      loadList(getCurrentSortParams(self));
-    }, 300 );
-  });
+  // $('#filter_bar #filter').keyup(function(){
+  //   var self = this
+  //   exclusive_delay(function(){
+  //     loadList(getCurrentSortParams(self));
+  //   }, 300 );
+  // });
 
   // sort
   // $('#claims th a').live('click', function(e){
@@ -804,4 +798,5 @@ $(function(){
 
   setTitles();
   set_editable_bonus_percent();
+
 });

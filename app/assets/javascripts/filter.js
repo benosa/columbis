@@ -48,6 +48,8 @@ $(function(){
     return $.extend({}, getFilter(), getSort());
   }
 
+  var jqxhr;
+
   // Refresh current list
   function listRefresh(data, container_selector) {
     var selector = container_selector || '.current_container';
@@ -56,22 +58,54 @@ $(function(){
     var url = $container.data('url') ||  window.location.href;
     if (typeof data == 'undefined')
        data = getParamsData();
-    $.ajax({
+    else if (data === false)
+        data = {};
+
+    ajaxCounterInc();
+
+    if (jqxhr)
+      jqxhr.abort();
+
+    jqxhr = $.ajax({
       url: url,
+      timeout: 15000, // 15 sec
       data: data,
       dataType: 'text',
       context: {
         selector: selector,
         container: $container[0]
-      },
-      success: function(resp){
+      }
+    }).done(function(resp){
+        // If it is not last refresh request do nothing
+        if (ajaxCounterDec() > 0)
+          return;
+
         $(this.container).replaceWith(resp);
         // reset params changing
         bindParams(this.selector);
         // reset select customization in current list container
         customizeSelect(this.selector, true);
-      }
+    }).fail(function() {
+      ajaxCounterDec();
     });
+  }
+
+  var ajaxCounter = 0;
+
+  function ajaxCounterInc(num) {
+    ajaxCounter += num || 1;
+    if (ajaxCounter > 0)
+      $('#ajax-indicator').show();
+    return ajaxCounter;
+  }
+
+  function ajaxCounterDec(num) {
+    ajaxCounter -= num || 1;
+    if (ajaxCounter < 0)
+      ajaxCounter = 0;
+    if (ajaxCounter === 0)
+      $('#ajax-indicator').hide();
+    return ajaxCounter;
   }
 
   // Bind callbacks on changing filter params
@@ -97,16 +131,19 @@ $(function(){
 
         var data = $.extend(getParamsData(), getFilter(this), getSort(this, toggle_dir));
 
-        if (e.type == 'keyup')
+        if (e.type == 'keyup' && !e.isTrigger)
           exclusive_delay(function() {
             listRefresh(data);
-          }, 300);
+          }, 200);
         else
           listRefresh(data);
       });
     });
-  };
+  }
 
   bindParams();
+
+  // Exports
+  window.listRefresh = listRefresh;
 
 });

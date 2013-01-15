@@ -123,6 +123,29 @@ $(function(){
   });
 
   $('label.required').tooltip();
+
+  // Prevent default submit of fiter form
+  $('form.filter').on('submit', function(e) { e.preventDefault(); });
+  $('form.filter .go_search').on('click', function(e) {
+    $('form.filter .search').trigger('keyup');
+  });
+
+  // Unset filters link
+  $('form.filter .unset_filters').on('click', function(e) {
+    e.preventDefault();
+    $('form.filter :input[data-param]').each(function() {
+      var $t = $(this);
+      if ($t.is('select'))
+        $t.ikSelect('select', $t.find('option:first-child').val());
+        // $t.val($t.find('option:first-child').val());
+      else
+        $t.val('');
+    });
+    listRefresh({
+      unset_filters: true
+    });
+  });
+
 });
 
 function customizeSelect(selector, is_container, options) {

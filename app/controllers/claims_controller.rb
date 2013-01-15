@@ -214,7 +214,9 @@ class ClaimsController < ApplicationController
   end
 
   def set_last_search
-    if search_or_sort?
+    if params[:unset_filters]
+      session[:last_search] = nil
+    elsif search_or_sort?
       setted_params = {}
       unless params[:sort] == Claim::DEFAULT_SORT[:col] and params[:dir] == Claim::DEFAULT_SORT[:dir]
         setted_params[:sort] = params[:sort] if params[:sort]

@@ -136,5 +136,5 @@
           %td
             = link_to '', edit_claim_path(claim), :class => 'edit_row'
         - prev_month = cur_month
-  - Rails.logger.debug "claims_collection: #{@claims_collection.all}"
+
   = render :partial => 'shared/pagination', :locals => { :path_helper => :search_claims_path, :collection => @claims_collection || @claims }

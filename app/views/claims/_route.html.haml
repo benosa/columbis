@@ -20,13 +20,15 @@
               :class => 'operator editable-select tour_operator_select', :not_highlighted => true
       .two_line
         %p= f.label :country, t('.direction'), :required => true
-        = f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {},
-            :class => 'country editable-select route_select', :not_highlighted => true
+        = f.fields_for :country, @claim.country do |cf|
+          = cf.text_field :name, :class => 'autocomplete country', :data => { :id => (@claim.country_id || 1), :val => cf.object.try(:name) }, :not_highlighted => true
+        -# f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {}, :class => 'country editable-select route_select', :not_highlighted => true
       .two_line
         %p= f.label :resort, :required => true
         .last
-          = f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'resort editable-select resort_select', :not_highlighted => true
+          = f.fields_for :resort, @claim.resort do |rf|
+            = rf.text_field :name, :class => 'autocomplete resort', :not_highlighted => true
+          -# f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {}, :class => 'resort editable-select resort_select', :not_highlighted => true
     .fake_row
       .two_line
         %p= f.label :hotel

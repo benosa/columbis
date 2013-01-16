@@ -9,7 +9,7 @@ class TouristsController < ApplicationController
         checkout_order(options)
         scoped = Tourist.search_and_sort(options).includes(:address)
         scoped = scoped.potential if params[:potential].present?
-        search_paginate(scoped, options)
+        scoped = search_paginate(scoped, options)
       else
         scoped = Tourist.send(!params[:potential] ? :clients : :potentials)
         scoped.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)

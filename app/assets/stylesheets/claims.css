@@ -70,6 +70,10 @@
   vertical-align: baseline;
 }
 
+.reservations .id_link { text-decoration: none; color: inherit; }
+.reservations .bonus_percent form { width: 100%; }
+.reservations .bonus_percent input { width: 100%; padding: 0; border: none; }
+
 /*.claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }*/
 
@@ -95,6 +99,26 @@ option {
 .visa_status .ik_select_list{width: 118px !important;}
 
 .operator_currency { width: 28px; }
+
+.total_years.ik_select{ width: 67px; }
+.total_years .ik_select_link{width: 65px;}
+.total_years .ik_select_link_text{width: 50px;}
+.total_years .ik_select_list{width: 63px !important;}
+
+.unset_filters{
+  background: url("/assets/new_design/images/reset.png") no-repeat;
+  color: #000;
+  display: block;
+  font-size: 11px;
+  padding: 1px 0 4px 19px;
+  text-shadow: #fff 0px 1px 0px;
+  margin-right: 17px;
+  float: left;
+}
+
+.settings { float: left; padding: 1px 0 4px 22px; }
+
+.main_page .filter fieldset { padding: 6px 0 0 17px; }
 
 /* low_resolution */
 .main_page .low_resolution .filter .search { width: 150px; }

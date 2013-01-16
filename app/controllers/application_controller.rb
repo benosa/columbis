@@ -92,10 +92,10 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
-  def set_current_controller    
+  def set_current_controller
     ::ApplicationController.current = self
   end
-  
+
 end
 
 class Float

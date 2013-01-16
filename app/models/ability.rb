@@ -45,6 +45,7 @@ class Ability
     elsif user.role == 'manager'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
+      can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
       can :read, Claim, :company_id => user.company_id, :office_id => user.office_id
       can :search, Claim
       can [:update], User, :id => user.id

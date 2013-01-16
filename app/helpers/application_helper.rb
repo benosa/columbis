@@ -33,6 +33,26 @@ module ApplicationHelper
     url_for(url_params)
   end
 
+  def write_manifest_file
+    assets = {
+      :js => parse_js_paths_from_tags(view_context.javascript_include_tag 'application'),
+      :css => parse_css_paths_from_tags([view_context.stylesheet_link_tag('application'), view_context.stylesheet_link_tag('jquery-ui')].join),
+      :img => get_asset_paths[:img]
+    }
+    manifest_path = File.join(Rails.root, "public/tourism.manifest")
+    File.open(manifest_path, 'w') do |file|
+      file.puts manifest_default_text
+      assets[:js].sort.each { |js| file.puts js }
+      file.puts "\n"
+      assets[:css].sort.each { |css| file.puts css }
+      file.puts "\n"
+      assets[:img].sort.each do |k, v|
+        img = k == v ? "/assets/#{k}" : "/assets/#{k}\n/assets/#{v}"
+        file.puts img
+      end
+    end
+  end
+
   def javascript_local_data
     if @javascript_local_data.nil?
       text = "";
@@ -108,7 +128,7 @@ module ApplicationHelper
       :per_page => options[:per_page],
       :count => search_info[:total_pages],
       :total_entries => search_info[:total_entries]
-    }).offset(0) # use it to skip offset provided by will_paginate, because shinking sphinx return 1 page
+    }).offset(0) # use it to skip offset provided by will_paginate, because thinking sphinx return 1 page
   end
 
   def sort_col(default = :id)
@@ -123,18 +143,11 @@ module ApplicationHelper
     dir.to_sym == :asc ? :desc : :asc
   end
 
-  def sort_link(column, title = nil, _default = nil)
-    if _default.kind_of? Hash
-      default = true
-      default_dir = _default[:default]
-    else
-      default = _default
-      default_dir = :asc
-    end
+  def sort_link(column, title = nil, default_and_dir = nil)
     col = column.to_sym
     title ||= col.titleize
-    dir ||= col == sort_col(default ? col : nil) ? sort_dir(default_dir) : default_dir
-    css_class = col == sort_col(default ? col : nil) ? "sort_active #{dir}" : nil
+    css_class = col == sort_col(default_and_dir ? col : nil) ? "sort_active #{sort_dir(default_and_dir == :desc ? :desc : :asc)}" : nil
+    dir = col == sort_col(default_and_dir ? col : nil) ? sort_dir(default_and_dir == :desc ? :desc : :asc) : :asc
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 
@@ -180,9 +193,86 @@ module ApplicationHelper
     end
   end
 
+  private
+
+    def manifest_default_text
+      text = <<-MANIFEST_TEXT
+        CACHE MANIFEST
+        # #{Time.now.utc}
+
+        FALLBACK:
+        / /offline.html
+
+        NETWORK:
+        *
+
+        SETTINGS:
+        prefer-online
+
+        CACHE:
+        /offline.html
+
+        MANIFEST_TEXT
+      text.gsub!(/^[ \t]+/m, '')
+    end
+
+    def get_asset_paths
+      paths = {}
+      app = Rails.application
+      assets = app.assets
+      assets.each_logical_path do |logical_path|
+        if File.basename(logical_path)[/[^\.]+/, 0] == 'index'
+          logical_path.sub!(/\/index\./, '.')
+        end
+
+        # grabbed from Sprockets::Environment#find_asset
+        pathname = Pathname.new(logical_path)
+        if pathname.absolute?
+          return unless stat(pathname)
+          logical_path = assets.attributes_for(pathname).logical_path
+        else
+          begin
+            pathname = assets.resolve(logical_path)
+          rescue Sprockets::FileNotFound
+            return nil
+          end
+        end
+
+        asset = Sprockets::Asset.new(assets, logical_path, pathname)
+
+        key = File.extname(logical_path)[1..-1].to_sym
+        key = :img unless [:js, :css].include?(key)
+        paths[key] = {} unless paths[key]
+        paths[key][logical_path] = app.config.assets.digest ? asset.digest_path : asset.logical_path
+      end
+      paths
+    end
+
+    def parse_js_paths_from_tags(text)
+      paths = []
+      text.scan(/src="([^"]+)"/) { |path| paths << path }
+      paths
+    end
+
+    def parse_css_paths_from_tags(text)
+      paths = []
+      text.scan(/href="([^"]+)"/) { |path| paths << path }
+      paths
+    end
+
 end
 
 class Float
+  def to_money
+    sprintf("%0.0f", self)
+  end
+
+  def to_percent
+    sprintf("%0.2f", self)
+  end
+end
+
+class BigDecimal
   def to_money
     sprintf("%0.0f", self)
   end
@@ -224,7 +314,7 @@ class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
         id = "#{@options[:link_id]}_page#{page}"
       else
         prefix = @collection.to_s
-        prefix = @collection.klass.to_s if @collection.respond_to?(:klass)
+        prefix = @collection.klass.to_s if @collection.try(:klass)
         id = "#{prefix.tableize}_page#{page}"
       end
       unless page == current_page
@@ -333,6 +423,7 @@ module ActiveRecord
 
     def self.local_data_scoped
       scope = self.local_data_settings[:scope]
+      # Rails.logger.debug "settings: #{self.local_data_settings.map{|k,v| k.to_s + ' => ' + v.to_s}.join(', ')}"
       if scope.respond_to?(:call)
         scoped = scope.bind(self).call
       elsif scope.is_a? Symbol and self.respond_to? scope

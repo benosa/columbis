@@ -27,3 +27,4 @@ public/tourism.manifest
 public/assets
 *.sublime-project
 *.sublime-workspace
+.idea

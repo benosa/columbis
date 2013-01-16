@@ -7,12 +7,9 @@
         local_assigns[:pager_params] ? pager_params.merge({ :per_page => count }) : { :per_page => count }) },
         :selected => (count == per_page) && 'selected' }
         = count
-
--# if collection.is_a? WillPaginate and (collection.next_page || collection.previous_page)
-- content_for(:pagination) do
-  - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
-  - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
-  = will_paginate collection, will_paginate_params
-- if content_for?(:pagination)
+-# paginate in Active Record now returns a Relation and don't have WillPaginate in ancestors
+- if collection.next_page || collection.previous_page
   .pagination
-    = yield :pagination
+    - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
+    - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
+    = will_paginate collection, will_paginate_params

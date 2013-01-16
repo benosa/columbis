@@ -1,0 +1,12 @@
+%tr
+  %td{ :colspan => show_office ? 18 : 17 }
+    = description
+  %td.thick_border= as_money(total.approved_tourist_advance)
+  %td
+  %td= as_money(total.approved_operator_advance)
+  %td= as_money(total.profit)
+  %td= total.profit_in_percent.to_percent
+  - if is_admin? or is_boss?
+    %td
+    %td= as_money(total.bonus)
+  %td{ :colspan => 5 }

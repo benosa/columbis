@@ -1,3 +1,4 @@
+- set_current_width(:medium) if small_width?
 - content_for(:html_class) { 'main_page' }
 
 - title t('.claims')
@@ -8,25 +9,29 @@
   %form#filter_bar.filter
     = render 'shared/search_field'
 
-    - if is_admin? or is_boss? or is_supervisor?
+    - if is_admin? or is_boss? or is_supervisor? or is_accountant?
 
       = label_tag :office_id, t('.office')
-      = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
-        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'office_id', :filter => true }
+      = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]), :prompt => t('nope'), :class => 'filter_select', :data => { :param=> 'office_id', :filter => 1 }
 
       = label_tag :user_id, t('.user')
-      = select_tag :user_id,  options_from_collection_for_select(current_company.users, 'id', 'name_for_list', params[:user_id]),
-        :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'user_id', :filter => true }
+      = select_tag :user_id,  options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:user_id]), :prompt => t('nope'), :class => 'filter_select', :data => { :param=> 'user_id', :filter => 1 }
+
+      - if is_admin? or is_boss?
+        = label_tag :total_years, t('.only_totals')
+        = select_tag :total_years, options_for_select(total_years.unshift([t('claims.index.options_all'), 'all']), params[:year]), :prompt => t('nope'), :name => 'year', :class => 'total_years', :data => { :param=> 'total_years', :filter => 1 }
 
     - else
 
-      = check_box_tag :only_my, nil, (params[:only_my] == '1')
+      = check_box_tag :only_my, nil, (params[:only_my] == '1'), :data => { :param=> 'only_my', :filter => 1, :value => 1 }
       = label_tag :only_my, t('.only_my')
 
     %fieldset
       - if small_width?
+        = link_to '', '#', :id => 'unset_filters', :class => 'unset_filters', :title => t('.unset_filters')
         %a.settings{ :href => "#", :title => t('.column_settings') }
       - else
+        = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
         %a.settings{ :href => "#" }= t('.column_settings')
 
 = render :partial => 'list'

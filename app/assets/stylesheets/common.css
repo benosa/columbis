@@ -149,6 +149,15 @@ body, input, textarea {
   height: 0;
 }
 
+#ajax-indicator {
+  float: left;
+  display: none;
+  background: url(/assets/ajax-loader.gif) no-repeat transparent;
+  width: 24px;
+  height: 24px;
+  margin: 3px 0 0 7px;
+}
+
 /*** Colors ***/
 .orange{color: #cc3300;}
 .purple{color: #6666ff;}

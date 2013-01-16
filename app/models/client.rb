@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Client < ActiveRecord::Base
   attr_accessible :full_name, :passport_series, :passport_number,
                   :date_of_birth, :passport_valid_until, :phone_number, :address

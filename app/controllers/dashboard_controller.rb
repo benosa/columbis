@@ -79,7 +79,8 @@ class DashboardController < ApplicationController
     def get_local_data(updated_at = nil)
       data = {
         :tables => [],
-        :data => {}
+        :data => {},
+        :last_version => local_data_version
       }
 
       local_table_list.each do |table|
@@ -124,5 +125,10 @@ class DashboardController < ApplicationController
         :office_id => current_user.office_id,
         :office => current_user.office.name
       }
+    end
+
+    def local_data_version
+      # Return last migration number
+      ActiveRecord::Migrator.current_version.to_s
     end
 end

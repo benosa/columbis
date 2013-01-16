@@ -61,6 +61,7 @@ ru:
     submit:
       create: 'Сохранить'
       update: 'Сохранить'
+  save_and_close: 'Сохранить и закрыть'
 
   will_paginate:
     previous_label: 'Предыдущая'

@@ -7,9 +7,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
-//= require hogan
 //= require vendor
 //= require mustache
+//= require hogan
+//= require best_in_place
 //= require_tree ../../templates
 //= require_tree ./templates
 //= require common

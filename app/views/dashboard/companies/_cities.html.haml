@@ -10,8 +10,8 @@
       = link_to t('delete'), '#', :class => 'del', :id => "del_#{city.id}"
       = hidden_field_tag 'company[city_ids][]', city.id, :id => "hid_#{city.id}"
 
-= select_tag :countries, options_for_select(Country.all.map{ |o| [o.name, o.id] })
-= select_tag :regions, options_for_select(Country.first.regions.map{ |o| [o.name, o.id] })
-= select_tag :cities, options_for_select(Country.first.regions.first.cities.map{ |o| [o.name, o.id] })
+= select_tag :countries, options_for_select(Country.select([:id, :name]).all.map{ |o| [o.name, o.id] }, 1) # 1 - Russia as default coutry
+= select_tag :regions, options_for_select(Region.where(:country_id => 1).select([:id, :name]).all.map{ |o| [o.name, o.id] })
+= select_tag :cities, options_for_select(Region.where(:country_id => 1).select([:id, :name]).first.cities.map{ |o| [o.name, o.id] })
 
 = link_to t('add'), '#', :class => 'add'

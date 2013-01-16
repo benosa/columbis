@@ -142,7 +142,7 @@ $(function(){
 		e.preventDefault();
 
     var city_id = $('#cities').val();
-    if ($('#city_' + city_id).length == 0) {
+    if ($('#city_' + city_id).length === 0) {
       var city = {
         id: city_id,
         name: $('#cities option:selected').text()

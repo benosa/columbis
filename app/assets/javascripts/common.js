@@ -13,19 +13,6 @@ $(function(){
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
   });
 
-  // $('.editable-select').editableSelect({
-  //   bg_iframe: true,
-  //   onSelect: function(list_item) {
-  //     // alert('List item text: '+ list_item.text());
-  //     // 'this' is a reference to the instance of EditableSelect
-  //     // object, so you have full access to everything there
-  //     // alert('Input value: '+ this.text.val());
-  //   },
-  //   case_sensitive: false, // If set to true, the user has to type in an exact
-  //                       // match for the item to get highlighted
-  //   items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
-  // });
-
   // user color
   $('#user_color').live('change', function(event){
     $('.color_sample').css('background-color', $(event.currentTarget).val());
@@ -136,6 +123,29 @@ $(function(){
   });
 
   $('label.required').tooltip();
+
+  // Prevent default submit of fiter form
+  $('form.filter').on('submit', function(e) { e.preventDefault(); });
+  $('form.filter .go_search').on('click', function(e) {
+    $('form.filter .search').trigger('keyup');
+  });
+
+  // Unset filters link
+  $('form.filter .unset_filters').on('click', function(e) {
+    e.preventDefault();
+    $('form.filter :input[data-param]').each(function() {
+      var $t = $(this);
+      if ($t.is('select'))
+        $t.ikSelect('select', $t.find('option:first-child').val());
+        // $t.val($t.find('option:first-child').val());
+      else
+        $t.val('');
+    });
+    listRefresh({
+      unset_filters: true
+    });
+  });
+
 });
 
 function customizeSelect(selector, is_container, options) {

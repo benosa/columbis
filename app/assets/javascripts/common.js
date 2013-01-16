@@ -12,6 +12,8 @@ $(function(){
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
   });
+   
+  $('.popup_hover').popover({trigger: 'hover'})
 
   // $('.editable-select').editableSelect({
   //   bg_iframe: true,

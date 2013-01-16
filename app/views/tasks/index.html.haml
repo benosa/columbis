@@ -14,12 +14,11 @@
         %span
           = t :actions
       - @tasks.each do |t|
-        .task_body
-          %tr
-            %td
-              = truncate t.body, :length => 80, :omission => '...', :separator => ' '
-            %td
-              = label_tag :bug, '&nbsp;'.html_safe, :class => 'checkbox'
-              = check_box_tag :bug, true
-            %td
-              = link_to 'взять', to_user_task_path(t), :class =>'btn btn-primary'
+        %tr
+          %td.popup_hover{:data => {:content => t.body, :placement => 'bottom',  :'original-title' => t.id }}
+            = truncate t.body, :length => 80, :omission => '...', :separator => ''
+          %td
+            = label_tag :bug, '&nbsp;'.html_safe, :class => 'checkbox'
+            = check_box_tag :bug, true
+          %td
+            = link_to 'взять', to_user_task_path(t), :class =>'btn btn-primary'

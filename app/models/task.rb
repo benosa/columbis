@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status
+
   belongs_to :user
-  validate :body, :presence => true
+  validates :body, :presence => true
 end

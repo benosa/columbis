@@ -2,5 +2,5 @@ ru:
   activerecord:
     attributes:
       task:
-        body: 'Задачи'
+        body: 'Отзыв'
         bug: 'Баг'

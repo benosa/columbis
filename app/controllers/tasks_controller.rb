@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+	
 	def index
 		@tasks = Task.all
 	end
@@ -11,9 +12,8 @@ class TasksController < ApplicationController
 		@task = Task.new(params[:task])
 		@task.user = current_user
 		@task.status = 'new'
-		if @task.save
-			redirect_to root_path
-		end
+		@task.body = nil if @task.body.empty?
+		@task.save ? redirect_to(root_path) : render(:action => :new)
 	end
 
 	def to_user

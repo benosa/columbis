@@ -12,5 +12,6 @@
 //= require mustache
 //= require_tree ../../templates
 //= require_tree ./templates
+//= require_tree ./pages
 //= require common
 //= require_tree .

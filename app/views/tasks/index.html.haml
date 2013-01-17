@@ -1,24 +1,8 @@
 .row
   .span2
-  = select_tag '#'
+    = form_tag('/tasks', :method => :put, :remote => true) do 
+      = select_tag(:status, options_for_select(Task::STATUS.map{|st| [st,st] } ))
 .row
   .span2
-    %table.reservations.tour_operators
-      %th
-        %span
-          = t :tasks
-      %th
-        %span
-          = t :bug
-      %th.actions
-        %span
-          = t :actions
-      - @tasks.each do |t|
-        %tr
-          %td.popup_hover{:data => {:content => t.body, :placement => 'bottom',  :'original-title' => t.id }}
-            = truncate t.body, :length => 80, :omission => '...', :separator => ''
-          %td
-            = label_tag :bug, '&nbsp;'.html_safe, :class => 'checkbox'
-            = check_box_tag :bug, true
-          %td
-            = link_to 'взять', to_user_task_path(t), :class =>'btn btn-primary'
+    .tasks
+      = render 'tasks'

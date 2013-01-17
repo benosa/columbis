@@ -11,9 +11,8 @@ ru:
       long: "%d.%m.%Y %H:%M"
       short_date: "%d.%m"
 
-  send: Отправить
-  bug: Баг
-  tasks: Отзывы
+  task: Отзывы
+
   yep: 'Да'
   nope: 'Нет'
   yes: 'Да'

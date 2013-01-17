@@ -9,6 +9,8 @@ Tourism::Application.routes.draw do
   resources :tasks do
     member do
       get 'to_user'
+      get 'cancel'
+      post 'bug'
     end
   end
   resources :claims do

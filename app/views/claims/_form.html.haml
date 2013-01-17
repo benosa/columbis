@@ -51,7 +51,7 @@
     - else
       = f.text_field :office_id, :value => claim.office.try(:name), :disabled => true
 
-    - users = current_company.users
+    - users = current_company.users.reject{ |u| u.role == 'admin' }
 
     = f.label :user_id, t('.user'), :required => false
     - if is_admin? or is_boss?
@@ -60,12 +60,12 @@
     - else
       = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
 
-    = f.label :assistand_id, t('.assistant'), :required => false
+    = f.label :assistant_id, t('.assistant'), :required => false
     - if is_admin? or is_boss? or current_user.id == @claim.user.id
-      = f.select :user_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true},
+      = f.select :assistant_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true},
           :class => 'filter_select'
     - else
-      = f.text_field :user_id, :value => claim.assistant.try(:first_last_name), :disabled => true
+      = f.text_field :assistant_id, :value => claim.assistant.try(:first_last_name), :disabled => true
 
     .float_right
       - if small_width?

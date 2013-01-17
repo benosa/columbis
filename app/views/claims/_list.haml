@@ -1,147 +1,142 @@
 .claims.current_container
-  %table#claims.reservations{ :rules => 'all'}
-    %thead
-      %tr
-        %th= sort_link 'id', t('claims.index.num')
-        %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
-        %th.medium= sort_link 'tourist_stat', t('claims.index.tourist_stat')
-        - show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
-        - if show_office
-          %th.double_sort.blue_box
-            = sort_link 'user_id', t('claims.index.manager')
-            = sort_link 'office', t('claims.index.office')
-        - else
-          %th.blue_box= sort_link 'user_id', t('claims.index.manager')
-        %th.double_sort.w75.blue_box
-          = sort_link 'applicant', t('claims.index.full_name')
-          = sort_link 'phone_number', t('claims.index.phone_number')
-        %th.double_sort.medium.sand_box
-          = sort_link 'depart_to', t('claims.index.depart_to')
-          = sort_link 'country', t('claims.index.to')
-        %th.double_sort.medium.sand_box
-          = sort_link 'depart_back', t('claims.index.depart_back')
-          = sort_link 'airport_back', t('claims.index.from')
-        %th.double_sort.medium.sand_box
-          = sort_link 'visa_check', t('claims.index.term')
-          = sort_link 'visa', t('claims.index.visa')
-        %th= sort_link 'operator', t('claims.index.operator')
-        %th= sort_link 'operator_confirmation', t('claims.index.operator_confirmation')
-        %th.purple_box= sort_link 'primary_currency_price', t('claims.index.price')
-        %th.medium.purple_box= sort_link 'calculation', t('claims.index.calculation')
-        %th.purple_box= sort_link 'tourist_advance', t('claims.index.advance')
-        %th.purple_box= sort_link 'tourist_debt', t('claims.index.debt')
-        %th.thick_border.purple_box= sort_link 'operator_price', t('claims.index.operator_price')
-        %th.short_date.purple_box= sort_link 'operator_maturity', t('claims.index.operator_payment_term')
-        %th.purple_box= sort_link 'operator_advance', t('claims.index.operator_paid')
-        %th.purple_box= sort_link 'operator_debt', t('claims.index.operator_debt')
-        - if params[:list_type] == 'accountant_list'
-          %th.w45px.thick_border.green_back= sort_link 'approved_tourist_advance', t('claims.index.advance')
-          %th.w45px.green_back= sort_link 'approved_operator_advance', t('claims.index.operator_paid')
-          %th.w45px.green_back= sort_link 'approved_operator_advance_prim', t('claims.index.operator_paid_prim')
-          %th.w45px.green_back= sort_link 'profit', 'Нац-ка'
-          %th.w45px.green_back= sort_link 'profit_in_percent', '%'
-          - if is_admin? or is_boss?
-            %th.w45px.green_back= sort_link 'bonus_percent', '% премии'
-            %th.w45px.green_back= sort_link 'bonus', 'Премия'
-        %th.thick_border= sort_link 'documents_status', t('claims.index.docs')
-        %th.w50= sort_link 'docs_note', t('claims.index.memo')
-        %th.w50= sort_link 'check_date', t('claims.index.check_date')
-        %th.last_cols
-        %th.last_cols
-
-    %tbody#claims_body
-      - cur_month = prev_month = false
-      - @claims.each do |claim|
-        - if @totals
-          - cur_month = claim.reservation_date.month
-          - if cur_month != prev_month && (ti = @totals.index{ |t| t.month.to_i == cur_month })
-            = render :partial => 'total', :locals => { :total => @totals[ti], :show_office => show_office, :description => l(@totals[ti].reservation_date, :format => "%B %Y") }
-        %tr{ :class => [claim.canceled? && 'gray_back', cycle("odd", "even")] }
-          %td= link_to claim.id, edit_claim_path(claim), :class => 'id_link'
-          %td= l( claim.reservation_date, :format => :default )
-          %td{ :title => claim.tourist_stat }
-            = truncate(claim.tourist_stat, :length => 4)
+  .reservations_wrapper
+    %table#claims.reservations{ :rules => 'all'}
+      %thead
+        %tr
+          %th= sort_link 'id', t('claims.index.num')
+          %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
+          %th.medium= sort_link 'tourist_stat', t('claims.index.tourist_stat')
+          - show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
           - if show_office
-            %td
-              %p{ :title => claim.user.try(:full_name) }
-                %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
+            %th.double_sort.blue_box
+              = sort_link 'user_id', t('claims.index.manager')
+              = sort_link 'office', t('claims.index.office')
+          - else
+            %th.blue_box= sort_link 'user_id', t('claims.index.manager')
+          %th.double_sort.w75.blue_box
+            = sort_link 'applicant', t('claims.index.full_name')
+            = sort_link 'phone_number', t('claims.index.phone_number')
+          %th.double_sort.medium.sand_box
+            = sort_link 'depart_to', t('claims.index.depart_to')
+            = sort_link 'country', t('claims.index.to')
+          %th.double_sort.medium.sand_box
+            = sort_link 'depart_back', t('claims.index.depart_back')
+            = sort_link 'airport_back', t('claims.index.from')
+          %th.double_sort.medium.sand_box
+            = sort_link 'visa_check', t('claims.index.term')
+            = sort_link 'visa', t('claims.index.visa')
+          %th= sort_link 'operator', t('claims.index.operator')
+          %th= sort_link 'operator_confirmation', t('claims.index.operator_confirmation')
+          %th.purple_box= sort_link 'primary_currency_price', t('claims.index.price')
+          %th.medium.purple_box= sort_link 'calculation', t('claims.index.calculation')
+          %th.purple_box= sort_link 'tourist_advance', t('claims.index.advance')
+          %th.purple_box= sort_link 'tourist_debt', t('claims.index.debt')
+          %th.thick_border.purple_box= sort_link 'operator_price', t('claims.index.operator_price')
+          %th.short_date.purple_box= sort_link 'operator_maturity', t('claims.index.operator_payment_term')
+          %th.purple_box= sort_link 'operator_advance', t('claims.index.operator_paid')
+          %th.purple_box= sort_link 'operator_debt', t('claims.index.operator_debt')
+          - if params[:list_type] == 'accountant_list'
+            %th.w45px.thick_border.green_back= sort_link 'approved_tourist_advance', t('claims.index.advance')
+            %th.w45px.green_back= sort_link 'approved_operator_advance', t('claims.index.operator_paid')
+            %th.w45px.green_back= sort_link 'approved_operator_advance_prim', t('claims.index.operator_paid_prim')
+            %th.w45px.green_back= sort_link 'profit', 'Нац-ка'
+            %th.w45px.green_back= sort_link 'profit_in_percent', '%'
+            - if is_admin? or is_boss?
+              %th.w45px.green_back= sort_link 'bonus_percent', '% премии'
+              %th.w45px.green_back= sort_link 'bonus', 'Премия'
+          %th.thick_border= sort_link 'documents_status', t('claims.index.docs')
+          %th.w50= sort_link 'docs_note', t('claims.index.memo')
+          %th.w50= sort_link 'check_date', t('claims.index.check_date')
+          %th.last_cols
+          %th.last_cols
+
+      %tbody#claims_body
+        - cur_month = prev_month = false
+        - @claims.each do |claim|
+          - if @totals
+            - cur_month = claim.reservation_date.month
+            - if cur_month != prev_month && (ti = @totals.index{ |t| t.month.to_i == cur_month })
+              = render :partial => 'total', :locals => { :total => @totals[ti], :show_office => show_office, :description => l(@totals[ti].reservation_date, :format => "%B %Y") }
+          %tr{ :class => [claim.canceled? && 'gray_back', cycle("odd", "even")] }
+            %td= link_to claim.id, edit_claim_path(claim), :class => 'id_link'
+            %td= l( claim.reservation_date, :format => :default )
+            %td{ :title => claim.tourist_stat }
+              = truncate(claim.tourist_stat, :length => 4)
+            - if show_office
+              %td
+                %p{ :title => claim.user.try(:full_name) }
+                  %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
+                  = truncate(claim.user.try(:login), :length => 8)
+                %p{ :title => claim.office.name }
+                  = truncate(claim.office.name, :length => 8)
+            - else
+              / %td{ :title => claim.user.try(:full_name), :style => "background-color:#{claim.user.try(:color)}",
+              /   :class =>  claim.user.try(:color) && 'user_bg' }
+              %td{ :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
                 = truncate(claim.user.try(:login), :length => 8)
               %p{ :title => claim.office.name }
                 = truncate(claim.office.name, :length => 8)
-          - else
-            / %td{ :title => claim.user.try(:full_name), :style => "background-color:#{claim.user.try(:color)}",
-            /   :class =>  claim.user.try(:color) && 'user_bg' }
-            %td{ :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
-              = truncate(claim.user.try(:login), :length => 8)
-            %p{ :full_value => claim.office.name }
-              = truncate(claim.office.name, :length => 8)
-        - else
-          / %td{ :full_value => claim.user.try(:full_name), :style => "background-color:#{claim.user.try(:color)}",
-          /   :class =>  claim.user.try(:color) && 'user_bg' }
-          %td{ :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
-            = truncate(claim.user.try(:login), :length => 8)
+            %td
+              %p{ :title => tourists_list(claim) }
+                = truncate(claim.applicant.try(:initials_name), :length => 8)
+              %p{ :title => claim.applicant.try(:phone_number) }
+                = text_value truncate(claim.applicant.try(:phone_number), :length => 10)
+            %td{ :class => color_for_flight(claim) }
+              %span{ :title => l(claim.depart_to, :format => :long) }
+                = text_value l( claim.depart_to, :format => :short_date )
+              %p{ :title => claim.country.try(:name) }
+                = text_value truncate(claim.country.try(:name), :length => 8)
+            %td
+              %span{ :title => l(claim.depart_back, :format => :long) }
+                = text_value l( claim.depart_back, :format => :short_date )
+              %p{ :title => claim.city.try(:name) }
+                = text_value truncate(claim.city.try(:name), :length => 6)
+            %td{ :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
+              %span{ :title => l( claim.visa_check, :format => :short ) }
+                = text_value l( claim.visa_check, :format => :short )
+              %p{ :title => text_for_visa(claim) }
+                = text_for_visa(claim)
 
-          %td
-            %p{ :title => tourists_list(claim) }
-              = truncate(claim.applicant.try(:initials_name), :length => 8)
-            %p{ :title => claim.applicant.try(:phone_number) }
-              = text_value truncate(claim.applicant.try(:phone_number), :length => 10)
-          %td{ :class => color_for_flight(claim) }
-            %span{ :title => l(claim.depart_to, :format => :long) }
-              = text_value l( claim.depart_to, :format => :short_date )
-            %p{ :title => claim.country.try(:name) }
-              = text_value truncate(claim.country.try(:name), :length => 8)
-          %td
-            %span{ :title => l(claim.depart_back, :format => :long) }
-              = text_value l( claim.depart_back, :format => :short_date )
-            %p{ :title => claim.city.try(:name) }
-              = text_value truncate(claim.city.try(:name), :length => 6)
-          %td{ :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
-            %span{ :title => l( claim.visa_check, :format => :short ) }
-              = text_value l( claim.visa_check, :format => :short )
-            %p{ :title => text_for_visa(claim) }
-              = text_for_visa(claim)
-
-          %td{ :title => claim.operator.try(:name) }
-            = claim.operator.try(:name)
-          %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
-            = truncate(claim.operator_confirmation, :length => 10)
-          %td{ :title => claim.primary_currency_price.to_money }
-            = claim.primary_currency_price.to_money
-          %td{ :title => claim.calculation }
-            = truncate(claim.calculation, :length => 8)
-          %td{ :title => claim.tourist_advance.to_money, :class => color_for_tourist_advance(claim)}
-            = claim.tourist_advance.to_money
-          %td{ :title => claim.tourist_debt.to_money, :class => !claim.canceled? && color_for_tourist_advance(claim) }
-            = claim.tourist_debt.to_money
-          %td.thick_border{ :class => !claim.canceled? && color_for_operator_debt(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
-            = truncate(operator_price(claim), :length => 6) if claim.operator_price > 0
-          %td{ :title => l(claim.operator_maturity, :format => :short) }
-            = l( claim.operator_maturity, :format => :short )
-          %td{ :title => claim.operator_advance.to_money, :class =>  !claim.canceled? && color_for_operator_advance(claim) }
-            = operator_advance(claim)
-          %td{ :title => claim.operator_debt.to_money, :class =>  (!claim.canceled? && claim.operator_debt != 0) && 'red_back' }
-            = operator_debt(claim)
-          - if params[:list_type] == 'accountant_list'
-            %td.thick_border= approved_advance(claim, :tourist)
-            %td= approved_advance(claim, :operator_prim)
-            %td= approved_advance(claim, :operator)
-            %td= claim.profit.to_money if claim.profit > 0
-            %td= claim.profit_in_percent.to_percent if claim.profit > 0
-            - if is_admin? or is_boss?
-              %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
-                :display_with => lambda {|b| b.to_percent.html_safe }
-              %td.bonus= claim.bonus.to_money
-          %td.thick_border{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
-            = t('claims.documents_statuses.' << claim.documents_status)
-          %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }
-            = truncate(claim.memo, :length => 8)
-          %td{ :title => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }
-            = l( claim.check_date, :format => :default )
-          %td{ :title => claim.docs_note }
-            %span{ :class => !claim.docs_note.empty? && 'attention' }
-          %td
-            = link_to '', edit_claim_path(claim), :class => 'edit_row'
-        - prev_month = cur_month
+            %td{ :title => claim.operator.try(:name) }
+              = claim.operator.try(:name)
+            %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
+              = truncate(claim.operator_confirmation, :length => 10)
+            %td{ :title => claim.primary_currency_price.to_money }
+              = claim.primary_currency_price.to_money
+            %td{ :title => claim.calculation }
+              = truncate(claim.calculation, :length => 8)
+            %td{ :title => claim.tourist_advance.to_money, :class => color_for_tourist_advance(claim)}
+              = claim.tourist_advance.to_money
+            %td{ :title => claim.tourist_debt.to_money, :class => !claim.canceled? && color_for_tourist_advance(claim) }
+              = claim.tourist_debt.to_money
+            %td.thick_border{ :class => !claim.canceled? && color_for_operator_debt(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
+              = truncate(operator_price(claim), :length => 6) if claim.operator_price > 0
+            %td{ :title => l(claim.operator_maturity, :format => :short) }
+              = l( claim.operator_maturity, :format => :short )
+            %td{ :title => claim.operator_advance.to_money, :class =>  !claim.canceled? && color_for_operator_advance(claim) }
+              = operator_advance(claim)
+            %td{ :title => claim.operator_debt.to_money, :class =>  (!claim.canceled? && claim.operator_debt != 0) && 'red_back' }
+              = operator_debt(claim)
+            - if params[:list_type] == 'accountant_list'
+              %td.thick_border= approved_advance(claim, :tourist)
+              %td= approved_advance(claim, :operator_prim)
+              %td= approved_advance(claim, :operator)
+              %td= claim.profit.to_money if claim.profit > 0
+              %td= claim.profit_in_percent.to_percent if claim.profit > 0
+              - if is_admin? or is_boss?
+                %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
+                  :display_with => lambda {|b| b.to_percent.html_safe }
+                %td.bonus= claim.bonus.to_money
+            %td.thick_border{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
+              = t('claims.documents_statuses.' << claim.documents_status)
+            %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }
+              = truncate(claim.memo, :length => 8)
+            %td{ :title => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }
+              = l( claim.check_date, :format => :default )
+            %td{ :title => claim.docs_note }
+              %span{ :class => !claim.docs_note.empty? && 'attention' }
+            %td
+              = link_to '', edit_claim_path(claim), :class => 'edit_row'
+          - prev_month = cur_month
 
   = render :partial => 'shared/pagination', :locals => { :path_helper => :search_claims_path, :collection => @claims_collection || @claims }

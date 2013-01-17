@@ -39,7 +39,10 @@ class TasksController < ApplicationController
 
   def cancel
     @task.update_attribute :status, 'cancel'
-    redirect_to tasks_path
+    respond_to do |format|
+      format.html { redirect_to tasks_path }
+      format.json { render :json => @task.status }
+    end
   end
 
   def destroy

@@ -1,12 +1,12 @@
 .span4
-  .task_body
-    = form_for @task, :url => { :action => "create" }, :html => {:class => "form-horizontal"} do |f|
-      - @form_id = f.options[:html][:id]
-      - content_for(:error_messages) do
-        = f.error_messages
-      .task_body
-        = f.text_area :body
-    .clear
+  .tasks
+  = form_for @task, :url => { :action => "create" }, :html => {:class => "form-horizontal"} do |f|
+    - @form_id = f.options[:html][:id]
+    - content_for(:error_messages) do
+      = f.error_messages
+    .task_body
+      = f.text_area :body
+  .clear
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t(:take), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('tasks.send'), '#', :class => 'save', :data => { :submit => @form_id }

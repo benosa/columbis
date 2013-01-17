@@ -24,7 +24,7 @@
             = render :partial => 'tourist', :locals => { :f => af }
 
           = af.text_field :phone_number, :class => 'phone_number phone'
-          = af.text_field :address, :class => 'address'
+          = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
           = link_to '', '#', :class => 'delete', :id => "del1"
         - else
           %p= t('.tourists_full_name_hint') + ':'

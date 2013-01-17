@@ -23,7 +23,7 @@ class ClaimsController < ApplicationController
         :date_of_birth => tourist.date_of_birth.try(:strftime, '%d.%m.%Y'),
         :passport_valid_until => tourist.passport_valid_until.try(:strftime, '%d.%m.%Y'),
         :phone_number => tourist.phone_number,
-        :address => tourist.address
+        :address => tourist.address.try(:joint_address)
       }
     }
   end

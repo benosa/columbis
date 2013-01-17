@@ -5,7 +5,7 @@ class Address < ActiveRecord::Base
   belongs_to :addressable, :polymorphic => true
 
   before_save do |address|
-    self.joint_address = pretty_full_address
+    self.joint_address = pretty_full_address if joint_address.blank?
   end
 
   default_scope :order => :joint_address
@@ -27,8 +27,7 @@ class Address < ActiveRecord::Base
 
   def pretty_full_address(with_phone = true)
     str = "#{region}, #{street}, #{house_number}, #{housing}, #{office_number}, #{zip_code}".strip
-    str.gsub!(/,\W*,/, ',')
-    str.chomp(',')
+    str.gsub(/,\W*,/, ',').gsub(/(^,\W*)|(,\W*$)/, '').strip
   end
 
   def self.left_join(model)

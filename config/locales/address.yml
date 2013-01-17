@@ -25,6 +25,14 @@ ru:
       edit_address: 'Редактирование адреса'
       list_of_address: 'Список адресов'
 
+    messages:
+      created: 'Адрес создан'
+      updated: 'Адрес обновлен'
+      destroyed: 'Адрес удален'
+
+    shared:
+      presentation: 'Представление (удалите для обновления)'
+
 
   activerecord:
     attributes:
@@ -45,3 +53,4 @@ ru:
     office_number: 'Номер офиса'
     phone_number: 'Номер телефона'
     zip_code: 'Индекс'
+    joint_address: 'Представление'

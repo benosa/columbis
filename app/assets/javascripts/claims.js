@@ -573,7 +573,6 @@ $(function(){
         tr.find("input.date_of_birth").val(ui.item.date_of_birth);
         tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
         if(tr.hasClass('applicant')) {
-          tr = tr.next().next();
           tr.find("input.phone_number").val(ui.item.phone_number);
           tr.find("input.address").val(ui.item.address);
           $('#claim_applicant_id').val(ui.item.id);

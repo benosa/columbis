@@ -14,7 +14,7 @@ class Tourist < ActiveRecord::Base
   has_many :claims, :through => :tourist_claims
   has_one :address, :as => :addressable, :dependent => :destroy
 
-  accepts_nested_attributes_for :address
+  accepts_nested_attributes_for :address, :reject_if => :all_blank
 
   validates_presence_of :first_name, :last_name, :company_id
 

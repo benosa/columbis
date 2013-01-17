@@ -10,7 +10,7 @@ class AddressesController < ApplicationController
 
     respond_to do |format|
       if @address.save
-        format.html { redirect_to @address, :notice => 'Address was successfully created.' }
+        format.html { redirect_to addresses_url, :notice => t('addresses.messages.created') }
       else
         format.html { render :action => "new" }
       end
@@ -26,7 +26,7 @@ class AddressesController < ApplicationController
 
     respond_to do |format|
       if @address.update_attributes(params[:address])
-        format.html { redirect_to @address, :notice => 'Address was successfully updated.' }
+        format.html { redirect_to addresses_url, :notice => t('addresses.messages.updated') }
       else
         format.html { render :action => "edit" }
       end
@@ -52,7 +52,7 @@ class AddressesController < ApplicationController
     @address.destroy
 
     respond_to do |format|
-      format.html { redirect_to addresses_url }
+      format.html { redirect_to addresses_url, :notice => t('addresses.messages.destroyed') }
     end
   end
 end

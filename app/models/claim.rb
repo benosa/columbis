@@ -75,7 +75,6 @@ class Claim < ActiveRecord::Base
   end
 
   validate :presence_of_applicant
-  validate :correctness_of_maturity
 
   before_save :update_debts
 
@@ -407,14 +406,28 @@ class Claim < ActiveRecord::Base
   end
 
   def assign_applicant(applicant_params)
+    # Set address manually to avoid an exeption
+    applicant_address = applicant_params[:address] if applicant_params[:address].present?
+    applicant_params.delete :address
+
     if applicant_params[:id].blank?
       a = Tourist.new(applicant_params)
       a.company_id = company_id
+      a.address.build_address(:company_id => company_id, :joint_address => applicant_address) if applicant_address
       a.save
       self.applicant = a
     else
-      self.applicant = Tourist.find(applicant_params[:id])
-      self.applicant.update_attributes(applicant_params) if self.applicant.present?
+      self.applicant = Tourist.where(:company_id => company_id).includes(:address).find(applicant_params[:id])
+      if self.applicant.present?
+        self.applicant.update_attributes(applicant_params)
+        if applicant_address
+          if self.applicant.address
+            self.applicant.address.update_attributes({ :joint_address => applicant_address })
+          else
+            self.applicant.create_address({:company_id => company_id, :joint_address => applicant_address},:without_protection => true)
+          end
+        end
+      end
     end
   end
 
@@ -426,7 +439,7 @@ class Claim < ActiveRecord::Base
         tourist = Tourist.new(tourist_hash)
         tourist.company_id = company_id
       else
-        tourist = Tourist.find(tourist_hash[:id])
+        tourist = Tourist.where(:company_id => company_id).find(tourist_hash[:id])
         tourist.update_attributes(tourist_hash) if tourist.present?
       end
 

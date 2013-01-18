@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug ]
+  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish]
   before_filter :get_tasks, :only => [ :index ]
 
   def index
@@ -18,15 +18,20 @@ class TasksController < ApplicationController
     @task.user = current_user
     @task.status = 'new'
     @task.body = nil if @task.body.empty?
-    @task.save ? redirect_to(root_path) : render(:action => :new)
+
+    if @task.save
+      redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
+    else
+      render :action => :new
+    end
   end
 
   def to_user
-    @task.executer = current_user
-    @task.start_date = Time.now
-    @task.status = 'work'
-    @task.save
-    redirect_to tasks_path
+    @task.update_attributes :executer => current_user, :start_date => Time.now, :status => 'work', :end_date => nil
+    respond_to do |format|
+      format.html { redirect_to tasks_path }
+      format.json { render :json => @task.status }
+    end
   end
 
   def bug
@@ -34,6 +39,14 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to tasks_path }
       format.json { render :json => @task.bug }
+    end
+  end
+
+  def finish
+    @task.update_attributes :status => 'finish', :end_date =>  Time.now
+    respond_to do |format|
+      format.html { redirect_to tasks_path }
+      format.json { render :json => @task.status }
     end
   end
 
@@ -53,7 +66,7 @@ class TasksController < ApplicationController
   private
 
   def get_tasks
-    @tasks = Task.all
+    @tasks = Task.order_created.bug
   end
 
   def get_task

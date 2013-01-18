@@ -8,6 +8,9 @@
     width: 1000px;
   }
 }
+.add_task{
+  margin-bottom: 20px;
+}
 .tasks {
   tr.bug {
     td {
@@ -16,7 +19,7 @@
   }
 
   td.take{
-    width: 248px;
+    width: 300px;
   }
 
   .del{

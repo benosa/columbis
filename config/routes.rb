@@ -11,6 +11,7 @@ Tourism::Application.routes.draw do
       get 'to_user'
       get 'cancel'
       post 'bug'
+      get 'finish'
     end
   end
   resources :claims do

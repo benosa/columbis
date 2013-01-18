@@ -89,7 +89,7 @@
             = link_to t('.operators'), operators_path
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
-          %li= link_to 'Список задач', tasks_path if current_user.role == 'admin'
+          %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?
           .type

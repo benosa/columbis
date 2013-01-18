@@ -18,21 +18,20 @@
     %span
       = t :actions
   - @tasks.each do |t|
-    - unless t.status == 'cancel' || t.status =='delete'
-      %tr{:class => "#{'bug' if t.bug}"}
-        %td.popup_hover{:class => (t.status =='delete' ? 'del' : ''), :data => {:content => t.body, :placement => 'bottom',  :'original-title' => "# #{t.id}" }}
-          = truncate t.body, :length => 80, :omission => '...', :separator => ''
+    %tr{:class => "#{'bug' if t.bug}"}
+      %td.popup_hover{:class => (t.status =='cancel' ? 'del' : ''), :data => {:content => t.body, :placement => 'bottom',  :'original-title' => "# #{t.id}" }}
+        = truncate t.body, :length => 80, :omission => '...', :separator => ''
 
-        %td 
-          = t.executer.login rescue nil
-        %td
-          = l(t.start_date, :format => :long)
-        %td
-          = l(t.end_date, :format => :long)
-        %td.bug_checkbox
-          = label_tag :"bug_#{t.id}", '&nbsp;'.html_safe, :class => "checkbox #{'active' if t.bug}"
-          = check_box_tag :"bug_#{t.id}", t.id, t.bug, :class => 'bug_checkbox'
-        %td.take
-          = link_to t('tasks.take'), to_user_task_path(t), :class =>'btn btn-success'
-          = link_to t('tasks.delete'), task_path(t), :method => :delete, :class =>'btn btn-danger'
-          = link_to t('tasks.canсel'), cancel_task_path(t), :class => 'btn btn-primary cancel_task' #, :value => t.id, :remote => true
+      %td 
+        = t.executer.login rescue nil
+      %td
+        = l(t.start_date, :format => :long)
+      %td
+        = l(t.end_date, :format => :long)
+      %td
+        = label_tag :"bug_#{t.id}", '&nbsp;'.html_safe, :class => "checkbox #{'active' if t.bug}"
+        = check_box_tag :"bug_#{t.id}", t.id, t.bug, :class => 'bug_checkbox'
+      %td.take
+        = link_to t('tasks.take'), to_user_task_path(t), :class =>'btn btn-success', :remote => true
+        = link_to t('tasks.finish'), finish_task_path(t), :class =>'btn btn-danger finish_task',  :remote => true
+        = link_to t('tasks.canсel'), cancel_task_path(t), :class => 'btn btn-primary cancel_task',  :remote => true

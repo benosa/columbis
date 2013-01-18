@@ -1,7 +1,9 @@
 .row
   .span2
+    .add_task
+      = link_to 'Добавить задачу', new_task_path, :class => 'btn btn-primary'
     = form_tag('/tasks', :method => :put, :remote => true) do 
-      = select_tag(:status, options_for_select(Task::STATUS.map{|st| [st,st] } ))
+      = select_tag(:status, options_for_select(Task::STATUS.map{|st| [ t("task_status.#{st}"), t("task_status.#{st}") ] } ))
 .row
   .span2
     .tasks

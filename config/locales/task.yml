@@ -9,7 +9,7 @@ ru:
   task_status:
     new: 'Новые'
     work: 'В работе'
-    canсel: 'Отмененные'
+    cancel: 'Отмененные'
     delete: 'Удаленные'
     create: 'Создать'
     finish: 'Завершенные'

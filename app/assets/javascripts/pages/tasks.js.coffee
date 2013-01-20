@@ -14,3 +14,5 @@ jQuery ->
             row.addClass "bug"
           else
             row.removeClass "bug"
+  $(".filter_frm select").change ->
+    $(this.form).trigger('submit');

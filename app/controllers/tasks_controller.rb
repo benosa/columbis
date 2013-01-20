@@ -66,7 +66,10 @@ class TasksController < ApplicationController
   private
 
   def get_tasks
-    @tasks = Task.order_created.bug
+    @tasks = Task.by_status(['new', 'work']).order_bug.order_created
+    if params[:filter]
+      @tasks = @tasks.filtered(params[:filter])
+    end
   end
 
   def get_task

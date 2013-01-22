@@ -10,3 +10,5 @@ ru:
       catalogs: 'Каталоги'
       operators: 'Туроператоры'
       airlines: 'Авиалинии'
+      fullscreen: 'На весь экран'
+      fullscreen_cancel: 'Закрыть полный экран'

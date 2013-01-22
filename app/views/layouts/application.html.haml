@@ -51,6 +51,7 @@
                       %span= value[0]
               %li= link_to 'Приходник', '#'
           %li= link_to 'Справка', '#'
+          %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
           / %li
 
           / - if can? :switch_view, current_user

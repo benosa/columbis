@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  STATUS = [ 'new','work','cancel','finish' ]
+  STATUS = [ 'new','work','cancel','finish' ].freeze
   attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status, :bug
 
   belongs_to :user
@@ -29,11 +29,12 @@ class Task < ActiveRecord::Base
     indexes user(:login), :as => :user, :sortable => true
     indexes executer(:login), :as => :executer, :sortable => true
     indexes body, :sortable => true
+    indexes status, :sortable => true
+
     has :id
     has :user_id
     has :executer_id
     has :bug, :type => :boolean
-    has :start_date, :end_date, :type => :datetime
-    has :created_at
+    has :created_at, :start_date, :end_date, :type => :datetime
   end
 end

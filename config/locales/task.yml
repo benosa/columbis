@@ -1,16 +1,22 @@
 ru:
   tasks:
     send: 'Отправить'
-    take: 'Принять'
-    canсel: 'Отменить'
-    delete: 'Удалить'
     add_task: 'Добавить задачу'
-    finish: 'Завершить'
     num: '№'
     new: 'новая'
     cancel: отмененная
     work: в работе
     finish: завершенная
+    actions:
+      accept: 'Принять'
+      canсel: 'Отменить'
+      finish: 'Завершить'
+    index:
+      add_task: 'Добавить задачу'
+      all: 'Все'
+      status: 'Статус'
+      tasks: 'Задачи'
+
   task_status:
     new: 'Новые'
     work: 'В работе'

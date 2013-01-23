@@ -39,11 +39,12 @@ class TasksController < ApplicationController
     end
   end
 
-  def to_user
-    @task.update_attributes :executer => current_user, :start_date => Time.now, :status => 'work', :end_date => nil
+  def update
+    @task = Task.find(params[:id])
+    is_updated = @task.update_attributes(task_params)
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      format.json { render :json => @task.status }
+      format.js { is_updated ? render(:update) : render(:text => '') }
     end
   end
 
@@ -51,32 +52,11 @@ class TasksController < ApplicationController
     @task.update_attribute :bug, (params[:state] == '1')
     respond_to do |format|
       format.html do
-        render :partial => 'task', :locals => { :task => @task } if request.xhr?
+        render :partial => 'task' if request.xhr?
         redirect_to tasks_path unless request.xhr?
       end
       format.json { render :json => @task }
     end
-  end
-
-  def finish
-    @task.update_attributes :status => 'finish', :end_date =>  Time.now
-    respond_to do |format|
-      format.html { redirect_to tasks_path }
-      format.json { render :json => @task.status }
-    end
-  end
-
-  def cancel
-    @task.update_attribute :status, 'cancel'
-    respond_to do |format|
-      format.html { redirect_to tasks_path }
-      format.json { render :json => @task.status }
-    end
-  end
-
-  def destroy
-    @task.update_attribute :status, 'delete'
-    redirect_to tasks_path
   end
 
   private
@@ -95,6 +75,18 @@ class TasksController < ApplicationController
   def set_filters(options)
     filter = {}
     filter[:user_id] = params[:user_id] if params[:user_id].present?
-    options[:with].merge!(filter) unless filter.empty?
+    options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
+    options[:conditions] = (options[:conditions] || {}).merge!({ status: params[:status] }) if params[:status].present?
   end
+
+  def task_params
+    return {} unless params[:task]
+    prms = params[:task].dup
+    case
+    when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.now, :end_date => nil })
+    when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
+    end
+    prms
+  end
+
 end

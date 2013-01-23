@@ -54,7 +54,7 @@ class TasksController < ApplicationController
         render :partial => 'task', :locals => { :task => @task } if request.xhr?
         redirect_to tasks_path unless request.xhr?
       end
-      format.json { render :json => @task.bug }
+      format.json { render :json => @task }
     end
   end
 

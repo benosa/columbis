@@ -10,6 +10,8 @@ class Task < ActiveRecord::Base
   scope :order_created, order('created_at DESC')
   scope :by_status, ->(status) { where(status: status) }
 
+  default_scope :order => 'id DESC'
+
   scope :filtered, ->(filter) {
     filter.inject(scoped) do |combine_scope, (field, value)|
       case field.to_sym
@@ -26,7 +28,7 @@ class Task < ActiveRecord::Base
 
     indexes user(:login), :as => :user, :sortable => true
     indexes executer(:login), :as => :executer, :sortable => true
-    indexes body
+    indexes body, :sortable => true
     has :id
     has :user_id
     has :executer_id

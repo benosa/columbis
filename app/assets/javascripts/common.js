@@ -1,7 +1,7 @@
 $(function(){
 
   // Toggle checked attribute for hidden checkbox by clicking on corresponding label
-  $("label.checkbox").on('click', function(e){
+  $(document.body).on('click', 'label.checkbox', function(e){
     e.preventDefault();
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
@@ -12,8 +12,6 @@ $(function(){
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
   });
-   
-  $('.popup_hover').popover({trigger: 'hover'})
 
   // $('.editable-select').editableSelect({
   //   bg_iframe: true,
@@ -138,6 +136,7 @@ $(function(){
   });
 
   $('label.required').tooltip();
+
 });
 
 function customizeSelect(selector, is_container, options) {

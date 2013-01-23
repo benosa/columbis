@@ -1,43 +1,23 @@
-%table.reservations.tour_operators
-  %th
-    = sort_link :id, t('tasks.num'), :default => :desc
-  %th
-    = sort_link :task, t('task')
-  %th
-    = sort_link :user_id, t('activerecord.attributes.task.user')
-  %th
-    = sort_link :executer_id, t('activerecord.attributes.task.executer')
-  %th
-    = sort_link :status, t('activerecord.attributes.task.status')
-  %th
-    = sort_link :start_date, t('activerecord.attributes.task.start_date')
-  %th
-    = sort_link :end_date, t('activerecord.attributes.task.end_date')
-  %th
-    = sort_link :bug, t('activerecord.attributes.task.bug')
-  %th.actions
-    %span
-      = t('actions')
-  - @tasks.each do |t|
-    %tr{:class => "#{'bug' if t.bug}"}
-      %td
-        = t.id
-      %td.popup_hover{:class => (t.status =='cancel' ? 'del' : ''), :data => {:content => t.body, :placement => 'bottom',  :'original-title' => "# #{t.id}" }}
-        = truncate t.body, length: 80, omission: '...', separator: ''
-      %td
-        = t.user.login
-      %td 
-        = t.executer.login rescue nil
-      %td
-        = t("tasks.#{t.status}")
-      %td
-        = l(t.start_date, format: :long)
-      %td
-        = l(t.end_date, format: :long)
-      %td
-        = label_tag :"bug_#{t.id}", '&nbsp;'.html_safe, class: "checkbox #{'active' if t.bug}"
-        = check_box_tag :"bug_#{t.id}", t.id, t.bug, class: 'bug_checkbox'
-      %td.take
-        = link_to t('tasks.take'), to_user_task_path(t), class: 'btn btn-success', remote: true
-        = link_to t('tasks.finish'), finish_task_path(t), class: 'btn btn-danger finish_task',  remote: true
-        = link_to t('tasks.canсel'), cancel_task_path(t), class: 'btn btn-primary cancel_task',  remote: true
+.current_container
+  %table.reservations.tour_operators
+    %th
+      = sort_link :id, t('tasks.num'), :default => :desc
+    %th
+      = sort_link :body, t('task')
+    %th
+      = sort_link :user, t('activerecord.attributes.task.user')
+    %th
+      = sort_link :executer_id, t('activerecord.attributes.task.executer')
+    %th
+      = sort_link :status, t('activerecord.attributes.task.status')
+    %th
+      = sort_link :start_date, t('activerecord.attributes.task.start_date')
+    %th
+      = sort_link :end_date, t('activerecord.attributes.task.end_date')
+    %th
+      = sort_link :bug, t('activerecord.attributes.task.bug')
+    %th.actions
+      %span
+        = t('actions')
+    - @tasks.each do |t|
+      = render :partial => 'task', :locals => { :task => t }

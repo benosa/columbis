@@ -18,6 +18,9 @@ ru:
     delete: 'Удаленные'
     create: 'Создать'
     finish: 'Завершенные'
+  task_type:
+    bug: 'Баг'
+    offer: 'Предложение'
   activerecord:
     attributes:
       task:

@@ -5,7 +5,6 @@ class TasksController < ApplicationController
   def index
     if search_or_sort?
       options = search_and_sort_options(
-        :with => current_ability.attributes_for(:read, Task),
         :defaults => { :order => :id, :sort_mode => :desc },
         :sql_order => false
       )
@@ -13,7 +12,7 @@ class TasksController < ApplicationController
       @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
       @tasks = Task.sort_by_search_results(@tasks_collection)
     else
-      @tasks_collection = Task.accessible_by(current_ability).includes(:user).paginate(:page => params[:page], :per_page => per_page)
+      @tasks_collection = Task.includes(:user).paginate(:page => params[:page], :per_page => per_page)
       @tasks = @tasks_collection.all
     end
     render :partial => 'tasks' if request.xhr?
@@ -51,7 +50,10 @@ class TasksController < ApplicationController
   def bug
     @task.update_attribute :bug, (params[:state] == '1')
     respond_to do |format|
-      format.html { redirect_to tasks_path }
+      format.html do
+        render :partial => 'task', :locals => { :task => @task } if request.xhr?
+        redirect_to tasks_path unless request.xhr?
+      end
       format.json { render :json => @task.bug }
     end
   end

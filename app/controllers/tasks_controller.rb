@@ -3,10 +3,24 @@ class TasksController < ApplicationController
   before_filter :get_tasks, :only => [ :index ]
 
   def index
-    respond_to do |format|
-      format.js
-      format.html
-    end 
+    if search_or_sort?
+      options = search_and_sort_options(
+        :with => current_ability.attributes_for(:read, Task),
+        :defaults => { :order => :id, :sort_mode => :desc },
+        :sql_order => false
+      )
+      set_filters(options)
+      @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
+      @tasks = Task.sort_by_search_results(@tasks_collection)
+    else
+      @tasks_collection = Task.accessible_by(current_ability).includes(:user).paginate(:page => params[:page], :per_page => per_page)
+      @tasks = @tasks_collection.all
+    end
+    render :partial => 'tasks' if request.xhr?
+    # respond_to do |format|
+    #   format.js
+    #   format.html
+    # end 
   end
 
   def new
@@ -66,7 +80,7 @@ class TasksController < ApplicationController
   private
 
   def get_tasks
-    @tasks = Task.by_status(['new', 'work']).order_bug.order_created
+    @tasks = Task.by_status(['new', 'work']).order_created
     if params[:filter]
       @tasks = @tasks.filtered(params[:filter])
     end
@@ -74,5 +88,11 @@ class TasksController < ApplicationController
 
   def get_task
     @task = Task.find(params[:id])
+  end
+
+  def set_filters(options)
+    filter = {}
+    filter[:user_id] = params[:user_id] if params[:user_id].present?
+    options[:with].merge!(filter) unless filter.empty?
   end
 end

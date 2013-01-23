@@ -11,6 +11,7 @@ class Ability
       can :manage, Company, :id => user.company_id
       can :manage, DropdownValue, :common=> true
       can :offline_version, User
+      can :manage, Task
     elsif user.role == 'boss'
       can :switch_view, User
       can :search, Claim

@@ -6,6 +6,11 @@ ru:
     delete: 'Удалить'
     add_task: 'Добавить задачу'
     finish: 'Завершить'
+    num: '№'
+    new: 'новая'
+    cancel: отмененная
+    work: в работе
+    finish: завершенная
   task_status:
     new: 'Новые'
     work: 'В работе'
@@ -21,3 +26,5 @@ ru:
         start_date: 'Дата принятия'
         end_date: 'Дата завершения'
         executer: 'Исполнитель'
+        user: 'Пользователь'
+        status: 'Статус'

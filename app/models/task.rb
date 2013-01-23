@@ -20,4 +20,18 @@ class Task < ActiveRecord::Base
       end
     end
   }
+  extend SearchAndSort
+
+  define_index do
+
+    indexes user(:login), :as => :user, :sortable => true
+    indexes executer(:login), :as => :executer, :sortable => true
+    indexes body
+    has :id
+    has :user_id
+    has :executer_id
+    has :bug, :type => :boolean
+    has :start_date, :end_date, :type => :datetime
+    has :created_at
+  end
 end

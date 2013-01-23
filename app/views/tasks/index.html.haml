@@ -5,6 +5,6 @@
     = form_tag('/tasks', :method => :get, :remote => true, :class => 'filter_frm') do 
       = select_tag('filter[status]', options_for_select(Task::STATUS.map{|st| [ t("task_status.#{st}"), st ] } ), {:include_blank => true})
 .row
-  .span2
+  .span8
     .tasks
       = render 'tasks'

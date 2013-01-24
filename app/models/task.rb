@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
-  STATUS = ['new', 'work', 'finish', 'cancel'].freeze
-  attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status, :bug
+  STATUS = [ 'new','work','cancel','finish' ].freeze
+  attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status, :bug, :comment
 
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
@@ -26,17 +26,16 @@ class Task < ActiveRecord::Base
   extend SearchAndSort
 
   define_index do
-
-    indexes user(:login), :as => :user, :sortable => true
-    indexes executer(:login), :as => :executer, :sortable => true
-    indexes body, :sortable => true
-    indexes status, :sortable => true
+    indexes user(:login), as: :user, sortable: true
+    indexes executer(:login), as: :executer, sortable: true
+    indexes body, sortable: true
+    indexes status, sortable: true
 
     has :id
     has :user_id
     has :executer_id
-    has :bug, :type => :boolean
-    has :created_at, :start_date, :end_date, :type => :datetime
-    has "CRC32(status)", :as => :status_crc32, :type => :integer
+    has :bug, type: :boolean
+    has :created_at, :start_date, :end_date, type: :datetime
+    has "CRC32(status)", :as => :status_crc32, type: :integer
   end
 end

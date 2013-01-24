@@ -12,6 +12,8 @@ ru:
       short_date: "%d.%m"
 
   task: Отзывы
+  tasks: Задачи
+  status: Статус
 
   yep: 'Да'
   nope: 'Нет'

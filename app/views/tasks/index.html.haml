@@ -1,3 +1,4 @@
+
 - set_current_width(:small)
 - content_for(:body_class) { 'panel' }
 
@@ -8,11 +9,11 @@
     = render 'shared/search_field'
 
     = label_tag :status, t('.status')
-    = select_tag :status, options_for_select(status_filter_options, 'active'), :class => 'filter_select', :data => { :param => 'status', :filter => true }
+    = select_tag :status, options_for_select(status_filter_options, 'active'), class: 'filter_select', data: { param: 'status', filter: true }
 
 .tasks
   = render 'tasks'
 
 - content_for(:float_panel) do
-  = link_to t('back'), :back, :class => 'back'
-  = link_to t('.add_task'), new_task_path, :class => 'add_operator'
+  = link_to t('back'), :back, class: 'back'
+  = link_to t('tasks.add_task'), new_task_path, class: 'add_operator'

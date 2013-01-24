@@ -1,6 +1,6 @@
 - task = @task unless local_assigns[:task]
-%tr{:id => "task-#{task.id}", :class => task.bug && 'bug'}
-  %td{ :class => task.bug && 'red_back' }
+%tr{id: "task-#{task.id}", class: task.bug && 'bug'}
+  %td{ class: task.bug && 'red_back' }
     = task.id
   %td.body.popup_hover{:class => task.status =='cancel' && 'del', :title => "\##{task.id} - #{t('task_type.' + (task.bug ? 'bug' : 'offer'))}", :data => { :content => task.body }}
     = truncate task.body, length: 80, omission: '...', separator: ' '
@@ -9,7 +9,7 @@
   %td
     = task.executer.login rescue nil
   %td
-    = t("tasks.#{task.status}")
+    = t("status.#{task.status}")
   %td
     = l(task.start_date, format: :long)
   %td
@@ -18,8 +18,8 @@
     = label_tag :"bug_#{task.id}", '&nbsp;'.html_safe, class: "checkbox #{'active' if task.bug}"
     = check_box_tag :"bug_#{task.id}", task.id, task.bug, class: 'bug_checkbox'
   %td.take
-    = link_to t('tasks.actions.accept'), task_path(task, task: {status: 'work'}), remote: true, method: :put
-    = link_to t('tasks.actions.finish'), task_path(task, task: {status: 'finish'}), class: 'finish_task', remote: true, method: :put, confirm: t('are_you_sure')
-    = link_to t('tasks.actions.canсel'), task_path(task, task: {status: 'cancel'}), class: 'cancel_task', remote: true, method: :put, confirm: t('are_you_sure')
+    = link_to t('status.actions.accept'), task_path(task, task: { status: 'work' }), remote: true, method: :put
+    = link_to t('status.actions.finish'), task_path(task, task: { status: 'finish' }), class: 'finish_task', remote: true, method: :put, confirm: t('are_you_sure')
+    = link_to t('status.actions.canсel'), task_path(task, task: { status: 'cancel' }), class: 'cancel_task', remote: true, method: :put, confirm: t('are_you_sure')
   %td
-    = link_to '', edit_task_path(task), :class => 'edit_row', :title => t('edit')
+    = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit')

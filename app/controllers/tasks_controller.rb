@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish]
+  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update]
   before_filter :get_tasks, :only => [ :index ]
 
   def index
@@ -16,10 +16,6 @@ class TasksController < ApplicationController
       @tasks = @tasks_collection.all
     end
     render :partial => 'tasks' if request.xhr?
-    # respond_to do |format|
-    #   format.js
-    #   format.html
-    # end 
   end
 
   def new
@@ -29,8 +25,9 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(params[:task])
     @task.user = current_user
-    @task.status = 'new'
+    @task.status = 'new' if params[:task][:status].blank?
     @task.body = nil if @task.body.empty?
+    @task.executer_id = params[:task][:executer_id]
 
     if @task.save
       redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
@@ -40,7 +37,6 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = Task.find(params[:id])
     is_updated = @task.update_attributes(task_params)
     respond_to do |format|
       format.html { redirect_to tasks_path }
@@ -91,5 +87,4 @@ class TasksController < ApplicationController
     end
     prms
   end
-
 end

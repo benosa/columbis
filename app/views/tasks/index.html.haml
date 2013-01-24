@@ -8,8 +8,7 @@
     = render 'shared/search_field'
 
     = label_tag :status, t('.status')
-    = select_tag :status, options_for_select(Task::STATUS.map{|st| [ t("task_status.#{st}"), st ] }, params[:status]),
-      :prompt => t('.all'), :class => 'filter_select', :data => { :param => 'status', :filter => true }
+    = select_tag :status, options_for_select(status_filter_options, 'active'), :class => 'filter_select', :data => { :param => 'status', :filter => true }
 
 .tasks
   = render 'tasks'

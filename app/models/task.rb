@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  STATUS = [ 'new','work','cancel','finish' ].freeze
+  STATUS = ['new', 'work', 'finish', 'cancel'].freeze
   attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status, :bug
 
   belongs_to :user
@@ -9,6 +9,7 @@ class Task < ActiveRecord::Base
   scope :order_bug, order('bug DESC')
   scope :order_created, order('created_at DESC')
   scope :by_status, ->(status) { where(status: status) }
+  scope :active, where(status: %w(new work))
 
   default_scope :order => 'id DESC'
 
@@ -36,5 +37,6 @@ class Task < ActiveRecord::Base
     has :executer_id
     has :bug, :type => :boolean
     has :created_at, :start_date, :end_date, :type => :datetime
+    has "CRC32(status)", :as => :status_crc32, :type => :integer
   end
 end

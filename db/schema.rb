@@ -42,8 +42,12 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.integer "country_id"
     t.string  "name"
     t.integer "region_id"
+    t.integer "company_id"
+    t.boolean "common",     :default => false
   end
 
+  add_index "cities", ["common"], :name => "index_cities_on_common"
+  add_index "cities", ["company_id"], :name => "index_cities_on_company_id"
   add_index "cities", ["country_id", "region_id", "name"], :name => "index_cities_on_country_id_and_region_id_and_name"
   add_index "cities", ["name"], :name => "index_cities_on_name"
 
@@ -60,20 +64,20 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.integer  "office_id"
     t.integer  "operator_id"
     t.string   "operator_confirmation"
-    t.string   "visa",                                :default => "nothing_done", :null => false
+    t.string   "visa",                                                               :default => "nothing_done", :null => false
     t.string   "airport_to"
     t.string   "airport_back"
     t.string   "flight_to"
     t.string   "flight_back"
     t.date     "visa_check"
-    t.float    "tour_price",                          :default => 0.0
-    t.float    "visa_price",                          :default => 0.0
-    t.float    "insurance_price",                     :default => 0.0
-    t.float    "additional_insurance_price",          :default => 0.0
-    t.float    "fuel_tax_price",                      :default => 0.0
-    t.float    "primary_currency_price",              :default => 0.0
-    t.float    "course_usd",                          :default => 0.0
-    t.string   "tour_price_currency",                                             :null => false
+    t.float    "tour_price",                                                         :default => 0.0
+    t.float    "visa_price",                                                         :default => 0.0
+    t.float    "insurance_price",                                                    :default => 0.0
+    t.float    "additional_insurance_price",                                         :default => 0.0
+    t.float    "fuel_tax_price",                                                     :default => 0.0
+    t.float    "primary_currency_price",                                             :default => 0.0
+    t.float    "course_usd",                                                         :default => 0.0
+    t.string   "tour_price_currency",                                                                            :null => false
     t.string   "airline"
     t.integer  "visa_count"
     t.string   "meals"
@@ -83,59 +87,62 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.date     "arrival_date"
     t.date     "departure_date"
     t.boolean  "early_reservation"
-    t.string   "docs_note"
+    t.text     "docs_note"
     t.date     "reservation_date"
-    t.string   "memo"
+    t.text     "memo"
     t.integer  "country_id"
-    t.float    "operator_price",                      :default => 0.0,            :null => false
-    t.float    "operator_debt",                       :default => 0.0,            :null => false
-    t.float    "tourist_debt",                        :default => 0.0,            :null => false
+    t.float    "operator_price",                                                     :default => 0.0,            :null => false
+    t.float    "operator_debt",                                                      :default => 0.0,            :null => false
+    t.float    "tourist_debt",                                                       :default => 0.0,            :null => false
     t.datetime "depart_to"
     t.datetime "depart_back"
     t.date     "maturity"
-    t.boolean  "visa_confirmation_flag",              :default => false
+    t.boolean  "visa_confirmation_flag",                                             :default => false
     t.integer  "resort_id"
     t.integer  "city_id"
-    t.string   "visa_price_currency",                 :default => "eur",          :null => false
-    t.string   "insurance_price_currency",            :default => "eur",          :null => false
-    t.string   "additional_insurance_price_currency", :default => "eur",          :null => false
-    t.string   "fuel_tax_price_currency",             :default => "eur",          :null => false
-    t.string   "calculation"
-    t.float    "course_eur",                          :default => 0.0
-    t.float    "tourist_advance",                     :default => 0.0,            :null => false
+    t.string   "visa_price_currency",                                                :default => "eur",          :null => false
+    t.string   "insurance_price_currency",                                           :default => "eur",          :null => false
+    t.string   "additional_insurance_price_currency",                                :default => "eur",          :null => false
+    t.string   "fuel_tax_price_currency",                                            :default => "eur",          :null => false
+    t.text     "calculation"
+    t.float    "course_eur",                                                         :default => 0.0
+    t.float    "tourist_advance",                                                    :default => 0.0,            :null => false
     t.string   "tourist_paid"
     t.string   "operator_price_currency"
-    t.boolean  "closed",                              :default => false
-    t.boolean  "delta",                               :default => true
-    t.float    "operator_advance",                    :default => 0.0,            :null => false
+    t.boolean  "closed",                                                             :default => false
+    t.boolean  "delta",                                                              :default => true
+    t.float    "operator_advance",                                                   :default => 0.0,            :null => false
     t.string   "operator_paid"
-    t.float    "profit",                              :default => 0.0,            :null => false
-    t.float    "profit_in_percent",                   :default => 0.0,            :null => false
+    t.float    "profit",                                                             :default => 0.0,            :null => false
+    t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.string   "transfer"
     t.string   "relocation"
     t.string   "service_class"
-    t.string   "additional_services"
-    t.float    "additional_services_price",           :default => 0.0,            :null => false
-    t.string   "additional_services_price_currency",  :default => "eur",          :null => false
+    t.text     "additional_services"
+    t.float    "additional_services_price",                                          :default => 0.0,            :null => false
+    t.string   "additional_services_price_currency",                                 :default => "eur",          :null => false
     t.string   "medical_insurance"
     t.date     "operator_maturity"
-    t.float    "approved_operator_advance",           :default => 0.0,            :null => false
-    t.float    "approved_tourist_advance",            :default => 0.0,            :null => false
-    t.boolean  "canceled",                            :default => false
-    t.string   "documents_status",                    :default => "not_ready"
-    t.boolean  "memo_tasks_done",                     :default => false
-    t.boolean  "operator_confirmation_flag",          :default => false
+    t.float    "approved_operator_advance",                                          :default => 0.0,            :null => false
+    t.float    "approved_tourist_advance",                                           :default => 0.0,            :null => false
+    t.boolean  "canceled",                                                           :default => false
+    t.string   "documents_status",                                                   :default => "not_ready"
+    t.boolean  "memo_tasks_done",                                                    :default => false
+    t.boolean  "operator_confirmation_flag",                                         :default => false
     t.integer  "insurance_count"
     t.integer  "additional_insurance_count"
     t.integer  "fuel_tax_count"
-    t.float    "children_visa_price",                 :default => 0.0,            :null => false
+    t.float    "children_visa_price",                                                :default => 0.0,            :null => false
     t.integer  "children_visa_count"
-    t.string   "children_visa_price_currency",        :default => "eur",          :null => false
+    t.string   "children_visa_price_currency",                                       :default => "eur",          :null => false
     t.string   "tourist_stat"
-    t.float    "approved_operator_advance_prim",      :default => 0.0,            :null => false
+    t.float    "approved_operator_advance_prim",                                     :default => 0.0,            :null => false
     t.integer  "company_id"
     t.datetime "arrive_to"
     t.datetime "arrive_back"
+    t.integer  "assistant_id"
+    t.decimal  "bonus",                               :precision => 15, :scale => 2, :default => 0.0,            :null => false
+    t.decimal  "bonus_percent",                       :precision => 5,  :scale => 2, :default => 0.0,            :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -157,9 +164,13 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
   end
 
   create_table "countries", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "company_id"
+    t.boolean "common",     :default => false
   end
 
+  add_index "countries", ["common"], :name => "index_countries_on_common"
+  add_index "countries", ["company_id"], :name => "index_countries_on_company_id"
   add_index "countries", ["name"], :name => "index_countries_on_name"
 
   create_table "currency_courses", :force => true do |t|
@@ -305,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "potential",            :default => false, :null => false
+    t.text     "address"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

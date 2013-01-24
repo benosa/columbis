@@ -12,7 +12,7 @@ class TasksController < ApplicationController
       @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
       @tasks = Task.sort_by_search_results(@tasks_collection)
     else
-      @tasks_collection = Task.includes(:user).paginate(:page => params[:page], :per_page => per_page)
+      @tasks_collection = Task.active.includes(:user).paginate(:page => params[:page], :per_page => per_page)
       @tasks = @tasks_collection.all
     end
     render :partial => 'tasks' if request.xhr?
@@ -75,8 +75,11 @@ class TasksController < ApplicationController
   def set_filters(options)
     filter = {}
     filter[:user_id] = params[:user_id] if params[:user_id].present?
+    if params[:status].present? and params[:status] != 'all'
+      filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
+    end
     options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
-    options[:conditions] = (options[:conditions] || {}).merge!({ status: params[:status] }) if params[:status].present?
+    # options[:conditions] = (options[:conditions] || {}).merge!({ status: params[:status] }) if params[:status].present?
   end
 
   def task_params

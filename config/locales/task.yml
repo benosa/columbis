@@ -13,11 +13,12 @@ ru:
       finish: 'Завершить'
     index:
       add_task: 'Добавить задачу'
-      all: 'Все'
       status: 'Статус'
       tasks: 'Задачи'
 
   task_status:
+    active: 'Активные'
+    all: 'Все'
     new: 'Новые'
     work: 'В работе'
     cancel: 'Отмененные'

@@ -14,6 +14,9 @@
 .tasks
   = render 'tasks'
 
+  #comment_form_container{ :style => 'display: none;' }
+    = render 'comment_form'
+
 - content_for(:float_panel) do
   = link_to t('back'), :back, class: 'back'
   = link_to t('tasks.add_task'), new_task_path, class: 'add_operator'

@@ -21,3 +21,11 @@ jQuery ->
     selector: '.popup_hover'
     trigger: 'hover'
     placement: 'right'
+
+  $('.finish_task').popover
+    trigger: 'click',
+    placement: 'bottom',
+    content: ->
+      $($(this).data('contentid')).show()
+
+  $('div[class^="comment_task_form_"]').hide()

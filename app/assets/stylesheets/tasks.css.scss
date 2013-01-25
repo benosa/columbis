@@ -4,6 +4,12 @@
 .add_task{
   margin-bottom: 20px;
 }
+.popover-content .comment_task{
+  textarea{
+    width: 182px;
+    height: 35px;
+  }
+}
 .tasks {
   tr.bug {
     td {

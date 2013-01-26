@@ -40,7 +40,18 @@ class TasksController < ApplicationController
     is_updated = @task.update_attributes(task_params)
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      format.js { is_updated ? render(:update) : render(:text => '') }
+      format.js do
+        if is_updated
+          # Index isn't real time updated before thinking sphinx verison 3
+          # options = set_filters(search_and_sort_options)
+          # @task_in_search = Task.search_for_ids_with_options(options).include?(params[:id].to_i)
+          @task.reload
+          @task_in_search = task_in_search?(@task)
+          render(:update)
+        else
+          render(:text => '')
+        end
+      end
     end
   end
 
@@ -75,7 +86,7 @@ class TasksController < ApplicationController
       filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
     end
     options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
-    # options[:conditions] = (options[:conditions] || {}).merge!({ status: params[:status] }) if params[:status].present?
+    options
   end
 
   def task_params
@@ -87,4 +98,15 @@ class TasksController < ApplicationController
     end
     prms
   end
+
+  def task_in_search?(task)
+    in_search = true
+    if params[:status].present? and params[:status] != 'all'
+      in_search = false if params[:status] == 'active' and !%w(new work).include?(task.status)
+      in_search = false if params[:status] != 'active' and task.status != params[:status]
+    end
+    in_search = false if !params[:bug].nil? and task.status != params[:bug]
+    in_search
+  end
+
 end

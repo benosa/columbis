@@ -47,6 +47,7 @@ $(function(){
   function getParamsData() {
     return $.extend({}, getFilter(), getSort());
   }
+  window.getParamsData = getParamsData;
 
   // Refresh current list
   function listRefresh(data, container_selector) {

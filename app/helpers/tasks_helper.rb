@@ -1,8 +1,5 @@
 module TasksHelper
 
-  def task_is_filtered?(task)
-  end
-
   def status_filter_options
     [
       [t('task_status.active'), 'active'],

@@ -1,31 +1,26 @@
 jQuery ->
 
-  task_update = (task_id, options, do_after_callback = true) ->
+  task_update = (task_id, options) ->
     $task = $("#task-#{task_id}")
+    data = $.extend(getParamsData(), { _method: 'PUT' })
     defaults =
-      url: '/tasks/' + task_id
-      data:
-        _method: 'PUT'
+      url: "/tasks/#{task_id}"
+      data: data
       context: $task
       type: 'POST'
       dataType: 'script'
 
     opts = $.extend(true, {}, defaults, options)
     $ajax = $.ajax(opts)
-    $ajax.done(after_task_update) if do_after_callback is on
-    $ajax
 
-  after_task_update = (data) ->
-    $task = this
-    $task.find('.popup_hover').popover('hide') # hide visible popover, otherwise it stays after replace
-    $task.replaceWith(data)
+  # after_task_update = ($task) ->
+  #   $task.find('.popup_hover').popover('hide') # hide visible popover, otherwise it stays after replace
+  #   $task.replaceWith(data)
 
   $(".tasks").on "change", '.bug_checkbox', ->
-    task_id = @value
     task_update @value,
-      url: "/tasks/#{task_id}/bug"
       data:
-        state: (if (@checked) then 1 else 0)
+        'task[bug]': @checked
 
   $(".filter_frm select").change ->
     $(this.form).trigger('submit');
@@ -71,9 +66,7 @@ jQuery ->
         data:
           'task[status]' : action
           'task[comment]': $form.find('.task_comment').val()
-        , false
       .done ->
         $('.task_comment_popover').remove()
-      .done(after_task_update)
     else
       comment_close()

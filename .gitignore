@@ -28,3 +28,4 @@ public/assets
 *.sublime-project
 *.sublime-workspace
 .idea
+config/initializers/better_errors.rb

@@ -43,6 +43,8 @@ group :development do
   gem 'rvm-capistrano', :require => false
   gem 'capistrano_colors', :require => false
   gem 'annotate', '~> 2.5.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'meta_request', '~> 0.2.1'
   gem 'rack-mini-profiler', '~> 0.1.23'
 end

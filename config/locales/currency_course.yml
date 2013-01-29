@@ -18,6 +18,9 @@ ru:
       course: 'Курс'
       currency: 'Валюта'
 
+  currency_is_not_found: 'Валюта не найдена'
+  primary_currency_course_updating_is_impossible: 'Нельзя обновить курс основной валюты'
+
   activerecord:
     attributes:
       currency_course:

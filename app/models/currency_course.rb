@@ -9,8 +9,8 @@ class CurrencyCourse < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
 
-  validates_inclusion_of :currency, :in => CURRENCIES, :message => I18n.t('currency_code_not_found')
-  validates_exclusion_of :currency, :in => [PRIMARY_CURRENCY], :message => I18n.t('primary_currency_course_updating_is_mpossilble')
+  validates_inclusion_of :currency, :in => CURRENCIES, :message => I18n.t('currency_is_not_found')
+  validates_exclusion_of :currency, :in => [PRIMARY_CURRENCY], :message => I18n.t('primary_currency_course_updating_is_impossible')
 
   validates_presence_of :course, :currency, :on_date
   validates_numericality_of :course

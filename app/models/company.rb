@@ -24,7 +24,7 @@ class Company < ActiveRecord::Base
 
   has_many :printers, :order => :id, :dependent => :destroy
 
-  accepts_nested_attributes_for :address, :reject_if => :all_blank?
+  accepts_nested_attributes_for :address, :reject_if => :all_blank
   accepts_nested_attributes_for :offices, :reject_if => proc { |attributes| attributes['name'].blank? }, :allow_destroy => true
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
@@ -75,6 +75,6 @@ class Company < ActiveRecord::Base
         false
       else
         attributes['template'].blank?
-      end      
+      end
     end
 end

@@ -97,10 +97,3 @@ class ApplicationController < ActionController::Base
   end
 
 end
-
-class Float
-  def amount_in_word( currency)
-    str = RuPropisju.amount_in_word(self, currency)
-    str.mb_chars.capitalize.to_s
-  end
-end

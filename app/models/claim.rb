@@ -602,15 +602,17 @@ class Claim < ActiveRecord::Base
       self.operator_id = claim_params[:operator_id]
     end
 
+    company_cities = []
+
     if claim_params[:city_id].blank?
       unless claim_params[:city].blank?
         City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
-        self.city = City.where( :name => claim_params[:city]).first
+        self.city = City.where(:name => claim_params[:city]).first
       end
     else
       self.city_id = claim_params[:city_id]
     end
-    company.cities << self.city if self.city
+    company_cities << self.city if self.city
 
     country_name = claim_params[:country][:name].strip
     unless country_name.blank?
@@ -632,9 +634,13 @@ class Claim < ActiveRecord::Base
       }) unless City.where(conds).count > 0
       self.resort = City.where(conds).first
     end
-    company.cities << self.resort if self.resort
+    company_cities << self.resort if self.resort
 
-    self.company.city_ids = self.company.city_ids.uniq
+    if !company_cities.empty?
+      company_cities.each do |city|
+        CityCompany.where(:company_id => company, :city_id => city).first_or_create
+      end
+    end
   end
 
   def presence_of_applicant

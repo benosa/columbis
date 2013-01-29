@@ -6,6 +6,11 @@ class Float
   def to_percent
     sprintf("%0.2f", self)
   end
+
+  def amount_in_word(currency)
+    str = RuPropisju.amount_in_words(self, currency)
+    str.capitalize.to_s # str.mb_chars.capitalize.to_s
+  end
 end
 
 class BigDecimal

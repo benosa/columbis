@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130117104206) do
+ActiveRecord::Schema.define(:version => 20130123142211) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -64,20 +64,20 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.integer  "office_id"
     t.integer  "operator_id"
     t.string   "operator_confirmation"
-    t.string   "visa",                                :default => "nothing_done", :null => false
+    t.string   "visa",                                                               :default => "nothing_done", :null => false
     t.string   "airport_to"
     t.string   "airport_back"
     t.string   "flight_to"
     t.string   "flight_back"
     t.date     "visa_check"
-    t.float    "tour_price",                          :default => 0.0
-    t.float    "visa_price",                          :default => 0.0
-    t.float    "insurance_price",                     :default => 0.0
-    t.float    "additional_insurance_price",          :default => 0.0
-    t.float    "fuel_tax_price",                      :default => 0.0
-    t.float    "primary_currency_price",              :default => 0.0
-    t.float    "course_usd",                          :default => 0.0
-    t.string   "tour_price_currency",                                             :null => false
+    t.float    "tour_price",                                                         :default => 0.0
+    t.float    "visa_price",                                                         :default => 0.0
+    t.float    "insurance_price",                                                    :default => 0.0
+    t.float    "additional_insurance_price",                                         :default => 0.0
+    t.float    "fuel_tax_price",                                                     :default => 0.0
+    t.float    "primary_currency_price",                                             :default => 0.0
+    t.float    "course_usd",                                                         :default => 0.0
+    t.string   "tour_price_currency",                                                                            :null => false
     t.string   "airline"
     t.integer  "visa_count"
     t.string   "meals"
@@ -91,13 +91,13 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.date     "reservation_date"
     t.text     "memo"
     t.integer  "country_id"
-    t.float    "operator_price",                      :default => 0.0,            :null => false
-    t.float    "operator_debt",                       :default => 0.0,            :null => false
-    t.float    "tourist_debt",                        :default => 0.0,            :null => false
+    t.float    "operator_price",                                                     :default => 0.0,            :null => false
+    t.float    "operator_debt",                                                      :default => 0.0,            :null => false
+    t.float    "tourist_debt",                                                       :default => 0.0,            :null => false
     t.datetime "depart_to"
     t.datetime "depart_back"
     t.date     "maturity"
-    t.boolean  "visa_confirmation_flag",              :default => false
+    t.boolean  "visa_confirmation_flag",                                             :default => false
     t.integer  "resort_id"
     t.integer  "city_id"
     t.string   "visa_price_currency",                                                :default => "eur",          :null => false
@@ -109,12 +109,12 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.float    "tourist_advance",                                                    :default => 0.0,            :null => false
     t.string   "tourist_paid"
     t.string   "operator_price_currency"
-    t.boolean  "closed",                              :default => false
-    t.boolean  "delta",                               :default => true
-    t.float    "operator_advance",                    :default => 0.0,            :null => false
+    t.boolean  "closed",                                                             :default => false
+    t.boolean  "delta",                                                              :default => true
+    t.float    "operator_advance",                                                   :default => 0.0,            :null => false
     t.string   "operator_paid"
-    t.float    "profit",                              :default => 0.0,            :null => false
-    t.float    "profit_in_percent",                   :default => 0.0,            :null => false
+    t.float    "profit",                                                             :default => 0.0,            :null => false
+    t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.string   "transfer"
     t.string   "relocation"
     t.string   "service_class"
@@ -123,20 +123,20 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.string   "additional_services_price_currency",                                 :default => "eur",          :null => false
     t.string   "medical_insurance"
     t.date     "operator_maturity"
-    t.float    "approved_operator_advance",           :default => 0.0,            :null => false
-    t.float    "approved_tourist_advance",            :default => 0.0,            :null => false
-    t.boolean  "canceled",                            :default => false
-    t.string   "documents_status",                    :default => "not_ready"
-    t.boolean  "memo_tasks_done",                     :default => false
-    t.boolean  "operator_confirmation_flag",          :default => false
+    t.float    "approved_operator_advance",                                          :default => 0.0,            :null => false
+    t.float    "approved_tourist_advance",                                           :default => 0.0,            :null => false
+    t.boolean  "canceled",                                                           :default => false
+    t.string   "documents_status",                                                   :default => "not_ready"
+    t.boolean  "memo_tasks_done",                                                    :default => false
+    t.boolean  "operator_confirmation_flag",                                         :default => false
     t.integer  "insurance_count"
     t.integer  "additional_insurance_count"
     t.integer  "fuel_tax_count"
-    t.float    "children_visa_price",                 :default => 0.0,            :null => false
+    t.float    "children_visa_price",                                                :default => 0.0,            :null => false
     t.integer  "children_visa_count"
-    t.string   "children_visa_price_currency",        :default => "eur",          :null => false
+    t.string   "children_visa_price_currency",                                       :default => "eur",          :null => false
     t.string   "tourist_stat"
-    t.float    "approved_operator_advance_prim",      :default => 0.0,            :null => false
+    t.float    "approved_operator_advance_prim",                                     :default => 0.0,            :null => false
     t.integer  "company_id"
     t.datetime "arrive_to"
     t.datetime "arrive_back"
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.boolean  "bug",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "comment"
   end
 
   create_table "tourist_claims", :force => true do |t|
@@ -316,6 +317,7 @@ ActiveRecord::Schema.define(:version => 20130117104206) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "potential",            :default => false, :null => false
+    t.text     "address"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

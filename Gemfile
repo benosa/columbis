@@ -22,7 +22,6 @@ gem 'carrierwave'
 gem 'smt_rails', '~> 0.2.1'
 
 gem 'state_machine'
-gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -41,6 +40,7 @@ group :development do
   gem 'capistrano', :require => false
   gem 'rvm-capistrano', :require => false
   gem 'capistrano_colors', :require => false
+  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
 end
 
 group :development, :test do

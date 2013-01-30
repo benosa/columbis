@@ -13,5 +13,6 @@
 //= require best_in_place
 //= require_tree ../../templates
 //= require_tree ./templates
+//= require_tree ./pages
 //= require common
 //= require_tree .

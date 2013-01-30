@@ -11,6 +11,8 @@ ru:
       long: "%d.%m.%Y %H:%M"
       short_date: "%d.%m"
 
+  task: Отзывы
+
   yep: 'Да'
   nope: 'Нет'
   yes: 'Да'

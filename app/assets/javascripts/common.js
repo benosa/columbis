@@ -1,7 +1,7 @@
 $(function(){
 
   // Toggle checked attribute for hidden checkbox by clicking on corresponding label
-  $("label.checkbox").on('click', function(e){
+  $(document.body).on('click', 'label.checkbox', function(e){
     e.preventDefault();
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
@@ -12,6 +12,19 @@ $(function(){
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
   });
+
+  // $('.editable-select').editableSelect({
+  //   bg_iframe: true,
+  //   onSelect: function(list_item) {
+  //     // alert('List item text: '+ list_item.text());
+  //     // 'this' is a reference to the instance of EditableSelect
+  //     // object, so you have full access to everything there
+  //     // alert('Input value: '+ this.text.val());
+  //   },
+  //   case_sensitive: false, // If set to true, the user has to type in an exact
+  //                       // match for the item to get highlighted
+  //   items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+  // });
 
   // user color
   $('#user_color').live('change', function(event){

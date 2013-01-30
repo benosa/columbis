@@ -6,7 +6,14 @@ Tourism::Application.routes.draw do
 
   resources :airlines
   resources :currency_courses
-
+  resources :tasks do
+    member do
+      get 'to_user'
+      get 'cancel'
+      post 'bug'
+      get 'finish'
+    end
+  end
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'

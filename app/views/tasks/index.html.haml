@@ -1,0 +1,10 @@
+.row
+  .span2
+    .add_task
+      = link_to 'Добавить задачу', new_task_path, :class => 'btn btn-primary'
+    = form_tag('/tasks', :method => :get, :remote => true, :class => 'filter_frm') do 
+      = select_tag('filter[status]', options_for_select(Task::STATUS.map{|st| [ t("task_status.#{st}"), st ] } ), {:include_blank => true})
+.row
+  .span8
+    .tasks
+      = render 'tasks'

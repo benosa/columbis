@@ -44,8 +44,8 @@ module Tourism
 
     config.generators do |g|
       g.test_framework :rspec
-      g.template_engine :haml
-      g.fixture_replacement :fabrication, :dir => "spec/fabricators"
+      #g.template_engine :haml
+      #g.fixture_replacement :fabrication, :dir => "spec/fabricators"
     end
 
     # Enable the asset pipeline

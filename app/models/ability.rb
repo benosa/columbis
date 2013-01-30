@@ -11,6 +11,7 @@ class Ability
       can :manage, Company, :id => user.company_id
       can :manage, DropdownValue, :common=> true
       can :offline_version, User
+      can :manage, Task
     elsif user.role == 'boss'
       can :switch_view, User
       can :search, Claim
@@ -51,6 +52,7 @@ class Ability
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
       can :offline_version, User
+      can :manage, Task
     else
       can [:update, :destroy], User, :id => user.id
     end

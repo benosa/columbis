@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
 
   belongs_to :company
   belongs_to :office
+  has_many :tasks
 
   before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
 

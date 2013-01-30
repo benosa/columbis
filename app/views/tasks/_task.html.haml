@@ -1,14 +1,15 @@
 - task = @task unless local_assigns[:task]
+- comment_length = task.comment && task.comment.length > 80
 %tr{id: "task-#{task.id}", class: "task #{'bug' if task.bug}", data: {id: task.id}}
   %td{ class: task.bug && 'red_back' }
     = task.id
   %td.body{:class => [task.status =='cancel' && 'del', (task.body.length > 80) && 'popup_hover'], :title => "\##{task.id} - #{t('task_type.' + (task.bug ? 'bug' : 'offer'))}", :data => { :content => (task.body.length > 80) && task.body }}
     = truncate task.body, length: 80, omission: '...', separator: ' '
 
-  %td.comment{ :title => "\##{task.id} #{t('.comment')}", :class => (task.comment.length > 80) && 'popup_hover', :data => { :content => (task.comment.length > 80) && task.comment }}
+  %td.comment{ :title => "\##{task.id} #{t('.comment')}", :class => (comment_length) && 'popup_hover', :data => { :content => (comment_length) && task.comment }}
     = truncate task.comment, length: 80, omission: '...', separator: ' '
   %td
-    = task.user.login
+    = task.user.login rescue nil
   %td
     = task.executer.login rescue nil
   %td

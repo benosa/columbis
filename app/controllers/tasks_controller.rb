@@ -30,6 +30,7 @@ class TasksController < ApplicationController
     @task.executer_id = params[:task][:executer_id]
 
     if @task.save
+      #task.status.new_task
       redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
     else
       render :action => :new
@@ -109,5 +110,4 @@ class TasksController < ApplicationController
     in_search = false if !params[:bug].nil? and task.status != params[:bug]
     in_search
   end
-
 end

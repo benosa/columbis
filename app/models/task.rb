@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
   STATUS = [ 'new','work','cancel','finish' ].freeze
-  attr_accessible :user_id, :body, :start_date, :end_date, :executer, :status, :bug, :comment
+  attr_accessible :user_id, :body, :start_date, :end_date, :executer_id, :executer, :status, :bug, :comment
 
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
@@ -10,6 +10,12 @@ class Task < ActiveRecord::Base
   scope :order_created, order('created_at DESC')
   scope :by_status, ->(status) { where(status: status) }
   scope :active, where(status: %w(new work))
+
+  after_save do |record|
+    if record.status_changed?
+      Mailer.task_info(record).deliver
+    end
+  end
 
   default_scope :order => 'id DESC'
 
@@ -37,5 +43,17 @@ class Task < ActiveRecord::Base
     has :bug, type: :boolean
     has :created_at, :start_date, :end_date, type: :datetime
     has "CRC32(status)", :as => :status_crc32, type: :integer
+  end
+
+  state_machine :status do
+    after_transition any => :finish do |task, transition|
+      Mailer.task_info(task).deliver
+    end
+    after_transition any => :new do |task, transition|
+      Mailer.task_info(task).deliver
+    end
+    event :new_task do
+      transition any - [ :new ] => :new
+    end
   end
 end

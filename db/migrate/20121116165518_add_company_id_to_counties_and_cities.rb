@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddCompanyIdToCountiesAndCities < ActiveRecord::Migration
   def up
     add_column :countries, :company_id, :integer

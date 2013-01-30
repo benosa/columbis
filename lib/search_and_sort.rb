@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Extending active record models with thinking sphinx integration for searching and sorting
 module SearchAndSort
 

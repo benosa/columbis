@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class TasksController < ApplicationController
   before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update, :update_status]
   before_filter :get_tasks, :only => [ :index ]

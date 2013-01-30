@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class SetTextTypeToLongTextFields < ActiveRecord::Migration
   def up
     change_column :claims, :memo, :text

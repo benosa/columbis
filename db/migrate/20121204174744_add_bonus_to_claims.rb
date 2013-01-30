@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddBonusToClaims < ActiveRecord::Migration
   def change
     add_column :claims, :bonus, :decimal, :precision => 15, :scale => 2, :default => 0.0, :null => false

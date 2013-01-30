@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveClientsToTourists < ActiveRecord::Migration
   def up
     add_column :tourists, :potential, :boolean, :null => false, :default => false

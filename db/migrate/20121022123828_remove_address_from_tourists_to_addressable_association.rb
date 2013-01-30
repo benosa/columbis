@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveAddressFromTouristsToAddressableAssociation < ActiveRecord::Migration
   def up
     # Remove address data to addresses table

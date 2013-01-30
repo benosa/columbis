@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module TasksHelper
 
   def status_filter_options

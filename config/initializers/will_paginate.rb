@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Set default form builder
 ActionView::Base.default_form_builder = TourismFormBuilder
 

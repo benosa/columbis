@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Float
   def to_money
     sprintf("%0.0f", self)

@@ -23,6 +23,7 @@ gem 'thinking-sphinx', '2.0.14'
 gem 'carrierwave', '0.8.0'
 gem 'smt_rails', '~> 0.2.4'
 gem 'best_in_place', '~> 2.0.2'
+gem 'state_machine'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -47,6 +48,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request', '~> 0.2.1'
   gem 'rack-mini-profiler', '~> 0.1.23'
+  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing for state_machine
 end
 
 group :development, :test do

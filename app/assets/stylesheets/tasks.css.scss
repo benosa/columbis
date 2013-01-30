@@ -1,21 +1,14 @@
 // Place all the styles related to the tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.task_body{
-  margin-top: 17px;
-  textarea {
-    height: 200px;
-    width: 1000px;
-  }
-}
 .add_task{
   margin-bottom: 20px;
 }
+
 .tasks {
-  margin-top: 50px;
   tr.bug {
     td {
-      background-color: #FF6666;
+      background-color: #FCE8E9;
     }
   }
 
@@ -27,5 +20,27 @@
 
   .del{
     text-decoration: line-through;
+  }
+}
+
+.comment_form {
+  .task_comment {
+    width: 195px;
+    height: 55px;
+    padding-top: 5px;
+  }
+  .actions {
+    margin-top: 12px;
+  }
+}
+
+.form_block_content .fake_row .task_body{
+  textarea {
+    width: 240px !important;
+  }
+}
+.form_block_content .fake_row .task_comment{
+  textarea {
+    width: 240px !important;
   }
 }

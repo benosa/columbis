@@ -1,33 +1,55 @@
 ru:
   tasks:
     send: 'Отправить'
-    take: 'Принять'
-    canсel: 'Отменить'
-    delete: 'Удалить'
     add_task: 'Добавить задачу'
-    finish: 'Завершить'
     num: '№'
+    index:
+      tasks: 'Список Задач'
+      add_task: 'Добавить задачу'
+      all: 'Все'
+      status: 'Статус'
+    form:
+      common: 'Общие данные'
+    new:
+      new_task: 'Новая задача'
+      task: Отзыв
+    comment_form:
+      comment: 'Комментарий'
+    task:
+      comment: 'Комментарий'
+
+  send: Отправить
+
+  status:
     new: 'новая'
     cancel: отмененная
     work: в работе
     finish: завершенная
+    actions:
+      accept: 'Принять'
+      canсel: 'Отменить'
+      finish: 'Завершить'
+
   task_status:
+    active: 'Активные'
+    all: 'Все'
     new: 'Новые'
     work: 'В работе'
     cancel: 'Отмененные'
     delete: 'Удаленные'
     create: 'Создать'
-    finish: 'Завершенные'
+    finish: 'Завершенные'  
   task_type:
     bug: 'Баг'
     offer: 'Предложение'
   activerecord:
     attributes:
       task:
-        body: 'Отзыв'
+        body: 'Описание'
         bug: 'Баг'
         start_date: 'Дата принятия'
         end_date: 'Дата завершения'
         executer: 'Исполнитель'
         user: 'Пользователь'
         status: 'Статус'
+        comment: 'Комментарии'

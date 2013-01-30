@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
 
   default_scope :order => [:last_name, :first_name, :middle_name]
 
+  scope :admins, where( role: 'admin')
+
   def last_boss?
     User.where('role = \'boss\' AND company_id = ? AND id != ?', company_id, id).empty?
   end

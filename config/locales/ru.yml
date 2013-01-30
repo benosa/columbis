@@ -12,6 +12,8 @@ ru:
       short_date: "%d.%m"
 
   task: Отзывы
+  tasks: Задачи
+  status: Статус
 
   yep: 'Да'
   nope: 'Нет'
@@ -34,6 +36,8 @@ ru:
   save: 'Сохранить'
   delete: 'Удалить'
   download: 'Скачать'
+  cancel: 'Отменить'
+  close: 'Закрыть'
 
   logout: 'Выйти'
   login: 'Войти'

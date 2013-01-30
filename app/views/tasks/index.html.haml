@@ -1,10 +1,22 @@
-.row
-  .span2
-    .add_task
-      = link_to 'Добавить задачу', new_task_path, :class => 'btn btn-primary'
-    = form_tag('/tasks', :method => :get, :remote => true, :class => 'filter_frm') do 
-      = select_tag('filter[status]', options_for_select(Task::STATUS.map{|st| [ t("task_status.#{st}"), st ] } ), {:include_blank => true})
-.row
-  .span8
-    .tasks
-      = render 'tasks'
+
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.tasks')
+
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+
+    = label_tag :status, t('.status')
+    = select_tag :status, options_for_select(status_filter_options, 'active'), class: 'filter_select', data: { param: 'status', filter: true }
+
+.tasks
+  = render 'tasks'
+
+  #comment_form_container{ :style => 'display: none;' }
+    = render 'comment_form'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, class: 'back'
+  = link_to t('tasks.add_task'), new_task_path, class: 'add_operator'

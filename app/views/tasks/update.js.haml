@@ -1,0 +1,6 @@
+- if @task_in_search
+  $task = $("#task-#{@task.id}");
+  $task.find('.popup_hover').popover('hide');
+  $task.replaceWith("#{ j(render :partial => 'task') }");
+- else
+  $("#task-#{@task.id}").fadeOut('slow');

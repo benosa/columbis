@@ -1,0 +1,5 @@
+.comment_form{ :data => { :title => t('.comment') } }
+  = text_area_tag 'task[comment]', nil, :class => 'task_comment'
+  %p.actions
+    = link_to t('save'), '#', :class => 'save_btn btn btn-mini btn-primary'
+    = link_to t('close'), '#', :class => 'close_btn btn btn-mini'

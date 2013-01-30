@@ -20,7 +20,6 @@ gem 'stringex'
 gem 'thinking-sphinx', '2.0.13'
 gem 'carrierwave'
 gem 'smt_rails', '~> 0.2.1'
-
 gem 'state_machine'
 
 # Gems used only for assets and not required
@@ -40,7 +39,7 @@ group :development do
   gem 'capistrano', :require => false
   gem 'rvm-capistrano', :require => false
   gem 'capistrano_colors', :require => false
-  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
+  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing for state_machine
 end
 
 group :development, :test do

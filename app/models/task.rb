@@ -5,17 +5,12 @@ class Task < ActiveRecord::Base
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
   validates :body, :presence => true
+  validates :executer, :presence => true, :if => proc { |task| task.status != 'new' }
 
   scope :order_bug, order('bug DESC')
   scope :order_created, order('created_at DESC')
   scope :by_status, ->(status) { where(status: status) }
   scope :active, where(status: %w(new work))
-
-  after_save do |record|
-    if record.status_changed?
-      Mailer.task_info(record).deliver
-    end
-  end
 
   default_scope :order => 'id DESC'
 
@@ -45,15 +40,32 @@ class Task < ActiveRecord::Base
     has "CRC32(status)", :as => :status_crc32, type: :integer
   end
 
-  state_machine :status do
-    after_transition any => :finish do |task, transition|
-      Mailer.task_info(task).deliver
+  state_machine :status, initial: :new do
+    event :work do
+      transition all - [ :work ] => :work
     end
-    after_transition any => :new do |task, transition|
-      Mailer.task_info(task).deliver
+    event :finish do
+      transition all - [ :finish ] => :finish
     end
-    event :new_task do
-      transition any - [ :new ] => :new
+    event :cancel do
+      transition all - [ :cancel ] => :cancel
+    end
+
+    before_transition on: :work do |task, transition|
+      executer = transition.args.first # the first argument for event must be a user
+      attrs = transition.args[1] || {} # the second argument might be a hash of attributes
+      task.assign_attributes({ executer: executer, start_date: Time.now, end_date: nil }.merge!(attrs))
+      task.valid?
+    end
+    before_transition on: [:finish, :cancel] do |task, transition|
+      executer = transition.args.first # the first argument for event must be a user
+      attrs = transition.args[1] || {} # the second argument might be a hash of attributes
+      task.assign_attributes({ executer: executer, end_date: Time.now }.merge!(attrs))
+      task.valid?
+    end
+
+    after_transition any => any - :new do |task, transition|
+      Mailer.task_info(task).deliver
     end
   end
 end

@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update]
+  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update, :update_status]
   before_filter :get_tasks, :only => [ :index ]
 
   def index
@@ -38,7 +38,14 @@ class TasksController < ApplicationController
   end
 
   def update
-    is_updated = @task.update_attributes(task_params)
+    tparams = task_params
+    is_updated = true
+    if tparams[:status].present?
+      status = tparams.delete(:status)
+      comment = tparams.delete(:comment)
+      is_updated = @task.fire_status_event(status, current_user, comment && {comment: comment}) # state_machine event firing
+    end
+    is_updated = @task.update_attributes(tparams) if (is_updated and !tparams.empty?)
     respond_to do |format|
       format.html { redirect_to tasks_path }
       format.js do
@@ -48,9 +55,9 @@ class TasksController < ApplicationController
           # @task_in_search = Task.search_for_ids_with_options(options).include?(params[:id].to_i)
           @task.reload
           @task_in_search = task_in_search?(@task)
-          render(:update)
+          render :update
         else
-          render(:text => '')
+          render :text => ''
         end
       end
     end
@@ -93,10 +100,10 @@ class TasksController < ApplicationController
   def task_params
     return {} unless params[:task]
     prms = params[:task].dup
-    case
-    when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.now, :end_date => nil })
-    when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
-    end
+    # case
+    # when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.now, :end_date => nil })
+    # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
+    # end
     prms.delete(:comment) if prms[:comment].blank?
     prms
   end

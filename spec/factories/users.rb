@@ -12,8 +12,9 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    login { FactoryGirl.generate(:login) }
+    email { FactoryGirl.generate(:email) }
+    
     last_name 'Иванов'
     first_name 'Иван'
     middle_name 'Иванович'
@@ -26,8 +27,8 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    login { FactoryGirl.next(:login) }
+    email { FactoryGirl.next(:email) }
     last_name 'Сидоров'
     first_name 'Сидор'
     middle_name 'Сидорович'

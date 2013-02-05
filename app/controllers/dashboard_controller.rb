@@ -26,7 +26,7 @@ class DashboardController < ApplicationController
   end
 
   def create_manifest
-    require 'lib/tourism_manifest'
+    require './lib/tourism_manifest'
     TourismManifest.write_manifest_file(view_context)
     render :text => 'OK' if request.present?
   end

@@ -132,6 +132,7 @@ class Claim < ActiveRecord::Base
 
       unless self.errors.any?
         remove_unused_payments
+        check_not_null_fields
         self.save
       end
     end
@@ -501,7 +502,7 @@ class Claim < ActiveRecord::Base
     self.tourist_paid = create_paid_string(:in)
 
     # profit amount available only full payment
-    if approved_operator_advance_prim >= operator_price
+    if approved_operator_advance_prim >= operator_price.to_f
 
       self.profit = primary_currency_price - approved_operator_advance
 
@@ -515,6 +516,16 @@ class Claim < ActiveRecord::Base
     else
       self.profit = 0
       self.profit_in_percent = 0
+    end
+  end
+
+  def check_not_null_fields
+    Claim.columns.each do |col|
+      if !col.null and self[col.name].nil? # Prevent null values in not null fields
+        convertor = "to_#{col.type.to_s.first}".to_sym
+        convertor = :to_s unless nil.respond_to?(convertor)
+        self[col.name] = nil.send(convertor)
+      end
     end
   end
 
@@ -713,6 +724,7 @@ class Claim < ActiveRecord::Base
       'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
       'СайтКомпании' => company.try(:site),
       'ФИО' => applicant.try(:full_name),
+      'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', '),
       'Адрес' => applicant.try(:address),
       'ТелефонТуриста' => applicant.try(:phone_number),
       'ДатаРождения' => applicant.try(:date_of_birth),

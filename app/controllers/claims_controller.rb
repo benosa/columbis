@@ -35,10 +35,8 @@ class ClaimsController < ApplicationController
   end
 
   def autocomplete_resort
-    country_id = params[:country_id]
-    country_id = if params[:country_id].to_i > 0 # country_id is a digit
-      params[:country_id]
-    else # country_id is a string - name of country
+    country_id = params[:country_id].mb_chars
+    country_id = unless country_id.to_i > 0 # country_id is a string - name of country
       country_name = params[:country_id].strip
       cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
       Country.where(cond).first.try(:id)

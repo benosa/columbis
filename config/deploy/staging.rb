@@ -9,3 +9,5 @@ set :domain, "tourism-dev.devmen.com"
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
+
+require 'capistrano-unicorn'

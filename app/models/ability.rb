@@ -6,7 +6,7 @@ class Ability
     user ||= User.new
 
     if user.role == 'admin'
-      can :manage, :all, :company_id => user.company_id
+      can :manage, :all #, :company_id => user.company_id
       cannot :manage, Company
       can :manage, Company, :id => user.company_id
       can :manage, DropdownValue, :common=> true

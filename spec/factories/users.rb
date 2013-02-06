@@ -8,12 +8,16 @@ FactoryGirl.define do
     "login#{n}"
   end
 
+
   factory :admin, :class => User do
     association :company
     association :office
 
-    login { FactoryGirl.generate(:login) }
-    email { FactoryGirl.generate(:email) }
+    # login { FactoryGirl.generate(:login) }
+    # email { FactoryGirl.generate(:email) }
+
+    email { Faker::Internet.email }
+    login { Faker::Name.name }
     
     last_name 'Иванов'
     first_name 'Иван'

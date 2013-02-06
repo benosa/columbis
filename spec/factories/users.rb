@@ -15,7 +15,6 @@ FactoryGirl.define do
 
     # login { FactoryGirl.generate(:login) }
     # email { FactoryGirl.generate(:email) }
-
     email { Faker::Internet.email }
     login { Faker::Name.name }
     

@@ -2,7 +2,7 @@
 class TasksController < ApplicationController
   load_and_authorize_resource
 
-  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update, :update_status]
+  before_filter :get_task, :only => [ :to_user, :destroy, :cancel, :bug, :finish, :update, :update_status, :edit]
   before_filter :get_tasks, :only => [ :index ]
 
   def index
@@ -25,6 +25,11 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  def edit
+    @task.update_attributes params[:task]
+    #redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
+  end
+
   def create
     @task = Task.new(params[:task])
     @task.user = current_user
@@ -33,7 +38,6 @@ class TasksController < ApplicationController
     @task.executer_id = params[:task][:executer_id]
 
     if @task.save
-      #task.status.new_task
       redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
     else
       render :action => :new
@@ -108,6 +112,7 @@ class TasksController < ApplicationController
     # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
     # end
     prms.delete(:comment) if prms[:comment].blank?
+    #raise prms.inspect
     prms
   end
 

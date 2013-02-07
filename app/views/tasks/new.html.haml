@@ -5,7 +5,7 @@
 
 = form_for @task do |form|
   - @form_id = form.options[:html][:id]
-  = render partial: 'form', locals: { f: form }
+  = render partial: 'form', locals: { f: form, task: @task}
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, class: 'back'

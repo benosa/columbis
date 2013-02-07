@@ -17,6 +17,8 @@ ru:
       comment: 'Комментарий'
     task:
       comment: 'Комментарий'
+    edit:
+      edit_task: Редактирование задачи
 
   send: Отправить
 

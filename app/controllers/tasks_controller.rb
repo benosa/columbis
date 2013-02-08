@@ -27,7 +27,6 @@ class TasksController < ApplicationController
 
   def edit
     @task.update_attributes params[:task]
-    #redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
   end
 
   def create
@@ -100,6 +99,13 @@ class TasksController < ApplicationController
     if params[:status].present? and params[:status] != 'all'
       filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
     end
+
+    if params[:type].present? and params[:type] != 'all'
+      if params[:type] == 'bug'
+        filter[:bug] = true
+      end
+    end
+
     options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
     options
   end

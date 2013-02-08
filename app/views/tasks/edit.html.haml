@@ -1,0 +1,12 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel task edit_operator' }
+
+- title t('.edit_task')
+
+= form_for @task do |form|
+  - @form_id = form.options[:html][:id]
+  = render partial: 'form', locals: { f: form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, class: 'back'
+  = link_to (current_user.role == 'admin' ? t('save') :t('send') ), '#', class: 'save', data: { submit: @form_id }

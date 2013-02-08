@@ -25,6 +25,8 @@ gem 'smt_rails', '~> 0.2.4'
 gem 'best_in_place', '~> 2.0.2'
 gem 'state_machine'
 
+gem 'unicorn', '~> 4.5.0'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -43,6 +45,7 @@ group :development do
   gem 'capistrano', :require => false
   gem 'rvm-capistrano', :require => false
   gem 'capistrano_colors', :require => false
+  gem 'capistrano-unicorn', :require => false
   gem 'annotate', '~> 2.5.0'
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -63,19 +66,6 @@ group :development, :test do
   gem 'faker', '1.1.2'
   gem 'hirb', '0.7.0'
 
-  case RbConfig::CONFIG['host_os']
-    when /darwin/i
-      gem 'rb-fsevent'
-      gem 'growl'
-    when /linux/i
-      gem 'libnotify'
-      gem 'rb-inotify'
-    when /mswin|windows/i
-      gem 'rb-fchange'
-      gem 'win32console'
-      gem 'rb-notifu'
-  end
-
   gem 'guard', '~> 1.6.0'
   gem 'guard-bundler', '>= 1.0.0'
   gem 'guard-rails', '>= 0.1.1'
@@ -89,5 +79,5 @@ group :test do
 end
 
 group :production do
-  gem 'exception_notification', '~> 3.0.0' #, :group => %w(staging staging2)
+  gem 'exception_notification', '~> 3.0.0', :group => %w(staging staging2)
 end

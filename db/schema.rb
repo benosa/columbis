@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -291,8 +291,8 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "comment"
   end
 
@@ -317,7 +317,6 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "potential",            :default => false, :null => false
-    t.text     "address"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

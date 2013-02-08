@@ -44,7 +44,7 @@ Tourism::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( jquery-ui.css )
+  config.assets.precompile += %w( jquery-ui.css new_design/css/low.css new_design/css/middle.css new_design/css/high.css common.css css3-mediaqueries.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

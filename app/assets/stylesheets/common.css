@@ -4,10 +4,15 @@
 *= require tourists
 *= require dropdown_values
 *= require catalogs
+*= require tasks
 */
 
 body, input, textarea {
   font-size: 12px;
+}
+
+body {
+  background: url("/assets/new_design/images/html.png") repeat-x scroll center top #E7E7E7;
 }
 
 .clear { clear: both; }

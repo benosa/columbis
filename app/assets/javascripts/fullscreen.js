@@ -1,6 +1,6 @@
 $(function() {
 
-  var fullScreen = {
+  var fullScrn = {
     cancel: function(el) {
         var requestMethod = el.cancelFullScreen||el.webkitCancelFullScreen||el.mozCancelFullScreen||el.exitFullscreen;
         if (requestMethod) { // cancel full screen.
@@ -41,7 +41,7 @@ $(function() {
     }
   };
 
-  window.fullScreen = fullScreen;
+  window.fullScrn = fullScrn;
 
   $('#fullscreen-link').on('click', function(e) {
     e.preventDefault();
@@ -50,7 +50,7 @@ $(function() {
         text = active ? $t.data('flscr') : $t.data('flscr-cancel');
 
     $t.toggleClass('active').text(text);
-    window.fullScreen.toggle();
+    window.fullScrn.toggle();
   });
 
 });

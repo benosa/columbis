@@ -14,7 +14,7 @@ class DropdownValue < ActiveRecord::Base
     indexes :list, :value, :sortable => true
     has :common, :type => :boolean
     has :company_id
-    # set_property :delta => true
+    set_property :delta => true
   end
 
   sphinx_scope(:by_list) { { :order => [:list, :id] } }

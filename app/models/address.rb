@@ -15,7 +15,7 @@ class Address < ActiveRecord::Base
             :street, :phone_number, :joint_address, :sortable => true
     has :zip_code
     has :company_id
-    # set_property :delta => true
+    set_property :delta => true
   end
 
   sphinx_scope(:by_joint) { { :order => :joint_address } }

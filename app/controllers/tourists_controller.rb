@@ -31,6 +31,7 @@ class TouristsController < ApplicationController
   end
 
   def edit
+    @tourist.build_address unless @tourist.address
   end
 
   def update

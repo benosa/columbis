@@ -39,6 +39,8 @@ class Task < ActiveRecord::Base
     has :bug, type: :boolean
     has :created_at, :start_date, :end_date, type: :datetime
     has "CRC32(status)", :as => :status_crc32, type: :integer
+
+    set_property :delta => true
   end
 
   state_machine :status, initial: :new do

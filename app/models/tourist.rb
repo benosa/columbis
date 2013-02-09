@@ -32,7 +32,8 @@ class Tourist < ActiveRecord::Base
     has :passport_valid_until, :date_of_birth, :type => :datetime
     has :potential, :type => :boolean
     has :company_id
-    # set_property :delta => true
+
+    set_property :delta => true
   end
 
   sphinx_scope(:clients_by_full_name) do

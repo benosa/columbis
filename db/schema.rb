@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130123142211) do
+ActiveRecord::Schema.define(:version => 20130209180319) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.text     "joint_address"
+    t.boolean  "delta",            :default => true
   end
 
   add_index "addresses", ["joint_address"], :name => "index_addresses_on_joint_address"
@@ -190,6 +191,7 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.string  "value"
     t.integer "company_id"
     t.boolean "common",     :default => false
+    t.boolean "delta",      :default => true
   end
 
   add_index "dropdown_values", ["list"], :name => "index_dropdown_values_on_list"
@@ -244,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.date     "insurer_contract_start"
     t.date     "insurer_contract_end"
     t.string   "insurer_provision"
+    t.boolean  "delta",                  :default => true
   end
 
   create_table "payments", :force => true do |t|
@@ -294,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.text     "comment"
+    t.boolean  "delta",       :default => true
   end
 
   create_table "tourist_claims", :force => true do |t|
@@ -317,13 +321,14 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "potential",            :default => false, :null => false
+    t.boolean  "delta",                :default => true
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",   :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -342,6 +347,7 @@ ActiveRecord::Schema.define(:version => 20130123142211) do
     t.integer  "office_id"
     t.string   "color"
     t.integer  "company_id"
+    t.boolean  "delta",                                 :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

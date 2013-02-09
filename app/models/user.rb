@@ -36,7 +36,8 @@ class User < ActiveRecord::Base
     indexes office(:name), :as => :office, :sortable => true
     has :company_id
     has :office_id
-    # set_property :delta => true
+
+    set_property :delta => true
   end
 
   sphinx_scope(:by_fio) { { :order => [:last_name, :first_name, :middle_name] } }

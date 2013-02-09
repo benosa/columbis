@@ -22,7 +22,7 @@ class Operator < ActiveRecord::Base
     indexes :name, :register_number, :register_series, :inn, :ogrn, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :company_id
-    # set_property :delta => true
+    set_property :delta => true
   end
 
   sphinx_scope(:by_name) { { :order => :name } }

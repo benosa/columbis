@@ -7,7 +7,8 @@ $(function(){
         $checkbox = $('#' + $t.attr('for'));
     $t.toggleClass('active');
     $checkbox.attr('checked', $t.hasClass('active')).trigger('change');
-  }).each(function() { // Set initial state for label.checkbox's
+  });
+  $('label.checkbox').each(function() { // Set initial state for label.checkbox's
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');

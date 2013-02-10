@@ -8,6 +8,7 @@ class Operator < ActiveRecord::Base
   attr_protected :company_id
 
   belongs_to :company
+  has_many :claims, :inverse_of => :operator
   has_many :payments, :as => :recipient
   has_one :address, :as => :addressable, :dependent => :destroy
 

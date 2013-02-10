@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class Address < ActiveRecord::Base
-  attr_protected :company_id
+  attr_accessible :company_id, :region, :street, :house_number, :housing, :office_number, :phone_number, :zip_code, :joint_address
   belongs_to :company
   belongs_to :addressable, :polymorphic => true
 
@@ -17,6 +17,9 @@ class Address < ActiveRecord::Base
     has :company_id
     set_property :delta => true
   end
+  # Set delta flag for related asscociation models
+  after_save :set_delta_flag
+  after_destroy :set_delta_flag
 
   sphinx_scope(:by_joint) { { :order => :joint_address } }
   default_sphinx_scope :by_joint
@@ -27,7 +30,7 @@ class Address < ActiveRecord::Base
 
   def pretty_full_address(with_phone = true)
     str = "#{region}, #{street}, #{house_number}, #{housing}, #{office_number}, #{zip_code}".strip
-    str.gsub(/,\W*,/, ',').gsub(/(^,\W*)|(,\W*$)/, '').strip
+    str.gsub(/,[\s,]+/, ',').sub(/^,\s*/, '').sub(/,\s*$/, '').gsub(/,(\S)/, ', \1').strip
   end
 
   def self.left_join(model)
@@ -37,4 +40,15 @@ class Address < ActiveRecord::Base
   def self.order_text(column, dir = :asc)
     "#{table_name}.#{column} #{dir}"
   end
+
+  private
+
+    def set_delta_flag
+      model = addressable_type.constantize
+      record = model.find(addressable_id)
+      if record.respond_to?(:delta)
+        record.delta = true
+        record.save
+      end
+    end
 end

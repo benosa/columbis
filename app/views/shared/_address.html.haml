@@ -14,3 +14,4 @@
 = f.text_field :zip_code, :class => 'address_input'
 %p= f.label :joint_address, t('addresses.shared.presentation')
 = f.text_area :joint_address, :class => 'address_textarea'
+= f.hidden_field :company_id, value: f.object.company_id || current_company.id

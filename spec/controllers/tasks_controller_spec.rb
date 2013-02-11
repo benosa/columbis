@@ -39,7 +39,6 @@ describe TasksController do
     end
 
     it 'should render tasks/new' do
-      puts response.body
       response.should render_template('new')
     end
 
@@ -51,7 +50,6 @@ describe TasksController do
   describe 'POST create' do
     def do_task
       post :create, task: { body: 'Test create task', status: 'new' }
-      #"task"=>{"body"=>"123456", "executer_id"=>"", "status"=>"new", "bug"=>"0", "comment"=>""}}
     end
 
     it 'should redirect to tasks' do

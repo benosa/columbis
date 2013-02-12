@@ -10,11 +10,14 @@
 
     = label_tag :status, t('.status')
     = select_tag :status, options_for_select(status_filter_options, 'active'), class: 'filter_select', data: { param: 'status', filter: true }
+    = label_tag :type, t('.type')
+    = select_tag :type, options_for_select(type_filter_options, 'all'), class: 'filter_select', data: { param: 'type', filter: true }
+
 
 .tasks
   = render 'tasks'
 
-  #comment_form_container{ :style => 'display: none;' }
+  #comment_form_container{ style: 'display: none;' }
     = render 'comment_form'
 
 - content_for(:float_panel) do

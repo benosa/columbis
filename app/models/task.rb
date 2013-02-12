@@ -44,6 +44,9 @@ class Task < ActiveRecord::Base
   end
 
   state_machine :status, initial: :new do
+    event :new do
+      transition all - [ :new ] => :new
+    end
     event :work do
       transition all - [ :work ] => :work
     end

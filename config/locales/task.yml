@@ -8,6 +8,7 @@ ru:
       add_task: 'Добавить задачу'
       all: 'Все'
       status: 'Статус'
+      type: Тип
     form:
       common: 'Общие данные'
     new:
@@ -17,6 +18,8 @@ ru:
       comment: 'Комментарий'
     task:
       comment: 'Комментарий'
+    edit:
+      edit_task: Редактирование задачи
 
   send: Отправить
 
@@ -38,10 +41,11 @@ ru:
     cancel: 'Отмененные'
     delete: 'Удаленные'
     create: 'Создать'
-    finish: 'Завершенные'  
+    finish: 'Завершенные' 
   task_type:
-    bug: 'Баг'
-    offer: 'Предложение'
+    all: 'Все'
+    bug: 'Баги'
+    offer: 'Предложения'
   activerecord:
     attributes:
       task:

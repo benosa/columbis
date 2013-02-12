@@ -18,6 +18,6 @@
           - if devise_mapping.rememberable?
             %p= f.label :remember_me, :class => 'checkbox left_checkbox'
             = f.check_box :remember_me
-          %p.submit_row= f.submit 'Войти', :class => 'btn'
+          %p.submit_row= f.submit 'Войти', :class => 'btn', :id => 'user_session_submit'
           %p.links
             = render :partial => "devise/shared/links"

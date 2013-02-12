@@ -8,16 +8,12 @@ FactoryGirl.define do
     "login#{n}"
   end
 
-
   factory :admin, :class => User do
     association :company
     association :office
 
-    # login { FactoryGirl.generate(:login) }
-    # email { FactoryGirl.generate(:email) }
     email { Faker::Internet.email }
     login { Faker::Name.name }
-    
     last_name 'Иванов'
     first_name 'Иван'
     middle_name 'Иванович'
@@ -30,8 +26,8 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { FactoryGirl.next(:login) }
-    email { FactoryGirl.next(:email) }
+    email { Faker::Internet.email }
+    login { Faker::Name.name }
     last_name 'Сидоров'
     first_name 'Сидор'
     middle_name 'Сидорович'
@@ -44,8 +40,8 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    email { Faker::Internet.email }
+    login { Faker::Name.name }
     last_name 'Чужой'
     first_name 'Чужак'
     middle_name 'Чужакович'
@@ -58,8 +54,8 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    email { Faker::Internet.email }
+    login { Faker::Name.name }
     last_name 'Смирнов'
     first_name 'Сергей'
     middle_name 'Алексеевич'
@@ -72,8 +68,8 @@ FactoryGirl.define do
     association :company
     association :office
 
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    email { Faker::Internet.email }
+    login { Faker::Name.name }
     last_name 'Петрова'
     first_name 'Мария'
     middle_name 'Ивановна'

@@ -33,14 +33,22 @@ RSpec.configure do |config|
 
   config.include(Macros)
   config.include Devise::TestHelpers, :type => :controller
+  config.include FactoryGirl::Syntax::Methods
 
   # MODULES.each do |m|
   #   module_macros = "#{m.camelize}::Macros".constantize rescue nil
   #   config.include(module_macros) if module_macros
   # end
 
-  Capybara.default_wait_time = 5
+  # Capybara.default_wait_time = 5
   #Capybara.javascript_driver = :webkit
+  Capybara.register_driver :poltergeist do |app|
+    options = {
+      timeout: 10,
+      window_size: [1024, 768]
+    }
+    Capybara::Poltergeist::Driver.new(app, options)
+  end
   Capybara.javascript_driver = :poltergeist
 end
 

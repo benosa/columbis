@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.11'
+gem 'rails', '~> 3.2.12'
+gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
 
 gem 'haml', '~> 3.1.7'

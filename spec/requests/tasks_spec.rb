@@ -64,8 +64,40 @@ describe "Tasks", js: true do
           should have_selector("a[href='#{edit_task_path(task)}']")
         end
       end
-
     end
   end
 
+  describe "submit form" do
+
+    before do
+      visit '/tasks/new'
+    end
+
+    describe "create task" do
+      let(:task_attrs) { attributes_for(:task) }
+
+      context "when invalid attribute values" do
+
+        it "should not create an task, should show error message" do
+          expect {
+            fill_in "task[body]", with: ""
+            click_link I18n.t('save')
+          }.to_not change(Task, :count)
+          current_path.should eq(tasks_path)
+          page.should have_selector("div.error_messages")
+        end
+      end
+
+      context "when invalid attribute values" do
+
+        it "should create an task, redirect to task_path" do
+          expect {
+            fill_in "task[body]", with: "TEST"
+            click_link I18n.t('save')
+          }.to change(Task, :count).by(1)
+          current_path.should eq(tasks_path)
+        end
+      end
+    end
+  end
 end

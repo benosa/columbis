@@ -26,7 +26,6 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task.update_attributes params[:task]
   end
 
   def create

@@ -100,4 +100,40 @@ describe "Tasks", js: true do
       end
     end
   end
+
+  describe "update" do
+    let(:task) { create_list(:new_task, 1)[0]  }
+
+    before do
+      task
+      visit tasks_path
+    end
+
+    it 'edit status task' do
+      click_link "task_#{task.id}"  
+
+      visit edit_task_path(task.id)
+      
+      current_path.should eq("/tasks/#{task.id}/edit")
+    
+      expect {
+        fill_in "task[status]", with: "new"
+        click_link I18n.t('save')
+      }
+
+      task.status.should eq('new')
+    end
+
+    # it 'task click_link accept' do
+
+    #   within "#task-#{task.id}" do
+
+    #     click_link "accept_task_#{task.id}"  
+
+    #     should has_content()
+
+    #   end
+      
+    # end
+  end
 end

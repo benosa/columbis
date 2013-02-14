@@ -8,6 +8,7 @@ development: &my_settings
   use_64_bit: true
 test:
   <<: *my_settings
+  port: 9314
 production:
   <<: *my_settings
   port: 9333

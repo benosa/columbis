@@ -63,6 +63,8 @@ $(function(){
         data = {};
 
     ajaxCounterInc();
+    // Add refreshing properties to container
+    addRefreshing($container);
 
     if (jqxhr)
       jqxhr.abort();
@@ -81,7 +83,9 @@ $(function(){
         if (ajaxCounterDec() > 0)
           return;
 
-        $(this.container).replaceWith(resp);
+        var $container = $(this.container);
+        // replace content
+        $container.replaceWith(resp);
         // reset params changing
         bindParams(this.selector);
         // reset select customization in current list container
@@ -107,6 +111,16 @@ $(function(){
     if (ajaxCounter === 0)
       $('#ajax-indicator').hide();
     return ajaxCounter;
+  }
+
+  function addRefreshing($container) {
+    if (!$container.data('refreshing'))
+      $container.data('refreshing', true).addClass('refreshing');
+  }
+
+  function removeRefreshing($container) {
+    if ($container.data('refreshing'))
+      $container.removeData('refreshing').removeClass('refreshing');
   }
 
   // Bind callbacks on changing filter params

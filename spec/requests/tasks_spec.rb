@@ -1,9 +1,13 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe "Tasks", js: true do
+describe "Tasks:", js: true do
   include ActionView::Helpers
   include TasksHelper
+
+  before(:all) { ThinkingSphinx::Test.start }
+  after(:all) { ThinkingSphinx::Test.stop }
+
   before { login_as_admin }
   subject { page }
 
@@ -14,7 +18,8 @@ describe "Tasks", js: true do
     let(:canceled_tasks) { create_list(:canceled_task, 2) }
     let(:active_tasks) { new_tasks + worked_tasks }
     let(:inactive_tasks) { finished_tasks + canceled_tasks }
-    let(:tasks) { active_tasks + finished_tasks + canceled_tasks }
+    let(:offered_tasks) { create_list(:worked_task, 2, :not_bug) }
+    let(:tasks) { active_tasks + finished_tasks + canceled_tasks + offered_tasks }
 
     before do
       tasks
@@ -24,7 +29,7 @@ describe "Tasks", js: true do
     it "should contain add button, filter by status and bug, links and data for each task" do
       # Add button
       should have_selector("a[href='#{new_task_path}']")
-
+      page.driver.render(Rails.root.join('tmp/page.png'), full: true)
       # Filters
       within "form.filter" do
         should have_field("filter")
@@ -65,6 +70,112 @@ describe "Tasks", js: true do
         end
       end
 
+    end
+
+    describe "when filter by status" do
+      before do
+        page.find('select[name=status]').find(:xpath, '..').click # find(:xpath, '..') - is parent element
+      end
+
+      it "should contain all tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.all')).click
+        wait_for_filter_refresh # wait until ajax request has done
+        tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        # page.driver.render(Rails.root.join('tmp/page1.png'), full: true)
+      end
+
+      it "should contain only active tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.active')).click
+        wait_for_filter_refresh
+        active_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        inactive_tasks.each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only new tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.new')).click
+        wait_for_filter_refresh
+        new_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        (worked_tasks + finished_tasks).each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only worked tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.work')).click
+        wait_for_filter_refresh
+        worked_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        (new_tasks + finished_tasks).each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only finished tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.finish')).click
+        wait_for_filter_refresh
+        finished_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        (canceled_tasks + worked_tasks).each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only canceled tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_status.cancel')).click
+        wait_for_filter_refresh
+        canceled_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        (finished_tasks + worked_tasks).each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+    end
+
+    describe "when filter by bug" do
+      before do
+        page.find('select[name=type]').find(:xpath, '..').click # find(:xpath, '..') - is parent element
+      end
+
+      it "should contain bug and not bug tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_type.all')).click
+        wait_for_filter_refresh
+        (active_tasks + offered_tasks).each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only bug tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_type.bug')).click
+        wait_for_filter_refresh
+        active_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+        offered_tasks.each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+      end
+
+      it "should contain only not bug tasks" do
+        find('.ik_select_block').find('li', text: I18n.t('task_type.offer')).click
+        wait_for_filter_refresh
+        active_tasks.each do |task|
+          has_no_selector?("#task-#{task.id}").should be_true
+        end
+        offered_tasks.each do |task|
+          has_selector?("#task-#{task.id}").should be_true
+        end
+      end
     end
   end
 

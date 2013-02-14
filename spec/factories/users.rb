@@ -20,6 +20,7 @@ FactoryGirl.define do
     role 'admin'
     password 'secret'
     password_confirmation 'secret'
+    delta false
   end
 
   factory :boss, :class => User do

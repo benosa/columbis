@@ -294,8 +294,8 @@ ActiveRecord::Schema.define(:version => 20130209180319) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "comment"
     t.boolean  "delta",       :default => true
   end
@@ -327,8 +327,8 @@ ActiveRecord::Schema.define(:version => 20130209180319) do
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",   :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

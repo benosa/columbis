@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require File.dirname(__FILE__) + "/macros"
 require 'capybara/poltergeist'
+require 'thinking_sphinx/test'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -15,11 +16,8 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.use_transactional_fixtures = false
 
-  config.before(:suite) { DatabaseCleaner.strategy = :truncation }
-  # config.before(:each)  { DatabaseCleaner.start }
-  # config.after(:each)   { DatabaseCleaner.clean }
   config.before(:each) do
-    if Capybara.current_driver == :webkit || Capybara.current_driver == :poltergeist
+    if Capybara.current_driver == :poltergeist
       DatabaseCleaner.strategy = :truncation
     else
       DatabaseCleaner.strategy = :transaction
@@ -31,7 +29,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.include(Macros)
+  config.include Macros
   config.include Devise::TestHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods
 
@@ -40,16 +38,18 @@ RSpec.configure do |config|
   #   config.include(module_macros) if module_macros
   # end
 
-  # Capybara.default_wait_time = 5
   #Capybara.javascript_driver = :webkit
+  Capybara.default_wait_time = 5
   Capybara.register_driver :poltergeist do |app|
     options = {
-      timeout: 10,
+      timeout: 5,
       window_size: [1024, 768]
     }
     Capybara::Poltergeist::Driver.new(app, options)
   end
   Capybara.javascript_driver = :poltergeist
+
+  ThinkingSphinx::Test.init
 end
 
 def test_sign_in(user)

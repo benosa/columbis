@@ -26,5 +26,9 @@ FactoryGirl.define do
         comment { Faker::Lorem.sentence }
       end
     end
+
+    trait :not_bug do
+      bug false
+    end
   end
 end

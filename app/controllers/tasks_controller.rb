@@ -101,9 +101,7 @@ class TasksController < ApplicationController
     end
 
     if params[:type].present? and params[:type] != 'all'
-      if params[:type] == 'bug'
-        filter[:bug] = true
-      end
+      filter[:bug] = params[:type] == 'bug'
     end
 
     options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?

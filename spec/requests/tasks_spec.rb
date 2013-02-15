@@ -31,7 +31,7 @@ describe "Tasks:", js: true do
       it "should contain add button, filter by status and bug, links and data for each task" do
         # Add button
         should have_selector("a[href='#{new_task_path}']")
-        page.driver.render(Rails.root.join('tmp/page.png'), full: true)
+
         # Filters
         within "form.filter" do
           should have_field("filter")
@@ -85,7 +85,6 @@ describe "Tasks:", js: true do
           tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
-          # page.driver.render(Rails.root.join('tmp/page1.png'), full: true)
         end
 
         it "should contain only active tasks" do

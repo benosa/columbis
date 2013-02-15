@@ -19,8 +19,7 @@ config/database.yml
 *.swa
 .sass-cache
 .rvmrc
-config/development.sphinx.conf
-config/production.sphinx.conf
+config/*.sphinx.conf
 db/sphinx/
 public/uploads/
 public/tourism.manifest

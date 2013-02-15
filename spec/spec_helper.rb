@@ -4,9 +4,10 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
-require File.dirname(__FILE__) + "/macros"
 require 'capybara/poltergeist'
 require 'thinking_sphinx/test'
+require File.dirname(__FILE__) + '/activerecord_shared_connection'
+require File.dirname(__FILE__) + "/macros"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -14,31 +15,12 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.use_transactional_fixtures = false
-
-  config.before(:each) do
-    if Capybara.current_driver == :poltergeist
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
-    end
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
+  config.use_transactional_fixtures = true
 
   config.include Macros
   config.include Devise::TestHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods
 
-  # MODULES.each do |m|
-  #   module_macros = "#{m.camelize}::Macros".constantize rescue nil
-  #   config.include(module_macros) if module_macros
-  # end
-
-  #Capybara.javascript_driver = :webkit
   Capybara.default_wait_time = 5
   Capybara.register_driver :poltergeist do |app|
     options = {
@@ -50,6 +32,8 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
 
   ThinkingSphinx::Test.init
+
+  # Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
 
 def test_sign_in(user)

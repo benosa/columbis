@@ -458,10 +458,10 @@ class Claim < ActiveRecord::Base
       next if empty_payment_hash?(payment_hash)
 
       payment_hash[:company_id] = company_id
-      payment_hash[:recipient_id] = Company.first.try(:id)
-      payment_hash[:recipient_type] = Company.first.class.try(:name)
+      payment_hash[:recipient_id] = company_id
+      payment_hash[:recipient_type] = Company.model_name
       payment_hash[:payer_id] = self.applicant.try(:id)
-      payment_hash[:payer_type] = self.applicant.class.try(:name)
+      payment_hash[:payer_type] = self.applicant.class.try(:model_name)
       payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:course] = 1
 
@@ -475,9 +475,9 @@ class Claim < ActiveRecord::Base
 
       payment_hash[:company_id] = company_id
       payment_hash[:recipient_id] = self.operator.try(:id)
-      payment_hash[:recipient_type] = self.operator.class.try(:name)
-      payment_hash[:payer_id] = Company.first.try(:id)
-      payment_hash[:payer_type] = Company.first.class.try(:name)
+      payment_hash[:recipient_type] = self.operator.class.try(:model_name)
+      payment_hash[:payer_id] = company_id
+      payment_hash[:payer_type] = Company.model_name
       payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:reversed_course] = (payment_hash[:currency] == 'rur')
 

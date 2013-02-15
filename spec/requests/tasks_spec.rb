@@ -199,4 +199,74 @@ describe "Tasks:", js: true do
 
   end
 
+  describe "submit form" do
+
+    before do
+      visit '/tasks/new'
+    end
+
+    describe "create task" do
+      let(:task_attrs) { attributes_for(:task) }
+
+      context "when invalid attribute values" do
+
+        it "should not create an task, should show error message" do
+          expect {
+            fill_in "task[body]", with: ""
+            click_link I18n.t('save')
+          }.to_not change(Task, :count)
+          current_path.should eq(tasks_path)
+          page.should have_selector("div.error_messages")
+        end
+      end
+
+      context "when invalid attribute values" do
+
+        it "should create an task, redirect to task_path" do
+          expect {
+            fill_in "task[body]", with: "TEST"
+            click_link I18n.t('save')
+          }.to change(Task, :count).by(1)
+          current_path.should eq(tasks_path)
+        end
+      end
+    end
+  end
+
+  describe "update" do
+    let(:task) { create(:new_task) }
+
+    before do
+      task
+      visit tasks_path
+    end
+
+    it 'edit status task' do
+      click_link "task_#{task.id}"
+
+      visit edit_task_path(task.id)
+
+      current_path.should eq("/tasks/#{task.id}/edit")
+
+      expect {
+        fill_in "task[status]", with: "new"
+        click_link I18n.t('save')
+      }
+
+      task.status.should eq('new')
+    end
+
+    # it 'task click_link accept' do
+
+    #   within "#task-#{task.id}" do
+
+    #     click_link "accept_task_#{task.id}"
+
+    #     should has_content()
+
+    #   end
+
+    # end
+  end
+
 end

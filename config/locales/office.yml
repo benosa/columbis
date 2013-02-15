@@ -10,6 +10,7 @@ ru:
       title: 'Редактировать офис'
     form:
       users: 'Пользователи'
+    default_name: 'Основной'
   activerecord:
     attributes:
       office:

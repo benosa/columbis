@@ -67,17 +67,15 @@
       %h2= t('.offices')
     .form_block_content
       = f.fields_for :offices do |of|
-        - unless of.object.new_record?
-          .fake_row.fields
-            %p= of.label :name, t('.office.name')
-            = of.text_field :name, :class => 'office_input'
-            = link_to '', '#', :class => 'del delete', :title => t('delete')
-            %p= of.label :default_password, t('.office.default_password')
-            = of.text_field :default_password, :class => 'office_input'
-            = of.hidden_field(:_destroy)
-        - else
-          #add_office_block.fake_row.white
-            = link_to t('.add_office'), '#', :class => 'add add_city'
+        .fake_row.fields
+          %p= of.label :name, t('.office.name')
+          = of.text_field :name, :class => 'office_input'
+          = link_to '', '#', :class => 'del delete', :title => t('delete')
+          %p= of.label :default_password, t('.office.default_password')
+          = of.text_field :default_password, :class => 'office_input'
+          = of.hidden_field(:_destroy)
+      #add_office_block.fake_row.white
+        = link_to t('.add_office'), '#', :class => 'add add_city'
 
 
 #printers_block.form_block.grey_block

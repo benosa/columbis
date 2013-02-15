@@ -39,3 +39,6 @@ ru:
         inn: 'ИНН'
       company/printers:
           template: 'Шаблон'
+      company/offices:
+        name: 'Название'
+        default_password: 'Пароль по умолчанию'

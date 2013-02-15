@@ -63,7 +63,7 @@
     width: 96px;
 }
 
-.company .address_input { width: 183px; }
+.company .address_input, .company .address_textarea { width: 183px !important; }
 .company .office_input { width: 160px; }
 .company .highlighted .office_input { width: 156px; }
 

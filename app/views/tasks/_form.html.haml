@@ -1,26 +1,44 @@
-- content_for(:error_messages) do
-  = f.error_messages
+- as_popup ||= false
 
-%fieldset.form_column.first
-  .form_block
-    .block_title
-      %h2= t('.common')
-    .form_block_content
-      .fake_row
-        %p= f.label :body
-        .task_body
-          = f.text_area :body, class: 'wide'
-        - if current_user.role == 'admin'
-          %p= f.label :executer_id
-          = f.select :executer_id, options_for_select(User.admins.map{|u| [ u.login , u.id ] }), include_blank: true, class: 'wide'
-          %p= f.label :status
-          = f.text_field :status, class: 'wide'
-          %p
-            = f.check_box :bug
-            = f.label :bug, class: 'checkbox right_checkbox'
-          %p= f.label :comment
-          .task_comment  
-            = f.text_area :comment, class: 'wide'
+= form_for task do |f|
+  - @form_id = f.options[:html][:id]
 
-%fieldset.form_submit{ style: 'display: none; height: 0;' }
-  = f.submit
+  - unless as_popup
+    - content_for(:error_messages) do
+      = f.error_messages
+  - else
+    = f.error_messages
+
+  %fieldset.form_column.first
+    .form_block
+      .block_title
+        %h2= t('.common')
+      .form_block_content
+        .fake_row
+          %p= f.label :body
+          .task_body
+            = f.text_area :body, class: 'wide'
+          - if current_user.role == 'admin'
+            %p= f.label :executer_id
+            = f.select :executer_id, options_for_select(User.admins.map{|u| [ u.login , u.id ] }), include_blank: true, class: 'wide'
+            %p= f.label :status
+            = f.text_field :status, class: 'wide'
+            %p
+              = f.check_box :bug
+              = f.label :bug, class: 'checkbox right_checkbox'
+            %p= f.label :comment
+            .task_comment
+              = f.text_area :comment, class: 'wide'
+
+  %fieldset.form_submit{ style: 'display: none; height: 0;' }
+    = f.submit
+
+  - if as_popup
+    %p.actions
+      = link_to t('save'), '#', :class => 'save_btn btn btn-mini btn-primary'
+      = link_to t('close'), '#', :class => 'close_btn btn btn-mini'
+
+  - else
+    - content_for(:float_panel) do
+      = link_to t('back'), :back, class: 'back'
+      = link_to (current_user.role == 'admin' ? t('save') :t('send') ), '#', class: 'save', data: { submit: @form_id }

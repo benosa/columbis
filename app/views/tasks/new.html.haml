@@ -1,12 +1,8 @@
+- task = @task
+- task ||= Task.new
 - set_current_width(:small)
 - content_for(:body_class) { 'panel task edit_operator' }
 
 - title ( current_user.role == 'admin' ? t('.new_task') : t('.task') )
 
-= form_for @task do |form|
-  - @form_id = form.options[:html][:id]
-  = render partial: 'form', locals: { f: form, task: @task}
-
-- content_for(:float_panel) do
-  = link_to t('back'), :back, class: 'back'
-  = link_to (current_user.role == 'admin' ? t('save') :t('send') ), '#', class: 'save', data: { submit: @form_id }
+= render 'form', task: task

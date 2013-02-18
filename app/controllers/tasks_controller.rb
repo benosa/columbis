@@ -28,17 +28,30 @@ class TasksController < ApplicationController
   end
 
   def create
+    # raise params.inspect
     @task = Task.new(params[:task])
     @task.user = current_user
     @task.status = 'new' if params[:task][:status].blank?
     @task.body = nil if @task.body.empty?
     @task.executer_id = params[:task][:executer_id]
 
-    if @task.save
-      redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
-    else
-      render :action => :new
+    respond_to do |format|
+      format.html {
+        if @task.save
+          redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
+        else
+          render :action => :new
+        end
+      }
+      format.json {
+        if @task.save
+          render :json => { success: true, location: (current_user.role == 'admin' ? tasks_path : root_path)}
+        else
+          render :json => { success: false, content: render_to_string(partial: 'tasks/form', locals: { task: @task, as_popup: true }, formats: [ :html ]) }
+        end
+      }
     end
+
   end
 
   def update

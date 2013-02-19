@@ -104,15 +104,15 @@
               = truncate(claim.calculation, :length => 8)
             %td{ :title => claim.tourist_advance.to_money, :class => color_for_tourist_advance(claim)}
               = claim.tourist_advance.to_money
-            %td{ :title => claim.tourist_debt.to_money, :class => !claim.canceled? && color_for_tourist_advance(claim) }
+            %td{ :title => claim.tourist_debt.to_money, :class => color_for_tourist_advance(claim) }
               = claim.tourist_debt.to_money
-            %td.thick_border{ :class => !claim.canceled? && color_for_operator_debt(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
+            %td.thick_border{ :class => color_for_operator_price(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
               = truncate(operator_price(claim), :length => 6) if claim.operator_price > 0
             %td{ :title => l(claim.operator_maturity, :format => :short) }
               = l( claim.operator_maturity, :format => :short )
-            %td{ :title => claim.operator_advance.to_money, :class =>  !claim.canceled? && color_for_operator_advance(claim) }
+            %td{ :title => claim.operator_advance.to_money }
               = operator_advance(claim)
-            %td{ :title => claim.operator_debt.to_money, :class =>  (!claim.canceled? && claim.operator_debt != 0) && 'red_back' }
+            %td{ :title => claim.operator_debt.to_money, :class => color_for_operator_debt(claim) }
               = operator_debt(claim)
             - if params[:list_type] == 'accountant_list'
               %td.thick_border= approved_advance(claim, :tourist)

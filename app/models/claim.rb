@@ -346,7 +346,7 @@ class Claim < ActiveRecord::Base
       :has_tourist_debt => claim.has_tourist_debt?,
       # :operator_price => claim.operator_price.to_money,
       :operator_price_short => claim.operator_price > 0 ? helpers.truncate(helpers.operator_price(claim), :length => 6) : '',
-      :operator_price_class => !claim.canceled? && helpers.color_for_operator_debt(claim),
+      :operator_price_class => !claim.canceled? && helpers.color_for_operator_price(claim),
       :operator_maturity => helpers.l( claim.operator_maturity, :format => :long ),
       :operator_maturity_short => helpers.l( claim.operator_maturity, :format => :short ),
       # :operator_advance => claim.operator_advance.to_money,

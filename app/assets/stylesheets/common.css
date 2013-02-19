@@ -86,13 +86,13 @@ body {
 .user_panel li.reglink { height: 33px; padding: 15px 21px 0 10px; }
 /*.user_panel li:first-child span { height: 38px; padding-top: 10px; background-position: left center; vertical-align: middle; }*/
 
-.red_back, .nothing_done, .hot, .not_ready, .received {
+.red_back, .nothing_done, .hot, .not_ready {
   /*background: url(/assets/new_design/images/red_box.png) right repeat-x !important;*/
   background: #FCE8E9 !important;
   color: #990000 !important;
 }
 
-.orange_back, .docs_got, .soon {
+.orange_back, .docs_got, .soon, .received {
   /*background: url(/assets/new_design/images/sand_box.png) right repeat-x #ff8888 !important;*/
   background: #f1e3d0 !important;
 }

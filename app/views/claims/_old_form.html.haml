@@ -128,7 +128,7 @@
               = (@claim.tourist_debt? ? t('yep') : t('nope'))
             %td= t('.tourist_debt')
           %tr
-            %td.framed.operator_debt_ind{ :class => color_for_operator_debt(@claim) }
+            %td.framed.operator_debt_ind{ :class => color_for_operator_price(@claim) }
               = (@claim.operator_debt? ? t('yep') : t('nope'))
             %td= t('.operator_debt')
           %tr

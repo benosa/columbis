@@ -659,7 +659,7 @@ class Claim < ActiveRecord::Base
   end
 
   def primary_currency_price_in_word
-    str = RuPropisju.amount_in_word(primary_currency_price, CurrencyCourse::PRIMARY_CURRENCY)
+    str = primary_currency_price.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
     str.mb_chars.capitalize.to_s
   end
 

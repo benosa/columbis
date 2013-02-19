@@ -34,7 +34,7 @@
         = f.text_field :flight_back, :class => 'expires_date'
       .two_line
         %p= f.label :depart_back, t('.depart')
-        = f.text_field :depart_back, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
+        = f.text_field :depart_back, :class => 'datetimepicker time_departure', :value => l(claim.depart_back, :format => :long)
       .two_line
         %p= f.label :arrive_back, t('.arrive')
-        = f.text_field :arrive_back, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)
+        = f.text_field :arrive_back, :class => 'datetimepicker time_departure', :value => l(claim.arrive_back, :format => :long)

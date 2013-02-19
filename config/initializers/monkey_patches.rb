@@ -8,9 +8,13 @@ class Float
     sprintf("%0.2f", self)
   end
 
-  def amount_in_word(currency)
+  def amount_in_words(currency)
     str = RuPropisju.amount_in_words(self, currency)
     str.capitalize.to_s # str.mb_chars.capitalize.to_s
+  end
+
+  def amount_in_word(currency)
+    self.amount_in_words(currency)
   end
 end
 

@@ -20,8 +20,11 @@ ru:
       comment: 'Комментарий'
     edit:
       edit_task: Редактирование задачи
-
-  send: Отправить
+    review_form:
+      review: 'Ваш отзыв'
+    messages:
+      review_created: 'Ваш отзыв сохранен, спасибо!'
+      review_failed: 'Извините, Ваш отзыв сохранить не удалось!'
 
   status:
     new: 'новая'
@@ -41,7 +44,7 @@ ru:
     cancel: 'Отмененные'
     delete: 'Удаленные'
     create: 'Создать'
-    finish: 'Завершенные' 
+    finish: 'Завершенные'
   task_type:
     all: 'Все'
     bug: 'Баги'
@@ -57,3 +60,4 @@ ru:
         user: 'Пользователь'
         status: 'Статус'
         comment: 'Комментарии'
+

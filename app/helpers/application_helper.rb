@@ -33,6 +33,11 @@ module ApplicationHelper
     url_for(url_params)
   end
 
+  def redirect_back(options = {})
+    default = options.delete(:default) || root_path
+    redirect_to (request.referer.present? && request.referer != request.original_url ? :back : default), options
+  end
+
   def write_manifest_file
     assets = {
       :js => parse_js_paths_from_tags(view_context.javascript_include_tag 'application'),

@@ -34,6 +34,7 @@ ru:
   download: 'Скачать'
   cancel: 'Отменить'
   close: 'Закрыть'
+  send: 'Отправить'
 
   logout: 'Выйти'
   login: 'Войти'

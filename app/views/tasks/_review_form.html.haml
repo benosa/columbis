@@ -1,0 +1,5 @@
+= form_tag create_review_path, class: 'review_form', data: { title: t('.review') } do
+  = text_area_tag :review, nil, :class => 'review'
+  %p.actions
+    = button_tag t('send'), :class => 'save_btn btn btn-primary'
+    = button_tag t('close'), :class => 'close_btn btn', :type => 'button'

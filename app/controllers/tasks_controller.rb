@@ -54,6 +54,16 @@ class TasksController < ApplicationController
 
   end
 
+  def create_review
+    redirect_back unless current_user
+    @task = Task.new(body: params[:review], user: current_user, status: 'new')
+    if @task.save
+      redirect_back notice: t('tasks.messages.review_created')
+    else
+      redirect_to current_path, error: t('tasks.messages.review_failed')
+    end
+  end
+
   def update
     tparams = task_params
     is_updated = true

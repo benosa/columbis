@@ -6,7 +6,7 @@
 
 - content_for :top do
   %form.filter
-    = render 'shared/search_field'
+    = render :partial => 'shared/search_field', :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
 
     = label_tag :status, t('.status')
     = select_tag :status, options_for_select(status_filter_options, 'active'), class: 'filter_select', data: { param: 'status', filter: true }

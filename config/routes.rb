@@ -14,6 +14,7 @@ Tourism::Application.routes.draw do
       get 'finish'
     end
   end
+  match 'create_review' => 'tasks#create_review', as: 'create_review', via: :post
   resources :claims do
     collection do
       get 'autocomplete_tourist_last_name'

@@ -57,9 +57,10 @@
 
           / - if can? :switch_view, current_user
           /   %li= link_for_view_switcher
-        #review_form_container{ style: 'display: none;' }
-          .review_form
-            = render 'tasks/form', task: Task.new, as_popup: true
+        - if user_signed_in?
+          #review_form_container{ style: 'display: none;' }
+            .review_form
+              = render 'tasks/form', task: Task.new, as_popup: true
         %ul.user_panel
           = render 'devise/menu/registration_items'
           = render 'devise/menu/login_items'

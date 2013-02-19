@@ -70,12 +70,9 @@
                 %p{ :title => claim.office.name }
                   = truncate(claim.office.name, :length => 8)
             - else
-              / %td{ :title => claim.user.try(:full_name), :style => "background-color:#{claim.user.try(:color)}",
-              /   :class =>  claim.user.try(:color) && 'user_bg' }
-              %td{ :style => claim.user.try(:color) && "color:#{claim.user.try(:color)}" }
+              %td{ :title => claim.user.try(:full_name) }
+                %span.colored.circular{ :style => claim.user.try(:color) && "background-color: #{claim.user.try(:color)};" }
                 = truncate(claim.user.try(:login), :length => 8)
-              %p{ :title => claim.office.name }
-                = truncate(claim.office.name, :length => 8)
             %td
               %p{ :title => tourists_list(claim) }
                 = truncate(claim.applicant.try(:initials_name), :length => 8)

@@ -5,6 +5,7 @@ class Ability
   def initialize(user)
     user ||= User.new
 
+    # TODO: need refactor to case operator
     if user.role == 'admin'
       can :manage, :all #, :company_id => user.company_id
       cannot :manage, Company
@@ -24,6 +25,7 @@ class Ability
       can :users_sign_in_as, :user
       can :claims_all, :user
       can :offline_version, User
+      can :create, Task
     elsif user.role == 'accountant'
       can :switch_view, User
       can :search, Claim
@@ -34,6 +36,7 @@ class Ability
       can :read, Company, :id => user.company_id
       can :claims_all, :user
       can :offline_version, User
+      can :create, Task
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
@@ -43,6 +46,7 @@ class Ability
       can :read, [Country, Region, City]
       can :claims_all, :user
       can :offline_version, User
+      can :create, Task
     elsif user.role == 'manager'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
@@ -52,7 +56,7 @@ class Ability
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
       can :offline_version, User
-      can :manage, Task
+      can :create, Task
     else
       can [:update, :destroy], User, :id => user.id
     end

@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 class TasksController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource :only => :create_review
 
   before_filter :get_task, :only => [ :edit, :bug, :update ]
 

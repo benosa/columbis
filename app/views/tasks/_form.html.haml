@@ -20,9 +20,14 @@
             = f.text_area :body, class: 'wide'
           - if current_user.role == 'admin'
             %p= f.label :executer_id
-            = f.select :executer_id, options_for_select(User.admins.map{|u| [ u.login , u.id ] }), include_blank: true, class: 'wide'
+            = f.select :executer_id, options_for_select(User.admins.map{|u| [ u.login , u.id ] }, task.executer_id), include_blank: true, class: 'wide'
+            
             %p= f.label :status
-            = f.text_field :status, class: 'wide'
+            = f.select :status, options_for_select(Task::STATUS.map{|s| [ t("status.#{s}") , s.to_sym ]}, task.status), include_blank: true, class: 'wide'
+            
+            / %p= f.label :status
+            / = f.text_field :status, class: 'wide'
+
             %p
               = f.check_box :bug
               = f.label :bug, class: 'checkbox right_checkbox'
@@ -41,4 +46,4 @@
   - else
     - content_for(:float_panel) do
       = link_to t('back'), :back, class: 'back'
-      = link_to (current_user.role == 'admin' ? t('save') :t('send') ), '#', class: 'save', data: { submit: @form_id }
+      = link_to (current_user.role == 'admin' ? t('save') : t('send') ), '#', class: 'save', data: { submit: @form_id }

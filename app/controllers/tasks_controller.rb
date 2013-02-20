@@ -132,7 +132,6 @@ class TasksController < ApplicationController
     # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
     # end
     prms.delete(:comment) if prms[:comment].blank?
-    #raise prms.inspect
     prms
   end
 

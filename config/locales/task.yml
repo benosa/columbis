@@ -56,6 +56,7 @@ ru:
         bug: 'Баг'
         start_date: 'Дата принятия'
         end_date: 'Дата завершения'
+        executer: 'Исполнитель'
         executer_id: 'Исполнитель'
         user: 'Пользователь'
         status: 'Статус'

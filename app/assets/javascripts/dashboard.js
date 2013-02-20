@@ -113,13 +113,13 @@ $(function(){
       url: '/dashboard/get_regions/' + country_id,
       success: function() {
         // reset regions select customization
-        customizeSelect('#regions, #cities');
+        customizeSelect('#region_select, #city_select');
       }
     });
   }
 
-  $('#countries').live('change', function(e){
-    loadRegions($('#countries').val());
+  $('#cities_block').on('change', '#country_select', function(e){
+    loadRegions($('#country_select').val());
   });
 
   // select cities
@@ -128,24 +128,24 @@ $(function(){
       url: '/dashboard/get_cities/' + region_id,
       success: function() {
         // reset cities select customization
-        customizeSelect('#cities');
+        customizeSelect('#city_select');
       }
     });
   }
 
-  $('#regions').live('change', function(e){
-    loadCities($('#regions').val());
+  $('#cities_block').on('change', '#region_select', function(e){
+    loadCities($('#region_select').val());
   });
 
   // add selected city
   $('#cities_block').on('click', '.add', function(e) {
 		e.preventDefault();
 
-    var city_id = $('#cities').val();
+    var city_id = $('#city_select').val();
     if ($('#city_' + city_id).length === 0) {
       var city = {
         id: city_id,
-        name: $('#cities option:selected').text()
+        name: $('#city_select option:selected').text()
       };
       var tmpl = JST['companies/city'].render(city);
       $('#add_city_block').before(tmpl);

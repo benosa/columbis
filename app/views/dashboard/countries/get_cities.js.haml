@@ -1,2 +1,2 @@
-uncustomizeSelect('#cities');
-$('#cities').replaceWith("#{ j(select_tag :cities, options_for_select(@cities_options), :class => 'company_select') }");
+uncustomizeSelect('#city_select');
+$('#city_select').replaceWith("#{ j(select_tag :city_select, options_for_select(@city_select_options), :class => 'company_select') }");

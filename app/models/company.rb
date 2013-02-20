@@ -22,7 +22,7 @@ class Company < ActiveRecord::Base
   has_many :cities, :through => :city_companies, :order => :name, :uniq => true
   has_many :countries, :through => :cities, :group => 'countries.name, countries.id', :order => :name
 
-  has_many :printers, :order => :id, :dependent => :destroy
+  has_many :printers, :order => :id, :dependent => :destroy, inverse_of: :company
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
   accepts_nested_attributes_for :offices, :reject_if => proc { |attributes| attributes['name'].blank? }, :allow_destroy => true

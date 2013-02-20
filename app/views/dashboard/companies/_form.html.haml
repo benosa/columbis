@@ -52,12 +52,12 @@
           = hidden_field_tag 'company[city_ids][]', city.id, :id => "hid_#{city.id}"
 
       #add_city_block.fake_row.white
-        %p= label_tag :countries, t('.country')
-        = select_tag :countries, options_for_select(@countries_options), :class => 'company_select'
-        %p= label_tag :regions, t('.region')
-        = select_tag :regions, options_for_select(@regions_options), :class => 'company_select'
-        %p= label_tag :cities, t('.city')
-        = select_tag :cities, options_for_select(@cities_options), :class => 'company_select'
+        %p= label_tag :country_select, t('.country')
+        = select_tag :country_select, options_for_select(@country_select_options, params[:country_select]), :class => 'company_select'
+        %p= label_tag :region_select, t('.region')
+        = select_tag :region_select, options_for_select(@region_select_options, params[:region_select]), :class => 'company_select'
+        %p= label_tag :city_select, t('.city')
+        = select_tag :city_select, options_for_select(@city_select_options, params[:city_select]), :class => 'company_select'
 
         = link_to t('.add_city'), '#', :class => 'add add_city', :data => { :fail_message => t('.add_city_fail_message') }
 

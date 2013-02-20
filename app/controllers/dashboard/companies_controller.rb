@@ -23,8 +23,10 @@ class Dashboard::CompaniesController < ApplicationController
 
   def edit
     @company = current_company unless @company
+    ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers asscociation
     build_empty_associations
-    build_select_options
+    build_select_options(session[:city_selects])
+    params.merge!(session.delete(:city_selects)) if session[:city_selects].present?
     stub_currents
   end
 
@@ -32,6 +34,7 @@ class Dashboard::CompaniesController < ApplicationController
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
+      session[:city_selects] = city_selects_hash
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
       build_empty_associations
@@ -47,15 +50,24 @@ class Dashboard::CompaniesController < ApplicationController
       @company.build_address unless @company.address.present?
     end
 
-    def build_select_options
-      @countries_options = Country.select([:id, :name]).order(:id).all.map{ |o| [o.name, o.id] } # id = 1 - Russia
-      @regions_options   = regions_for_select(@countries_options.first[1])
-      @cities_options    = !@regions_options.empty? ? cities_for_select(@regions_options.first[1]) : []
+    def build_select_options(current = nil)
+      current ||= {}
+      @country_select_options = Country.select([:id, :name]).order(:id).all.map{ |o| [o.name, o.id] } # id = 1 - Russia
+      @region_select_options   = regions_for_select(current[:country_select] || @country_select_options.first[1])
+      @city_select_options    = !@region_select_options.empty? ? cities_for_select(current[:region_select] || @region_select_options.first[1]) : []
     end
 
     # stub for current_company and current_office
     def stub_currents
       current_user.company = @company
       current_user.office = @company.offices.first || @company.offices.build
+    end
+
+    def city_selects_hash
+      {
+        country_select: params[:country_select],
+        region_select: params[:region_select],
+        city_select: params[:city_select]
+      }
     end
 end

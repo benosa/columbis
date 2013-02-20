@@ -5,7 +5,7 @@ class Printer < ActiveRecord::Base
   attr_accessible :country_id, :template, :mode
   attr_protected :company_id
 
-  belongs_to :company
+  belongs_to :company, inverse_of: :printers
   belongs_to :country
   validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' } # TODO: check company presence
 

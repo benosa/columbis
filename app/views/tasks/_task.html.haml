@@ -23,7 +23,7 @@
     = check_box_tag :"bug_#{task.id}", task.id, task.bug, class: 'bug_checkbox'
   %td.take
     = link_to t('status.actions.accept'), task_path(task, task: { status: 'work' }), remote: true, method: :put, id: "accept_task_#{task.id}"
-    = link_to t('status.actions.finish'), '#', class: 'finish_task'
-    = link_to t('status.actions.canсel'), '#', class: 'cancel_task'
+    = link_to t('status.actions.finish'), '#', class: 'finish_task', id: "finish_task_#{task.id}"
+    = link_to t('status.actions.canсel'), '#', class: 'cancel_task', id: "cancel_task_#{task.id}"
   %td
-    = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "task_#{task.id}"
+    = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"

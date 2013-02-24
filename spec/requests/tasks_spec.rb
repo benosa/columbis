@@ -67,11 +67,9 @@ describe "Tasks:", js: true do
             should have_link(I18n.t('status.actions.accept'))
             should have_link(I18n.t('status.actions.finish'))
             should have_link(I18n.t('status.actions.canсel'))
-
             should have_selector("a[href='#{edit_task_path(task)}']")
           end
         end
-
       end
 
       describe "when filter by status" do
@@ -195,7 +193,6 @@ describe "Tasks:", js: true do
         end
       end
     end
-
   end
 
   describe "submit form" do
@@ -208,13 +205,15 @@ describe "Tasks:", js: true do
       let(:task_attrs) { attributes_for(:task) }
 
       context "when invalid attribute values" do
-
         it "should not create an task, should show error message" do
           expect {
             fill_in "task[body]", with: ""
             click_link I18n.t('save')
           }.to_not change(Task, :count)
+
+          task.comment.should eq('qweqwe')
           current_path.should eq(tasks_path)
+          
           page.should have_selector("div.error_messages")
         end
       end
@@ -232,40 +231,72 @@ describe "Tasks:", js: true do
     end
   end
 
-  describe "update" do
+  describe "tasks list change statuses" do
     let(:task) { create(:new_task) }
+    before(:all) {self.use_transactional_fixtures = false}
 
     before do
       task
       visit tasks_path
     end
 
-    it 'edit status task' do
-      click_link "task_#{task.id}"
+    it 'accept task' do
+      expect {
+        click_link "accept_task_#{task.id}"
+        wait_for_filter_refresh
+        task.reload
+      }.to change(task, :status).to('work')
+      
+      page.find("#task-#{task.id} td:nth-child(7)").text.should_not be_empty
+    end
 
-      visit edit_task_path(task.id)
+    it 'finish task' do
+      expect {
+        click_link "finish_task_#{task.id}"
+        find(".popover-inner .comment_form").fill_in 'task[comment]', 'qweqwe'
+        find(".popover-inner .comment_form").click_link('task_save')        
+        wait_for_filter_refresh
+        task.reload
+      }.to change(task, :status).to('finish')
+      sleep(1) # need becouse fadeOut
+      page.find("#task-#{task.id}").visible?.should be_false
 
+    end
+
+    it 'cancel task' do
+      expect {
+        click_link "cancel_task_#{task.id}"
+        find(".popover-inner .comment_form").click_link('task_save')        
+        wait_for_filter_refresh
+        task.reload
+      }.to change(task, :status).to('cancel')
+      sleep(1) # need becouse fadeOut
+      page.find("#task-#{task.id}").visible?.should be_false
+    end
+  end
+
+  describe "update task" do 
+    
+    let(:task) { create(:new_task) }
+    before(:all) {self.use_transactional_fixtures = false}
+
+    before do
+      task
+      visit tasks_path
+    end
+
+    it 'when invalid attribute values' do
+      click_link "edit_task_#{task.id}"
       current_path.should eq("/tasks/#{task.id}/edit")
 
       expect {
-        fill_in "task[status]", with: "new"
+        #page.fill_in "task[status]", with: "work"
+        fill_in "task[body]", with: "qweqwe" 
+        fill_in "task[comment]", with: "qweqwe"
         click_link I18n.t('save')
-      }
-
-      task.status.should eq('new')
+        save_and_open_page
+        task.reload
+      }.to change(task, :body).to('qweqwe')
     end
-
-    # it 'task click_link accept' do
-
-    #   within "#task-#{task.id}" do
-
-    #     click_link "accept_task_#{task.id}"
-
-    #     should has_content()
-
-    #   end
-
-    # end
   end
-
 end

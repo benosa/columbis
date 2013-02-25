@@ -64,6 +64,10 @@ Tourism::Application.routes.draw do
     end
   end
 
+  namespace :boss do
+    match 'reports/:action' => 'reports#:action'
+  end
+
   scope 'dashboard' do
     match 'local_tables' => 'dashboard#local_tables'
     match 'local_data' => 'dashboard#local_data'

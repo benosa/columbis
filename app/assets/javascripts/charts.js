@@ -39,7 +39,7 @@
           enabled: false
         },
         tooltip: {
-          formatter: function() { return this.series.name + ': ' + this.y; }
+          formatter: function() { return this.series.name + ': ' + this.y.toFixed(2); }
         }
       },
 

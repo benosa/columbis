@@ -1,12 +1,14 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class ReportsController < ApplicationController
+    include BossHelper
 
     def operators
       @report = OperatorReport.new(report_options).prepare
       @amount = @report.amount_compact
       @items  = @report.items_compact
       @total  = @report.total
+      render partial: 'operators' if request.xhr?
     end
 
     private

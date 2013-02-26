@@ -3,3 +3,16 @@ ru:
     title:
       others: 'Остальные'
       other_operators: 'Остальные операторы'
+      row_count: 'Количество рядов'
+    all_rows: 'Все'
+
+  boss:
+    reports:
+      operators:
+        title: 'Операторы'
+        start_date: 'Дата начала'
+        end_date: 'Дата конца'
+        row_count: 'Рядов'
+        operator: 'Оператор'
+        amount: 'Сумма'
+        items: 'Количество заявок'

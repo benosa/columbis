@@ -1,97 +1,17 @@
 - content_for(:head) { javascript_include_tag 'highcharts' } #, 'highcharts/highcharts-more' }
-.charts
-  .chart-left
-    #amount_bar.chart
-    #items_bar.chart
-  .chart-right
-    #amount_pie.chart
-    #items_pie.chart
+- set_current_width(:small)
 
-%table.totals
-  %thead
-    %tr
-      %th id
-      %th Operator
-      %th Amount
-      %th Items
-  %tbody
-    - @total.each do |row|
-      %tr
-        %td= row['id']
-        %td= row['name']
-        %td= row['amount']
-        %td= row['items']
+- title t('.title')
 
-- content_for(:head) do
-  :javascript
-    $(function() {
-      var amount_bar = Charts.bar('amount_bar', {
-        title: {
-          text: 'Amount price'
-        },
-        subtitle: {
-          text: 'First 10 operators'
-        },
-        xAxis: {
-          categories: #{@amount.map{|o| o['name'] }.inspect}
-        },
-        yAxis: {
-          title: {
-            text: 'RUR'
-          }
-        },
-        series: [{
-          name: 'Amount price',
-          data: #{@amount.map{|o| o['amount'] }.inspect}
-        }]
-      });
+- content_for :top do
+  %form.filter
+    = label_tag :start_date, t('.start_date')
+    = text_field_tag :start_date, l(Date.parse(@report.start_date.to_s), format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1 }
 
-      var amount_pie = Charts.pie('amount_pie', {
-        title: {
-          text: 'First 10 operators'
-        },
-        subtitle: {
-          text: 'First 10 operators'
-        },
-        series: [{
-          type: 'pie',
-          name: 'First 10 operators',
-          data: #{@amount.map{|o| [o['name'], o['amount']] }.inspect}
-        }]
-      });
+    = label_tag :end_date, t('.end_date')
+    = text_field_tag :end_date, l(Date.parse(@report.end_date.to_s), format: :long), class: 'datepicker start_date date', data: { param: 'end_date', filter: 1 }
 
-      var items_bar = Charts.bar('items_bar', {
-        title: {
-          text: 'Amount price'
-        },
-        subtitle: {
-            text: 'First 10 operators'
-        },
-        xAxis: {
-          categories: #{@items.map{|o| o['name'] }.inspect}
-        },
-        yAxis: {
-          title: {
-            text: 'RUR'
-          }
-        },
-        series: [{
-          name: 'items price',
-          data: #{@items.map{|o| o['items'] }.inspect}
-        }]
-      });
+    = label_tag :row_count, t('.row_count')
+    = select_tag :row_count, options_for_select(row_count_options), class: 'filter_select', data: { param: 'row_count', filter: 1 }
 
-      var items_pie = Charts.pie('items_pie', {
-        title: {
-          text: 'First 10 operators'
-        },
-        subtitle: {
-            text: 'First 10 operators'
-        },
-        series: [{
-          type: 'pie',
-          name: 'First 10 operators',
-          data: #{@items.map{|o| [o['name'], o['items']] }.inspect}
-        }]
-      });
-    });
+= render partial: 'operators'

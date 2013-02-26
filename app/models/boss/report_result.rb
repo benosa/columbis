@@ -80,7 +80,7 @@ module Boss
 
     def compact(options = {})
       row_count = options[:row_count] || self.row_count
-      return @data.clone if row_count.to_sym == :all
+      return @data.clone if row_count.to_s == 'all'
       row_count = row_count.to_i
 
       columns = (options[:columns].kind_of?(Array) ? options[:columns] : [options[:columns]]) || []

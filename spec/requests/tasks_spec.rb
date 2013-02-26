@@ -204,16 +204,14 @@ describe "Tasks:", js: true do
     describe "create task" do
       let(:task_attrs) { attributes_for(:task) }
 
+
       context "when invalid attribute values" do
         it "should not create an task, should show error message" do
           expect {
             fill_in "task[body]", with: ""
             click_link I18n.t('save')
           }.to_not change(Task, :count)
-
-          task.comment.should eq('qweqwe')
           current_path.should eq(tasks_path)
-          
           page.should have_selector("div.error_messages")
         end
       end
@@ -253,7 +251,7 @@ describe "Tasks:", js: true do
     it 'finish task' do
       expect {
         click_link "finish_task_#{task.id}"
-        find(".popover-inner .comment_form").fill_in 'task[comment]', 'qweqwe'
+        find(".popover-inner .comment_form").fill_in 'task[comment]', with: 'qweqwe'
         find(".popover-inner .comment_form").click_link('task_save')        
         wait_for_filter_refresh
         task.reload
@@ -278,25 +276,38 @@ describe "Tasks:", js: true do
   describe "update task" do 
     
     let(:task) { create(:new_task) }
-    before(:all) {self.use_transactional_fixtures = false}
 
     before do
       task
       visit tasks_path
     end
 
-    it 'when invalid attribute values' do
+    it 'should not create an task, should show error message' do
       click_link "edit_task_#{task.id}"
       current_path.should eq("/tasks/#{task.id}/edit")
 
       expect {
-        #page.fill_in "task[status]", with: "work"
-        fill_in "task[body]", with: "qweqwe" 
-        fill_in "task[comment]", with: "qweqwe"
+        fill_in "task_body", with: ""
+        fill_in "task_comment", with: "qweqwe"
         click_link I18n.t('save')
-        save_and_open_page
+      }.to_not change(task, :body).from(task.body).to('')
+      current_path.should eq("/tasks/#{task.id}")
+      page.should have_selector("div.error_messages")
+    end
+
+    it 'should edit an task, redirect to task_path' do
+      click_link "edit_task_#{task.id}"
+      current_path.should eq("/tasks/#{task.id}/edit")
+
+      expect {
+        fill_in "task_body", with: "qweqwe" 
+        fill_in "task_comment", with: "qweqwe"
+        #page.select t("status.work"), from: "task_status"
+        click_link I18n.t('save')
         task.reload
-      }.to change(task, :body).to('qweqwe')
+      }.to change(task, :body).from(task.body).to('qweqwe')
+      task.comment.should eq("qweqwe")
+      current_path.should eq(tasks_path)
     end
   end
 end

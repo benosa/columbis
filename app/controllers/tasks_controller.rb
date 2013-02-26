@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => :create_review
 
-  before_filter :get_task, :only => [ :edit, :bug, :update ]
+  before_filter :get_task, :only => [ :edit, :bug, :update, :edit ]
 
   def index
     if search_or_sort?
@@ -74,9 +74,16 @@ class TasksController < ApplicationController
       comment = tparams.delete(:comment)
       is_updated = @task.fire_status_event(status, current_user, comment && {comment: comment}) # state_machine event firing
     end
+    tparams[:comment] = comment
     is_updated = @task.update_attributes(tparams) if (is_updated and !tparams.empty?)
     respond_to do |format|
-      format.html { redirect_to tasks_path }
+      format.html {
+        if is_updated
+          redirect_to tasks_path
+        else
+          render :edit
+        end
+      }
       format.js do
         if is_updated
           # Index isn't real time updated before thinking sphinx verison 3

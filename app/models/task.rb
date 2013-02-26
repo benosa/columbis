@@ -34,16 +34,16 @@ class Task < ActiveRecord::Base
 
   state_machine :status, initial: :new do
     event :new do
-      transition all - [ :new ] => :new
+      transition all => :new
     end
     event :work do
-      transition all - [ :work ] => :work
+      transition all => :work
     end
     event :finish do
-      transition all - [ :finish ] => :finish
+      transition all => :finish
     end
     event :cancel do
-      transition all - [ :cancel ] => :cancel
+      transition all => :cancel
     end
 
     before_transition on: :work do |task, transition|

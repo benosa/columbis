@@ -2,7 +2,7 @@
 FactoryGirl.define do
 
   factory :task do
-    association :user, factory: :manager
+    association :user, factory: :admin
     body { Faker::Lorem.sentence }
     bug true
 

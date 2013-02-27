@@ -8,3 +8,5 @@
 //= require jquery.cookie
 //= require bootstrap
 //= require jquery.dotdotdot
+//= require globalize
+//= require globalize.culture.ru.js

@@ -1,37 +1,31 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class Report
-    include ActiveModel::Validations
-    include ActiveModel::Conversion
-    extend  ActiveModel::Naming
+    include ActiveAttr::Model
 
-    attr_accessor :company, :user, :name,
-                  :start_date, :end_date, #, :period
-                  :row_count, :sort_col, :sort_dir #, :currency
-    attr_reader   :results
+    attribute :company
+    attribute :user
+    attribute :name
+    attribute :start_date, type: Date, default: Date.current.beginning_of_month
+    attribute :end_date, type: Date, default: Date.current.end_of_month
+    attribute :row_count, type: Integer, default: 10
+    attribute :show_others, type: Boolean, default: true
+    attribute :sort_col, default: :amount
+    attribute :sort_dir, default: :desc
 
-    delegate :[], :each, :to => :results
+    attr_accessible :company, :user, :name, :start_date, :end_date, :row_count, :show_others, :sort_col, :sort_dir
+
+    attr_reader :results
+
+    # delegate :[], :each, :to => :results
 
     validates_presence_of :company, :start_date, :end_date
 
     # Instance methods
 
-    def initialize(attributes = {})
-      attributes.each do |name, value|
-        a = "#{name}="
-        send(a, value) if respond_to?(a)
-      end
-      @start_date ||= Date.current.beginning_of_month
-      @end_date ||= Date.current.end_of_month
-      @row_count ||= 10
-      @sort_col ||= :amount
-      @sort_dir ||= :desc
-      # @currency ||= ::CurrenceCourse::PRIMARY_CURRENCY
+    def initialize(attributes = nil, options = {})
       @results = {}
-    end
-
-    def persisted?
-      false
+      super
     end
 
     # Must be overrided to get actual results

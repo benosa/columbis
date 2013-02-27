@@ -38,16 +38,16 @@ module Boss
 
       def base_query
         operators.project([operators[:id], operators[:name]])
-          .where(operators[:company_id].eq(@company.id))
+          .where(operators[:company_id].eq(company.id))
           # .group(operators[:id])
       end
 
       def amount_query(options = {})
         query = payments.project(payments[:recipient_id].as('operator_id'), payments[:amount].sum.as('amount'))
-          .where(payments[:company_id].eq(@company.id))
+          .where(payments[:company_id].eq(company.id))
           .where(payments[:recipient_type].eq('Operator'))
-          .where(payments[:payer_type].eq('Company')).where(payments[:payer_id].eq(@company.id))
-          .where(payments[:date_in].gteq(@start_date).and(payments[:date_in].lteq(@end_date)))
+          .where(payments[:payer_type].eq('Company')).where(payments[:payer_id].eq(company.id))
+          .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
           .group(payments[:recipient_id])
           .as('amount_query')
 
@@ -64,8 +64,8 @@ module Boss
 
       def items_query(options = {})
         query = claims.project(claims[:operator_id], claims[:id].count.as('items'))
-                .where(claims[:company_id].eq(@company.id))
-                .where(claims[:reservation_date].gteq(@start_date).and(claims[:reservation_date].lteq(@end_date)))
+                .where(claims[:company_id].eq(company.id))
+                .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
                 .group(claims[:operator_id])
                 .as('items_query')
 

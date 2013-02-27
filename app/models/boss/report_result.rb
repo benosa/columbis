@@ -6,7 +6,7 @@ module Boss
     attr_reader :report, :query, :data
     # attr_accessor :query, :data
 
-    delegate :row_count, :sort_col, :sort_dir, :to => :@report
+    delegate :row_count, :show_others, :sort_col, :sort_dir, :to => :@report
     delegate :[], :to => :@data
 
     def initialize(report, options = {})
@@ -79,9 +79,10 @@ module Boss
     end
 
     def compact(options = {})
-      row_count = options[:row_count] || self.row_count
-      return @data.clone if row_count.to_s == 'all'
-      row_count = row_count.to_i
+      row_count   = options[:row_count] || self.row_count
+      show_others = options[:show_others] || self.show_others
+
+      return @data.clone if row_count == 0
 
       columns = (options[:columns].kind_of?(Array) ? options[:columns] : [options[:columns]]) || []
       if options[:name].kind_of?(Array)
@@ -94,19 +95,23 @@ module Boss
 
       data = @data[0, row_count - 1]
 
-      last = { name_col => title }
-      remaining_data = @data.from(row_count)
-      args = [:to_i]
-      columns.each do |col|
-        if col.kind_of?(Array)
-          column, args = col[0], col.from(1)
-        else
-          column = col
+      if show_others
+        last = { name_col => title }
+        remaining_data = @data.from(row_count)
+        args = [:to_i]
+        columns.each do |col|
+          if col.kind_of?(Array)
+            column, args = col[0], col.from(1)
+          else
+            column = col
+          end
+          last[column] = remaining_data.inject(0){ |sum, row| sum + (row[column].kind_of?(Numeric) ? row[column] : row[column].send(*args)) }
         end
-        last[column] = remaining_data.inject(0){ |sum, row| sum + (row[column].kind_of?(Numeric) ? row[column] : row[column].send(*args)) }
+
+        data << last
       end
 
-      data << last
+      data
     end
 
     # Class methods

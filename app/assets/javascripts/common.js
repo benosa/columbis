@@ -1,5 +1,10 @@
 $(function(){
 
+  // Set Russian cultute for Globalize plugin as default
+  if (window.Globalize) {
+    Globalize.culture('ru');
+  }
+
   // Toggle checked attribute for hidden checkbox by clicking on corresponding label
   $(document.body).on('click', 'label.checkbox', function(e){
     e.preventDefault();
@@ -145,19 +150,29 @@ $(function(){
   });
 
   // Unset filters link
-  $('form.filter .unset_filters').on('click', function(e) {
+  $('form.filter .unset_filters, form.filter .filter_reset').on('click', function(e) {
     e.preventDefault();
     $('form.filter :input[data-param]').each(function() {
-      var $t = $(this);
-      if ($t.is('select'))
-        $t.ikSelect('select', $t.find('option:first-child').val());
-        // $t.val($t.find('option:first-child').val());
-      else
-        $t.val('');
+      var $t = $(this),
+          defval = $t.data('default'),
+          newval = defval !== undefined ? defval : '';
+      if ($t.is('select')) {
+        if (newval == '')
+          newval = $t.find('option:first-child').val();
+        $t.ikSelect('select', newval);
+      } else if ($t.is(':checkbox')) {
+        newval = (!newval || newval === 'false' || newval === '0') ? false : true;
+        $t.attr('checked', newval);
+        $('label[for="' + $t.attr('id') + '"]')[newval ? 'addClass' : 'removeClass']('active');
+      } else {
+        $t.val(newval);
+      }
     });
-    listRefresh({
-      unset_filters: true
-    });
+    var data = {};
+    if ($(this).hasClass('unset_filters')) {
+      data['unset_filters'] = true;
+    }
+    listRefresh(data);
   });
 
 });
@@ -241,8 +256,8 @@ function setDatepicker(selector, is_container, options) {
     buttonImage: false,
     changeMonth: true,
     changeYear: true,
-    yearRange: 'c-10:c+10',
-    dateFormat: 'dd.mm.yy',
+    yearRange: 'c-10:c+10'
+    // dateFormat: 'dd.mm.yy', // Use globalize.js to format value
   }, dpikOptions());
   if (options)
     $.extend(opts, options);

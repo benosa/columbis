@@ -15,14 +15,24 @@ $(function(){
   // Get current filter params
   function getFilter(selector) {
     var filter = {},
-        param, value
         $s = $(selector || ':input[data-filter], a[data-filter].active');
     if (!$s.is('[data-param]'))
       return filter;
     $s.each(function() {
-      param = $(this).data('param');
+      var param, value, to_filter,
+          $t = $(this);
+      param = $t.data('param');
       value = getValue(this);
-      if (param && value && param != '' && value != '')
+      to_filter = param && value && param != '' && value != '';
+      if (to_filter && $t.is(':checkbox')) {
+        var unchecked_value = $t.data('unchecked');
+        if (unchecked_value !== undefined) {
+          value = $t.prop('checked') ? value : unchecked_value;
+          to_filter = true;
+        } else
+          to_filter = $t.prop('checked');
+      }
+      if (to_filter)
         filter[param] = value;
     });
     return filter;
@@ -57,10 +67,11 @@ $(function(){
         $container = $(selector);
     if (!$container.length) return;
     var url = $container.data('url') ||  window.location.href;
-    if (typeof data == 'undefined')
-       data = getParamsData();
-    else if (data === false)
-        data = {};
+    if (data === undefined || $.isEmptyObject(data)) {
+      data = getParamsData();
+    } else if (data === false) {
+      data = {};
+    }
 
     ajaxCounterInc();
     // Add refreshing properties to container

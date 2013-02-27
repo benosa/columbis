@@ -125,3 +125,44 @@
   window.Charts = Charts;
 
 })();
+
+// Onready execution
+$(function() {
+
+  $('.filter select.period').on('change', function() {
+    var period = $(this).val(),
+        current_date = new Date(),
+        d = current_date.getDate(),
+        m = current_date.getMonth(),
+        y = current_date.getFullYear(),
+        start_date, end_date;
+
+    switch (period) {
+      case 'day':
+        start_date = end_date = current_date;
+        break;
+      case 'week':
+        var wd = current_date.getDay(),
+            sd = wd > 0 ? wd - 1 : 6,
+            ed = 6 - sd;
+        start_date = new Date(y, m, d - sd);
+        end_date = new Date(y, m, d + ed);
+        break;
+      case 'month':
+        start_date = new Date(y, m, 1);
+        end_date = new Date(y, m + 1, 0);
+        break;
+      case 'year':
+        start_date = new Date(y, 1, 1);
+        end_date = new Date(y, 12, 0);
+        break;
+    }
+
+    if (start_date && end_date) {
+      $('.filter .start_date').val(Globalize.format(start_date, 'd'));
+      $('.filter .end_date').val(Globalize.format(end_date, 'd'));
+      listRefresh();
+    }
+  });
+
+});

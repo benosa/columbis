@@ -2,7 +2,11 @@
 module BossHelper
 
   def row_count_options
-    [5, 10, 20, [t('report.all_rows'), 'all']]
+    [[t('report.all_rows'), 0], 5, 10, 20]
+  end
+
+  def period_options
+    %w(day week month year).map{ |p| [t("report.period_options.#{p}"), p] }
   end
 
 end

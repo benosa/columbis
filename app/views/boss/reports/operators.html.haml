@@ -5,13 +5,27 @@
 
 - content_for :top do
   %form.filter
+    = label_tag :period, t('.period')
+    = select_tag :period, options_for_select(period_options, 'month'), class: 'period', data: { param: 'period', default: 'month' }
+
     = label_tag :start_date, t('.start_date')
-    = text_field_tag :start_date, l(Date.parse(@report.start_date.to_s), format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1 }
+    = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: l(@report.start_date, format: :long) }
 
     = label_tag :end_date, t('.end_date')
-    = text_field_tag :end_date, l(Date.parse(@report.end_date.to_s), format: :long), class: 'datepicker start_date date', data: { param: 'end_date', filter: 1 }
+    = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: l(@report.end_date, format: :long) }
 
     = label_tag :row_count, t('.row_count')
-    = select_tag :row_count, options_for_select(row_count_options), class: 'filter_select', data: { param: 'row_count', filter: 1 }
+    = select_tag :row_count, options_for_select(row_count_options, @report.row_count), class: 'row_count', data: { param: 'row_count', filter: 1, default: @report.row_count }
+
+    = label_tag :show_others, t('report.title.other_operators'), class: 'checkbox show_others'
+    = check_box_tag :show_others, 1, @report.show_others, data: { param: 'show_others', filter: 1, default: @report.show_others, unchecked: '0' }
+
+    %fieldset
+      - if small_width?
+        = link_to '', '#', id: 'filter_reset', class: 'filter_reset', title: t('.filter_reset')
+        = link_to '', '#', id: 'settings', class: 'settings', title: t('.settings')
+      - else
+        = link_to t('.filter_reset'), '#', id: 'filter_reset', class: 'filter_reset'
+        = link_to t('.settings'), '#', id: 'settings', class: 'settings'
 
 = render partial: 'operators'

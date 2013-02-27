@@ -5,14 +5,22 @@ ru:
       other_operators: 'Остальные операторы'
       row_count: 'Количество рядов'
     all_rows: 'Все'
+    period_options:
+      day: 'День'
+      week: 'Неделя'
+      month: 'Месяц'
+      year: 'Год'
 
   boss:
     reports:
       operators:
         title: 'Операторы'
-        start_date: 'Дата начала'
-        end_date: 'Дата конца'
+        period: 'Период'
+        start_date: 'начало'
+        end_date: 'конец'
         row_count: 'Рядов'
         operator: 'Оператор'
-        amount: 'Сумма'
+        amount: 'Сумма, руб.'
         items: 'Количество заявок'
+        filter_reset: 'Сбросить фильтры'
+        settings: 'Настройки'

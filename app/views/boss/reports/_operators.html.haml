@@ -20,7 +20,6 @@
           %td= row['amount']
           %td= row['items']
 
-- content_for(:head) do
   :javascript
     $(function() {
       var amount_bar = Charts.bar('amount_bar', {

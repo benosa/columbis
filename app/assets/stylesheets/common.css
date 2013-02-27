@@ -277,6 +277,27 @@ div.left {
 /*** Filter bar ***/
 .small_filter { width: 150px !important; }
 .filter_margin { margin-right: 17px !important; }
+
+.filter .settings, .filter .filter_reset {
+  color: #000000;
+  display: block;
+  float: left;
+  font-size: 11px;
+  padding: 1px 0 4px 19px;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
+.filter .settings { background: url("/assets/new_design/images/settings.png") no-repeat; }
+.filter .filter_reset {
+  background: url("/assets/new_design/images/reset.png") no-repeat;
+  margin-right: 17px;
+}
+.low_resolution .filter .settings,
+.low_resolution .filter .unset_filters,
+.low_resolution .filter .filter_reset {
+    height: 14px;
+    padding-left: 0;
+    width: 26px;
+}
 /*** END Filter bar ***/
 
 /*** ikSelect ***/

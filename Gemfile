@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '~> 3.2.12'
 gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
+gem 'unicorn', '~> 4.5.0'
 
 gem 'haml', '~> 3.1.7'
 # Using haml-rails, because haml gem dosn't give generators for rails 3
@@ -25,8 +26,7 @@ gem 'carrierwave', '0.8.0'
 gem 'smt_rails', '~> 0.2.4'
 gem 'best_in_place', '~> 2.0.2'
 gem 'state_machine'
-
-gem 'unicorn', '~> 4.5.0'
+gem 'active_attr', '~> 0.7.0'
 
 # Gems used only for assets and not required
 # in production environments by default.

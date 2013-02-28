@@ -1,0 +1,18 @@
+%ul.settings-menu.dropdown-menu.pull-right
+  %li.settings-menu-inputs
+    %p
+      = label_tag :show_amount, t('.show_amount'), class: 'checkbox show_amount'
+      = check_box_tag :show_amount, 1, true, data: { param: 'show_amount', filter: 1, default: true, unchecked: '0', event: false }
+    %p
+      = label_tag :show_items, t('.show_items'), class: 'checkbox show_items'
+      = check_box_tag :show_items, 1, true, data: { param: 'show_items', filter: 1, default: true, unchecked: '0', event: false }
+    %p
+      = label_tag :show_bars, t('.show_bars'), class: 'checkbox show_bars'
+      = check_box_tag :show_bars, 1, true, data: { param: 'show_bars', filter: 1, default: true, unchecked: '0', event: false }
+    %p
+      = label_tag :show_pies, t('.show_pies'), class: 'checkbox show_pies'
+      = check_box_tag :show_pies, 1, true, data: { param: 'show_pies', filter: 1, default: true, unchecked: '0', event: false }
+  %li.divider
+  %li.settings-menu-buttons
+    %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
+    %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

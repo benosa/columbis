@@ -298,6 +298,22 @@ div.left {
     padding-left: 0;
     width: 26px;
 }
+
+.settings-menu {
+  background-color: #FAFAFA;
+  padding: 11px 19px;
+  min-width: 200px;
+}
+.settings-menu p {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 14px;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
+.filter .settings-menu label { float: none; }
+.settings-menu-inputs { margin-bottom: 15px; }
+.settings-menu-buttons { text-align: right; margin-top: 15px; }
+.settings-menu-buttons .btn + .btn { margin-left: 5px; }
 /*** END Filter bar ***/
 
 /*** ikSelect ***/
@@ -355,6 +371,7 @@ label.required:after { content: "*"; }
 
 input.error, .error input, .error_message input { background-color: #FCE8E9 !important; }
 
+.fake_row { width: auto; }
 .fake_row .two_line p label { margin: 0; }
 .fake_row .ik_select { margin-bottom: 11px; }
 .fake_row textarea { height: 41px; }
@@ -365,6 +382,9 @@ input.error, .error input, .error_message input { background-color: #FCE8E9 !imp
 .address_input { width: 266px; } /* default styles of adress fields */
 .address_textarea { width: 266px !important; padding: 2px 0 2px 10px !important; margin: 0 17px 11px 0 !important; }
 .submit_row { margin-top: 16px; }
+
+label.checkbox { padding: 0 0 0 25px; }
+label.checkbox.right_checkbox { padding: 0 25px 0 0; }
 /*** END forms ***/
 
 /*** messages ***/
@@ -405,3 +425,8 @@ input.error, .error input, .error_message input { background-color: #FCE8E9 !imp
   font-size: 13px;
 }
 /*** END buttons ***/
+
+/*** modals ***/
+/*.dialog { display: none; }*/
+/*.modal-backdrop.nobg { background: none; }*/
+/*** END modals ***/

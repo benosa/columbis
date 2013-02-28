@@ -175,6 +175,56 @@ $(function(){
     listRefresh(data);
   });
 
+  // Remove the backdrop for modal window with 'nobg' class
+  // $('.modal.nobg').on('shown', function() {
+  //   $('.modal-backdrop').addClass('nobg');
+  // });
+  // $('#settings-window').dialog({
+  //   autoOpen: false,
+  //   modal: false
+  // });
+  // $('.settings').on('click', function() {
+  //   $('#settings-window')
+  //     .dialog('option', 'position', { my: 'right top', at: 'rigth bottom', of: this })
+  //     .dialog('open');
+  // });
+
+  // Prevent dropdown from closing after click on it
+  $(document.body).on('click', '.settings-menu', function(e) {
+    e.stopPropagation();
+  });
+
+  // Save current value form inputs on settings menu
+  $('.settings').on('click', function(e) {
+    $(':input[data-param]', '.settings-menu').each(function() {
+      var $t = $(this);
+      $t.data('current-value', $t.val());
+    });
+  })
+
+  // Settings menu buttons handlers
+  $('.settings-menu').on('click', '[role="button"]', function(e) {
+    e.stopPropagation();
+    var $t = $(this),
+        act = $t.attr('rel'),
+        $menu = $t.closest('.settings-menu');
+    if (act == 'save') {
+      listRefresh();
+      // $menu.dropdown('toggle');
+      $menu.dropdown('close');
+    } else if (act == 'close') {
+      $(':input[data-param]', $menu).each(function() {
+        var $t = $(this),
+            curval = $t.data('current-value');
+        if (curval !== undefined) {
+          $t.val(curval).removeData('current-value');
+        }
+      });
+      // $menu.dropdown('toggle');
+      $menu.dropdown('close');
+    }
+  });
+
 });
 
 function customizeSelect(selector, is_container, options) {

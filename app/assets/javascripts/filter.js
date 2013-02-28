@@ -136,7 +136,7 @@ $(function(){
 
   // Bind callbacks on changing filter params
   function bindParams(container) {
-    $(':input[data-param], a[data-param], a[data-sort]', container || document.body).each(function() {
+    $(':input[data-param], a[data-param], a[data-sort]', container || document.body).filter(':not([data-event="false"])').each(function() {
       var $t = $(this),
           event = $t.data('event') || ($(this).is(':input') ? 'change' : 'click');
 

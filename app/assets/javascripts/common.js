@@ -171,47 +171,44 @@ $(function(){
     var data = {};
     if ($(this).hasClass('unset_filters')) {
       data['unset_filters'] = true;
+    } else if ($(this).hasClass('filter_reset')) {
+      data['filter_reset'] = true;
     }
     listRefresh(data);
   });
 
-  // Remove the backdrop for modal window with 'nobg' class
-  // $('.modal.nobg').on('shown', function() {
-  //   $('.modal-backdrop').addClass('nobg');
-  // });
-  // $('#settings-window').dialog({
-  //   autoOpen: false,
-  //   modal: false
-  // });
-  // $('.settings').on('click', function() {
-  //   $('#settings-window')
-  //     .dialog('option', 'position', { my: 'right top', at: 'rigth bottom', of: this })
-  //     .dialog('open');
-  // });
-
-  // Prevent dropdown from closing after click on it
-  $(document.body).on('click', '.settings-menu', function(e) {
-    e.stopPropagation();
+  // Settings menu
+  $('#settings-menu').dialog({
+    autoOpen: false,
+    modal: false,
+    draggable: false,
+    resizable: false,
+    dialogClass: 'settings-menu-dialog',
+    open: function() {
+      $(':input[data-param]', this).each(function() {
+        var $t = $(this);
+        $t.data('current-value', $t.val());
+      });
+    }
   });
 
-  // Save current value form inputs on settings menu
-  $('.settings').on('click', function(e) {
-    $(':input[data-param]', '.settings-menu').each(function() {
-      var $t = $(this);
-      $t.data('current-value', $t.val());
-    });
-  })
+  // Settings menu open button
+  $('#settings').on('click', function() {
+    $('#settings-menu')
+      .dialog('option', 'position', { my: 'right top', at: 'right bottom', of: this })
+      .dialog('open');
+  });
 
-  // Settings menu buttons handlers
-  $('.settings-menu').on('click', '[role="button"]', function(e) {
+  // // Settings menu buttons handlers
+  $('#settings-menu').on('click', '[role="button"]', function(e) {
     e.stopPropagation();
     var $t = $(this),
         act = $t.attr('rel'),
-        $menu = $t.closest('.settings-menu');
+        $menu = $t.closest('#settings-menu');
     if (act == 'save') {
       listRefresh();
       // $menu.dropdown('toggle');
-      $menu.dropdown('close');
+      $menu.dialog('close');
     } else if (act == 'close') {
       $(':input[data-param]', $menu).each(function() {
         var $t = $(this),
@@ -221,7 +218,7 @@ $(function(){
         }
       });
       // $menu.dropdown('toggle');
-      $menu.dropdown('close');
+      $menu.dialog('close');
     }
   });
 

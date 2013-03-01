@@ -27,11 +27,64 @@ module Boss
     end
 
     def amount_compact
-      amount.compact(columns: 'amount', name: I18n.t('report.title.other_operators'))
+      amount.compact(columns: 'amount', name: I18n.t('operator_report.others'))
     end
 
     def items_compact
-      items.compact(columns: 'items', name: I18n.t('report.title.other_operators'))
+      items.compact(columns: 'items', name: I18n.t('operator_report.others'))
+    end
+
+    def bar_settings(factor, data)
+      if factor == :amount
+        title = "#{I18n.t('operator_report.amount')}, #{I18n.t('rur')}"
+        ytitle = I18n.t('rur')
+      elsif factor == :items
+        title = I18n.t('operator_report.items')
+        ytitle = I18n.t('report.pcs')
+      end
+
+      settings = {
+        title: {
+          text: title
+        },
+        subtitle: {
+          text: row_count > 0 ? I18n.t('operator_report.first_operators', count: row_count) : I18n.t('operator_report.all_operators')
+        },
+        xAxis: {
+          categories: data.map{ |o| o['name'] }
+        },
+        yAxis: {
+          title: {
+            text: ytitle
+          }
+        },
+        series: [{
+          name: title,
+          data: data.map{ |o| o[factor.to_s] }
+        }]
+      }.to_json
+    end
+
+    def pie_settings(factor, data)
+      if factor == :amount
+        title = "#{I18n.t('operator_report.amount')}, #{I18n.t('rur')}"
+      elsif factor == :items
+        title = I18n.t('operator_report.items')
+      end
+
+      settings = {
+        title: {
+          text: title
+        },
+        subtitle: {
+          text: row_count > 0 ? I18n.t('operator_report.first_operators', count: row_count) : I18n.t('operator_report.all_operators')
+        },
+        series: [{
+          type: 'pie',
+          name: title,
+          data: data.map{ |o| [o['name'], o[factor.to_s]] }
+        }]
+      }.to_json
     end
 
     private

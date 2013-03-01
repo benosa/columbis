@@ -1,18 +1,32 @@
 ru:
   report:
-    title:
-      others: 'Остальные'
-      other_operators: 'Остальные операторы'
-      row_count: 'Количество рядов'
+    others: 'Остальные'
+    row_count: 'Количество рядов'
+    amount: 'Сумма'
+    items: 'Количество'
     all_rows: 'Все'
+    pcs: 'шт.'
     period_options:
       day: 'День'
       week: 'Неделя'
       month: 'Месяц'
       year: 'Год'
 
+  operator_report:
+    others: 'Остальные операторы'
+    amount: 'Сумма оплаты'
+    items: 'Количество заявок'
+    first_operators: 'Первые %{count} операторов'
+    all_operators: 'Все операторы'
+
   boss:
     reports:
+      settings_menu:
+        settings: 'Настройки'
+        show_bars: 'Полосовая диаграмма'
+        show_pies: 'Круговая диаграмма'
+        show_amount: 'Сумма'
+        show_items: 'Количество заявок'
       operators:
         title: 'Операторы'
         period: 'Период'
@@ -24,5 +38,3 @@ ru:
         items: 'Количество заявок'
         filter_reset: 'Сбросить фильтры'
         settings: 'Настройки'
-        show_bars: 'Полосовая диаграмма'
-        show_pies: 'Круговая диаграмма'

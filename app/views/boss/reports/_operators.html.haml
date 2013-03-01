@@ -1,11 +1,17 @@
 .current_container
   .charts
-    .chart-left
-      #amount_bar.chart
-      #items_bar.chart
-    .chart-right
-      #amount_pie.chart
-      #items_pie.chart
+    - unless params[:show_amount] == '0'
+      .chart-left
+        - unless params[:show_bars] == '0'
+          #amount_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:amount, @amount) } }
+        - unless params[:show_pies] == '0'
+          #amount_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:amount, @amount) } }
+    - unless params[:show_items] == '0'
+      .chart-right
+        - unless params[:show_bars] == '0'
+          #items_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:items, @items) } }
+        - unless params[:show_pies] == '0'
+          #items_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:items, @items) } }
 
   %table.totals.reservations.tour_operators
     %thead
@@ -19,76 +25,3 @@
           %td= row['name']
           %td= row['amount']
           %td= row['items']
-
-  :javascript
-    $(function() {
-      var amount_bar = Charts.bar('amount_bar', {
-        title: {
-          text: 'Amount price'
-        },
-        subtitle: {
-          text: 'First 10 operators'
-        },
-        xAxis: {
-          categories: #{@amount.map{|o| o['name'] }.inspect}
-        },
-        yAxis: {
-          title: {
-            text: 'RUR'
-          }
-        },
-        series: [{
-          name: 'Amount price',
-          data: #{@amount.map{|o| o['amount'] }.inspect}
-        }]
-      });
-
-      var amount_pie = Charts.pie('amount_pie', {
-        title: {
-          text: 'First 10 operators'
-        },
-        subtitle: {
-          text: 'First 10 operators'
-        },
-        series: [{
-          type: 'pie',
-          name: 'First 10 operators',
-          data: #{@amount.map{|o| [o['name'], o['amount']] }.inspect}
-        }]
-      });
-
-      var items_bar = Charts.bar('items_bar', {
-        title: {
-          text: 'Amount price'
-        },
-        subtitle: {
-            text: 'First 10 operators'
-        },
-        xAxis: {
-          categories: #{@items.map{|o| o['name'] }.inspect}
-        },
-        yAxis: {
-          title: {
-            text: 'RUR'
-          }
-        },
-        series: [{
-          name: 'items price',
-          data: #{@items.map{|o| o['items'] }.inspect}
-        }]
-      });
-
-      var items_pie = Charts.pie('items_pie', {
-        title: {
-          text: 'First 10 operators'
-        },
-        subtitle: {
-            text: 'First 10 operators'
-        },
-        series: [{
-          type: 'pie',
-          name: 'First 10 operators',
-          data: #{@items.map{|o| [o['name'], o['items']] }.inspect}
-        }]
-      });
-    });

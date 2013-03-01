@@ -1,5 +1,30 @@
 (function() {
 
+  // Chart object
+  var Chart = function(type, el, options) {
+    this.type = type || 'bar';
+    this.$el = Charts.jqel(el);
+    this.options = options || {}
+    this.highchart = null;
+
+    var defaults = $.extend(true, {}, Charts.defaults[this.type], {
+      chart: {
+        renderTo: this.$el.prop('id')
+      }
+    });
+
+    var data = this.$el.data('chart');
+    if (data) {
+      try {
+        data = $.parseJSON(data);
+      } catch(e) { data = {} }
+    }
+
+    var settings = $.extend(true, {}, defaults, data, this.options);
+
+    this.highchart = new Highcharts.Chart(settings);
+  }
+
   // Charts object with common methods
   var Charts = {
     jqel: function(el) {
@@ -82,45 +107,33 @@
           }
         }
       }
+    },
 
-    }
-  }
+    list: {}, // list of chart instances
 
-  // Chart object
-  var Chart = function(type, el, options) {
-    this.type = type || 'bar';
-    this.$el = Charts.jqel(el);
-    this.options = options || {}
-    this.highchart = null;
-
-    var defaults = $.extend(true, {}, Charts.defaults[this.type], {
-      chart: {
-        renderTo: this.$el.prop('id')
-      }
-    });
-
-    var data = this.$el.data('chart');
-    if (data) {
-      try {
-        data = $.parseJSON(data);
-      } catch(e) { data = {} }
-    }
-
-    var settings = $.extend(true, {}, defaults, data, this.options);
-
-    this.highchart = new Highcharts.Chart(settings);
-  }
-
-  // Extend Charts object with additional methods
-  $.extend(Charts, {
     bar: function(el, options) {
-      return new Chart('bar', el, options);
+      this.list[el] = new Chart('bar', el, options);
+      return this.list[el];
     },
 
     pie: function(el, options) {
-      return new Chart('pie', el, options);
+      this.list[el] = new Chart('pie', el, options);
+      return this.list[el];
+    },
+
+    init: function(selector) {
+      $(selector || '.chart').each(function() {
+        var $t = $(this),
+            el = $t.attr('id'),
+            type = $t.data('type'),
+            settings = $t.data('settings'); // must be object caused by jQuery
+
+        if (type && settings) {
+          Charts[type](el, settings);
+        }
+      });
     }
-  });
+  }
 
   window.Charts = Charts;
 
@@ -129,6 +142,15 @@
 // Onready execution
 $(function() {
 
+  // Initialize all charts on the page
+  Charts.init();
+
+  // Initialize charts after container was refreshed
+  $('body').on('refreshed', '.current_container', function() {
+    Charts.init('.current_container .chart');
+  });
+
+  // Set date interval by period changing
   $('.filter select.period').on('change', function() {
     var period = $(this).val(),
         current_date = new Date(),

@@ -94,13 +94,10 @@ $(function(){
         if (ajaxCounterDec() > 0)
           return;
 
-        var $container = $(this.container);
         // replace content
-        $container.replaceWith(resp);
-        // reset params changing
-        bindParams(this.selector);
-        // reset select customization in current list container
-        customizeSelect(this.selector, true);
+        $(this.container).replaceWith(resp);
+        // trigger the refreshed event
+        $(this.selector).trigger('refreshed');
     }).fail(function() {
       ajaxCounterDec();
     });
@@ -167,9 +164,18 @@ $(function(){
     });
   }
 
-  bindParams();
-
   // Exports
   window.listRefresh = listRefresh;
+
+  // Bind handlers to all param filters on the page
+  bindParams();
+
+  // Bind handler for default actions after refresh default container
+  $('body').on('refreshed', '.current_container', function() {
+    // reset params changing
+    bindParams('.current_container');
+    // reset select customization in current list container
+    customizeSelect('.current_container', true);
+  });
 
 });

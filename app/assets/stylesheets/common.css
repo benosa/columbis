@@ -305,8 +305,6 @@ div.left {
 }
 .settings-menu li {
   margin-bottom: 8px;
-  font-size: 13px;
-  line-height: 14px;
   text-shadow: 0 1px 0 #FFFFFF;
 }
 .filter .settings-menu label { float: none; }
@@ -322,6 +320,7 @@ div.left {
 .settings-menu-dialog .ui-dialog-titlebar {
   padding: 6px 19px 3px;
   font-weight: normal;
+  font-size: 13px;
   color: #000;
   text-shadow: #fff 0px -1px 0px;
 }
@@ -332,6 +331,9 @@ div.left {
   border-top: 1px #f9fbfd solid;
   border-radius: 3px 3px 0 0;
 }
+
+.filter .field_wrapper { float: left; }
+.filter .field_wrapper + .field_wrapper { margin-left: 11px; }
 /*** END Filter bar ***/
 
 /*** ikSelect ***/

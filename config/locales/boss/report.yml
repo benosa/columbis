@@ -4,6 +4,8 @@ ru:
     row_count: 'Количество рядов'
     amount: 'Сумма'
     items: 'Количество'
+    payment_amount: 'Сумма оплаты'
+    claim_quantity: 'Количество заявок'
     all_rows: 'Все'
     pcs: 'шт.'
     period_options:
@@ -19,22 +21,31 @@ ru:
     first_operators: 'Первые %{count} операторов'
     all_operators: 'Все операторы'
 
+  direction_report:
+    others: 'Остальные направления'
+    amount: 'Сумма оплаты'
+    items: 'Количество заявок'
+
   boss:
     reports:
+      filter:
+        period: 'Период'
+        start_date: 'начало'
+        end_date: 'конец'
+        row_count: 'Рядов'
+        amount: 'Сумма, руб.'
+        items: 'Количество заявок'
+        filter_reset: 'Сбросить фильтры'
+        settings: 'Настройки'
       settings_menu:
         settings: 'Настройки'
         show_bars: 'Полосовая диаграмма'
         show_pies: 'Круговая диаграмма'
         show_amount: 'Сумма'
-        show_items: 'Количество заявок'
+        show_items: 'Количество'
       operators:
         title: 'Операторы'
-        period: 'Период'
-        start_date: 'начало'
-        end_date: 'конец'
-        row_count: 'Рядов'
         operator: 'Оператор'
-        amount: 'Сумма, руб.'
-        items: 'Количество заявок'
-        filter_reset: 'Сбросить фильтры'
-        settings: 'Настройки'
+      directions:
+        title: 'Направления'
+        direction: 'Направление'

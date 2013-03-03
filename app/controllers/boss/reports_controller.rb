@@ -13,6 +13,14 @@ module Boss
       render partial: 'operators' if request.xhr?
     end
 
+    def directions
+      @report = DirectionReport.new(report_params).prepare
+      @amount = @report.amount_compact
+      @items  = @report.items_compact
+      @total  = @report.total
+      render partial: 'directions' if request.xhr?
+    end
+
     private
 
       def report_params

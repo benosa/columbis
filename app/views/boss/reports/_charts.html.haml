@@ -1,0 +1,16 @@
+- report = local_assigns[:report] || @report
+- amount = local_assigns[:amount] || @amount
+- items = local_assigns[:items] || @items
+.charts
+  - unless params[:show_amount] == '0'
+    .chart-left
+      - unless params[:show_bars] == '0'
+        #amount_bar.chart{ data: { type: 'bar', settings: report.bar_settings(:amount, amount) } }
+      - unless params[:show_pies] == '0'
+        #amount_pie.chart{ data: { type: 'pie', settings: report.pie_settings(:amount, amount) } }
+  - unless params[:show_items] == '0'
+    .chart-right
+      - unless params[:show_bars] == '0'
+        #items_bar.chart{ data: { type: 'bar', settings: report.bar_settings(:items, items) } }
+      - unless params[:show_pies] == '0'
+        #items_pie.chart{ data: { type: 'pie', settings: report.pie_settings(:items, items) } }

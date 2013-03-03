@@ -45,9 +45,9 @@
         title: {
           text: 'Bar chart'
         },
-        subtitle: {
-          text: 'default view'
-        },
+        // subtitle: {
+        //   text: 'default view'
+        // },
         credits: {
           enabled: false
         },

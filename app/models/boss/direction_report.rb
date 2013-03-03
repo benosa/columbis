@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 module Boss
-  class OperatorReport < Report
+  class DirectionReport < Report
 
-    arel_tables :operators, :payments, :claims
+    arel_tables :countries, :payments, :claims
     available_results :amount, :items, :total
 
     def prepare(options = {})
@@ -19,7 +19,7 @@ module Boss
         @results[:items] = build_result(query: items_query(items_options), typecast: {items: :to_i})
       end
 
-      # Total data
+      # Total
       # @results[:total] = ReportResult.merge(self, @results[:amount], @results[:items]).sort!
       @results[:total] = build_result.merge(@results[:amount], @results[:items]).sort!
 
@@ -27,19 +27,19 @@ module Boss
     end
 
     def amount_compact
-      amount.compact(columns: 'amount', name: I18n.t('operator_report.others'))
+      amount.compact(columns: 'amount', name: I18n.t('direction_report.others'))
     end
 
     def items_compact
-      items.compact(columns: 'items', name: I18n.t('operator_report.others'))
+      items.compact(columns: 'items', name: I18n.t('direction_report.others'))
     end
 
     def bar_settings(factor, data)
       if factor == :amount
-        title = "#{I18n.t('operator_report.amount')}, #{I18n.t('rur')}"
+        title = "#{I18n.t('direction_report.amount')}, #{I18n.t('rur')}"
         ytitle = I18n.t('rur')
       elsif factor == :items
-        title = I18n.t('operator_report.items')
+        title = I18n.t('direction_report.items')
         ytitle = I18n.t('report.pcs')
       end
 
@@ -47,9 +47,6 @@ module Boss
         title: {
           text: title
         },
-        # subtitle: {
-        #   text: row_count > 0 ? I18n.t('operator_report.first_operators', count: row_count) : I18n.t('operator_report.all_operators')
-        # },
         xAxis: {
           categories: data.map{ |o| o['name'] }
         },
@@ -67,18 +64,15 @@ module Boss
 
     def pie_settings(factor, data)
       if factor == :amount
-        title = "#{I18n.t('operator_report.amount')}, #{I18n.t('rur')}"
+        title = "#{I18n.t('direction_report.amount')}, #{I18n.t('rur')}"
       elsif factor == :items
-        title = I18n.t('operator_report.items')
+        title = I18n.t('direction_report.items')
       end
 
       settings = {
         title: {
           text: title
         },
-        # subtitle: {
-        #   text: row_count > 0 ? I18n.t('operator_report.first_operators', count: row_count) : I18n.t('operator_report.all_operators')
-        # },
         series: [{
           type: 'pie',
           name: title,
@@ -90,42 +84,44 @@ module Boss
     private
 
       def base_query
-        operators.project([operators[:id], operators[:name]])
-          .where(operators[:company_id].eq(company.id))
-          # .group(operators[:id])
+        countries.project([countries[:id], countries[:name]])
+          .where(countries[:company_id].eq(company.id).or(countries[:common].eq(true)))
       end
 
       def amount_query(options = {})
-        query = payments.project(payments[:recipient_id].as('operator_id'), payments[:amount].sum.as('amount'))
+        query = payments.project(payments[:claim_id], payments[:amount])
           .where(payments[:company_id].eq(company.id))
-          .where(payments[:recipient_type].eq('Operator'))
-          .where(payments[:payer_type].eq('Company')).where(payments[:payer_id].eq(company.id))
+          .where(payments[:payer_type].eq('Tourist'))
+          .where(payments[:recipient_type].eq('Company')).where(payments[:recipient_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
-          .group(payments[:recipient_id])
           .as('amount_query')
 
         if options.has_key?(:approved)
           query = query.where(payments[:approved].eq(options[:approved]))
         end
 
-        query = base_query.project(query[:amount])
-                .join(query).on(query[:operator_id].eq(operators[:id]))
-                .order(order_expr 'amount_query."amount"')
-        # Rails.logger.debug "query: #{query.to_sql}"
+        claims_query = claims.project(claims[:id], claims[:country_id])
+          .where(claims[:company_id].eq(company.id)) # .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .as('claims_query')
+
+        query = base_query.project(query[:amount].sum.as('amount'))
+                .join(claims_query).on(claims_query[:country_id].eq(countries[:id]))
+                .join(query).on(query[:claim_id].eq(claims_query[:id]))
+                .group(countries[:id])
+                .order(order_expr 'SUM(amount_query."amount")')
         query
       end
 
       def items_query(options = {})
-        query = claims.project(claims[:operator_id], claims[:id].count.as('items'))
+        query = claims.project(claims[:country_id], claims[:id].count.as('items'))
                 .where(claims[:company_id].eq(company.id))
                 .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
-                .group(claims[:operator_id])
+                .group(claims[:country_id])
                 .as('items_query')
 
         query = base_query.project(query[:items])
-                .join(query).on(query[:operator_id].eq(operators[:id]))
+                .join(query).on(query[:country_id].eq(countries[:id]))
                 .order(order_expr 'items_query."items"')
-        # Rails.logger.debug "query: #{query.to_sql}"
         query
       end
 

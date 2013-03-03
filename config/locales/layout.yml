@@ -12,3 +12,7 @@ ru:
       airlines: 'Авиалинии'
       fullscreen: 'На весь экран'
       fullscreen_cancel: 'Закрыть полный экран'
+
+      reports:
+        operators: 'Туроператоры'
+        directions: 'Направления'

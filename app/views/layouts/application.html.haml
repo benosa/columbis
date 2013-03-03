@@ -17,6 +17,8 @@
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
+    - if params[:controller] == 'reports'
+      = javascript_include_tag 'highcharts'
     = csrf_meta_tag
     = yield(:head)
 
@@ -89,11 +91,12 @@
               = link_to t('.potentials'), tourists_path(:potential => true)
           %li{ :class => params[:controller] == 'operators' && 'active' }
             = link_to t('.operators'), operators_path
-          %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
-            %a{:href => '#'} Статистика
-            %ul
-              %li= link_to t('.reports.operators'), boss_reports_path(:operators)
-              %li= link_to t('.reports.directions'), boss_reports_path(:directions)
+          - if user_signed_in? && %w[admin boss].include?(current_user.role)
+            %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
+              %a{:href => '#'} Статистика
+              %ul
+                %li= link_to t('.reports.operators'), boss_reports_path(:operators)
+                %li= link_to t('.reports.directions'), boss_reports_path(:directions)
           %li= link_to 'Симки', '#'
           %li= link_to 'Агентства', '#'
           %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'

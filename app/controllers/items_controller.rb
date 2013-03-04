@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
+  load_and_authorize_resource
   before_filter :get_catalog
   before_filter :load_item, :only => [:edit, :update, :show, :destroy]
 

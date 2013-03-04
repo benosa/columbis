@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class AddressesController < ApplicationController
+  load_and_authorize_resource
+
   def new
     @address = Address.new
   end

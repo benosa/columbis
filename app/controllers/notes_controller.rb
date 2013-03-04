@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class NotesController < ApplicationController
+  load_and_authorize_resource
   def new
     @note = Note.new(:item_id => params[:item_id])
   end

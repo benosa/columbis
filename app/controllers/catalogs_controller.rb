@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class CatalogsController < ApplicationController
-  before_filter :load_catalog, :only => [:edit, :update, :show, :destroy]
+  load_and_authorize_resource
 
   def new
     @catalog = Catalog.new

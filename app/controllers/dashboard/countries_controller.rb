@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class Dashboard::CountriesController < ApplicationController
+  before_filter { raise CanCan::AccessDenied.new unless current_user }
   skip_before_filter :check_company_office, :only => [:get_regions, :get_cities]
   include CountriesHelper
 

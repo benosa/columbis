@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CurrencyCoursesController < ApplicationController
+  load_and_authorize_resource
+
   def index
     @actual_courses = CurrencyCourse.actual_courses
     @currency_courses = CurrencyCourse.order_by_date

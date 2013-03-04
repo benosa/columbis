@@ -11,7 +11,7 @@ class WillPaginateLinkRenderer < WillPaginate::ActionView::LinkRenderer
         id = "#{@options[:link_id]}_page#{page}"
       else
         prefix = @collection.to_s
-        prefix = @collection.klass.to_s if @collection.try(:klass)
+        prefix = @collection.klass.to_s if @collection.respond_to?(:klass)
         id = "#{prefix.tableize}_page#{page}"
       end
       unless page == current_page

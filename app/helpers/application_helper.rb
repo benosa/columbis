@@ -19,9 +19,13 @@ module ApplicationHelper
   end
 
   def per_page(default = 30)
-    per_page = "#{current_user.login}-per_page".to_sym
-    cookies[per_page] = params[:per_page] if params[:per_page].present?
-    (cookies[per_page] || default).to_i
+    if user_signed_in?
+      per_page_key = "#{current_user.login}-per_page".to_sym
+      cookies[per_page_key] = params[:per_page] if params[:per_page].present?
+      (cookies[per_page_key] || default).to_i
+    else
+      (params[:per_page] || default).to_i
+    end
   end
 
   def current_path(args = {})

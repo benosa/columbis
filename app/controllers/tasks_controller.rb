@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => :create_review
 
-  before_filter :get_task, :only => [ :edit, :bug, :update, :edit ]
+  before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
   def index
     if search_or_sort?
@@ -107,6 +107,31 @@ class TasksController < ApplicationController
         redirect_to tasks_path unless request.xhr?
       end
       format.json { render :json => @task }
+    end
+  end
+
+  def emails
+    @emails = @task.emails
+    if @emails.empty?
+      flash[:notice] = "Писем не найдено по задаче № #{@task.id}"
+      redirect_to tasks_path
+      # respond_to do |format|
+      #   format.html {
+      #     unless @emails.empty?
+      #       redirect_to ( current_user.role == 'admin' ? emails_path : root_path )
+      #     else
+      #       flash[:notice] = "Писем не найдено по задаче № #{@task.id}"
+      #       redirect_to tasks_path
+      #     end
+      #   }
+      #   format.json {
+      #     unless @emails.empty?
+      #       render :json => { success: true, location: (current_user.role == 'admin' ? emails_path : root_path)}
+      #     else
+      #       render :json => { success: false, content: render_to_string(partial: 'tasks/form', locals: { task: @task, as_popup: true }, formats: [ :html ]) }
+      #     end
+      #   }
+      # end
     end
   end
 

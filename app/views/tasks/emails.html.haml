@@ -1,0 +1,7 @@
+- @emails.each do |m|
+  = m.title
+  %br
+  %br
+  = raw m.body.gsub(/\r?\n/, "<br>")
+
+

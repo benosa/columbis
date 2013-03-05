@@ -5,6 +5,7 @@ class Task < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
+  has_many :emails, class_name: 'UserMailer'
   validates :body, :presence => true
   validates :executer, :presence => true, :if => proc { |task| task.status != 'new' }
 
@@ -59,7 +60,7 @@ class Task < ActiveRecord::Base
       task.valid?
     end
 
-    after_transition any => any - :new do |task, transition|
+    after_transition any => any do |task, transition|
       Mailer.task_info(task).deliver
     end
   end

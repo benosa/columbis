@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130209180319) do
+ActiveRecord::Schema.define(:version => 20130228084053) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -325,6 +325,16 @@ ActiveRecord::Schema.define(:version => 20130209180319) do
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
+
+  create_table "user_mailers", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "parent_id"
+    t.integer  "message_id"
+    t.integer  "task_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false

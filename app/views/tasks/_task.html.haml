@@ -27,3 +27,5 @@
     = link_to t('status.actions.canсel'), '#', class: 'cancel_task', id: "cancel_task_#{task.id}"
   %td
     = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"
+  %td
+    = link_to 'Переписка', emails_task_path(task)

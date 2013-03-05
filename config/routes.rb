@@ -12,6 +12,7 @@ Tourism::Application.routes.draw do
       get 'cancel'
       post 'bug'
       get 'finish'
+      get :emails
     end
   end
   match 'create_review' => 'tasks#create_review', as: 'create_review', via: :post

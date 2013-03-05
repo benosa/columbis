@@ -113,25 +113,8 @@ class TasksController < ApplicationController
   def emails
     @emails = @task.emails
     if @emails.empty?
-      flash[:notice] = "Писем не найдено по задаче № #{@task.id}"
+      flash[:notice] = "#[#{@task.id}] Писем не найдено"
       redirect_to tasks_path
-      # respond_to do |format|
-      #   format.html {
-      #     unless @emails.empty?
-      #       redirect_to ( current_user.role == 'admin' ? emails_path : root_path )
-      #     else
-      #       flash[:notice] = "Писем не найдено по задаче № #{@task.id}"
-      #       redirect_to tasks_path
-      #     end
-      #   }
-      #   format.json {
-      #     unless @emails.empty?
-      #       render :json => { success: true, location: (current_user.role == 'admin' ? emails_path : root_path)}
-      #     else
-      #       render :json => { success: false, content: render_to_string(partial: 'tasks/form', locals: { task: @task, as_popup: true }, formats: [ :html ]) }
-      #     end
-      #   }
-      # end
     end
   end
 

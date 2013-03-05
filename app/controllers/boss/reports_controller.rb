@@ -21,6 +21,12 @@ module Boss
       render partial: 'directions' if request.xhr?
     end
 
+    def tourprice
+      @report = TourpriceReport.new(report_params).prepare
+      @count  = @report.count
+      render partial: 'tourprice' if request.xhr?
+    end
+
     private
 
       def report_params

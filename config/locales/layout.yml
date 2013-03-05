@@ -16,3 +16,4 @@ ru:
       reports:
         operators: 'Туроператоры'
         directions: 'Направления'
+        tourprice: 'Стоимость тура'

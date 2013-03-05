@@ -9,12 +9,14 @@
   .field_wrapper
     = label_tag :end_date, t('.end_date')
     = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: l(@report.end_date, format: :long) }
-  .field_wrapper
-    = label_tag :row_count, local_assigns[:row_count] || t('.row_count')
-    = select_tag :row_count, options_for_select(row_count_options, @report.row_count), class: 'row_count', data: { param: 'row_count', filter: 1, default: @report.row_count }
-  .field_wrapper
-    = label_tag :show_others, local_assigns[:show_others_label] || t('report.others'), class: 'checkbox left_checkbox show_others'
-    = check_box_tag :show_others, 1, @report.show_others, data: { param: 'show_others', filter: 1, default: @report.show_others, unchecked: '0' }
+  - unless local_assigns[:show_others_label] === false
+    .field_wrapper
+      = label_tag :row_count, local_assigns[:row_count] || t('.row_count')
+      = select_tag :row_count, options_for_select(row_count_options, @report.row_count), class: 'row_count', data: { param: 'row_count', filter: 1, default: @report.row_count }
+  - unless local_assigns[:show_others_label] === false
+    .field_wrapper
+      = label_tag :show_others, local_assigns[:show_others_label] || t('report.others'), class: 'checkbox left_checkbox show_others'
+      = check_box_tag :show_others, 1, @report.show_others, data: { param: 'show_others', filter: 1, default: @report.show_others, unchecked: '0' }
 
   %fieldset
     - if small_width?

@@ -5,7 +5,7 @@ ru:
     amount: 'Сумма'
     items: 'Количество'
     payment_amount: 'Сумма оплаты'
-    claim_quantity: 'Количество заявок'
+    claim_quantity: 'Количество броней'
     all_rows: 'Все'
     pcs: 'шт.'
     period_options:
@@ -17,14 +17,20 @@ ru:
   operator_report:
     others: 'Остальные операторы'
     amount: 'Сумма оплаты'
-    items: 'Количество заявок'
+    items: 'Количество броней'
     first_operators: 'Первые %{count} операторов'
     all_operators: 'Все операторы'
 
   direction_report:
     others: 'Остальные направления'
     amount: 'Сумма оплаты'
-    items: 'Количество заявок'
+    items: 'Количество броней'
+
+  tourprice_report:
+    names:
+      before: 'до %{value}'
+      range: 'от %{value1} до %{value2}'
+      after: 'больше %{value}'
 
   boss:
     reports:
@@ -34,7 +40,7 @@ ru:
         end_date: 'конец'
         row_count: 'Рядов'
         amount: 'Сумма, руб.'
-        items: 'Количество заявок'
+        items: 'Количество броней'
         filter_reset: 'Сбросить фильтры'
         settings: 'Настройки'
       settings_menu:
@@ -49,3 +55,5 @@ ru:
       directions:
         title: 'Направления'
         direction: 'Направление'
+      tourprice:
+        title: 'Стоимость тура'

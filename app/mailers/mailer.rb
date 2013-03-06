@@ -20,20 +20,21 @@ class Mailer < ActionMailer::Base
     mail(to: 'v.sheshenya@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
   end
 
-  def receive(email)
-    page = Page.find_by_address(email.to.first)
-    page.emails.create(
-      :subject => email.subject,
-      :body => email.body
-    )
+  # def receive(email)
+  #   page = Page.find_by_address(email.to.first)
+  #   page.emails.create(
+  #     :subject => email.subject,
+  #     :body => email.body
+  #   )
  
-    if email.has_attachments?
-      email.attachments.each do |attachment|
-        page.attachments.create({
-          :file => attachment,
-          :description => email.subject
-        })
-      end
-    end
-  end
+  #   if email.has_attachments?
+  #     email.attachments.each do |attachment|
+  #       page.attachments.create({
+  #         :file => attachment,
+  #         :description => email.subject
+  #       })
+  #     end
+  #   end
+  # end
+  
 end

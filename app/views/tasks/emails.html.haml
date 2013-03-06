@@ -3,7 +3,7 @@
 
 - title t('.emails')
 %br
-- @emails.each do |m|
+- @emails.desc_email.each do |m|
   %h1
     = m.title
   .clear

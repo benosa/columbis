@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305163529) do
+ActiveRecord::Schema.define(:version => 20130306102618) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(:version => 20130305163529) do
   create_table "user_mailers", :force => true do |t|
     t.string   "title"
     t.text     "body"
-    t.integer  "parent_id"
+    t.string   "parent_id"
     t.string   "message_id"
     t.integer  "task_id"
     t.datetime "created_at", :null => false

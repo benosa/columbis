@@ -8,7 +8,16 @@ class Mailer < ActionMailer::Base
 
   def task_info(task)
     @task = task
-    mail(to: 'v.sheshenya@gmail.com', subject: "#[#{@task.id}] #{@task.status == 'new' ? 'Создана задача' : 'Задача завершена' || @task.status == 'work' ? 'Задача в работе' : 'Задача завершена' }", from: 'testdevmen@gmail.com')
+
+    subject = case
+    when task.status == 'new'
+      "#[#{@task.id}] Задача создана"
+    when task.status == 'work'
+      "#[#{@task.id}] Задача в работе"
+    else
+      "#[#{@task.id}] Задача завершена"
+    end
+    mail(to: 'v.sheshenya@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
   end
 
   def receive(email)

@@ -7,10 +7,10 @@ namespace :tasks do
     mail.inbox.emails.each do |email|
       usermailer = UserMailer.new
       usermailer.title = email.subject
-      usermailer.body = email.html_part.body.decoded
+      puts usermailer.body = email.html_part.body.decoded
       puts usermailer.message_id = email.message_id.match(/^(.+?)@/)[1]
       usermailer.task_id = email.subject.match(/\d+/)[0]
-      puts usermailer.reply_id = email.header.match(/In-Reply-To:.<(.*)@/)
+      puts usermailer.parent_id = email.header.to_s.match(/In-Reply-To:.<(.*)@/)[0]
       usermailer.save
       email.label!("MayBeArchive")
       email.delete!

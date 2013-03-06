@@ -8,7 +8,7 @@
     = m.title
   .clear
   %br
-  = sanitize m.body.gsub(/<!.*.+<\/blockquote>/, ""), :tags => %w(p a br div), attribute: %w(href)# raw m.body.gsub(/\r?\n/, "<br>")
+  = sanitize m.body.gsub(/<!--.+?-->/, '').gsub(/<blockquote.+?\/blockquote>/, '').strip, :tags => %w(p a br div), attribute: %w(href)
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, class: 'back'

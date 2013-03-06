@@ -1,0 +1,16 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.emails')
+%br
+- @emails.desc_email.each do |m|
+  %h1
+    = m.title
+  .clear
+  %br
+  = sanitize m.body, :tags => %w(p a br div), attribute: %w(href)# raw m.body.gsub(/\r?\n/, "<br>")
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, class: 'back'
+
+

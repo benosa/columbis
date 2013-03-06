@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303155052) do
+ActiveRecord::Schema.define(:version => 20130306102618) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -294,8 +294,8 @@ ActiveRecord::Schema.define(:version => 20130303155052) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "comment"
     t.boolean  "delta",       :default => true
   end
@@ -325,6 +325,16 @@ ActiveRecord::Schema.define(:version => 20130303155052) do
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
+
+  create_table "user_mailers", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.string   "parent_id"
+    t.string   "message_id"
+    t.integer  "task_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false

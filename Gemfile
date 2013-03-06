@@ -27,6 +27,8 @@ gem 'smt_rails', '~> 0.2.4'
 gem 'best_in_place', '~> 2.0.2'
 gem 'state_machine'
 gem 'active_attr', '~> 0.7.0'
+gem 'ruby-gmail'
+gem 'whenever', :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -72,6 +74,7 @@ group :development, :test do
   gem 'guard-bundler', '>= 1.0.0'
   gem 'guard-rails', '>= 0.1.1'
   gem 'guard-rspec', '~> 2.3.3'
+  gem 'mailcatcher'
   # gem 'guard-livereload', '~> 1.1.3'
 end
 

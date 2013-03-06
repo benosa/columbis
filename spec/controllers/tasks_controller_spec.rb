@@ -15,6 +15,7 @@ describe TasksController do
 
     it 'should be successful' do
       do_get
+      #p response.body.inspect
       response.should be_success
     end
 

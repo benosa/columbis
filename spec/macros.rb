@@ -10,7 +10,7 @@ module Macros
     visit new_user_session_path
     fill_in "user[login]", :with => admin.login
     fill_in "user[password]", :with => admin.password
-    click_button 'user_session_submit'
+    page.click_button 'user_session_submit'
     admin
   end
 
@@ -22,7 +22,10 @@ module Macros
 
   def wait_for_filter_refresh(seconds = Capybara.default_wait_time)
     # wait_until(seconds) { page.has_no_selector?('.refreshing') } or puts("Ran out of time waiting for ajax refresh.\n")
-    wait_until(seconds) { !page.find('#ajax-indicator').visible? }
+    wait_until(seconds) { 
+      # puts page.find('#ajax-indicator').visible?.inspect
+      !page.find('#ajax-indicator').visible? 
+    } #or puts("Ran out of time waiting for ajax refresh.\n")
   rescue Capybara::TimeoutError
     flunk 'Expected ajax indicator to be hidden'
   end

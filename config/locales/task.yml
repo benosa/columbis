@@ -25,6 +25,8 @@ ru:
     messages:
       review_created: 'Ваш отзыв сохранен, спасибо!'
       review_failed: 'Извините, Ваш отзыв сохранить не удалось!'
+    emails:
+      emails: Почта
 
   status:
     new: 'новая'
@@ -56,6 +58,7 @@ ru:
         bug: 'Баг'
         start_date: 'Дата принятия'
         end_date: 'Дата завершения'
+        executer: 'Исполнитель'
         executer_id: 'Исполнитель'
         user: 'Пользователь'
         status: 'Статус'

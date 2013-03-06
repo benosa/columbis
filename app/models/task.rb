@@ -5,6 +5,7 @@ class Task < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
+  has_many :emails, class_name: 'UserMailer'
   validates :body, :presence => true
   validates :executer, :presence => true, :if => proc { |task| task.status != 'new' }
 
@@ -34,16 +35,16 @@ class Task < ActiveRecord::Base
 
   state_machine :status, initial: :new do
     event :new do
-      transition all - [ :new ] => :new
+      transition all => :new
     end
     event :work do
-      transition all - [ :work ] => :work
+      transition all => :work
     end
     event :finish do
-      transition all - [ :finish ] => :finish
+      transition all => :finish
     end
     event :cancel do
-      transition all - [ :cancel ] => :cancel
+      transition all => :cancel
     end
 
     before_transition on: :work do |task, transition|
@@ -59,7 +60,7 @@ class Task < ActiveRecord::Base
       task.valid?
     end
 
-    after_transition any => any - :new do |task, transition|
+    after_transition any => any do |task, transition|
       Mailer.task_info(task).deliver
     end
   end

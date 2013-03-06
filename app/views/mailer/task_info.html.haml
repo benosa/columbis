@@ -1,5 +1,5 @@
 %h1
-  Задача № #{@task.id} :
+  "#[#{@task.id}]" Задача:
 %p
   Содержание:
   %br
@@ -11,5 +11,10 @@
       Дата взятия: #{@task.start_date}  
     %br
       Дата завершения: #{@task.end_date}
+  - if @task.status == 'work'
+    %br
+      Дата взятия: #{@task.start_date}  
+
+    
 %p
   =link_to 'Подробнее', tasks_url

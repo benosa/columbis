@@ -350,3 +350,28 @@ function defineScreenResolution() {
   }
   return size;
 }
+
+var ajaxCounter = 0;
+
+function ajaxCounterInc(num) {
+  ajaxCounter += num || 1;
+  if (ajaxCounter > 0)
+    $('#ajax-indicator').show();
+  return ajaxCounter;
+}
+
+function ajaxCounterDec(num) {
+  ajaxCounter -= num || 1;
+  if (ajaxCounter < 0)
+    ajaxCounter = 0;
+  if (ajaxCounter === 0)
+    $('#ajax-indicator').hide();
+  return ajaxCounter;
+}
+
+$(document).ajaxStart(function() {
+   ajaxCounterInc();
+ });
+$(document).ajaxStop(function() {
+   ajaxCounterDec();
+ });

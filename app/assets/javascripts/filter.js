@@ -73,7 +73,7 @@ $(function(){
       data = {};
     }
 
-    ajaxCounterInc();
+    //ajaxCounterInc(); // move to common.js put in .ajaxStart
     // Add refreshing properties to container
     addRefreshing($container);
 
@@ -99,26 +99,8 @@ $(function(){
         // trigger the refreshed event
         $(this.selector).trigger('refreshed');
     }).fail(function() {
-      ajaxCounterDec();
+      // ajaxCounterDec(); // move to common.js put in .ajaxStop
     });
-  }
-
-  var ajaxCounter = 0;
-
-  function ajaxCounterInc(num) {
-    ajaxCounter += num || 1;
-    if (ajaxCounter > 0)
-      $('#ajax-indicator').show();
-    return ajaxCounter;
-  }
-
-  function ajaxCounterDec(num) {
-    ajaxCounter -= num || 1;
-    if (ajaxCounter < 0)
-      ajaxCounter = 0;
-    if (ajaxCounter === 0)
-      $('#ajax-indicator').hide();
-    return ajaxCounter;
   }
 
   function addRefreshing($container) {

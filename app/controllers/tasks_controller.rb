@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => :create_review
 
-  before_filter :get_task, :only => [ :edit, :bug, :update ]
+  before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
   def index
     if search_or_sort?
@@ -40,6 +40,7 @@ class TasksController < ApplicationController
       format.html {
         if @task.save
           redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
+          Mailer.task_info(@task).deliver
         else
           render :action => :new
         end
@@ -74,9 +75,16 @@ class TasksController < ApplicationController
       comment = tparams.delete(:comment)
       is_updated = @task.fire_status_event(status, current_user, comment && {comment: comment}) # state_machine event firing
     end
+    tparams[:comment] = comment
     is_updated = @task.update_attributes(tparams) if (is_updated and !tparams.empty?)
     respond_to do |format|
-      format.html { redirect_to tasks_path }
+      format.html {
+        if is_updated
+          redirect_to tasks_path
+        else
+          render :edit
+        end
+      }
       format.js do
         if is_updated
           # Index isn't real time updated before thinking sphinx verison 3
@@ -100,6 +108,14 @@ class TasksController < ApplicationController
         redirect_to tasks_path unless request.xhr?
       end
       format.json { render :json => @task }
+    end
+  end
+
+  def emails
+    @emails = @task.emails
+    if @emails.empty?
+      flash[:notice] = "#[#{@task.id}] Писем не найдено"
+      redirect_to tasks_path
     end
   end
 
@@ -132,7 +148,6 @@ class TasksController < ApplicationController
     # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
     # end
     prms.delete(:comment) if prms[:comment].blank?
-    #raise prms.inspect
     prms
   end
 

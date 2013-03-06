@@ -4,7 +4,6 @@ namespace :tasks do
   task :parser_mail => :environment do
     
     mail = Gmail.new("testdevmen@gmail.com","20081989")
-    mail.label("all")
     mail.inbox.emails.each do |email|
       usermailer = UserMailer.new
       usermailer.title = email.subject

@@ -43,8 +43,8 @@ class Address < ActiveRecord::Base
 
   private
     def set_delta_flag
-      model = addressable_type.constantize
-      record = model.find(addressable_id)
+      model = addressable_type.constantize rescue nil
+      record = model.find(addressable_id) if model
       if record.respond_to?(:delta)
         record.delta = true
         record.save

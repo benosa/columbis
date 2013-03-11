@@ -623,7 +623,7 @@ class Claim < ActiveRecord::Base
 
       total = 0;
       fields.each do |f|
-        count = send(f.sub(/_price$/, '_count'))
+        count = send(f.sub(/_price$/, '_count')) || 0
         total += send(f).to_f * count * course(send(f + '_currency')) if (count > 0)
       end
       (sum_price + total).round

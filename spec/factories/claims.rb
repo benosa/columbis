@@ -1,20 +1,21 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :claim do
-    association :user, factory: :admin
-    # association :office
-    # association :company
-    # association :resort
-    # #association :city
-    association :applicant
+    association :user, factory: :manager
+    association :office
+    association :company
+    association :applicant, factory: :tourist
     association :operator
 
-    check_date Time.now + 20.day
-    tour_price_currency 'eur'
-    visa_price_currency 'eur'
-    insurance_price_currency 'eur'
-    additional_insurance_price_currency 'eur'
-    fuel_tax_price_currency 'eur'
-    operator_price_currency 'eur'
+    check_date { 10.days.since }
+    departure_date { 5.days.since }
+    arrival_date { 15.days.since }
+
+    tour_price_currency 'rur'
+    visa_price_currency 'rur'
+    insurance_price_currency 'rur'
+    additional_insurance_price_currency 'rur'
+    fuel_tax_price_currency 'rur'
+    operator_price_currency 'rur'
   end
 end

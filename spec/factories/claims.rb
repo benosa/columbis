@@ -6,7 +6,7 @@ FactoryGirl.define do
     # association :company
     # association :resort
     # #association :city
-    association :tourist
+    association :applicant
 
     check_date Time.now + 20.day
     tour_price_currency 'eur'

@@ -1,11 +1,12 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :claim do
-    association :user
-    association :office
-    association :country
-    association :resort
-    association :city
+    association :user, factory: :admin
+    # association :office
+    # association :company
+    # association :resort
+    # #association :city
+    association :tourist
 
     check_date Time.now + 20.day
     tour_price_currency 'eur'

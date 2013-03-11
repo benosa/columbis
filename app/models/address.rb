@@ -42,7 +42,6 @@ class Address < ActiveRecord::Base
   end
 
   private
-
     def set_delta_flag
       model = addressable_type.constantize
       record = model.find(addressable_id)

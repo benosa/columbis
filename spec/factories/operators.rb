@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :operator do
-    name 'operator'
+    association :claim
+    #association :company
+    name { Faker::Lorem.sentence }
   end
 end

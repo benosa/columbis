@@ -5,9 +5,9 @@ describe Dashboard::UsersController do
   include Devise::TestHelpers
 
   def create_users
-    office = Factory(:office)
-    @admin = Factory(:admin)
-    @manager = Factory(:manager, :office_id => office.id)
+    office = FactoryGirl.create(:office)
+    @admin = FactoryGirl.create(:admin)
+    @manager = FactoryGirl.create(:manager, :office_id => office.id)
     test_sign_in(@admin)
   end
 

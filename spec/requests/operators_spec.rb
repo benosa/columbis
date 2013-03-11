@@ -94,6 +94,5 @@ describe "Operators:", js: true do
         click_link "delete_operator_#{operator.id}"
       }.to change(Operator, :count).by(-1)
     end
-
   end
 end

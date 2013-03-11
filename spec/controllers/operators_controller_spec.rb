@@ -22,6 +22,7 @@ describe OperatorsController do
     end
 
     it 'should render operators/edit' do
+      puts response.body.inspect
       response.should render_template('edit')
     end
 

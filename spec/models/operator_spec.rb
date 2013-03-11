@@ -4,6 +4,7 @@ require 'spec_helper'
 describe Operator do
   it "has a valid factory" do
     FactoryGirl.create(:operator_with_claims).should be_valid
+    FactoryGirl.create(:operator).should be_valid
   end
 
   describe ".associtiations" do

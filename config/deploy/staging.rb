@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-set :branch, "staging"
+set :branch, "develop"
 
 set :application, "tourism-dev"
 set(:deploy_to) { "/opt/apps/#{application}" }

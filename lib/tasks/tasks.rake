@@ -10,7 +10,7 @@ namespace :tasks do
       usermailer.body = email.html_part.body.decoded
       usermailer.message_id = email.message_id.match(/^(.+?)@/)[1]
       usermailer.task_id = email.subject.match(/\d+/)[0]
-      puts usermailer.parent_id = email.header.to_s.match(/In-Reply-To:.<(.*)@/)[1]
+      usermailer.parent_id = email.header.to_s.match(/In-Reply-To:.<(.*)@/)[1]
       usermailer.save
       email.label!("MayBeArchive")
       email.delete!
@@ -19,7 +19,7 @@ namespace :tasks do
     mail.mailbox("[Gmail]/&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-").emails.each do |email|
       usermailer = UserMailer.new
       usermailer.title = email.subject
-      usermailer.body = email.body
+      usermailer.body = email.body.decoded
       usermailer.message_id = email.message_id.match(/^(.+?)@/)[1]
       usermailer.task_id = email.subject.match(/\d+/)[0]
       #usermailer.parent_id = email.header.to_s.match(/In-Reply-To:.<(.*)@/)[0]

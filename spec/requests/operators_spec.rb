@@ -5,11 +5,10 @@ describe "Operators:", js: true do
   include ActionView::Helpers
   include OperatorsHelper
 
-  clean_once_with_sphinx do
+  before { login_as_admin }
+  subject { page }
 
-    before { login_as_admin }
-    subject { page }
-
+  describe "submit form" do
     describe "submit form" do
 
       before do
@@ -33,12 +32,71 @@ describe "Operators:", js: true do
           it "should create an operator, redirect to operators_path" do
             expect {
               page.fill_in "operator[name]", with: "TEST"
-              click_link I18n.t('save')
+              page.click_link I18n.t('save')
             }.to change(Operator, :count).by(1)
             page.current_path.should eq(operator_path(Operator.last.id))
           end
         end
       end
     end
+  end
+
+  describe "update operator" do 
+    let(:operator) { create(:operator) }
+
+    before do
+      operator
+      visit operators_path
+    end
+
+    it 'should not create an operator, should show error message' do
+      click_link "edit_operator_#{operator.id}"
+      current_path.should eq("/operators/#{operator.id}/edit")
+
+      expect {
+        fill_in "operator[name]", with: ""
+        click_link I18n.t('save')
+      }.to_not change(operator, :name).from(operator.name).to('')
+      current_path.should eq("/operators/#{operator.id}")
+      page.should have_selector("div.error_messages")
+    end
+
+    it 'should edit an operator, redirect to operators_path' do
+      click_link "edit_operator_#{operator.id}"
+      current_path.should eq("/operators/#{operator.id}/edit")
+
+      expect {
+        fill_in "operator[name]", with: "qweqwe" 
+        click_link I18n.t('save')
+        operator.reload
+      }.to change(operator, :name).from(operator.name).to('qweqwe')
+      operator.name.should eq("qweqwe")
+      save_and_open_page
+      current_path.should eq(operator_path(operator.id))
+    end
+
+    it 'delete operator, edit operator' do
+      click_link "edit_operator_#{operator.id}"
+      current_path.should eq("/operators/#{operator.id}/edit")
+      expect{
+        click_link I18n.t('delete')
+      }.to change(Operator, :count).by(-1)
+    end
+  end
+
+  describe "delete operator" do 
+    let(:operator) { create(:operator) }
+
+    before do
+      operator
+      visit operators_path
+    end
+
+    it 'delete operator' do
+      expect{
+        click_link "delete_operator_#{operator.id}"
+      }.to change(Operator, :count).by(-1)
+    end
+
   end
 end

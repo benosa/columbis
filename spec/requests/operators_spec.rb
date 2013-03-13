@@ -8,38 +8,38 @@ describe "Operators:", js: true do
   before { login_as_admin }
   subject { page }
 
+  
   describe "submit form" do
-    describe "submit form" do
 
-      before do
-        visit '/operators/new'
+    before do
+      visit '/operators/new'
+    end
+
+    describe "create operator" do
+      let(:operator_attrs) { attributes_for(:operator) }
+      context "when invalid attribute values" do
+        it "should not create an operator, should show error message" do
+          expect {
+            page.fill_in "operator[name]", with: ""
+            page.click_link I18n.t('save')
+          }.to_not change(Operator, :count)
+          page.current_path.should eq(operators_path)
+          page.should have_selector("div.error_messages")
+        end
       end
 
-      describe "create operator" do
-        let(:operator_attrs) { attributes_for(:operator) }
-        context "when invalid attribute values" do
-          it "should not create an operator, should show error message" do
-            expect {
-              page.fill_in "operator[name]", with: ""
-              page.click_link I18n.t('save')
-            }.to_not change(Operator, :count)
-            page.current_path.should eq(operators_path)
-            page.should have_selector("div.error_messages")
-          end
-        end
-
-        context "when invalid attribute values" do
-          it "should create an operator, redirect to operators_path" do
-            expect {
-              page.fill_in "operator[name]", with: "TEST"
-              page.click_link I18n.t('save')
-            }.to change(Operator, :count).by(1)
-            page.current_path.should eq(operator_path(Operator.last.id))
-          end
+      context "when invalid attribute values" do
+        it "should create an operator, redirect to operators_path" do
+          expect {
+            page.fill_in "operator[name]", with: "TEST"
+            page.click_link I18n.t('save')
+          }.to change(Operator, :count).by(1)
+          page.current_path.should eq(operator_path(Operator.last.id))
         end
       end
     end
   end
+
 
   describe "update operator" do 
     let(:operator) { create(:operator) }
@@ -71,7 +71,6 @@ describe "Operators:", js: true do
         operator.reload
       }.to change(operator, :name).from(operator.name).to('qweqwe')
       operator.name.should eq("qweqwe")
-      save_and_open_page
       current_path.should eq(operator_path(operator.id))
     end
 
@@ -86,12 +85,10 @@ describe "Operators:", js: true do
 
   describe "delete operator" do 
     let(:operator) { create(:operator) }
-
     before do
       operator
       visit operators_path
     end
-
     it 'delete operator' do
       expect{
         click_link "delete_operator_#{operator.id}"

@@ -7,8 +7,6 @@ describe "Operators:", js: true do
 
   before { login_as_admin }
   subject { page }
-
-
   
   describe "submit form" do
 
@@ -40,6 +38,7 @@ describe "Operators:", js: true do
       end
     end
   end
+
 
   describe "update operator" do 
     let(:operator) { create(:operator) }
@@ -85,12 +84,10 @@ describe "Operators:", js: true do
 
   describe "delete operator" do 
     let(:operator) { create(:operator) }
-
     before do
       operator
       visit operators_path
     end
-
     it 'delete operator' do
       expect{
         click_link "delete_operator_#{operator.id}"

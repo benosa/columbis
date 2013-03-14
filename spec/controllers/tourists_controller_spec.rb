@@ -2,51 +2,25 @@
 require 'spec_helper'
 
 describe TouristsController do
+  before { create_tourist }
+  
   def create_tourist
-    @tourist = Factory(:tourist)
+    @tourist = FactoryGirl.create(:tourist)
+    user = FactoryGirl.create(:admin)
+    test_sign_in(user)
   end
 
-  before (:each) do
-    create_tourist
-  end
-
-  describe 'GET index' do
-    def do_get
-      get :index
-    end
-
-    it 'should be successful' do
-      do_get
-      response.should be_success
-    end
-
-    it 'should find all tourists' do
-      do_get
-      assigns[:tourists].size.should > 0
-    end
-
-    it 'should render tourists/index.html' do
-      do_get
-      response.should render_template('index')
-    end
+  describe "GET #index" do
+    before { get :index }
+    it { should respond_with :success }
+    it { should render_template :index }
+    it { should assign_to(:tourists).with [@tourist] }
   end
 
   describe 'GET new' do
-    def do_get
-      get :new
-    end
-
-    before (:each) do
-      do_get
-    end
-
-    it 'should render tourists/new' do
-      response.should render_template('new')
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
+    before { get :new }
+    it { should respond_with :success }
+    it { should render_template :new }
   end
 
   describe 'POST create' do
@@ -56,7 +30,7 @@ describe TouristsController do
 
     it 'should redirect to tourists/show.html' do
       do_tourist
-      response.should redirect_to(tourist_path(Tourist.last.id))
+      response.should redirect_to(tourists_path)
     end
 
     it 'should change tourists count up by 1' do
@@ -65,42 +39,25 @@ describe TouristsController do
   end
 
   describe 'GET edit' do
-    def do_get
-      get :edit, :id => @tourist.id
-    end
+    before { get :edit, :id => @tourist.id }
 
-    before (:each) do
-      do_get
-    end
+    it { should respond_with :success }
+    it { should render_template :edit }
+    it { should assign_to(:tourist).with(@tourist) }
 
-    it 'should render tourists/edit' do
-      response.should render_template('edit')
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find right tourist' do
-      assigns[:tourist].id.should == @tourist.id
-    end
   end
 
   describe 'PUT update' do
-    def do_put
-      put :update, :id => @tourist.id, :tourist => {:last_name => 'Ivanov'}
-    end
+    before { put :update, id: @tourist.id, tourist: attributes_for(:tourist, last_name: 'Ivanov') }
+    
+    it { should assign_to(:tourist).with(@tourist) }
+    it { should redirect_to(tourists_path)  }
 
-    before(:each) do
-      do_put
-    end
-
-    it 'should change tourist last_name' do
-      assigns[:tourist].last_name.should == 'Ivanov'
-    end
-
-    it 'should redirect to tourists/show.html' do
-      response.should redirect_to @tourist
+    it "changes tourist last_name " do
+      expect {
+        put :update, id: @tourist.id, tourist: attributes_for(:tourist, last_name: 'Ivanov1')
+        @tourist.reload
+      }.to change(@tourist, :last_name).to('Ivanov1')
     end
   end
 
@@ -124,24 +81,11 @@ describe TouristsController do
   end
 
   describe 'GET show' do
-    def do_get
-      get :show, :id => @tourist.id
-    end
+    before { get :show, :id => @tourist.id }
 
-    before (:each) do
-      do_get
-    end
+    it { should assign_to(:tourist).with(@tourist) }
+    it { should respond_with :success }
+    it { should render_template(:show)  }
 
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find right tourist' do
-      assigns[:tourist].id.should == @tourist.id
-    end
-
-    it 'should render tourists/show.html' do
-      response.should render_template('show')
-    end
   end
 end

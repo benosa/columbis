@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :company do
+    #association :user, factory: :manager
     name 'company'
     email 'wtf@gmail.com'
     oficial_letter_signature 'bye'

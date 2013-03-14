@@ -11,7 +11,7 @@ class TouristsController < ApplicationController
         scoped = scoped.potentials if params[:potential].present?
         scoped = search_paginate(scoped, options)
       else
-        scoped = Tourist.send(!params[:potential] ? :clients : :potentials)
+        scoped = Tourist.send(params[:potential] ? :potentials : :clients)
         scoped.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?

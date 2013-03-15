@@ -9,23 +9,17 @@ describe TasksController do
   end
 
   describe 'GET index' do
-    def do_get
-      get :index
-    end
-
+    before { get :index }
+    
     it 'should be successful' do
-      do_get
-      #p response.body.inspect
       response.should be_success
     end
 
     it 'should find all tasks' do
-      do_get
       assigns[:tasks].size.should > 0
     end
 
     it 'should render tasks/index.html' do
-      do_get
       response.should render_template('index')
     end
   end

@@ -1,0 +1,100 @@
+# -*- encoding : utf-8 -*-
+require 'spec_helper'
+
+describe "Tourist:", js: true do
+  include ActionView::Helpers
+  include TouristsHelper
+
+  before { login_as_admin }
+  #subject { page }
+
+  
+  describe "submit form" do
+
+    before do
+      visit new_tourist_path
+    end
+
+    describe "create tourist" do
+      let(:tourist_attrs) { attributes_for(:tourist) }
+      context "when invalid attribute values" do
+        it "should not create an tourist, should show error message" do
+          expect {
+            fill_in "tourist[last_name]", with: ""
+            fill_in "tourist[first_name]", with: ""
+            page.click_link I18n.t('save')
+          }.to_not change(Tourist, :count)
+          page.current_path.should eq(tourists_path)
+          page.should have_selector("div.error_messages")
+        end
+      end
+
+      context "when invalid attribute values" do
+        it "should create an operator, redirect to operators_path" do
+          expect {
+            fill_in "tourist[last_name]", with: "TEST"
+            fill_in "tourist[first_name]", with: "test"
+            page.click_link I18n.t('save')
+          }.to change(Tourist, :count).by(1)
+          page.current_path.should eq(tourists_path)
+        end
+      end
+    end
+  end
+
+
+  describe "update tourist" do 
+    let(:tourist) { create(:tourist) }
+    before(:all) {self.use_transactional_fixtures = false}
+
+    before do
+      tourist
+      visit tourists_path
+    end
+
+    it 'should not create an tourist, should show error message' do
+      click_link "edit_tourist_#{tourist.id}"
+      current_path.should eq("/tourists/#{tourist.id}/edit")
+
+      expect {
+        fill_in "tourist[last_name]", with: ""
+        click_link I18n.t('save')
+      }.to_not change(tourist, :name).from(tourist.last_name).to('')
+      current_path.should eq("/tourists/#{tourist.id}")
+      page.should have_selector("div.error_messages")
+    end
+
+    it 'should edit an tourist, redirect to tourists_path' do
+      click_link "edit_tourist_#{tourist.id}"
+      current_path.should eq("/tourists/#{tourist.id}/edit")
+      expect {
+        page.fill_in "tourist[first_name]", with: "qweqwe"
+        click_link I18n.t('save')
+        tourist.reload
+      }.to change(tourist, :first_name).from(tourist.first_name).to('qweqwe')
+      tourist.first_name.should eq("qweqwe")
+    end
+
+    # it 'delete tourist, edit tourist' do
+    #   click_link "edit_tourist_#{tourist.id}"
+    #   current_path.should eq("/tourists/#{tourist.id}/edit")
+    #   expect{
+    #     save_and_open_page
+    #     click_link t('delete')
+    #   }.to change(Tourist, :count).by(-1)
+    # end
+  end
+
+  describe "delete tourist" do 
+    let(:tourist) { create(:tourist) }
+    before do
+      tourist
+      visit tourists_path
+    end
+    it 'delete operator' do
+      expect{
+        click_link "delete_tourist_#{tourist.id}"
+      }.to change(Tourist, :count).by(-1)
+    end
+  end
+end

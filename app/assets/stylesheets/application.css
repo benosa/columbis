@@ -1,6 +1,8 @@
 /*
 *= require new_design/css/reset
 * require jquery-ui
+* require jquery-ui-1.10.2.custom
+*= require autocomplete
 * require dropdown
 *= require bootstrap
 *= require new_design/css/style

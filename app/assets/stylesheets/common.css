@@ -78,6 +78,15 @@ body {
 .databases li.dropdown ul {
   top: 48px; /* fix dropdown blinking */
 }
+/*.databases li:hover, .databases li.active
+.databases li.dropdown:hover, .databases li.dropdown.active {
+  background: url("/assets/new_design/images/databases_hover.png") repeat-x scroll 0 0 transparent !important;
+}
+.databases li:hover a, .databases li.active a,
+.databases li.dropdown:hover a, .databases li.dropdown.active a {
+  color: #000000;
+  text-shadow: 0 1px 0 #FFFFFF;
+}*/
 
 .user_panel {
     background: url("/assets/new_design/images/reservation_border.png") no-repeat scroll left top transparent;

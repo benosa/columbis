@@ -52,13 +52,11 @@
                     - else
                       %span= value[0]
               %li= link_to 'Приходник', '#'
-          %li= link_to 'Справка', '#'
           %li= link_to 'Оставить отзыв', '#', id: 'write_review'
           %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
-          / %li
+          -#
+            %li= link_to 'Справка', '#'
 
-          / - if can? :switch_view, current_user
-          /   %li= link_for_view_switcher
         - if user_signed_in?
           #review_form_container{ style: 'display: none;' }
             = render 'tasks/review_form'
@@ -69,8 +67,7 @@
         .clear
 
         %ul#databases_menu.databases
-          / %li
-          /   %span Базы
+          -# %li.dropdown { :class => (params[:controller] =~ /^dashboard/ or params[:controller] == 'operators') && 'active' }
           %li.dropdown
             %a{:href => '#'} Управление
             %ul
@@ -78,28 +75,26 @@
               %li= link_to t('.users'), dashboard_users_path
               %li= link_to t('.operators'), operators_path
               %li= link_to t('.dropdown_values'), dashboard_dropdown_values_path
-              %li= link_to t('.tourists'), tourists_path
-              %li= link_to t('.potentials'), tourists_path(:potential => true)
-              %li= link_to t('.addresses'), addresses_path
-              %li= link_to t('.catalogs'), catalogs_path
-          %li{ :class => request.url == dashboard_edit_company_url && 'active' }
-            = link_to t('.company'), dashboard_edit_company_path
+              -#
+                %li= link_to t('.tourists'), tourists_path
+                %li= link_to t('.potentials'), tourists_path(:potential => true)
+                %li= link_to t('.addresses'), addresses_path
+                %li= link_to t('.catalogs'), catalogs_path
           %li{ :class => (params[:controller] == 'tourists' && params[:potential].blank?) && 'active' }
             = link_to t('.tourists'), tourists_path
-          - if !small_width?
-            %li{ :class => (params[:controller] == 'tourists' && params[:potential].present?) && 'active' }
-              = link_to t('.potentials'), tourists_path(:potential => true)
-          %li{ :class => params[:controller] == 'operators' && 'active' }
-            = link_to t('.operators'), operators_path
+          -#
+            %li= link_to 'Симки', '#'
+            %li= link_to 'Агентства', '#'
+          %li{ :class => (params[:controller] == 'tourists' && params[:potential].present?) && 'active' }
+            = link_to t('.potentials'), tourists_path(:potential => true)
           - if user_signed_in? && %w[admin boss].include?(current_user.role)
-            %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
+            -# %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
+            %li.dropdown
               %a{:href => '#'} Статистика
               %ul
                 %li= link_to t('.reports.operators'), boss_reports_path(:operators)
                 %li= link_to t('.reports.directions'), boss_reports_path(:directions)
                 %li= link_to t('.reports.tourprice'), boss_reports_path(:tourprice)
-          %li= link_to 'Симки', '#'
-          %li= link_to 'Агентства', '#'
           %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?

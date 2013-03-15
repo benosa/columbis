@@ -37,13 +37,14 @@ Tourism::Application.routes.draw do
     match ':id' => :edit, :constraints => {:id => /\d+/}, :on => :collection, :via => :get
   end
   resources :tourists
-  resources :addresses
-  resources :notes
 
-  resources :catalogs do
-    resources :item_fields
-    resources :items
-  end
+  # Disable catalogs and addresses
+  # resources :addresses
+  # resources :notes
+  # resources :catalogs do
+  #   resources :item_fields
+  #   resources :items
+  # end
 
   devise_for :users
 

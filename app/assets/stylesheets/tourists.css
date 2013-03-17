@@ -10,6 +10,7 @@
 .tourists th.colspan a {
     float: none;
     padding-top: 15px !important;
+    padding-left: 10px;
     width: auto;
 }
 .tourists th.colspan span {

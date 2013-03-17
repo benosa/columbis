@@ -258,13 +258,19 @@ body {
       margin: 4px 0;
     }
 
+.reservations th { text-align: center; }
+.reservations th a { padding: 21px 2px 0; }
+.reservations th a.sort_active, .reservations th.double_sort a.sort_active {
+    background-position: right top !important;
+}
+.reservations th.purple_box a { padding-top: 21px; }
+
 .reservations.tour_operators th {
   max-width: 350px;
   background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
 }
-.reservations th a.sort_active, .reservations th.double_sort a.sort_active {
-    background-position: right top !important;
-}
+
+.reservations td { height: auto; padding: 5px 3px; }
 /*** END Tables ***/
 
 div.left {

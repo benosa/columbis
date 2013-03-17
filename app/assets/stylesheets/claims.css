@@ -11,21 +11,21 @@
 .low_resoluition .claims .reservations_wrapper { width: 980px; }
 .middle_resoluition .claims .reservations_wrapper { width: 1534px; }
 .height_resoluition .claims .reservations_wrapper { width: 1843px; }
-.claims .reservations { margin: 0; width: 100% !important; }
+.claims .reservations { font-size: 11px; margin: 0; width: 100% !important; }
 .claims .reservations th:first-child, .claims .reservations th:last-child,
 .claims .reservations td:first-child, .claims .reservations td:last-child { border-left: none; border-right: none; }
 
-.reservations th { min-width: 36px; }
+.claims .reservations th { min-width: 36px; }
 
-.reservations th.double_sort span:first-child {
+.claims .reservations th.double_sort span:first-child {
     margin-top: 2px;
 }
-.reservations th.double_sort span {
+.claims .reservations th.double_sort span {
     margin: 5px 0;
     padding: 0 12px 0 4px;
     text-align: left;
 }
-.reservations th span {
+.claims .reservations th span {
     color: #666666;
     display: block;
     padding-top: 21px;
@@ -33,46 +33,47 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
-.reservations th a.sort_active {
+.claims .reservations th a.sort_active {
   font-weight: bold;
   /*color: #222222;
   text-decoration: underline;*/
 }
 
-.reservations th a.sort_active.desc,.reservations th.double_sort a.sort_active.desc {
+.claims .reservations th a.sort_active.desc,.reservations th.double_sort a.sort_active.desc {
   background: url(/assets/new_design/images/sort_active_desc.gif) right center no-repeat;
 }
 
-.reservations td .attention { margin-left: 2px; }
+.claims .reservations td.user_cell { background-image: none; }
+.claims .reservations td .attention { margin-left: 2px; }
 
 /*
 .reservations th a.active.asc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right -5px transparent; }
 .reservations th a.active.desc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right 5px transparent; }
 */
 
-.reservations th.medium { width: 65px; }
-.reservations th.w75 { width: 75px; }
-.reservations th.w50px { width: 50px; }
-.reservations th.w45px { width: 45px; }
-.reservations th.last_cols { width: 25px; }
-.reservations th.short_date { width: 45px; }
+.claims .reservations th.medium { width: 65px; }
+.claims .reservations th.w75 { width: 75px; }
+.claims .reservations th.w50px { width: 50px; }
+.claims .reservations th.w45px { width: 45px; }
+.claims .reservations th.last_cols { width: 25px; }
+.claims .reservations th.short_date { width: 45px; }
 
-.reservations td p {
+.claims .reservations td p {
   min-height: 1em;
 }
 
-.reservations td.user_bg { background: none; }
+.claims .reservations td.user_bg { background: none; }
 
-.reservations span.colored {
+.claims .reservations span.colored {
   display: inline-block;
   margin: 0;
   position: static;
   vertical-align: baseline;
 }
 
-.reservations .id_link { text-decoration: none; color: inherit; }
-.reservations .bonus_percent form { width: 100%; }
-.reservations .bonus_percent input { width: 100%; padding: 0; border: none; }
+.claims .reservations .id_link { text-decoration: none; color: inherit; }
+.claims .reservations .bonus_percent form { width: 100%; }
+.claims .reservations .bonus_percent input { width: 100%; padding: 0; border: none; }
 
 /*.claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }*/

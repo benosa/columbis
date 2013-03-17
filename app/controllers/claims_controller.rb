@@ -65,7 +65,7 @@ class ClaimsController < ApplicationController
       @claims = @claims_collection.all
     end
     set_list_type
-    @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+    #@totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
     render :partial => 'list' if request.xhr?
   end
 
@@ -75,7 +75,7 @@ class ClaimsController < ApplicationController
     else
       :all
     end
-    @totals = claim_totals(period, params)
+    #@totals = claim_totals(period, params)
     render :partial => 'totals'
   end
 

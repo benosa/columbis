@@ -120,7 +120,7 @@ $(function(){
   setDatetimepicker();
 
   // change years for date_of_birth pickers
-  $('.date_of_birth').datepicker('option', 'yearRange', 'c-100:c+0');
+  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
 
   // define screen resolution into browser cookie
   defineScreenResolution();

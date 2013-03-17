@@ -17,6 +17,11 @@ body {
 }
 
 .clear { clear: both; }
+/* From Twitter bootstrap */
+/*.clearfix { *zoom: 1; }
+.clearfix:before { display: table; content: ""; }
+.clearfix:after { clear: both; display: table; content: ""; }*/
+/*------------------------*/
 
 .header { overflow: visible; }
 
@@ -78,6 +83,15 @@ body {
 .databases li.dropdown ul {
   top: 48px; /* fix dropdown blinking */
 }
+/*.databases li:hover, .databases li.active
+.databases li.dropdown:hover, .databases li.dropdown.active {
+  background: url("/assets/new_design/images/databases_hover.png") repeat-x scroll 0 0 transparent !important;
+}
+.databases li:hover a, .databases li.active a,
+.databases li.dropdown:hover a, .databases li.dropdown.active a {
+  color: #000000;
+  text-shadow: 0 1px 0 #FFFFFF;
+}*/
 
 .user_panel {
     background: url("/assets/new_design/images/reservation_border.png") no-repeat scroll left top transparent;
@@ -244,13 +258,19 @@ body {
       margin: 4px 0;
     }
 
+.reservations th { text-align: center; }
+.reservations th a { padding: 21px 2px 0; }
+.reservations th a.sort_active, .reservations th.double_sort a.sort_active {
+    background-position: right top !important;
+}
+.reservations th.purple_box a { padding-top: 21px; }
+
 .reservations.tour_operators th {
   max-width: 350px;
   background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
 }
-.reservations th a.sort_active, .reservations th.double_sort a.sort_active {
-    background-position: right top !important;
-}
+
+.reservations td { height: auto; padding: 5px 3px; }
 /*** END Tables ***/
 
 div.left {
@@ -334,6 +354,10 @@ div.left {
 
 .filter .field_wrapper { float: left; }
 .filter .field_wrapper + .field_wrapper { margin-left: 11px; }
+
+.filter_row { border-top: 1px solid #CECECE; border-bottom: 1px solid #FFFFFF; }
+.filter_row:first-child { border-top: none; }
+.filter_row:last-child { border-bottom: none; }
 /*** END Filter bar ***/
 
 /*** ikSelect ***/
@@ -346,7 +370,7 @@ div.left {
     padding: 0;
     width: 100% !important;
 }
-.ik_select_list { width: auto; }
+.ik_select_list, .filter_select .ik_select_list { width: auto; }
 /*** END ikSelect ***/
 
 /*** highlighted ***/

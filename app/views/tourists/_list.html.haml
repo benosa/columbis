@@ -7,9 +7,9 @@
         .passport
           %span= t('.series')
           %span= t('.number')
-      %th.passport_valid_until.two_row
+      %th.passport_valid_until
         = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
-      %th.date_of_birth.two_row
+      %th.date_of_birth
         = sort_link(:date_of_birth, Tourist.human_attribute_name(:date_of_birth))
       %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
       %th.address

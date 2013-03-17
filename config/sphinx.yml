@@ -15,6 +15,3 @@ production:
 staging:
   <<: *my_settings
   port: 9334
-staging2:
-  <<: *my_settings
-  port: 9335

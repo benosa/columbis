@@ -1,10 +1,10 @@
 # -*- encoding : utf-8 -*-
 set :branch, "master"
 
-set :application, "tourism"
+set :application, "tourism-dev"
 set(:deploy_to) { "/opt/apps/#{application}" }
 
-set :domain, "tourism.devmen.com"
+set :domain, "columbis.ru"
 
 role :app, domain
 role :web, domain

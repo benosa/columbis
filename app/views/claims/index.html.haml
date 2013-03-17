@@ -1,4 +1,4 @@
-- set_current_width(:small)# if small_width? # TODO: small_width in claims and claim form
+-# set_current_width(:small)# if small_width? # TODO: small_width in claims and claim form
 - content_for(:html_class) { 'main_page' }
 
 - title t('.claims')
@@ -11,13 +11,13 @@
 
     - if is_admin? or is_boss? or is_supervisor? or is_accountant?
 
-      = label_tag :office_id, t('.office')
+      = label_tag :office_id, t('.office_filter')
       = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]), :prompt => t('nope'), :class => 'filter_select', :data => { :param=> 'office_id', :filter => 1 }
 
-      = label_tag :user_id, t('.user')
+      = label_tag :user_id, t('.user_filter')
       = select_tag :user_id,  options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:user_id]), :prompt => t('nope'), :class => 'filter_select', :data => { :param=> 'user_id', :filter => 1 }
 
-      - if is_admin? or is_boss?
+      -# if is_admin? or is_boss?
         = label_tag :total_years, t('.only_totals')
         = select_tag :total_years, options_for_select(total_years.unshift([t('claims.index.options_all'), 'all']), params[:year]), :prompt => t('nope'), :name => 'year', :class => 'total_years', :data => { :param=> 'total_years', :filter => 1 }
 

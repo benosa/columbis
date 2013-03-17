@@ -84,5 +84,5 @@ group :test do
 end
 
 group :production do
-  gem 'exception_notification', '~> 3.0.0', :group => %w(staging staging2)
+  gem 'exception_notification', '~> 3.0.0', :group => %w(staging production)
 end

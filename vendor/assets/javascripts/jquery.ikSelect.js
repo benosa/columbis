@@ -286,7 +286,12 @@
             ikselect.show_block();
           }
           link.addClass("ik_select_focus");
-          $(this).select();
+
+          // Use timeout to avoid cyclical event call
+          var self = this;
+          setTimeout(function() {
+            $(self).select();
+          }, 0);
         });
 
         // when focus left from input clear it, if there is no options with input value

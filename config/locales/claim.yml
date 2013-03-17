@@ -19,8 +19,8 @@ ru:
     index:
       claims: 'Бронирования'
       only_my: 'Только мои'
-      office: 'Отбор по офису'
-      user: 'Отбор по пользователю'
+      office_filter: 'Офис'
+      user_filter: 'Менеджер'
       unset_filters: 'Сбросить фильтры'
       only_totals: 'Только итоги'
       reservation_date: 'Дата'

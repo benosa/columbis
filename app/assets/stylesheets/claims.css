@@ -135,6 +135,11 @@ option {
 .edit_page .visa_status .ik_select_link_text{width: 95px !important;}
 .edit_page .visa_status .ik_select_list{width: 118px !important;}
 
+.edit_page .standart_select.ik_select{ width: 157px; }
+.edit_page .standart_select .ik_select_link{width: 150px;}
+.edit_page .standart_select .ik_select_link_text{width: 135px;}
+.edit_page .standart_select .ik_select_list{width: 148px;}
+
 /* low_resolution */
 .main_page .low_resolution .filter .search { width: 150px; }
 .main_page .low_resolution .filter .ik_select { width: 122px; }

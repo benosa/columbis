@@ -77,5 +77,5 @@ Tourism::Application.configure do
   config.middleware.use ExceptionNotifier,
     :email_prefix => '[Tourism] ',
     :sender_address => %{ "notifier" <mailer.devmen.com@gmail.com> },
-    :exception_recipients => %w{ alexzammer@gmail.com pchipiga@devmen.com }
+    :exception_recipients => %w{ alexzammer@gmail.com }
 end

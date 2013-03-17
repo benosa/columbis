@@ -87,13 +87,13 @@ option {
   border-color: #D5D5D5;
 }
 
-.main_page .type .ik_select { width: 180px; }
+.main_page .type .ik_select { width: 182px; }
 .main_page .type .ik_select_link { width: 180px; }
 .main_page .type .ik_select_link_text { width: 165px; }
 .main_page .type .ik_select_list { width: 178px; }
 
 /* visa status select */
-.visa_status.ik_select{ width: 120px !important; margin-right: 0px; margin-bottom: 4px; }
+.visa_status.ik_select{ width: 122px !important; margin-right: 0px; margin-bottom: 4px; }
 .visa_status .ik_select_link{width: 120px !important;}
 .visa_status .ik_select_link_text{width: 95px !important;}
 .visa_status .ik_select_list{width: 118px !important;}
@@ -122,7 +122,7 @@ option {
 
 /* low_resolution */
 .main_page .low_resolution .filter .search { width: 150px; }
-.main_page .low_resolution .filter .ik_select { width: 120px; }
+.main_page .low_resolution .filter .ik_select { width: 122px; }
 .main_page .low_resolution .filter .ik_select_link { width: 120px; }
 .main_page .low_resolution .filter .ik_select_link_text { width: 105px; }
 .main_page .low_resolution .filter .ik_select_list { width: 118px; }
@@ -135,12 +135,10 @@ option {
 .edit_page .low_resolution .filter label:first-child { margin-left: 0; }
 .edit_page .low_resolution .filter label.checkbox { margin-left: 3px; }
 .edit_page .low_resolution .filter label.checkbox.right_checkbox { margin-left: 14px; }
-.edit_page .low_resolution .filter .filter_select.ik_select, .edit_page .low_resolution .filter .filter_select .ik_select_link {
-    width: 150px !important;
-}
-.edit_page .low_resolution .filter .filter_select .ik_select_link_text {
-    width: 135px !important;
-}
+.edit_page .low_resolution .filter .filter_select.ik_select { width: 152px !important; }
+.edit_page .low_resolution .filter .filter_select .ik_select_link { width: 150px !important; }
+.edit_page .low_resolution .filter .filter_select .ik_select_link_text { width: 135px !important; }
+.edit_page .low_resolution .filter .filter_select .ik_select_list { width: 148px !important; }
 
 /* high_resolution */
 .edit_page .high_resolution .filter label { margin-left: 10px; }

@@ -87,19 +87,19 @@ option {
   border-color: #D5D5D5;
 }
 
+.operator_currency { width: 28px; }
+
 .main_page .type .ik_select { width: 182px; }
 .main_page .type .ik_select_link { width: 180px; }
 .main_page .type .ik_select_link_text { width: 165px; }
 .main_page .type .ik_select_list { width: 178px; }
 
-.operator_currency { width: 28px; }
+.main_page .total_years.ik_select{ width: 67px; }
+.main_page .total_years .ik_select_link{width: 65px;}
+.main_page .total_years .ik_select_link_text{width: 50px;}
+.main_page .total_years .ik_select_list{width: 63px !important;}
 
-.total_years.ik_select{ width: 67px; }
-.total_years .ik_select_link{width: 65px;}
-.total_years .ik_select_link_text{width: 50px;}
-.total_years .ik_select_list{width: 63px !important;}
-
-.unset_filters{
+.main_page .unset_filters{
   background: url("/assets/new_design/images/reset.png") no-repeat;
   color: #000;
   display: block;
@@ -110,7 +110,12 @@ option {
   float: left;
 }
 
-.settings { float: left; padding: 1px 0 4px 22px; }
+.main_page .settings { float: left; padding: 1px 0 4px 22px; }
+
+.main_page .filter .ik_select { width: 187px; }
+.main_page .filter .ik_select_link { width: 180px; }
+.main_page .filter .ik_select_link_text { width: 160px; }
+.main_page .filter .ik_select_list { width: 178px; }
 
 .main_page .filter fieldset { padding: 6px 0 0 17px; }
 

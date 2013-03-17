@@ -51,7 +51,8 @@
 .reservations th a.active.desc { background: url("/assets/new_design/images/sort.png") no-repeat scroll right 5px transparent; }
 */
 
-.claims .reservations th.medium { width: 65px; }
+.claims .reservations th.short { max-width: 45px; }
+.claims .reservations th.medium { max-width: 60px; }
 .claims .reservations th.w75 { width: 75px; }
 .claims .reservations th.w50px { width: 50px; }
 .claims .reservations th.w45px { width: 45px; }

@@ -92,12 +92,6 @@ option {
 .main_page .type .ik_select_link_text { width: 165px; }
 .main_page .type .ik_select_list { width: 178px; }
 
-/* visa status select */
-.visa_status.ik_select{ width: 122px !important; margin-right: 0px; margin-bottom: 4px; }
-.visa_status .ik_select_link{width: 120px !important;}
-.visa_status .ik_select_link_text{width: 95px !important;}
-.visa_status .ik_select_list{width: 118px !important;}
-
 .operator_currency { width: 28px; }
 
 .total_years.ik_select{ width: 67px; }
@@ -120,6 +114,20 @@ option {
 
 .main_page .filter fieldset { padding: 6px 0 0 17px; }
 
+/*.edit_page .filter .ik_select,
+.edit_page .filter .ik_select_link,
+.edit_page .filter .ik_select_link_text { width: auto; }*/
+
+.edit_page .filter_select.ik_select { width: 187px; }
+.edit_page .filter_select .ik_select_link { width: 180px; }
+.edit_page .filter_select .ik_select_link_text { width: 160px; }
+.edit_page .filter_select .ik_select_list { width: 178px; }
+
+.edit_page .visa_status.ik_select{ width: 122px !important; margin-right: 0px; margin-bottom: 4px; }
+.edit_page .visa_status .ik_select_link{width: 120px !important;}
+.edit_page .visa_status .ik_select_link_text{width: 95px !important;}
+.edit_page .visa_status .ik_select_list{width: 118px !important;}
+
 /* low_resolution */
 .main_page .low_resolution .filter .search { width: 150px; }
 .main_page .low_resolution .filter .ik_select { width: 122px; }
@@ -130,6 +138,7 @@ option {
 .main_page .low_resolution .filter .ik_select { margin-right: 11px; }
 .main_page .low_resolution .filter .settings { padding-left: 0px; width: 26px; height: 14px; }
 
+.edit_page .low_resolution .filter { height: 132px; margin: 25px 0 0; }
 .edit_page .low_resolution .filter .float_right { margin-left: 0; }
 .edit_page .low_resolution .filter label { margin-left: 14px; }
 .edit_page .low_resolution .filter label:first-child { margin-left: 0; }
@@ -139,6 +148,10 @@ option {
 .edit_page .low_resolution .filter .filter_select .ik_select_link { width: 150px !important; }
 .edit_page .low_resolution .filter .filter_select .ik_select_link_text { width: 135px !important; }
 .edit_page .low_resolution .filter .filter_select .ik_select_list { width: 148px !important; }
+
+.edit_page .low_resolution .filter .float_right { display: block; float: right; }
+
+.edit_page .low_resolution .check_list { height: 132px; }
 
 /* high_resolution */
 .edit_page .high_resolution .filter label { margin-left: 10px; }

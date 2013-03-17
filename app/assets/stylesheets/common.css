@@ -17,6 +17,11 @@ body {
 }
 
 .clear { clear: both; }
+/* From Twitter bootstrap */
+/*.clearfix { *zoom: 1; }
+.clearfix:before { display: table; content: ""; }
+.clearfix:after { clear: both; display: table; content: ""; }*/
+/*------------------------*/
 
 .header { overflow: visible; }
 
@@ -343,6 +348,10 @@ div.left {
 
 .filter .field_wrapper { float: left; }
 .filter .field_wrapper + .field_wrapper { margin-left: 11px; }
+
+.filter_row { border-top: 1px solid #CECECE; border-bottom: 1px solid #FFFFFF; }
+.filter_row:first-child { border-top: none; }
+.filter_row:last-child { border-bottom: none; }
 /*** END Filter bar ***/
 
 /*** ikSelect ***/

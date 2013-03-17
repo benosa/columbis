@@ -98,6 +98,20 @@ ru:
       early_reservation_two_line: 'Раннее<br/>бронир.'
       check_date_two_line: 'Контр.<br/>дата'
 
+    form_filter:
+      office: 'Офис'
+      user: 'Менеджер'
+      assistant: 'Ассистент'
+
+      operator_confirmation: 'Подтверждение оператора'
+      reservation_date: 'Дата резервирования'
+      early_reservation: 'Раннее бронирование'
+      check_date: 'Контрольная дата'
+      operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
+      reservation_date_two_line: 'Дата<br/>резерв.'
+      early_reservation_two_line: 'Раннее<br/>бронир.'
+      check_date_two_line: 'Контр.<br/>дата'
+
     tourists:
       tourists: 'Туристы'
       full_name: 'ФИО туриста'

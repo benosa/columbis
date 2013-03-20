@@ -62,7 +62,7 @@ describe "Tourist:", js: true do
 
   describe "update tourist" do 
     let(:tourist) { create(:tourist) }
-    before(:all) {self.use_transactional_fixtures = false}
+    #before(:all) {self.use_transactional_fixtures = false}
 
     before do
       tourist
@@ -117,7 +117,7 @@ describe "Tourist:", js: true do
     end
     it 'delete operator' do
       expect{
-        click_link "delete_tourist_#{tourist.id}"
+        page.click_link "delete_tourist_#{tourist.id}"
       }.to change(Tourist, :count).by(-1)
     end
   end

@@ -23,7 +23,7 @@
         %p= f.label :phone_number
         = f.text_field :phone_number, :class => 'wide'
         %p
-          = f.check_box :potential
+          = f.check_box :potential, id: 'potential'
           = f.label :potential, :class => 'checkbox right_checkbox'
 
 %fieldset.form_column.form_column-small

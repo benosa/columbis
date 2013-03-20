@@ -9,6 +9,6 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('delete'), tourists_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+  = link_to t('delete'), tourist_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
   = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'

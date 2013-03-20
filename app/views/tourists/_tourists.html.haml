@@ -16,7 +16,7 @@
       %span= t('actions')
 
   - for tourist in tourists
-    %tr{ :class => cycle('odd', 'even') }
+    %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
       %td
         %p= tourist.name
       %td
@@ -32,5 +32,5 @@
       %td
         %p= tourist.address.try(:joint_address)
       %td
-        = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit')
-        = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => 'delete', :title => t('delete')
+        = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
+        = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', id: "delete_tourist_#{tourist.id}", :title => t('delete')

@@ -12,6 +12,7 @@ describe "Tourist:", js: true do
     fill_in "user[password]", :with => admin.password
     page.click_button 'user_session_submit'
     admin }
+
   subject { page }
 
   describe "submit form" do

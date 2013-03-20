@@ -14,9 +14,9 @@
 
 - content_for :top do
   .switch_type
-    %a.client.potential-switcher{ :href => tourists_url, :class => params[:potential].blank? && 'active' }
+    %a.client.potential-switcher{ :href => tourists_url, :class => params[:potential].blank? && 'active', id: 'clients' }
       %span= t('.clients')
-    %a.client.potential-switcher{ :href => tourists_url(potential: 1), :class => params[:potential].present? && 'active' }
+    %a.client.potential-switcher{ :href => tourists_url(potential: 1), :class => params[:potential].present? && 'active', id: 'clients_potential'}
       %span= t('.potential_clients')
 
   %form.filter

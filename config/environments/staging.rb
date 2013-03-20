@@ -32,13 +32,13 @@ Tourism::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  #config.log_level = :debug
+  config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
 
   # Use a different cache store in production
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :file_store, Rails.root.join('tmp/cache')
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"

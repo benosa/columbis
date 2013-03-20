@@ -19,6 +19,7 @@ ru:
     index:
       claims: 'Бронирования'
       only_my: 'Только мои'
+      only_active: 'В работе'
       office_filter: 'Офис'
       user_filter: 'Менеджер'
       unset_filters: 'Сбросить фильтры'

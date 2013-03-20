@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306102618) do
+ActiveRecord::Schema.define(:version => 20130318233541) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20130306102618) do
     t.integer  "assistant_id"
     t.decimal  "bonus",                               :precision => 15, :scale => 2, :default => 0.0,            :null => false
     t.decimal  "bonus_percent",                       :precision => 5,  :scale => 2, :default => 0.0,            :null => false
+    t.boolean  "active",                                                             :default => true,           :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -294,8 +295,8 @@ ActiveRecord::Schema.define(:version => 20130306102618) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "comment"
     t.boolean  "delta",       :default => true
   end

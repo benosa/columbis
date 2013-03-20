@@ -373,8 +373,24 @@ function ajaxCounterDec(num) {
 }
 
 $(document).ajaxStart(function() {
-   ajaxCounterInc();
- });
+  ajaxCounterInc();
+});
 $(document).ajaxStop(function() {
-   ajaxCounterDec();
- });
+  ajaxCounterDec();
+});
+
+function set_sticky_elements(selector, options) {
+  selector = selector || '.sticky-element';
+  if (!options) { options = {}; }
+  $(selector).waypoint('sticky', options);
+}
+
+function set_waypoints(selector, options) {
+  selector = selector || '.waypoint';
+  var defaults = {
+    offset: 100
+  };
+  if (!options) { options = {}; }
+  options = $.extend({}, defaults, options);
+  $(selector).waypoint(options);
+}

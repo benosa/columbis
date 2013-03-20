@@ -76,6 +76,17 @@
 .claims .reservations .bonus_percent form { width: 100%; }
 .claims .reservations .bonus_percent input { width: 100%; padding: 0; border: none; }
 
+.claims .sticky-element.stuck {
+  position:fixed !important;
+  top:0 !important;
+  box-shadow:0 2px 4px rgba(0, 0, 0, .3);
+  margin-left: -1px;
+}
+
+.claims .waypoint { height: 0; }
+.claims .waypoint.active { height: 25px; }
+.claims .waypoint.active td { height: 25px; background: url(ajax-loader.gif) 50% 50% no-repeat transparent; }
+
 /*.claim .red_back, .claim .nothing_done, .claim .hot,
 .claim .not_ready, .claim .received { color: white !important; }*/
 

@@ -21,8 +21,8 @@ Tourism::Application.routes.draw do
       get 'autocomplete_tourist_last_name'
       get 'autocomplete_country'
       get 'autocomplete_resort/:country_id' => 'claims#autocomplete_resort', :as => 'autocomplete_resort'
-      match 'search' => 'claims#search', :as => :search
-      get 'totals'
+      match 'scroll' => 'claims#scroll', as: :scroll
+      match 'totals' => 'claims#totals', as: :totals
       put 'update_bonus/:id' => 'claims#update_bonus', :as => 'update_bonus'
       match 'autocomplete_common/:list' => 'claims#autocomplete_common'
       match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'

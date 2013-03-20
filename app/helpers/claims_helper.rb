@@ -83,7 +83,7 @@ module ClaimsHelper
 
     if claim.closed?
       'departed'
-    elsif claim.check_date <= Time.now.to_date
+    elsif claim.check_date.to_date <= Date.current
       'hot'
     else
       'soon'
@@ -136,9 +136,9 @@ module ClaimsHelper
     return '' unless claim.depart_to
     return '' if claim.canceled?
 
-    if claim.depart_to > Time.now + 8.day
+    if claim.depart_to.to_date > Date.current + 8.day
      'soon'
-    elsif claim.depart_to > Time.now-1.day
+    elsif claim.depart_to.to_date >= Date.current
       'hot'
     else
       'departed'

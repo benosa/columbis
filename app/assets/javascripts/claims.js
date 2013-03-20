@@ -2,8 +2,16 @@
 function getCurrentParams(el){
   var currentParams = { sort:'reservation_date', direction:'desc', filter: '' },
       $current_sort = $('#claims th a.current'),
-      $el = $(el);
+      $el = $(el),
+      href;
+
   if ($el.is('#claims th a')) {
+    href = $el.attr('href');
+  } else {
+    href = $current_sort.attr('href');
+  }
+
+  if (href) {
     var href = $el.attr('href');
     href = href.replace(/\/claims.*\?/, '');
     var params = href.split('&');
@@ -33,34 +41,67 @@ function getCurrentParams(el){
   } else if ($('#only_my').length > 0) {
     currentParams.only_my = ($('#only_my')[0].checked ? '1' : '');
   }
+  if ($('#only_active').length > 0) {
+    currentParams.only_active = ($('#only_active')[0].checked ? '1' : '');
+  }
   currentParams.filter = $('#filter').val();
   currentParams.list_type = $('.accountant_login').attr('list_type');
 
   return currentParams;
 }
 
-// load list
-function loadList(currentParams){
-  $.ajax({
-    url: 'claims/search',
-    data: currentParams,
-    success: function(resp){
+function loadClaims(options) {
+  var defaults = {
+    url: 'claims',
+    data: {},
+    success: function(resp) {
+      $('#claims_body .waypoint').waypoint('destroy');
+
       $('.claims').replaceWith(resp);
+
       setTitles();
       set_editable_bonus_percent();
+      set_claims_sticky_header();
+      set_claims_waypoint();
     }
+  };
+  if (!options) { options = {}; }
+  options = $.extend({}, defaults, options);
+
+  $.ajax(options);
+}
+
+// load list
+function loadList(currentParams){
+  loadClaims({
+    data: currentParams
   });
 }
 
 // load totals
 function loadTotals(data){
-  $.ajax({
+  loadClaims({
     url: 'claims/totals',
+    data: currentParams
+  });
+}
+
+// load claims by scroll
+function loadClaimsByScroll(data){
+  loadClaims({
+    url: 'claims/scroll',
     data: data,
     success: function(resp){
-      $('#claims_body').replaceWith(resp);
+      var $w = $('#claims_body .waypoint');
+      $w.waypoint('destroy'); $w.remove();
+      $('#claims_body .total').addClass('active');
+
+      $('#claims_body').append(resp);
+
+      set_claims_waypoint();
       setTitles();
       set_editable_bonus_percent();
+      remove_duplicated_totals();
     }
   });
 }
@@ -81,19 +122,76 @@ function setFilters(el, inverse_sorting) {
 
 function setTitles() {
   // Set title attribute for all tags in claim list with full_value attribute
-  $('#claims [full_value]').each(function() {
+  $('#claims [full_value][title!=""]').each(function() {
     $(this).attr('title', $(this).attr('full_value'));
   });
 }
 
 // Set editable fields
 function set_editable_bonus_percent(selector) {
-  $('.bonus_percent .best_in_place').best_in_place().bind('ajax:success', function(event, jstr) {
+  $('.bonus_percent .best_in_place:not(.active)').addClass('active').best_in_place().bind('ajax:success', function(event, jstr) {
     var json = $.parseJSON(jstr),
         bip = $(this).data('bestInPlaceEditor');
     bip.original_content = json.bonus_percent;
     $(this).html(json.bonus_percent).attr("data-original-content", json.bonus_percent);
     $(this).closest('.row').find('.bonus').html(json.bonus);
+  });
+}
+
+function set_claims_waypoint() {
+  set_waypoints('#claims_body .waypoint:last', {
+    continuous: false,
+    offset: 'bottom-in-view',
+    handler: function(direction) {
+      if (direction == 'down') {
+        var $t = $(this),
+            cols = $('#claims_body tr:first td').length,
+            page = parseInt($t.data('page'));
+        if (isNaN(page)) { page = 2 };
+        $t.addClass('active').append('<td colspan="' + cols + '" />');
+        var data = $.extend({}, getCurrentParams(), { page: page });
+        loadClaimsByScroll(data);
+      }
+    }
+  });
+}
+
+function set_claims_sticky_header() {
+  var options = {
+    wrapper: null, //'<table class="sticky-wrapper" />',
+    stuckClass: 'stuck',
+    offset: function() { return -$(this).height(); }
+  };
+
+  var selector = '#claims .sticky-element',
+      $tr = $(selector),
+      w = $tr.width(),
+      $table = $tr.closest('table'),
+      $thead = $table.find('thead'),
+      $tbody = $table.find('tbody');
+
+  // Fix width for thead and tbody
+  $tr.width(w);
+  $table.width(w);
+  $thead.width(w);
+  $tbody.width(w);
+  $tr.find('th').each(function() {
+    $(this).width($(this).width());
+  });
+  $tbody.find('tr:first-child td').each(function() {
+    $(this).width($(this).width());
+  });
+
+  set_sticky_elements(selector, options);
+}
+
+function remove_duplicated_totals() {
+  $('#claims_body .total:not(.active)').each(function() {
+    var $t = $(this),
+        date = $t.data('date');
+    if ($('#claims_body .total.active[data-date="' + date + '"]').length) {
+      $t.remove();
+    }
   });
 }
 
@@ -797,5 +895,7 @@ $(function(){
 
   setTitles();
   set_editable_bonus_percent();
+  set_claims_sticky_header();
+  set_claims_waypoint();
 
 });

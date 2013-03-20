@@ -77,6 +77,9 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
 
   before_save :update_debts
+  before_save :update_active
+
+  scope :active, lambda { where(:active => true) }
 
   define_index do
     indexes :airport_to, :airport_back, :visa, :calculation, :documents_status, :docs_note, :flight_to, :flight_back, :meals, :placement,
@@ -106,7 +109,7 @@ class Claim < ActiveRecord::Base
 
     has :reservation_date, :depart_to, :depart_back, :visa_check, :check_date,
         :arrival_date, :departure_date, :maturity, :operator_maturity, :type => :datetime
-    has :operator_confirmation_flag, :type => :boolean
+    has :operator_confirmation_flag, :active, :type => :boolean
     has :primary_currency_price, :tourist_advance, :tourist_debt, :operator_price, :operator_advance, :operator_debt,
         :approved_tourist_advance, :approved_operator_advance, :approved_operator_advance_prim, :profit, :profit_in_percent,
         :bonus, :bonus_percent, :type => :float
@@ -152,6 +155,16 @@ class Claim < ActiveRecord::Base
 
   def has_memo?
     !self.memo.blank?
+  end
+
+  def is_active?
+    inactive = canceled?
+    if not inactive
+      inactive = closed? and operator_confirmation_flag? and !has_tourist_debt? and !has_operator_debt?
+      inactive &&= visa == 'all_done' if visa_confirmation_flag?
+      inactive &&= depart_to.to_date < Date.current if depart_to
+    end
+    not inactive
   end
 
   def fill_new
@@ -517,6 +530,11 @@ class Claim < ActiveRecord::Base
       self.profit = 0
       self.profit_in_percent = 0
     end
+  end
+
+  def update_active
+    self.active = is_active?
+    true
   end
 
   def check_not_null_fields

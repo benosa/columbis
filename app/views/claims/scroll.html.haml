@@ -1,0 +1,5 @@
+- show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
+- show_accountant_columns = params[:list_type] == 'accountant_list'
+- show_bonus_columns = is_admin? or is_boss?
+
+= render :partial => 'claims', :object => @claims, :locals => { :show_office => show_office, :show_accountant_columns => show_accountant_columns, :show_bonus_columns => show_bonus_columns, :totals => @totals }

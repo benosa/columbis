@@ -4,6 +4,12 @@ require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'thinking_sphinx/deploy/capistrano'
 
+set :whenever_command, 'bundle exec whenever'
+set :whenever_environment, defer { stage }
+set :whenever_identifier, defer { "#{application}_#{stage}" }
+set :whenever_roles, [:db, :app]
+require 'whenever/capistrano'
+
 require 'capistrano/ext/multistage'
 set :default_stage, "staging"
 
@@ -33,6 +39,7 @@ after "deploy:update_code", "thinking_sphinx:start"
 # after 'deploy:finalize_update', 'deploy:symlink_sphinx_indexes'
 after "deploy:update_code", "deploy:precompile_assets"
 after "deploy:update_code", "deploy:create_manifest"
+after "deploy:update_code", "deploy:expire_active_claims_cache"
 after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
@@ -84,6 +91,11 @@ namespace :deploy do
     #   logger.info "Skipping asset pre-compilation because there were no asset changes"
     # end
     run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+  end
+
+  desc 'expire active claims cache'
+  task :expire_active_claims_cache, :roles => :app do
+    run "cd #{current_path} && bundle exec rake claims:expire_active_cache RAILS_ENV=#{rails_env}"
   end
 end
 

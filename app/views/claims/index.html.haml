@@ -23,8 +23,11 @@
 
     - else
 
-      = check_box_tag :only_my, nil, (params[:only_my] == '1'), :data => { :param=> 'only_my', :filter => 1, :value => 1 }
-      = label_tag :only_my, t('.only_my')
+      = check_box_tag :only_my, nil, (params[:only_my] == '1'), data: { param: 'only_my', filter: 1, value: 1 }
+      = label_tag :only_my, t('.only_my'), class: 'checkbox left_checkbox'
+
+    = check_box_tag :only_active, nil, (params[:only_active] == '1'), data: { param: 'only_active', filter: 1, value: 1 }
+    = label_tag :only_active, t('.only_active'), class: 'checkbox left_checkbox'
 
     %fieldset
       - if small_width?

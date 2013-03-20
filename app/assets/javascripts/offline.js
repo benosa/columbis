@@ -720,7 +720,8 @@
       else if ($.browser.webkit) {
         // Check connection by ajax-request
         $.ajax({
-          url: '/dashboard/edit_company',
+          url: '/ping.json',
+          dataType: 'json',
           success: function(data, textStatus, jqXHR) {
             deferred.resolve(true);
           },
@@ -800,31 +801,35 @@
         // Online
         if (self.online) {
 
-          // Check necessary information
-          self.check_db().done(function() {
-            // Get last data
-            self.get_data(false, self.last_sync()).done(function() {
-              // Update synchronization time
-              self.set_last_sync();
-            }).fail(function(last_version) {
-              if (last_version) {
-                self.set_last_version(last_version);
-                console.log("Reload database, version = " + last_version);
-                // Drop all tables and reload all data
-                self.drop_tables('all').done(function() {
-                  self.get_data(false, self.last_sync()).done(function() {
-                    // Update synchronization time
-                    self.set_last_sync();
+          // Check new data one time a day
+          if ( self.different_days(self.last_sync(), new Date()) ) {
+
+            // Check necessary information
+            self.check_db().done(function() {
+              // Get last data
+              self.get_data(false, self.last_sync()).done(function() {
+                // Update synchronization time
+                self.set_last_sync();
+              }).fail(function(last_version) {
+                if (last_version) {
+                  self.set_last_version(last_version);
+                  console.log("Reload database, version = " + last_version);
+                  // Drop all tables and reload all data
+                  self.drop_tables('all').done(function() {
+                    self.get_data(false, self.last_sync()).done(function() {
+                      // Update synchronization time
+                      self.set_last_sync();
+                    });
                   });
-                });
-              } else
-                self.error("getting data is failed");
+                } else
+                  self.error("getting data is failed");
+              });
             });
-          });
 
           // Get offline site version one time a day
           // if ( self.different_days(self.last_cache_update(), new Date()) )
             self.get_offline_version();
+          }
 
         // Offline
         } else {

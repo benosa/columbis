@@ -10,3 +10,5 @@
 //= require jquery.dotdotdot
 //= require globalize
 //= require globalize.culture.ru.js
+//= require waypoints
+//= require waypoints-sticky

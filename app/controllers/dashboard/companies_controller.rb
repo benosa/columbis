@@ -4,9 +4,7 @@ class Dashboard::CompaniesController < ApplicationController
   include CountriesHelper
 
   def new
-    build_empty_associations
-    build_select_options
-    stub_currents
+    build_company_edition_prerequisites
   end
 
   def create
@@ -15,19 +13,17 @@ class Dashboard::CompaniesController < ApplicationController
       current_user.update_attribute(:company_id, @company.id)
       current_user.update_attribute(:office_id, @company.offices.first.id) unless @company.offices.empty?
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
+      session[:city_selects] = city_selects_hash
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_created_company')
     else
+      build_company_edition_prerequisites
       render :action => "new"
     end
   end
 
   def edit
     @company = current_company unless @company
-    ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers asscociation
-    build_empty_associations
-    build_select_options(session[:city_selects])
-    params.merge!(session.delete(:city_selects)) if session[:city_selects].present?
-    stub_currents
+    build_company_edition_prerequisites
   end
 
   def update
@@ -37,8 +33,7 @@ class Dashboard::CompaniesController < ApplicationController
       session[:city_selects] = city_selects_hash
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
-      build_empty_associations
-      build_select_options(session[:city_selects])
+      build_company_edition_prerequisites
       render :action => "edit"
     end
   end
@@ -70,5 +65,13 @@ class Dashboard::CompaniesController < ApplicationController
         region_select: params[:region_select],
         city_select: params[:city_select]
       }
+    end
+
+    def build_company_edition_prerequisites
+      ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers association
+      build_empty_associations
+      build_select_options(session[:city_selects])
+      params.merge!(session.delete(:city_selects)) if session[:city_selects].present?
+      stub_currents
     end
 end

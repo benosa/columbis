@@ -38,6 +38,7 @@ class Dashboard::CompaniesController < ApplicationController
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else
       build_empty_associations
+      build_select_options(session[:city_selects])
       render :action => "edit"
     end
   end

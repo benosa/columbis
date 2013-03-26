@@ -7,4 +7,5 @@
 *= require bootstrap
 *= require new_design/css/style
 *= require new_design/css/ikSelect
+*= require timepicker
 */

@@ -4,152 +4,52 @@ require 'spec_helper'
 describe Dashboard::CompaniesController do
 
   def create_company
-    @company = Factory(:company)
+    @company = FactoryGirl.create(:company)
+    @user = FactoryGirl.create(:admin, :company_id => @company.id)
+    test_sign_in(@user)
   end
 
-  before(:each) do
-    create_company
-  end
-
-  describe 'GET index' do
-    def do_get
-      get :index
-    end
-
-    before(:each) do
-      do_get
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find all companies' do
-      do_get
-      assigns[:companies].size.should > 0
-    end
-
-    it 'should render companies/index.html' do
-      do_get
-      response.should render_template('index')                
-    end
-  end
-
-  describe 'GET new' do
-    def do_get
-      get :new
-    end
-
-    before (:each) do
-      do_get
-    end
-
-    it 'should render companies/new' do
-      response.should render_template('new')
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-  end
+  before { create_company }
 
   describe 'POST create' do
+
     def do_company
-      post :create, :company => {:name => 'company', :email => 'fuck@gmail.com', :oficial_letter_signature => 'best wishes', :address_attributes => {:region => 'kyrovsky', :zip_code => '234', :house_number => '3', :housing => '4', :office_number => '1', :street => 'elm street', :phone_number => '666'}}
+      post :create, :company => {:name => 'company',
+                                  :email => 'fuck@gmail.com',
+                                  :oficial_letter_signature => 'best wishes',
+                                  :address_attributes => {:region => 'kyrovsky',
+                                  :zip_code => '234',
+                                  :house_number => '3',
+                                  :housing => '4', :office_number => '1',
+                                  :street => 'elm street',
+                                  :phone_number => '666'}}
     end
 
     it 'should redirect to companies/show.html' do
       do_company
-      response.should redirect_to(company_path(Company.last.id))
+      response.should redirect_to(dashboard_edit_company_path)
     end
 
     it 'should change companies count up by 1' do
-      lambda { do_company }.should change{ Company.count }.by(1)
+      expect { do_company }.to change{ Company.count }.by(1)
     end
 
     it 'should change addresses count up by 1' do
-      lambda { do_company }.should change{ Address.count }.by(1)
-    end
-  end
-
-  describe 'GET edit' do    
-    def do_get
-      get :edit, :id => @company.id
-    end
-
-    before (:each) do
-      do_get
-    end
-
-    it 'should render companies/edit' do
-      response.should render_template('edit')
-    end
-    
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find right company' do
-      assigns[:company].id.should == @company.id
+      expect { do_company }.to change{ Address.count }.by(1)
     end
   end
 
   describe 'PUT update' do
-    def do_put
-      put :update, :id => @company.id, :company => {:name => 'new_company'}
-    end
+    before { put :update, id: @company.id, company: attributes_for(:company, name: 'new_company') }
+    it { should assign_to(:company).with(@company) }
+    #it { should set_the_flash[:notice].to  t('companies.messages.successfully_updated_company') }
+    it { should redirect_to dashboard_edit_company_path }
 
-    before(:each) do
-      do_put
-    end
-
-    it 'should update company name' do
-      assigns[:company].name.should == 'new_company'
-    end
-    
-    it 'should redirect to companies/show.html' do
-      response.should redirect_to @company
-    end
-  end
-
-  describe 'DELETE destroy' do
-    def do_delete
-      delete :destroy, :id => @company.id
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should redirect to companies/index.html' do
-      do_delete
-      response.should redirect_to(companies_path)
-    end
-
-    it 'should change companies count down by 1' do
-      lambda { do_delete }.should change{ Company.count }.by(-1)
-    end
-  end
-
-  describe 'GET show' do
-    def do_get
-      get :show, :id => @company.id
-    end
-
-    before (:each) do
-      do_get
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find right company' do
-      assigns[:company].id.should == @company.id
-    end
-
-    it 'should render companies/show.html' do
-      response.should render_template('show')
+    it "changes company name " do
+      expect {
+        put :update, id: @company.id, company: attributes_for(:company, name: 'new_company2')
+        @company.reload
+      }.to change(@company, :name).to('new_company2')
     end
   end
 end

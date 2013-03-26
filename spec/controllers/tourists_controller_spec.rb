@@ -34,7 +34,7 @@ describe TouristsController do
     end
 
     it 'should change tourists count up by 1' do
-      lambda { do_tourist }.should change{ Tourist.count }.by(1)
+      expect { do_tourist }.to change{ Tourist.count }.by(1)
     end
   end
 
@@ -76,7 +76,7 @@ describe TouristsController do
     end
 
     it 'should change tourists count down by 1' do
-      lambda { do_delete }.should change{ Tourist.count }.by(-1)
+      expect { do_delete }.to change{ Tourist.count }.by(-1)
     end
   end
 

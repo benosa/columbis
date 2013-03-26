@@ -19,17 +19,18 @@ margin-bottom: 10px;
 margin-bottom: 10px}
 .ui_tpicker_hour_label{
 float:left;
-margin-right: 18px;}
+margin-right: 11px;}
 .ui_tpicker_hour{
     float: left;
-margin-right: 20px;
+    margin-right: 20px;
 }
 .ui_tpicker_minute_label{
     float: left;
-margin-right: 18px;
+margin-right: 11px;
 }
 .ui_tpicker_minute{
-    float:left;}
+    float:left;
+}
 
 .ui-datepicker-buttonpane{
     margin-top: 7px;
@@ -57,4 +58,45 @@ border: 1px solid #E7E7E7;
 font: bold 11px Arial;
 text-shadow: 0 -1px 0 #2B4B67;
 margin-left:98px;
+}
+
+.tpicker_select.ik_select{
+    float: left;
+    /*margin: 0 5px;*/
+}
+    .tpicker_select .ik_select_link_text{
+        font-size: 12px;
+        line-height: 17px;
+        padding: 2px 5px 0;
+    }
+.tpicker_select .ik_select_link{
+    background: #fff url(/assets/new_design/images/calendar_select.png) right center no-repeat;
+    border-color: #324873;
+}
+.tpicker_select.ik_select {width: 49px;}
+.tpicker_select .ik_select_link {width: 47px;}
+.tpicker_select .ik_select_link_text{width: 32px;}/* -15 */
+.tpicker_select .ik_select_list{width: 45px;}/* -2 */
+
+.ui_tpicker_hour, .ui_tpicker_hour_label, .ui_tpicker_minute, .ui_tpicker_minute_label {
+  float: none;
+  display: inline-block;
+  line-height: 22px;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-current-day a,
+.ui-datepicker-calendar td:hover a {
+  background: url("/assets/new_design/images/today_hover.png") no-repeat scroll 0 0 transparent;
+  color: #393B3C;
+  display: block;
+  height: 19px;
+  margin: 0 auto;
+  padding-top: 4px;
+  text-align: center;
+  width: 24px;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today a {
+  background: url("/assets/new_design/images/today.png") no-repeat scroll 0 0 transparent;
+  color: #FFFFFF;
 }

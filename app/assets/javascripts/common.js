@@ -257,6 +257,12 @@ function dpikOptions() {
     ddCustomClass: "calendar_select",
     block_container: '#ui-datepicker-div'
   };
+  var ikopts1 = {
+    autoWidth: false,
+    customClass: "tpicker_select",
+    ddCustomClass: "tpicker_select",
+    block_container: '#ui-datepicker-div'
+  };
 
   return {
     beforeShow: function(input, inst) {
@@ -269,7 +275,7 @@ function dpikOptions() {
         if ($header.length) {
           customizeSelect($header, true, ikopts);
           // if ($tp.length) {
-          //   customizeSelect($tp, true, ikopts);
+          //   customizeSelect($tp, true, ikopts1);
           // }
           clearInterval(timer);
         }
@@ -327,14 +333,14 @@ function setDatetimepicker(selector, is_container, options) {
 
   var ikopts = {
     autoWidth: false,
-    customClass: "calendar_select",
-    ddCustomClass: "calendar_select",
-    block_container: '#ui-timepicker-div'
+    customClass: "tpicker_select",
+    ddCustomClass: "tpicker_select",
+    block_container: '#ui-datepicker-div'
   };
 
-  // var useAmpm = function(timeFormat){
-  //   return (timeFormat.indexOf('t') !== -1 && timeFormat.indexOf('h') !== -1);
-  // };
+  var useAmpm = function(timeFormat){
+    return (timeFormat.indexOf('t') !== -1 && timeFormat.indexOf('h') !== -1);
+  };
 
   var opts = $.extend({
     showOn: 'focus',
@@ -356,62 +362,71 @@ function setDatetimepicker(selector, is_container, options) {
     //   $tp.find('.ik_select select').ikSelect('detach').remove();
     //   customizeSelect($tp, true, ikopts);
     // }
-    // controlType: {
-    //   create: function(tp_inst, obj, unit, val, min, max, step){
-    //     var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
-    //       ul = tp_inst._defaults.timeFormat.indexOf('t') !== -1? 'toLowerCase':'toUpperCase',
-    //       m = 0;
+    controlType: {
+      create: function(tp_inst, obj, unit, val, min, max, step){
+        var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
+          ul = tp_inst._defaults.timeFormat.indexOf('t') !== -1? 'toLowerCase':'toUpperCase',
+          m = 0;
 
-    //     for(var i=min; i<=max; i+=step){
-    //       sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
-    //       // if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
-    //         // sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
-    //       // else if(unit == 'millisec' || i >= 10) sel += i;
-    //       // else sel += '0'+ i.toString();
-    //       sel += $.datepicker.formatTime('HH:mm', {hour:i}, tp_inst._defaults);
-    //       sel += '</option>';
-    //     }
-    //     sel += '</select>';
+        for(var i=min; i<=max; i+=step){
+          sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
+          if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
+            // sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
+            sel += $.datepicker.formatTime('hh TT', {hour:i}, tp_inst._defaults);
+          else if(unit == 'millisec' || i >= 10) sel += i;
+          else sel += '0'+ i.toString();
+          sel += '</option>';
+        }
+        sel += '</select>';
 
-    //     obj.children('select').remove();
+        // obj.children('select').remove();
+        var $s = $('select', obj);
+        if ($s.data('plugin_ikSelect')) {
+          $s.ikSelect('detach');
+        }
+        $s.remove();
 
-    //     $(sel).appendTo(obj).change(function(e){
-    //       tp_inst._onTimeChange();
-    //       tp_inst._onSelectHandler();
-    //     });
+        $(sel).appendTo(obj).change(function(e){
+          tp_inst._onTimeChange();
+          tp_inst._onSelectHandler();
+        });
 
-    //     if (obj.css('display') !== 'none') {
-    //       var $s = $('select', obj);
-    //       if (!$s.data('plugin_ikSelect')) {
-    //         // $s.ikSelect('detach');
-    //         customizeSelect($s, false, ikopts);
-    //       }
-    //     }
+        if ($('#ui-datepicker-div').is(':visible') && obj.css('display') !== 'none') {
+          var $s = $('select', obj);
+          if (!$s.data('plugin_ikSelect')) {
+            customizeSelect($s, false, ikopts);
+            var $dp = $s.parent();
+            $dp.find('.ik_select_block, .ik_select_list_inner, .ik_select_list_inner ul').css({
+              width: 45 //$dp.find('.ik_select_list').width()
+            });
+          }
+        }
 
-    //     return obj;
-    //   },
-    //   options: function(tp_inst, obj, unit, opts, val){
-    //     var o = {},
-    //       // $t = obj.children('select');
-    //       $t = $('select', obj);
-    //     if(typeof(opts) == 'string'){
-    //       if(val === undefined)
-    //         return $t.data(opts);
-    //       o[opts] = val;
-    //     }
-    //     else o = opts;
-    //     return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
-    //   },
-    //   value: function(tp_inst, obj, unit, val){
-    //     // var $t = obj.children('select');
-    //     var $t = $('select', obj);
-    //     if(val !== undefined)
-    //       // return $t.val(val);
-    //       $t.ikSelect("select", val);
-    //     // return $t.val();
-    //     $t.val();
-    //   }
-    // }
+        return obj;
+      },
+      options: function(tp_inst, obj, unit, opts, val){
+        var o = {},
+          // $t = obj.children('select');
+          $t = $('select', obj);
+        if(typeof(opts) == 'string'){
+          if(val === undefined)
+            return $t.data(opts);
+          o[opts] = val;
+        }
+        else o = opts;
+        return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+      },
+      value: function(tp_inst, obj, unit, val){
+        // var $t = obj.children('select');
+        var $t = $('select', obj);
+        if(val !== undefined) {
+          // return $t.val(val);
+          $t.ikSelect("select", val);
+          return $t;
+        }
+        return $t.val();
+      }
+    }
   }, dpikOptions());
   if (options)
     $.extend(opts, options);

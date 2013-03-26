@@ -185,9 +185,9 @@ describe "Tasks:", js: true do
           wait_for_filter_refresh
           active_tasks.each do |task|
             if task.body.index(@filter) or task.comment.try(:index, @filter)
-              has_selector?("#task-#{task.id}").should be_true
+              page.has_selector?("#task-#{task.id}").should be_true
             else
-              has_no_selector?("#task-#{task.id}").should be_true
+              page.has_no_selector?("#task-#{task.id}").should be_true
             end
           end
         end
@@ -251,8 +251,8 @@ describe "Tasks:", js: true do
     it 'finish task' do
       expect {
         click_link "finish_task_#{task.id}"
-        find(".popover-inner .comment_form").fill_in 'task[comment]', with: 'qweqwe'
-        find(".popover-inner .comment_form").click_link('task_save')        
+        find(".popover .comment_form").fill_in 'task[comment]', with: 'qweqwe'
+        find(".popover .comment_form").click_link('task_save')        
         wait_for_filter_refresh
         task.reload
       }.to change(task, :status).to('finish')
@@ -264,7 +264,7 @@ describe "Tasks:", js: true do
     it 'cancel task' do
       expect {
         click_link "cancel_task_#{task.id}"
-        find(".popover-inner .comment_form").click_link('task_save')        
+        find(".popover .comment_form").click_link('task_save')        
         wait_for_filter_refresh
         task.reload
       }.to change(task, :status).to('cancel')

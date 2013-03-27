@@ -1,0 +1,14 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'dashboard' }
+
+- title t('.key_indexes')
+
+- content_for :top do
+  .current-date Thursday 21st, February 2013, Week 8
+
+.widget-area.clearfix
+  - @widgets.each do |widget|
+    = render partial: "boss/widgets/#{widget[:width]}", locals: { widget: widget }
+  = render partial: "boss/widgets/small2", locals: { widget: @widgets[0] }
+  = render partial: "boss/widgets/medium", locals: { widget: @widgets[0] }
+  = render partial: "boss/widgets/large", locals: { widget: @tourists_widget }

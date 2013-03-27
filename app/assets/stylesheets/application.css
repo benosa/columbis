@@ -8,4 +8,5 @@
 *= require new_design/css/style
 *= require new_design/css/ikSelect
 *= require timepicker
+*= require_tree ./boss
 */

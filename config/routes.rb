@@ -68,6 +68,7 @@ Tourism::Application.routes.draw do
 
   namespace :boss do
     match 'reports/:action' => 'reports#:action', :as => :reports
+    match '/' => 'base#index', :as => :index
   end
 
   scope 'dashboard' do

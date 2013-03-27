@@ -1,0 +1,247 @@
+@CHARSET "UTF-8";
+
+.dashboard {
+  .current-date {
+    color: #666666;
+    font-size: 13px;
+    line-height: 22px;
+    vertical-align: top;
+    float: right;
+    margin-top: 4px;
+  }
+  .widget-area {
+    width: 1547px;
+    margin: 25px 0 25px -10px;
+  }
+  .widget {
+    float: left;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    .widget-menu {
+      display: none;
+      float: right;
+      position: absolute;
+      right: 4px;
+      top: 7px;
+    }
+    &:hover .widget-menu {
+      display: block;
+    }
+    .widget-menu {
+      a {
+        text-decoration: none;
+        color: #FFFFFF;
+        display: block;
+        font-size: 11px;
+        font-weight: bold;
+        height: 34px;
+        line-height: 34px;
+        padding-left: 20px;
+      }
+      .widget-btn {
+        opacity: 0.85;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      .widget-btn-more {
+        float: right;
+        background: url(btn-more.png) no-repeat;
+        width: 23px;
+        height: 34px;
+      }
+      .widget-btn-delete {
+        float: right;
+        background: url(btn-del.png) no-repeat;
+        width: 71px;
+        height: 34px;
+        text-shadow: 0 -1px 0 #345a80;
+      }
+      .widget-btn-settings {
+        float: right;
+        background: url(btn-set.png) no-repeat;
+        width: 81px;
+        height: 34px;
+        text-shadow: 0 -1px 0 #345a80;
+      }
+      .widget-btn-type {
+        float: right;
+        background: url(btn-type.png) no-repeat;
+        width: 54px;
+        height: 34px;
+        text-shadow: 0 -1px 0 #345a80;
+      }
+    }
+  }
+  .widget-small {
+    width: 247px;
+  }
+  .widget-double-small {
+    width: 504px;
+  }
+  .widget-title {
+    height: 45px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("widget-title.png") repeat-x scroll 0 0 transparent;
+    border-color: #f9fbfd #bed1e9 #bed1e9;
+    border-image: none;
+    border-radius: 3px 3px 0 0;
+    border-right: 1px solid #bed1e9;
+    border-style: solid;
+    border-width: 1px;
+    h2 {
+      font-size: 18px;
+      line-height: 19px;
+      padding: 11px 9px;
+      text-shadow: 0 -1px 0 white;
+    }
+  }
+  .widget-content {
+    border-color: #d5d5d5 #d5d5d5;
+    border-image: none;
+    border-radius: 0 0 4px 4px;
+    border-right: 1px solid #d5d5d5;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    background: #fff;
+  }
+  .widget-small {
+    .widget-content {
+      height: 155px;
+      color: #666666;
+      font-size: 11px;
+    }
+    .widget-stats {
+      height: 56px;
+      padding: 11px 10px;
+      border-bottom: 1px solid #d5d5d5;
+      .widget-col-1 {
+        float: left;
+        line-height: 19.5px;
+      }
+      .widget-col-2 {
+        float: right;
+        font-size: 13px;
+        color: #000;
+        line-height: 19.5px;
+        p {
+          text-align: right;
+        }
+      }
+      .widget-col-3 {
+        float: right;
+        margin: 0 5px;
+        font-size: 13px;
+        color: #000;
+        line-height: 19.5px;
+        width: 8px;
+        p {
+          &.sign-up {
+            height: 19.5px;
+            background: url(sign-up.png) center no-repeat;
+          }
+          &.sign-down {
+            height: 19.5px;
+            background: url(sign-down.png) center no-repeat;
+          }
+        }
+      }
+      .widget-col-4 {
+        float: right;
+        font-size: 13px;
+        color: #000;
+        line-height: 19.5px;
+        p {
+          text-align: right;
+        }
+      }
+    }
+    .widget-total {
+      height: 56px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 0 0 4px 4px;
+      .widget-text {
+        float: left;
+        margin-top: 8px;
+        span {
+          display: block;
+        }
+      }
+      .widget-sum {
+        float: right;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000;
+        span {
+          color: #666;
+          font-size: 13px;
+          font-weight: normal;
+          vertical-align: bottom;
+        }
+      }
+    }
+  }
+  .widget-medium {
+    width: 504px;
+    .widget-content {
+      padding: 10px;
+      height: 246px;
+    }
+  }
+  .widget-table {
+    width: 1018px;
+  }
+  .widget-large.widget-table .widget-content {
+    overflow-y: auto;
+    height: 440px;
+    padding: 0;
+  }
+  .widget-table .widget-content .reservations {
+    margin: 0;
+    overflow-y: auto;
+    width: 100%;
+    th {
+      background: url("thead_bg.png") repeat-x;
+    }
+  }
+  .widget-large {
+    width: 1018px;
+    .widget-content {
+      padding: 10px;
+      height: 310px;
+      .widget-chart {
+        height: 270px;
+      }
+      .widget-foot {
+        font-size: 13px;
+        color: #666;
+        span {
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .left-block {
+          width: 318px;
+          float: left;
+          text-align: left;
+        }
+        .center-block {
+          width: 318px;
+          float: left;
+          text-align: center;
+          vertical-align: middle;
+          margin-top: 20px;
+        }
+        .right-block {
+          width: 318px;
+          float: left;
+          text-align: right;
+        }
+      }
+    }
+  }
+}

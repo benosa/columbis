@@ -11,29 +11,16 @@ describe Dashboard::UsersController do
     test_sign_in(@admin)
   end
 
-  before(:each) do
-    create_users
-  end
+  before { create_users }
 
   describe 'GET index' do
-    def do_get
-      get :index
-    end
+    before { get :index }
 
-    it 'should be successful' do
-      do_get
-      response.should be_success
-    end
+    it{ response.should be_success }
 
-    it 'should find all users' do
-      do_get
-      assigns[:users].size.should > 0
-    end
+    it{ should assign_to(:users) }
 
-    it 'should render users/index.html' do
-      do_get
-      response.should render_template('index')
-    end
+    it{ response.should render_template('index') }
   end
 
   describe 'DELETE destroy' do
@@ -41,39 +28,21 @@ describe Dashboard::UsersController do
       delete :destroy, :id => @manager.id
     end
 
-    it 'should be successful' do
-      response.should be_success
-    end
+    it { response.should be_success }
 
     it 'should redirect to sign in' do
       do_delete
-      response.should redirect_to(new_user_session_path)
+      response.should redirect_to(dashboard_users_url)
     end
 
-    it 'should change users count down by 1' do
-      lambda { do_delete }.should change{ User.count }.by(-1)
-    end
+    it { expect { do_delete }.to change{ User.count }.by(-1) }
   end
 
   describe 'GET edit' do
-    def do_get
-      get :edit, :id => @manager.id
-    end
+    before { get :edit, :id => @manager.id }
 
-    before (:each) do
-      do_get
-    end
-
-    it 'should render users/edit' do
-      response.should render_template('edit')
-    end
-
-    it 'should be successful' do
-      response.should be_success
-    end
-
-    it 'should find right user' do
-      assigns[:user].id.should == @manager.id
-    end
+    it{ response.should render_template('edit')}
+    it{ response.should be_success}
+    it { should assign_to(:user).with(@manager) }
   end
 end

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Payment < ActiveRecord::Base
   attr_accessible :claim_id, :date_in, :form, :payer_id, :payer_type, :recipient_id, :course, :reversed_course,
-                  :recipient_type, :currency, :amount, :amount_prim, :description, :approved
+                  :recipient_type, :currency, :amount, :amount_prim, :description, :approved, :canceled
   attr_protected :company_id
 
   belongs_to :company

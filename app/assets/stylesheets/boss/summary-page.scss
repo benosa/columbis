@@ -192,13 +192,16 @@
       padding: 10px;
       height: 246px;
     }
+
+    .widget-content .chart { width: 100%; height: 100%; }
   }
   .widget-table {
     width: 1018px;
   }
   .widget-large.widget-table .widget-content {
     overflow-y: auto;
-    height: 440px;
+    // height: 440px;
+    height: auto;
     padding: 0;
   }
   .widget-table .widget-content .reservations {

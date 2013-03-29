@@ -32,6 +32,7 @@ module Boss
     def prepare
       self
     end
+    alias_method :run, :prepare
 
     def order_expr(column)
       "(CASE WHEN #{column} IS NULL THEN 0 ELSE #{column} END) DESC"

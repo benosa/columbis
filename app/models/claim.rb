@@ -477,6 +477,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:payer_type] = self.applicant.class.try(:model_name)
       payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:course] = 1
+      payment_hash[:canceled] = self.canceled?
 
       process_payment_hash(payment_hash, self.payments_in)
     end
@@ -493,6 +494,7 @@ class Claim < ActiveRecord::Base
       payment_hash[:payer_type] = Company.model_name
       payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
       payment_hash[:reversed_course] = (payment_hash[:currency] == 'rur')
+      payment_hash[:canceled] = self.canceled?
 
       process_payment_hash(payment_hash, self.payments_out)
     end

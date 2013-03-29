@@ -29,6 +29,7 @@ gem 'state_machine'
 gem 'active_attr', '~> 0.7.0'
 gem 'ruby-gmail'
 gem 'whenever', :require => false
+gem 'cells'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -81,6 +82,7 @@ end
 group :test do
   gem 'shoulda', '~> 3.3.2'
   gem 'email_spec', '~> 1.4.0'
+  gem 'rspec-cells'
 end
 
 group :production do

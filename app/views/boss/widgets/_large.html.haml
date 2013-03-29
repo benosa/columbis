@@ -3,40 +3,4 @@
   .widget-title
     %h2= widget[:title]
   .widget-content
-    %table#tourists.tourists.reservations.tour_operators
-      %tr
-        %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
-        %th.passport.two_row.colspan{ :colspan => 2 }
-          = sort_link(:passport, t('.passport'))
-          .passport
-            %span= t('.series')
-            %span= t('.number')
-        %th.passport_valid_until
-          = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
-        %th.date_of_birth
-          = sort_link(:date_of_birth, Tourist.human_attribute_name(:date_of_birth))
-        %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
-        %th.address
-          = sort_link(:joint_address, t('.address'))
-        %th.actions
-          %span= t('actions')
-
-      - for tourist in widget[:data]
-        %tr{ :class => cycle('odd', 'even') }
-          %td
-            %p= tourist.name
-          %td.passport_series
-            %p= tourist.passport_series
-          %td.passport_number.dark_blue_box
-            %span= tourist.passport_number
-          %td
-            %p= l(tourist.passport_valid_until, :format => :long)
-          %td
-            %p= l(tourist.date_of_birth, :format => :long)
-          %td
-            %span= tourist.phone_number
-          %td
-            %p= tourist.address.try(:joint_address)
-          %td
-            = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit')
-            = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+    = render partial: "tourists/tourists", locals: { tourists: @tourists_widget[:data] }

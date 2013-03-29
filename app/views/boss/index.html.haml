@@ -7,8 +7,12 @@
   .current-date Thursday 21st, February 2013, Week 8
 
 .widget-area.clearfix
+  -# render partial: "boss/widgets/small", locals: { widget: @income_widget }
+  = render_cell 'boss/widget', :factor_income
+  = render_cell 'boss/widget', :factor_claims
+  = render_cell 'boss/widget', :chart_income
+
   - @widgets.each do |widget|
     = render partial: "boss/widgets/#{widget[:width]}", locals: { widget: widget }
-  = render partial: "boss/widgets/small2", locals: { widget: @widgets[0] }
-  = render partial: "boss/widgets/medium", locals: { widget: @widgets[0] }
+  -# render partial: "boss/widgets/small2", locals: { widget: @widgets[0] }
   = render partial: "boss/widgets/large", locals: { widget: @tourists_widget }

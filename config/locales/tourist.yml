@@ -19,7 +19,7 @@ ru:
       add_tourist: 'Добавить туриста'
       clients: 'Клиенты'
       potential_clients: 'Потенциальные клиенты'
-    list:
+    tourists:
       full_name: "ФИО"
       address: "Адрес"
       passport: 'Паспорт'

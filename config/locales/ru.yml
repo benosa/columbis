@@ -3,6 +3,7 @@ ru:
     formats:
       default: "%d.%m.%y"
       short: "%d.%m"
+      short_with_month_name: "%d %b"
       long: "%d.%m.%Y"
   time:
     formats:
@@ -112,3 +113,24 @@ ru:
       less_than_or_equal_to: "может иметь значение меньшее или равное %{count}"
       odd: "может иметь лишь четное значение"
       even: "может иметь лишь нечетное значение"
+
+  short_units:
+    unit: ""
+    thousand: "тыс."
+    million: "млн."
+    billion: "млрд."
+  short_amount:
+    unit: "руб."
+    thousand: "тыс. руб."
+    million: "млн. руб."
+    billion: "млрд. руб."
+  very_short_amount:
+    unit: "руб."
+    thousand: "тыс. р."
+    million: "млн. р."
+    billion: "млрд. р."
+  short_items:
+    unit: "шт."
+    thousand: "тыс. шт."
+    million: "млн. шт."
+    billion: "млрд. шт."

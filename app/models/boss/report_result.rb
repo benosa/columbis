@@ -43,8 +43,8 @@ module Boss
     end
 
     def sort(options = {})
-      sort_col = (options[:sort_col] || self.sort_col).to_s
-      sort_dir = (options[:sort_dir] || self.sort_dir).to_s
+      sort_col = (options[:sort_col] || options[:col] || self.sort_col).to_s
+      sort_dir = (options[:sort_dir] || options[:dir] || self.sort_dir).to_s
       @data.sort do |h1, h2|
         if sort_dir == 'asc'
           h1[sort_col].nil? ? -1 : (h2[sort_col].nil? ? 1 : h1[sort_col] <=> h2[sort_col])

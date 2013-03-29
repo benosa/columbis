@@ -9,7 +9,7 @@ module Boss
       widget = {
         type: :data,
         width: :small,
-        title: 'Путевок продано',
+        title: 'Заглушка',
         data: [
           ['Среда', '7 дней', '31 день'],
           ['31', '5,420', '338,786'],
@@ -29,7 +29,7 @@ module Boss
         type: :table,
         width: :large,
         title: 'Новые туристы',
-        data: Tourist.clients.accessible_by(current_ability).includes(:address).paginate(page: 1, per_page: 10)
+        data: Tourist.clients.accessible_by(current_ability).includes(:address).order('created_at DESC').limit(10)
       }
 
       render 'boss/index'

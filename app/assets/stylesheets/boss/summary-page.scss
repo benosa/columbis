@@ -47,27 +47,27 @@
       }
       .widget-btn-more {
         float: right;
-        background: url(/assets/boss/btn-more.png) no-repeat;
+        background: url("/assets/boss/btn-more.png") no-repeat;
         width: 23px;
         height: 34px;
       }
       .widget-btn-delete {
         float: right;
-        background: url(/assets/boss/btn-del.png) no-repeat;
+        background: url("/assets/boss/btn-del.png") no-repeat;
         width: 71px;
         height: 34px;
         text-shadow: 0 -1px 0 #345a80;
       }
       .widget-btn-settings {
         float: right;
-        background: url(/assets/boss/btn-set.png) no-repeat;
+        background: url("/assets/boss/btn-set.png") no-repeat;
         width: 81px;
         height: 34px;
         text-shadow: 0 -1px 0 #345a80;
       }
       .widget-btn-type {
         float: right;
-        background: url(/assets/boss/btn-type.png) no-repeat;
+        background: url("/assets/boss/btn-type.png") no-repeat;
         width: 54px;
         height: 34px;
         text-shadow: 0 -1px 0 #345a80;
@@ -142,11 +142,11 @@
         p {
           &.sign-up {
             height: 19.5px;
-            background: url(/assets/boss/sign-up.png) center no-repeat;
+            background: url("/assets/boss/sign-up.png") center no-repeat;
           }
           &.sign-down {
             height: 19.5px;
-            background: url(/assets/boss/sign-down.png) center no-repeat;
+            background: url("/assets/boss/sign-down.png") center no-repeat;
           }
         }
       }

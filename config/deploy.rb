@@ -95,7 +95,7 @@ namespace :deploy do
 
   desc 'expire active claims cache'
   task :expire_active_claims_cache, :roles => :app do
-    run "cd #{current_path} && bundle exec rake claims:expire_active_cache RAILS_ENV=#{rails_env}"
+    run "cd #{release_path} && bundle exec rake claims:expire_active_cache RAILS_ENV=#{rails_env}"
   end
 end
 

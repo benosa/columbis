@@ -92,11 +92,11 @@
             %li.dropdown
               %a{:href => '#'} Статистика
               %ul
-                %li= link_to 'Рабочий стол', boss_index_path if %w(admin boss).include?(current_user.role)
+                %li= link_to 'Рабочий стол', boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
                 %li= link_to t('.reports.operators'), boss_reports_path(:operators)
                 %li= link_to t('.reports.directions'), boss_reports_path(:directions)
                 %li= link_to t('.reports.tourprice'), boss_reports_path(:tourprice)
-          %li= link_to 'Список задач', tasks_path if current_user.role == 'admin'
+          %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?
           .type

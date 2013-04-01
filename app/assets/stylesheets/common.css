@@ -258,8 +258,8 @@ body {
       margin: 4px 0;
     }
 
-.reservations th { text-align: center; }
-.reservations th a { padding: 21px 2px 0; }
+.reservations th { text-align: center !important; }
+.reservations th a { padding: 21px 2px 0; text-align: center !important; }
 .reservations th a.sort_active, .reservations th.double_sort a.sort_active {
     background-position: right top !important;
 }
@@ -473,4 +473,5 @@ label.checkbox.right_checkbox { padding: 0 25px 0 0; }
 /*** modals ***/
 /*.dialog { display: none; }*/
 /*.modal-backdrop.nobg { background: none; }*/
+.popover { max-width: none; }
 /*** END modals ***/

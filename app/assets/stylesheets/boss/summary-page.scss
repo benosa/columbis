@@ -108,6 +108,8 @@
     border-style: none solid solid;
     border-width: medium 1px 1px;
     background: #fff;
+
+    .chart { width: 100%; height: 100%; }
   }
   .widget-small {
     .widget-content {
@@ -192,8 +194,6 @@
       padding: 10px;
       height: 246px;
     }
-
-    .widget-content .chart { width: 100%; height: 100%; }
   }
   .widget-table {
     width: 1018px;

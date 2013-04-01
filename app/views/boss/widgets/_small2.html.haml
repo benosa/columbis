@@ -3,4 +3,4 @@
   .widget-title
     %h2= widget[:title]
   .widget-content
-    .graph
+    .chart{ id: chart_id, data: { type: 'bar', settings: report.bar_settings(data) } }

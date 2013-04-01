@@ -38,7 +38,7 @@ module Boss
     end
 
     def chart_income(options = {})
-      @widget = Widget.chart(title: 'Доход (динамика по неделям)')
+      @widget = Widget.small_chart(title: 'Доход (динамика по неделям)')
       @report = IncomeIntervalReport.new(report_options options).prepare(by_step: true)
       render partial: "boss/widgets/#{@widget[:view]}", locals: { widget: @widget, report: @report, data: @report.results[:amount].data, chart_id: 'chart_income' }
     end

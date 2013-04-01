@@ -3,9 +3,11 @@ development: &my_settings
   min_infix_len: 1
   charset_type: utf-8
   morphology: 'stem_en, stem_ru'
-  charset_table: "0..9, a..z, _, @, A..Z->a..z, U+410..U+42F->U+430..U+44F, U+430..U+458, U+0022, U+0026, U+0027, U+42F, U+44F, U+043B, U+041B, U+0456, U+0457, U+0406, U+0407, U+400..U+4FF"
+  # charset_table: "0..9, a..z, _, @, A..Z->a..z, U+410..U+42F->U+430..U+44F, U+430..U+458, U+0022, U+0026, U+0027, U+42F, U+44F, U+043B, U+041B, U+0456, U+0457, U+0406, U+0407, U+400..U+4FF"
+  charset_table: '0..9, A..Z->a..z, _, @, a..z, U+410..U+42F->U+430..U+44F, U+430..U+44F, U+451, U+22, U+25..U+27'
   sql_user: ''
   use_64_bit: true
+  collation_server: utf8_ci
 test:
   <<: *my_settings
   port: 9314

@@ -12,7 +12,6 @@ describe "Companyies:", js: true do
 
     before do
       visit dashboard_edit_company_path
-      save_and_open_page
     end
 
     # it 'should not update an company, should show error message' do

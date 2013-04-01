@@ -33,7 +33,7 @@ RSpec.configure do |config|
 
   ThinkingSphinx::Test.init
 
-  Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
+  #Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
 
 def test_sign_in(user)

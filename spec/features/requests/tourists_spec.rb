@@ -84,11 +84,11 @@ describe "Tourist:", js: true do
       click_link "edit_tourist_#{tourist.id}"
       current_path.should eq("/tourists/#{tourist.id}/edit")
       expect {
-        page.fill_in "tourist[first_name]", with: "qweqwe"
+        page.fill_in "tourist[first_name]", with: "test"
         click_link I18n.t('save')
         tourist.reload
-      }.to change(tourist, :first_name).from(tourist.first_name).to('qweqwe')
-      tourist.first_name.should eq("qweqwe")
+      }.to change(tourist, :first_name).from(tourist.first_name).to('test')
+      tourist.first_name.should eq("test")
     end
 
     it 'delete tourist, edit tourist' do
@@ -115,7 +115,7 @@ describe "Tourist:", js: true do
       tourist
       visit tourists_path
     end
-    it 'delete operator' do
+    it 'delete tourist' do
       expect{
         page.click_link "delete_tourist_#{tourist.id}"
       }.to change(Tourist, :count).by(-1)

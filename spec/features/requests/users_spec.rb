@@ -10,6 +10,7 @@ describe "User:", js: true do
   let(:company) { create :company }
   let(:office) { create :office, company: company }
 
+
   # describe "user sign_up" do
   #   it "registration user" do 
   #     before do
@@ -29,6 +30,8 @@ describe "User:", js: true do
 
   
   describe "submit form" do
+    let(:user) { create :admin, company: company, office: office }
+
     before do
       visit new_dashboard_user_path
     end
@@ -104,6 +107,7 @@ describe "User:", js: true do
 
   describe "delete user" do 
     let(:user) { create(:admin) }
+
     before do
       user
       visit dashboard_users_path
@@ -149,4 +153,22 @@ describe "User:", js: true do
   #     current_path.should eq root_path
   #   end
   # end
+  describe "edit password user" do 
+    before do
+      user
+      visit dashboard_users_path
+    end
+
+    it 'edit password user' do
+      click_link "edit_password_user#{user.id}"
+      current_path.should eq edit_password_dashboard_user_path(user.id)
+      save_and_open_page
+      expect{
+        fill_in "user[password]", with: "test123456"
+        click_link I18n.t('save')
+        user.reload
+        save_and_open_page
+      }.to change(user, :password).from(user.password).to('test123456')
+    end
+  end
 end

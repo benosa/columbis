@@ -417,8 +417,12 @@ DEPENDENCIES
   oj
   pg (~> 0.14.1)
 <<<<<<< HEAD
+<<<<<<< HEAD
   poltergeist (~> 1.0.2)
   rabl
+=======
+  poltergeist (~> 1.1.0)
+>>>>>>> [#41] Tests request user, fix views, refactoring, update capybara nd poltergeist
 =======
   poltergeist (~> 1.1.0)
 >>>>>>> [#41] Tests request user, fix views, refactoring, update capybara nd poltergeist

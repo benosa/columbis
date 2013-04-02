@@ -22,7 +22,6 @@ class Dashboard::UsersController < ApplicationController
       if @user.update_attribute(:password, params[:user][:password])
         Mailer.registrations_info(@user).deliver
       else
-        puts @user.errors.inspect 
         render :edit_password
         return
       end

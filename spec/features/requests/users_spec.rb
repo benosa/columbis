@@ -109,13 +109,21 @@ describe "User:", js: true do
     it 'edit password user' do
       click_link "edit_password_user#{user.id}"
       current_path.should eq edit_password_dashboard_user_path(user.id)
-      save_and_open_page
       expect{
         fill_in "user[password]", with: "test123456"
         click_link I18n.t('save')
         user.reload
-        save_and_open_page
-      }.to change(user, :password).from(user.password).to('test123456')
+      }
+      current_path.should eq dashboard_users_path
+
+
+      visit new_user_session_path
+      expect{
+        fill_in "user[login]", :with => user.login
+        fill_in "user[password]", :with => "test123456"
+        page.click_button 'user_session_submit'
+      }
+      current_path.should eq root_path
     end
   end
 end

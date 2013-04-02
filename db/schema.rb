@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130328114121) do
+ActiveRecord::Schema.define(:version => 20130401212755) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -360,6 +360,7 @@ ActiveRecord::Schema.define(:version => 20130328114121) do
     t.string   "color"
     t.integer  "company_id"
     t.boolean  "delta",                                 :default => true
+    t.string   "screen_width"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

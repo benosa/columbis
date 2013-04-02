@@ -76,7 +76,7 @@ class Dashboard::UsersController < ApplicationController
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
     params[:user][:role] = @user.role
     if @user.update_by_params(params[:user])
-      redirect_to dashboard_users_url, :notice => t('users.messages.created')
+      redirect_to dashboard_users_url, :notice => t('users.messages.updated')
     else
       render :action => 'edit'
     end
@@ -84,6 +84,6 @@ class Dashboard::UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to dashboard_users_url, :notice => t('users.messages.created')
+    redirect_to dashboard_users_url, :notice => t('users.messages.destroyed')
   end
 end

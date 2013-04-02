@@ -470,8 +470,14 @@ label.checkbox.right_checkbox { padding: 0 25px 0 0; }
 }
 /*** END buttons ***/
 
-/*** modals ***/
+/*** modals and popups ***/
 /*.dialog { display: none; }*/
 /*.modal-backdrop.nobg { background: none; }*/
 .popover { max-width: none; }
-/*** END modals ***/
+.tooltip.error_message .tooltip-arrow { border-top-color: #CD6A6A; }
+.tooltip.error_message .tooltip-inner {
+  background-color: #FCE8E9;
+  border: 1px solid #CD6A6A;
+  color: #990000;
+}
+/*** END modals and popups ***/

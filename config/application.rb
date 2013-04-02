@@ -62,7 +62,8 @@ module Tourism
         %(<span class="error_message">#{html_tag}</span>).html_safe
       else
         cls = html_tag[/class="(.+?)"/, 1]
-        %(<div class="error_message input_wrapper" title="#{errors}">#{html_tag}</div>).html_safe
+        id = html_tag[/id="(.+?)"/, 1] + '_wrapper'
+        %(<div id="#{id}" class="error_message input_wrapper" title="#{errors}">#{html_tag}</div>).html_safe
       end
     end
 

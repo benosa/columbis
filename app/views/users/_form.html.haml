@@ -1,7 +1,7 @@
 - content_for(:error_messages) do
   = f.error_messages
 
-%fieldset.form_column.first
+%fieldset.form_column.form_column-middle.first
   .form_block
     .block_title
       %h2= t('.credentials')
@@ -29,7 +29,7 @@
     .block_title
       %h2= t('.view_settings')
     .form_block_content
-      .fake_row
+      .fake_row.single_row
         - available_colors = Hash[User.available_colors]
         - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
         .two_line
@@ -42,12 +42,12 @@
         %p= t('.screen_width')
         = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, f.object.try(:screen_width)), include_blank: t('.auto')
 
-%fieldset.form_column.last
+%fieldset.form_column.form_column-middle.last
   .form_block
     .block_title
       %h2= t('.personal_data')
     .form_block_content
-      .fake_row
+      .fake_row.single_row
         %p= f.label :first_name
         = f.text_field :first_name, :class => 'type_user'
         %p= f.label :last_name
@@ -62,13 +62,13 @@
       .block_title
         %h2= t('.change_password')
       .form_block_content
-        .fake_row
+        .fake_row.single_row
           %p= f.label :password
-          = f.password_field :password
+          = f.password_field :password, :class => 'type_user'
           %p= f.label :password_confirmation
-          = f.password_field :password_confirmation
+          = f.password_field :password_confirmation, :class => 'type_user'
           %p= f.label :current_password
-          = f.password_field :current_password
+          = f.password_field :current_password, :class => 'type_user'
 
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }

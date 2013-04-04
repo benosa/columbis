@@ -1,0 +1,34 @@
+.profile_edit {
+  .form_column {
+    margin-top: 25px;
+    &.last { margin-top: 25px; }
+    .color_select {
+      &.ik_select { width: 213px !important; }
+      .ik_select_link { width: 211px !important; }
+      .ik_select_link_text { width: 196px !important; }
+      .ik_select_list { width: 209px !important; }
+    }
+    .color {
+      width: 200px !important;
+      border-color: #fff;
+    }
+  }
+}
+
+/*.middle_resoluition {
+  .type_user {
+    width: 655px;
+  }
+  .single_row {
+    .ik_select { width: 667px; }
+    .ik_select_link { width: 665px; }
+    .ik_select_link_text { width: 650px; }
+    .ik_select_list { width: 663px; }
+    .color_select {
+      &.ik_select { width: 475px; }
+      .ik_select_link { width: 473px; }
+      .ik_select_link_text { width: 458px; }
+      .ik_select_list { width: 471px; }
+    }
+  }
+}*/

@@ -241,6 +241,8 @@ option {
 .edit_page .filter_select .ik_select_list { width: 178px; }*/
 
 .edit_page {
+  .form_column { margin: 0 !important; }
+
   .visa_status {
     &.ik_select {
       width: 122px !important;

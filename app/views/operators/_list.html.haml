@@ -8,7 +8,7 @@
       %th= sort_link(:ogrn, Operator.human_attribute_name(:ogrn))
       %th{ :style => 'width: 350px;' }
         = sort_link(:joint_address, t('.address'))
-      %th
+      %th.actions
         %span= t('actions')
 
     - for operator in @operators

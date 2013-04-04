@@ -1,0 +1,88 @@
+.middle_resoluition {
+  .tourists {
+    .passport {
+      span + span {
+        border-left: 2px solid #d5d5d5;
+      }
+      padding: 0;
+      width: auto !important;
+    }
+    th.colspan {
+      span {
+        width: 49%;
+        padding: 10px 0;
+      }
+      a {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #d5d5d5;
+      }
+    }
+  }
+  .reservations {
+    .delete {
+      margin-top: 2px;
+    }
+    .edit_row {
+      margin-left: 10px;
+    }
+    .lock {
+      margin-left: 25px;
+    }
+    .power {
+      margin-left: 18px;
+    }
+    td:last-child a {
+      float: left;
+      margin: 0;
+      + a {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+.high_resolution {
+  .reservations {
+    .delete {
+      margin-top: 2px !important;
+    }
+    .edit_row {
+      margin-left: 10px !important;
+    }
+    .lock {
+      margin-left: 25px !important;
+    }
+    .power {
+      margin-left: 18px !important;
+    }
+    td:last-child a {
+      float: left;
+      margin: 0;
+      + a {
+        margin-left: 15px;
+      }
+    }
+  }
+  .tourists {
+    .passport {
+      span + span {
+        border-left: 2px solid #d5d5d5;
+      }
+      padding: 0;
+      width: auto !important;
+    }
+    th.colspan {
+      span {
+        width: 49%;
+        padding: 10px 0;
+      }
+      a {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #d5d5d5;
+      }
+    }
+  }
+  .reservations tr td.dark_blue_box {
+    background: url("/assets/new_design/images/dark_blue_box.png") repeat scroll right top transparent;
+  }
+}

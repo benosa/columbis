@@ -682,6 +682,29 @@ div.left {
   width: 980px;
 }
 
+.form_block {
+  &.form_block-large {
+    clear: both;
+    margin-top: 25px;
+    width: 980px;
+    .block_title, .fake_row { width: 958px; }
+    .fake_table {
+      width: 978px;
+      span {
+        background: url("/assets/new_design/images/blue_border.png") repeat-y scroll left center transparent;
+        color: #333333;
+        font-size: 12px;
+        line-height: 13px;
+        padding: 11px 10px 1px 22px;
+        &:first-child {
+          background: none repeat scroll 0 0 transparent;
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+
 .fake_row {
   width: auto;
   .two_line p label {

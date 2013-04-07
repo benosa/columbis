@@ -541,7 +541,7 @@ class Claim < ActiveRecord::Base
 
   def check_not_null_fields
     Claim.columns.each do |col|
-      if !col.null and self[col.name].nil? # Prevent null values in not null fields
+      if !col.null and self[col.name].nil? and col.name != 'id' # Prevent null values in not null fields
         convertor = "to_#{col.type.to_s.first}".to_sym
         convertor = :to_s unless nil.respond_to?(convertor)
         self[col.name] = nil.send(convertor)

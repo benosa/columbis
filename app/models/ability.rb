@@ -15,7 +15,6 @@ class Ability
       can :manage, Task
     elsif user.role == 'boss'
       can :switch_view, User
-      can :search, Claim
       can :manage, :all, :company_id => user.company_id
       cannot :manage, Company
       can :manage, Company, :id => user.company_id
@@ -28,7 +27,6 @@ class Ability
       can :create, Task
     elsif user.role == 'accountant'
       can :switch_view, User
-      can :search, Claim
       can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
       can [:update, :destroy], User, :id => user.id
       can :read, :all, :company_id => user.company_id
@@ -40,8 +38,7 @@ class Ability
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
-      can :search, Claim
-      can :read, Claim, :company_id => user.company_id
+      can [:read, :scroll], Claim, :company_id => user.company_id
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
       can :claims_all, :user
@@ -51,7 +48,7 @@ class Ability
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
-      can :read, Claim, :company_id => user.company_id, :office_id => user.office_id
+      can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id
       can :search, Claim
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]

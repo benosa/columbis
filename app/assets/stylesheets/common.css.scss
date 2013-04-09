@@ -674,6 +674,9 @@ div.left {
     display: inline-block;
     margin-right: 8px;
   }
+  input[type="text"], input[type="password"] {
+    width: 265px;;
+  }
 }
 
 .low_resolution.edit_tourists .form_block {

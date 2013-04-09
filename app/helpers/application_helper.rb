@@ -180,10 +180,11 @@ module ApplicationHelper
   # available site resolutions: 1024x768 1600x900 1920x1080
   def current_width
     return @current_width if @current_width.present?
-    width = (current_user.try(:screen_width) || client_resolution[:width]).to_i
+    width = (current_user.screen_width if current_user).to_i
+    width = client_resolution[:width].to_i unless width > 0
     @current_width = case width
-      when 0...1599 then :small
-      when 1600...1919 then :medium
+      when 0...1600 then :small
+      when 1600...1920 then :medium
       else :large
     end
   end

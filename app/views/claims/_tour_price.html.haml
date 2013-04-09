@@ -57,8 +57,8 @@
       .two_line
         %p= f.label :primary_currency_price
         %p
-          %em= claim.primary_currency_price
           = f.hidden_field :primary_currency_price
+          %em#claim_primary_currency_price_view= claim.primary_currency_price
           = t('rur')
       .two_line.value_in_words
         %p= f.label t('.price_as_string')

@@ -394,16 +394,18 @@ $(function(){
   });
 
   // tour price
-  function course(elem) {
-    switch (elem.val())
-    {
+  function course(currency) {
+    var value;
+    switch (currency) {
       case 'eur':
-        return parseFloat($('#claim_course_eur').val());
+        value = parseFloat($('#claim_course_eur').val());
+        break;
       case 'usd':
-        return parseFloat($('#claim_course_usd').val());
-      default:
-        return 1;
+        value = parseFloat($('#claim_course_usd').val());
+        break;
     }
+    value = value && isFinite(value) ? value : 1;
+    return value;
   }
 
   function update_calculation() {
@@ -491,9 +493,9 @@ $(function(){
       }
     });
 
-    var sum_price = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency'));
+    var sum_price = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency').val());
     sum_price = sum_price +
-      parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency'));
+      parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency').val());
 
     // some fields are calculated per person
     fields =  ['#claim_visa_price', '#claim_children_visa_price', '#claim_insurance_price', '#claim_additional_insurance_price', '#claim_fuel_tax_price'];
@@ -504,7 +506,7 @@ $(function(){
       var basis = fields[i].replace(/_price$/, '');
       var count = parseFloat($(basis + '_count').val());
       if (isFinite(count) && count > 0) {
-        total = total + parseFloat($(fields[i]).val()) * count * course($(fields[i] +'_currency'));
+        total = total + parseFloat($(fields[i]).val()) * count * course($(fields[i] +'_currency').val());
       }
     }
     sum_price = Math.round(sum_price + total);
@@ -512,19 +514,29 @@ $(function(){
     return sum_price;
   };
 
+  function save_tour_price(tour_price) {
+    tour_price = tour_price || calculate_tour_price();
+    $('#claim_primary_currency_price').data('tour_price', tour_price);
+  }
+
   function adjust_calculation() {
-    var total = calculate_tour_price();
-    $('#claim_primary_currency_price').val(total);
-    $('#claim_primary_currency_price').change();
-    calculate_tourist_debt();
-    update_calculation();
+    var tour_price = calculate_tour_price(),
+        prev_tour_price = $('#claim_primary_currency_price').data('tour_price');
+    if (tour_price != prev_tour_price) {
+      $('#claim_primary_currency_price').val(tour_price);
+      $('#claim_primary_currency_price_view').text(tour_price);
+      $('#claim_primary_currency_price').change();
+      calculate_tourist_debt();
+      update_calculation();
+      save_tour_price(tour_price);
+    }
   };
 
-  $('#claim_course_eur, #claim_course_usd, tr.countable input').bind('keyup, input', function(){
+  $('#claim_course_eur, #claim_course_usd, #tour_price input').bind('keyup, input', function(){
     adjust_calculation();
   });
 
-  $('tr.countable select').change(function(){
+  $('#tour_price select').change(function(){
     adjust_calculation();
   });
 
@@ -897,5 +909,6 @@ $(function(){
   set_editable_bonus_percent();
   set_claims_sticky_header();
   set_claims_waypoint();
+  save_tour_price();
 
 });

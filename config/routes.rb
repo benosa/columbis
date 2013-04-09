@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
-  match 'amount_in_word' => ApplicationController.action(:amount_in_word)
-  match 'get_currency_course' => ApplicationController.action(:get_currency_course)
+  match 'amount_in_word' => 'application#amount_in_word'
+  match 'get_currency_course' => 'application#get_currency_course'
 
   resources :airlines
   resources :currency_courses

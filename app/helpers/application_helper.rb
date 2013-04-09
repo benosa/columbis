@@ -28,6 +28,12 @@ module ApplicationHelper
     end
   end
 
+  def next_page
+    next_page = params[:page].to_i + 1
+    next_page = 2 if next_page < 2
+    next_page
+  end
+
   def current_path(args = {})
     url_params = args.dup
     if args[:save_params]

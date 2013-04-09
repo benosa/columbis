@@ -1,8 +1,3 @@
-- show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
-- show_accountant_columns = params[:list_type] == 'accountant_list'
-- show_bonus_columns = is_admin? or is_boss?
-- next_page = params[:page].to_i + 1; next_page = 2 if next_page < 2
-
 .claims.current_container
   .reservations_wrapper
     %table#claims.reservations{ :rules => 'all'}
@@ -51,7 +46,7 @@
           %th.last_cols
 
       %tbody#claims_body
-        = render partial: 'claims', object: @claims, locals: { show_office: show_office, show_accountant_columns: show_accountant_columns, show_bonus_columns: show_bonus_columns } #, totals: @totals }
+        = render partial: 'claims', object: @claims #, locals: { totals: @totals }
 
         - if next_page <= @claims_collection.total_pages
           %tr{ :class => "waypoint", :data => {:page => next_page} }

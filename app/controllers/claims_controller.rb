@@ -192,8 +192,8 @@ class ClaimsController < ApplicationController
   end
 
   def check_payments
-    @claim.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_in.empty?
-    @claim.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_out.empty?
+    @claim.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_in.empty?
+    @claim.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if @claim.payments_out.empty?
   end
 
   def set_commit_type

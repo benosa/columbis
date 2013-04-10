@@ -14,9 +14,9 @@ FactoryGirl.define do
 
     email { Faker::Internet.email }
     login { Faker::Name.name }
-    last_name 'Иванов'
-    first_name 'Иван'
-    middle_name 'Иванович'
+    last_name { Faker::Name.name }
+    first_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
     role 'admin'
     password 'secret'
     password_confirmation 'secret'

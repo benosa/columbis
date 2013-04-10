@@ -6,8 +6,13 @@ describe "Tasks:", js: true do
   include TasksHelper
 
   clean_once_with_sphinx do
-
-    before { login_as_admin }
+    before {
+      admin = FactoryGirl.create(:admin)
+      visit new_user_session_path
+      fill_in "user[login]", :with => admin.login
+      fill_in "user[password]", :with => admin.password
+      page.click_button 'user_session_submit'
+      admin }
     subject { page }
 
     describe "list of task" do
@@ -78,16 +83,15 @@ describe "Tasks:", js: true do
         end
 
         it "should contain all tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.all')).click
-          wait_for_filter_refresh # wait until ajax request has done
+          page.select t('task_type.all'), :from => 'type_filter_options'
+          page.select t('task_status.all'), :from => 'status_filter_options'
           tasks.each do |task|
-            has_selector?("#task-#{task.id}").should be_true
+            should have_selector("#task-#{task.id}")
           end
         end
 
         it "should contain only active tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.active')).click
-          wait_for_filter_refresh
+          page.select t('task_type.all'), :from => 'type_filter_options'
           active_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -97,8 +101,7 @@ describe "Tasks:", js: true do
         end
 
         it "should contain only new tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.new')).click
-          wait_for_filter_refresh
+          page.select t('task_status.new'), :from => 'status_filter_options'
           new_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -108,8 +111,7 @@ describe "Tasks:", js: true do
         end
 
         it "should contain only worked tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.work')).click
-          wait_for_filter_refresh
+          page.select t('task_status.work'), :from => 'status_filter_options'
           worked_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -119,8 +121,7 @@ describe "Tasks:", js: true do
         end
 
         it "should contain only finished tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.finish')).click
-          wait_for_filter_refresh
+          page.select t('task_status.finish'), :from => 'status_filter_options'
           finished_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -130,8 +131,7 @@ describe "Tasks:", js: true do
         end
 
         it "should contain only canceled tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_status.cancel')).click
-          wait_for_filter_refresh
+          page.select t('task_status.cancel'), :from => 'status_filter_options'
           canceled_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -147,16 +147,15 @@ describe "Tasks:", js: true do
         end
 
         it "should contain bug and not bug tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_type.all')).click
-          wait_for_filter_refresh
+          page.select t('task_type.bug'), :from => 'type_filter_options'
+          page.select t('task_status.all'), :from => 'status_filter_options'
           (active_tasks + offered_tasks).each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
         end
 
         it "should contain only bug tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_type.bug')).click
-          wait_for_filter_refresh
+          page.select t('task_type.bug'), :from => 'type_filter_options'
           active_tasks.each do |task|
             has_selector?("#task-#{task.id}").should be_true
           end
@@ -166,8 +165,7 @@ describe "Tasks:", js: true do
         end
 
         it "should contain only not bug tasks" do
-          find('.ik_select_block').find('li', text: I18n.t('task_type.offer')).click
-          wait_for_filter_refresh
+          page.select t('task_type.offer'), :from => 'type_filter_options'
           active_tasks.each do |task|
             has_no_selector?("#task-#{task.id}").should be_true
           end
@@ -182,7 +180,6 @@ describe "Tasks:", js: true do
         it "should contain only tasks with the search word" do
           @filter = active_tasks.first.body.split.first # get first word from first task
           fill_in('filter', with: @filter) # trigger search by word
-          wait_for_filter_refresh
           active_tasks.each do |task|
             if task.body.index(@filter) or task.comment.try(:index, @filter)
               page.has_selector?("#task-#{task.id}").should be_true
@@ -241,7 +238,7 @@ describe "Tasks:", js: true do
     it 'accept task' do
       expect {
         click_link "accept_task_#{task.id}"
-        wait_for_filter_refresh
+        sleep(2)
         task.reload
       }.to change(task, :status).to('work')
       
@@ -253,7 +250,7 @@ describe "Tasks:", js: true do
         click_link "finish_task_#{task.id}"
         find(".popover .comment_form").fill_in 'task[comment]', with: 'qweqwe'
         find(".popover .comment_form").click_link('task_save')        
-        wait_for_filter_refresh
+        sleep(2)
         task.reload
       }.to change(task, :status).to('finish')
       sleep(1) # need becouse fadeOut
@@ -265,7 +262,7 @@ describe "Tasks:", js: true do
       expect {
         click_link "cancel_task_#{task.id}"
         find(".popover .comment_form").click_link('task_save')        
-        wait_for_filter_refresh
+        sleep(2)
         task.reload
       }.to change(task, :status).to('cancel')
       sleep(1) # need becouse fadeOut

@@ -5,10 +5,15 @@ describe "Tourist:", js: true do
   include ActionView::Helpers
   include TouristsHelper
 
-  before { login_as_admin }
+  before {
+    admin = FactoryGirl.create(:admin)
+    visit new_user_session_path
+    fill_in "user[login]", :with => admin.login
+    fill_in "user[password]", :with => admin.password
+    page.click_button 'user_session_submit'
+    admin }
   subject { page }
 
-  
   describe "submit form" do
 
     before do

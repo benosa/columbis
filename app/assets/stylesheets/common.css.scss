@@ -688,6 +688,11 @@ div.left {
   }
 }
 
+.block_title.with_clarification {
+  h2 { float: left; }
+  span { float: left; margin: 12px 0 0 10px; }
+}
+
 .form_column.sign_form {
   margin-top: 0;
   width: 320px;

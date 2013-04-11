@@ -2,8 +2,9 @@
 - approved_disabled = !(is_admin? or is_boss? or is_accountant?)
 - amount_width_class = large_width? ? 'date' : 'paid'
 #payments_out.payments.form_block.green_block{ :class => large_width? && 'payment_operator', :data => { :form_options => form_options, :approved_disabled => approved_disabled, :amount_width_class => amount_width_class } }
-  .block_title
+  .block_title.with_clarification
     %h2= t('.payments_out')
+    %span= "(#{t('.can_edit_payment_after_save')})" if f.object.new_record?
   .form_block_content
     - ind = 0
     = f.fields_for :payments_out, :highlight_only => [:amount] do |pof|

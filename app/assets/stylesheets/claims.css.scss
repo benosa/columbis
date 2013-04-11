@@ -242,7 +242,6 @@ option {
 
 .edit_page {
   .form_column { margin: 0 !important; }
-
   .visa_status {
     &.ik_select {
       width: 122px !important;
@@ -271,6 +270,13 @@ option {
     }
     .ik_select_list {
       width: 148px;
+    }
+  }
+  .fields {
+    &.destroyed { display: none; }
+    &.disabled {
+      input, .ik_select_link_text { color: #999; }
+      a.delete { display: none; }
     }
   }
 }
@@ -347,6 +353,9 @@ option {
     }
     .value_in_words {
       margin-left: 114px;
+    }
+    .delete {
+      float: none;
     }
 
     /* ik_selects */

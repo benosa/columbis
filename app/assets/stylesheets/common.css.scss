@@ -582,6 +582,11 @@ div.left {
   width: auto;
 }
 
+.error .ik_select_link, .error_message .ik_select_link {
+  background-color: #FCE8E9;
+  color: #990000;
+}
+
 /*.filter_select .ik_select_link, .filter_select .ik_select_link_text, .filter_select .ik_select_link_inner {
   width: auto !important;
   min-width: 50px;

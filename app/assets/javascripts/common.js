@@ -10,6 +10,7 @@ $(function(){
     e.preventDefault();
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
+    if ($t.hasClass('disabled')) { return; }
     $t.toggleClass('active');
     $checkbox.attr('checked', $t.hasClass('active')).trigger('change');
   });
@@ -17,6 +18,7 @@ $(function(){
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
+    $t[$checkbox.is(':disabled') ? 'addClass' : 'removeClass']('disabled');
   });
 
   // $('.editable-select').editableSelect({

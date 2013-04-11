@@ -24,7 +24,7 @@ class TouristsController < ApplicationController
   def create
     @tourist.company = current_company
     if @tourist.save
-      redirect_to tourists_url, :notice => t('tourists.messages.created')
+      redirect_to @tourist.potential ? tourists_url(potential: 1) : tourists_url, :notice => t('tourists.messages.created')
     else
       render :action => "new"
     end
@@ -37,7 +37,7 @@ class TouristsController < ApplicationController
   def update
     @tourist.company = current_company
     if @tourist.update_attributes(params[:tourist])
-      redirect_to tourists_url, :notice => t('tourists.messages.updated')
+      redirect_to @tourist.potential ? tourists_url(potential: 1) : tourists_url, :notice => t('tourists.messages.updated')
     else
       render :action => "edit"
     end

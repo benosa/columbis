@@ -39,6 +39,7 @@ class Ability
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
       can [:read, :scroll], Claim, :company_id => user.company_id
+      can :update, Payment, :company_id => user.company_id, :approved => false
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
       can :claims_all, :user
@@ -49,7 +50,8 @@ class Ability
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
       can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id
-      can :search, Claim
+      can :update, Payment, :claim => { :user_id => user.id }, :approved => false
+      can :update, Payment, :claim => { :assistant_id => user.id }, :approved => false
       can [:update], User, :id => user.id
       can :read, [Country, Region, City]
       can :offline_version, User

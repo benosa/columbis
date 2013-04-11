@@ -468,10 +468,6 @@ class Claim < ActiveRecord::Base
 
   def update_payments
     payments_in.each do |payment|
-      # payment.company = company
-      # payment.recipient = company
-      # payment.payer = self.applicant
-      Rails.logger.debug "payment: #{payment.inspect}"
       payment.assign_attributes({
         :company => company,
         :recipient => company,
@@ -480,7 +476,6 @@ class Claim < ActiveRecord::Base
         :course => 1,
         :canceled => canceled?
       }, :without_protection => true)
-      Rails.logger.debug "payment: #{payment.inspect}"
     end
     payments_out.each do |payment|
       payment.assign_attributes({

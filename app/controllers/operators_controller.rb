@@ -27,7 +27,7 @@ class OperatorsController < ApplicationController
         @operator.address.company = current_company
         @operator.address.save
       end
-      redirect_to @operator, :notice => "Successfully created operator."
+      redirect_to operators_path, :notice => t('operators.messages.created')
     else
       render :action => 'new'
     end
@@ -46,7 +46,7 @@ class OperatorsController < ApplicationController
         @operator.address.company = current_company
         @operator.address.save
       end
-      redirect_to @operator, :notice  => "Successfully updated operator."
+      redirect_to operators_path, :notice => t('operators.messages.updated')
     else
       render :action => 'edit'
     end
@@ -54,6 +54,6 @@ class OperatorsController < ApplicationController
 
   def destroy
     @operator.destroy
-    redirect_to operators_url, :notice => "Successfully destroyed operator."
+    redirect_to operators_path, :notice => t('operators.messages.destroyed')
   end
 end

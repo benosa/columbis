@@ -4,6 +4,7 @@ gem 'rails', '~> 3.2.12'
 gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
 gem 'unicorn', '~> 4.5.0'
+gem 'nokogiri', '1.5.6'
 
 gem 'haml', '~> 3.1.7'
 # Using haml-rails, because haml gem dosn't give generators for rails 3
@@ -62,8 +63,8 @@ end
 group :development, :test do
   # gem 'turn', :require => false
   gem 'rspec-rails', '~> 2.12.0'
-  gem 'capybara', '~> 1.1.4' # don't use 2 version, because poltergeist relies on capybara ~> 1.1
-  gem 'poltergeist', '~> 1.0.2' # need to install phantomjs (http://phantomjs.org/download.html)
+  gem 'capybara', '~> 2.0.3' # don't use 2 version, because poltergeist relies on capybara ~> 1.1
+  gem 'poltergeist', '~> 1.1.0' # need to install phantomjs (http://phantomjs.org/download.html)
   gem 'launchy', '~> 2.1.2'
   gem 'database_cleaner', '0.9.1'
   gem 'rails3-generators', '1.0.0'

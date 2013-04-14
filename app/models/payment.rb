@@ -16,7 +16,7 @@ class Payment < ActiveRecord::Base
   validates_numericality_of :course, :amount, :greater_than => 0
   validates_numericality_of :amount
 
-  validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
+  # validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
 
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
 
@@ -27,10 +27,16 @@ class Payment < ActiveRecord::Base
   end
 
   before_save :fill_fields
-  def fill_fields
-    # we also store amount in primary currency
-    crs = reversed_course ? (1 / course) : course
-    self.amount_prim = (crs * amount).round(2)
-    self.description = amount.amount_in_words(currency).mb_chars.capitalize.to_s
+  before_save do |payment|
+    company.check_and_save_dropdown('form', payment.form)
   end
+
+  private
+
+    def fill_fields
+      # we also store amount in primary currency
+      crs = reversed_course ? (1 / course) : course
+      self.amount_prim = (crs * amount).round(2)
+      self.description = amount.amount_in_words(currency).mb_chars.capitalize.to_s
+    end
 end

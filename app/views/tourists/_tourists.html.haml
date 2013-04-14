@@ -1,11 +1,10 @@
 %table#tourists.tourists.reservations.tour_operators
   %tr
     %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
-    %th.passport.two_row.colspan{ :colspan => 2 }
-      = sort_link(:passport, t('.passport'))
-      .passport
-        %span= t('.series')
-        %span= t('.number')
+    %th.passport_series
+      = sort_link(:passport_series, t('.passport_series'))
+    %th.passport_number
+      = sort_link(:passport_number, t('.passport_number'))
     %th.passport_valid_until
       = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
     %th.date_of_birth
@@ -20,10 +19,10 @@
     %tr{ :class => cycle('odd', 'even') }
       %td
         %p= tourist.name
-      %td.passport_series
+      %td
         %p= tourist.passport_series
-      %td.passport_number.dark_blue_box
-        %span= tourist.passport_number
+      %td
+        %p= tourist.passport_number
       %td
         %p= l(tourist.passport_valid_until, :format => :long)
       %td

@@ -23,8 +23,8 @@ ru:
       full_name: "ФИО"
       address: "Адрес"
       passport: 'Паспорт'
-      series: 'Серия'
-      number: 'Номер'
+      passport_series: 'Серия паспорта'
+      passport_number: 'Номер паспорта'
     show:
       tourists: 'Список туристов'
     edit:

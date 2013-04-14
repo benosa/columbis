@@ -1,0 +1,39 @@
+.tourists {
+  .actions {
+    width: 68px;
+  }
+}
+
+/*.tourists .address { width: 300px; }*/
+
+/*.tourist .first,
+.tourist .first .form_block { width: 450px; }
+.tourist .first .block_title { width: 428px; }*/
+
+.tourist {
+  .form_column {
+    .wide {
+      width: 266px;
+    }
+    .third {
+      width: 120px;
+      margin-right: 2px;
+    }
+    .last_third {
+      width: 120px;
+    }
+    .passport_series {
+      width: 80px;
+      margin-right: 2px;
+    }
+    .passport_number {
+      width: 168px;
+    }
+  }
+}
+
+// .edit_tourists {
+//   .form_block {
+//     margin-top: 25px;
+//   }
+// }

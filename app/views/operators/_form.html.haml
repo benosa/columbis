@@ -1,7 +1,7 @@
 - content_for(:error_messages) do
   = f.error_messages
 
-%fieldset.form_column.first
+%fieldset.form_column.form_column-small.first
   .form_block
     .block_title
       %h2= t('.common')
@@ -22,7 +22,7 @@
         %p= f.label :site
         = f.text_field :site, :class => 'website'
 
-%fieldset.form_column
+%fieldset.form_column.form_column-small
   .form_block
     .block_title
       %h2= t('.address')
@@ -31,27 +31,27 @@
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
 
-%fieldset.form_column
+%fieldset.form_column.form_column-small.last
   .form_block
     .block_title
       %h2= t('.insurer')
     .form_block_content
       .fake_row
-        %p= f.label t('.name')
+        %p= f.label :insurer, t('.name')
         = f.text_field :insurer, :class => 'website'
-        %p= f.label t('.address')
+        %p= f.label :insurer_address, t('.address')
         = f.text_field :insurer_address, :class => 'website'
-        %p= f.label t('.provision')
+        %p= f.label :insurer_provision, t('.provision')
         = f.text_field :insurer_provision, :class => 'website'
-        %p= f.label t('.contract')
+        %p= f.label :insurer_contract, t('.contract')
         = f.text_field :insurer_contract, :class => 'website'
-        %p= f.label t('.contract_date')
+        %p= f.label :insurer_contract_date, t('.contract_date')
         = f.text_field :insurer_contract_date, :value => l(f.object.insurer_contract_date, :format => :long),
           :class => 'website datepicker'
-        %p= f.label t('.contract_start')
+        %p= f.label :insurer_contract_start, t('.contract_start')
         = f.text_field :insurer_contract_start, :value => l(f.object.insurer_contract_start, :format => :long),
           :class => 'website datepicker'
-        %p= f.label t('.contract_end')
+        %p= f.label :insurer_contract_end, t('.contract_end')
         = f.text_field :insurer_contract_end, :value => l(f.object.insurer_contract_end, :format => :long),
           :class => 'website datepicker'
 

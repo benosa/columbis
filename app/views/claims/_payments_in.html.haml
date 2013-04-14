@@ -1,32 +1,36 @@
-#payments_in.payments.form_block.green_block{ :class => large_width? && 'payment_tourist' }
+- form_options = current_company.dropdown_for('form').collect{|o| [ o.value, o.value ]}
+- approved_disabled = !(is_admin? or is_boss? or is_accountant?)
+#payments_in.payments.form_block.green_block{ :class => large_width? && 'payment_tourist', :data => { :form_options => form_options, :approved_disabled => approved_disabled } }
   .block_title
     %h2= t('.payments_in')
   .form_block_content
     - ind = 0
     = f.fields_for :payments_in, :highlight_only => [:amount] do |pif|
       - payment_in = pif.object
-      .fake_row.fields{ :id => "payment_in_#{ind}", :class => payment_in.new_record? && 'new_record' }
+      -# disabled = approved_disabled && payment_in.approved
+      - disabled = payment_in.approved
+      .fake_row.fields{ :id => "payment_in_#{ind}", :class => [payment_in.new_record? && 'new_record', disabled && 'disabled', payment_in._destroy && 'destroyed'] }
         .two_line
           %p= pif.label :date_in, t('.date')
-          = pif.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_in.date_in, :format => :long),
-              :not_highlighted => true
+          = pif.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_in.date_in, :format => :long), :not_highlighted => true, :disabled => disabled
         .two_line
           %p= pif.label :amount, t('.paid')
-          = pif.text_field :amount, :class => 'amount date'
+          = pif.text_field :amount, :class => 'amount date', :disabled => disabled
           %label= t('rur')
           -# pif.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
         .two_line
           %p= pif.label :description, t('.paid_in_word')
-          = pif.text_field :description, :class => 'description sum disabled', :disabled => true
+          = pif.text_field :description, :class => 'description sum disabled', :disabled => true, :readonly => true
         .two_line
-          %p= pif.label :form, t('.paid_type'), :required => false
-          = pif.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
-              :class => 'payment_form payment_select', :not_highlighted => true
-          - if is_admin? or is_boss? or is_accountant?
-            = pif.label :approved, '&nbsp;'.html_safe, :class => 'checkbox', :title => Payment.human_attribute_name(:approved)
-            = pif.check_box :approved, :class => 'approved' #, :disabled => (!is_admin? and !is_boss? and !is_accountant?)
-          = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_in.new_record?
+          %p= pif.label :form, t('.paid_type')
+          = pif.select :form, form_options, { :include_blank => t('nope') },
+              :class => 'payment_form payment_select', :not_highlighted => true, :disabled => disabled
+          = pif.label :approved, '&nbsp;'.html_safe, :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved)
+          = pif.check_box :approved, :class => 'approved', :disabled => approved_disabled
+          = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
+        = pif.hidden_field :_destroy, :class => '_destroy'
         = pif.hidden_field :id
+      - ind += 1
 
     - content_for(:pi_last_fields) do
       .two_line.due_date
@@ -40,7 +44,7 @@
           = f.label :tourist_debt, t('.tourist_debt_short')
         - else
           %p= f.label :tourist_debt
-        = f.text_field :tourist_debt, :disabled => true, :class => 'debt text_right'
+        = f.text_field :tourist_debt, :disabled => true, :readonly => true, :class => 'debt text_right'
         %label= t('rur')
 
     - if small_width? or medium_width?
@@ -55,5 +59,3 @@
           = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
       .fake_row
         = yield :pi_last_fields
-
-    - ind += 1

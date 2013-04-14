@@ -35,6 +35,8 @@ ru:
       current_color: Текущий цвет
       personal_data: Личные данные
       change_password: Сменить пароль
+      screen_width: Ширина экрана
+      auto: Авто
 
     messages:
       created: 'Пользователь создан'

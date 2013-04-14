@@ -122,14 +122,12 @@
 
           = yield
 
-    - if content_for? :float_panel
-      .float_panel
-        .panel_content
-          = yield :float_panel
-
     .footer
+      - if content_for? :float_panel
+        .float_panel
+          .panel_content
+            = yield :float_panel
+
       .footer_content
         %p.copy &copy; Devmen. All rights reserved, 2012
         %p.right tourism.devmen.com
-
-    #popup

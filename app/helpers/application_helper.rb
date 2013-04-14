@@ -28,6 +28,12 @@ module ApplicationHelper
     end
   end
 
+  def next_page
+    next_page = params[:page].to_i + 1
+    next_page = 2 if next_page < 2
+    next_page
+  end
+
   def current_path(args = {})
     url_params = args.dup
     if args[:save_params]
@@ -174,7 +180,9 @@ module ApplicationHelper
   # available site resolutions: 1024x768 1600x900 1920x1080
   def current_width
     return @current_width if @current_width.present?
-    @current_width = case client_resolution[:width].to_i
+    width = (current_user.screen_width if current_user).to_i
+    width = client_resolution[:width].to_i unless width > 0
+    @current_width = case width
       when 0...1600 then :small
       when 1600...1920 then :medium
       else :large
@@ -192,7 +200,7 @@ module ApplicationHelper
 
   # For using in views
   def set_current_width(width)
-    self.current_width = (width)
+    # self.current_width = (width)
   end
 
   # Define helpers: small_width?, medium_width?, large_width?

@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
-  match 'amount_in_word' => ApplicationController.action(:amount_in_word)
-  match 'get_currency_course' => ApplicationController.action(:get_currency_course)
+  match 'amount_in_word' => 'application#amount_in_word'
+  match 'get_currency_course' => 'application#get_currency_course'
 
   resources :airlines
   resources :currency_courses
@@ -46,7 +46,7 @@ Tourism::Application.routes.draw do
   #   resources :items
   # end
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => "registrations" }
 
   namespace :dashboard do
     match 'sign_in_as/:user_id' => 'users#sign_in_as', :as => :sign_in_as

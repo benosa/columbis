@@ -1,0 +1,153 @@
+.company {
+  .form_column{
+    width: 237px !important;
+    margin-left: 0;
+  }
+  .form_block{
+    margin-top: 25px;
+    width: 235px !important;
+  }
+  .block_title, .fake_row{ width: 213px !important; }
+  &.low_resolution {
+    .form_block.grey_block{ width: 980px !important; }
+    .grey_block .block_title, .grey_block .fake_row{ width: 958px !important; }
+  }
+  &.middle_resoluition {
+    .form_block.grey_block{ width: 544px !important; }
+    .grey_block .block_title, .grey_block .fake_row{ width: 522px !important; }
+  }
+  &.high_resolution {
+    .form_block.grey_block{ width: 854px !important; }
+    .grey_block .block_title, .grey_block .fake_row{ width: 832px !important; }
+  }
+
+  .list_select {
+    &.ik_select, .ik_select_link {
+      width: 160px;
+    }
+    .ik_select_link_text {
+      width: 145px;
+    }
+    .ik_select_list {
+      width: 158px;
+    }
+  }
+  .country_select {
+    &.ik_select, .ik_select_link {
+      width: 150px;
+    }
+    .ik_select_link_text {
+      width: 135px;
+    }
+    .ik_select_list {
+      width: 148px;
+    }
+  }
+  .new_file_form {
+    position: relative;
+    min-height: 70px;
+    + .new_file_form {
+      margin-top: 10px;
+    }
+    .list_select.ik_select {
+      left: 140px;
+      top: 20px;
+      position: absolute;
+    }
+    .country_select.ik_select {
+      left: 322px;
+      top: 20px;
+      position: absolute;
+    }
+    .file {
+      top: 20px;
+      width: 245px;
+    }
+    label {
+      color: #666666;
+      font-size: 12px;
+      height: 20px;
+      line-height: 13px;
+    }
+    .mode_label {
+      left: 140px;
+      position: absolute;
+      top: 0px;
+    }
+    .country_select.ik_select {
+      display: none;
+    }
+    .country_label {
+      display: none;
+      left: 322px;
+      position: absolute;
+      top: 0px;
+    }
+    .file .file_holder {
+      padding-top: 8px;
+      width: 335px;
+      height: 17px;
+    }
+    .delete {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      margin: 0;
+    }
+  }
+  .file_block .add_file {
+    padding: 4px 0 0 21px;
+    width: 96px;
+  }
+  .address_input, .address_textarea {
+    width: 183px !important;
+  }
+  .office_input {
+    width: 160px;
+  }
+  .highlighted .office_input {
+    width: 156px;
+  }
+  .edit_file_form {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    padding: 0 10px 0 8px;
+    width: 262px;
+  }
+  &.low_resolution .edit_file_form {
+    width: 688px;
+  }
+  &.high_resolution .edit_file_form {
+    width: 562px;
+  }
+  .edit_file_form {
+    .select_file {
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: normal;
+      text-decoration: none;
+    }
+    .file {
+      display: inline-block;
+      float: none;
+      width: 245px;
+    }
+  }
+  &.low_resolution .edit_file_form .file {
+    width: 666px;
+  }
+  &.high_resolution .edit_file_form .file {
+    width: 540px;
+  }
+  .edit_file_form {
+    .file input {
+      width: 245px;
+      left: -20px;
+    }
+    .del_file {
+      margin: 0;
+      float: none;
+    }
+  }
+}

@@ -11,11 +11,14 @@ class Printer < ActiveRecord::Base
 
   mount_uploader :template, TemplateUploader
 
-  after_destroy { Pathname.new(self.template.path).dirname.delete if File.exist?(Pathname.new(self.template.path).dirname) }
+  after_destroy do
+    templ_dir = Pathname.new(self.template.path).dirname
+    FileUtils.remove_dir(templ_dir, true) if File.exist?(templ_dir)
+  end
 
   def prepare_template(fields, collections)
     @text = File.read(template.path)
-    @empty_fields = []    
+    @empty_fields = []
 
     setup_collections(collections)
 
@@ -23,13 +26,13 @@ class Printer < ActiveRecord::Base
       value ||= ''
       upkey = key.mb_chars.upcase
       @text.gsub!(/\#\{#{upkey}\}/) do
-        @empty_fields << key if (value == '' and !unrequired_fields.include?(upkey))        
+        @empty_fields << key if (value == '' and !unrequired_fields.include?(upkey))
         (value.respond_to?(:strftime) ? value.strftime('%d/%m/%Y') : value.to_s)
       end
     end
-    @empty_fields.uniq! 
+    @empty_fields.uniq!
     @text.gsub!(/\#\{ПУСТЫЕ_ПОЛЯ\}/, empty_fields_message)
-    
+
     @text
   end
 
@@ -38,10 +41,10 @@ class Printer < ActiveRecord::Base
   def setup_collections(collections)
     @empty_collection_fields = {}
     collections.each do |key, value|
-      collection_name = key.mb_chars.upcase.to_s        
+      collection_name = key.mb_chars.upcase.to_s
       @text.scan(/(\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%)/m).each do |matches|
         collection = value[:collection]
-        match = matches[0].clone        
+        match = matches[0].clone
         partial = ''<< matches[1].clone
         result = ''
 
@@ -52,9 +55,9 @@ class Printer < ActiveRecord::Base
             next if collection_key == :collection
             collection_field ||= ''.to_sym
             field = ob.try(collection_field)
-            upkey = collection_key.mb_chars.upcase            
+            upkey = collection_key.mb_chars.upcase
             row.gsub!(/\#\{#{upkey}\}/, (field.respond_to?(:strftime) ? field.strftime('%d/%m/%Y') : field.to_s))
-            if (field.to_s == '' and !unrequired_fields.include?(upkey)) 
+            if (field.to_s == '' and !unrequired_fields.include?(upkey))
               @empty_collection_fields[key] = [] if @empty_collection_fields[key].nil?
               @empty_collection_fields[key][index] = [] if @empty_collection_fields[key][index].nil?
               @empty_collection_fields[key][index] << collection_key
@@ -67,12 +70,12 @@ class Printer < ActiveRecord::Base
             rescue Exception => e
               ''
             end
-          end          
+          end
           result += row
           index += 1
         end
         @text.gsub!(match, result)
-      end      
+      end
     end
   end
 
@@ -92,8 +95,8 @@ class Printer < ActiveRecord::Base
     return @unrequired_fields if @unrequired_fields.present?
     @unrequired_fields = []
     s = @text.index('%{НЕОБЯЗАТЕЛЬНЫЕ_ПОЛЯ}').to_i + '%{НЕОБЯЗАТЕЛЬНЫЕ_ПОЛЯ}'.length
-    e = @text.index('{НЕОБЯЗАТЕЛЬНЫЕ_ПОЛЯ}%').to_i    
+    e = @text.index('{НЕОБЯЗАТЕЛЬНЫЕ_ПОЛЯ}%').to_i
     @unrequired_fields += @text[s, e - s].strip.gsub(/[\s\n]/, '').split(',') if (s < e)
-    @unrequired_fields    
+    @unrequired_fields
   end
 end

@@ -1,38 +1,41 @@
-#payments_out.payments.form_block.green_block{ :class => large_width? && 'payment_operator' }
-  .block_title
+- form_options = current_company.dropdown_for('form').collect{|o| [ o.value, o.value ]}
+- approved_disabled = !(is_admin? or is_boss? or is_accountant?)
+- amount_width_class = large_width? ? 'date' : 'paid'
+#payments_out.payments.form_block.green_block{ :class => large_width? && 'payment_operator', :data => { :form_options => form_options, :approved_disabled => approved_disabled, :amount_width_class => amount_width_class } }
+  .block_title.with_clarification
     %h2= t('.payments_out')
+    %span= "(#{t('.can_edit_payment_after_save')})" if f.object.new_record?
   .form_block_content
     - ind = 0
     = f.fields_for :payments_out, :highlight_only => [:amount] do |pof|
       - payment_out = pof.object
-      .fake_row.fields{ :id => "payment_out_#{ind}", :class => payment_out.new_record? && 'new_record' }
+      -# disabled = @claim.new_record? || (approved_disabled && payment_out.approved)
+      - disabled = @claim.new_record? || payment_out.approved
+      .fake_row.fields{ :id => "payment_out_#{ind}", :class => [payment_out.new_record? && 'new_record', disabled && 'disabled', payment_out._destroy && 'destroyed'] }
         .two_line
           %p= pof.label :date_in, t('.date')
-          = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long), :disabled => claim.new_record?, :not_highlighted => true
+          = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long), :not_highlighted => true, :readonly => disabled
         .two_line
           %p= pof.label :amount, t('.paid')
-          - if small_width? or medium_width?
-            = pof.text_field :amount, :class => 'amount paid', :disabled => claim.new_record?
-          - elsif large_width?
-            = pof.text_field :amount, :class => 'amount date', :disabled => claim.new_record?
-          %label= t('rur')
+          = pof.text_field :amount, :class => "amount #{amount_width_class}", :readonly => disabled
+          %label.operator_currency= t('rur')
         .two_line.big_select
           %p= pof.label :course, t('.course')
-          = pof.text_field :course, :class => 'course date', :disabled => claim.new_record?, :not_highlighted => true
+          = pof.text_field :course, :class => 'course date', :readonly => disabled, :not_highlighted => true
         .two_line
           %p= pof.label :amount_prim, t('.paid')
-          = pof.text_field :amount_prim, :class => 'amount_prim paid', :disabled => claim.new_record?, :not_highlighted => true
-          %label.operator_currency= t(claim.operator_price_currency.upcase)
-          -# pof.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :disabled => true
+          = pof.text_field :amount_prim, :class => 'amount_prim paid', :readonly => disabled, :not_highlighted => true
+          %label= t(claim.operator_price_currency.upcase)
+          -# pof.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :readonly => true
         .two_line.big_select
-          %p= pof.label :form, t('.paid_type'), :required => false
-          = pof.select :form, current_company.dropdown_for('form').collect {|o| [ o.value, o.value ]}, {},
-              :class => 'payment_form big_payment_select', :not_highlighted => true, :disabled => claim.new_record?
-          - if is_admin? or is_boss? or is_accountant?
-            = pof.label :approved, '&nbsp;'.html_safe, :class => 'checkbox', :title => Payment.human_attribute_name(:approved)
-            = pof.check_box :approved, :class => 'approved' #, :disabled => (!is_admin? and !is_boss? and !is_accountant?)
-          = link_to '', '#', :class => 'delete', :id => "del#{ind}" unless payment_out.new_record?
-        = pof.hidden_field :id
+          %p= pof.label :form, t('.paid_type')
+          = pof.select :form, form_options, { :include_blank => t('nope') }, :class => 'payment_form big_payment_select', :not_highlighted => true, :readonly => disabled
+          = pof.label :approved, '&nbsp;'.html_safe, :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved)
+          = pof.check_box :approved, :class => 'approved', :readonly => @claim.new_record? || approved_disabled
+          = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
+        = pof.hidden_field :_destroy, :class => '_destroy'
+        = pof.hidden_field :id, :class => 'payment_id'
+      - ind += 1
 
     - content_for(:po_last_fields) do
       .two_line
@@ -48,14 +51,13 @@
         - else
           %p= f.label :operator_price
         = f.text_field :operator_price, :class => 'number_visas'
-        = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {},
-            :class => 'price_select', :not_highlighted => true, :disabled => !claim.new_record?
+        = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
       .two_line.error
         - if small_width?
           = f.label :operator_debt, t('.operator_debt_short')
         - else
           %p= f.label :operator_debt
-        = f.text_field :operator_debt, :disabled => true, :class => 'credit text_right'
+        = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right'
         %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)
 
     - if small_width? or medium_width?
@@ -76,5 +78,3 @@
             = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
       .fake_row.add_paying
         = yield :po_last_fields
-
-    - ind += 1

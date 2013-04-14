@@ -10,6 +10,7 @@ $(function(){
     e.preventDefault();
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
+    if ($t.hasClass('disabled')) { return; }
     $t.toggleClass('active');
     $checkbox.attr('checked', $t.hasClass('active')).trigger('change');
   });
@@ -17,6 +18,7 @@ $(function(){
     var $t = $(this),
         $checkbox = $('#' + $t.attr('for'));
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
+    $t[$checkbox.is(':disabled') ? 'addClass' : 'removeClass']('disabled');
   });
 
   // $('.editable-select').editableSelect({
@@ -125,23 +127,32 @@ $(function(){
   // define screen resolution into browser cookie
   defineScreenResolution();
 
-  $('.error_message.input_wrapper').each(function() {
-    var $t = $(this),
-        errors = $t.attr('title'),
-        $i = $t.find(':input');
-    if (errors.length) {
-      if ($i.data('errors-text') === false) {
-        $t.tooltip();
-        return;
-      }
-      $t.css('width', $t.width());
-      var $ell = $('<div class="errors ellipsis">' + errors + '</div>').appendTo($t);
-      $ell.dotdotdot({ wrap: 'letter' });
-      if ($ell.triggerHandler("isTruncated"))
-        $t.tooltip();
-      else
-        $t.attr('title', '');
-    }
+  // $('.error_message.input_wrapper').each(function() {
+  //   var $t = $(this),
+  //       errors = $t.attr('title'),
+  //       $i = $t.find(':input');
+  //   var tooltip_options = {
+  //     template: '<div class="tooltip error_message"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  //     placement: 'top'
+  //   };
+  //   if (errors.length) {
+  //     if ($i.data('errors-text') === false) {
+  //       $t.tooltip(tooltip_options);
+  //       return;
+  //     }
+  //     $t.css('width', $t.width());
+  //     var $ell = $('<div class="errors ellipsis">' + errors + '</div>').appendTo($t);
+  //     $ell.dotdotdot({ wrap: 'letter' });
+  //     if ($ell.triggerHandler("isTruncated"))
+  //       $t.tooltip(tooltip_options);
+  //     else
+  //       $t.attr('title', '');
+  //   }
+  // });
+
+  $('.error_message.input_wrapper').tooltip({
+    template: '<div class="tooltip error_message"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    placement: 'top'
   });
 
   $('label.required').tooltip();

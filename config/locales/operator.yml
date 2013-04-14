@@ -27,6 +27,11 @@ ru:
     list:
       address: 'Адрес'
 
+    messages:
+      created: 'Оператор создан'
+      updated: 'Оператор обновлен'
+      destroyed: 'Оператор удален'
+
   activerecord:
     attributes:
       operator:

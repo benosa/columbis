@@ -14,10 +14,10 @@
     = f.check_box :operator_confirmation_flag
 
     .float_right
-      = f.hidden_field :visa
       = f.label :visa_check
       = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long),
           :disabled => !claim.visa_confirmation_flag
+      = f.hidden_field :visa
       = select_tag '', options_for_select(Claim::VISA_STATUSES.map {|s| [ t("claims.visa_statuses.#{s}"), s ]}, claim.visa),
           :id => 'claim_visa_status', :class => 'visa_status', :disabled => !claim.visa_confirmation_flag
       = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'

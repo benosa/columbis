@@ -1,7 +1,7 @@
 - content_for(:error_messages) do
   = f.error_messages
 
-%fieldset.form_column.first
+%fieldset.form_column.form_column-small.first
   .form_block
     .block_title
       %h2= t('.common')
@@ -26,7 +26,7 @@
           = f.check_box :potential
           = f.label :potential, :class => 'checkbox right_checkbox'
 
-%fieldset.form_column
+%fieldset.form_column.form_column-small
   .form_block
     .block_title
       %h2= t('.address')

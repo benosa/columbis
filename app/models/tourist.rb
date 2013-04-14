@@ -28,7 +28,8 @@ class Tourist < ActiveRecord::Base
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
     indexes :phone_number, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
-    has [:passport_series, :passport_number], :as => :passport
+    has :passport_series
+    has :passport_number
     has :passport_valid_until, :date_of_birth, :type => :datetime
     has :potential, :type => :boolean
     has :company_id

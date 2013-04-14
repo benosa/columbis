@@ -35,8 +35,8 @@ class Claim < ActiveRecord::Base
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance,
-                  :bonus, :bonus_percent
-                  #:payments_in_attributes, :payments_out_attributes
+                  :bonus, :bonus_percent,
+                  :payments_in_attributes, :payments_out_attributes
 
   belongs_to :company
   belongs_to :user
@@ -53,12 +53,12 @@ class Claim < ActiveRecord::Base
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
 
-  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :inverse_of => :claim
-  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :inverse_of => :claim
+  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
+  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
 
   accepts_nested_attributes_for :dependents
-  accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?
-  accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?
+  accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?, :allow_destroy => true
+  accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?, :allow_destroy => true
 
   validates_presence_of :user_id, :operator_id, :check_date, :arrival_date
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
@@ -75,6 +75,8 @@ class Claim < ActiveRecord::Base
   end
 
   validate :presence_of_applicant
+
+  before_validation :update_payments
 
   before_save :update_debts
   before_save :update_active
@@ -130,8 +132,6 @@ class Claim < ActiveRecord::Base
 
       assign_applicant(claim_params[:applicant])
       assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
-      assign_payments_in(claim_params[:payments_in_attributes]) if claim_params.has_key?(:payments_in_attributes) # can be created for a new claim
-      assign_payments_out(claim_params[:payments_out_attributes]) if claim_params.has_key?(:payments_out_attributes) and !self.new_record?
 
       unless self.errors.any?
         remove_unused_payments
@@ -466,37 +466,26 @@ class Claim < ActiveRecord::Base
     end
   end
 
-  def assign_payments_in(payments_in)
-    payments_in.each do |key, payment_hash|
-      next if empty_payment_hash?(payment_hash)
-
-      payment_hash[:company_id] = company_id
-      payment_hash[:recipient_id] = company_id
-      payment_hash[:recipient_type] = Company.model_name
-      payment_hash[:payer_id] = self.applicant.try(:id)
-      payment_hash[:payer_type] = self.applicant.class.try(:model_name)
-      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
-      payment_hash[:course] = 1
-      payment_hash[:canceled] = self.canceled?
-
-      process_payment_hash(payment_hash, self.payments_in)
+  def update_payments
+    payments_in.each do |payment|
+      payment.assign_attributes({
+        :company => company,
+        :recipient => company,
+        :payer => applicant,
+        :currency => CurrencyCourse::PRIMARY_CURRENCY,
+        :course => 1,
+        :canceled => canceled?
+      }, :without_protection => true)
     end
-  end
-
-  def assign_payments_out(payments_out)
-    payments_out.each do |key, payment_hash|
-      next if empty_payment_hash?(payment_hash)
-
-      payment_hash[:company_id] = company_id
-      payment_hash[:recipient_id] = self.operator.try(:id)
-      payment_hash[:recipient_type] = self.operator.class.try(:model_name)
-      payment_hash[:payer_id] = company_id
-      payment_hash[:payer_type] = Company.model_name
-      payment_hash[:currency] = CurrencyCourse::PRIMARY_CURRENCY
-      payment_hash[:reversed_course] = (payment_hash[:currency] == 'rur')
-      payment_hash[:canceled] = self.canceled?
-
-      process_payment_hash(payment_hash, self.payments_out)
+    payments_out.each do |payment|
+      payment.assign_attributes({
+        :company => company,
+        :recipient => operator,
+        :payer => company,
+        :currency => CurrencyCourse::PRIMARY_CURRENCY,
+        :reversed_course => payment.currency == 'rur',
+        :canceled => canceled?
+      }, :without_protection => true)
     end
   end
 
@@ -541,7 +530,7 @@ class Claim < ActiveRecord::Base
 
   def check_not_null_fields
     Claim.columns.each do |col|
-      if !col.null and self[col.name].nil? # Prevent null values in not null fields
+      if !col.null and self[col.name].nil? and col.name != 'id' # Prevent null values in not null fields
         convertor = "to_#{col.type.to_s.first}".to_sym
         convertor = :to_s unless nil.respond_to?(convertor)
         self[col.name] = nil.send(convertor)
@@ -592,13 +581,14 @@ class Claim < ActiveRecord::Base
   def process_payment_hash(ph, in_out_payments)
     company.check_and_save_dropdown('form', ph[:form])
     if ph[:id].blank?
-      payment = self.new_record? ? Payment.new(ph) : Payment.create(ph)
+      # self.new_record? ? in_out_payments.build(ph) : in_out_payments.create(ph)
+      payment = in_out_payments.build(ph)
     else
-      payment = Payment.find(ph[:id])
+      payment = in_out_payments.where(id: ph[:id].to_i).first
+      Rails.logger.debug "payment: #{payment.inspect}"
       payment.update_attributes(ph)
     end
-    payment.company_id = company_id
-    in_out_payments << payment
+    payment.company_id = company_id # to avoid mass-assignment issue
   end
 
   def empty_tourist_hash?(th)
@@ -613,8 +603,6 @@ class Claim < ActiveRecord::Base
 
   def drop_reflections
     self.dependents = []
-    self.payments_in = []
-    self.payments_out = []
   end
 
   def check_dropdowns(claim_params)

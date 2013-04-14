@@ -6,7 +6,7 @@
 - content_for :top do
   %form.filter
     = render 'shared/search_field'
-  %form.importance
+
     = label_tag :list_filter, t('.list')
     = select_tag :list_filter, options_for_select(DropdownValue.available_lists.map{ |k,v| [v, k] }.sort{ |o1, o2| o1[0] <=> o2[0] }), :prompt => t('nope'), :class => 'importance_select', :data => { :param => 'list', :filter => '1' }
 

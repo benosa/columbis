@@ -53,7 +53,8 @@
                       %span= value[0]
               %li= link_to 'Приходник', '#'
           %li= link_to 'Оставить отзыв', '#', id: 'write_review'
-          %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
+          -#
+            %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
           -#
             %li= link_to 'Справка', '#'
 

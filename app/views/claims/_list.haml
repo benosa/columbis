@@ -51,4 +51,8 @@
         - if next_page <= @claims_collection.total_pages
           %tr{ :class => "waypoint", :data => {:page => next_page} }
 
-  = render :partial => 'shared/pagination', :locals => { :path_helper => :claims_path, :collection => @claims_collection || @claims }
+  - content_for(:fixed_pagination) do
+    = render :partial => 'shared/pagination', :locals => { :path_helper => :claims_path, :collection => @claims_collection || @claims }
+
+  - if request.xhr?
+    #content_for.content_for{ data: { fixed_pagination: content_for(:fixed_pagination).gsub("\n", '') } }

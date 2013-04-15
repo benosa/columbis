@@ -114,19 +114,6 @@ $(function(){
       $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
   });
 
-  // customize all selects
-  customizeSelect();
-
-  // set default date and datetime pickers
-  setDatepicker();
-  setDatetimepicker();
-
-  // change years for date_of_birth pickers
-  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
-
-  // define screen resolution into browser cookie
-  defineScreenResolution();
-
   // $('.error_message.input_wrapper').each(function() {
   //   var $t = $(this),
   //       errors = $t.attr('title'),
@@ -235,6 +222,21 @@ $(function(){
       $menu.dialog('close');
     }
   });
+
+  // customize all selects
+  customizeSelect();
+
+  // set default date and datetime pickers
+  setDatepicker();
+  setDatetimepicker();
+  // change years for date_of_birth pickers
+  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
+
+  // define screen resolution into browser cookie
+  defineScreenResolution();
+
+  // Refine bottom padding for content
+  set_content_bottom_padding();
 
 });
 
@@ -497,4 +499,8 @@ function set_waypoints(selector, options) {
   if (!options) { options = {}; }
   options = $.extend({}, defaults, options);
   $(selector).waypoint(options);
+}
+
+function set_content_bottom_padding() {
+  $('#container').css('padding-bottom', $('#footer').outerHeight());
 }

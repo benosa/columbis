@@ -123,7 +123,10 @@
 
           = yield
 
-    .footer
+    #footer.footer
+      - if content_for? :fixed_pagination
+        #fixed_pagination.fixed_pagination.clearfix
+          = yield :fixed_pagination
       - if content_for? :float_panel
         .float_panel
           .panel_content

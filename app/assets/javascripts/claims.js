@@ -1,6 +1,6 @@
 // search
 function getCurrentParams(el){
-  var currentParams = { sort:'reservation_date', direction:'desc', filter: '' },
+  var currentParams = { sort:'reservation_date', dir:'desc', filter: '' },
       $current_sort = $('#claims th a.current'),
       $el = $(el),
       href;
@@ -23,9 +23,9 @@ function getCurrentParams(el){
           break;
         case 'direction':
           if ($el[0] == $current_sort[0]) {  // change direction for current sort column
-            currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc');
+            currentParams.dir = (pair[1]=='asc' ? 'desc' : 'asc');
           } else {
-            currentParams.direction = pair[1];
+            currentParams.dir = pair[1];
           }
           break;
         case 'filter':
@@ -144,6 +144,7 @@ function set_claims_waypoint() {
     offset: 'bottom-in-view',
     handler: function(direction) {
       if (direction == 'down') {
+        if ($(this).closest('.refreshing').length) { return; }
         var $t = $(this),
             cols = $('#claims_body tr:first td').length,
             page = parseInt($t.data('page'));
@@ -844,5 +845,10 @@ $(function(){
   set_claims_sticky_header();
   set_claims_waypoint();
   save_tour_price();
+
+  // After refresh claims container, addition to default after refresh
+  $('body').on('refreshed', '.claims', function(e) {
+    set_claims_waypoint();
+  });
 
 });

@@ -73,6 +73,7 @@ class ClaimsController < ApplicationController
   def scroll
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
     # remover any sql order by reorder(nil), because there are might be composed columns
+    Rails.logger.debug "search_options: #{search_options}"
     @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables)).reorder(nil)
     @claims = Claim.sort_by_search_results(@claims_collection)
     set_list_type

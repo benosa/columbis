@@ -51,13 +51,13 @@
     = operator_advance(claim)
   %td{ :title => claim.operator_debt.to_money, :class => color_for_operator_debt(claim) }
     = operator_debt(claim)
-  - if params[:list_type] == 'accountant_list'
+  - if show_accountant_columns
     %td.thick_border= approved_advance(claim, :tourist)
     %td= approved_advance(claim, :operator_prim)
     %td= approved_advance(claim, :operator)
     %td= claim.profit.to_money if claim.profit > 0
     %td= claim.profit_in_percent.to_percent if claim.profit > 0
-    - if is_admin? or is_boss?
+    - if show_bonus_columns
       %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
         :display_with => lambda {|b| b.to_percent.html_safe }
       %td.bonus= claim.bonus.to_money

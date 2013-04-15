@@ -103,9 +103,9 @@
           .type
             %p Вид:
             %select#view_switcher.view_switcher
-              %option{ :value => current_path(:list_type => 'manager_list'), :selected => params[:list_type] == 'manager_list' && 'selected' }
+              %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
                 = t('claims.index.manager_list')
-              %option{ :value => current_path(:list_type => 'accountant_list'), :selected => params[:list_type] == 'accountant_list' && 'selected' }
+              %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
                 = t('claims.index.accountant_list')
 
       .clear

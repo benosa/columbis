@@ -45,7 +45,7 @@ function getCurrentParams(el){
     currentParams.only_active = ($('#only_active')[0].checked ? '1' : '');
   }
   currentParams.filter = $('#filter').val();
-  currentParams.list_type = $('.accountant_login').attr('list_type');
+  currentParams.list_type = $('#view_switcher').val();
 
   return currentParams;
 }

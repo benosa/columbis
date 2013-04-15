@@ -91,9 +91,7 @@ $(function(){
 
   // view switcher
   $('#view_switcher').change(function(e) {
-    var claims_path = $('#claims_link').attr('href');
-    var $option = $('option:selected', this);
-    location.href = $(this).val();
+    location.search = 'list_type=' + $(this).val();
   });
 
   // trigger function exclusively after corresponding timeout

@@ -186,14 +186,14 @@
           case 36: //home
             if(type === "keydown"){
               event.preventDefault();
-              ikselect._move_to(listItems.filter(".not(ik_select_option_disabled):first"));
+              ikselect._move_to(listItems.filter(":not(ik_select_option_disabled):first"));
             }
             break;
           case 34: //page down
           case 35: //end
             if(type === "keydown"){
               event.preventDefault();
-              ikselect._move_to(listItems.filter(".not(ik_select_option_disabled):last"));
+              ikselect._move_to(listItems.filter(":not(ik_select_option_disabled):last"));
             }
             break;
           case 32: //space

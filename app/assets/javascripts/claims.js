@@ -642,45 +642,44 @@ $(function(){
   $('#claim_primary_currency_price').change(get_amount_in_word);
 
   // autocomplete
-  var $autocomplete = {
-    touristLastName: {
-      source: "/claims/autocomplete_tourist_last_name",
-      select: function(event, ui) {
-        var tr = $(this).closest('.fake_row');
-        tr.find("input.passport_series").val(ui.item.passport_series);
-        tr.find("input.passport_number").val(ui.item.passport_number);
-        tr.find("input.date_of_birth").val(ui.item.date_of_birth);
-        tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
-        if(tr.hasClass('applicant')) {
-          tr.find("input.phone_number").val(ui.item.phone_number);
-          tr.find("input.address").val(ui.item.address);
-          $('#claim_applicant_id').val(ui.item.id);
-        } else {
-          tr.next(".hidden_id").val(ui.item.id);
-        }
-      },
-      minLength: 0
-    },
-    country: {
-      source: "/claims/autocomplete_country",
-      select: function(event, ui) {
-        var $resort = $("input.autocomplete.resort");
-        if ($(this).data('val') != ui.item.value)
-          $resort.val('');
-        $resort.autocomplete('option', 'source', '/claims/autocomplete_resort/' + ui.item.id);
-      },
-      change: function(eventn, ui) {
-        $(this).data('val', this.value);
-        $("input.autocomplete.resort").val('').autocomplete('option', 'source', '/claims/autocomplete_resort/' + this.value);
-      },
-      minLength: 0
+  var select_tourist = function(el, data) {
+    var $row = $(el).closest('.fake_row'),
+        data = data || {};
+    $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
+      $row.find('input.' + this).val(data[this]);
+    });
+    if($row.hasClass('applicant')) {
+      $row.find('.phone_number').val(data.phone_number);
+      $row.find('.address').val(data.address);
+      $('#claim_applicant_id').val(data.id);
+    } else {
+      $row.next('.hidden_id').val(data.id);
     }
   };
-  $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
-  $("input.autocomplete.country").autocomplete($autocomplete.country);
-  $("input.autocomplete.resort").autocomplete({
-    source: "/claims/autocomplete_resort/" + $('#claim_country_name').data('id'),
-    minLength: 0
+
+  setAutocomplete('.full_name.autocomplete', false, {
+    select: function(event, ui) { select_tourist(this, ui.item); }
+  });
+
+  var resort_source = function(el, country) {
+    return $(el || '.resort.autocomplete').data('ac')['source'] + '/' + country;
+  };
+
+  setAutocomplete('.country.autocomplete', false, {
+    select: function(event, ui) {
+      var $resort = $('.resort.autocomplete');
+      $resort.autocomplete('option', 'source', resort_source($resort, ui.item.id));
+      if ($(this).data('val') != ui.item.value)
+        $resort.val('');
+    },
+    change: function(event, ui) {
+      $(this).data('val', this.value);
+      var $resort = $('.resort.autocomplete');
+      $resort.val('').autocomplete('option', 'source', resort_source($resort, this.value));
+    }
+  });
+  setAutocomplete('.resort.autocomplete', false , {
+    source: resort_source(false, $('#claim_country_name').data('id'))
   });
 
   // add tourist
@@ -711,9 +710,11 @@ $(function(){
 
       $(this).find('.num').text(i+2);
 
-      $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
       $(this).find('input.autocomplete.full_name').attr('id', 'claim_dependents_attributes_' + i + '_full_name');
       $(this).find('input.autocomplete.full_name').attr('name', 'claim[dependents_attributes][' + i + '][full_name]');
+      setAutocomplete($(this).find('.full_name.autocomplete'), false, {
+        select: function(event, ui) { select_tourist(this, ui.item); }
+      });
 
       $(this).find('input.date_of_birth').attr('id', 'claim_dependents_attributes_' + i + '_date_of_birth');
       $(this).find('input.date_of_birth').attr('name', 'claim[dependents_attributes][' + i + '][date_of_birth]');

@@ -5,7 +5,7 @@ class ClaimsController < ApplicationController
 
   load_and_authorize_resource :except => ADDITIONAL_ACTIONS
 
-  autocomplete :tourist, :last_name, :full => true
+  # autocomplete :tourist, :last_name, :full => true
 
   before_filter :set_protected_attr,  :only => [:create, :update]
   before_filter :set_commit_type,     :only => [:create, :update]
@@ -37,9 +37,9 @@ class ClaimsController < ApplicationController
   end
 
   def autocomplete_resort
-    country_id = params[:country_id].mb_chars
+    country_id = params[:country_id] || ''
     country_id = unless country_id.to_i > 0 # country_id is a string - name of country
-      country_name = params[:country_id].strip
+      country_name = country_id.strip
       cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
       Country.where(cond).first.try(:id)
     end

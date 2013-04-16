@@ -436,6 +436,10 @@ option {
     .big_payment_select .ik_select_link_text{width: 181px;}/* -15 */
     .big_payment_select .ik_select_list{width: 194px;}/* -2 */
   }
+  .middle_resoluition {
+    // .name { width: 236px; }
+    .country, .resort { width: 150px; }
+  }
   .high_resolution {
     .filter label {
       margin-left: 10px;

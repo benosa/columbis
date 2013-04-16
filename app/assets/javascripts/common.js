@@ -238,6 +238,44 @@ $(function(){
 
 });
 
+function setAutocomplete(selector, is_container, opts) {
+  var defsel = '.autocomplete',
+      sel = selector || defsel,
+      $sel = $(sel);
+  if (is_container)
+    $sel = $sel.find(defsel);
+
+  var defaults = {
+    delay: 100,
+    minLength: 0
+    // open: function(event, ui) {
+    //   var self = this,
+    //       $widget = $(this).autocomplete('widget');
+    //   $widget.find('.ui-menu-item a').filter(function() {
+    //     return $(this).text() == self.value;
+    //   }).addClass('ui-state-focus');
+    // }
+  };
+
+  var options = $.extend({}, defaults, opts || {});
+
+  $sel.each(function() {
+    var $t = $(this),
+        opts = $.extend({}, options, $t.data('ac'));
+    $t.autocomplete(opts);
+    if ($t.data('open_on_focus') !== false) {
+      $t.on('focus', function(e) {
+        $(this).autocomplete('search', '');
+      });
+    }
+    // temporary solution for adjust width and right padding
+    $t.css({
+      width: $t.width() - 25,
+      paddingRight: 25
+    });
+  });
+};
+
 function customizeSelect(selector, is_container, options) {
   var defsel = 'select',
       sel = selector || defsel,

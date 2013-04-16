@@ -1,7 +1,7 @@
 - ind ||= 1
 - tourist = f.object
 
-= f.text_field :full_name, :autocomplete => autocomplete_tourist_last_name_claims_path, :class => 'autocomplete full_name name'
+= f.text_field :full_name, :class => 'autocomplete full_name name', data: { ac: { source: autocomplete_tourist_last_name_claims_path } }
 = f.text_field :date_of_birth, :class => 'datepicker date_of_birth date', :value => l(tourist.date_of_birth, :format => :long)
 = f.text_field :passport_series, :class => 'passport_series number_password'
 = f.text_field :passport_number, :class => 'passport_number date'

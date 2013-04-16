@@ -651,6 +651,13 @@ div.left {
 /*** END highlighted ***/
 
 /*** forms ***/
+input[type="text"], input[type="password"], textarea {
+  padding: 0 5px;
+}
+input.autocomplete {
+  background: url("/assets/select_menu_2.png") no-repeat right #FFFFFF;
+  // padding-right: 25px;
+}
 
 .form_column {
   margin: 0 6px 0 0;

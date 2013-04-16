@@ -14,8 +14,9 @@ describe ClaimsController do
   def create_users
     @admin = FactoryGirl.create(:admin)
     @manager = FactoryGirl.create(:manager, :office_id => @office.id)
-    stub_current_user(@manager)
-    test_sign_in(@manager)
+    stub_current_user(@admin)
+    test_sign_in(@admin)
+
   end
 
   def create_claim
@@ -30,58 +31,34 @@ describe ClaimsController do
   end
 
   describe 'GET index' do
-    def do_get
-      get :index
-    end
+    before{ get :index }
 
-    it 'should be successful' do
-      do_get
-      response.should be_success
-    end
+    it { response.should be_success}
+    it { should assign_to(:claims) }
 
-    it 'should find all claims' do
-      do_get
-      assigns[:claims].size.should > 0
-    end
-
-    it 'should render claims/index.html' do
-      do_get
-      response.should render_template('index')
-    end
+    it {response.should render_template('index') }
   end
 
-#   describe 'GET new' do
-#     def do_get
-#       get :new
-#     end
+  describe 'GET new' do
+    before { get :new }
+    it { response.should render_template('new') }
+    it { response.should be_success }
+  end
 
-#     before (:each) do
-#       do_get
-#     end
+  describe 'POST create' do
+    def do_claim
+      post :create, claim: { user:  @manager.id, check_date: Time.now, reservation_date: Time.now + 14, office_id: @office.id }
+    end
 
-#     it 'should render claims/new' do
-#       response.should render_template('new')
-#     end
+    it 'should redirect to claim edit' do
+      do_claim
+      response.should redirect_to(edit_claim_path(Claim.last.id))
+    end
 
-#     it 'should be successful' do
-#       response.should be_success
-#     end
-#   end
-
-#   describe 'POST create' do
-#     def do_claim
-#       post :create, :claim => {:name => 'claim'}
-#     end
-
-#     it 'should redirect to claims/show.html' do
-#       do_claim
-#       response.should redirect_to(claims_path)
-#     end
-
-#     it 'should change claim count up by 1' do
-#       lambda { do_claim }.should change{ Claim.count }.by(1)
-#     end
-#   end
+    # it 'should change claim count up by 1' do
+    #   expect { do_claim }.to change{ Claim.count }.by(1)
+    # end
+  end
 
 #   describe 'GET edit' do
 #     def do_get

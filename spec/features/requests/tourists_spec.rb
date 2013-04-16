@@ -104,14 +104,6 @@ describe "Tourist:", js: true do
         click_link I18n.t('delete')
       }.to change(Tourist, :count).by(-1)
     end
-    # it 'delete tourist, edit tourist' do
-    #   click_link "edit_tourist_#{tourist.id}"
-    #   current_path.should eq("/tourists/#{tourist.id}/edit")
-    #   expect{
-    #     save_and_open_page
-    #     click_link t('delete')
-    #   }.to change(Tourist, :count).by(-1)
-    # end
   end
 
   describe "delete tourist" do 

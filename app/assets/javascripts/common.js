@@ -282,10 +282,12 @@ function setAutocomplete(selector, is_container, options) {
     }
 
     // TODO: temporary solution for adjust width and right padding
-    $t.css({
-      width: $t.width() - 25,
-      paddingRight: 25
-    });
+    if (parseInt($t.css('padding-right')) < 25) {
+      $t.css({
+        width: $t.width() - 25,
+        paddingRight: 25
+      });
+    }
 
     // Adjust suggestion list width
     var $ul = $t.data('autocomplete')['widget']();

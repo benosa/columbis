@@ -749,23 +749,29 @@ $(function(){
 	$('#tourists a.add').click(add_tourist);
 
   // del tourist
-  var del_tourist = function(e){
-    e.preventDefault();
+  var del_tourist = function(fields){
+    var $fields = $(fields);
 
-    var id = $(this).attr('id').replace(/del/,'');
-    var $tr = $('#dependent' + id);
-    if (id == 1)
-      $('.applicant').closest('.fake_row').find(':input').val('');
+    if ($fields.hasClass('.applicant'))
+      $fields.find(':input').val('');
     else {
-      $tr.next('input[type=hidden]').remove();
-      $tr.remove();
+      // $fields.find('.ik_select select').ikSelect('detach');
+      // $fields.find('.datepicker').datepicker('destroy');
+      // $fields.find('.autocomplete').autocomplete('destroy');
+      // $fields.find('._destroy').val('1');
+      // $fields.addClass('destroyed').hide();
+      // TODO: replace with nested fiedls
+      $fields.next('input[type=hidden]').remove();
+      $fields.remove();
     }
-
-    $('#tourists .dependent').each(function(i){
-      $(this).find('.num').text(i+2)
-    });
   };
-	$('#tourists a.delete').click(del_tourist);
+	$('#tourists').on('click', 'a.delete', function(e) {
+    e.preventDefault();
+    var $t = $(this),
+        $fields = $t.closest('.fake_row');
+    // if ($fields.hasClass('disabled') || !confirm($t.data('check'))) { return; }
+    del_tourist($fields);
+  });
 
   // add paymnet
   var add_payment = function(payment_block) {

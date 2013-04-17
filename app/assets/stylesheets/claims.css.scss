@@ -358,6 +358,18 @@ option {
       float: none;
     }
 
+    #tourists {
+      .address { margin: 0 0 11px 0; }
+      .delete { float: right; margin: 4px 10px 0 0; }
+    }
+
+    .name { width: 205px; }
+    .city, .hotel { width: 230px; }
+    .meals { width: 150px; }
+    .placement { width: 190px; }
+    .airline { width: 230px; }
+    .airport_to, .airport_back { width: 360px; }
+
     /* ik_selects */
     .flight_from_select.ik_select,.flight_from_select .ik_select_link{width: 235px;}
     .flight_from_select .ik_select_link_text{width: 220px;}/* -15 */

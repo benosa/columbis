@@ -662,7 +662,8 @@ $(function(){
   });
 
   var resort_source = function(el, country) {
-    return $(el || '.resort.autocomplete').data('ac')['source'] + '/' + country;
+    var data = $(el || '.resort.autocomplete').data('ac');
+    return data ? data.source + '/' + country : '';
   };
 
   setAutocomplete('.country.autocomplete', false, {

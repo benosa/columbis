@@ -15,7 +15,7 @@ gem 'devise', '~> 2.1.2'
 gem 'jquery-rails', '~> 2.1.4'
 
 gem 'will_paginate', '~> 3.0'
-gem 'rails3-jquery-autocomplete', '~> 1.0.10'
+# gem 'rails3-jquery-autocomplete', '~> 1.0.10'
 # gem 'ru_propisju', :git => 'https://github.com/terraplane/ru_propisju.git'
 gem 'ru_propisju', '~> 2.1.4'
 # gem 'stringex'
@@ -30,6 +30,9 @@ gem 'active_attr', '~> 0.7.0'
 gem 'ruby-gmail'
 gem 'whenever', :require => false
 gem 'cells'
+
+gem 'oj' # optimized json, automatically used by multi_json
+gem 'rabl'
 
 # Gems used only for assets and not required
 # in production environments by default.

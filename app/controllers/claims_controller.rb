@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ClaimsController < ApplicationController
   include ClaimsHelper
-  ADDITIONAL_ACTIONS = [:autocomplete_tourist, :autocomplete_country, :autocomplete_resort, :autocomplete_common, :totals, :update_bonus].freeze
+  ADDITIONAL_ACTIONS = [:totals, :update_bonus].freeze
 
   load_and_authorize_resource :except => ADDITIONAL_ACTIONS
 
@@ -126,46 +126,6 @@ class ClaimsController < ApplicationController
   def destroy
     @claim.destroy
     redirect_to claims_url, :notice =>  t('claims.messages.successfully_destroyed_claim')
-  end
-
-  def autocomplete_tourist
-    # tourists_arel = Tourist.accessible_by(current_ability)
-    #   .select('tourists.*, addresses.joint_address')
-    #   .where(["last_name ILIKE '%' || ? || '%'", params[:term]])
-    #   .joins("LEFT JOIN addresses ON addresses.addressable_type = 'Tourist' AND addresses.addressable_id = tourists.id")
-    #   .limit(100)
-    # @tourists = Tourist.all_hashes tourists_arel
-    @tourists = Tourist.accessible_by(current_ability).includes(:address)
-      .where(["last_name ILIKE '%' || ? || '%'", params[:term]])
-      .limit(50)
-    render 'claims/autocompletes/tourists'
-  end
-
-  def autocomplete_country
-    @countries = Country.select([:id, :name])
-      .where(["(common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", true, current_company.id, params[:term]])
-      .order('name ASC')
-      .limit(50)
-    render 'claims/autocompletes/countries'
-  end
-
-  def autocomplete_resort
-    country_id = params[:country_id] || ''
-    country_id = unless country_id.to_i > 0 # country_id is a string - name of country
-      country_name = country_id.strip
-      cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
-      Country.where(cond).first.try(:id)
-    end
-    @resorts = City.select([:id, :name])
-      .where(["country_id = ? AND (common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", country_id, true, current_company.id, params[:term]])
-      .order('name ASC')
-      .limit(50)
-    render 'claims/autocompletes/resorts'
-  end
-
-  def autocomplete_common
-    @list = current_company.dropdown_for(params[:list])
-    render 'claims/autocompletes/common_list'
   end
 
   private
@@ -309,8 +269,6 @@ class ClaimsController < ApplicationController
     def permit_actions
       action = params[:action].to_sym
       allowed = case
-      when [:autocomplete_tourist_last_name, :autocomplete_country, :autocomplete_resort].include?(action)
-        user_signed_in?
       when action == :totals
         is_admin? or is_boss?
       when action == :update_bonus

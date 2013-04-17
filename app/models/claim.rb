@@ -633,7 +633,7 @@ class Claim < ActiveRecord::Base
     end
     company_cities << self.city if self.city
 
-    country_name = claim_params[:country][:name].strip
+    country_name = claim_params[:country][:name].strip if claim_params[:country].kind_of?(Hash)
     unless country_name.blank?
       conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
       Country.create({

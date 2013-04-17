@@ -265,7 +265,7 @@ function setAutocomplete(selector, is_container, opts) {
     $t.autocomplete(opts);
     if ($t.data('open_on_focus') !== false) {
       $t.on('focus', function(e) {
-        $(this).autocomplete('search', '');
+        $(this).autocomplete('search', this.value);
       });
     }
     // temporary solution for adjust width and right padding

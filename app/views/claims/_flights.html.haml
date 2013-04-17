@@ -4,16 +4,12 @@
   .form_block_content
     .fake_row
       %p= f.label :airline, t('.airline'), :required => true
-      - if small_width? or medium_width?
-        = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select airline_select'
-      - elsif large_width?
-        = f.select :airline, current_company.dropdown_values_for('airline'), {}, :class => 'editable-select big_airline_select'
+      = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline'))
     .fake_row
       .two_line
         %p
           %strong= f.label :airport_to, t('.there'), :required => true
-        = f.select :airport_to, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
-            :not_highlighted => true
+        = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
       .two_line
         %p= f.label :flight_to, t('.flight')
         = f.text_field :flight_to, :class => 'expires_date'
@@ -27,8 +23,7 @@
       .two_line
         %p
           %strong= f.label :airport_back, t('.back'), :required => true
-        = f.select :airport_back, current_company.dropdown_values_for('airport'), {}, :class => 'editable-select standart_select',
-            :not_highlighted => true
+        = f.text_field :airport_back, :class => 'autocomplete airport_back standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
       .two_line
         %p= f.label :flight_back, t('.flight')
         = f.text_field :flight_back, :class => 'expires_date'

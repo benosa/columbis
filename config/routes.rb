@@ -21,9 +21,11 @@ Tourism::Application.routes.draw do
     collection do
       scope 'autocomplete', as: 'autocomplete', controller: 'claims_autocomplete' do
         get 'tourist'
+        get 'city'
+        get 'operator'
         get 'country'
         get 'resort(/:country_id)' => 'claims_autocomplete#resort', as: 'resort'
-        get 'common/:list' => 'claims_autocomplete#common', as: 'common'
+        get 'dropdown/:list' => 'claims_autocomplete#dropdown', as: 'dropdown'
       end
       get 'scroll' => 'claims#scroll', as: :scroll
       get 'totals' => 'claims#totals', as: :totals

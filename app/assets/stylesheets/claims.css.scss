@@ -439,6 +439,14 @@ option {
   .middle_resoluition {
     // .name { width: 236px; }
     .country, .resort { width: 150px; }
+    .flight_from_select { width: 195px; }
+    .tour_operator_select { width: 154px; }
+    .hotel { width: 195px; }
+    .meals { width: 104px; }
+    .placement { width: 154px; }
+    .airline { width: 200px; }
+    .airport_to, .airport_back { width: 150px; }
+    .tourist_stat { width: 200px; }
   }
   .high_resolution {
     .filter label {

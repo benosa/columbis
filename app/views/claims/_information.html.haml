@@ -9,7 +9,7 @@
             :class => "#{claim.documents_status} documentation_select #{'error' if claim.documents_status != Claim::DOCUMENTS_STATUSES.last}"
       .two_line
         %p= f.label :tourist_stat, t('.tourist_stat')
-        = f.select :tourist_stat, current_company.dropdown_values_for('tourist_stat'), {}, :class => 'editable-select documentation_select'
+        = f.text_field :tourist_stat, :class => 'autocomplete tourist_stat documentation_select', data: ac_data(source: dropdown_autocomplete_claims_path('tourist_stat'))
     .fake_row
       .two_line
         %p= f.label :docs_note

@@ -221,6 +221,9 @@ $(function(){
     }
   });
 
+  // initialize autocompletes
+  // setAutocomplete();
+
   // customize all selects
   customizeSelect();
 
@@ -238,7 +241,7 @@ $(function(){
 
 });
 
-function setAutocomplete(selector, is_container, opts) {
+function setAutocomplete(selector, is_container, options) {
   var defsel = '.autocomplete',
       sel = selector || defsel,
       $sel = $(sel);
@@ -257,22 +260,48 @@ function setAutocomplete(selector, is_container, opts) {
     // }
   };
 
-  var options = $.extend({}, defaults, opts || {});
+  var _options = $.extend({}, defaults, options || {}),
+      is_reset = !!options;
 
-  $sel.each(function() {
-    var $t = $(this),
-        opts = $.extend({}, options, $t.data('ac'));
-    $t.autocomplete(opts);
+  var _createAutocomplete = function($t) {
+    var _opts = $.extend({}, _options, $t.data('ac'));
+
+    $t.autocomplete(_opts);
+
     if ($t.data('open_on_focus') !== false) {
       $t.on('focus', function(e) {
         $(this).autocomplete('search', this.value);
       });
     }
-    // temporary solution for adjust width and right padding
+    // if hidden element with id appropriate id exists, use it for save selected id
+    var $h = $('#' + $t.attr('id') + '_id');
+    if ($h.length) {
+      $t.on('autocompleteselect', function(event, ui) {
+        $('#' + $(this).attr('id') + '_id').val(ui.item.id);
+      });
+    }
+
+    // TODO: temporary solution for adjust width and right padding
     $t.css({
       width: $t.width() - 25,
       paddingRight: 25
     });
+
+    // Adjust suggestion list width
+    var $ul = $t.data('autocomplete')['widget']();
+    $ul.css('max-width', $t.outerWidth() - 2);
+  };
+
+  $sel.each(function() {
+    var $t = $(this),
+        current_ac = $t.data('autocomplete');
+    // Check already initialized autocomplete is setted already
+    if (!current_ac) {
+      _createAutocomplete($t);
+    } else if (is_reset) {
+      $t.autocomplete('destroy');
+      _createAutocomplete($t);
+    }
   });
 };
 

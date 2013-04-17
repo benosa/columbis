@@ -18,12 +18,26 @@ class ClaimsAutocompleteController < ApplicationController
     render 'claims/autocompletes/tourists'
   end
 
+  def city
+    @list = current_company.cities.select('cities.id, cities.name')
+      .where(["cities.name ILIKE '%' || ? || '%'", params[:term]])
+      .limit(50)
+    render 'claims/autocompletes/list'
+  end
+
+  def operator
+    @list = current_company.operators.select('operators.id, operators.name')
+      .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
+      .limit(50)
+    render 'claims/autocompletes/list'
+  end
+
   def country
-    @countries = Country.select([:id, :name])
+    @list = Country.select([:id, :name])
       .where(["(common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", true, current_company.id, params[:term]])
       .order('name ASC')
       .limit(50)
-    render 'claims/autocompletes/countries'
+    render 'claims/autocompletes/list'
   end
 
   def resort
@@ -33,16 +47,19 @@ class ClaimsAutocompleteController < ApplicationController
       cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
       Country.where(cond).first.try(:id)
     end
-    @resorts = City.select([:id, :name])
+    @list = City.select([:id, :name])
       .where(["country_id = ? AND (common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", country_id, true, current_company.id, params[:term]])
       .order('name ASC')
       .limit(50)
-    render 'claims/autocompletes/resorts'
+    render 'claims/autocompletes/list'
   end
 
-  def common
-    @list = current_company.dropdown_for(params[:list])
-    render 'claims/autocompletes/common_list'
+  def dropdown
+    @list = current_company.dropdown_for(params[:list]).select(:value)
+      .where(["value ILIKE '%' || ? || '%'", params[:term]])
+      .reorder('value ASC')
+      .limit(50)
+    render 'claims/autocompletes/dropdown_list'
   end
 
 end

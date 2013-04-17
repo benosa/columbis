@@ -683,6 +683,15 @@ $(function(){
     source: resort_source(false, $('#claim_country_name').data('id'))
   });
 
+  // setAutocomplete('.city.autocomplete', false , {
+  //   select: function(event, ui) {
+  //     $('#claim_city_id').val(ui.item.id);
+  //   }
+  // });
+
+  // Set autocomplete for others autocompletes in the form
+  setAutocomplete('.edit_claim', true);
+
   // add tourist
 	var add_tourist = function(e){
     e.preventDefault();

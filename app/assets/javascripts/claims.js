@@ -690,7 +690,7 @@ $(function(){
   // });
 
   // Set autocomplete for others autocompletes in the form
-  setAutocomplete('.edit_claim', true);
+  setAutocomplete('.edit_page', true);
 
   // add tourist
 	var add_tourist = function(e){

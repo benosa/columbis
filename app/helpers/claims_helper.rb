@@ -161,11 +161,11 @@ module ClaimsHelper
   end
 
   def show_office
-    (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
+    (is_admin? or is_boss? or is_accountant? or is_supervisor?) and current_company.offices.count > 1
   end
 
   def show_accountant_columns
-    params[:list_type] == 'accountant_list'
+    (is_admin? or is_boss? or is_accountant?) and params[:list_type] == 'accountant_list'
   end
 
   def show_bonus_columns

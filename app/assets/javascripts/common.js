@@ -91,9 +91,7 @@ $(function(){
 
   // view switcher
   $('#view_switcher').change(function(e) {
-    var claims_path = $('#claims_link').attr('href');
-    var $option = $('option:selected', this);
-    location.href = $(this).val();
+    location.search = 'list_type=' + $(this).val();
   });
 
   // trigger function exclusively after corresponding timeout
@@ -113,19 +111,6 @@ $(function(){
     if (form_id && $form.length)
       $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
   });
-
-  // customize all selects
-  customizeSelect();
-
-  // set default date and datetime pickers
-  setDatepicker();
-  setDatetimepicker();
-
-  // change years for date_of_birth pickers
-  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
-
-  // define screen resolution into browser cookie
-  defineScreenResolution();
 
   // $('.error_message.input_wrapper').each(function() {
   //   var $t = $(this),
@@ -236,7 +221,91 @@ $(function(){
     }
   });
 
+  // initialize autocompletes
+  // setAutocomplete();
+
+  // customize all selects
+  customizeSelect();
+
+  // set default date and datetime pickers
+  setDatepicker();
+  setDatetimepicker();
+  // change years for date_of_birth pickers
+  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
+
+  // define screen resolution into browser cookie
+  defineScreenResolution();
+
+  // Refine bottom padding for content
+  set_content_bottom_padding();
+
 });
+
+function setAutocomplete(selector, is_container, options) {
+  var defsel = '.autocomplete',
+      sel = selector || defsel,
+      $sel = $(sel);
+  if (is_container)
+    $sel = $sel.find(defsel);
+
+  var defaults = {
+    delay: 100,
+    minLength: 0
+    // open: function(event, ui) {
+    //   var self = this,
+    //       $widget = $(this).autocomplete('widget');
+    //   $widget.find('.ui-menu-item a').filter(function() {
+    //     return $(this).text() == self.value;
+    //   }).addClass('ui-state-focus');
+    // }
+  };
+
+  var _options = $.extend({}, defaults, options || {}),
+      is_reset = !!options;
+
+  var _createAutocomplete = function($t) {
+    var _opts = $.extend({}, _options, $t.data('ac'));
+
+    $t.autocomplete(_opts);
+
+    if ($t.data('open_on_focus') !== false) {
+      $t.on('focus', function(e) {
+        $(this).autocomplete('search', this.value);
+      });
+    }
+    // if hidden element with id appropriate id exists, use it for save selected id
+    var $h = $('#' + $t.attr('id') + '_id');
+    if ($h.length) {
+      $t.on('autocompleteselect', function(event, ui) {
+        $('#' + $(this).attr('id') + '_id').val(ui.item.id);
+      });
+    }
+
+    // TODO: temporary solution for adjust width and right padding
+    if (parseInt($t.css('padding-right')) < 25) {
+      $t.css({
+        width: $t.width() - 25,
+        paddingRight: 25
+      });
+    }
+
+    // Adjust suggestion list width
+    var $ul = $t.data('autocomplete')['widget']();
+    $ul.css('max-width', $t.outerWidth() - 2);
+  };
+
+  $sel.each(function() {
+    var $t = $(this),
+        current_ac = $t.data('autocomplete');
+    // Check already initialized autocomplete is setted already
+    if (!current_ac) {
+      _createAutocomplete($t);
+    } else if (is_reset) {
+      $t.autocomplete('destroy');
+      _createAutocomplete($t);
+    }
+  });
+};
 
 function customizeSelect(selector, is_container, options) {
   var defsel = 'select',
@@ -497,4 +566,8 @@ function set_waypoints(selector, options) {
   if (!options) { options = {}; }
   options = $.extend({}, defaults, options);
   $(selector).waypoint(options);
+}
+
+function set_content_bottom_padding() {
+  $('#container').css('padding-bottom', $('#footer').outerHeight());
 }

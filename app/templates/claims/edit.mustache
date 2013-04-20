@@ -57,7 +57,7 @@
           </tr>
           <tr class='applicant'>
             <td class='num'>1</td>
-            <td><input autocomplete="/claims/autocomplete_tourist_last_name" class="autocomplete full_name" id="claim_applicant_full_name" name="claim[applicant][full_name]" size="20" type="text" value="{{applicant.full_name}}" /></td>
+            <td><input autocomplete="/claims/autocomplete/tourist" class="autocomplete full_name" id="claim_applicant_full_name" name="claim[applicant][full_name]" size="20" type="text" value="{{applicant.full_name}}" /></td>
             <td class='datepicker'><input class="datepicker date_of_birth" id="claim_applicant_date_of_birth" name="claim[applicant][date_of_birth]" size="30" type="text" value="{{applicant.date_of_birth}}" /></td>
             <td><input class="passport_series" id="claim_applicant_passport_series" name="claim[applicant][passport_series]" size="30" style="width: 90%;" type="text" value="{{applicant.passport_series}}" /></td>
             <td><input class="passport_number" id="claim_applicant_passport_number" name="claim[applicant][passport_number]" size="30" type="text" value="{{applicant.passport_number}}" /></td>
@@ -86,7 +86,7 @@
           {{#dependents}}
           <tr class='dependent' id='dependent{{ind}}'>
             <td class='num'>{{ind}}</td>
-            <td><input autocomplete="/claims/autocomplete_tourist_last_name" class="autocomplete full_name" id="claim_dependents_attributes_{{n}}_full_name" name="claim[dependents_attributes][{{n}}][full_name]" size="20" type="text" value="{{full_name}}" /></td>
+            <td><input autocomplete="/claims/autocomplete/tourist" class="autocomplete full_name" id="claim_dependents_attributes_{{n}}_full_name" name="claim[dependents_attributes][{{n}}][full_name]" size="20" type="text" value="{{full_name}}" /></td>
             <td class='datepicker'><input class="datepicker date_of_birth" id="claim_dependents_attributes_{{n}}_date_of_birth" name="claim[dependents_attributes][{{n}}][date_of_birth]" size="30" type="text" value="{{date_of_birth}}" /></td>
             <td><input class="passport_series" id="claim_dependents_attributes_{{n}}_passport_series" name="claim[dependents_attributes][{{n}}][passport_series]" size="30" style="width: 90%;" type="text" value="{{passport_series}}" /></td>
             <td><input class="passport_number" id="claim_dependents_attributes_{{n}}_passport_number" name="claim[dependents_attributes][{{n}}][passport_number]" size="30" type="text" value="{{passport_number}}" /></td>

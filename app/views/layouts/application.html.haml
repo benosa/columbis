@@ -53,7 +53,8 @@
                       %span= value[0]
               %li= link_to 'Приходник', '#'
           %li= link_to 'Оставить отзыв', '#', id: 'write_review'
-          %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
+          -#
+            %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
           -#
             %li= link_to 'Справка', '#'
 
@@ -102,9 +103,9 @@
           .type
             %p Вид:
             %select#view_switcher.view_switcher
-              %option{ :value => current_path(:list_type => 'manager_list'), :selected => params[:list_type] == 'manager_list' && 'selected' }
+              %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
                 = t('claims.index.manager_list')
-              %option{ :value => current_path(:list_type => 'accountant_list'), :selected => params[:list_type] == 'accountant_list' && 'selected' }
+              %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
                 = t('claims.index.accountant_list')
 
       .clear
@@ -122,7 +123,10 @@
 
           = yield
 
-    .footer
+    #footer.footer
+      - if content_for? :fixed_pagination
+        #fixed_pagination.fixed_pagination.clearfix
+          = yield :fixed_pagination
       - if content_for? :float_panel
         .float_panel
           .panel_content

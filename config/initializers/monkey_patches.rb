@@ -47,3 +47,18 @@ module ActionView
     end
   end
 end
+
+module ActiveRecord
+  class Base
+
+    # return all records as array of hashes
+    def self.all_hashes(arel, name = nil, binds = [])
+      connection.select_all(arel, name, binds).each do |attrs|
+        attrs.each_key do |attr|
+          attrs[attr] = type_cast_attribute(attr, attrs)
+        end
+      end
+    end
+
+  end
+end

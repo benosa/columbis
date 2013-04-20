@@ -43,7 +43,7 @@
     = f.fields_for :dependents, claim.dependents do |df|
       .fake_row.dependent{ :id => "dependent#{ind}"}
         = render :partial => 'tourist', :locals => { :f => df, :ind => ind }
-        = link_to '', '#', :class => 'delete', :id => "del#{ind}"
+        = link_to '', '#', :class => 'delete', :id => "del#{ind}", data: { check: t('are_you_sure') }
         - ind += 1
 
     .fake_row.add_row

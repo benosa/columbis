@@ -61,12 +61,23 @@
   border: 1px solid #D5D5D5;
   border-radius: 3px 3px 3px 3px;
   font-size: 12px;
+  padding: 2px 0;
+  max-height: 200px;
+  max-width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-  .ui-menu-item a { border-radius: 3px 3px 3px 3px; }
+  .ui-menu-item a {
+    border-radius: 0;
+    padding: 2px 6px;
+  }
 
   .ui-state-focus {
+    // border: 1px solid #D5D5D5;
+    // background-color: #F4F4F4;
     margin: -1px;
-    border: 1px solid #D5D5D5;
-    background-color: #F4F4F4;
+    border: 1px solid #4577BD;
+    background-color: #4577BD;
+    color: #FFFFFF;
   }
 }

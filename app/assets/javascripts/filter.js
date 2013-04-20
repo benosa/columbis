@@ -96,8 +96,25 @@ $(function(){
 
         // replace content
         $(this.container).replaceWith(resp);
+
+        var $container = $(this.selector),
+            $content_for = $container.find('#content_for');
+
+        // If content_for div exist, perform it's data
+        if ($content_for.length) {
+          var data = $content_for.data(),
+              $block;
+          for (block_id in data) {
+            $block = $('#' + block_id);
+            $block.html(data[block_id]);
+            // trigger the refreshed event for current block
+            $block.trigger('refreshed');
+          };
+          $content_for.remove();
+        }
+
         // trigger the refreshed event
-        $(this.selector).trigger('refreshed');
+        $container.trigger('refreshed');
     }).fail(function() {
       // ajaxCounterDec(); // move to common.js put in .ajaxStop
     });
@@ -153,11 +170,11 @@ $(function(){
   bindParams();
 
   // Bind handler for default actions after refresh default container
-  $('body').on('refreshed', '.current_container', function() {
+  $('body').on('refreshed', function(e) {
     // reset params changing
-    bindParams('.current_container');
+    bindParams(e.target);
     // reset select customization in current list container
-    customizeSelect('.current_container', true);
+    customizeSelect(e.target, true);
   });
 
 });

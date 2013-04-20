@@ -29,7 +29,8 @@ $(function() {
     },
 
     toggle: function() {
-        var elem = document.body; // Make the body go full screen.
+        // var elem = document.body; // Make the body go full screen.
+        var elem = window;
         var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||  (document.mozFullScreen || document.webkitIsFullScreen);
 
         if (isInFullScreen) {

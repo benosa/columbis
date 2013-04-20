@@ -210,6 +210,10 @@ module ApplicationHelper
     end
   end
 
+  def ac_data(data = {})
+    { ac: data }
+  end
+
   private
 
     def manifest_default_text

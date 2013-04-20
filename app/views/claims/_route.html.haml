@@ -11,41 +11,38 @@
     .fake_row{ :class => large_width? && 'margin_small' }
       .two_line
         %p
-          %label.required= t('.departure_from_city')
-        = f.select :city_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'city editable-select flight_from_select', :not_highlighted => true
+          %label.required{ :for => 'claim_city' }= t('.departure_from_city')
+        = f.text_field :city, :value => @claim.city.try(:name), :class => 'autocomplete city flight_from_select', data: ac_data(source: city_autocomplete_claims_path), :not_highlighted => true
+        = f.hidden_field :city_id, :value => @claim.city.try(:id)
       .two_line
         %p= f.label :operator_id, t('.operator')
-        = f.select :operator_id, current_company.operators.collect {|o| [ o.name, o.id ] }, {},
-              :class => 'operator editable-select tour_operator_select', :not_highlighted => true
+        = f.text_field :operator, :value => @claim.operator.try(:name), :class => 'autocomplete operator tour_operator_select', data: ac_data(source: operator_autocomplete_claims_path), :not_highlighted => true
+        = f.hidden_field :operator_id, :value => @claim.operator.try(:id)
       .two_line
         %p= f.label :country, t('.direction'), :required => true
         = f.fields_for :country, @claim.country do |cf|
-          = cf.text_field :name, :class => 'autocomplete country', :data => { :id => (@claim.country_id || 1), :val => cf.object.try(:name) }, :not_highlighted => true
+          = cf.text_field :name, :class => 'autocomplete country', :data => { :id => @claim.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
         -# f.select :country_id, current_company.countries.collect {|o| [ o.name, o.id ] }, {}, :class => 'country editable-select route_select', :not_highlighted => true
       .two_line
         %p= f.label :resort, :required => true
         .last
           = f.fields_for :resort, @claim.resort do |rf|
-            = rf.text_field :name, :class => 'autocomplete resort', :not_highlighted => true
+            = rf.text_field :name, :class => 'autocomplete resort', data: ac_data(source: resort_autocomplete_claims_path), :not_highlighted => true
           -# f.select :resort_id, current_company.cities.collect {|o| [ o.name, o.id ] }, {}, :class => 'resort editable-select resort_select', :not_highlighted => true
     .fake_row
       .two_line
         %p= f.label :hotel
-        = f.select :hotel, current_company.dropdown_values_for('hotel'), {}, :class => 'editable-select color_select',
-          :not_highlighted => true
+        = f.text_field :hotel, :class => 'autocomplete hotel color_select', data: ac_data(source: dropdown_autocomplete_claims_path('hotel')), :not_highlighted => true
       .two_line
         %p= f.label :meals
-        = f.select :meals, current_company.dropdown_values_for('meals'), {}, :class => 'editable-select food_select',
-          :not_highlighted => true
+        = f.text_field :meals, :class => 'autocomplete meals food_select', data: ac_data(source: dropdown_autocomplete_claims_path('meals')), :not_highlighted => true
+      .two_line
+        %p= f.label :placement
+        = f.text_field :placement, :class => 'autocomplete placement placement_select', data: ac_data(source: dropdown_autocomplete_claims_path('placement')), :not_highlighted => true
       .two_line
         %p= f.label :medical_insurance
         = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
             :class => 'editable-select medical_insurance_select', :not_highlighted => true
-      .two_line
-        %p= f.label :placement
-        = f.select :placement, current_company.dropdown_values_for('placement'), {}, :class => 'editable-select placement_select',
-          :not_highlighted => true
       .two_line
         %p= f.label :nights
         = f.select :nights, (1..30).to_a, {}, :class => 'editable-select nights_select'

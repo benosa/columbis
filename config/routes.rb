@@ -16,16 +16,20 @@ Tourism::Application.routes.draw do
     end
   end
   match 'create_review' => 'tasks#create_review', as: 'create_review', via: :post
+
   resources :claims do
     collection do
-      get 'autocomplete_tourist_last_name'
-      get 'autocomplete_country'
-      get 'autocomplete_resort/:country_id' => 'claims#autocomplete_resort', :as => 'autocomplete_resort'
-      match 'scroll' => 'claims#scroll', as: :scroll
-      match 'totals' => 'claims#totals', as: :totals
+      scope 'autocomplete', as: 'autocomplete', controller: 'claims_autocomplete' do
+        get 'tourist'
+        get 'city'
+        get 'operator'
+        get 'country'
+        get 'resort(/:country_id)' => 'claims_autocomplete#resort', as: 'resort'
+        get 'dropdown/:list' => 'claims_autocomplete#dropdown', as: 'dropdown'
+      end
+      get 'scroll' => 'claims#scroll', as: :scroll
+      get 'totals' => 'claims#totals', as: :totals
       put 'update_bonus/:id' => 'claims#update_bonus', :as => 'update_bonus'
-      match 'autocomplete_common/:list' => 'claims#autocomplete_common'
-      match 'autocomplete_model_common/:model' => 'claims#autocomplete_model_common'
     end
     member do
       match 'print/:document' => 'claims#print'

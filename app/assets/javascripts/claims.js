@@ -1,6 +1,6 @@
 // search
 function getCurrentParams(el){
-  var currentParams = { sort:'reservation_date', direction:'desc', filter: '' },
+  var currentParams = { sort:'reservation_date', dir:'desc', filter: '' },
       $current_sort = $('#claims th a.current'),
       $el = $(el),
       href;
@@ -23,9 +23,9 @@ function getCurrentParams(el){
           break;
         case 'direction':
           if ($el[0] == $current_sort[0]) {  // change direction for current sort column
-            currentParams.direction = (pair[1]=='asc' ? 'desc' : 'asc');
+            currentParams.dir = (pair[1]=='asc' ? 'desc' : 'asc');
           } else {
-            currentParams.direction = pair[1];
+            currentParams.dir = pair[1];
           }
           break;
         case 'filter':
@@ -45,7 +45,7 @@ function getCurrentParams(el){
     currentParams.only_active = ($('#only_active')[0].checked ? '1' : '');
   }
   currentParams.filter = $('#filter').val();
-  currentParams.list_type = $('.accountant_login').attr('list_type');
+  currentParams.list_type = $('#view_switcher').val();
 
   return currentParams;
 }
@@ -144,6 +144,7 @@ function set_claims_waypoint() {
     offset: 'bottom-in-view',
     handler: function(direction) {
       if (direction == 'down') {
+        if ($(this).closest('.refreshing').length) { return; }
         var $t = $(this),
             cols = $('#claims_body tr:first td').length,
             page = parseInt($t.data('page'));
@@ -641,46 +642,55 @@ $(function(){
   $('#claim_primary_currency_price').change(get_amount_in_word);
 
   // autocomplete
-  var $autocomplete = {
-    touristLastName: {
-      source: "/claims/autocomplete_tourist_last_name",
-      select: function(event, ui) {
-        var tr = $(this).closest('.fake_row');
-        tr.find("input.passport_series").val(ui.item.passport_series);
-        tr.find("input.passport_number").val(ui.item.passport_number);
-        tr.find("input.date_of_birth").val(ui.item.date_of_birth);
-        tr.find("input.passport_valid_until").val(ui.item.passport_valid_until);
-        if(tr.hasClass('applicant')) {
-          tr.find("input.phone_number").val(ui.item.phone_number);
-          tr.find("input.address").val(ui.item.address);
-          $('#claim_applicant_id').val(ui.item.id);
-        } else {
-          tr.next(".hidden_id").val(ui.item.id);
-        }
-      },
-      minLength: 0
-    },
-    country: {
-      source: "/claims/autocomplete_country",
-      select: function(event, ui) {
-        var $resort = $("input.autocomplete.resort");
-        if ($(this).data('val') != ui.item.value)
-          $resort.val('');
-        $resort.autocomplete('option', 'source', '/claims/autocomplete_resort/' + ui.item.id);
-      },
-      change: function(eventn, ui) {
-        $(this).data('val', this.value);
-        $("input.autocomplete.resort").val('').autocomplete('option', 'source', '/claims/autocomplete_resort/' + this.value);
-      },
-      minLength: 0
+  var select_tourist = function(el, data) {
+    var $row = $(el).closest('.fake_row'),
+        data = data || {};
+    $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
+      $row.find('input.' + this).val(data[this]);
+    });
+    if($row.hasClass('applicant')) {
+      $row.find('.phone_number').val(data.phone_number);
+      $row.find('.address').val(data.address);
+      $('#claim_applicant_id').val(data.id);
+    } else {
+      $row.next('.hidden_id').val(data.id);
     }
   };
-  $("input.autocomplete.full_name").autocomplete($autocomplete.touristLastName);
-  $("input.autocomplete.country").autocomplete($autocomplete.country);
-  $("input.autocomplete.resort").autocomplete({
-    source: "/claims/autocomplete_resort/" + $('#claim_country_name').data('id'),
-    minLength: 0
+
+  setAutocomplete('.full_name.autocomplete', false, {
+    select: function(event, ui) { select_tourist(this, ui.item); }
   });
+
+  var resort_source = function(el, country) {
+    var data = $(el || '.resort.autocomplete').data('ac');
+    return data ? data.source + '/' + country : '';
+  };
+
+  setAutocomplete('.country.autocomplete', false, {
+    select: function(event, ui) {
+      var $resort = $('.resort.autocomplete');
+      $resort.autocomplete('option', 'source', resort_source($resort, ui.item.id));
+      if ($(this).data('val') != ui.item.value)
+        $resort.val('');
+    },
+    change: function(event, ui) {
+      $(this).data('val', this.value);
+      var $resort = $('.resort.autocomplete');
+      $resort.val('').autocomplete('option', 'source', resort_source($resort, this.value));
+    }
+  });
+  setAutocomplete('.resort.autocomplete', false , {
+    source: resort_source(false, $('#claim_country_name').data('id'))
+  });
+
+  // setAutocomplete('.city.autocomplete', false , {
+  //   select: function(event, ui) {
+  //     $('#claim_city_id').val(ui.item.id);
+  //   }
+  // });
+
+  // Set autocomplete for others autocompletes in the form
+  setAutocomplete('.edit_page', true);
 
   // add tourist
 	var add_tourist = function(e){
@@ -710,9 +720,11 @@ $(function(){
 
       $(this).find('.num').text(i+2);
 
-      $(this).find('input.autocomplete.full_name').autocomplete($autocomplete.touristLastName);
       $(this).find('input.autocomplete.full_name').attr('id', 'claim_dependents_attributes_' + i + '_full_name');
       $(this).find('input.autocomplete.full_name').attr('name', 'claim[dependents_attributes][' + i + '][full_name]');
+      setAutocomplete($(this).find('.full_name.autocomplete'), false, {
+        select: function(event, ui) { select_tourist(this, ui.item); }
+      });
 
       $(this).find('input.date_of_birth').attr('id', 'claim_dependents_attributes_' + i + '_date_of_birth');
       $(this).find('input.date_of_birth').attr('name', 'claim[dependents_attributes][' + i + '][date_of_birth]');
@@ -737,23 +749,29 @@ $(function(){
 	$('#tourists a.add').click(add_tourist);
 
   // del tourist
-  var del_tourist = function(e){
-    e.preventDefault();
+  var del_tourist = function(fields){
+    var $fields = $(fields);
 
-    var id = $(this).attr('id').replace(/del/,'');
-    var $tr = $('#dependent' + id);
-    if (id == 1)
-      $('.applicant').closest('.fake_row').find(':input').val('');
+    if ($fields.hasClass('.applicant'))
+      $fields.find(':input').val('');
     else {
-      $tr.next('input[type=hidden]').remove();
-      $tr.remove();
+      // $fields.find('.ik_select select').ikSelect('detach');
+      // $fields.find('.datepicker').datepicker('destroy');
+      // $fields.find('.autocomplete').autocomplete('destroy');
+      // $fields.find('._destroy').val('1');
+      // $fields.addClass('destroyed').hide();
+      // TODO: replace with nested fiedls
+      $fields.next('input[type=hidden]').remove();
+      $fields.remove();
     }
-
-    $('#tourists .dependent').each(function(i){
-      $(this).find('.num').text(i+2)
-    });
   };
-	$('#tourists a.delete').click(del_tourist);
+	$('#tourists').on('click', 'a.delete', function(e) {
+    e.preventDefault();
+    var $t = $(this),
+        $fields = $t.closest('.fake_row');
+    // if ($fields.hasClass('disabled') || !confirm($t.data('check'))) { return; }
+    del_tourist($fields);
+  });
 
   // add paymnet
   var add_payment = function(payment_block) {
@@ -844,5 +862,10 @@ $(function(){
   set_claims_sticky_header();
   set_claims_waypoint();
   save_tour_price();
+
+  // After refresh claims container, addition to default after refresh
+  $('body').on('refreshed', '.claims', function(e) {
+    set_claims_waypoint();
+  });
 
 });

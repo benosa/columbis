@@ -221,6 +221,17 @@ $(function(){
     }
   });
 
+  // bind handle for on success after remote record deletion
+  $('body').on('ajax:success', 'a.delete[data-remote]', function(e) {
+    // if it'is reservations table, just remove appropriate row
+    var $table = $(this).closest('.reservations');
+    if ($(this).closest('table.reservations').length) {
+      $(this).closest('tr').remove();
+    } else {
+      listRefresh();
+    }
+  });
+
   // initialize autocompletes
   // setAutocomplete();
 

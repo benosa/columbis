@@ -48,7 +48,11 @@ class TouristsController < ApplicationController
 
   def destroy
     @tourist.destroy
-    redirect_to tourists_path, :notice => t('tourists.messages.destroyed')
+    unless request.xhr?
+      redirect_to tourists_path, :notice => t('tourists.messages.destroyed')
+    else
+      render :text => ''
+    end
   end
 
   private

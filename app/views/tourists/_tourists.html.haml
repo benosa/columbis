@@ -33,4 +33,4 @@
         %p= tourist.address.try(:joint_address)
       %td
         = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit')
-        = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+        = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => 'delete', :title => t('delete')

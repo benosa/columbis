@@ -189,7 +189,7 @@ ru:
   activerecord:
     errors:
       messages:
-         blank_or_wrong: 'заполнен с ошибками'
+        blank_or_wrong: 'заполнен с ошибками'
     attributes:
       claim:
         user_id: 'Менеджер'
@@ -234,6 +234,7 @@ ru:
         resort: 'Курорт'
         calculation: 'Расчет'
         applicant: 'Основной турист'
+        dependents: 'Список туристов'
         resort_id: 'Курорт'
         city_id: 'Город'
         airport_to: 'Аэропорт прямого вылета'
@@ -270,6 +271,14 @@ ru:
           form: 'Оплата оператору: Форма оплаты'
 
       # it's useful only for rails >= 3.2.0
+      claim/applicant:
+        full_name: 'Основной турист:'
+        last_name: 'Основной турист: Фамилия'
+        first_name: 'Основной турист: Имя'
+      claim/dependents:
+        full_name: 'Турист:'
+        last_name: 'Турист: Фамилия'
+        first_name: 'Турист: Имя'
       claim/payments_in:
         currency: 'Оплата туристом: Валюта'
         date_in: 'Оплата туристом: Дата оплаты'

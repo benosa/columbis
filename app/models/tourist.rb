@@ -10,13 +10,15 @@ class Tourist < ActiveRecord::Base
   belongs_to :company
   has_many :payments, :as => :payer
 
-  has_many :tourist_claims
+  has_many :tourist_claims, :dependent => :destroy
   has_many :claims, :through => :tourist_claims
   has_one :address, :as => :addressable, :dependent => :destroy
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
 
-  validates_presence_of :first_name, :last_name, :company_id
+  # validates_presence_of :first_name, :last_name, :company_id
+  validates_presence_of :company_id
+  validate :presence_of_full_name
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)
@@ -65,9 +67,19 @@ class Tourist < ActiveRecord::Base
     split = name.split(' ', 3)
     self.last_name = split[0]
     self.first_name = split[1]
-    self.middle_name = split[2] if split[2]
+    self.middle_name = split[2]
   end
 
   alias_method :name, :full_name
+
+  private
+
+    def presence_of_full_name
+      atr = if last_name.blank? && first_name.blank? then :full_name
+      elsif last_name.blank? then :last_name
+      elsif first_name.blank? then :first_name
+      end
+      errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
+    end
 
 end

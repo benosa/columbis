@@ -45,7 +45,7 @@ describe OperatorsController do
     end
 
     it 'should redirect to operators/show.html' do
-      response.should redirect_to @operator
+      response.should redirect_to operators_path
     end
   end
 
@@ -136,7 +136,7 @@ describe OperatorsController do
 
     it 'should redirect to operators/show.html' do
       do_operator
-      response.should redirect_to(operator_path(Operator.last.id))
+      response.should redirect_to operators_path
     end
 
     it 'should change catalog count up by 1' do

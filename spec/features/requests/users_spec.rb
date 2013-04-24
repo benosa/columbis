@@ -154,6 +154,8 @@ describe "User:", js: true do
   #   end
   # end
   describe "edit password user" do 
+    let(:user) { create(:admin) }
+
     before do
       user
       visit dashboard_users_path

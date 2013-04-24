@@ -40,7 +40,7 @@ describe "Operators:", js: true do
             save_and_open_page
             page.click_link I18n.t('save')
           }.to change(Operator, :count).by(1)
-          page.current_path.should eq(operator_path(Operator.last.id))
+          page.current_path.should eq(operators_path)
         end
       end
     end
@@ -77,7 +77,7 @@ describe "Operators:", js: true do
         operator.reload
       }.to change(operator, :name).from(operator.name).to('qweqwe')
       operator.name.should eq("qweqwe")
-      current_path.should eq(operator_path(operator.id))
+      current_path.should eq(operators_path)
     end
 
     it 'delete operator, edit operator' do

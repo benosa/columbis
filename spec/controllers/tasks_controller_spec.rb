@@ -10,7 +10,7 @@ describe TasksController do
 
   describe 'GET index' do
     before { get :index }
-    
+
     it 'should be successful' do
       response.should be_success
     end

@@ -89,7 +89,7 @@ describe OperatorsController do
       response.should render_template('show')
     end
   end
-  
+
   describe 'GET index' do
     def do_get
       get :index

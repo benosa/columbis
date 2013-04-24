@@ -64,7 +64,7 @@ class Tourist < ActiveRecord::Base
   end
 
   def full_name=(name)
-    split = name.split(' ', 3)
+    split = name.to_s.split(' ', 3)
     self.last_name = split[0]
     self.first_name = split[1]
     self.middle_name = split[2]

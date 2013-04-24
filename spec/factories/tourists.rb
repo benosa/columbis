@@ -16,6 +16,7 @@ FactoryGirl.define do
   
   factory :applicant, :class => Tourist do
     association :company
+    association :address
     first_name 'Походов'
     last_name  'Иван'
     middle_name 'Акакиевич'

@@ -43,3 +43,11 @@ end
 def stub_current_user(user)
   controller.stub!(:current_user).and_return(user)
 end
+
+def stub_current_company(company)
+  controller.stub!(:current_company).and_return(company)
+end
+
+def stub_current_office(office)
+  controller.stub!(:current_office).and_return(office)
+end

@@ -265,6 +265,7 @@ option {
 
   // Temporary solution for calims table
   .wrapper, .claims, .reservations_wrapper { overflow: visible; }
+  .claims .reservations { margin-bottom: 171px; }
 }
 
 /*.main_page .filter .ik_select { width: 187px; }

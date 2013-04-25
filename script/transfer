@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'yaml'
+
+bazoved_path = '/opt/apps/tourism'
+columbis_path = '/opt/apps/tourism-dev'
+bazoved_dump = 'bazoved.dump'
+rvm_ruby_string = '1.9.3@tourism'
+
+bazoved_env = 'production'
+columbis_env = 'staging'
+
+bazoved_db_config = YAML::load_file(File.join(bazoved_path, '/shared/config/database.yml'))[bazoved_env]
+columbis_db_config = YAML::load_file(File.join(columbis_path, '/shared/config/database.yml'))[columbis_env]
+columbis_db_config['database'] = 'columbis'
+
+puts Time.now
+
+puts 'Save bazoved database'
+system "export PGPASSWORD=#{bazoved_db_config["password"]} && pg_dump --host=#{bazoved_db_config["host"]} --port=#{bazoved_db_config["port"]} --username #{bazoved_db_config["username"]} --file #{columbis_path}/shared/#{bazoved_dump} -Fc #{bazoved_db_config["database"]}"
+
+puts 'Stop sphinx process'
+system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:stop 1>/dev/null"
+
+puts 'Stop unicorn process'
+system "if [ -e /opt/apps/tourism-dev/current/tmp/pids/unicorn.pid ]; then kill `cat /opt/apps/tourism-dev/current/tmp/pids/unicorn.pid`; fi"
+
+puts 'Drop columbis database'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && dropdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} #{columbis_db_config["database"]}"
+
+puts 'Create new columbis database'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && createdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -T template0 #{columbis_db_config["database"]}"
+
+puts 'Load data to columbis database'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && pg_restore -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -d #{columbis_db_config["database"]} #{columbis_path}/shared/#{bazoved_dump}"
+
+puts 'Migrate columbis database'
+system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake db:migrate RAILS_ENV=#{columbis_env} 1>/dev/null"
+
+puts 'Copy upload files from bazoved to columbis'
+system "cp -rf #{bazoved_path}/shared/uploads/* #{columbis_path}/shared/uploads"
+
+puts 'Start unicorn process'
+system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && BUNDLE_GEMFILE=#{columbis_path}/current/Gemfile bundle exec unicorn -c #{columbis_path}/current/config/unicorn/#{columbis_env}.rb -E #{columbis_env} -D"
+
+puts 'Start sphinx process'
+system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:configure thinking_sphinx:index thinking_sphinx:start 1>/dev/null"
+
+puts "\n\n"

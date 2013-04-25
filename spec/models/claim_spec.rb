@@ -27,7 +27,6 @@ describe Claim do
     context "when valid" do
       subject { FactoryGirl.create :claim }
       it { should validate_presence_of :user_id }
-      it { should validate_presence_of :operator_id }
       it { should validate_presence_of :check_date }
       it { should validate_presence_of :arrival_date }
 

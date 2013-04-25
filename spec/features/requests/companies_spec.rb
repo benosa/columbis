@@ -25,8 +25,8 @@ describe "Companyies:", js: true do
     #   page.should have_selector("div.error_messages")
     # end
 
-    it 'should edit an operator, redirect to operators_path' do
-      puts current_path.should eq(dashboard_edit_company_path)
+    # it 'should edit an operator, redirect to operators_path' do
+    #   current_path.should eq(dashboard_edit_company_path)
       
 
       # expect {
@@ -36,7 +36,7 @@ describe "Companyies:", js: true do
       # }.to change(company, :name).from(company.name).to('Test')
       # company.name.should eq("qweqwe")
       # current_path.should eq(dashboard_edit_company_path)
-    end
+    # end
 
     # it 'delete operator, edit operator' do
     #   click_link "edit_operator_#{operator.id}"

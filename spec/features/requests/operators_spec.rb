@@ -37,7 +37,6 @@ describe "Operators:", js: true do
         it "should create an operator, redirect to operators_path" do
           expect {
             page.fill_in "operator[name]", with: "TEST"
-            save_and_open_page
             page.click_link I18n.t('save')
           }.to change(Operator, :count).by(1)
           page.current_path.should eq(operators_path)

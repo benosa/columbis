@@ -51,9 +51,7 @@ describe "Tourist:", js: true do
           expect {
             fill_in "tourist[last_name]", with: "TEST potential"
             fill_in "tourist[first_name]", with: "TEST potential"
-            find('input[type=checkbox]#potential') do
-              check('potential')
-            end
+            find('label[for=tourist_potential]').click
             page.click_link I18n.t('save')
           }.to change(Tourist, :count).by(1)
           page.current_path.should eq(tourists_path)

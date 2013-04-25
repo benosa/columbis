@@ -78,9 +78,9 @@ describe "Tasks:", js: true do
       end
 
       describe "when filter by status" do
-        before do
-          page.find('select[name=status]').find(:xpath, '..').click # find(:xpath, '..') - is parent element
-        end
+        # before do
+        #   page.find('select[name=status]').find(:xpath, '..').click # find(:xpath, '..') - is parent element
+        # end
 
         it "should contain all tasks" do
           page.select t('task_type.all'), :from => 'type_filter_options'

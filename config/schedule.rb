@@ -5,5 +5,5 @@ every 1.day, :at => '1:17am', :roles => [:app] do
 end
 
 every '25 5-17/3,23 * * *' do
-  command 'script/transfer'
+  command File.expand_path('../../script/transfer', __FILE__)
 end

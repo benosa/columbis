@@ -176,6 +176,8 @@ class ClaimsController < ApplicationController
           opts[:with]['manager'] = 1
         end
       end
+      opts[:order] = "#{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+      opts[:sort_mode] = :extended
       @search_options = opts.delete_if{ |key, value| value.blank? }
     end
 

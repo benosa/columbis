@@ -17,7 +17,7 @@ class CreateGeoObjects < ActiveRecord::Migration
     add_index :cities, [:country_id, :region_id, :name]
     add_index :cities, [:name]
 
-    Country.all.map{ |c| c.save! }
+    Country.find_each(:batch_size => 500){ |c| c.save! }
   end
 
   def self.down

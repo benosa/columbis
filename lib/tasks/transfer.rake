@@ -10,11 +10,9 @@ namespace :transfer do
       { email: 'vampir.666.87@gmail.com', login: 'seobomj', last_name: 'Сео', first_name: 'Бомж' },
       { email: 'brutalmarketing@gmail.com', login: 'brutalmarketing', last_name: 'Коршунов', first_name: 'Сергей' }
     ].each do |params|
-      User.create(params.merge({
-        company_id: company.id, office_id: office.id,
-        password: password, password_confirmation: password,
-        role: 'admin'
-      }), as: :admin)
+      user = User.new(params.merge({ office_id: office.id, password: password, password_confirmation: password }))
+      user.company = company
+      user.role = 'admin'
     end
   end
 end

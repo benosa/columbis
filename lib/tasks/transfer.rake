@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 namespace :transfer do
   desc "Create accaunt for humans, who are working on the project"
-  task :create_specifiс_users => :environment do
+  task :create_specific_users => :environment do
     company = Company.find(8) # Мистраль
     office = Office.find(7) # Корстон
     password = '123,ewq'

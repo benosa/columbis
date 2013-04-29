@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]
-      user.send "#{attribute}=", user.send(attribute).strip
+      user.send "#{attribute}=", user.send(attribute).try(:strip)
     end
   end
 

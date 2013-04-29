@@ -171,6 +171,8 @@ class Claim < ActiveRecord::Base
     self.applicant = Tourist.new
     self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
     self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
+    self.course_usd = CurrencyCourse.where(:currency=>'usd').order(:created_at).last.try(:course)
+    self.course_eur = CurrencyCourse.where(:currency=>'eur').order(:created_at).last.try(:course)
 
     cur_attrs = Hash[[
       :tour_price_currency, :visa_price_currency, :children_visa_price_currency, :insurance_price_currency,

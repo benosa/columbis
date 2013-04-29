@@ -87,4 +87,8 @@ puts 'Copy upload files from bazoved to columbis'
 system "cp -rf #{bazoved_path}/shared/uploads/* #{columbis_path}/shared/uploads"
 puts secs(t)
 
+puts 'Create specific users in columbis'
+system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} transfer:create_specifiс_users 1>/dev/null"
+puts secs(t)
+
 puts "\n\n"

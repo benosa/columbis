@@ -1,0 +1,20 @@
+# -*- encoding : utf-8 -*-
+namespace :transfer do
+  desc "Create accaunt for humans, who are working on the project"
+  task :create_specifiс_users => :environment do
+    company = Company.find(8) # mistral
+    office = company.offices.first
+    password = '123,ewq'
+    user_params = [
+      { email: 's_pash@mail.ru', login: 's_pash', last_name: 'Савинский', first_name: 'Павел' },
+      { email: 'vampir.666.87@gmail.com', login: 'seobomj', last_name: 'Сео', first_name: 'Бомж' },
+      { email: 'brutalmarketing@gmail.com', login: 'brutalmarketing', last_name: 'Коршунов', first_name: 'Сергей' }
+    ].each do |params|
+      User.create(params.merge({
+        company_id: company.id, office_id: office.id,
+        password: password, password_confirmation: password,
+        role: 'admin'
+      }), as: :admin)
+    end
+  end
+end

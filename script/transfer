@@ -36,7 +36,7 @@ system "export PGPASSWORD=#{columbis_db_config["password"]} && pg_restore -U #{c
 puts secs(t)
 
 puts 'Migrate temporary columbis database'
-system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake db:migrate_to[#{columbis_tmp_db}] RAILS_ENV=#{columbis_env} 1>/dev/null"
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake db:migrate_to[#{columbis_tmp_db}] RAILS_ENV=#{columbis_env} 1>/dev/null'"
 puts secs(t)
 
 puts 'Save migrated columbis database'
@@ -48,7 +48,7 @@ puts secs(t)
 # puts secs(t)
 
 puts 'Stop sphinx process'
-system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:stop 1>/dev/null"
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:stop 1>/dev/null'"
 puts secs(t)
 
 puts 'Stop unicorn process'
@@ -76,11 +76,11 @@ puts secs(t)
 # puts secs(t)
 
 puts 'Start unicorn process'
-system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && BUNDLE_GEMFILE=#{columbis_path}/current/Gemfile bundle exec unicorn -c #{columbis_path}/current/config/unicorn/#{columbis_env}.rb -E #{columbis_env} -D"
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && BUNDLE_GEMFILE=#{columbis_path}/current/Gemfile bundle exec unicorn -c #{columbis_path}/current/config/unicorn/#{columbis_env}.rb -E #{columbis_env} -D'"
 puts secs(t)
 
 puts 'Start sphinx process'
-system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:configure thinking_sphinx:index thinking_sphinx:start 1>/dev/null"
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:configure thinking_sphinx:index thinking_sphinx:start 1>/dev/null'"
 puts secs(t)
 
 puts 'Copy upload files from bazoved to columbis'
@@ -88,7 +88,7 @@ system "cp -rf #{bazoved_path}/shared/uploads/* #{columbis_path}/shared/uploads"
 puts secs(t)
 
 puts 'Create specific users in columbis'
-system "rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} transfer:create_specific_users 1>/dev/null"
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} transfer:create_specific_users 1>/dev/null'"
 puts secs(t)
 
 puts "\n\n"

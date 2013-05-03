@@ -13,6 +13,7 @@ namespace :transfer do
       user = User.new(params.merge({ office_id: office.id, password: password, password_confirmation: password }))
       user.company = company
       user.role = 'admin'
+      user.save
     end
   end
 end

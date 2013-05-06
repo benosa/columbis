@@ -7,7 +7,7 @@ columbis_path = '/opt/apps/tourism-dev'
 bazoved_dump = 'bazoved.db'
 columbis_dump = 'columbis.db'
 
-rvm_ruby_string = '1.9.3@tourism'
+rvm_ruby_string = '2.0.0@tourism'
 
 bazoved_env = 'production'
 columbis_env = 'staging'

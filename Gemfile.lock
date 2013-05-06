@@ -402,6 +402,7 @@ DEPENDENCIES
   carrierwave (= 0.8.0)
   cells
   coffee-rails
+  daemons (= 1.1.9)
   database_cleaner (= 0.9.1)
   delayed_job (= 3.0.5)
   delayed_job_active_record (= 0.4.4)
@@ -427,7 +428,7 @@ DEPENDENCIES
   libv8 (~> 3.11.8)
   mailcatcher
   meta_request (~> 0.2.1)
-  nokogiri (= 1.5.6)
+  nokogiri (= 1.5.9)
   oj
   pg (~> 0.14.1)
   poltergeist (~> 1.1.0)

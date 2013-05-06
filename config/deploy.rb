@@ -16,7 +16,7 @@ set :default_stage, "staging"
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true
 
-set :rvm_ruby_string, "1.9.3@tourism"
+set :rvm_ruby_string, "1.9.3-p374@tourism"
 set :rvm_type, :user
 
 set :scm, :git

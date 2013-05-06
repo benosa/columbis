@@ -1,10 +1,12 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :city do
-    name 'Москва'
+    association :company
+    # company { [ FactoryGirl.create(:company) ] }
+    name { Faker::Lorem.sentence }
   end
 
   factory :resort, :class => City do
-    name 'Хургада'
+    name { Faker::Lorem.sentence }
   end
 end

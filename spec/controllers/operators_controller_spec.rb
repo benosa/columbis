@@ -3,7 +3,9 @@ require 'spec_helper'
 
 describe OperatorsController do
   def create_operator
-    @operator = Factory(:operator)
+    @operator = FactoryGirl.create(:operator)
+    user = FactoryGirl.create(:admin)
+    test_sign_in(user)
   end
 
   before (:each) do
@@ -20,6 +22,7 @@ describe OperatorsController do
     end
 
     it 'should render operators/edit' do
+      puts response.body.inspect
       response.should render_template('edit')
     end
 
@@ -42,7 +45,7 @@ describe OperatorsController do
     end
 
     it 'should redirect to operators/show.html' do
-      response.should redirect_to @operator
+      response.should redirect_to operators_path
     end
   end
 
@@ -86,6 +89,7 @@ describe OperatorsController do
       response.should render_template('show')
     end
   end
+
   describe 'GET index' do
     def do_get
       get :index
@@ -132,7 +136,7 @@ describe OperatorsController do
 
     it 'should redirect to operators/show.html' do
       do_operator
-      response.should redirect_to(operator_path(Operator.last.id))
+      response.should redirect_to operators_path
     end
 
     it 'should change catalog count up by 1' do

@@ -14,9 +14,9 @@ FactoryGirl.define do
 
     email { Faker::Internet.email }
     login { Faker::Name.name }
-    last_name 'Иванов'
-    first_name 'Иван'
-    middle_name 'Иванович'
+    last_name { Faker::Name.name }
+    first_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
     role 'admin'
     password 'secret'
     password_confirmation 'secret'
@@ -29,9 +29,9 @@ FactoryGirl.define do
 
     email { Faker::Internet.email }
     login { Faker::Name.name }
-    last_name 'Сидоров'
-    first_name 'Сидор'
-    middle_name 'Сидорович'
+    last_name { Faker::Name.name }
+    first_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
     role 'boss'
     password 'secret'
     password_confirmation 'secret'
@@ -57,9 +57,9 @@ FactoryGirl.define do
 
     email { Faker::Internet.email }
     login { Faker::Name.name }
-    last_name 'Смирнов'
-    first_name 'Сергей'
-    middle_name 'Алексеевич'
+    last_name { Faker::Name.name }
+    first_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
     role 'manager'
     password 'secret'
     password_confirmation 'secret'

@@ -5,18 +5,18 @@
 
 -# content_for :top do
   .switch_type
-    %a.client.potential-switcher{ :href => "#", :class => params[:potential].blank? && 'active',
-      :data => { :param=> 'potential', :filter => 1 } }
+    %a.client.potential-switcher{:id => 'clients', :href => "#", :class => params[:potential].blank? && 'active',
+      :data => { :param=> 'potential', :filter => 1 }}
       %span= t('.clients')
-    %a.client.potential-switcher{ :href => "#", :class => params[:potential].present? && 'active',
-      :data => { :param=> 'potential', :filter => 1, :value => 1 } }
+    %a.client.potential-switcher{:id => 'clients_potential', :href => "#", :class => params[:potential].present? && 'active',
+      :data => { :param=> 'potential', :filter => 1, :value => 1 }}
       %span= t('.potential_clients')
 
 - content_for :top do
   .switch_type
-    %a.client.potential-switcher{ :href => tourists_url, :class => params[:potential].blank? && 'active' }
+    %a.client.potential-switcher{ :href => tourists_url, :class => params[:potential].blank? && 'active', id: 'clients' }
       %span= t('.clients')
-    %a.client.potential-switcher{ :href => tourists_url(potential: 1), :class => params[:potential].present? && 'active' }
+    %a.client.potential-switcher{ :href => tourists_url(potential: 1), :class => params[:potential].present? && 'active', id: 'clients_potential'}
       %span= t('.potential_clients')
 
   %form.filter

@@ -10,7 +10,7 @@
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
   - if can? :destroy, @user
-    = link_to t('delete'), dashboard_users_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
+    = link_to t('delete'), dashboard_user_path(@user.id), class: 'delete_operator', confirm: t('are_you_sure'), method: :delete, id: "destroy_user_#{@user.id}"
   - if can? :update, @user
     = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
   - if @user != current_user and can?(:manage, @user)

@@ -651,10 +651,8 @@ $(function(){
     if($row.hasClass('applicant')) {
       $row.find('.phone_number').val(data.phone_number);
       $row.find('.address').val(data.address);
-      $('#claim_applicant_id').val(data.id);
-    } else {
-      $row.next('.hidden_id').val(data.id);
     }
+    $row.find('.hidden_id').val(data.id);
   };
 
   setAutocomplete('.full_name.autocomplete', false, {
@@ -693,84 +691,60 @@ $(function(){
   setAutocomplete('.edit_page', true);
 
   // add tourist
-	var add_tourist = function(e){
+  var add_tourist = function(tourist_block) {
+    var $block = $(tourist_block),
+        $last_fields = $block.find('.dependent:last'),
+        num = $last_fields.length > 0 ? parseInt($last_fields.attr('id').replace(/dependent-/, ''), 10) + 1 : 0,
+        tourist, html;
+
+    tourist = {
+      num: num,
+      full_name: '',
+      id: '',
+      _destroy: '',
+      date_of_birth: '',
+      passport_series: '',
+      passport_number: '',
+      passport_valid_until: '',
+    }
+    html = JST['claims/dependent'].render(tourist);
+
+    $block.find(' .add_row').before(html);
+
+    var $fields = $block.find('.fields:last');
+    setDatepicker($fields, true);
+    setAutocomplete($fields.find('.full_name.autocomplete'), false, {
+      select: function(event, ui) { select_tourist(this, ui.item); }
+    });
+  }
+  $('#tourists').on('click', 'a.add', function(e) {
     e.preventDefault();
-
-    var $common_fields = $('#tourists .applicant .common_fields');
-    $('#tourists .add_row').before($('<div class="fake_row dependent"></div>'));
-    var $new_dependent = $('#tourists .dependent:last');
-    $new_dependent.append($common_fields.html());
-    $new_dependent.after('<input type="hidden" class="hidden_id">');
-    $new_dependent.find('input').each(function(n){
-      $(this).removeClass('hasDatepicker');
-      $(this).next('img').remove();
-      $(this).val('');
-      $(this).attr('value', '');
-    });
-    $new_dependent.attr('id', '');
-    if (!$new_dependent.find('.delete').length)
-      $new_dependent.append($('#tourists .applicant .delete').clone());
-
-    var last_ind = 0;
-    $('#tourists .dependent').each(function(i){
-      $(this).attr('id','dependent' + (i+2));
-
-      $(this).find('a.delete').click(del_tourist);
-      $(this).find('a.delete').attr('id','del'+(i+2));
-
-      $(this).find('.num').text(i+2);
-
-      $(this).find('input.autocomplete.full_name').attr('id', 'claim_dependents_attributes_' + i + '_full_name');
-      $(this).find('input.autocomplete.full_name').attr('name', 'claim[dependents_attributes][' + i + '][full_name]');
-      setAutocomplete($(this).find('.full_name.autocomplete'), false, {
-        select: function(event, ui) { select_tourist(this, ui.item); }
-      });
-
-      $(this).find('input.date_of_birth').attr('id', 'claim_dependents_attributes_' + i + '_date_of_birth');
-      $(this).find('input.date_of_birth').attr('name', 'claim[dependents_attributes][' + i + '][date_of_birth]');
-
-      $(this).find('input.passport_series').attr('id', 'claim_dependents_attributes_' + i + '_passport_series');
-      $(this).find('input.passport_series').attr('name', 'claim[dependents_attributes][' + i + '][passport_series]');
-
-      $(this).find('input.passport_number').attr('id', 'claim_dependents_attributes_' + i + '_passport_number');
-      $(this).find('input.passport_number').attr('name', 'claim[dependents_attributes][' + i + '][passport_number]');
-
-      $(this).find('input.passport_valid_until').attr('id', 'claim_dependents_attributes_' + i + '_passport_valid_until');
-      $(this).find('input.passport_valid_until').attr('name', 'claim[dependents_attributes][' + i + '][passport_valid_until]');
-
-      setDatepicker(this, true);
-
-      var hidden_id = $(this).next('[type=hidden]');
-      hidden_id.attr('id', 'claim_dependents_attributes_' + i + '_id');
-      hidden_id.attr('name', 'claim[dependents_attributes][' + i + '][id]');
-      last_ind = i+1;
-    });
-	};
-	$('#tourists a.add').click(add_tourist);
+    var $t = $(this);
+    add_tourist($t.closest('.form_block'));
+  });
 
   // del tourist
   var del_tourist = function(fields){
     var $fields = $(fields);
 
-    if ($fields.hasClass('.applicant'))
+    if ($fields.hasClass('applicant'))
       $fields.find(':input').val('');
     else {
-      // $fields.find('.ik_select select').ikSelect('detach');
-      // $fields.find('.datepicker').datepicker('destroy');
-      // $fields.find('.autocomplete').autocomplete('destroy');
-      // $fields.find('._destroy').val('1');
-      // $fields.addClass('destroyed').hide();
-      // TODO: replace with nested fiedls
-      $fields.next('input[type=hidden]').remove();
-      $fields.remove();
+      $fields.find('.datepicker').datepicker('destroy');
+      // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
+      $fields.find('._destroy').val('1');
+      $fields.addClass('destroyed').hide();
     }
   };
 	$('#tourists').on('click', 'a.delete', function(e) {
     e.preventDefault();
     var $t = $(this),
-        $fields = $t.closest('.fake_row');
-    // if ($fields.hasClass('disabled') || !confirm($t.data('check'))) { return; }
-    del_tourist($fields);
+        $fields = $t.closest('.fields');
+
+    var is_empty_fields = !$fields.find(':input[value!=""]').length;
+    if (is_empty_fields || confirm($t.data('check'))) {
+      del_tourist($fields);
+    }
   });
 
   // add paymnet

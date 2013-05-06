@@ -2,6 +2,7 @@ ru:
   activerecord:
     attributes:
       tourist:
+        full_name: "ФИО"
         last_name: "Фамилия"
         first_name: "Имя"
         middle_name: "Отчество"

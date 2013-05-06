@@ -19,9 +19,10 @@ class Dashboard::UsersController < ApplicationController
 
   def update_password
     if can? :create, User
-      if @user.update_attributes(params[:user])
+      if @user.update_attribute(:password, params[:user][:password])
         Mailer.registrations_info(@user).deliver
       else
+        puts @user.errors.inspect 
         render :edit_password
         return
       end
@@ -33,11 +34,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
-    @user.company = current_user.company
-    @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
-    @user.password = @user.office.default_password if @user.password.blank?
-
+    @user = User.new_by_user(params[:user], current_user)
     if @user.save
       Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => t('users.messages.created')

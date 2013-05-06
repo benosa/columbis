@@ -12,7 +12,7 @@
         %span= t('actions')
 
     - for operator in @operators
-      %tr{ :class => cycle('odd', 'even') }
+      %tr{ :class => cycle('odd', 'even'), id: "operator_#{operator.id}" }
         %td
           %p= operator.name
         %td
@@ -26,7 +26,7 @@
         %td
           %p= operator.address.try(:joint_address)
         %td
-          = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit')
-          = link_to '', operator, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+          = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit'), id: "edit_operator_#{operator.id}"
+          = link_to '', operator, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete_operator_#{operator.id}"
 
   = render :partial => 'shared/pagination', :locals => { :collection => @operators }

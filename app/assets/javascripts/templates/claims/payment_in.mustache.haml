@@ -26,5 +26,5 @@
     %label{ :for => "#{id_prefix}_approved", :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved) } &nbsp;
     = check_box_tag "#{name_prefix}[approved]", '1', false, :id => "#{id_prefix}_approved", :class => 'approved'
     = link_to '', '#', :class => 'delete', :title => I18n.t('delete'), data: { check: I18n.t('are_you_sure') }
-  = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy"
-  = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id"
+  = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
+  = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id", :class => '_destroy'

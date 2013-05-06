@@ -35,7 +35,10 @@ class Claim < ActiveRecord::Base
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance,
-                  :bonus, :bonus_percent,
+                  :bonus, :bonus_percent
+
+  # nested attributes
+  attr_accessible :applicant_attributes, :dependents_attributes,
                   :payments_in_attributes, :payments_out_attributes
 
   belongs_to :company
@@ -47,20 +50,21 @@ class Claim < ActiveRecord::Base
   belongs_to :city
   belongs_to :resort, :class_name => 'City'
 
-  has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
-  has_many :dependents, :through => :tourist_claims, :source => :tourist
-
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
+
+  has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
+  has_many :dependents, :through => :tourist_claims, :source => :tourist
 
   has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
   has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
 
-  accepts_nested_attributes_for :dependents
+  # accepts_nested_attributes_for :applicant, :reject_if => :empty_tourist_hash?
+  # accepts_nested_attributes_for :dependents, :reject_if => :empty_tourist_hash?
   accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?, :allow_destroy => true
   accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?, :allow_destroy => true
 
-  validates_presence_of :user_id, :operator_id, :check_date, :arrival_date
+  validates_presence_of :user_id, :check_date, :arrival_date
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
   #                       :airline, :airport_to, :airport_back,
@@ -76,6 +80,7 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
 
+  # before_validation :update_tourists
   before_validation :update_payments
 
   before_save :update_debts
@@ -127,16 +132,80 @@ class Claim < ActiveRecord::Base
 
   def assign_reflections_and_save(claim_params)
     self.transaction do
-      drop_reflections
       check_dropdowns(claim_params)
-
-      assign_applicant(claim_params[:applicant])
-      assign_dependents(claim_params[:dependents_attributes]) if claim_params.has_key?(:dependents_attributes)
 
       unless self.errors.any?
         remove_unused_payments
         check_not_null_fields
         self.save
+      end
+    end
+  end
+
+  def applicant_attributes=(attributes)
+    unless empty_tourist_hash?(attributes)
+      id = attributes.delete('id')
+      joint_address = attributes.delete('address')
+      if id.blank?
+        applicant = Tourist.new
+        applicant.company = company
+      else
+        applicant = self.applicant || Tourist.where(id: id, company_id: company).first
+      end
+      applicant.assign_attributes(attributes)
+      address = applicant.address || applicant.build_address(company_id: company_id)
+      address.joint_address = joint_address if address
+      self.applicant = applicant
+    end
+  end
+
+  def dependents_attributes=(attributes_hash)
+    unless new_record?
+      # first, create records in relation table for hash with presented id
+      is_new_dependents = false
+      attributes_hash.each_value do |attributes|
+        next if empty_tourist_hash?(attributes)
+        tourist_claim_id = attributes.delete('tourist_claim_id')
+        if tourist_claim_id.present?
+          tourist_claim = tourist_claims.select{ |tc| tc.id == tourist_claim_id.to_i }.first
+          if tourist_claim and tourist_claim.tourist_id != attributes['id'].to_i
+            tourist_claim.update_attributes(tourist_id: attributes['id'])
+          end
+        elsif attributes['id'].present? and !tourist_claims.select{ |tc| tc.tourist_id == attributes['id'].to_i }.first
+          tourist_claims.create(tourist_id: attributes['id'])
+          is_new_dependents = true
+        end
+      end
+      dependents.reload if is_new_dependents
+    end
+
+    # update attributes for existing record, otherwise build new dependent
+    attributes_hash.each do |i, attributes|
+      next if empty_tourist_hash?(attributes)
+
+      attributes.delete('tourist_claim_id') # special attribute for existing record
+      destroy = ActiveRecord::ConnectionAdapters::Column.value_to_boolean attributes.delete('_destroy')
+      id = attributes.delete('id')
+      if id.present?
+        unless new_record?
+          dependent = dependents.select{ |d| d.id == id.to_i }.first
+          if !destroy and dependent
+            dependent.update_attributes(attributes)
+            self.errors.add(:dependents, :invalid) if dependent.invalid? and !errors.has_key?(:dependents)
+          else
+            dependents.delete(dependent) if dependent
+          end
+        else
+          dependent = Tourist.where(id: id, company_id: company).first
+          if !destroy and dependent
+            dependent.assign_attributes(attributes)
+            dependent.company = company
+            dependents << dependent
+          end
+        end
+      elsif !destroy
+        new_dependent = dependents.build(attributes)
+        new_dependent.company = company
       end
     end
   end
@@ -169,8 +238,8 @@ class Claim < ActiveRecord::Base
 
   def fill_new
     self.applicant = Tourist.new
-    self.payments_in << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
-    self.payments_out << Payment.new(:currency => CurrencyCourse::PRIMARY_CURRENCY)
+    self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
+    self.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
     self.course_usd = CurrencyCourse.where(:currency=>'usd').order(:created_at).last.try(:course)
     self.course_eur = CurrencyCourse.where(:currency=>'eur').order(:created_at).last.try(:course)
 
@@ -408,367 +477,369 @@ class Claim < ActiveRecord::Base
 
   private
 
-  def self.to_js_type(column_type)
-    case column_type
-    when :integer
-      'INTEGER'
-    when :float
-      'REAL'
-    when :text
-      'TEXT'
-    else
-      'VARCHAR(255)'
-    end
-  end
-
-  def assign_applicant(applicant_params)
-    # Set address manually to avoid an exeption
-    applicant_address = applicant_params[:address] if applicant_params[:address].present?
-    applicant_params.delete :address
-
-    if applicant_params[:id].blank?
-      a = Tourist.new(applicant_params)
-      a.company_id = company_id
-      a.address.build_address(:company_id => company_id, :joint_address => applicant_address) if applicant_address
-      a.save
-      self.applicant = a
-    else
-      self.applicant = Tourist.where(:company_id => company_id).includes(:address).find(applicant_params[:id])
-      if self.applicant.present?
-        self.applicant.update_attributes(applicant_params)
-        if applicant_address
-          if self.applicant.address
-            self.applicant.address.update_attributes({ :joint_address => applicant_address })
-          else
-            self.applicant.create_address({:company_id => company_id, :joint_address => applicant_address},:without_protection => true)
-          end
-        end
-      end
-    end
-  end
-
-  def assign_dependents(tourists)
-    tourists.each do |key, tourist_hash|
-      next if empty_tourist_hash?(tourist_hash)
-
-      if tourist_hash[:id].blank?
-        tourist = Tourist.new(tourist_hash)
-        tourist.company_id = company_id
+    def self.to_js_type(column_type)
+      case column_type
+      when :integer
+        'INTEGER'
+      when :float
+        'REAL'
+      when :text
+        'TEXT'
       else
-        tourist = Tourist.where(:company_id => company_id).find(tourist_hash[:id])
-        tourist.update_attributes(tourist_hash) if tourist.present?
-      end
-
-      tourist.company_id = company_id
-      begin
-        self.dependents << tourist
-      rescue
-        tourist.errors.full_messages.each { |msg| self.errors.add(:tourists, msg) }
+        'VARCHAR(255)'
       end
     end
-  end
 
-  def update_payments
-    payments_in.each do |payment|
-      payment.assign_attributes({
-        :company => company,
-        :recipient => company,
-        :payer => applicant,
-        :currency => CurrencyCourse::PRIMARY_CURRENCY,
-        :course => 1,
-        :canceled => canceled?
-      }, :without_protection => true)
+    # def assign_applicant(applicant_params)
+    #   # Set address manually to avoid an exeption
+    #   applicant_address = applicant_params[:address] if applicant_params[:address].present?
+    #   applicant_params.delete :address
+
+    #   if applicant_params[:id].blank?
+    #     a = Tourist.new(applicant_params)
+    #     a.company_id = company_id
+    #     a.address.build_address(:company_id => company_id, :joint_address => applicant_address) if applicant_address
+    #     a.save
+    #     self.applicant = a
+    #   else
+    #     self.applicant = Tourist.where(:company_id => company_id).includes(:address).find(applicant_params[:id])
+    #     if self.applicant.present?
+    #       self.applicant.update_attributes(applicant_params)
+    #       if applicant_address
+    #         if self.applicant.address
+    #           self.applicant.address.update_attributes({ :joint_address => applicant_address })
+    #         else
+    #           self.applicant.create_address({:company_id => company_id, :joint_address => applicant_address},:without_protection => true)
+    #         end
+    #       end
+    #     end
+    #   end
+    # end
+
+    # def assign_dependents(tourists)
+    #   tourists.each do |key, tourist_hash|
+    #     next if empty_tourist_hash?(tourist_hash)
+
+    #     if tourist_hash[:id].blank?
+    #       tourist = Tourist.new(tourist_hash)
+    #       tourist.company_id = company_id
+    #     else
+    #       tourist = Tourist.where(:company_id => company_id).find(tourist_hash[:id])
+    #       tourist.update_attributes(tourist_hash) if tourist.present?
+    #     end
+
+    #     tourist.company_id = company_id
+    #     begin
+    #       self.dependents << tourist
+    #     rescue
+    #       tourist.errors.full_messages.each { |msg| self.errors.add(:tourists, msg) }
+    #     end
+    #   end
+    # end
+
+    # def update_tourists
+    #   dependents.each do |tourist|
+    #     tourist.company = company
+    #   end
+    # end
+
+    def update_payments
+      payments_in.each do |payment|
+        payment.assign_attributes({
+          :company => company,
+          :recipient => company,
+          :payer => applicant,
+          :currency => CurrencyCourse::PRIMARY_CURRENCY,
+          :course => 1,
+          :canceled => canceled?
+        }, :without_protection => true)
+      end
+      payments_out.each do |payment|
+        payment.assign_attributes({
+          :company => company,
+          :recipient => operator,
+          :payer => company,
+          :currency => CurrencyCourse::PRIMARY_CURRENCY,
+          :reversed_course => payment.currency == 'rur',
+          :canceled => canceled?
+        }, :without_protection => true)
+      end
     end
-    payments_out.each do |payment|
-      payment.assign_attributes({
-        :company => company,
-        :recipient => operator,
-        :payer => company,
-        :currency => CurrencyCourse::PRIMARY_CURRENCY,
-        :reversed_course => payment.currency == 'rur',
-        :canceled => canceled?
-      }, :without_protection => true)
+
+    def update_debts
+      self.operator_advance = self.payments_out.sum('amount_prim')
+      # no sense here anymore
+      self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
+      self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
+
+      self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
+      self.operator_paid = create_paid_string(:out)
+
+      self.tourist_advance = self.payments_in.sum('amount_prim')
+      self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
+
+      self.primary_currency_price = calculate_tour_price
+      self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
+      self.tourist_paid = create_paid_string(:in)
+
+      # profit amount available only full payment
+      if approved_operator_advance_prim >= operator_price.to_f
+
+        self.profit = primary_currency_price - approved_operator_advance
+
+        self.profit_in_percent =
+          begin
+            perc = approved_operator_advance / 100
+            perc > 0 ? profit/perc : 0
+          rescue
+            0
+          end
+      else
+        self.profit = 0
+        self.profit_in_percent = 0
+      end
     end
-  end
 
-  def update_debts
-    self.operator_advance = self.payments_out.sum('amount_prim')
-    # no sense here anymore
-    self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
-    self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
+    def update_active
+      self.active = is_active?
+      true
+    end
 
-    self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
-    self.operator_paid = create_paid_string(:out)
-
-    self.tourist_advance = self.payments_in.sum('amount_prim')
-    self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
-
-    self.primary_currency_price = calculate_tour_price
-    self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
-    self.tourist_paid = create_paid_string(:in)
-
-    # profit amount available only full payment
-    if approved_operator_advance_prim >= operator_price.to_f
-
-      self.profit = primary_currency_price - approved_operator_advance
-
-      self.profit_in_percent =
-        begin
-          perc = approved_operator_advance / 100
-          perc > 0 ? profit/perc : 0
-        rescue
-          0
+    def check_not_null_fields
+      Claim.columns.each do |col|
+        if !col.null and self[col.name].nil? and col.name != 'id' # Prevent null values in not null fields
+          convertor = "to_#{col.type.to_s.first}".to_sym
+          convertor = :to_s unless nil.respond_to?(convertor)
+          self[col.name] = nil.send(convertor)
         end
-    else
-      self.profit = 0
-      self.profit_in_percent = 0
-    end
-  end
-
-  def update_active
-    self.active = is_active?
-    true
-  end
-
-  def check_not_null_fields
-    Claim.columns.each do |col|
-      if !col.null and self[col.name].nil? and col.name != 'id' # Prevent null values in not null fields
-        convertor = "to_#{col.type.to_s.first}".to_sym
-        convertor = :to_s unless nil.respond_to?(convertor)
-        self[col.name] = nil.send(convertor)
       end
     end
-  end
 
-  def calculate_tour_price
+    def calculate_tour_price
 
-    sum_price = tour_price.to_f * course(tour_price_currency)
-    sum_price += additional_services_price.to_f * course(additional_services_price_currency);
+      sum_price = tour_price.to_f * course(tour_price_currency)
+      sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
-    # some fields are calculated per person
-    fields =  ['visa_price', 'children_visa_price', 'insurance_price', 'additional_insurance_price', 'fuel_tax_price'];
+      # some fields are calculated per person
+      fields =  ['visa_price', 'children_visa_price', 'insurance_price', 'additional_insurance_price', 'fuel_tax_price'];
 
-    total = 0;
-    fields.each do |f|
-      count = send(f.sub(/_price$/, '_count'))
-      total += send(f).to_f * count * course(send(f + '_currency')) if (count > 0)
-    end
-    (sum_price + total).round
-  end
-
-  def course(curr)
-    case curr
-    when 'eur'
-      course_eur
-    when 'usd'
-      course_usd
-    else
-      1
-    end
-  end
-
-  def create_paid_string(in_out)
-    str = ''
-    CurrencyCourse::CURRENCIES.each do |cur|
-      payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
-      (str += cur.upcase << ': ' << sprintf("%0.0f", payment_amount) << ' ') unless payment_amount == 0.0
-    end
-    str.strip!
-  end
-
-  def remove_unused_payments
-    Payment.where(:claim_id => nil, :company_id => company.id).destroy_all
-  end
-
-  def process_payment_hash(ph, in_out_payments)
-    company.check_and_save_dropdown('form', ph[:form])
-    if ph[:id].blank?
-      # self.new_record? ? in_out_payments.build(ph) : in_out_payments.create(ph)
-      payment = in_out_payments.build(ph)
-    else
-      payment = in_out_payments.where(id: ph[:id].to_i).first
-      Rails.logger.debug "payment: #{payment.inspect}"
-      payment.update_attributes(ph)
-    end
-    payment.company_id = company_id # to avoid mass-assignment issue
-  end
-
-  def empty_tourist_hash?(th)
-    th = th.symbolize_keys
-    th[:passport_number].blank? and th[:passport_valid_until].blank? and th[:id].blank? and
-    th[:passport_series].blank? and th[:full_name].blank? and th[:date_of_birth].blank?
-  end
-
-  def empty_payment_hash?(ph)
-    ph[:date_in].blank? and ph[:amount].to_f == 0.0 and ph[:id].blank?
-  end
-
-  def drop_reflections
-    self.dependents = []
-  end
-
-  def check_dropdowns(claim_params)
-    lists = DropdownValue.available_lists.map{|k, v| k.to_s}
-    lists.each do |l|
-      company.check_and_save_dropdown(l, claim_params[l.to_sym])
-    end
-    company.check_and_save_dropdown('airport', claim_params[:airport_to])
-    company.check_and_save_dropdown('airport', claim_params[:airport_back])
-
-    if claim_params[:operator_id].blank?
-      company.operators.create({ :name => claim_params[:operator] }) unless
-        company.operators.find_by_name(claim_params[:operator])
-      self.operator = company.operators.find_by_name(claim_params[:operator])
-    else
-      self.operator_id = claim_params[:operator_id]
-    end
-
-    company_cities = []
-
-    if claim_params[:city_id].blank?
-      unless claim_params[:city].blank?
-        City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
-        self.city = City.where(:name => claim_params[:city]).first
+      total = 0;
+      fields.each do |f|
+        count = send(f.sub(/_price$/, '_count')) || 0
+        total += send(f).to_f * count * course(send(f + '_currency')) if (count > 0)
       end
-    else
-      self.city_id = claim_params[:city_id]
-    end
-    company_cities << self.city if self.city
-
-    country_name = claim_params[:country][:name].strip if claim_params[:country].kind_of?(Hash)
-    unless country_name.blank?
-      conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
-      Country.create({
-        :name => country_name,
-        :company_id => company_id
-      }) unless Country.where(conds).count > 0
-      self.country = Country.where(conds).first
+      (sum_price + total).round
     end
 
-    resort_name = claim_params[:resort][:name].strip
-    unless resort_name.blank?
-      conds = ['(common = ? OR company_id = ?) AND name = ? AND country_id = ?', true, company_id, resort_name, self.country.id]
-      City.create({
-        :name => resort_name,
-        :country_id => self.country.id,
-        :company_id => company_id
-      }) unless City.where(conds).count > 0
-      self.resort = City.where(conds).first
-    end
-    company_cities << self.resort if self.resort
-
-    if !company_cities.empty?
-      company_cities.each do |city|
-        CityCompany.where(:company_id => company, :city_id => city).first_or_create
+    def course(curr)
+      case curr
+      when 'eur'
+        course_eur
+      when 'usd'
+        course_usd
+      else
+        1
       end
     end
-  end
 
-  def presence_of_applicant
-    self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant.valid?
-  end
+    def create_paid_string(in_out)
+      str = ''
+      CurrencyCourse::CURRENCIES.each do |cur|
+        payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
+        (str += cur.upcase << ': ' << sprintf("%0.0f", payment_amount) << ' ') unless payment_amount == 0.0
+      end
+      str.strip!
+    end
 
-  def primary_currency_price_in_word
-    str = primary_currency_price.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
-    str.mb_chars.capitalize.to_s
-  end
+    def remove_unused_payments
+      Payment.where(:claim_id => nil, :company_id => company.id).destroy_all
+    end
 
-  def printable_fields
-    {
-      'Номер' => id,
-      'Туроператор' => operator.try(:name),
-      'ТуроператорНомер' => operator.try(:register_number),
-      'ТуроператорСерия' => operator.try(:register_series),
-      'ТуроператорИНН' => operator.try(:inn),
-      'ТуроператорОГРН' => operator.try(:ogrn),
-      'ТуроператорСайт' => operator.try(:site),
-      'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
-      'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{RuPropisju.propisju(sum.to_i)})" } : '',
-      'Страховщик' => operator.try(:insurer),
-      'СтраховщикАдрес' => operator.try(:insurer_address),
-      'ДоговорСтрахования' => operator.try(:insurer_contract),
-      'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
-      'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : '',
-      'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : '',
-      'Город' => city.try(:name),
-      'Страна' => country.try(:name),
-      'Курорт' => resort.try(:name),
-      'Отель' => hotel,
-      'Размещение' => placement,
-      'КоличествоТуристов' => (dependents.count + 1),
-      'КоличествоНочей' => nights,
-      'Переезд' => relocation,
-      'Класс' => service_class,
-      'Питание' => meals,
-      'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
-      'ВизаВзрослаяСум' => (visa_count > 0 ?
-        (visa_count.to_s + 'x' + visa_price.round.to_s + ' ' + visa_price_currency) : 'Нет'),
-      'ВизаДетскаяСум' => (children_visa_count > 0 ?
-        (children_visa_count.to_s + 'x' + children_visa_price.round.to_s + ' ' + children_visa_price_currency) : 'Нет'),
-      'СтраховкаМедицинская' => medical_insurance,
-      'ТопливныйСборСум' => ((fuel_tax_count * fuel_tax_price) > 0 ?
-         (fuel_tax_count.to_s + 'x' + fuel_tax_price.round.to_s + ' ' + fuel_tax_price_currency) : 'Нет'),
-      'Трансфер' => transfer,
-      'СтраховкаОтНевыезда' => (insurance_price > 0 ? 'Да' : 'Нет'),
-      'СтраховкаОтНевыездаСум' => (insurance_price > 0 ?
-        (insurance_count.to_s + 'x' + insurance_price.round.to_s + ' ' + insurance_price_currency) : 'Нет'),
-      'СтраховкаДополнительнаяСум' => (additional_insurance_price > 0 ?
-        (additional_insurance_count.to_s + 'x' + additional_insurance_price.round.to_s + ' ' + additional_insurance_price_currency) : 'Нет'),
-      'ДополнительныеУслуги' => additional_services,
-      'ДополнительныеУслугиСум' => additional_services_price > 0 ?
-        (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
-      'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
-      'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
-      'СуммаПрописью' => primary_currency_price_in_word,
-      'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
-      'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
-      'Компания' => company.try(:name),
-      'Банк' => company.try(:bank),
-      'БИК' => company.try(:bik),
-      'РасчетныйСчет' => company.try(:curr_account),
-      'КорреспондентскийСчет' => company.try(:corr_account),
-      'ОГРН' => company.try(:ogrn),
-      'ОКПО' => company.try(:okpo),
-      'ИНН' => company.try(:inn),
-      'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
-      'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
-      'СайтКомпании' => company.try(:site),
-      'ФИО' => applicant.try(:full_name),
-      'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', '),
-      'Адрес' => applicant.try(:address),
-      'ТелефонТуриста' => applicant.try(:phone_number),
-      'ДатаРождения' => applicant.try(:date_of_birth),
-      'СерияПаспорта' => applicant.try(:passport_series),
-      'НомерПаспорта' => applicant.try(:passport_number),
-      'СрокПаспорта' => applicant.try(:passport_valid_until),
-      'АэропортТуда' => airport_to,
-      'АэропортОбратно' => airport_back,
-      'РейсТуда' => flight_to,
-      'РейсОбратно' => flight_back,
-      'ВылетТуда' => depart_to,
-      'ВылетОбратно' => depart_back,
-      'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
-      'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
-      'ПрибытиеТуда' => arrive_to,
-      'ПрибытиеОбратно' => arrive_back,
-      'ВремяПрибытияТуда' => (arrive_to.strftime('%H:%M') if arrive_to),
-      'ВремяПрибытияОбратно' => (arrive_back.strftime('%H:%M') if arrive_back)
-    }
-  end
+    def process_payment_hash(ph, in_out_payments)
+      company.check_and_save_dropdown('form', ph[:form])
+      if ph[:id].blank?
+        # self.new_record? ? in_out_payments.build(ph) : in_out_payments.create(ph)
+        payment = in_out_payments.build(ph)
+      else
+        payment = in_out_payments.where(id: ph[:id].to_i).first
+        payment.update_attributes(ph)
+      end
+      payment.company_id = company_id # to avoid mass-assignment issue
+    end
 
-  def printable_collections
-    {
-      'Туристы' =>
-        {
-          :collection => dependents,
-          'Турист.ФИО' => :full_name,
-          'Турист.ДатаРождения' => :date_of_birth,
-          'Турист.СерияПаспорта' => :passport_series,
-          'Турист.НомерПаспорта' => :passport_number,
-          'Турист.СрокПаспорта' => :passport_valid_until
-        }
-    }
-  end
+    def empty_tourist_hash?(th)
+      # th = th.symbolize_keys
+      # th[:passport_number].blank? and th[:passport_valid_until].blank? and th[:id].blank? and
+      # th[:passport_series].blank? and th[:full_name].blank? and th[:date_of_birth].blank?
+      th[:full_name].blank? and th[:id].blank?
+    end
+
+    def empty_payment_hash?(ph)
+      ph[:date_in].blank? and ph[:amount].to_f == 0.0 and ph[:id].blank?
+    end
+
+    def check_dropdowns(claim_params)
+      lists = DropdownValue.available_lists.map{|k, v| k.to_s}
+      lists.each do |l|
+        company.check_and_save_dropdown(l, claim_params[l.to_sym])
+      end
+      company.check_and_save_dropdown('airport', claim_params[:airport_to])
+      company.check_and_save_dropdown('airport', claim_params[:airport_back])
+
+      if claim_params[:operator_id].blank?
+        company.operators.create({ :name => claim_params[:operator] }) unless
+          company.operators.find_by_name(claim_params[:operator])
+        self.operator = company.operators.find_by_name(claim_params[:operator])
+      else
+        self.operator_id = claim_params[:operator_id]
+      end
+
+      company_cities = []
+
+      if claim_params[:city_id].blank?
+        unless claim_params[:city].blank?
+          City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
+          self.city = City.where(:name => claim_params[:city]).first
+        end
+      else
+        self.city_id = claim_params[:city_id]
+      end
+      company_cities << self.city if self.city
+
+      country_name = claim_params[:country][:name].strip if claim_params[:country].kind_of?(Hash)
+      unless country_name.blank?
+        conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+        Country.create({
+          :name => country_name,
+          :company_id => company_id
+        }) unless Country.where(conds).count > 0
+        self.country = Country.where(conds).first
+      end
+
+      resort_name = claim_params[:resort][:name].strip
+      unless resort_name.blank?
+        conds = ['(common = ? OR company_id = ?) AND name = ? AND country_id = ?', true, company_id, resort_name, self.country.id]
+        City.create({
+          :name => resort_name,
+          :country_id => self.country.id,
+          :company_id => company_id
+        }) unless City.where(conds).count > 0
+        self.resort = City.where(conds).first
+      end
+      company_cities << self.resort if self.resort
+
+      if !company_cities.empty?
+        company_cities.each do |city|
+          CityCompany.where(:company_id => company, :city_id => city).first_or_create
+        end
+      end
+    end
+
+    def presence_of_applicant
+      self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant #self.applicant.valid?
+    end
+
+    def primary_currency_price_in_word
+      str = primary_currency_price.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
+      str.mb_chars.capitalize.to_s
+    end
+
+    def printable_fields
+      {
+        'Номер' => id,
+        'Туроператор' => operator.try(:name),
+        'ТуроператорНомер' => operator.try(:register_number),
+        'ТуроператорСерия' => operator.try(:register_series),
+        'ТуроператорИНН' => operator.try(:inn),
+        'ТуроператорОГРН' => operator.try(:ogrn),
+        'ТуроператорСайт' => operator.try(:site),
+        'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
+        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{RuPropisju.propisju(sum.to_i)})" } : '',
+        'Страховщик' => operator.try(:insurer),
+        'СтраховщикАдрес' => operator.try(:insurer_address),
+        'ДоговорСтрахования' => operator.try(:insurer_contract),
+        'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
+        'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : '',
+        'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : '',
+        'Город' => city.try(:name),
+        'Страна' => country.try(:name),
+        'Курорт' => resort.try(:name),
+        'Отель' => hotel,
+        'Размещение' => placement,
+        'КоличествоТуристов' => (dependents.count + 1),
+        'КоличествоНочей' => nights,
+        'Переезд' => relocation,
+        'Класс' => service_class,
+        'Питание' => meals,
+        'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
+        'ВизаВзрослаяСум' => (visa_count > 0 ?
+          (visa_count.to_s + 'x' + visa_price.round.to_s + ' ' + visa_price_currency) : 'Нет'),
+        'ВизаДетскаяСум' => (children_visa_count > 0 ?
+          (children_visa_count.to_s + 'x' + children_visa_price.round.to_s + ' ' + children_visa_price_currency) : 'Нет'),
+        'СтраховкаМедицинская' => medical_insurance,
+        'ТопливныйСборСум' => ((fuel_tax_count * fuel_tax_price) > 0 ?
+           (fuel_tax_count.to_s + 'x' + fuel_tax_price.round.to_s + ' ' + fuel_tax_price_currency) : 'Нет'),
+        'Трансфер' => transfer,
+        'СтраховкаОтНевыезда' => (insurance_price > 0 ? 'Да' : 'Нет'),
+        'СтраховкаОтНевыездаСум' => (insurance_price > 0 ?
+          (insurance_count.to_s + 'x' + insurance_price.round.to_s + ' ' + insurance_price_currency) : 'Нет'),
+        'СтраховкаДополнительнаяСум' => (additional_insurance_price > 0 ?
+          (additional_insurance_count.to_s + 'x' + additional_insurance_price.round.to_s + ' ' + additional_insurance_price_currency) : 'Нет'),
+        'ДополнительныеУслуги' => additional_services,
+        'ДополнительныеУслугиСум' => additional_services_price > 0 ?
+          (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
+        'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
+        'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+        'СуммаПрописью' => primary_currency_price_in_word,
+        'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
+        'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
+        'Компания' => company.try(:name),
+        'Банк' => company.try(:bank),
+        'БИК' => company.try(:bik),
+        'РасчетныйСчет' => company.try(:curr_account),
+        'КорреспондентскийСчет' => company.try(:corr_account),
+        'ОГРН' => company.try(:ogrn),
+        'ОКПО' => company.try(:okpo),
+        'ИНН' => company.try(:inn),
+        'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
+        'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
+        'СайтКомпании' => company.try(:site),
+        'ФИО' => applicant.try(:full_name),
+        'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', '),
+        'Адрес' => applicant.try(:address),
+        'ТелефонТуриста' => applicant.try(:phone_number),
+        'ДатаРождения' => applicant.try(:date_of_birth),
+        'СерияПаспорта' => applicant.try(:passport_series),
+        'НомерПаспорта' => applicant.try(:passport_number),
+        'СрокПаспорта' => applicant.try(:passport_valid_until),
+        'АэропортТуда' => airport_to,
+        'АэропортОбратно' => airport_back,
+        'РейсТуда' => flight_to,
+        'РейсОбратно' => flight_back,
+        'ВылетТуда' => depart_to,
+        'ВылетОбратно' => depart_back,
+        'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
+        'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
+        'ПрибытиеТуда' => arrive_to,
+        'ПрибытиеОбратно' => arrive_back,
+        'ВремяПрибытияТуда' => (arrive_to.strftime('%H:%M') if arrive_to),
+        'ВремяПрибытияОбратно' => (arrive_back.strftime('%H:%M') if arrive_back)
+      }
+    end
+
+    def printable_collections
+      {
+        'Туристы' =>
+          {
+            :collection => dependents,
+            'Турист.ФИО' => :full_name,
+            'Турист.ДатаРождения' => :date_of_birth,
+            'Турист.СерияПаспорта' => :passport_series,
+            'Турист.НомерПаспорта' => :passport_number,
+            'Турист.СрокПаспорта' => :passport_valid_until
+          }
+      }
+    end
 
 end
 

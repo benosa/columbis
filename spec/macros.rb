@@ -6,7 +6,10 @@ module Macros
   end
 
   def login_as_admin
-    admin = FactoryGirl.create(:admin)
+    company = FactoryGirl.create(:company)
+    office = FactoryGirl.create(:office)
+    admin = FactoryGirl.create(:admin, company: company, office: office)
+    country = FactoryGirl.create(:country)
     visit new_user_session_path
     fill_in "user[login]", :with => admin.login
     fill_in "user[password]", :with => admin.password

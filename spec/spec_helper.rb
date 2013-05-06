@@ -33,7 +33,7 @@ RSpec.configure do |config|
 
   ThinkingSphinx::Test.init
 
-  Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
+  #Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
 
 def test_sign_in(user)
@@ -42,4 +42,12 @@ end
 
 def stub_current_user(user)
   controller.stub!(:current_user).and_return(user)
+end
+
+def stub_current_company(company)
+  controller.stub!(:current_company).and_return(company)
+end
+
+def stub_current_office(office)
+  controller.stub!(:current_office).and_return(office)
 end

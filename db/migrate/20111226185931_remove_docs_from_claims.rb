@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class RemoveDocsFrom_claims < ActiveRecord::Migration
+class RemoveDocsFromClaims < ActiveRecord::Migration
   def up
     remove_column :claims, :docs_memo
     remove_column :claims, :docs_ticket

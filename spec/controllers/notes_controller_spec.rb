@@ -1,6 +1,9 @@
 # -*- encoding : utf-8 -*-
-require 'spec_helper'
+# 
+### DISABLED! ###
+# 
+# require 'spec_helper'
 
-describe NotesController do
+# describe NotesController do
 
-end
+# end

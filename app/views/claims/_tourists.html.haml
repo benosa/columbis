@@ -16,8 +16,8 @@
         %span.passport= t('.passport')
         %span.expires= t('.passport_expire')
 
-    = f.fields_for :applicant, claim.applicant do |af|
-      .fake_row.applicant
+    = f.fields_for :applicant_attributes, @claim.applicant do |af|
+      .fake_row.applicant.fields
         - if small_width?
           / %p= t('.tourists_full_name_hint') + ':'
           %span.common_fields
@@ -30,21 +30,27 @@
           %p= t('.tourists_full_name_hint') + ':'
           %span.common_fields
             = render :partial => 'tourist', :locals => { :f => af }
-            = link_to '', '#', :class => 'delete', :id => "del1"
+            = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
 
           = af.label :phone_number, t('.phone') + ':'
           = af.text_field :phone_number, :class => 'phone_number phone'
           = af.label :address, t('.address') + ':', :class => 'address_label'
           = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
+        = af.hidden_field :id, :class => 'hidden_id'
 
-      = af.hidden_field :id
-
-    - ind = 2
-    = f.fields_for :dependents, claim.dependents do |df|
-      .fake_row.dependent{ :id => "dependent#{ind}"}
+    - ind = 0
+    = f.fields_for :dependents do |df|
+      .fake_row.dependent.fields{ :id => "dependent-#{ind}", :class => df.object.try(:_destroy) && 'destroyed' }
         = render :partial => 'tourist', :locals => { :f => df, :ind => ind }
-        = link_to '', '#', :class => 'delete', :id => "del#{ind}", data: { check: t('are_you_sure') }
-        - ind += 1
+        = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
+
+        = df.hidden_field :_destroy, :class => '_destroy'
+        = df.hidden_field :id, :class => 'hidden_id'
+        -# tourist_claim = @claim.tourist_claims.select{ |r| r.tourist_id == df.object.id }.first
+        - tourist_claim = @claim.tourist_claims.select{ |r| r.tourist_id == df.object.id }.first
+        - if tourist_claim
+          = df.hidden_field :tourist_claim_id, :value => tourist_claim.id
+      - ind += 1
 
     .fake_row.add_row
       .add_btn

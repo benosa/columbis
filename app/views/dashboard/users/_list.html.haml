@@ -11,7 +11,7 @@
 
     - office_id = nil
     - available_colors = Hash[User.available_colors]
-    - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
+    - # key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
     - @users.each do |user|
       - if office_id != user.office_id
         - office_id = user.office_id
@@ -22,21 +22,23 @@
       %tr{ :class => cycle('odd', 'even') }
         %td
           %p= user.full_name
-        - user_color = available_colors.send(key_method, user.color)
-        %td{ :class => user_color && "user_#{user_color.underscore}", :style => user_color && "background: none no-repeat #{user.color};" }
-          %p= user.login
+        - user_color = available_colors.send(:key, user.color)
+        %td{ :class => user_color && "user_#{user_color.underscore}" }
+          %p
+            %span.colored.circular{ :style => "background-color: #{user.color};" }
+            = user.login
         %td
           %p= user.role
         %td
           %p= user.email
         %td
           - if can? :update, user
-            = link_to '', edit_dashboard_user_path(user), :class => 'edit_row', :title => t('edit')
+            = link_to '', edit_dashboard_user_path(user), class: 'edit_row', title: t('edit'), id: "edit_user_#{user.id}"
           - if can? :destroy, user
-            = link_to '', [:dashboard, user], :method => :delete, :confirm => t('are_you_sure'), :class => 'delete', :title => t('delete')
+            = link_to '',  dashboard_user_path(user), method: :delete, confirm: t('are_you_sure'), class: 'delete', title: t('delete'), id: "destroy_user_#{user.id}"
           - if can? :create, user
-            = link_to '', edit_password_dashboard_user_path(user), :class => 'lock', :title => t('.reset_password')
+            = link_to '', edit_password_dashboard_user_path(user), class: 'lock', title: t('.reset_password'), id: "edit_password_user#{user.id}"
           - if user != current_user and can?(:manage, user)
-            = link_to '', dashboard_sign_in_as_path(user), :class => 'power', :title => t('.sign_in_as')
+            = link_to '', dashboard_sign_in_as_path(user), class: 'power', title: t('.sign_in_as')
 
   = render :partial => 'shared/pagination', :locals => { :collection => @users }

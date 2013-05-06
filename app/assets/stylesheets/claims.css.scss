@@ -29,7 +29,7 @@
 }
 
 .claims .reservations {
-  font-size: 11px;
+  font-size: 11px !important;
   margin: 0;
   width: 100% !important;
   th {
@@ -72,6 +72,42 @@
       &.desc {
         background: url(/assets/new_design/images/sort_active_desc.gif) right center no-repeat;
       }
+    }
+  }
+
+  .even td, .odd td { background: #FCFCFC; } // gray background used only for canceled claims
+
+  // Оld coloring for claims
+  tbody {
+    .red_back, .nothing_done, .hot, .not_ready, .received {
+      background-color: #ED2222 !important;
+      color: black !important;
+      span { color: black !important; }
+    }
+
+    .orange_back, .docs_got, .soon {
+      background-color: #ff8888 !important;
+      span { color: black !important; }
+    }
+
+    .green_back, .docs_sent {
+      background-color: #21d00c !important;
+      span { color: black !important; }
+    }
+
+    .navy_back, .visa_approved {
+      background-color: #96B1F0 !important;
+      span { color: black !important; }
+    }
+
+    .blue_back, .all_done, .departed {
+      background-color: #bde0fa !important;
+      span { color: black !important; }
+    }
+
+    .gray_back {
+      background-color: #e0e0e0 !important;
+      td { background-color: #e0e0e0 !important; }
     }
   }
 }
@@ -226,6 +262,10 @@ option {
     float: left;
     padding: 1px 0 4px 22px;
   }
+
+  // Temporary solution for calims table
+  .wrapper, .claims, .reservations_wrapper { overflow: visible; }
+  .claims .reservations { margin-bottom: 171px; }
 }
 
 /*.main_page .filter .ik_select { width: 187px; }

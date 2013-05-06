@@ -312,10 +312,10 @@ ActiveRecord::Schema.define(:version => 20130423213920) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.boolean  "delta",       :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "comment"
+    t.boolean  "delta",       :default => true
   end
 
   create_table "tourist_claims", :force => true do |t|

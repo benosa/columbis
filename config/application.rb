@@ -43,10 +43,15 @@ module Tourism
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    # Generators by default
     config.generators do |g|
-      g.test_framework :rspec
-      #g.template_engine :haml
-      #g.fixture_replacement :fabrication, :dir => "spec/fabricators"
+      g.test_framework :rspec,
+        fixture: true,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false
+      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+      g.template_engine :haml
     end
 
     # Enable the asset pipeline

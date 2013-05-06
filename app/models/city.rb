@@ -3,8 +3,9 @@ class City < ActiveRecord::Base
   attr_accessible :name, :company_id, :country_id
 
   belongs_to :country
+  belongs_to :company
   has_many :city_companies
-  has_many :company, :through => :city_companies
+  #has_many :company, :through => :city_companies
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => [:region_id, :company_id]

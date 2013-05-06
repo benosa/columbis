@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]
-      user.send "#{attribute}=", user.send(attribute).strip
+      user.send "#{attribute}=", user.send(attribute).try(:strip)
     end
   end
 
@@ -92,6 +92,14 @@ class User < ActiveRecord::Base
   def update_without_password(params = {}, *options)
     params.delete(:email)
     super(params)
+  end
+
+  def self.new_by_user(params, user)
+    @user = User.new(params)
+    @user.company = user.company
+    @user.role = params[:role] if user.available_roles.include?(params[:role])
+    @user.password = @user.office.default_password if @user.password.blank?
+    @user
   end
 
   private

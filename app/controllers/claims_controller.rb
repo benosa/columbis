@@ -3,9 +3,10 @@ class ClaimsController < ApplicationController
   include ClaimsHelper
   ADDITIONAL_ACTIONS = [:totals, :update_bonus].freeze
 
+  before_filter :set_claim, :only => [:new, :create, :edit, :update, :update_bonus] # override loading resource by cancan
+
   load_and_authorize_resource :except => ADDITIONAL_ACTIONS
 
-  before_filter :set_protected_attr,  :only => [:create, :update]
   before_filter :set_commit_type,     :only => [:create, :update]
   before_filter :set_last_search,     :only => :index
   before_filter :permit_actions,      :only => ADDITIONAL_ACTIONS
@@ -69,20 +70,16 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    @claim.company ||= current_company
-    @claim.user ||= current_user
-    @claim.office ||= current_office
-
     @claim.fill_new
   end
 
   def create
     @claim.assign_reflections_and_save(params[:claim])
     unless @claim.errors.any?
-      redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim.id)
+      redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
       redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
     else
-      @claim.applicant ||= Tourist.new(params[:claim][:applicant])
+      # @claim.applicant ||= Tourist.new(params[:claim][:applicant_attributes])
       check_payments
       render :action => 'new'
     end
@@ -96,24 +93,18 @@ class ClaimsController < ApplicationController
   def update
     @claim.assign_reflections_and_save(params[:claim])
 
-    updated = nil
     unless @claim.errors.any?
-      updated = @claim.update_attributes(params[:claim])
-      if updated and @commit_type == :save_and_close
-        redirect_to claims_url, :notice  => t('claims.messages.successfully_updated_claim')
-        return
-      end
+      redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
+      redirect_to redirect_path, :notice => t('claims.messages.successfully_updated_claim')
+    else
+      # @claim.applicant ||=
+      #   (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
+      check_payments
+      render :action => 'edit'
     end
-
-    flash.now[:notice] = t('claims.messages.successfully_updated_claim') if updated
-    @claim.applicant ||=
-      (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
-    check_payments
-    render :action => 'edit'
   end
 
   def update_bonus
-    @claim = Claim.find(params[:id])
     authorize! :update, @claim
     @claim.update_bonus(params[:claim][:bonus_percent])
     # respond_with_bip(@claim)
@@ -138,12 +129,18 @@ class ClaimsController < ApplicationController
       end
     end
 
-    def set_protected_attr
+    def set_claim
+      @claim = params[:id].present? ? Claim.find(params[:id]) : Claim.new
       @claim.company ||= current_company
-
-      if is_admin? or is_boss?
-        @claim.user_id = params[:claim][:user_id]
-        @claim.office_id = params[:claim][:office_id]
+      if params[:claim]
+        if is_admin? or is_boss?
+          @claim.user_id = params[:claim][:user_id]
+          @claim.office_id = params[:claim][:office_id]
+        else
+          @claim.user ||= current_user
+          @claim.office ||= current_office
+        end
+        @claim.assign_attributes(params[:claim])
       else
         @claim.user ||= current_user
         @claim.office ||= current_office
@@ -179,6 +176,8 @@ class ClaimsController < ApplicationController
           opts[:with]['manager'] = 1
         end
       end
+      opts[:order] = "#{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+      opts[:sort_mode] = :extended
       @search_options = opts.delete_if{ |key, value| value.blank? }
     end
 

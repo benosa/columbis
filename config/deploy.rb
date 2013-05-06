@@ -3,6 +3,7 @@ require 'capistrano_colors'
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'thinking_sphinx/deploy/capistrano'
+require "delayed/recipes"
 
 set :whenever_command, 'bundle exec whenever'
 set :whenever_environment, defer { stage }

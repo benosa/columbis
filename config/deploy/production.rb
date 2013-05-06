@@ -9,3 +9,5 @@ set :domain, "columbis.ru"
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
+
+set :rails_env, "production"

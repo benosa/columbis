@@ -3,6 +3,7 @@ require 'capistrano_colors'
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'thinking_sphinx/deploy/capistrano'
+require "delayed/recipes"
 
 set :whenever_command, 'bundle exec whenever'
 set :whenever_environment, defer { stage }
@@ -16,7 +17,7 @@ set :default_stage, "staging"
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true
 
-set :rvm_ruby_string, "1.9.3-p374@tourism"
+set :rvm_ruby_string, "2.0.0@tourism"
 set :rvm_type, :user
 
 set :scm, :git

@@ -63,4 +63,16 @@ class CurrencyCourse < ActiveRecord::Base
 
     super
   end
+
+  def self.get_current_courses
+    today = Date.today.strftime("%d/%m/%Y")
+    courses = Nokogiri::XML(open("http://www.cbr.ru/scripts/XML_daily.asp?date_req=#{today}"))
+    courses.xpath('//Valute').each {|v|
+      currency = v.xpath('CharCode').inner_text.downcase
+      if CURRENCIES.include? currency
+        value = v.xpath('Value').inner_text.sub(/,/, '.').to_f.round(2)
+        CurrencyCourse.find_or_create_by_on_date_and_currency!(:on_date => DateTime.parse(today), :currency => currency, :course => value)
+      end
+    }
+  end
 end

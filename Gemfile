@@ -4,6 +4,10 @@ gem 'rails', '~> 3.2.12'
 gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
 gem 'unicorn', '~> 4.5.0'
+gem 'nokogiri', '1.5.6'
+gem 'delayed_job_active_record', '0.4.4'
+gem 'delayed_job', '3.0.5'
+gem "delayed_job_web", '~> 1.2.0'
 
 gem 'haml', '~> 3.1.7'
 # Using haml-rails, because haml gem dosn't give generators for rails 3

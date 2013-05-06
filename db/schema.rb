@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401212755) do
+ActiveRecord::Schema.define(:version => 20130423213920) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.text     "joint_address"
     t.boolean  "delta",            :default => true
+    t.text     "joint_address"
   end
 
   add_index "addresses", ["joint_address"], :name => "index_addresses_on_joint_address"
@@ -187,6 +187,22 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
 
   add_index "currency_courses", ["currency", "on_date"], :name => "index_currency_courses_on_currency_and_on_date"
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "dropdown_values", :force => true do |t|
     t.string  "list"
     t.string  "value"
@@ -322,8 +338,8 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.boolean  "potential",            :default => false, :null => false
     t.boolean  "delta",                :default => true
+    t.boolean  "potential",            :default => false, :null => false
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

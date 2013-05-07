@@ -3,7 +3,7 @@ module Boss
   class BaseController < ApplicationController
     include BossHelper
 
-    before_filter { redirect_to root_path unless is_admin? or is_boss? }
+    before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
 
     def index
       widget = {

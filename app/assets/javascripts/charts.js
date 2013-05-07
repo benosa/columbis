@@ -32,6 +32,16 @@
       return $((el[0] != '#' ? '#' : '') + el);
     },
 
+    dateFormats: {
+      default: '%d.%m.%Y',
+      short: '%d.%m'
+    },
+
+    dateFormatter: function(timestamp, format) {
+      format = this.dateFormats[format || 'default'] || format
+      return Highcharts.dateFormat(format, timestamp, false);
+    },
+
     defaults: {
       'bar': {
         chart: {
@@ -106,7 +116,40 @@
             }
           }
         }
+      },
+
+      'line': {
+        chart: {
+          renderTo: '#default_chart',
+          type: 'line',
+          spacingBottom: 15,
+          spacingTop: 10,
+          spacingLeft: 10,
+          spacingRight: 30
+        },
+        title: {
+          text: 'Line chart'
+        },
+        credits: {
+          enabled: false
+        },
+        plotOptions: {
+          line: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true
+            }
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          formatter: function() { return this.series.name + ': ' + this.y.toFixed(2); }
+        }
       }
+
     },
 
     list: {}, // list of chart instances
@@ -118,6 +161,30 @@
 
     pie: function(el, options) {
       this.list[el] = new Chart('pie', el, options);
+      return this.list[el];
+    },
+
+    line: function(el, options) {
+      this.list[el] = new Chart('line', el, options);
+      return this.list[el];
+    },
+
+    dateline: function(el, options) {
+      options = $.extend(true, {
+        xAxis: {
+          labels: {
+            formatter: function() { return Charts.dateFormatter(this.value, 'short') }
+          }
+        },
+        plotOptions: {
+          line: {
+            dataLabels: {
+              enabled: false
+            }
+          }
+        }
+      }, options);
+      this.list[el] = new Chart('line', el, options);
       return this.list[el];
     },
 
@@ -141,6 +208,14 @@
 
 // Onready execution
 $(function() {
+
+  // Default Hightchart options
+  Highcharts.setOptions({
+    lang: {
+      resetZoom: 'Исходный масштаб',
+      resetZoomTitle: 'Вернуть исходный масштаб 1:1'
+    }
+  });
 
   // Initialize all charts on the page
   Charts.init();

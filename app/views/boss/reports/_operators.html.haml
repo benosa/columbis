@@ -4,12 +4,15 @@
   %table.totals.reservations.tour_operators
     %thead
       %tr
+        %th
+          %span= t('report.n')
         %th= sort_link 'name', t('.operator')
         %th= sort_link 'amount', t('report.payment_amount'), :desc
         %th= sort_link 'items', t('report.claim_quantity')
     %tbody
-      - @total.each do |row|
+      - @total.each_with_index do |row, i|
         %tr
+          %td= i + 1
           %td= row['name']
           %td= row['amount']
           %td= row['items']

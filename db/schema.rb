@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.text     "joint_address"
     t.boolean  "delta",            :default => true
+    t.text     "joint_address"
   end
 
   add_index "addresses", ["joint_address"], :name => "index_addresses_on_joint_address"
@@ -296,10 +296,10 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean  "bug",         :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "comment"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.boolean  "delta",       :default => true
+    t.text     "comment"
   end
 
   create_table "tourist_claims", :force => true do |t|
@@ -322,8 +322,8 @@ ActiveRecord::Schema.define(:version => 20130401212755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.boolean  "potential",            :default => false, :null => false
     t.boolean  "delta",                :default => true
+    t.boolean  "potential",            :default => false, :null => false
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

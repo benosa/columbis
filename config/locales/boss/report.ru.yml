@@ -8,6 +8,7 @@ ru:
     claim_quantity: 'Количество броней'
     all_rows: 'Все'
     pcs: 'шт.'
+    n: '№'
     period_options:
       day: 'День'
       week: 'Неделя'
@@ -57,3 +58,5 @@ ru:
         direction: 'Направление'
       tourprice:
         title: 'Стоимость тура'
+      income:
+        title: 'Выручка'

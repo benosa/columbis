@@ -3,6 +3,7 @@ module Boss
   class ReportsController < ApplicationController
     include BossHelper
 
+    before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
     before_filter :set_last_filter
 
     def operators
@@ -24,10 +25,22 @@ module Boss
     def tourprice
       @report = TourpriceReport.new(report_params).prepare
       @count  = @report.count
-      render partial: 'tourprice' if request.xhr?
+    end
+
+    def income
+      @report = IncomeReport.new(report_params).prepare
+      @amount  = @report.amount
+      @offices  = @report.offices
+      # render partial: 'income' if request.xhr?
     end
 
     private
+
+      def render(*args)
+        options = args.extract_options!
+        options = options.merge({ partial: params[:action] }) if request.xhr?
+        super *(args << options)
+      end
 
       def report_params
         options = params.select{ |k,v| [:start_date, :end_date, :row_count, :show_others].include?(k.to_sym) }

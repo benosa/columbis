@@ -2,12 +2,13 @@
 module Boss
   class IncomeReport < Report
 
-    arel_tables :payments, :offices
-    available_results :amount
+    arel_tables :payments, :offices, :claims
+    available_results :amount, :amount_by_offices
 
     def prepare(options = {})
       @results[:amount] = build_result(query: amount_query, typecast: {amount: :to_f, timestamp: :to_i})
-      @results[:offices] = build_result(query: offices_query, typecast: {amount: :to_f, timestamp: :to_i})
+      @results[:amount_by_offices] = build_result(query: offices_query, typecast: {amount: :to_f, timestamp: :to_i})
+      Rails.logger.debug "amount_by_offices: #{@results[:amount_by_offices].fetch_data}"
       self
     end
 
@@ -59,10 +60,11 @@ module Boss
       end
 
       def offices_query
-        base_query.project(payments[:office_id], offices[:name].as('office'))
-          .join(offices).on(payments[:office_id].eq(offices[:id]))
-          .group(payments[:office_id], 'timestamp')
-          .order(payments[:office_id], 'timestamp')
+        base_query.project(offices[:id], offices[:name].as('office'))
+          .join(claims).on(payments[:claim_id].eq(claims[:id]))
+          .join(offices).on(claims[:office_id].eq(offices[:id]))
+          .group(offices[:id], 'timestamp')
+          .order(offices[:id], 'timestamp')
       end
 
   end

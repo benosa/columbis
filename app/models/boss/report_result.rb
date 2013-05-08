@@ -114,6 +114,10 @@ module Boss
       data
     end
 
+    def group(options = {})
+      group_count = options[:row_count] || self.row_count
+    end
+
     # Class methods
 
     class << self

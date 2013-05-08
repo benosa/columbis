@@ -1,6 +1,6 @@
 .current_container
   .charts
     .chart-left
-      #line_bar.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @amount) } }
+      #amount_line.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @amount) } }
     .chart-right
-      #line_bar.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @offices) } }
+      #amount_by_offices_line.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @amount_by_offices) } }

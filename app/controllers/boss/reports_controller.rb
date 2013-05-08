@@ -29,8 +29,8 @@ module Boss
 
     def income
       @report = IncomeReport.new(report_params).prepare
-      @amount  = @report.amount
-      @offices  = @report.offices
+      @amount = @report.amount
+      @amount_by_offices = @report.amount_by_offices
       # render partial: 'income' if request.xhr?
     end
 

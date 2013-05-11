@@ -133,28 +133,32 @@ module Boss
     def adjust_groups!(options = {})
       xfield = options[:points]
       yfield = options[:factor]
+      defval = options[:defval]
 
       points = []
       @data.each_value do |serie|
         points += serie.map{ |row| row[xfield] }
       end
-      points.uniq!.sort!
-      Rails.logger.debug "points: #{points}"
+      points = points.uniq.sort
 
       @data.each_value do |serie|
         cps = serie.map{|row| row[xfield]} # current points
         l = cps.length
         points.each_with_index do |p, i|
           if cps[i] != p
-            if l > 1
-              if cps[i-1] && cps[i] then i1, i2 = i-1, i
-              elsif cps[i] && cps[i+1] then i1, i2 = i, i+1
-              else i1, i2 = i-2, i-1
+            unless defval
+              if l > 1
+                if cps[i-1] && cps[i] then i1, i2 = i-1, i
+                elsif cps[i] && cps[i+1] then i1, i2 = i, i+1
+                else i1, i2 = i-2, i-1
+                end
+                x1, y1, x2, y2 = cps[i1], serie[i1][yfield], cps[i2], serie[i2][yfield]
+                value = line_value(p, [x1, y1], [x2, y2])
+              else
+                value = serie[0][yfield]
               end
-              x1, y1, x2, y2 = cps[i1], serie[i1][yfield], cps[i2], serie[i2][yfield]
-              value = line_value(p, [x1, y1], [x2, y2])
             else
-              value = serie[0][yfield]
+              value = defval
             end
             serie.insert i, serie[0].merge({
               xfield => p,

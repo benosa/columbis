@@ -14,6 +14,8 @@ ru:
       week: 'Неделя'
       month: 'Месяц'
       year: 'Год'
+    total_for_period: 'Итог за период с %{start} по %{end}'
+    totals_for_period: 'Итоги за период с %{start} по %{end}'
 
   operator_report:
     others: 'Остальные операторы'
@@ -37,7 +39,6 @@ ru:
     amount: 'Сумма выручки'
     amount_offices: 'Сумма по офисам'
     amount_managers: 'Сумма по менеджерам'
-    income_for_period: 'Выручка за период с %{start} по %{end}'
 
   boss:
     reports:

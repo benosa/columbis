@@ -98,6 +98,9 @@
                 %li= link_to t('.reports.operators'), boss_reports_path(:operators)
                 %li= link_to t('.reports.directions'), boss_reports_path(:directions)
                 %li= link_to t('.reports.tourprice'), boss_reports_path(:tourprice)
+                %li= link_to t('.reports.income'), boss_reports_path(:income)
+                %li= link_to t('.reports.income_offices'), boss_reports_path(:income, group: :offices)
+                %li= link_to t('.reports.income_managers'), boss_reports_path(:income, group: :managers)
           %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?

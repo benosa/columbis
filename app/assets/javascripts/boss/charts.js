@@ -34,7 +34,8 @@
 
     dateFormats: {
       default: '%d.%m.%Y',
-      short: '%d.%m'
+      short: '%d.%m',
+      month: '%B'
     },
 
     dateFormatter: function(timestamp, format) {
@@ -212,8 +213,58 @@
             return labels.join('<br/>');
           }
         }
+      },
+
+      'column': {
+        chart: {
+          renderTo: '#default_chart',
+          type: 'column',
+          spacingBottom: 15,
+          spacingTop: 10,
+          spacingLeft: 10,
+          spacingRight: 30
+        },
+        title: {
+          text: 'Column chart'
+        },
+        credits: {
+          enabled: false
+        },
+        plotOptions: {
+          column: {
+            // stacking: 'normal',
+            // dataLabels: {
+            //   enabled: true,
+            //   color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            // }
+          }
+        },
+        legend: {
+          enabled: false,
+          symbolWidth: 10
+        },
+        tooltip: {
+          shared: true,
+          formatter: function() {
+            var point, i,
+                labels = [Charts.dateFormatter(this.x)];
+            for (i = 0; i < this.points.length; i++) {
+              point = this.points[i];
+              labels.push(point.series.name + ': ' + point.y.toFixed(2));
+            }
+            return labels.join('<br/>');
+          }
+        }
       }
 
+    },
+
+    datetime_defaults: {
+      xAxis: {
+        labels: {
+          formatter: function() { return Charts.dateFormatter(this.value, 'short') }
+        }
+      }
     },
 
     list: {}, // list of chart instances
@@ -234,13 +285,7 @@
     },
 
     dateline: function(el, options) {
-      options = $.extend(true, {
-        xAxis: {
-          labels: {
-            formatter: function() { return Charts.dateFormatter(this.value, 'short') }
-          }
-        }
-      }, options);
+      options = $.extend(true, {}, Charts.datetime_defaults, options);
       this.list[el] = new Chart('line', el, options);
       return this.list[el];
     },
@@ -251,14 +296,20 @@
     },
 
     datearea: function(el, options) {
+      options = $.extend(true, {}, Charts.datetime_defaults, options);
+      this.list[el] = new Chart('area', el, options);
+      return this.list[el];
+    },
+
+    column: function(el, options) {
       options = $.extend(true, {
         xAxis: {
           labels: {
-            formatter: function() { return Charts.dateFormatter(this.value, 'short') }
+            formatter: function() { return Charts.dateFormatter(this.value, 'month') }
           }
         }
       }, options);
-      this.list[el] = new Chart('area', el, options);
+      this.list[el] = new Chart('column', el, options);
       return this.list[el];
     },
 

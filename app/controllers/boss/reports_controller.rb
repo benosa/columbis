@@ -28,10 +28,10 @@ module Boss
     end
 
     def income
-      @factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
-      @report = IncomeReport.new(report_params).prepare(@factor)
-      @amount = @report.results[@factor]
-      @total  = @report.results[params[:group] ? "total_#{params[:group]}".to_sym : :total]
+      @amount_factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
+      @total_factor  = params[:group] ? "total_#{params[:group]}".to_sym : :total
+      @report = IncomeReport.new(report_params).prepare(@amount_factor)
+      @total = @report.results[@total_factor]
     end
 
     private

@@ -17,3 +17,6 @@ ru:
         operators: 'Туроператоры'
         directions: 'Направления'
         tourprice: 'Стоимость тура'
+        income: 'Выручка'
+        income_offices: 'Выручка по офисам'
+        income_managers: 'Выручка по менеджерам'

@@ -2,6 +2,7 @@
 module Boss
   class IncomeReport < Report
 
+    attribute :view, default: 'days' # days, months
     arel_tables :payments, :offices, :claims, :users
     available_results :amount, :amount_offices, :amount_managers, :total, :total_offices, :total_managers
 
@@ -10,13 +11,13 @@ module Boss
       if results.empty? or results.include?(:amount)
         @results[:amount] = build_result(query: amount_query, typecast: {amount: :to_f, timestamp: :to_i})
         @results[:total] = {
-          'name' => I18n.t('income_report.income_for_period', start: I18n.l(start_date, format: :long), end: I18n.l(end_date, format: :long)),
+          'name' => I18n.t('report.total_for_period', start: I18n.l(start_date, format: :long), end: I18n.l(end_date, format: :long)),
           'amount' => @results[:amount].inject(0){ |total, row| total += row['amount'] }.round(2)
         }
       end
       if results.empty? or results.include?(:amount_offices)
         result = build_result(query: offices_query, typecast: {amount: :to_f, timestamp: :to_i})
-        @results[:amount_offices] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount')
+        @results[:amount_offices] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount', defval: 0)
         total_data = @results[:amount_offices].inject([]) do |res, group|
           res << {
             'name' => group[0],
@@ -27,7 +28,7 @@ module Boss
       end
       if results.empty? or results.include?(:amount_managers)
         result = build_result(query: managers_query, typecast: {amount: :to_f, timestamp: :to_i})
-        @results[:amount_managers] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount')
+        @results[:amount_managers] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount', defval: 0)
         total_data = @results[:amount_managers].inject([]) do |res, group|
           res << {
             'name' => group[0],
@@ -39,8 +40,9 @@ module Boss
       self
     end
 
-    def settings(result)
+    def area_settings(result)
       title = I18n.t(result != :amount ? "income_report.#{result}" : 'report.amount')
+      title = "#{title}, #{I18n.t('rur')}"
       ytitle = I18n.t('rur')
 
       settings = {
@@ -48,10 +50,12 @@ module Boss
       }
       if result != :amount
         @results[result].each do |key, row|
-          settings[:series] << {
+          h = {
             name: key,
             data: row.map{ |o| [o['timestamp'] * 1000, o['amount']] }
           }
+          h[:color] = row[0]['color'] if row[0] || row[0]['color']
+          settings[:series] << h
         end
         settings[:legend] = { enabled: true }
       else
@@ -76,14 +80,98 @@ module Boss
           title: {
             text: ytitle
           }
+        },
+        tooltip: {
+          borderColor: '#4572A7'
         }
       }.deep_merge(settings).to_json
     end
 
+    def column_settings(result)
+      title = I18n.t(result != :amount ? "income_report.#{result}" : 'report.amount')
+      title = "#{title}, #{I18n.t('rur')}"
+      ytitle = I18n.t('rur')
+
+      settings = {
+        series: []
+      }
+      if result != :amount
+        @results[result].each do |key, row|
+          h = {
+            name: key,
+            data: row.map{ |o| o['amount'] }
+          }
+          h[:color] = row[0]['color'] if row[0] || row[0]['color']
+          settings[:series] << h
+        end
+        settings[:legend] = { enabled: true }
+        settings[:xAxis] = {
+          categories: @results[result].first[1].map{ |row| row['timestamp'] * 1000 }
+        }
+      else
+        settings[:series] << {
+          name: title,
+          data: @results[result].map{ |o| o['amount'] }
+        }
+        settings[:xAxis] = {
+          categories: @results[result].map{ |row| row['timestamp'] * 1000 }
+        }
+      end
+
+      settings = {
+        chart: {
+          zoomType: 'x'
+        },
+        title: {
+          text: title
+        },
+        yAxis: {
+          title: {
+            text: ytitle
+          }
+        },
+        tooltip: {
+          borderColor: '#4572A7'
+        }
+      }.deep_merge(settings).to_json
+    end
+
+    def bar_settings(result)
+      title = I18n.t('report.totals_for_period', start: I18n.l(start_date, format: :long), end: I18n.l(end_date, format: :long))
+      title = "#{title}, #{I18n.t('rur')}"
+      ytitle = I18n.t('rur')
+
+      settings = {
+        title: {
+          text: title
+        },
+        xAxis: {
+          categories: @results[result].map{ |row| row['name'] }
+        },
+        yAxis: {
+          title: {
+            text: ytitle
+          }
+        },
+        series: [{
+          name: title,
+          data: @results[result].map{ |row| row['amount'] }
+        }]
+      }.to_json
+    end
+
     private
 
+      def timestamp_field
+        if view == 'days'
+          "EXTRACT(EPOCH FROM payments.date_in)"
+        elsif view == 'months'
+          "EXTRACT(EPOCH FROM date_trunc('month', payments.date_in))"
+        end
+      end
+
       def base_query
-        payments.project("EXTRACT(EPOCH FROM payments.date_in) AS timestamp", payments[:amount].sum.as('amount'))
+        payments.project("#{timestamp_field} AS timestamp", payments[:amount].sum.as('amount'))
           .where(payments[:company_id].eq(company.id))
           .where(payments[:recipient_type].eq('Company'))
           .where(payments[:approved].eq(true))
@@ -108,7 +196,8 @@ module Boss
       end
 
       def managers_query
-        base_query.project(users[:id].as('manager_id'), "(CASE WHEN users.first_name != '' OR users.last_name != '' THEN users.first_name || ' ' || users.last_name ELSE users.login END) AS name")
+        base_query.project(users[:id].as('manager_id'), users[:color].as('color'),
+        "(CASE WHEN users.first_name != '' OR users.last_name != '' THEN users.first_name || ' ' || users.last_name ELSE users.login END) AS name")
           .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .join(users).on(claims[:user_id].eq(users[:id]))
           .group('timestamp', users[:id])

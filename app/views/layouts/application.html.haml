@@ -17,8 +17,9 @@
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
-    - if params[:controller] == 'boss/reports' || params[:controller] == 'boss/base'
-      = javascript_include_tag 'highcharts'
+    - if params[:controller] =~ %r[^boss/]
+      = stylesheet_link_tag 'boss'
+      = javascript_include_tag 'boss'
     = csrf_meta_tag
     = yield(:head)
 

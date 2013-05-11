@@ -1,6 +1,23 @@
 .current_container
   .charts
-    .chart-left
-      #amount_line.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @amount) } }
-    .chart-right
-      #amount_by_offices_line.chart{ data: { type: 'dateline', settings: @report.line_settings(:amount, @amount_by_offices) } }
+    #amount.chart{ data: { type: 'datearea', settings: @report.settings(@factor) } }
+
+  .totals
+    - if @factor == :amount
+      %h3
+        = "#{@total['name']}: "
+        %b= "#{@total['amount']} #{t('rur')}"
+    - else
+      %table.reservations.tour_operators
+        %thead
+          %tr
+            %th
+              %span= t('report.n')
+            %th= sort_link 'name', t(".#{params[:group]}")
+            %th= sort_link 'amount', t('report.amount'), :desc
+        %tbody
+          - @total.each_with_index do |row, i|
+            %tr
+              %td= i + 1
+              %td= row['name']
+              %td= row['amount']

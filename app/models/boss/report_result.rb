@@ -114,8 +114,65 @@ module Boss
       data
     end
 
-    def group(options = {})
-      group_count = options[:row_count] || self.row_count
+    def group_by(*args)
+      options = args.extract_options!
+      field = args[0].to_s
+
+      data = @data.group_by do |row|
+        row[field]
+      end
+
+      data
+    end
+
+    def group_by!(*args)
+      @data = group_by(*args)
+      self
+    end
+
+    def adjust_groups!(options = {})
+      xfield = options[:points]
+      yfield = options[:factor]
+
+      points = []
+      @data.each_value do |serie|
+        points += serie.map{ |row| row[xfield] }
+      end
+      points.uniq!.sort!
+      Rails.logger.debug "points: #{points}"
+
+      @data.each_value do |serie|
+        cps = serie.map{|row| row[xfield]} # current points
+        l = cps.length
+        points.each_with_index do |p, i|
+          if cps[i] != p
+            if l > 1
+              if cps[i-1] && cps[i] then i1, i2 = i-1, i
+              elsif cps[i] && cps[i+1] then i1, i2 = i, i+1
+              else i1, i2 = i-2, i-1
+              end
+              x1, y1, x2, y2 = cps[i1], serie[i1][yfield], cps[i2], serie[i2][yfield]
+              value = line_value(p, [x1, y1], [x2, y2])
+            else
+              value = serie[0][yfield]
+            end
+            serie.insert i, serie[0].merge({
+              xfield => p,
+              yfield => value
+            })
+            cps.insert i, p
+          end
+        end
+      end
+      self
+    end
+
+    def line_value(x, p1, p2)
+      x1, y1, x2, y2 = p1[0], p1[1], p2[0], p2[1]
+      dx = x2-x1
+      val = (x-x1) * (y2-y1) / dx + y1 if dx != 0
+      val = 0 if dx == 0 || val < 0
+      val
     end
 
     # Class methods

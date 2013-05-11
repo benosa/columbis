@@ -28,10 +28,10 @@ module Boss
     end
 
     def income
-      @report = IncomeReport.new(report_params).prepare
-      @amount = @report.amount
-      @amount_by_offices = @report.amount_by_offices
-      # render partial: 'income' if request.xhr?
+      @factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
+      @report = IncomeReport.new(report_params).prepare(@factor)
+      @amount = @report.results[@factor]
+      @total  = @report.results[params[:group] ? "total_#{params[:group]}".to_sym : :total]
     end
 
     private
@@ -59,7 +59,7 @@ module Boss
           session[filter_key] = nil
         elsif request.xhr?
           filter_params = params.select do |k,v|
-            not ([:controller, :action].include?(k.to_sym) or v.blank?)
+            not ([:controller, :action, :group].include?(k.to_sym) or v.blank?)
           end
           session[filter_key] = !filter_params.empty? ? filter_params : nil;
         elsif session[filter_key].present?

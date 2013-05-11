@@ -11,8 +11,15 @@
 //= require mustache
 //= require hogan
 //= require best_in_place
+//
 //= require_tree ../../templates
 //= require_tree ./templates
 //= require_tree ./pages
+//= require_tree ./new_design
+//
 //= require common
-//= require_tree .
+//= require filter
+//= require claims
+//= require dashboard
+//= require offline
+//= require widgets

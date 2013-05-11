@@ -33,6 +33,12 @@ ru:
       range: 'от %{value1} до %{value2}'
       after: 'больше %{value}'
 
+  income_report:
+    amount: 'Сумма выручки'
+    amount_offices: 'Сумма по офисам'
+    amount_managers: 'Сумма по менеджерам'
+    income_for_period: 'Выручка за период с %{start} по %{end}'
+
   boss:
     reports:
       filter:
@@ -60,3 +66,5 @@ ru:
         title: 'Стоимость тура'
       income:
         title: 'Выручка'
+        offices: 'Офисы'
+        managers: 'Менеджеры'

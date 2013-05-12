@@ -188,11 +188,13 @@ $(function(){
         var $t = $(this);
         $t.data('current-value', $t.val());
       });
+      $('.ik_select select', this).ikSelect('redraw');
     }
   });
 
   // Settings menu open button
-  $('#settings').on('click', function() {
+  $('#settings').on('click', function(e) {
+    e.preventDefault();
     $('#settings-menu')
       .dialog('option', 'position', { my: 'right top', at: 'right bottom', of: this })
       .dialog('open');

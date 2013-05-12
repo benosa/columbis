@@ -41,10 +41,10 @@
   }
   td {
     padding: 3px 3px;
-    &:first-child, &:last-child {
-      border-left: none;
-      border-right: none;
-    }
+    // &:first-child, &:last-child {
+    //   border-left: none;
+    //   border-right: none;
+    // }
   }
   th {
     min-width: 36px;
@@ -76,7 +76,7 @@
     }
   }
 
-  .even td, .odd td { background: #FCFCFC; } // gray background used only for canceled claims
+  .even td, .odd td { background: #F5F5F5; } // #FCFCFC gray background used only for canceled claims
 
   // Оld coloring for claims
   tbody {
@@ -283,6 +283,7 @@ option {
 
 .edit_page {
   .form_column { margin: 0 !important; }
+  .form_block { box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.26) }
   .visa_status {
     &.ik_select {
       width: 122px !important;
@@ -320,6 +321,13 @@ option {
       a.delete { display: none; }
     }
   }
+  .add_paying .error.two_line { margin-left: 32px; }
+
+  .block_title { background-image: url(/assets/block_title_1.png) }
+  .green_block .block_title { background-image: url(/assets/green_title_1.png) }
+  .grey_block .block_title { background-image: url(/assets/grey_title_1.png) }
+  .yellow_block .block_title { background-image: url(/assets/yellow_title_1.png) }
+  .blue_block .block_title { background-image: url(/assets/new_design/images/blue_title.png) }
 }
 
 /* low_resolution */

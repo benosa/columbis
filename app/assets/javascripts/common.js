@@ -273,11 +273,10 @@ function setAutocomplete(selector, is_container, options) {
     // }
   };
 
-  var _options = $.extend({}, defaults, options || {}),
-      is_reset = !!options;
+  var is_reset = !!options;
 
-  var _createAutocomplete = function($t) {
-    var _opts = $.extend({}, _options, $t.data('ac'));
+  var _createAutocomplete = function($t, options) {
+    var _opts = $.extend({}, defaults, $t.data('ac'), options);
 
     $t.autocomplete(_opts);
 
@@ -303,19 +302,19 @@ function setAutocomplete(selector, is_container, options) {
     }
 
     // Adjust suggestion list width
-    var $ul = $t.data('autocomplete')['widget']();
+    var $ul = $t.data('uiAutocomplete')['widget']();
     $ul.css('max-width', $t.outerWidth() - 2);
   };
 
   $sel.each(function() {
     var $t = $(this),
-        current_ac = $t.data('autocomplete');
+        current_ac = $t.data('uiAutocomplete');
     // Check already initialized autocomplete is setted already
     if (!current_ac) {
-      _createAutocomplete($t);
+      _createAutocomplete($t, options);
     } else if (is_reset) {
       $t.autocomplete('destroy');
-      _createAutocomplete($t);
+      _createAutocomplete($t, options);
     }
   });
 };

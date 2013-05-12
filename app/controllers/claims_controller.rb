@@ -79,7 +79,7 @@ class ClaimsController < ApplicationController
       redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
       redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
     else
-      # @claim.applicant ||= Tourist.new(params[:claim][:applicant_attributes])
+      @claim.applicant ||= Tourist.new #Tourist.new(params[:claim][:applicant_attributes])
       check_payments
       render :action => 'new'
     end

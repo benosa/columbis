@@ -30,8 +30,14 @@ module Boss
     def income
       @amount_factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
       @total_factor  = params[:group] ? "total_#{params[:group]}".to_sym : :total
-      @report = IncomeReport.new(report_params).prepare(@amount_factor)
+      @report = IncomeReport.new(report_params.merge({
+        view: params[:view],
+        office_filter: params[:office_filter],
+        manager_filter: params[:manager_filter]
+      })).prepare(@amount_factor)
       @total = @report.results[@total_factor]
+      @all_offices = current_company.offices
+      @all_managers = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
     end
 
     private
@@ -53,7 +59,9 @@ module Boss
       end
 
       def set_last_filter
-        filter_key = "reports-#{params[:action]}-last-filter".to_sym
+        params_key = [params[:action]]
+        params_key << params[:group] if params[:group]
+        filter_key = "reports-#{params_key.join('-')}-last-filter".to_sym
 
         if params[:filter_reset]
           session[filter_key] = nil

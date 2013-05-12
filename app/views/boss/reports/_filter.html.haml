@@ -22,8 +22,8 @@
     - if small_width?
       = link_to '', '#', id: 'filter_reset', class: 'filter_reset', title: t('.filter_reset')
       = link_to '', '#', id: 'settings', class: 'settings', title: t('.settings')
-      = render partial: 'settings_menu'
+      = render partial: local_assigns[:settings_menu] || 'settings_menu'
     - else
       = link_to t('.filter_reset'), '#', id: 'filter_reset', class: 'filter_reset'
       = link_to t('.settings'), '#', id: 'settings', class: 'settings'
-      = render partial: 'settings_menu'
+      = render partial: local_assigns[:settings_menu] || 'settings_menu'

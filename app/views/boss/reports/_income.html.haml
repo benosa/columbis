@@ -5,8 +5,9 @@
     - elsif @report.view == 'months'
       #amount_column.chart{ data: { type: 'column', settings: @report.column_settings(@amount_factor) } }
 
-    - unless @total_factor == :total
-      #amount_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(@total_factor) } }
+    -#
+      / - unless @total_factor == :total
+      /   #amount_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(@total_factor) } }
 
   .totals
     - if @amount_factor == :amount
@@ -20,7 +21,7 @@
             %th
               %span= t('report.n')
             %th= sort_link 'name', t(".#{params[:group]}")
-            %th= sort_link 'amount', t('report.amount'), :desc
+            %th= sort_link 'amount', I18n.t('report.total'), :desc
         %tbody
           - @total.each_with_index do |row, i|
             %tr

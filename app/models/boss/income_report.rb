@@ -1,8 +1,13 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class IncomeReport < Report
+    VIEWS = %w(days months)
 
-    attribute :view, default: 'days' # days, months
+    attribute :view, default: 'days'
+    attribute :office_filter
+    attribute :manager_filter
+    attr_accessible :view, :office_filter, :manager_filter
+
     arel_tables :payments, :offices, :claims, :users
     available_results :amount, :amount_offices, :amount_managers, :total, :total_offices, :total_managers
 
@@ -188,20 +193,28 @@ module Boss
       end
 
       def offices_query
-        base_query.project(offices[:id].as('office_id'), offices[:name].as('name'))
+        query = base_query.project(offices[:id].as('office_id'), offices[:name].as('name'))
           .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .join(offices).on(claims[:office_id].eq(offices[:id]))
           .group('timestamp', offices[:id])
           .order('timestamp', offices[:id])
+
+        if office_filter
+          query = query.where(offices[:id].in(office_filter))
+        end
       end
 
       def managers_query
-        base_query.project(users[:id].as('manager_id'), users[:color].as('color'),
+        query = base_query.project(users[:id].as('manager_id'), users[:color].as('color'),
         "(CASE WHEN users.first_name != '' OR users.last_name != '' THEN users.first_name || ' ' || users.last_name ELSE users.login END) AS name")
           .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .join(users).on(claims[:user_id].eq(users[:id]))
           .group('timestamp', users[:id])
           .order('timestamp', users[:id])
+
+        if manager_filter
+          query = query.where(users[:id].in(manager_filter))
+        end
       end
 
   end

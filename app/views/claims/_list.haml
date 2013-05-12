@@ -52,7 +52,7 @@
           %tr{ :class => "waypoint", :data => {:page => next_page} }
 
   - content_for(:fixed_pagination) do
-    = render :partial => 'shared/pagination', :locals => { :path_helper => :claims_path, :collection => @claims_collection || @claims }
+    = render :partial => 'shared/pagination', :locals => { :path_helper => :claims_path, :collection => @claims_collection || @claims, :per_page_list => [30, 50, 100] }
 
   - if request.xhr?
     #content_for.content_for{ data: { fixed_pagination: content_for(:fixed_pagination).gsub("\n", '') } }

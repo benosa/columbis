@@ -42,10 +42,10 @@ class ClaimsAutocompleteController < ApplicationController
 
   def resort
     country_id = params[:country_id] || ''
-    country_id = unless country_id.to_i > 0 # country_id is a string - name of country
+    unless country_id.to_i > 0 # country_id is a string - name of country
       country_name = country_id.strip
       cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
-      Country.where(cond).first.try(:id)
+      country_id = Country.where(cond).first.try(:id)
     end
     @list = City.select([:id, :name])
       .where(["country_id = ? AND (common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", country_id, true, current_company.id, params[:term]])

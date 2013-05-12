@@ -1,8 +1,11 @@
 - form_options = current_company.dropdown_for('form').collect{|o| [ o.value, o.value ]}
 - approved_disabled = !(is_admin? or is_boss? or is_accountant?)
 #payments_in.payments.form_block.green_block{ :class => large_width? && 'payment_tourist', :data => { :form_options => form_options, :approved_disabled => approved_disabled } }
-  .block_title
+  .block_title.with_fields
     %h2= t('.payments_in')
+    .rates
+      %p=f.label :maturity
+      = f.text_field :maturity, :class => 'datepicker date expires_date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
   .form_block_content
     - ind = 0
     = f.fields_for :payments_in, :highlight_only => [:amount] do |pif|
@@ -33,13 +36,14 @@
       - ind += 1
 
     - content_for(:pi_last_fields) do
-      .two_line.due_date
-        - if small_width?
-          = f.label :maturity
-        - else
-          %p= f.label :maturity
-        = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
-      .two_line.error
+      -#
+        / .two_line.due_date
+        /   - if small_width?
+        /     = f.label :maturity
+        /   - else
+        /     %p= f.label :maturity
+        /   = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), :not_highlighted => true
+      .two_line.error.pull-right
         - if small_width?
           = f.label :tourist_debt, t('.tourist_debt_short')
         - else

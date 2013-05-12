@@ -680,6 +680,11 @@ input.autocomplete {
   width: 720px;
   .form_block { width: 720px; }
   .block_title, .fake_row { width: auto; }
+  .block_title.with_fields {
+    h2 { float: left; }
+    .rates p { color: black; }
+    span { float: left; margin: 12px 0 0 10px; }
+  }
   input.wide { width: 675px; }
   textarea.wide {
     margin: 0 17px 11px 0;
@@ -716,11 +721,6 @@ input.autocomplete {
       .ik_select_list { width: 274px; }
     }
   }
-}
-
-.block_title.with_clarification {
-  h2 { float: left; }
-  span { float: left; margin: 12px 0 0 10px; }
 }
 
 .form_column.sign_form {
@@ -786,6 +786,8 @@ input.autocomplete {
     text-shadow: 0 1px 0 white;
   }
 }
+
+.add_paying .error.two_line { margin-left: 32px; }
 
 /*input.required, .ik_select.required .ik_select_link { border-color: #4272BB; }*/
 

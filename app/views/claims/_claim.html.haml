@@ -43,7 +43,7 @@
     = claim.tourist_advance.to_money
   %td{ :title => claim.tourist_debt.to_money, :class => color_for_tourist_advance(claim) }
     = claim.tourist_debt.to_money
-  %td.thick_border{ :class => color_for_operator_price(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
+  %td{ :class => color_for_operator_price(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
     = truncate(operator_price(claim), :length => 6) if claim.operator_price > 0
   %td{ :title => l(claim.operator_maturity, :format => :short) }
     = l( claim.operator_maturity, :format => :short )
@@ -52,15 +52,15 @@
   %td{ :title => claim.operator_debt.to_money, :class => color_for_operator_debt(claim) }
     = operator_debt(claim)
   - if show_accountant_columns
-    %td.thick_border= approved_advance(claim, :tourist)
-    %td= approved_advance(claim, :operator_prim)
-    %td= approved_advance(claim, :operator)
-    %td= claim.profit.to_money if claim.profit > 0
-    %td= claim.profit_in_percent.to_percent if claim.profit > 0
+    %td.thick_border.buh_col= approved_advance(claim, :tourist)
+    %td.buh_col= approved_advance(claim, :operator_prim)
+    %td.buh_col= approved_advance(claim, :operator)
+    %td.buh_col= claim.profit.to_money if claim.profit > 0
+    %td.buh_col= claim.profit_in_percent.to_percent if claim.profit > 0
     - if show_bonus_columns
-      %td.bonus_percent= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
+      %td.bonus_percent.buh_col= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
         :display_with => lambda {|b| b.to_percent.html_safe }
-      %td.bonus= claim.bonus.to_money
+      %td.bonus.buh_col= claim.bonus.to_money
   %td.thick_border{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
     = t('claims.documents_statuses.' << claim.documents_status)
   %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }

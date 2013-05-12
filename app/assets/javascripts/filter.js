@@ -32,8 +32,14 @@ $(function(){
         } else
           to_filter = $t.prop('checked');
       }
-      if (to_filter)
-        filter[param] = value;
+      if (to_filter) {
+        if (param[param.length - 1] == ']') { // array
+          if (filter[param] === undefined) filter[param] = [];
+          filter[param].push(value);
+        } else {
+          filter[param] = value;
+        }
+      }
     });
     return filter;
   }

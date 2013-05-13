@@ -39,7 +39,7 @@
             - if show_bonus_columns
               %th.green_back.medium= sort_link 'bonus_percent', '% премии'
               %th.green_back.medium= sort_link 'bonus', 'Премия'
-          %th.thick_border= sort_link 'documents_status', t('claims.index.docs')
+          %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs')
           %th= sort_link 'docs_note', t('claims.index.memo')
           %th= sort_link 'check_date', t('claims.index.check_date')
           %th.last_cols

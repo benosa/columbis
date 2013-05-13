@@ -188,14 +188,15 @@ class ClaimsController < ApplicationController
     def search_params
       return @search_params if @search_params
       @search_params = {}
-      unless params[:sort] == Claim::DEFAULT_SORT[:col] and params[:direction] == Claim::DEFAULT_SORT[:dir]
+      unless params[:sort] == Claim::DEFAULT_SORT[:col] && params[:direction] == Claim::DEFAULT_SORT[:dir]
         @search_params[:sort] = params[:sort] if params[:sort]
         @search_params[:direction] = params[:direction] if params[:direction]
       end
       exluded_params = exluded_search_params + [:sort, :direction]
       params.each do |k, v|
-        @search_params[k] = v if !exluded_params.include?(k.to_sym) and v.present?
+        @search_params[k] = v unless exluded_params.include?(k.to_sym) || v.blank?
       end
+      Rails.logger.debug "@search_params: #{@search_params}"
       @search_params
     end
 
@@ -205,12 +206,14 @@ class ClaimsController < ApplicationController
     end
 
     def set_last_search
+      session_key = :claims_last_search
       if params[:unset_filters]
-        session[:last_search] = nil
+        session[session_key] = nil
       elsif search_or_sort?
-        session[:last_search] = !search_params.empty? ? search_params : nil;
-      elsif session[:last_search].present?
-        params.reverse_merge!(session[:last_search])
+        session[session_key] = !search_params.empty? ? search_params : nil;
+      elsif session[session_key].present?
+        Rails.logger.debug "search_params: #{session[session_key]}"
+        params.reverse_merge!(session[session_key])
       end
     end
 

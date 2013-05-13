@@ -61,7 +61,7 @@
       %td.bonus_percent.buh_col= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
         :display_with => lambda {|b| b.to_percent.html_safe }
       %td.bonus.buh_col= claim.bonus.to_money
-  %td.thick_border{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => !claim.canceled? && claim.documents_status }
+  %td{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => [!claim.canceled? && claim.documents_status, show_accountant_columns && 'thick_border'] }
     = t('claims.documents_statuses.' << claim.documents_status)
   %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }
     = truncate(claim.memo, :length => 8)

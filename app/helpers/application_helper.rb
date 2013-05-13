@@ -103,8 +103,7 @@ module ApplicationHelper
   end
 
   def search_and_sort_options(options = {})
-    defaults = options.delete(:defaults)
-    defaults = {} if defaults.nil?
+    defaults = options.delete(:defaults) || {}
     defaults.reverse_merge!({
       :star => true,
       :filter => params[:filter] || '',

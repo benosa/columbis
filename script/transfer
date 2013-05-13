@@ -27,6 +27,10 @@ puts 'Save bazoved database'
 system "export PGPASSWORD=#{bazoved_db_config["password"]} && pg_dump --host=#{bazoved_db_config["host"]} --port=#{bazoved_db_config["port"]} --username #{bazoved_db_config["username"]} --file #{columbis_path}/shared/#{bazoved_dump} -Fc #{bazoved_db_config["database"]}"
 puts secs(t)
 
+puts 'Drop temporary columbis database (to avoid errors with restore if it is)'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && dropdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} #{columbis_tmp_db}"
+puts secs(t)
+
 puts 'Create new temporary database for columbis'
 system "export PGPASSWORD=#{columbis_db_config["password"]} && createdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -T template0 #{columbis_tmp_db}"
 puts secs(t)
@@ -43,9 +47,9 @@ puts 'Save migrated columbis database'
 system "export PGPASSWORD=#{columbis_db_config["password"]} && pg_dump --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} --username #{columbis_db_config["username"]} --file #{columbis_path}/shared/#{columbis_dump} -Fc #{columbis_tmp_db}"
 puts secs(t)
 
-# puts 'Drop temporary columbis database'
-# system "export PGPASSWORD=#{columbis_db_config["password"]} && dropdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} #{columbis_tmp_db}"
-# puts secs(t)
+puts 'Stop delayed_job process'
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && RAILS_ENV=#{columbis_env} script/delayed_job stop 1>/dev/null'"
+puts secs(t)
 
 puts 'Stop sphinx process'
 system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:stop 1>/dev/null'"
@@ -81,6 +85,10 @@ puts secs(t)
 
 puts 'Start sphinx process'
 system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake RAILS_ENV=#{columbis_env} thinking_sphinx:configure thinking_sphinx:index thinking_sphinx:start 1>/dev/null'"
+puts secs(t)
+
+puts 'Start delayed_job process'
+system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && RAILS_ENV=#{columbis_env} script/delayed_job start 1>/dev/null'"
 puts secs(t)
 
 puts 'Copy upload files from bazoved to columbis'

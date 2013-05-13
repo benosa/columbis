@@ -168,10 +168,10 @@ module Boss
     private
 
       def timestamp_field
-        if view == 'days'
-          "EXTRACT(EPOCH FROM payments.date_in)"
-        elsif view == 'months'
+        if view == 'months'
           "EXTRACT(EPOCH FROM date_trunc('month', payments.date_in))"
+        else
+          "EXTRACT(EPOCH FROM payments.date_in)"
         end
       end
 

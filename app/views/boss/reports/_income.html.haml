@@ -1,9 +1,9 @@
 .current_container
   .charts
-    - if @report.view == 'days'
-      #amount_area.chart{ data: { type: 'datearea', settings: @report.area_settings(@amount_factor) } }
-    - elsif @report.view == 'months'
+    - if @report.view == 'months'
       #amount_column.chart{ data: { type: 'column', settings: @report.column_settings(@amount_factor) } }
+    - else
+      #amount_area.chart{ data: { type: 'datearea', settings: @report.area_settings(@amount_factor) } }
 
     -#
       / - unless @total_factor == :total

@@ -16,6 +16,9 @@ bazoved_db_config = YAML::load_file(File.join(bazoved_path, '/shared/config/data
 columbis_db_config = YAML::load_file(File.join(columbis_path, '/shared/config/database.yml'))[columbis_env]
 columbis_tmp_db = columbis_db_config['database'] + '_tmp'
 
+tables = %w(currency_courses delayed_jobs)
+tables_dump = 'tables.data'
+
 def secs(t)
   (Time.now - t).round(2)
 end
@@ -28,7 +31,7 @@ system "export PGPASSWORD=#{bazoved_db_config["password"]} && pg_dump --host=#{b
 puts secs(t)
 
 puts 'Drop temporary columbis database (to avoid errors with restore if it is)'
-system "export PGPASSWORD=#{columbis_db_config["password"]} && dropdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} #{columbis_tmp_db}"
+system "export PGPASSWORD=#{columbis_db_config["password"]} && dropdb -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} #{columbis_tmp_db} 2>/dev/null"
 puts secs(t)
 
 puts 'Create new temporary database for columbis'
@@ -41,6 +44,10 @@ puts secs(t)
 
 puts 'Migrate temporary columbis database'
 system "/bin/bash -l -c 'rvm use #{rvm_ruby_string} && cd #{columbis_path}/current && bundle exec rake db:migrate_to[#{columbis_tmp_db}] RAILS_ENV=#{columbis_env} 1>/dev/null'"
+puts secs(t)
+
+puts 'Save tables with special data for columbus to file'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && pg_dump -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -f #{columbis_path}/shared/#{tables_dump} -Fc -a #{tables.map{|t| '-t ' + t}.join(' ')} #{columbis_db_config['database']}"
 puts secs(t)
 
 puts 'Save migrated columbis database'
@@ -65,6 +72,10 @@ puts secs(t)
 
 puts "Rename database #{columbis_tmp_db} to #{columbis_db_config['database']}"
 system "export PGPASSWORD=#{columbis_db_config["password"]} && psql -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -d #{bazoved_db_config["database"]} -c \"ALTER DATABASE #{columbis_tmp_db} RENAME TO #{columbis_db_config["database"]};\""
+puts secs(t)
+
+puts 'Restore tables with special data from dump'
+system "export PGPASSWORD=#{columbis_db_config["password"]} && pg_restore -U #{columbis_db_config["username"]} --host=#{columbis_db_config["host"]} --port=#{columbis_db_config["port"]} -d #{columbis_db_config['database']} -a #{columbis_path}/shared/#{tables_dump}"
 puts secs(t)
 
 # puts 'Create new columbis database'

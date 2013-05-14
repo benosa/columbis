@@ -240,8 +240,9 @@ class Claim < ActiveRecord::Base
     self.applicant = Tourist.new
     self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
     self.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
-    self.course_usd = CurrencyCourse.where(:currency=>'usd').order(:created_at).last.try(:course)
-    self.course_eur = CurrencyCourse.where(:currency=>'eur').order(:created_at).last.try(:course)
+    today = Date.today
+    self.course_usd = CurrencyCourse.where('currency = ? AND on_date <= ?', 'usd', today).order('on_date DESC, id DESC').first.try(:course)
+    self.course_eur = CurrencyCourse.where('currency = ? AND on_date <= ?', 'usd', today).order('on_date DESC, id DESC').first.try(:course)
 
     cur_attrs = Hash[[
       :tour_price_currency, :visa_price_currency, :children_visa_price_currency, :insurance_price_currency,
@@ -250,8 +251,8 @@ class Claim < ActiveRecord::Base
     ].map{|c| [c, CurrencyCourse::PRIMARY_CURRENCY] }]
     self.attributes = cur_attrs
 
-    self.reservation_date = Date.today
-    self.maturity = Date.today + 3.days
+    self.reservation_date = today
+    self.maturity = today + 3.days
   end
 
   def self.next_id

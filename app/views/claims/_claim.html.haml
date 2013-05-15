@@ -44,7 +44,7 @@
   %td{ :title => claim.tourist_debt.to_money, :class => color_for_tourist_advance(claim) }
     = claim.tourist_debt.to_money
   %td{ :class => color_for_operator_price(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
-    = truncate(operator_price(claim), :length => 6) if claim.operator_price > 0
+    = operator_price(claim)
   %td{ :title => l(claim.operator_maturity, :format => :short) }
     = l( claim.operator_maturity, :format => :short )
   %td{ :title => claim.operator_advance.to_money }
@@ -55,8 +55,8 @@
     %td.thick_border.buh_col= approved_advance(claim, :tourist)
     %td.buh_col= approved_advance(claim, :operator_prim)
     %td.buh_col= approved_advance(claim, :operator)
-    %td.buh_col= claim.profit.to_money if claim.profit > 0
-    %td.buh_col= claim.profit_in_percent.to_percent if claim.profit > 0
+    %td.buh_col{ :class => claim.profit < 0 && !claim.excluded_from_profit && 'red_back' }= claim.profit.to_money
+    %td.buh_col= claim.profit_in_percent.to_percent unless claim.excluded_from_profit
     - if show_bonus_columns
       %td.bonus_percent.buh_col= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
         :display_with => lambda {|b| b.to_percent.html_safe }

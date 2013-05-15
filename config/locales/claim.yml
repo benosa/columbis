@@ -253,6 +253,7 @@ ru:
         canceled: 'Аннулирована'
         memo_tasks_done: 'Примечания учтены'
         tourist_stat: 'Откуда пришел клиент'
+        excluded_from_profit: 'Не включать в наценку'
         payments_in:
           currency: 'Оплата туристом: Валюта'
           date_in: 'Оплата туристом: Дата оплаты'

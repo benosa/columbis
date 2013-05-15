@@ -75,6 +75,11 @@
       = f.label :canceled, :class => 'checkbox right_checkbox'
       = f.check_box :canceled
 
+      - if medium_width? or large_width?
+        - if is_admin? or is_boss? or is_accountant?
+          = f.label :excluded_from_profit, :class => 'checkbox right_checkbox'
+          = f.check_box :excluded_from_profit
+
   - if small_width?
     .filter_row
       - users = current_company.users.reject{ |u| u.role == 'admin' }
@@ -91,3 +96,8 @@
         = f.select :assistant_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, :class => 'filter_select'
       - else
         = f.text_field :assistant_id, :value => claim.assistant.try(:first_last_name), :disabled => true
+
+      - if is_admin? or is_boss? or is_accountant?
+        .float_right
+          = f.label :excluded_from_profit, :class => 'checkbox right_checkbox'
+          = f.check_box :excluded_from_profit

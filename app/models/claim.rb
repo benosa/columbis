@@ -35,7 +35,7 @@ class Claim < ActiveRecord::Base
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance,
-                  :bonus, :bonus_percent
+                  :bonus, :bonus_percent, :excluded_from_profit
 
   # nested attributes
   attr_accessible :applicant_attributes, :dependents_attributes,

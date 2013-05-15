@@ -222,8 +222,8 @@ class ClaimsController < ApplicationController
     end
 
     def claim_totals(period, filters = {})
-      conditions = ["company_id = :company_id"]
-      binds = { :company_id => current_company }
+      conditions = ["company_id = :company_id", "excluded_from_profit = :excluded_from_profit"]
+      binds = { :company_id => current_company, :excluded_from_profit => false }
       if period != :all
         # Get totals of montsh by current filters
         conditions << "reservation_date >= :begin AND reservation_date <= :end"

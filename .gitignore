@@ -30,3 +30,4 @@ public/assets
 *.sublime-workspace
 .idea
 config/initializers/better_errors.rb
+coverage/

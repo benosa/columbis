@@ -93,6 +93,7 @@ group :test do
   gem 'shoulda', '~> 3.3.2'
   gem 'email_spec', '~> 1.4.0'
   gem 'rspec-cells'
+  gem 'simplecov', :require => false
 end
 
 group :production do

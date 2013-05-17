@@ -15,7 +15,7 @@ describe "Tasks:", js: true do
       fill_in "user[password]", :with => @admin.password
       page.click_button 'user_session_submit'
     end
-    
+
     subject { page }
 
     describe "task list" do
@@ -181,7 +181,7 @@ describe "Tasks:", js: true do
       describe "when filter by search filter" do
 
         it "should contain only tasks with the search word" do
-          @filter = active_tasks.first.body.split.first # get first word from first task
+          @filter = active_tasks.first.body.split(/[\s,.']/).first # get first word from first task
           fill_in('filter', with: @filter) # trigger search by word
           active_tasks.each do |task|
             if task.body.index(@filter) or task.comment.try(:index, @filter)
@@ -192,7 +192,7 @@ describe "Tasks:", js: true do
           end
         end
       end
-    
+
       describe "when change task status by links" do
 
         it 'accept task' do
@@ -209,7 +209,7 @@ describe "Tasks:", js: true do
           expect {
             click_link "finish_task_#{task.id}"
             find(".popover .comment_form").fill_in 'task[comment]', with: 'qweqwe'
-            find(".popover .comment_form").click_link('task_save')        
+            find(".popover .comment_form").click_link('task_save')
             sleep(2)
             task.reload
           }.to change(task, :status).to('finish')
@@ -221,7 +221,7 @@ describe "Tasks:", js: true do
           task = worked_tasks[1]
           expect {
             click_link "cancel_task_#{task.id}"
-            find(".popover .comment_form").click_link('task_save')        
+            find(".popover .comment_form").click_link('task_save')
             sleep(2)
             task.reload
           }.to change(task, :status).to('cancel')
@@ -265,8 +265,8 @@ describe "Tasks:", js: true do
       end
     end
 
-    describe "update task" do 
-      
+    describe "update task" do
+
       let(:task) { create(:new_task) }
 
       before do
@@ -292,7 +292,7 @@ describe "Tasks:", js: true do
         current_path.should eq("/tasks/#{task.id}/edit")
 
         expect {
-          fill_in "task_body", with: "qweqwe" 
+          fill_in "task_body", with: "qweqwe"
           fill_in "task_comment", with: "qweqwe"
           #page.select t("status.work"), from: "task_status"
           click_link I18n.t('save')

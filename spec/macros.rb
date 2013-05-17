@@ -5,11 +5,26 @@ module Macros
     base.extend(ClassMethods)
   end
 
-  def login_as_admin
+  def create_user_with_company_and_office(factory = :user)
     company = FactoryGirl.create(:company)
-    office = FactoryGirl.create(:office)
-    admin = FactoryGirl.create(:admin, company: company, office: office)
-    country = FactoryGirl.create(:country)
+    office = FactoryGirl.create(:office, company: company)
+    user = FactoryGirl.create(factory, company: company, office: office)
+  end
+
+  def create_users_with_company_and_office(factory = :user, count = 2)
+    company = FactoryGirl.create(:company)
+    office = FactoryGirl.create(:office, company: company)
+    FactoryGirl.create(factory, company: company, office: office)
+    users = []
+    count.times { users << FactoryGirl.create(factory, company: company, office: office) }
+    users
+  end
+
+  def login_as_admin
+    # company = FactoryGirl.create(:company)
+    # office = FactoryGirl.create(:office)
+    admin = create_user_with_company_and_office(:admin)
+    # country = FactoryGirl.create(:country)
     visit new_user_session_path
     fill_in "user[login]", :with => admin.login
     fill_in "user[password]", :with => admin.password

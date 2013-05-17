@@ -51,7 +51,7 @@ describe ClaimsController do
   describe 'POST create' do
     def do_claim
       post :create, claim: { user_id: @manager.id, check_date: Time.now, reservation_date: Time.now + 14, 
-        office_id: @office.id, applicant: @applicant.attributes, operator_id: @operator.id, arrival_date: Time.now + 14,
+        office_id: @office.id, applicant_attributes: @applicant.attributes, operator_id: @operator.id, arrival_date: Time.now + 14,
         operator_price_currency: "rur", tour_price_currency: "rur" }
     end
 

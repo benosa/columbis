@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
     @user = User.new(params)
     @user.company = user.company
     @user.role = params[:role] if user.available_roles.include?(params[:role])
-    @user.password = @user.office.default_password if @user.password.blank?
+    @user.password = @user.office.try(:default_password) if @user.password.blank?
     @user
   end
 

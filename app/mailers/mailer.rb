@@ -17,7 +17,7 @@ class Mailer < ActionMailer::Base
     else
       "#[#{@task.id}] Задача завершена"
     end
-    mail(to: 'v.sheshenya@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
+    mail(to: 'testdevmen@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
   end
 
   # def receive(email)

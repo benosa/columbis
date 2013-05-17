@@ -29,9 +29,12 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   Capybara.default_wait_time = 5
+  Capybara.ignore_hidden_elements = false
   Capybara.register_driver :poltergeist do |app|
     options = {
       timeout: 5,
+      cookies: true,
+      js_errors: false,
       window_size: [1024, 768]
     }
     Capybara::Poltergeist::Driver.new(app, options)

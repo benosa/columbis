@@ -5,14 +5,19 @@ describe "User:", js: true do
   include ActionView::Helpers
   include UsersHelper
 
-  before { login_as_admin }
   subject { page }
-  let(:company) { create :company }
-  let(:office) { create :office, company: company }
+
+  before do
+    @admin = login_as_admin
+  end
+
+  let(:company) { @admin.company }
+  let(:office) { @admin.office }
+  let(:user) { @admin }
 
 
   # describe "user sign_up" do
-  #   it "registration user" do 
+  #   it "registration user" do
   #     before do
   # #     visit new_user_registration_path
   # #   end
@@ -28,16 +33,16 @@ describe "User:", js: true do
   #   end
   # end
 
-  
+
   describe "submit form" do
-    let(:user) { create :admin, company: company, office: office }
+    # let(:user) { create :admin, company: company, office: office }
 
     before do
       visit new_dashboard_user_path
     end
 
     describe "create user" do
-      
+
       let(:user_attrs) { attributes_for(:user) }
       it{ current_path.should eq(new_dashboard_user_path) }
 
@@ -67,7 +72,7 @@ describe "User:", js: true do
   end
 
   describe "update user" do
-    let(:user) { create :admin, company: company, office: office }
+    # let(:user) { create :admin, company: company, office: office }
 
     before do
       user
@@ -81,7 +86,7 @@ describe "User:", js: true do
         fill_in "user[login]", with: ""
         click_link I18n.t('save')
       }.to_not change(user, :login).from(user.login).to('')
-      current_path.should eq dashboard_user_path(user.id) 
+      current_path.should eq dashboard_user_path(user.id)
       page.should have_selector("div.error_messages")
     end
 
@@ -105,8 +110,8 @@ describe "User:", js: true do
     end
   end
 
-  describe "delete user" do 
-    let(:user) { create(:admin) }
+  describe "delete user" do
+    # let(:user) { create(:admin) }
 
     before do
       user
@@ -120,7 +125,7 @@ describe "User:", js: true do
     end
   end
 
-  # describe "edit password user" do 
+  # describe "edit password user" do
   #   let(:user) { create(:admin) }
   #   before do
   #     user
@@ -153,22 +158,22 @@ describe "User:", js: true do
   #     current_path.should eq root_path
   #   end
   # end
-  describe "edit password user" do 
-    let(:user) { create(:admin) }
+  describe "edit user" do
+    # let(:user) { create(:admin) }
 
     before do
       user
       visit dashboard_users_path
     end
 
-    it 'edit password user' do
+    it 'should change user password' do
       click_link "edit_password_user#{user.id}"
       current_path.should eq edit_password_dashboard_user_path(user.id)
       expect{
         fill_in "user[password]", with: "test123456"
         click_link I18n.t('save')
         user.reload
-      }.to change(user, :password).from(user.password).to('test123456')
+      }.to change(user, :encrypted_password)
     end
   end
 end

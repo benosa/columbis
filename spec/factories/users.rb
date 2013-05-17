@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
+
   sequence :email do |n|
     "email#{n}@factory.com"
   end
@@ -8,7 +9,7 @@ FactoryGirl.define do
     "login#{n}"
   end
 
-  factory :admin, :class => User do
+  factory :user do
     association :company
     association :office
 
@@ -17,65 +18,28 @@ FactoryGirl.define do
     last_name { Faker::Name.name }
     first_name { Faker::Name.name }
     middle_name { Faker::Name.name }
-    role 'admin'
     password 'secret'
     password_confirmation 'secret'
     delta false
+
+    factory (:admin)      { role 'admin' }
+    factory (:boss)       { role 'boss' }
+    factory (:manager)    { role 'manager' }
+    factory (:accountant) { role 'accountant' }
+
+    factory :alien_boss do
+      # association :company
+      # association :office
+
+      role 'boss'
+    end
+
+    factory :user_with_company_and_office do
+      before(:create) do |user|
+        user.company = FactoryGirl.create(:company)
+        user.office  = FactoryGirl.create(:office, company: user.company)
+      end
+    end
   end
 
-  factory :boss, :class => User do
-    association :company
-    association :office
-
-    email { Faker::Internet.email }
-    login { Faker::Name.name }
-    last_name { Faker::Name.name }
-    first_name { Faker::Name.name }
-    middle_name { Faker::Name.name }
-    role 'boss'
-    password 'secret'
-    password_confirmation 'secret'
-  end
-
-  factory :alien_boss, :class => User do
-    association :company
-    association :office
-
-    email { Faker::Internet.email }
-    login { Faker::Name.name }
-    last_name 'Чужой'
-    first_name 'Чужак'
-    middle_name 'Чужакович'
-    role 'boss'
-    password 'secret'
-    password_confirmation 'secret'
-  end
-
-  factory :manager, :class => User do
-    association :company
-    association :office
-
-    email { Faker::Internet.email }
-    login { Faker::Name.name }
-    last_name { Faker::Name.name }
-    first_name { Faker::Name.name }
-    middle_name { Faker::Name.name }
-    role 'manager'
-    password 'secret'
-    password_confirmation 'secret'
-  end
-
-  factory :accountant, :class => User do
-    association :company
-    association :office
-
-    email { Faker::Internet.email }
-    login { Faker::Name.name }
-    last_name 'Петрова'
-    first_name 'Мария'
-    middle_name 'Ивановна'
-    role 'accountant'
-    password 'secret'
-    password_confirmation 'secret'
-  end
 end

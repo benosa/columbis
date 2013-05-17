@@ -49,7 +49,7 @@ class Dashboard::CompaniesController < ApplicationController
     def build_select_options(current = nil)
       current ||= {}
       @country_select_options = Country.select([:id, :name]).order(:id).all.map{ |o| [o.name, o.id] } # id = 1 - Russia
-      @region_select_options   = regions_for_select(current[:country_select] || @country_select_options.first[1])
+      @region_select_options  = !@country_select_options.empty? ? regions_for_select(current[:country_select] || @country_select_options.first[1]) : []
       @city_select_options    = !@region_select_options.empty? ? cities_for_select(current[:region_select] || @region_select_options.first[1]) : []
     end
 

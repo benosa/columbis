@@ -72,8 +72,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.12.0'
   #gem 'capybara', '~> 1.1.4' # don't use 2 version, because poltergeist relies on capybara ~> 1.1
   #gem 'poltergeist', '~> 1.0.2' # need to install phantomjs (http://phantomjs.org/download.html)
-  gem 'capybara', '~> 2.0.3'
-  gem 'poltergeist', '~> 1.1.0' 
+  gem 'capybara', '~> 2.1.0'
+  gem 'poltergeist', '~> 1.3.0'
   gem 'launchy', '~> 2.1.2'
   gem 'database_cleaner', '0.9.1'
   gem 'rails3-generators', '1.0.0'
@@ -85,7 +85,6 @@ group :development, :test do
   gem 'guard-bundler', '>= 1.0.0'
   gem 'guard-rails', '>= 0.1.1'
   gem 'guard-rspec', '~> 2.3.3'
-  gem 'mailcatcher'
   # gem 'guard-livereload', '~> 1.1.3'
 end
 

@@ -40,7 +40,9 @@
     }
   }
   td {
-    padding: 3px 3px;
+    // padding: 3px 3px;
+    padding: 0px 2px; // temporary solution to reduce cell size
+    white-space: nowrap;
     // &:first-child, &:last-child {
     //   border-left: none;
     //   border-right: none;
@@ -102,7 +104,8 @@
     }
 
     .blue_back, .all_done, .departed {
-      background-color: #bde0fa !important;
+      // background-color: #bde0fa !important;
+      background-color: #F5F5F5 !important; // temporary solution, in this meaning blue_back is just clear cell
       span { color: black !important; }
     }
 

@@ -32,7 +32,7 @@
   %td{ :title => text_for_visa(claim) }
     = text_for_visa(claim)
   %td{ :title => claim.operator.try(:name) }
-    = claim.operator.try(:name)
+    = truncate(claim.operator.try(:name), :length => 8)
   %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
     = truncate(claim.operator_confirmation, :length => 10)
   %td{ :title => claim.primary_currency_price.to_money }

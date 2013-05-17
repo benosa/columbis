@@ -40,19 +40,24 @@ Tourism::Application.configure do
 #  # Generate digests for assets URLs
 #  config.assets.digest = true
 
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost' }
   # config.action_mailer.delivery_method = :letter
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
+  # mailcather options
   config.action_mailer.smtp_settings = {
-    :address              => 'smtp.gmail.com',
-    :port                 => 587,
-    :domain               => 'gmail.com',
-    :user_name            => 'testdevmen@gmail.com',
-    :password             => '20081989',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true
+    :address              => 'localhost',
+    :port                 => 1025
   }
+  # config.action_mailer.smtp_settings = {
+  #   :address              => 'smtp.gmail.com',
+  #   :port                 => 587,
+  #   :domain               => 'gmail.com',
+  #   :user_name            => 'testdevmen@gmail.com',
+  #   :password             => '20081989',
+  #   :authentication       => 'plain',
+  #   :enable_starttls_auto => true
+  # }
 
   # Thinking sphinx starter
   # unless defined?(IRB)
@@ -63,5 +68,5 @@ Tourism::Application.configure do
   #     Rake::Task['ts:start'].invoke
   #   end
   # end
-  
+
 end

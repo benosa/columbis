@@ -10,8 +10,9 @@
   .form_block_content
     .fake_row
       .two_line.small_margin
-        %p= f.label :tour_price
-        = f.text_field :tour_price, :class => 'phone'
+        %p
+          %strong= f.label :tour_price
+        = f.text_field :tour_price, :class => 'phone important'
         = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
       .two_line.small_margin
         %p= f.label :visa_price
@@ -61,10 +62,11 @@
           %em#claim_primary_currency_price_view= claim.primary_currency_price
           = t('rur')
       .two_line.value_in_words
-        %p= f.label t('.price_as_string')
+        %p
+          %strong= f.label t('.price_as_string')
         = text_field_tag :price_as_string,
             claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY),
-            :class => 'notes grey_input', :disabled => true
+            :class => 'notes grey_input important', :disabled => true
     .fake_row
       .two_line
         %p= f.label :calculation

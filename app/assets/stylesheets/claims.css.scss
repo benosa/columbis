@@ -280,7 +280,7 @@ option {
   .wrapper, .claims, .reservations_wrapper { overflow: visible; }
   .claims .reservations { margin-bottom: 171px; }
 
-  .buh_col { background: #FEFEFE !important; }
+  .buh_col { background: #FFFFFF !important; } // #FCFFD5
   .thick_border { border-left: 2px solid #999; }
 
   .claims_tooltip {
@@ -354,11 +354,29 @@ option {
   }
   .add_paying .error.two_line { margin-left: 32px; }
 
-  .block_title { background-image: url(/assets/block_title_1.png) }
-  .green_block .block_title { background-image: url(/assets/green_title_1.png) }
-  .grey_block .block_title { background-image: url(/assets/grey_title_1.png) }
-  .yellow_block .block_title { background-image: url(/assets/yellow_title_1.png) }
-  .blue_block .block_title { background-image: url(/assets/new_design/images/blue_title.png) }
+  // .block_title { background-image: url(/assets/block_title_1.png) }
+  // .green_block .block_title { background-image: url(/assets/green_title_1.png) }
+  // .grey_block .block_title { background-image: url(/assets/grey_title_1.png) }
+  // .yellow_block .block_title { background-image: url(/assets/yellow_title_1.png) }
+  // .blue_block .block_title { background-image: url(/assets/new_design/images/blue_title.png) }
+
+  @mixin blue_block_title {
+    background-image: url(/assets/new_design/images/blue_title.png);
+    border-bottom: 1px #3F6DB8 solid;
+    border-left: none;
+    border-right: none;
+    border-top: 1px #7BAFDA solid;
+    h2 {
+      color: white;
+      text-shadow: #0F6284 0px -1px 0px;
+    }
+  }
+
+  .block_title { @include blue_block_title; }
+  .green_block, .grey_block, .yellow_block {
+    .block_title { @include blue_block_title; }
+  }
+
 }
 
 /* low_resolution */

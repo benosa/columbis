@@ -49,12 +49,13 @@
         /     %p= f.label :operator_maturity, :required => claim.operator_confirmation_flag
         /   = f.text_field :operator_maturity, :class => 'datepicker date', :value => l(claim.operator_maturity, :format => :long),
         /       :not_highlighted => true, :required => claim.operator_confirmation_flag
-      .two_line.error.pull-right
+      .two_line.pull-right
         - if small_width?
-          = f.label :operator_debt, t('.operator_debt_short')
+          %strong= f.label :operator_debt, t('.operator_debt_short')
         - else
-          %p= f.label :operator_debt
-        = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right'
+          %p
+            %strong= f.label :operator_debt
+        = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right important'
         %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)
       .two_line.small_margin.pull-right
         - if small_width?

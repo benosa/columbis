@@ -63,6 +63,7 @@ function loadClaims(options) {
       set_editable_bonus_percent();
       set_claims_sticky_header();
       set_claims_waypoint();
+      set_claims_tooltip();
     }
   };
   if (!options) { options = {}; }
@@ -102,6 +103,7 @@ function loadClaimsByScroll(data){
       setTitles();
       set_editable_bonus_percent();
       remove_duplicated_totals();
+      set_claims_tooltip();
     }
   });
 }
@@ -194,6 +196,30 @@ function remove_duplicated_totals() {
       $t.remove();
     }
   });
+}
+
+function set_claims_tooltip(init) {
+  var options = {
+    template: '<div class="tooltip claims_tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    placement: 'bottom',
+    container: 'body',
+    delay: 300,
+    animation: false,
+    trigger: 'manual'
+  };
+  $('#claims td[title], #claims td span[title]').each(function() {
+    if (!$(this).hasClass('with_tooltip')) {
+      $(this).tooltip(options).addClass('with_tooltip');
+    }
+  });
+
+  if (init) {
+    $('body').on('click', '.with_tooltip', function(e) {
+      $(this).tooltip('toggle');
+    }).on('mouseout', '.with_tooltip', function(e) {
+      $(this).tooltip('hide');
+    });
+  }
 }
 
 $(function(){
@@ -836,10 +862,12 @@ $(function(){
   set_claims_sticky_header();
   set_claims_waypoint();
   save_tour_price();
+  set_claims_tooltip(true);
 
   // After refresh claims container, addition to default after refresh
   $('body').on('refreshed', '.claims', function(e) {
     set_claims_waypoint();
+    set_claims_tooltip();
   });
 
 });

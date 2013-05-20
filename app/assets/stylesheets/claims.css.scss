@@ -41,15 +41,21 @@
   }
   td {
     // padding: 3px 3px;
-    padding: 0px 2px; // temporary solution to reduce cell size
+    padding: 2px 2px; // temporary solution to reduce cell size
     white-space: nowrap;
     // &:first-child, &:last-child {
     //   border-left: none;
     //   border-right: none;
     // }
+    p, span { margin: 0; }
   }
   th {
     min-width: 36px;
+    // temporary
+    height: auto;
+    max-height: 67px;
+    padding: 5px 0px 5px 0;
+    //
     &.double_sort span {
       &:first-child {
         margin-top: 2px;
@@ -66,7 +72,8 @@
       text-shadow: 0 1px 0 white;
     }
     a {
-      padding: 21px 2px 0;
+      padding: 15px 2px 0; // temporary
+      // padding: 21px 2px 0;
     }
     a.sort_active {
       font-weight: bold;
@@ -77,6 +84,8 @@
       }
     }
   }
+
+  th.purple_box a { padding-top: 15px; } // temporary
 
   .even td, .odd td { background: #F5F5F5; } // #FCFCFC gray background used only for canceled claims
 
@@ -273,6 +282,22 @@ option {
 
   .buh_col { background: #FEFEFE !important; }
   .thick_border { border-left: 2px solid #999; }
+
+  .claims_tooltip {
+    opacity: 1; filter: alpha(opacity=1);
+    width: auto;
+    max-width: 400px;
+
+    .tooltip-arrow {
+      border-bottom-color: #999;
+    }
+    .tooltip-inner {
+      background-color: #FFF;
+      border: 1px solid #999;
+      color: #222;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+    }
+  }
 }
 
 /*.main_page .filter .ik_select { width: 187px; }

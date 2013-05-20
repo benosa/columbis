@@ -148,33 +148,39 @@ body {
 
 .red_back, .nothing_done, .hot, .not_ready {
   /*background: url(/assets/new_design/images/red_box.png) right repeat-x !important;*/
-  background: #fce8e9 !important;
+  // background: #fce8e9 !important;
+  background: #FFB4A2 !important;
   color: #990000 !important;
 }
 
 .orange_back, .docs_got, .soon, .received {
   /*background: url(/assets/new_design/images/sand_box.png) right repeat-x #ff8888 !important;*/
-  background: #f1e3d0 !important;
+  // background: #f1e3d0 !important;
+  background: #FFBC65 !important;
 }
 
 .green_back, .docs_sent {
   /*background: url(/assets/new_design/images/green_box.png) right repeat-x !important;*/
-  background: #e7f9e9 !important;
+  // background: #e7f9e9 !important;
+  background: #99F7A5 !important;
 }
 
 .navy_back, .visa_approved {
   /*background: url(/assets/new_design/images/blue_box.png) right repeat-x #96B1F0 !important;*/
-  background: #edf4fa !important;
+  // background: #edf4fa !important;
+  background: #99C0EA !important;
 }
 
 .blue_back, .all_done, .departed {
   /*background: url(/assets/new_design/images/dark_blue_box.png) right repeat-x #BDE0FA !important;*/
-  background: #e6eff8 !important;
+  // background: #e6eff8 !important;
+  background: #AED1F7 !important;
 }
 
 .gray_back {
   /*background: url(/assets/new_design/images/grey_box.png) right repeat-x !important;*/
-  background: #e0e0e0 !important;
+  // background: #e0e0e0 !important;
+  background: #BBBBBB !important;
 }
 
 .ui-datepicker {

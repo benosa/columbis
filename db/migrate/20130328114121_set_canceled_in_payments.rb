@@ -1,4 +1,7 @@
 class SetCanceledInPayments < ActiveRecord::Migration
+  class Claim < ActiveRecord::Base; end
+  class Payment < ActiveRecord::Base; end
+
   def up
     Claim.select(:id).where(canceled: true).includes(:payments_in, :payments_out).find_each(:batch_size => 500) do |claim|
       payment_ids = claim.payments_in.map(&:id)

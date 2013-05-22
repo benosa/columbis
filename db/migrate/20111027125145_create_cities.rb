@@ -4,7 +4,8 @@ class CreateCities < ActiveRecord::Migration
     create_table :cities do |t|
       t.belongs_to :country
       t.string :name
-      t.timestamps
+      t.datetime :created_at, :null => true
+      t.datetime :updated_at, :null => true
     end
   end
 

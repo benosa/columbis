@@ -1,5 +1,8 @@
 # -*- encoding : utf-8 -*-
 class RemoveClientsToTourists < ActiveRecord::Migration
+  class Tourist < ActiveRecord::Base; end
+  class Client < ActiveRecord::Base; end
+
   def up
     add_column :tourists, :potential, :boolean, :null => false, :default => false
     add_index :tourists, :potential

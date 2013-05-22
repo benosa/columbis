@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class AddJointAddressToAddresses < ActiveRecord::Migration
+  class Address < ActiveRecord::Base; end
+
   def up
     add_column :addresses, :joint_address, :text
     add_index :addresses, :joint_address

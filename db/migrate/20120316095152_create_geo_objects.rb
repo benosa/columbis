@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CreateGeoObjects < ActiveRecord::Migration
+  class Country < ActiveRecord::Base; end
+
   def self.up
     create_table :regions do |t|
       t.integer :country_id

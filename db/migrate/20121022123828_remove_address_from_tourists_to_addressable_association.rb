@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class RemoveAddressFromTouristsToAddressableAssociation < ActiveRecord::Migration
+  class Address < ActiveRecord::Base; end
+
   def up
     # Remove address data to addresses table
     execute("INSERT INTO addresses (addressable_type, addressable_id, region, joint_address) SELECT 'Tourist', id, address, address FROM tourists;")

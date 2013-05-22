@@ -1,5 +1,8 @@
 # -*- encoding : utf-8 -*-
 class SetCommonInCountriesAndCities < ActiveRecord::Migration
+  class Country < ActiveRecord::Base; end
+  class City < ActiveRecord::Base; end
+
   def up
     Country.where("id <= 106").update_all(:common => true) # Countries between Russia (1) and Japan (106) are common
     Country.where("id > 106").update_all(:company_id => 1) # All other countries belong to company

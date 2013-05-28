@@ -1,6 +1,11 @@
 # -*- encoding : utf-8 -*-
 class RemoveClientsToTourists < ActiveRecord::Migration
-  class Tourist < ActiveRecord::Base; end
+  class Address < ActiveRecord::Base
+    belongs_to :addressable, :polymorphic => true
+  end
+  class Tourist < ActiveRecord::Base
+    has_one :address, :as => :addressable, :dependent => :destroy
+  end
   class Client < ActiveRecord::Base; end
 
   def up

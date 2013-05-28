@@ -242,7 +242,7 @@ class Claim < ActiveRecord::Base
     self.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
     today = Date.today
     self.course_usd = CurrencyCourse.where('currency = ? AND on_date <= ?', 'usd', today).order('on_date DESC, id DESC').first.try(:course)
-    self.course_eur = CurrencyCourse.where('currency = ? AND on_date <= ?', 'usd', today).order('on_date DESC, id DESC').first.try(:course)
+    self.course_eur = CurrencyCourse.where('currency = ? AND on_date <= ?', 'eur', today).order('on_date DESC, id DESC').first.try(:course)
 
     cur_attrs = Hash[[
       :tour_price_currency, :visa_price_currency, :children_visa_price_currency, :insurance_price_currency,

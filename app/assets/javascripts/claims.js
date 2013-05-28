@@ -562,67 +562,53 @@ $(function(){
       }
     });
 	};
+
   var calculate_tourist_debt = function(){
-    var price = parseFloat($('#claim_primary_currency_price').val() || 0);
+    var price = parseFloat($('#claim_primary_currency_price').val());
+    if (isNaN(price)) { price = 0 }
     var paid = 0.0;
-    if (isFinite(price)) {
-      $('#payments_in .fields').each(function (i) {
-        var val = parseFloat($('#claim_payments_in_attributes_' + i + '_amount').val());
-        if (isFinite(val)) {
-          paid += val;
-        }
-      });
-    }
-    $('#claim_tourist_debt').val(price - paid);
+    $('#payments_in .fields').each(function (i) {
+      var val = parseFloat($('#claim_payments_in_attributes_' + i + '_amount').val());
+      if (!isNaN(val)) {
+        paid += val;
+      }
+    });
+    $('#claim_tourist_debt').val((price - paid).toFixed(2));
   };
 
   var calculate_operator_debt = function(){
     var price = parseFloat($('#claim_operator_price').val());
+    if (isNaN(price)) { price = 0 }
     var paid = 0.0;
-    if (isFinite(price)) {
-      $('#payments_out .fields').each(function (i) {
-        var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount_prim').val());
-        if (isFinite(val)) {
-          paid += val;
-        }
-      });
-    }
+    $('#payments_out .fields').each(function (i) {
+      var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount').val());
+      if (!isNaN(val)) {
+        paid += val;
+      }
+    });
     $('#claim_operator_debt').val((price - paid).toFixed(2));
   };
 
-  // $('#claim_operator_price').change(calculate_operator_debt);
   $('#claim_operator_price').on('keyup', calculate_operator_debt);
 
   var calculate_amount_prim = function(event){
     var $tr = $(event.currentTarget).closest('.fields'),
-        course = $tr.find('input.course').val();
-    if ($tr.find('input.course').length > 0){
-      if (isFinite(course) && course > 0 ) {
-        course = 1 / course;
-      } else {
-        course = 0;
-      }
-    }
+        course = parseFloat($tr.find('input.course').val());
+    if (isNaN(course) || course < 0) { course = 0 }
 
-    var amount = $tr.find('input.amount').val();
+    var amount = parseFloat($tr.find('input.amount').val());
+    if (isNaN(amount)) { amount = 0 }
     var amount_prim = (course * amount).toFixed(2);
     $tr.find('input.amount_prim').val(amount_prim);
   };
 
   var reversive_calculate_amount = function(event){
     var $tr = $(event.currentTarget).closest('.fields'),
-        course = $tr.find('input.course').val();
-    if ($tr.find('input.course').length > 0){
-      if (isFinite(course) && course > 0 ) {
-        course = 1 / course;
-      } else {
-        course = 0;
-      }
-    }
+        course = parseFloat($tr.find('input.course').val());
+    if (isNaN(course) || course < 0) { course = 0 }
 
-    var amount_prim = $tr.find('input.amount_prim').val();
-
-    if(course > 0) {
+    var amount_prim = parseFloat($tr.find('input.amount_prim').val());
+    if (course > 0) {
       var amount = (amount_prim / course).toFixed(2);
       $tr.find('input.amount').val(amount);
     } else {
@@ -635,7 +621,7 @@ $(function(){
   	calculate_tourist_debt(event);
   });
 
-  $('#payments_out').on('keyup', 'input.amount, input.course, input.reversed_course', function(event){
+  $('#payments_out').on('keyup', 'input.amount, input.course', function(event){
     calculate_amount_prim(event);
   	// get_amount_in_word(event);
   	calculate_operator_debt(event);

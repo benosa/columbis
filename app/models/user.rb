@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
-                  :login, :first_name, :last_name, :middle_name, :color, :screen_width
+                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone
   attr_protected :company_id, :as => :admin
   attr_protected :role, :as => [:admin, :boss]
 

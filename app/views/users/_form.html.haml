@@ -41,6 +41,11 @@
             :class => 'color color_sample', :style => "background-color: #{f.object.color};"
         %p= t('.screen_width')
         = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, f.object.try(:screen_width)), include_blank: t('.auto')
+        %p= t('time_zone')
+        = f.time_zone_select :time_zone, nil,  :model => I18nTimeZone, :default => "Moscow"
+        = Time.now
+        = Time.zone.now
+        
 
 %fieldset.form_column.form_column-middle.last
   .form_block

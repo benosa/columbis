@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130522100712) do
+ActiveRecord::Schema.define(:version => 20130530103035) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.string   "office_number"
     t.string   "street"
     t.string   "phone_number"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "delta",            :default => true
     t.text     "joint_address"
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
 
   create_table "catalogs", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
   create_table "claims", :force => true do |t|
     t.integer  "user_id"
     t.date     "check_date"
-    t.datetime "created_at",                                                                                     :null => false
-    t.datetime "updated_at",                                                                                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "office_id"
     t.integer  "operator_id"
     t.string   "operator_confirmation"
@@ -153,8 +153,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.string   "oficial_letter_signature"
     t.integer  "country_id"
     t.integer  "city_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
     t.string   "bank"
     t.string   "bik"
@@ -181,8 +181,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.datetime "on_date",                     :null => false
     t.string   "currency",                    :null => false
     t.float    "course",     :default => 0.0, :null => false
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
@@ -218,14 +218,14 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
   create_table "item_fields", :force => true do |t|
     t.integer  "catalog_id"
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
   create_table "items", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "catalog_id"
     t.integer  "company_id"
   end
@@ -234,23 +234,23 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.integer  "item_id"
     t.integer  "item_field_id"
     t.string   "value"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
   create_table "offices", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
     t.string   "default_password"
   end
 
   create_table "operators", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
     t.string   "register_number"
     t.string   "register_series"
@@ -277,8 +277,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.string   "currency",                           :null => false
     t.float    "amount",          :default => 0.0
     t.string   "description"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "form",                               :null => false
     t.float    "amount_prim",     :default => 0.0
     t.boolean  "approved",        :default => false
@@ -322,8 +322,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
   create_table "tourist_claims", :force => true do |t|
     t.integer  "claim_id"
     t.integer  "tourist_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "applicant",  :default => false
   end
 
@@ -336,8 +336,8 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.date     "date_of_birth"
     t.date     "passport_valid_until"
     t.string   "phone_number"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
@@ -356,12 +356,12 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",   :null => false
-    t.string   "encrypted_password",     :default => "",   :null => false
+    t.string   "email",                                 :default => "",   :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -370,12 +370,15 @@ ActiveRecord::Schema.define(:version => 20130522100712) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "middle_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "role"
     t.integer  "office_id"
     t.string   "color"
     t.integer  "company_id"
-    t.boolean  "delta",                  :default => true
+    t.boolean  "delta",                                 :default => true
     t.string   "screen_width"
+    t.string   "time_zone"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

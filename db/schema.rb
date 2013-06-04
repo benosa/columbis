@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130530103035) do
+ActiveRecord::Schema.define(:version => 20130604144649) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20130530103035) do
     t.string   "okpo"
     t.string   "site"
     t.string   "inn"
+    t.string   "time_zone"
   end
 
   create_table "countries", :force => true do |t|

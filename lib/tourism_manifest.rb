@@ -30,7 +30,7 @@ module TourismManifest
     def manifest_default_text
       text = <<-MANIFEST_TEXT
         CACHE MANIFEST
-        # #{Time.now.utc}
+        # #{Time.zone.now.utc}
 
         FALLBACK:
         / /offline.html

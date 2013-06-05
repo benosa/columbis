@@ -50,8 +50,8 @@ describe ClaimsController do
 
   describe 'POST create' do
     def do_claim
-      post :create, claim: { user_id: @manager.id, check_date: Time.now, reservation_date: Time.now + 14, 
-        office_id: @office.id, applicant_attributes: @applicant.attributes, operator_id: @operator.id, arrival_date: Time.now + 14,
+      post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14, 
+        office_id: @office.id, applicant_attributes: @applicant.attributes, operator_id: @operator.id, arrival_date: Time.zone.now + 14,
         operator_price_currency: "rur", tour_price_currency: "rur" }
     end
 
@@ -73,8 +73,8 @@ describe ClaimsController do
   end
 
   # describe 'PUT update' do
-  #   reservation_date = Time.now + 20
-  #   before{ put :update, id: @claim.id, claim: { user_id: @manager.id, check_date: Time.now, reservation_date: reservation_date, 
+  #   reservation_date = Time.zone.now + 20
+  #   before{ put :update, id: @claim.id, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: reservation_date, 
   #     office_id: @office.id, applicant: @applicant.attributes, operator_id: @operator.id, arrival_date: reservation_date, operator_price_currency: "rur", tour_price_currency: "rur" } }
   #   # it 'should change claim name' do
   #   #   assigns[:claim].reservation_date.should == reservation_date

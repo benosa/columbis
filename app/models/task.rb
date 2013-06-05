@@ -50,13 +50,13 @@ class Task < ActiveRecord::Base
     before_transition on: :work do |task, transition|
       executer = transition.args.first # the first argument for event must be a user
       attrs = transition.args[1] || {} # the second argument might be a hash of attributes
-      task.assign_attributes({ executer: executer, start_date: Time.now, end_date: nil }.merge!(attrs))
+      task.assign_attributes({ executer: executer, start_date: Time.zone.now, end_date: nil }.merge!(attrs))
       task.valid?
     end
     before_transition on: [:finish, :cancel] do |task, transition|
       executer = transition.args.first # the first argument for event must be a user
       attrs = transition.args[1] || {} # the second argument might be a hash of attributes
-      task.assign_attributes({ executer: executer, end_date: Time.now }.merge!(attrs))
+      task.assign_attributes({ executer: executer, end_date: Time.zone.now }.merge!(attrs))
       task.valid?
     end
 

@@ -20,10 +20,10 @@ tables = %w(currency_courses delayed_jobs)
 tables_dump = 'tables.data'
 
 def secs(t)
-  (Time.now - t).round(2)
+  (Time.zone.now - t).round(2)
 end
 
-t = Time.now
+t = Time.zone.now
 puts t
 
 puts 'Save bazoved database'

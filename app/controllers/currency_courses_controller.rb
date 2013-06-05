@@ -13,7 +13,7 @@ class CurrencyCoursesController < ApplicationController
 
   def new
     @currency_course = CurrencyCourse.new
-    @currency_course.on_date = Time.now
+    @currency_course.on_date = Time.zone.now
   end
 
   def create

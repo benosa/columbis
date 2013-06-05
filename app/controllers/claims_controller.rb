@@ -254,7 +254,7 @@ class ClaimsController < ApplicationController
         QUERY
       totals = Claim.find_by_sql([query, binds]).sort_by{ |t| -t.month.to_i }
       # Remove current month
-      totals.delete_if{ |t| t.month.to_i == Time.now.month }
+      totals.delete_if{ |t| t.month.to_i == Time.zone.now.month }
     end
 
     def get_totals(claims)

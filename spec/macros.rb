@@ -33,8 +33,8 @@ module Macros
   end
 
   def random_datetime(from = nil, to = nil)
-    from ||= Time.now - 1.week
-    to ||= Time.now + 1.week
+    from ||= Time.zone.now - 1.week
+    to ||= Time.zone.now + 1.week
     rand(from..to)
   end
 

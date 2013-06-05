@@ -144,8 +144,8 @@ class TasksController < ApplicationController
     return {} unless params[:task]
     prms = params[:task].dup
     # case
-    # when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.now, :end_date => nil })
-    # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.now })
+    # when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.zone.now, :end_date => nil })
+    # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.zone.now })
     # end
     prms.delete(:comment) if prms[:comment].blank?
     prms

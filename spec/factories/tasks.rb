@@ -13,8 +13,8 @@ FactoryGirl.define do
     factory :worked_task do
       association :executer, factory: :admin
       status 'work'
-      start_date { Time.now }
-      end_date { Time.now + 1.week }
+      start_date { Time.zone.now }
+      end_date { Time.zone.now + 1.week }
 
       factory :finished_task do
         status 'finish'

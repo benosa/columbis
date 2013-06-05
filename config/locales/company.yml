@@ -37,6 +37,7 @@ ru:
         ogrn: 'ОРГН'
         okpo: 'ОКПО'
         inn: 'ИНН'
+        time_zone: "Часовой пояс"
       company/printers:
           template: 'Шаблон'
       company/offices:

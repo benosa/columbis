@@ -39,6 +39,8 @@ gem 'cells'
 gem 'oj' # optimized json, automatically used by multi_json
 gem 'rabl'
 
+gem 'i18n-timezones'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

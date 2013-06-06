@@ -16,12 +16,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :"logged_as_another_user?"
 
-  before_filter :set_user_time_zone
+  before_filter :set_user_time_zone, :except => [:set_time]
 
-  before_filter :check_company_office
+  before_filter :check_company_office, :except => [:set_time]
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
 
-  before_filter :set_current_controller
+  before_filter :set_current_controller, :except => [:set_time]
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -66,6 +66,12 @@ class ApplicationController < ActionController::Base
     attr_accessor :current
 
   end
+  
+  def set_time
+    respond_to do |format|
+      format.js { render :text => "#{Time.zone.now.strftime("%H:%M")}" }
+    end
+  end
 
   protected
 
@@ -87,7 +93,7 @@ class ApplicationController < ActionController::Base
   
   def set_user_time_zone
     Time.zone = 'Moscow'
-     if !current_user.nil? && !current_user.company.time_zone.nil?
+     if !current_user.nil? && !current_company.time_zone.nil?
        Time.zone = current_user.company.time_zone
      end
   end

@@ -25,11 +25,15 @@ module Macros
     # office = FactoryGirl.create(:office)
     admin = create_user_with_company_and_office(:admin)
     # country = FactoryGirl.create(:country)
+    login admin
+  end
+  
+  def login(user=login_as_admin)
     visit new_user_session_path
-    fill_in "user[login]", :with => admin.login
-    fill_in "user[password]", :with => admin.password
+    fill_in "user[login]", :with => user.login
+    fill_in "user[password]", :with => user.password
     page.click_button 'user_session_submit'
-    admin
+    user
   end
 
   def random_datetime(from = nil, to = nil)

@@ -1,5 +1,6 @@
 %li
   %p#clock
+    = Time.zone.now.strftime("%H:%M:%S")
 - if user_signed_in?
   %li
     %span

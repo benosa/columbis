@@ -11,14 +11,14 @@ $(document).ready(function(){
 });
 
 function sync(elem) {
-	elem.load("set_time");
+	setTimeout(function() {elem.load("set_time");}, 1000)
 }
 
 function local_timer(elem) {
 	setInterval(function() {
 		var time = new Date("01/01/2013 " + elem.text());
 		time.setSeconds(time.getSeconds()+1);
-		var OH, OM, OS = "";
+		var OH = "", OM = "", OS = "";
 		if (time.getHours() < 10) { OH = "0";	}
 		if (time.getMinutes() < 10) {	OM = "0";	}
 		if (time.getSeconds() < 10) {	OS = "0";	}

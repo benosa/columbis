@@ -1,17 +1,17 @@
 $(document).ready(function(){
 	var elem = $("p#clock");
-	sync(elem);
+	sync_clock(elem);
 	var sync_id = setInterval(function() {
 		if (elem.text() != "") {
 			local_timer(elem);
 			clearInterval(sync_id);
 		}
 	}, 1000);
-	setInterval(function() { sync(elem); }, 3600000)
+	setInterval(function() { sync_clock(elem); }, 3600000)
 });
 
-function sync(elem) {
-	setTimeout(function() {elem.load("set_time");}, 1000)
+function sync_clock(elem) {
+	setTimeout(function() {elem.load('/set_time');}, 1000)
 }
 
 function local_timer(elem) {

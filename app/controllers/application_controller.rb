@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
   
   def set_time
     respond_to do |format|
-      format.js { render :text => "#{Time.zone.now.strftime("%H:%M")}" }
+      format.js { render :text => "#{Time.zone.now.strftime("%H:%M:%S")}" }
     end
   end
 

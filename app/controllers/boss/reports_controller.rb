@@ -39,6 +39,18 @@ module Boss
       @all_offices = current_company.offices
       @all_managers = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
     end
+    
+    def tourduration
+      
+    end
+    
+    def hotelstars
+      
+    end
+
+    def promotionchannel
+      
+    end
 
     private
 

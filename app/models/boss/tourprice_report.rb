@@ -16,13 +16,13 @@ module Boss
         values = [10, 15, 20, 30, 50]
         names = values.to_enum(:each_with_index).map do |value, i|
           if i == 0
-            I18n.t("tourprice_report.names.before", value: value)
+            I18n.t("intervals.names.before", value: value)
           else
             prev_value = values[i - 1]
-            I18n.t("tourprice_report.names.range", value1: prev_value, value2: value)
+            I18n.t("intervals.names.range", value1: prev_value, value2: value)
           end
         end
-        names << I18n.t("tourprice_report.names.after", value: values[values.length - 1])
+        names << I18n.t("intervals.names.after", value: values[values.length - 1])
         self.intervals = {
           values: values.map{ |v| v*1000 }.unshift(0),
           names: names

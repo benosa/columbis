@@ -30,7 +30,7 @@ ru:
     amount: 'Сумма оплаты'
     items: 'Количество броней'
 
-  tourprice_report:
+  intervals:
     names:
       before: 'до %{value}'
       range: 'от %{value1} до %{value2}'
@@ -68,9 +68,9 @@ ru:
         title: 'Направления'
         direction: 'Направление'
       tourprice:
-        title: 'Стоимость тура'
+        title: 'Стоимость тура, в тыс.руб.'
       tourduration:
-        title: 'Длительность тура'
+        title: 'Длительность тура, в днях'
       hotelstars:
         title: 'Количество звёзд у отеля'
       promotionchannel:

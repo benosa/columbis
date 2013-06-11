@@ -41,7 +41,8 @@ module Boss
     end
     
     def tourduration
-      
+      @report = TourDurationReport.new(report_params).prepare
+      @count  = @report.count
     end
     
     def hotelstars

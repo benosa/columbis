@@ -1,0 +1,8 @@
+- set_current_width(:small)
+
+- title t('.title')
+
+- content_for :top do
+  = render partial: 'filter', locals: {show_others_label: false}
+
+= render partial: 'hotelstars'

@@ -35,6 +35,7 @@ ru:
       before: 'до %{value}'
       range: 'от %{value1} до %{value2}'
       after: 'больше %{value}'
+      other: 'прочее'
 
   income_report:
     amount: 'Сумма выручки'

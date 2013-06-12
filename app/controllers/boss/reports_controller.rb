@@ -46,7 +46,8 @@ module Boss
     end
     
     def hotelstars
-      
+      @report = HotelStarsReport.new(report_params).prepare
+      @count  = @report.count
     end
 
     def promotionchannel

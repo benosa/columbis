@@ -79,7 +79,7 @@ module Boss
           )
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .group('name', 'interval')
-          .order('interval')
+          .order('count')
       end
   end
 end

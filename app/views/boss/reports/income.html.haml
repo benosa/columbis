@@ -1,6 +1,6 @@
 - set_current_width(:small)
 
-- title t('.title')
+- title @title
 
 - content_for :top do
   = render partial: 'filter', locals: { row_count: false, show_others_label: false, settings_menu: 'income_settings_menu' }

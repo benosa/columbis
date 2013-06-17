@@ -28,12 +28,20 @@ module Boss
     end
 
     def income
+      type = 'Company'
+      if params[:is_operator] == "true"
+        @title = I18n.t('boss.reports.income.maturity_title')
+        type = 'Operator'
+      else
+        @title = I18n.t('boss.reports.income.amount_title')
+      end
       @amount_factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
       @total_factor  = params[:group] ? "total_#{params[:group]}".to_sym : :total
       @report = IncomeReport.new(report_params.merge({
         view: params[:view],
         office_filter: params[:office_filter],
-        manager_filter: params[:manager_filter]
+        manager_filter: params[:manager_filter],
+        payment_type: type
       })).prepare(@amount_factor)
       @total = @report.results[@total_factor]
       @all_offices = current_company.offices

@@ -6,10 +6,17 @@ module Boss
     attribute :view, default: 'days'
     attribute :office_filter
     attribute :manager_filter
-    attr_accessible :view, :office_filter, :manager_filter
+    attribute :title
+    attr_accessible :view, :office_filter, :manager_filter, :title
 
     arel_tables :payments, :offices, :claims, :users
     available_results :amount, :amount_offices, :amount_managers, :total, :total_offices, :total_managers
+    
+    def initialize(options = {})
+      super
+      @payment_type = options[:payment_type] ? options[:payment_type] : 'Company'
+      @title = @payment_type == 'Company' ? 'Company' : 'Title'
+    end
 
     def prepare(results = nil)
       results = [results] unless results.kind_of?(Array)
@@ -178,7 +185,7 @@ module Boss
       def base_query
         payments.project("#{timestamp_field} AS timestamp", payments[:amount].sum.as('amount'))
           .where(payments[:company_id].eq(company.id))
-          .where(payments[:recipient_type].eq('Company'))
+          .where(payments[:recipient_type].eq(@payment_type))
           .where(payments[:approved].eq(true))
           .where(payments[:canceled].eq(false))
           .where(payments[:date_in].gteq(start_date))

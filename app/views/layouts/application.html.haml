@@ -104,6 +104,9 @@
                 %li= link_to t('.reports.income'), boss_reports_path(:income)
                 %li= link_to t('.reports.income_offices'), boss_reports_path(:income, group: :offices)
                 %li= link_to t('.reports.income_managers'), boss_reports_path(:income, group: :managers)
+                %li= link_to t('.reports.maturity'), boss_reports_path(:income, is_operator: "true")
+                %li= link_to t('.reports.maturity_offices'), boss_reports_path(:income, group: :offices, is_operator: "true")
+                %li= link_to t('.reports.maturity_managers'), boss_reports_path(:income, group: :managers, is_operator: "true")
           %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?

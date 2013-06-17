@@ -54,6 +54,7 @@ ru:
         signboard: ["вывеска", "брошюра", "листовка", "сам", "листовка", "листовка"]
   income_report:
     amount: 'Сумма выручки'
+    margin: 'Сумма наценки'
     amount_offices: 'Сумма по офисам'
     amount_managers: 'Сумма по менеджерам'
     views:
@@ -92,7 +93,8 @@ ru:
       promotionchannel:
         title: 'Канал продвижения'
       income:
-        title: 'Выручка'
+        amount_title: 'Выручка'
+        maturity_title: 'Наценка'
         offices: 'Офисы'
         managers: 'Менеджеры'
       income_settings_menu:

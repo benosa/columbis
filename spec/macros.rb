@@ -19,16 +19,6 @@ module Macros
     count.times { users << FactoryGirl.create(factory, company: company, office: office) }
     users
   end
-  
-  def create_claims(company, user)
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "интернет", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "друг", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "знакомый", hotel: "1*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-07")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "турагентство", hotel: "2*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-10")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "сам увидел", hotel: "3*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-12")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "телевидение", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20")
-    FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "газета", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20")
-  end
 
   def login_as_admin
     # company = FactoryGirl.create(:company)

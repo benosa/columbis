@@ -4,57 +4,6 @@
 
 - content_for :top do
   = render partial: 'filter', locals: {show_others_label: false}
-%table
-  %tr
-    %td
-      = I18n.t('intervals.channels.names.internet')
-    %td
-      = I18n.t('intervals.channels.names.recommendations')
-    %td
-      = I18n.t('intervals.channels.names.client')
-    %td
-      = I18n.t('intervals.channels.names.tv')
-    %td
-      = I18n.t('intervals.channels.names.magazines')
-    %td
-      = I18n.t('intervals.channels.names.signboard')
-    %td
-      = I18n.t('intervals.channels.names.default')
-  %tr
-    %td
-      %select
-        - @from_internet.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @from_recommendations.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @from_client.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @from_tv.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @from_magazines.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @from_signboard.each do |channel|
-          %option
-            = channel
-    %td
-      %select
-        - @channels.each do |channel|
-          %option
-            = channel      
 
 = render partial: 'promotionchannel'
+

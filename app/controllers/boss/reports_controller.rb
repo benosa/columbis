@@ -81,7 +81,9 @@ module Boss
       @report = PromotionChannelReport.new( report_params )
       @report.intervals = intervals
       @report.prepare
+      @amount = @report.amount
       @count  = @report.count
+      @total  = @report.total
     end
 
     private

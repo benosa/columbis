@@ -1,14 +1,10 @@
 module Boss
   class PromotionChannelReport < Report
-    arel_tables :claims
-    available_results :count
-    attribute :intervals # example: { values: [0, 10, 20], names: ['0-10', '10-20'] }
+    arel_tables :claims, :payments
+    available_results :count, :amount, :total
+    attribute :intervals
 
     attr_accessible :intervals
-
-    def initialize(attributes = nil, options = {})
-      super
-    end
 
     def interval_field(column, use_name = true)
       expr = ''
@@ -27,13 +23,21 @@ module Boss
     end
 
     def prepare(options = {})
-      @results[:count] = build_result(query: base_query, typecast: {count: :to_i})
+      @results[:count]  = build_result(query: count_query,  typecast: {count: :to_i})
+      @results[:amount] = build_result(query: amount_query, typecast: {amount: :to_i})
+      @results[:total]  = build_result.merge( @results[:amount], @results[:count] ).sort!
+
       self
     end
 
-    def bar_settings(factor, data)
-      title = I18n.t('report.claim_quantity')
-      ytitle = I18n.t('report.pcs')
+    def bar_settings(factor, data)      
+      if factor == :amount
+        title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
+        ytitle = I18n.t('rur')
+      elsif factor == :count
+        title = I18n.t('report.claim_quantity')
+        ytitle = I18n.t('report.pcs')
+      end
 
       settings = {
         title: {
@@ -55,7 +59,11 @@ module Boss
     end
 
     def pie_settings(factor, data)
-      title = I18n.t('report.claim_quantity')
+      if factor == :amount
+        title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
+      elsif factor == :count
+        title = I18n.t('report.claim_quantity')
+      end
 
       settings = {
         title: {
@@ -74,12 +82,30 @@ module Boss
       def base_query
         claims.project(
             "#{interval_field('claims.tourist_stat')} AS name",
-            claims[:id].count.as('count'),
             "#{interval_field('claims.tourist_stat', false)} AS interval"
           )
+      end
+      
+      def count_query
+        base_query.project( claims[:id].count.as('count') )
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .group('name', 'interval')
           .order('count')
+      end
+      
+      def amount_query
+        claims_query = base_query
+        query = payments.project(payments[:claim_id], payments[:amount])
+          .where(payments[:company_id].eq(company.id))
+          .where(payments[:payer_type].eq('Tourist'))
+          .where(payments[:recipient_type].eq('Company')).where(payments[:recipient_id].eq(company.id))
+          .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
+          .as('amount_query')
+        
+        base_query.project( query[:amount].sum.as('amount') )
+          .join(query).on(query[:claim_id].eq(claims[:id]))
+          .group('name', 'interval')
+          .order('amount')
       end
   end
 end

@@ -33,18 +33,18 @@ ru:
   intervals:
     names:
       before: 'до %{value}'
-      range: 'от %{value1} до %{value2}'
-      after: 'больше %{value}'
-      other: 'прочее'
+      range:  'от %{value1} до %{value2}'
+      after:  'больше %{value}'
+      other:  'прочее'
     channels:
       names:
         internet: "Интернет"
         recommendations: "Рекомендации"
-        client: "Клиенты"
-        tv: "Телевизор"
-        magazines: "Магазины/Журналы"
+        client:   "Клиенты"
+        tv:       "Телевизор"
+        magazines: "Журналы/Газеты"
         signboard: "Вывеска"
-        default: "Прочее"
+        default:  "Прочее"
       values:
         internet: ["интернет", "инет", "инэт", "интернэт", "интэрнэт", "веб", "вэб"]
         recommendations: ["рекоменд", "агент", "агенcт", "компания", "ооо", "оао"]

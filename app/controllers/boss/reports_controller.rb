@@ -89,10 +89,10 @@ module Boss
     private
     
       def get_channels_list(type)
-        what = 'intervals.channels.values.' + type
-        ret = @channels.find_all { |channel| t(what).any? { |inet| channel.mb_chars.downcase.scan(inet.mb_chars.downcase).size != 0} }
+        what = t('intervals.channels.values.' + type).uniq
+        ret = @channels.find_all { |channel| what.any? { |inet| channel.mb_chars.downcase.scan(inet.mb_chars.downcase).size != 0} }
         if ret.length == 0
-          ret = t(what)
+          ret = what
         end
         @channels -= ret
         ret

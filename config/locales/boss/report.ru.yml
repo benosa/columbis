@@ -95,6 +95,8 @@ ru:
         title: 'Канал продвижения'
       repurchase:
         title: "Количество покупок от одного человека"
+      clientsbase:
+        title: 'Анализ клиентской базы'
       income:
         amount_title: 'Выручка'
         maturity_title: 'Наценка'

@@ -62,6 +62,11 @@ module Boss
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
     end
+    
+    def clientsbase
+      @report = ClientsBaseReport.new(report_params).prepare
+      @count  = @report.count
+    end
 
     def promotionchannel
       @channels = Claim.where(:company_id => current_company).map { |channel| channel.tourist_stat }.uniq

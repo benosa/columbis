@@ -1,0 +1,6 @@
+.current_container
+  .charts
+    .chart-left
+      #count_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:count, @count) } }
+    .chart-right
+      #count_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:count, @count) } }

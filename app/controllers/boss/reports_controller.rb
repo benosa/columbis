@@ -26,6 +26,11 @@ module Boss
       @report = TourpriceReport.new(report_params).prepare
       @count  = @report.count
     end
+    
+    def repurchase
+      @report = RepurchaseReport.new(report_params).prepare
+      @count  = @report.count
+    end
 
     def income
       type = 'Company'

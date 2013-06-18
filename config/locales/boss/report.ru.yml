@@ -6,6 +6,7 @@ ru:
     items: 'Количество'
     payment_amount: 'Сумма оплаты'
     claim_quantity: 'Количество броней'
+    tourist_quantity: 'Количество туристов'
     all_rows: 'Все'
     pcs: 'шт.'
     n: '№'
@@ -92,6 +93,8 @@ ru:
         title: 'Количество звёзд у отеля'
       promotionchannel:
         title: 'Канал продвижения'
+      repurchase:
+        title: "Количество покупок от одного человека"
       income:
         amount_title: 'Выручка'
         maturity_title: 'Наценка'

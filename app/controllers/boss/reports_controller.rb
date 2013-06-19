@@ -66,6 +66,7 @@ module Boss
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
+      @amount  = @report.amount
     end
 
     def promotionchannel

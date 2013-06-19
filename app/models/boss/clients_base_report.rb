@@ -1,11 +1,11 @@
 module Boss
   class ClientsBaseReport < Report
-    arel_tables :tourist, :payments, :claims
+    arel_tables :payments
     available_results :count, :amount
 
     def prepare(options = {})
-      @results[:count]  = build_result(query: base_query,  typecast: {count: :to_i})
-
+      @results[:count]  = build_result(query: count_query,  typecast: {count: :to_i})
+      @results[:amount]  = build_result(query: amount_query,  typecast: {amount: :to_i})
       self
     end
 
@@ -14,7 +14,7 @@ module Boss
         title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
         ytitle = I18n.t('rur')
       elsif factor == :count
-        title = I18n.t('report.claim_quantity')
+        title = I18n.t('report.tourist_quantity')
         ytitle = I18n.t('report.pcs')
       end
 
@@ -41,7 +41,7 @@ module Boss
       if factor == :amount
         title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
       elsif factor == :count
-        title = I18n.t('report.claim_quantity')
+        title = I18n.t('report.tourist_quantity')
       end
 
       settings = {
@@ -60,31 +60,53 @@ module Boss
 
       def base_query
         payments.project( 
-            payments[:payer_id].as('name'),
+            payments[:payer_id],
             payments[:amount].sum.as('amount')
           )
           .where(payments[:payer_type].eq('Tourist'))
           .where(payments[:recipient_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
-          .group(payments[:amount].desc)
+          .group(payments[:payer_id])
+          .as("t")
       end
       
       def count_query
+        query = payments.project(
+            "payer_id",
+            "(CASE
+              WHEN sum(amount) over(order by amount desc rows unbounded preceding) <= 0.8 * sum(amount) over() THEN '80% выручки'
+              WHEN sum(amount) over(order by amount desc rows unbounded preceding) <= 0.95 * sum(amount) over() THEN '15% выручки'
+              ELSE '05% выручки'
+            END) as name",
+            )
+          .from(base_query)
+          .as("count")
+        
+        p = payments.project( "count(payer_id)", "name" )
+          .from(query)
+          .group("name")
+          .order("name")
       end
       
       def amount_query
+        query = payments.project(
+            "amount",
+            "(CASE
+              WHEN count(payer_id) over(order by amount asc rows unbounded preceding) <= 0.5 * count(payer_id) over() THEN '50% клиентов'
+              WHEN count(payer_id) over(order by amount asc rows unbounded preceding) <= 0.8 * count(payer_id) over() THEN '30% клиентов'
+              ELSE '20% клиентов'
+            END) as name",
+            )
+          .from(base_query)
+          .as("amount")
         
-      end
-      
-      def over_query(procent, name)
-        payments.project(payments[:payer_id], "sum(amount) over(order by amount desc rows unbounded preceding) <= #{procent} * sum(amount) over() as #{name}")
+        p = payments.project( "sum(amount) as amount", "name" )
+          .from(query)
+          .group("name")
+          .order("name")
       end
   end
 end
-
-
-select payer_id, sum(amount) over(order by amount desc rows unbounded preceding) <= 0.8 * sum(amount) over() as is_top_user
-from (select sum(amount) as amount, payer_id from payments group by 2) t
 
 
 

@@ -34,6 +34,11 @@ ru:
   normalcheck_report:
     title: "Средняя стоимость путёвки по дням"
     yaxis: "Средняя стоимость, руб"
+    
+  incraseclients_report:
+    title: "Соотношение появившихся клиентов в этом месяце к появившимся в предыдущем"
+    yaxis: "Соотношение"
+    count_title: "Количество новых туристов в каждый месяц"
 
   intervals:
     names:
@@ -111,3 +116,5 @@ ru:
         view: 'Вид'
       normalcheck:
         title: "Средний чек"
+      increaseclients:
+        title: "Динамика прироста клиентской базы"

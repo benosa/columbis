@@ -110,6 +110,7 @@
                 %li= link_to t('.reports.repurchase'), boss_reports_path(:repurchase)
                 %li= link_to t('.reports.clientsbase'), boss_reports_path(:clientsbase)
                 %li= link_to t('.reports.normalcheck'), boss_reports_path(:normalcheck)
+                %li= link_to t('.reports.increaseclients'), boss_reports_path(:increaseclients)
           %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?

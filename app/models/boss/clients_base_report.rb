@@ -82,7 +82,7 @@ module Boss
           .from(base_query)
           .as("count")
         
-        p = payments.project( "count(payer_id)", "name" )
+        payments.project( "count(payer_id)", "name" )
           .from(query)
           .group("name")
           .order("name")
@@ -100,7 +100,7 @@ module Boss
           .from(base_query)
           .as("amount")
         
-        p = payments.project( "sum(amount) as amount", "name" )
+        payments.project( "sum(amount) as amount", "name" )
           .from(query)
           .group("name")
           .order("name")

@@ -30,6 +30,10 @@ ru:
     others: 'Остальные направления'
     amount: 'Сумма оплаты'
     items: 'Количество броней'
+    
+  normalcheck_report:
+    title: "Средняя стоимость путёвки по дням"
+    yaxis: "Средняя стоимость, руб"
 
   intervals:
     names:
@@ -105,3 +109,5 @@ ru:
       income_settings_menu:
         settings: 'Настройки'
         view: 'Вид'
+      normalcheck:
+        title: "Средний чек"

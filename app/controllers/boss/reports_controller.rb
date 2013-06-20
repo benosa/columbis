@@ -68,6 +68,11 @@ module Boss
       @count  = @report.count
       @amount  = @report.amount
     end
+    
+    def normalcheck
+      @report = NormalCheckReport.new(report_params).prepare
+      @count  = @report.count
+    end
 
     def promotionchannel
       @channels = Claim.where(:company_id => current_company).map { |channel| channel.tourist_stat }.uniq

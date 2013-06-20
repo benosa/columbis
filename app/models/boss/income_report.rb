@@ -6,8 +6,7 @@ module Boss
     attribute :view, default: 'days'
     attribute :office_filter
     attribute :manager_filter
-    attribute :title
-    attr_accessible :view, :office_filter, :manager_filter, :title
+    attr_accessible :view, :office_filter, :manager_filter
 
     arel_tables :payments, :offices, :claims, :users
     available_results :amount, :amount_offices, :amount_managers, :total, :total_offices, :total_managers
@@ -15,7 +14,6 @@ module Boss
     def initialize(options = {})
       super
       @payment_type = options[:payment_type] ? options[:payment_type] : 'Company'
-      @title = @payment_type == 'Company' ? 'Company' : 'Title'
     end
 
     def prepare(results = nil)

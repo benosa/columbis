@@ -28,3 +28,4 @@ ru:
         maturity: 'Наценка'
         maturity_offices: 'Наценка по офисам'
         maturity_managers: 'Наценка по менеджерам'
+        normalcheck: "Средний чек"

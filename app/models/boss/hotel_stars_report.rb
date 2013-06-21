@@ -2,27 +2,11 @@ module Boss
   class HotelStarsReport < Report
     arel_tables :claims
     available_results :count
-    attribute :intervals # example: { values: [0, 10, 20], names: ['0-10', '10-20'] }
-
-    attr_accessible :intervals
-
-    def initialize(attributes = nil, options = {})
-      super
-
-      # Default intervals
-      unless intervals
-        self.intervals = {
-          values: ["1*", "2*", "3*", "4*", "5*"],
-          names: ["*", "**", "***", "****", "*****"]
-        }
-      end
-    end
 
     def interval_field(column, use_name = true)
       expr = ''
-      intervals[:values].each_with_index do |value, i|
-        res = use_name ? intervals[:names][i] : i
-        expr += "WHEN (position(\'#{value}\' in #{column}) <> 0) THEN '#{res}' "
+      ["1*", "2*", "3*", "4*", "5*"].each do |value|
+        expr += "WHEN (position(\'#{value}\' in #{column}) <> 0) THEN '#{value}' "
       end
       expr += "ELSE \'#{I18n.t("intervals.names.other")}\'"
       expr.blank? ? column : "(CASE #{expr} END)"
@@ -33,7 +17,7 @@ module Boss
       self
     end
 
-    def bar_settings(factor, data)
+    def bar_settings(data)
       title = I18n.t('report.claim_quantity')
       ytitle = I18n.t('report.pcs')
 
@@ -51,12 +35,12 @@ module Boss
         },
         series: [{
           name: title,
-          data: data.map{ |o| o[factor.to_s] }
+          data: data.map{ |o| o["count"] }
         }]
       }.to_json
     end
 
-    def pie_settings(factor, data)
+    def pie_settings(data)
       title = I18n.t('report.claim_quantity')
 
       settings = {
@@ -66,7 +50,7 @@ module Boss
         series: [{
           type: 'pie',
           name: title,
-          data: data.map{ |o| [o['name'], o[factor.to_s]] }
+          data: data.map{ |o| [o['name'], o["count"]] }
         }]
       }.to_json
     end
@@ -76,13 +60,12 @@ module Boss
       def base_query
         claims.project(
             "#{interval_field('(claims.hotel)')} AS name",
-            claims[:id].count.as('count'),
-            "#{interval_field('(claims.hotel)', false)} AS interval"
+            claims[:id].count
           )
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
-          .group('name', 'interval')
-          .order('interval')
+          .group('name')
+          .order('name')
       end
   end
 end

@@ -167,6 +167,7 @@ ru:
       till: 'по'
       operator: 'Туроператор'
       direction: 'Направление'
+      deys: 'Дней: '
 
     tour_price:
       tour_price: 'Стоимость тура'
@@ -190,6 +191,7 @@ ru:
     errors:
       messages:
         blank_or_wrong: 'заполнен с ошибками'
+        arrival_date: 'не может быть больше даты выезда'
     attributes:
       claim:
         user_id: 'Менеджер'

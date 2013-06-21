@@ -857,3 +857,19 @@ $(function(){
   });
 
 });
+
+// Tour duration
+$(document).ready(function() {
+	set_deys();
+	$("input#claim_arrival_date").on('change', set_deys);
+	$("input#claim_departure_date").on('change', set_deys);
+});
+
+function set_deys() {
+	arrival_date = Globalize.parseDate($("input#claim_arrival_date").val());
+	departure_date = Globalize.parseDate($("input#claim_departure_date").val());
+	if (arrival_date != null && departure_date != null && arrival_date != "" && departure_date != "" && departure_date >= arrival_date) {
+		deys =  departure_date - arrival_date;
+		$("label#deys").text(deys/1000/60/60/24+1)
+	}
+};

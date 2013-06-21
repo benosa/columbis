@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130604144649) do
+ActiveRecord::Schema.define(:version => 20130621100501) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20130604144649) do
     t.decimal  "bonus_percent",                       :precision => 5,  :scale => 2, :default => 0.0,            :null => false
     t.boolean  "active",                                                             :default => true,           :null => false
     t.boolean  "excluded_from_profit",                                               :default => false,          :null => false
+    t.integer  "tour_duration"
   end
 
   create_table "companies", :force => true do |t|

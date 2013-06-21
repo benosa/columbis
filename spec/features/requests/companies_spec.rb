@@ -13,6 +13,17 @@ describe "Companyies:", js: true do
     before do
       visit dashboard_edit_company_path
     end
+    
+    it "checking time zone on select box" do
+      page.select '(GMT+01:00) Берлин', :from => 'company_time_zone'
+      page.find("a.save").click
+      page.should have_content 'Данные компании обновлены'
+      page.should have_content '(GMT+01:00) Берлин'
+      page.select '(GMT+04:00) Москва', :from => 'company_time_zone'
+      page.find("a.save").click
+      page.should have_content 'Данные компании обновлены'
+      page.should have_content '(GMT+04:00) Москва'
+    end
 
     # it 'should not update an company, should show error message' do
     #   current_path.should eq(dashboard_edit_company_path)

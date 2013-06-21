@@ -213,6 +213,11 @@ module ApplicationHelper
     { ac: data }
   end
 
+  def current_zone_timestamp
+    # Time.zone.now.to_i == Time.now.to_i, it doesn't account zone
+    Time.parse(Time.zone.now.strftime("%Y-%m-%d %H:%M:%S")).to_i
+  end
+
   private
 
     def manifest_default_text

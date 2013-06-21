@@ -3,8 +3,7 @@ Tourism::Application.routes.draw do
 
   match 'amount_in_word' => 'application#amount_in_word'
   match 'get_currency_course' => 'application#get_currency_course'
-  
-  match 'set_time' => "application#set_time" 
+  match 'current_timestamp' => "application#current_timestamp"
 
   resources :airlines
   resources :currency_courses

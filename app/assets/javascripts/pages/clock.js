@@ -1,41 +1,61 @@
-$(document).ready(function(){
-	var elem = $("p#clock");
-	// start_time needs to take delay of ajax request and local time
-	var start_time = new Date().getTime();
-	elem.load({ url: '/set_time', success: local_timer(elem, start_time)});
-});
+$(function() {
 
-function local_timer(elem, start_time) {
-	var local_time = new Date().getTime();
-	var server_time = (new Date("01/01/2013 " + elem.text())).getTime();
-	var delay = local_time - start_time;
-	var delta = local_time - (server_time - (delay / 2));
-	var tick = 0;
-	var is_syncing = false
+	var Clock = {
+		$el: $('#clock'),
+		server_time: null,
+		delta: 0,
+		url: '/current_timestamp',
+		secTimer: null,
+		syncTimer: null,
+		syncTimeout: 1000 * 60 * 60, // 1 hour
+		format: 'HH:mm:ss',
 
-	interval_id = setInterval(function() {
-		tick ++;
-		// Set time to form
-		elem.text(Globalize.format(new Date(new Date().getTime() - delta), 'HH:mm:ss'));
-		// begin sync with server every 1 hour
-		if (tick > (1000 * 60 * 60)) {
-			if(is_syncing == false) {
-				elem.load({
-					url: '/set_time',
-					success: new_sync(elem, interval_id)
-				});	
+		load_time: function() {
+			$.ajax({
+				url: this.url,
+				context: this,
+				success: function(timestamp) {
+					this.set_server_time(timestamp);
+					this.refresh();
+				}
+			});
+		},
+
+		set_server_time: function(timestamp) {
+			this.server_time = parseInt(timestamp) * 1000;
+			this.delta = this.server_time - new Date().getTime();
+		},
+
+		render: function() {
+			var timestamp = new Date().getTime() + this.delta,
+					text = Globalize.format(new Date(timestamp), this.format);
+			this.$el.html(text);
+		},
+
+		set_timers: function() {
+			clearInterval(this.secTimer);
+			this.secTimer = setInterval(function() { Clock.render(); }, 1000);
+			clearInterval(this.syncTimer);
+			this.syncTimer = setInterval(function() { Clock.load_time(); }, this.syncTimeout);
+		},
+
+		refresh: function() {
+			this.render();
+			this.set_timers();
+		},
+
+		init: function() {
+			var timestamp = this.$el.data('timestamp');
+			if (!timestamp) {
+				this.load_time();
+			} else {
+				this.set_server_time(timestamp);
+				this.refresh();
 			}
-			is_syncing = true;
 		}
-		// end sync with server every 1 hour
-	}, 1000);
-}
+	}
 
-function new_sync(elem, interval_id) {
-	// clear previous interval
-	clearInterval(interval_id);
-	var start_time = new Date().getTime();
-	// cyclic call one method from another here does not lead to overflows since this call occurs once every hour
-	local_timer(elem, start_time);
-}
+	Clock.init();
+	window.Clock = Clock;
+});
 

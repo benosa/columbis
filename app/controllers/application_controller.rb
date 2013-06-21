@@ -16,12 +16,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :"logged_as_another_user?"
 
-  before_filter :set_user_time_zone, :except => [:set_time]
+  before_filter :set_user_time_zone
 
-  before_filter :check_company_office, :except => [:set_time]
+  before_filter :check_company_office, :except => [:current_timestamp]
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
 
-  before_filter :set_current_controller, :except => [:set_time]
+  before_filter :set_current_controller, :except => [:current_timestamp]
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -41,6 +41,10 @@ class ApplicationController < ActionController::Base
 
   def get_currency_course
     render :text => CurrencyCourse.actual_course(params[:currency] || CurrencyCourse.PRIMARY_CURRENCY)
+  end
+
+  def current_timestamp
+    render :text => current_zone_timestamp
   end
 
   CURRENTS.each do |elem|
@@ -66,12 +70,6 @@ class ApplicationController < ActionController::Base
     attr_accessor :current
 
   end
-  
-  def set_time
-    respond_to do |format|
-      format.js { render :text => "#{Time.zone.now.strftime("%H:%M:%S")}" }
-    end
-  end
 
   protected
 
@@ -90,12 +88,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
-  
+
   def set_user_time_zone
     Time.zone = 'Moscow'
-     if !current_user.nil? && !current_company.time_zone.nil?
-       Time.zone = current_company.time_zone
-     end
+    if !current_user.nil? && !current_company.time_zone.nil?
+      Time.zone = current_company.time_zone
+    end
   end
 
   def logged_as_another_user?

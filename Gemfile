@@ -68,6 +68,7 @@ group :development do
   gem 'meta_request', '~> 0.2.1'
   # gem 'rack-mini-profiler', '~> 0.1.23'
   gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing for state_machine
+  gem 'pry', '0.9.12'
 end
 
 group :development, :test do

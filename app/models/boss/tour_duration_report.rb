@@ -98,6 +98,7 @@ module Boss
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:tour_duration].not_eq(nil).and(claims[:tour_duration].not_eq(0)))
+          .where(claims[:canceled].eq(false))
           .group('name', 'interval')
           .order('interval')
       end

@@ -64,6 +64,7 @@ module Boss
           )
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:canceled].eq(false))
           .group('name')
           .order('name')
       end

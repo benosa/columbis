@@ -95,6 +95,7 @@ module Boss
         claims.project("#{interval_field('claims.primary_currency_price')} AS name", claims[:id].count.as('count'), "#{interval_field('claims.primary_currency_price', false)} AS interval")
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:canceled].eq(false))
           .group('name', 'interval')
           .order('interval')
       end

@@ -96,11 +96,13 @@ module Boss
         claims.project(
             "#{interval_field('claims.tourist_stat')} AS name"
           )
+        .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+        .where(claims[:canceled].eq(false))
+
       end
 
       def count_query
         base_query.project( claims[:id].count.as('count') )
-          .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .group(:name)
           .order(:count)
       end

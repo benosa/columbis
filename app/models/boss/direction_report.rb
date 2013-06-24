@@ -102,7 +102,8 @@ module Boss
         end
 
         claims_query = claims.project(claims[:id], claims[:country_id])
-          .where(claims[:company_id].eq(company.id)) # .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:company_id].eq(company.id))
+          .where(claims[:canceled].eq(false)) # .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .as('claims_query')
 
         query = base_query.project(query[:amount].sum.as('amount'))
@@ -117,6 +118,7 @@ module Boss
         query = claims.project(claims[:country_id], claims[:id].count.as('items'))
                 .where(claims[:company_id].eq(company.id))
                 .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+                .where(claims[:canceled].eq(false))
                 .group(claims[:country_id])
                 .as('items_query')
 

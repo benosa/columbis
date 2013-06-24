@@ -36,6 +36,7 @@ module Boss
         claims.project(claims[:primary_currency_price].sum.as("amount"), claims[:id].count.as("count"), claims[:reservation_date].as("date"))
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:canceled].eq(false))
           .group(:date)
           .order(:date)
       end

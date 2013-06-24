@@ -80,52 +80,12 @@ module Boss
     end
 
     def promotionchannel
-      @channels = Claim.where(:company_id => current_company).map { |channel| channel.tourist_stat }.uniq
-      
-      @from_internet = get_channels_list("internet")
-      @from_recommendations = get_channels_list("recommendations")
-      @from_client = get_channels_list("client")
-      @from_tv = get_channels_list("tv")
-      @from_magazines = get_channels_list("magazines")
-      @from_signboard = get_channels_list("signboard")
-      
-      intervals = {
-                  values: [ @channels,
-                            @from_internet,
-                            @from_recommendations,
-                            @from_client,
-                            @from_tv,
-                            @from_magazines,
-                            @from_signboard
-                          ],
-                  names:  [ I18n.t('intervals.channels.names.default'),
-                            I18n.t('intervals.channels.names.internet'),
-                            I18n.t('intervals.channels.names.recommendations'),
-                            I18n.t('intervals.channels.names.client'),
-                            I18n.t('intervals.channels.names.tv'),
-                            I18n.t('intervals.channels.names.magazines'),
-                            I18n.t('intervals.channels.names.signboard')
-                          ]
-                }
-      @report = PromotionChannelReport.new( report_params )
-      @report.intervals = intervals
-      @report.prepare
+      @report = PromotionChannelReport.new(report_params).prepare
       @amount = @report.amount
       @count  = @report.count
-      @total  = @report.total
     end
 
     private
-    
-      def get_channels_list(type)
-        what = t('intervals.channels.values.' + type).uniq
-        ret = @channels.find_all { |channel| what.any? { |inet| channel.mb_chars.downcase.scan(inet.mb_chars.downcase).size != 0} }
-        if ret.length == 0
-          ret = what
-        end
-        @channels -= ret
-        ret
-      end
 
       def render(*args)
         options = args.extract_options!

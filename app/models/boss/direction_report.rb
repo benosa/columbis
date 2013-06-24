@@ -94,6 +94,7 @@ module Boss
           .where(payments[:payer_type].eq('Tourist'))
           .where(payments[:recipient_type].eq('Company')).where(payments[:recipient_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
+          .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
           .as('amount_query')
 
         if options.has_key?(:approved)

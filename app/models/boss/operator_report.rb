@@ -101,6 +101,7 @@ module Boss
           .where(payments[:recipient_type].eq('Operator'))
           .where(payments[:payer_type].eq('Company')).where(payments[:payer_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
+          .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
           .group(payments[:recipient_id])
           .as('amount_query')
 

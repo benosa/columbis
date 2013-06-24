@@ -30,16 +30,20 @@ ru:
     others: 'Остальные направления'
     amount: 'Сумма оплаты'
     items: 'Количество броней'
-    
+
   normalcheck_report:
     title: "Средняя стоимость путёвки по дням"
     info: "Средняя стоимость, руб."
     yaxis: "руб."
-    
+
   incraseclients_report:
     title: "Соотношение появившихся клиентов в этом месяце к появившимся в предыдущем"
     yaxis: "Соотношение"
     count_title: "Количество новых туристов в каждый месяц"
+
+  clientsbase_report:
+    amount: '%{value} выручки'
+    payer_id: '%{value} клиентов'
 
   intervals:
     names:
@@ -98,7 +102,7 @@ ru:
       repurchase:
         title: "Количество покупок от одного человека"
       clientsbase:
-        title: 'Анализ клиентской базы'
+        title: 'ABC Анализ клиентской базы'
       income:
         amount_title: 'Выручка'
         maturity_title: 'Наценка'

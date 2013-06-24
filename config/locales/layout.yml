@@ -21,7 +21,7 @@ ru:
         hotelstars: 'Количество звёзд у отеля'
         promotionchannel: 'Канал продвижения'
         repurchase: 'Количество покупок от одного человека'
-        clientsbase: 'Анализ клиентской базы'
+        clientsbase: 'ABC Анализ клиентской базы'
         income: 'Выручка'
         income_offices: 'Выручка по офисам'
         income_managers: 'Выручка по менеджерам'

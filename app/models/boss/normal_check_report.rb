@@ -23,7 +23,7 @@ module Boss
           }
         },
         series: [{
-          name: I18n.t('normalcheck_report.yaxis'),
+          name: I18n.t('normalcheck_report.info'),
           pointInterval: 7 * 24 * 3600 * 1000,
           data: data.map{ |o| [ o["date"].to_i * 1000, o["amount"]/o["count"]] }
         }]

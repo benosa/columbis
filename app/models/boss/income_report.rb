@@ -13,7 +13,7 @@ module Boss
     
     def initialize(options = {})
       super
-      @payment_type = options[:payment_type] ? options[:payment_type] : 'Company'
+      @is_maturity = options[:query_type]
     end
 
     def prepare(results = nil)
@@ -172,22 +172,31 @@ module Boss
 
     private
 
-      def timestamp_field
+      def timestamp_field(column)
         if view == 'months'
-          "EXTRACT(EPOCH FROM date_trunc('month', payments.date_in))"
+          "EXTRACT(EPOCH FROM date_trunc('month', #{column}))"
         else
-          "EXTRACT(EPOCH FROM payments.date_in)"
+          "EXTRACT(EPOCH FROM #{column})"
         end
       end
 
       def base_query
-        payments.project("#{timestamp_field} AS timestamp", payments[:amount].sum.as('amount'))
-          .where(payments[:company_id].eq(company.id))
-          .where(payments[:recipient_type].eq(@payment_type))
-          .where(payments[:approved].eq(true))
-          .where(payments[:canceled].eq(false))
-          .where(payments[:date_in].gteq(start_date))
-          .where(payments[:date_in].lteq(end_date))
+          if @is_maturity
+            query = claims.project("#{timestamp_field('claims.reservation_date')} AS timestamp", claims[:profit].sum.as('amount'))
+              .where(claims[:company_id].eq(company.id))
+              .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+              .where(claims[:canceled].eq(false))
+          else
+            query = payments.project("#{timestamp_field('payments.date_in')} AS timestamp", payments[:amount].sum.as('amount'))
+              .join(claims).on(payments[:claim_id].eq(claims[:id]))
+              .where(payments[:company_id].eq(company.id))
+              .where(payments[:recipient_type].eq('Company'))
+              .where(payments[:approved].eq(true))
+              .where(payments[:canceled].eq(false))
+              .where(payments[:date_in].gteq(start_date))
+              .where(payments[:date_in].lteq(end_date))
+          end
+          query
       end
 
       def amount_query
@@ -199,7 +208,6 @@ module Boss
 
       def offices_query
         query = base_query.project(offices[:id].as('office_id'), offices[:name].as('name'))
-          .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .join(offices).on(claims[:office_id].eq(offices[:id]))
           .group('timestamp', offices[:id])
           .order('timestamp', offices[:id])
@@ -212,7 +220,6 @@ module Boss
       def managers_query
         query = base_query.project(users[:id].as('manager_id'), users[:color].as('color'),
         "(CASE WHEN users.first_name != '' OR users.last_name != '' THEN users.first_name || ' ' || users.last_name ELSE users.login END) AS name")
-          .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .join(users).on(claims[:user_id].eq(users[:id]))
           .group('timestamp', users[:id])
           .order('timestamp', users[:id])

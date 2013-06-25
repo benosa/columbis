@@ -34,10 +34,10 @@ module Boss
     end
 
     def income
-      type = 'Company'
-      if params[:is_operator] == "true"
+      type = false
+      if params[:is_maturity] == "true"
         @title = I18n.t('boss.reports.income.maturity_title')
-        type = 'Operator'
+        type = true
       else
         @title = I18n.t('boss.reports.income.amount_title')
       end
@@ -47,7 +47,7 @@ module Boss
         view: params[:view],
         office_filter: params[:office_filter],
         manager_filter: params[:manager_filter],
-        payment_type: type
+        query_type: type
       })).prepare(@amount_factor)
       @total = @report.results[@total_factor]
       @all_offices = current_company.offices

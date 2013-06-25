@@ -30,6 +30,7 @@ module Boss
     def repurchase
       @report = RepurchaseReport.new(report_params).prepare
       @count  = @report.count
+      @total  = @report.total
     end
 
     def income

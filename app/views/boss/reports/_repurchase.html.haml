@@ -4,3 +4,21 @@
       #count_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:count, @count) } }
     .chart-right
       #count_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:count, @count) } }
+
+  .totals
+    %table.reservations.tour_operators
+      %thead
+        %tr
+          %th= I18n.t("boss.reports.repurchase.tourist")
+          %th= I18n.t("activerecord.attributes.client.first_name")
+          %th= I18n.t("activerecord.attributes.client.last_name")
+          %th= I18n.t("activerecord.attributes.client.middle_name")
+          %th= sort_link 'number', I18n.t('boss.reports.repurchase.number'), :desc
+      %tbody
+        - @total.each_with_index do |row, i|
+          %tr
+            %td= i + 1
+            %td= row['first_name']
+            %td= row['last_name']
+            %td= row['middle_name']
+            %td= row['number']

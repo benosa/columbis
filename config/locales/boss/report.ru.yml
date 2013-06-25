@@ -100,7 +100,13 @@ ru:
       promotionchannel:
         title: 'Канал продвижения'
       repurchase:
-        title: "Количество покупок от одного человека"
+        title: "Количество повторных покупок одного человека"
+        xtitle: "покупок, шт."
+        tourist: "Турист"
+        number: "Покупок"
+      repurchase_settings_menu:
+        settings: 'Настройки'
+        minim: 'Минимальное количество покупок'
       clientsbase:
         title: 'ABC Анализ клиентской базы'
       income:

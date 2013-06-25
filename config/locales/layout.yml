@@ -20,7 +20,7 @@ ru:
         tourduration: 'Длительность тура'
         hotelstars: 'Количество звёзд у отеля'
         promotionchannel: 'Канал продвижения'
-        repurchase: 'Количество покупок от одного человека'
+        repurchase: 'Анализ повторных покупок'
         clientsbase: 'ABC Анализ клиентской базы'
         income: 'Выручка'
         income_offices: 'Выручка по офисам'

@@ -3,6 +3,6 @@
 - title t('.title')
 
 - content_for :top do
-  = render partial: 'filter', locals: {show_others_label: false}
+  = render partial: 'filter', locals: {show_others_label: false, settings_menu: 'repurches_settings_menu'}
 
 = render partial: 'repurchase'

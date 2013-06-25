@@ -9,14 +9,20 @@ module Boss
     end
 
     def line_settings(data)
-      categories = data.each_with_index.map { |o| I18n.t("date.months")[o["month"] - 1] }
+      categories = data.map { |o| I18n.t("date.months")[o["month"] - 1] }
       xdata = data.map { |o| o["count"] }
       
       xdata = xdata.each_with_index.map do |x, i|
         x = i==0 ? x/x : x/xdata[i-1]
         x = x.round 2
       end
-      
+      categories = categories.each_with_index.map do |x, i|
+        x = i==0 ? x : "#{x}/#{categories[i-1]}"
+      end
+
+      categories.shift
+      xdata.shift
+
       settings = {
         chart: {
           zoomType: 'x'
@@ -44,17 +50,22 @@ module Boss
     end
     
     def bar_settings(data)
-      
       settings = {
         title: {
           text: I18n.t('incraseclients_report.count_title')
         },
         xAxis: {
-          categories: data.each_with_index.map { |o| I18n.t("date.months")[o["month"] - 1] }
+          categories: data.map { |o| I18n.t("date.months")[o["month"] - 1] },
+          labels: {
+            formatter: nil
+          }
         },
         yAxis: {
           title: {
             text: I18n.t('report.tourist_quantity')
+          },
+          stackLabels: {
+            enabled: true
           }
         },
         series: [{
@@ -63,6 +74,11 @@ module Boss
         }],
         tooltip: {
             formatter: nil
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal'
+          }
         }
       }.to_json
     end
@@ -70,15 +86,17 @@ module Boss
     private
 
       def base_query
-        tourists.project( tourists[:id].count.as("count"), "extract(month from \"tourists\".\"created_at\") as month" )
+        tourists.project( tourists[:id].count.as("count"),
+                          "extract(epoch from date_trunc('month', tourists.created_at)) as month_number",
+                          "extract(month from \"tourists\".\"created_at\") as month"
+                        )
           .where(tourists[:company_id].eq(company.id))
-          .where(tourists[:created_at].gteq(start_date).and(tourists[:created_at].lteq(end_date)))
-          .group(:month)
-          .order(:month)
+          .where(tourists[:created_at].gteq(start_date-1.month).and(tourists[:created_at].lteq(end_date)))
+          .group(:month_number, :month)
+          .order(:month_number)
       end
   end
 end
-
 
 
 

@@ -3,6 +3,6 @@
 - title t('.title')
 
 - content_for :top do
-  = render partial: 'filter', locals: {show_others_label: false}
+  = render partial: 'filter', locals: {row_count: false, show_others_label: false}
 
 = render partial: 'promotionchannel'

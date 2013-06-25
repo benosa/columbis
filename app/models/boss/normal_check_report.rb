@@ -3,19 +3,23 @@ module Boss
   class NormalCheckReport < Report
     arel_tables :claims
     available_results :count
-    
+
     def prepare(options = {})
       @results[:count]  = build_result(query: default_query,  typecast: {count: :to_f, amount: :to_f, date: :to_datetime})
       self
     end
-    
+
     def spline_settings(data)
       settings = {
+        chart: {
+          zoomType: 'x'
+        },
         title: {
           text: I18n.t('normalcheck_report.title')
         },
         xAxis: {
-          type: 'datetime'
+          type: 'datetime',
+          maxZoom: 15 * 24 * 3600000
         },
         yAxis: {
           title: {
@@ -29,9 +33,9 @@ module Boss
         }]
       }.to_json
     end
-    
+
     private
-    
+
       def default_query
         claims.project(claims[:primary_currency_price].sum.as("amount"), claims[:id].count.as("count"), claims[:reservation_date].as("date"))
           .where(claims[:company_id].eq(company.id))
@@ -40,6 +44,6 @@ module Boss
           .group(:date)
           .order(:date)
       end
-    
+
   end
 end

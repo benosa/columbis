@@ -18,11 +18,15 @@ module Boss
       end
       
       settings = {
+        chart: {
+          zoomType: 'x'
+        },
         title: {
           text: I18n.t('incraseclients_report.title')
         },
         xAxis: {
-          categories: categories
+          categories: categories,
+          maxZoom: 1 
         },
         yAxis: {
           title: {

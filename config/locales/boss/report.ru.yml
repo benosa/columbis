@@ -104,6 +104,8 @@ ru:
         xtitle: "покупок, шт."
         tourist: "Турист"
         number: "Покупок"
+      empty_settings_menu:
+        title: "Нет настроек для этого отчёта"
       repurchase_settings_menu:
         settings: 'Настройки'
         minim: 'Минимальное количество покупок'

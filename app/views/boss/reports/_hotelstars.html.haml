@@ -1,6 +1,10 @@
 .current_container
   .charts
-    .chart-left
-      #count_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(@count) } }
-    .chart-right
-      #count_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(@count) } }
+    - unless params[:show_amount] == '0'
+      .chart-left
+        - unless params[:show_bars] == '0'
+          #count_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(@count) } }
+    - unless params[:show_items] == '0'
+      .chart-right
+        - unless params[:show_pies] == '0'
+          #count_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(@count) } }

@@ -215,6 +215,31 @@
         }
       },
 
+      'funnel': {
+        chart: {
+          type: 'funnel',
+          marginRight: 100
+        },
+        title: {
+          text: 'Funnel chart'
+        },
+        plotOptions: {
+          series: {
+          	dataLabels: {
+	          enabled: true,
+	          color: 'black',
+	          format: '<b>{point.name}</b> ({point.y:,.0f})',
+	          softConnector: true
+            },
+            neckWidth: '30%',
+            neckHeight: '25%'
+          }
+        },
+        legend: {
+          enabled: false
+        }
+      },
+
       'column': {
         chart: {
           renderTo: '#default_chart',
@@ -281,6 +306,11 @@
 
     line: function(el, options) {
       this.list[el] = new Chart('line', el, options);
+      return this.list[el];
+    },
+
+    funnel: function(el, options) {
+      this.list[el] = new Chart('funnel', el, options);
       return this.list[el];
     },
 

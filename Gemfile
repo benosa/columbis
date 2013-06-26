@@ -51,7 +51,7 @@ group :assets do
   gem 'haml_assets'
   gem 'libv8', '~> 3.11.8' # workaround to avoid issues with compiled libv8
   gem 'therubyracer', '~> 0.11.0', :require => 'v8' # requires libv8
-  gem 'highcharts-rails', '~> 2.3.5'
+  gem 'highcharts-rails', '~> 3.0.0'
 end
 
 group :development do

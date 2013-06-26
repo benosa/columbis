@@ -86,6 +86,11 @@ module Boss
       @count  = @report.count
     end
 
+    def salesfunnel
+      @report = SalesFunnelReport.new(report_params).prepare
+      @count  = @report.count
+    end
+
     private
 
       def render(*args)

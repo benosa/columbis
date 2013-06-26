@@ -28,7 +28,7 @@ module Boss
     end
     
     def repurchase
-      @report = RepurchaseReport.new(report_params).prepare
+      @report = RepurchaseReport.new(report_params.merge({minim: params[:minim].to_i})).prepare
       @count  = @report.count
       @total  = @report.total
     end

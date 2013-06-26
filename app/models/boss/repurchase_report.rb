@@ -2,11 +2,16 @@ module Boss
   class RepurchaseReport < Report
     arel_tables :tourists, :payments
     available_results :count, :total
+    attribute :minim, default: 3
+
+    attr_accessible :minim
+    attr_accessible :selects
 
     def prepare(options = {})
-      minim = options[:minim] ? options[:minim] : 3
       @results[:count]  = build_result(query: count_query,  typecast: {count: :to_i})
-      @results[:total]  = build_result(query: total_query(minim),  typecast: {count: :to_i})
+      @results[:total]  = build_result(query: total_query(minim),  typecast: {count: :to_i}).sort!
+
+      @selects = @results[:count].map{|o| o["name"].to_s}
 
       self
     end

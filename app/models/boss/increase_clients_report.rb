@@ -13,11 +13,9 @@ module Boss
       xdata = data.map { |o| o["count"] }
       
       xdata = xdata.each_with_index.map do |x, i|
-        x = i==0 ? x/x : x/xdata[i-1]
-        x = x.round 2
-      end
-      categories = categories.each_with_index.map do |x, i|
-        x = i==0 ? x : "#{x}/#{categories[i-1]}"
+        xd = i==0 ? x/x : x/xdata[i-1]
+        cat = i==0 ? categories[i] : "#{categories[i]}/#{categories[i-1]}"
+        [cat, xd.round(2)]
       end
 
       categories.shift
@@ -32,7 +30,9 @@ module Boss
         },
         xAxis: {
           categories: categories,
-          maxZoom: 1 
+          maxZoom: 1,
+          tickmarkPlacement: 'on',
+          startOnTick: false
         },
         yAxis: {
           title: {
@@ -41,21 +41,27 @@ module Boss
         },
         series: [{
           name: I18n.t('incraseclients_report.yaxis'),
-          data: xdata
+          data: xdata,
+          pointStart: 0
         }],
         tooltip: {
             formatter: nil
         }
       }.to_json
     end
-    
+
     def bar_settings(data)
+      categories = data.map { |o| I18n.t("date.months")[o["month"] - 1] }
+      xdata = data.map { |o| o["count"] }
+      categories.shift
+      xdata.shift
+
       settings = {
         title: {
           text: I18n.t('incraseclients_report.count_title')
         },
         xAxis: {
-          categories: data.map { |o| I18n.t("date.months")[o["month"] - 1] },
+          categories: categories,
           labels: {
             formatter: nil
           }
@@ -70,7 +76,7 @@ module Boss
         },
         series: [{
           name: I18n.t('report.tourist_quantity'),
-          data: data.map { |o| o["count"] }
+          data: xdata
         }],
         tooltip: {
             formatter: nil

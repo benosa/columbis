@@ -14,7 +14,7 @@ class CorrectStatisticColumn < ActiveRecord::Migration
     logger = Logger.new('log/migrate_correct_statistic.log')
     logger.info(){"#{Time.zone.now}. Begin grouping all incorect statistic"}
 
-    Claim.all.each do |claim|
+    Claim.find_each(:batch_size => 500) do |claim|
 
       old_value = claim.tourist_stat
 
@@ -28,7 +28,7 @@ class CorrectStatisticColumn < ActiveRecord::Migration
           break
         end
       end
-      if claim.save
+      if claim.save(:validate => false)
         logger.info() {"correct #{claim.id}: #{old_value} => #{claim.tourist_stat}"}
       else
         logger.error() {"correct #{claim.id}: #{claim.errors.full_messages}"}

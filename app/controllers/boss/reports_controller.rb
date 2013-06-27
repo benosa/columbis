@@ -71,7 +71,7 @@ module Boss
     end
     
     def normalcheck
-      @report = NormalCheckReport.new(report_params).prepare
+      @report = NormalCheckReport.new(report_params.merge({view: params[:view]})).prepare
       @count  = @report.count
     end
     

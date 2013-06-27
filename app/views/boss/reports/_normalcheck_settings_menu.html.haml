@@ -1,0 +1,7 @@
+%ul#settings-menu.settings-menu{ title: t('.settings') }
+  %li
+    = label_tag :view, t('.view'), class: 'ik_select_label view'
+    = select_tag :view, options_for_select(Boss::IncomeReport::VIEWS.map{ |view| [t("income_report.views.#{view}"), view] }, @report.view), data: { param: 'view', filter: 1, default: 'days', event: false }
+  %li.settings-menu-buttons
+    %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
+    %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

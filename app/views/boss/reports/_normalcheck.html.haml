@@ -1,3 +1,6 @@
 .current_container
   .charts
-    #spline_bar.chart{ data: { type: 'datearea', settings: @report.spline_settings(@count) } }
+    - if @report.view == 'days'
+      #count_area.chart{ data: { type: 'datearea', settings: @report.spline_settings(@count) } }
+    - else
+      #count_clumn.chart{ data: { type: 'column', settings: @report.bar_settings(@count) } }

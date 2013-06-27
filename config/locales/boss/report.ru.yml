@@ -41,6 +41,9 @@ ru:
     info: "Средняя стоимость, руб."
     yaxis: "руб."
 
+  repurchase_report:
+    pie_title: "Процент туристов"
+
   incraseclients_report:
     title: "Прирост клиентов"
     yaxis: "Соотношение"
@@ -64,6 +67,7 @@ ru:
       magazines: "Журналы/Газеты"
       signboard: "Вывеска"
       default:  "Прочее"
+
   income_report:
     amount: 'Сумма выручки'
     margin: 'Сумма наценки'

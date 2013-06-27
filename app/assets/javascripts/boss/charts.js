@@ -108,13 +108,9 @@
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-              enabled: true,
-              color: '#000000',
-              connectorColor: '#000000',
-              formatter: function() {
-                return this.point.name + ': <b>' + this.percentage.toFixed(2) + ' %</b>';
-              }
-            }
+              enabled: false
+            },
+            showInLegend: true
           }
         }
       },

@@ -44,7 +44,7 @@ module Boss
     end
 
     def pie_settings(factor, data)
-      title = I18n.t('report.tourist_quantity')
+      title = I18n.t('.repurchase_report.pie_title')
 
       settings = {
         title: {

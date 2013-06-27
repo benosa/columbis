@@ -9,16 +9,12 @@
     %table.reservations.tour_operators
       %thead
         %tr
-          %th= I18n.t("boss.reports.repurchase.tourist")
-          %th= I18n.t("activerecord.attributes.client.first_name")
-          %th= I18n.t("activerecord.attributes.client.last_name")
-          %th= I18n.t("activerecord.attributes.client.middle_name")
+          %th= I18n.t("report.n")
+          %th= sort_link 'last_name', I18n.t("boss.reports.repurchase.tourist")
           %th= sort_link 'number', I18n.t('boss.reports.repurchase.number'), :desc
       %tbody
         - @total.each_with_index do |row, i|
           %tr
             %td= i + 1
-            %td= row['first_name']
-            %td= row['last_name']
-            %td= row['middle_name']
+            %td= "#{row['last_name']} #{row['first_name']} #{row['middle_name']}"
             %td= row['number']

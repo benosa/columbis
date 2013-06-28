@@ -83,7 +83,14 @@ module Boss
           type: 'pie',
           name: title,
           data: data.map{ |o| [o['name'], o[factor.to_s]] }
-        }]
+        }],
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              format: '{percentage:.0f}%'
+            }
+          }
+        }
       }.to_json
     end
 

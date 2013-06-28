@@ -67,12 +67,7 @@ Tourism::Application.routes.draw do
 
     resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show
-    resources :users do
-      member do
-        get :edit_password
-        put :update_password
-      end
-    end
+    resources :users
   end
 
   namespace :boss do

@@ -11,6 +11,7 @@ ru:
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
         current_password: 'Текущий пароль'
+        if_not_password: 'Если не создать пароль, то для входа будет использоваться пароль офиса. Если пароль офиса в данный момент не задан, Вам придётся создать пароль пользователя'
         remember_me: 'Запомнить меня'
         office_id: 'Офис'
         color: 'Цвет (для списков)'
@@ -35,6 +36,7 @@ ru:
       current_color: Текущий цвет
       personal_data: Личные данные
       change_password: Сменить пароль
+      create_password: Задать пароль
       screen_width: Ширина экрана
       auto: Авто
 

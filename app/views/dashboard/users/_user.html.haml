@@ -10,7 +10,5 @@
     %td= link_to t('edit'), edit_dashboard_user_path(user)
   - if can? :destroy, user
     %td= link_to t('destroy'), [:dashboard, user], :method => :delete, :confirm => t('are_you_sure')
-  - if can? :create, user
-    %td= link_to t('.reset_password'), edit_password_dashboard_user_path(user), :class => 'password_reset_form'
   - if can? :manage, user
     %td= link_to t('.sign_in_as'),  dashboard_sign_in_as_path(user)

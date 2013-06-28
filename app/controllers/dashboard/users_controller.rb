@@ -11,30 +11,16 @@ class Dashboard::UsersController < ApplicationController
     redirect_to root_path
   end
 
-  def edit_password
-    unless can? :create, User
-      redirect_to dashboard_users_url
-    end
-  end
-
-  def update_password
-    if can? :create, User
-      if @user.update_attribute(:password, params[:user][:password])
-        Mailer.registrations_info(@user).deliver
-      else
-        puts @user.errors.inspect 
-        render :edit_password
-        return
-      end
-    end
-    redirect_to dashboard_users_url
-  end
-
   def new
   end
 
   def create
     @user = User.new_by_user(params[:user], current_user)
+
+    office = Office.find_by_id(params[:user][:office_id])
+    if office.default_password.nil? and params[:user][:password].nil?
+      render :action => 'new', :errors => "Необходимо задать пароль"
+    end
     if @user.save
       Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
@@ -72,6 +58,14 @@ class Dashboard::UsersController < ApplicationController
   def update
     @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
     params[:user][:role] = @user.role
+
+    if params[:user][:password].present? && params[:user][:id] != current_user
+      if @user.update_attribute(:password, params[:user][:password])
+        Mailer.registrations_info(@user).deliver
+        params[:user].delete(:password)
+      end
+    end
+
     if @user.update_by_params(params[:user])
       redirect_to dashboard_users_url, :notice => t('users.messages.updated')
     else

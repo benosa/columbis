@@ -6,14 +6,14 @@ describe Boss::ReportsController do
   
   def create_claims(company, user)
     [
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "интернет", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "друг", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "знакомый", hotel: "1*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-07"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "турагентство", hotel: "2*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-10"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "сам увидел в инэте", hotel: "3*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-12"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "телевидение", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "газета", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20"),
-      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "сама", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20")
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Интернет", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Клиенты", hotel: "5*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-02"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Клиенты", hotel: "1*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-07"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Рекомендации", hotel: "2*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-9"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Интернет", hotel: "3*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-12"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Телевизор", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Журналы/Газеты", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20"),
+      FactoryGirl.create(:claim, company: company, user: user, tourist_stat: "Вывеска", hotel: "4*", reservation_date: Time.zone.now, arrival_date: "2013-01-01", departure_date: "2013-01-20")
     ]
   end
   
@@ -37,7 +37,7 @@ describe Boss::ReportsController do
   describe "hotel stars report" do
     it "check stars" do
       get :hotelstars
-      assigns(:count).data.map { |x| [ x["name"], x["count"] ] }.should == [ ["*", 1], ["**", 1], ["***", 1], ["****", 3], ["*****", 2] ]
+      assigns(:count).data.map { |x| [ x["name"], x["count"] ] }.should == [ ["1*", 1], ["2*", 1], ["3*", 1], ["4*", 3], ["5*", 2] ]
     end
   end
   

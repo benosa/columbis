@@ -70,7 +70,20 @@
           = f.password_field :password_confirmation, :class => 'type_user'
           %p= f.label :current_password
           = f.password_field :current_password, :class => 'type_user'
-
+  - else
+    - if can? :create, User and f.object != current_user
+      .form_block.grey_block
+        .block_title
+          - if f.object.new_record?
+            %h2= t('.create_password')
+          - else
+            %h2= t('.change_password')
+        .form_block_content
+          .fake_row.single_row
+            %p= f.label :password
+            = f.text_field :password, :class => 'type_user'
+            - if f.object.new_record?
+              %p= t('activerecord.attributes.user.if_not_password')
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

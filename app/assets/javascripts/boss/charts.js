@@ -107,15 +107,25 @@
           pie: {
             allowPointSelect: true,
             cursor: 'pointer',
+            minSize: 200,
             dataLabels: {
               enabled: true,
               connectorWidth: 0,
               distance: 5,
-              formatter: function() {
-                if (this.percentage.toFixed(0) != 0)
-                  return this.point.name.substr(0,4) + ':' + this.percentage.toFixed(0) + '%';
-                else
+              useHTML: true,
+              textMaxSymbols: 10,
+              formatter: function(options) {
+                var text = this.point.name,
+                    percent = this.percentage.toFixed(0),
+                    maxSymbols = options.textMaxSymbols;
+                if (percent != 0) {
+                  if (maxSymbols && text.length > maxSymbols) {
+                    text = text.substr(0, maxSymbols - 1) + '&hellip;';
+                  }
+                  return text + ': <b>' + percent + '%</b>';
+                } else {
                   return null;
+                }
               }
             },
             showInLegend: true

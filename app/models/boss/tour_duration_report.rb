@@ -87,7 +87,7 @@ module Boss
         plotOptions: {
           pie: {
             dataLabels: {
-              format: '{percentage:.0f}%'
+              textMaxSymbols: 11
             }
           }
         }

@@ -11,6 +11,7 @@ ru:
       default: "%d.%m %h:%m"
       short: "%d.%m %H:%M"
       long: "%d.%m.%Y %H:%M"
+      full: "%d.%m.%Y %H:%M:%S"
       short_date: "%d.%m"
 
   yep: 'Да'

@@ -213,9 +213,10 @@ module ApplicationHelper
     { ac: data }
   end
 
-  def current_zone_timestamp
+  def current_zone_datetime(only_time = false)
     # Time.zone.now.to_i == Time.now.to_i, it doesn't account zone
-    Time.parse(Time.zone.now.strftime("%Y-%m-%d %H:%M:%S")).to_i
+    format = !only_time ? "%Y.%m.%d %H:%M:%S" : "%H:%M:%S"
+    Time.zone.now.strftime(format)
   end
 
   private

@@ -1,7 +1,7 @@
 - if user_signed_in?
   %li
-    #clock.clock{ data: { timestamp: current_zone_timestamp } }
-      = Time.zone.now.strftime("%H:%M:%S")
+    #clock.clock{ data: { datetime: current_zone_datetime } }
+      = current_zone_datetime(true)
   %li
     %span
       = t('user.roles.' + current_user.role)

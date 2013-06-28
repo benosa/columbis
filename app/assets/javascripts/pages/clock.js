@@ -14,15 +14,23 @@ $(function() {
 			$.ajax({
 				url: this.url,
 				context: this,
-				success: function(timestamp) {
-					this.set_server_time(timestamp);
+				success: function(datetime) {
+					this.set_server_time(datetime);
 					this.refresh();
 				}
 			});
 		},
 
-		set_server_time: function(timestamp) {
-			this.server_time = parseInt(timestamp) * 1000;
+		// datetime format YYYY.MM.DD HH:MM:SS
+		timestamp: function(datetime) {
+			var parts = datetime.split(' '),
+					d = parts[0].split('.'),
+					t = parts[1].split(':');
+			return new Date(d[0], d[1], d[2], t[0], t[1], t[2]).getTime();
+		},
+
+		set_server_time: function(datetime) {
+			this.server_time = this.timestamp(datetime);
 			this.delta = this.server_time - new Date().getTime();
 		},
 
@@ -45,11 +53,11 @@ $(function() {
 		},
 
 		init: function() {
-			var timestamp = this.$el.data('timestamp');
-			if (!timestamp) {
+			var datetime = this.$el.data('datetime');
+			if (!datetime) {
 				this.load_time();
 			} else {
-				this.set_server_time(timestamp);
+				this.set_server_time(datetime);
 				this.refresh();
 			}
 		}

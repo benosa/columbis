@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_timestamp
-    render :text => current_zone_timestamp
+    render :text => current_zone_datetime
   end
 
   CURRENTS.each do |elem|

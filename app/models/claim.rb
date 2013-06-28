@@ -741,13 +741,13 @@ class Claim < ActiveRecord::Base
     def presence_of_applicant
       self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant #self.applicant.valid?
     end
-    
+
     def arrival_date_connot_be_greater_departure_date
-      errors.add(:arrival_date, I18n.t('activerecord.errors.messages.arrival_date')) if
-        (departure_date == nil && arrival_date != nil ) ||
-        (departure_date < arrival_date )
+      if !departure_date.nil? && (arrival_date > departure_date)
+        errors.add(:departure_date, I18n.t('activerecord.errors.messages.arrival_date'))
+      end
     end
-    
+
     def take_tour_duration
       if (arrival_date != nil) && (departure_date != nil) && (departure_date >= arrival_date)
         self.tour_duration = (departure_date - arrival_date + 1)

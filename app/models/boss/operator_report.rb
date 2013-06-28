@@ -97,7 +97,7 @@ module Boss
 
       def amount_query(options = {})
         query = payments.project(payments[:recipient_id].as('operator_id'), payments[:amount].sum.as('amount'))
-                .join(claims, Arel::Nodes::OuterJoin).on(claims[:id].eq(payments[:claim_id]))
+                .join(claims).on(claims[:id].eq(payments[:claim_id]))
                 .where(claims[:excluded_from_profit].eq(false))
                 .where(payments[:company_id].eq(company.id))
                 .where(payments[:recipient_type].eq('Operator'))

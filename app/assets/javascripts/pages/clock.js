@@ -53,13 +53,16 @@ $(function() {
 		},
 
 		init: function() {
-			var datetime = this.$el.data('datetime');
-			if (!datetime) {
-				this.load_time();
-			} else {
-				this.set_server_time(datetime);
-				this.refresh();
-			}
+			if (this.$el.length == 0) { return; }
+
+			// var datetime = this.$el.data('datetime');
+			// if (!datetime) {
+			// 	this.load_time();
+			// } else {
+			// 	this.set_server_time(datetime);
+			// 	this.refresh();
+			// }
+			this.load_time();
 		}
 	}
 

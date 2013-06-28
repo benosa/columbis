@@ -95,12 +95,7 @@ module Boss
     private
 
       def base_query
-        payments.project( 
-            payments[:payer_id],
-            payments[:amount].sum.as('amount')
-          )
-          .join(claims, Arel::Nodes::OuterJoin).on(claims[:id].eq(payments[:claim_id]))
-          .where(claims[:excluded_from_profit].eq(false))
+        payments.project( payments[:payer_id], payments[:amount].sum.as('amount') )
           .where(payments[:payer_type].eq('Tourist'))
           .where(payments[:recipient_id].eq(company.id))
           .where(payments[:recipient_type].eq('Company'))

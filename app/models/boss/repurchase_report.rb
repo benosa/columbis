@@ -62,8 +62,6 @@ module Boss
 
       def base_query
         payments.project( payments[:id].count.as('number'), payments[:payer_id].as('payer_id') )
-          .join(claims, Arel::Nodes::OuterJoin).on(claims[:id].eq(payments[:claim_id]))
-          .where(claims[:excluded_from_profit].eq(false))
           .where(payments[:payer_type].eq('Tourist'))
           .where(payments[:recipient_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))

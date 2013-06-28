@@ -117,15 +117,18 @@
               formatter: function(options) {
                 var text = this.point.name,
                     percent = this.percentage.toFixed(0),
-                    maxSymbols = options.textMaxSymbols;
-                if (percent != 0) {
-                  if (maxSymbols && text.length > maxSymbols) {
+                    maxSymbols = options.textMaxSymbols,
+                    result;
+                if (percent == 0) { return null; }
+                if (maxSymbols) {
+                  if (text.length > maxSymbols) {
                     text = text.substr(0, maxSymbols - 1) + '&hellip;';
                   }
-                  return text + ': <b>' + percent + '%</b>';
+                  result = text + ': <b>' + percent + '%</b>';
                 } else {
-                  return null;
+                  result = '<b>' + percent + '%</b>';
                 }
+                return result;
               }
             },
             showInLegend: true

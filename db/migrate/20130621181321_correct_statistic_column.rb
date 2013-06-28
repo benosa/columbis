@@ -39,7 +39,7 @@ class CorrectStatisticColumn < ActiveRecord::Migration
       logger.info() {"Replace to #{value[:name]} #{value[:stat]} times. Old values:\n#{value[:old].to_s}"}
     end
 
-    DropdownValue.where(:list => "tourist_stat").destroy_all
+    DropdownValue.where(:list => "tourist_stat").delete_all
 
     logger.close
   end

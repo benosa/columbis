@@ -8,8 +8,8 @@ FactoryGirl.define do
     association :operator
 
     check_date { 10.days.since }
-    departure_date { 5.days.since }
-    arrival_date { 15.days.since }
+    arrival_date { 5.days.since }
+    departure_date { 15.days.since }
 
     tour_price_currency 'rur'
     visa_price_currency 'rur'

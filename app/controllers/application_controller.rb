@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :"logged_as_another_user?"
 
-  before_filter :set_user_time_zone
+  around_filter :set_time_zone
 
   before_filter :check_company_office, :except => [:current_timestamp]
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
@@ -89,11 +89,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def set_user_time_zone
-    Time.zone = 'Moscow'
-    if !current_user.nil? && !current_company.time_zone.nil?
-      Time.zone = current_company.time_zone
+  def set_time_zone
+    old_time_zone = Time.zone
+    if user_signed_in? && current_company && current_company.time_zone
+      new_time_zone = ActiveSupport::TimeZone[current_company.time_zone]
     end
+    Time.zone = new_time_zone || 'Moscow'
+    yield
+  ensure
+    Time.zone = old_time_zone
   end
 
   def logged_as_another_user?

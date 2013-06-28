@@ -14,16 +14,17 @@ FactoryGirl.define do
       association :executer, factory: :admin
       status 'work'
       start_date { Time.zone.now }
-      end_date { Time.zone.now + 1.week }
 
       factory :finished_task do
         status 'finish'
         comment { Faker::Lorem.sentence }
+        end_date { Time.zone.now + 1.week }
       end
 
       factory :canceled_task do
         status 'cancel'
         comment { Faker::Lorem.sentence }
+        end_date { Time.zone.now + 1.week }
       end
     end
 

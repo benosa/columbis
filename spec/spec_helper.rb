@@ -46,6 +46,8 @@ RSpec.configure do |config|
   #Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
 
+Time.zone = 'Moscow' # Default time zone
+
 def test_sign_in(user)
   sign_in(user)
 end

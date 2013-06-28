@@ -14,24 +14,23 @@ class CorrectStatisticColumn < ActiveRecord::Migration
     logger = Logger.new('log/migrate_correct_statistic.log')
     logger.info(){"#{Time.zone.now}. Begin grouping all incorect statistic"}
 
-    Claim.find_each(:batch_size => 500) do |claim|
+    Claim.select([:id, :tourist_stat]).find_each(:batch_size => 500) do |claim|
 
       old_value = claim.tourist_stat
 
       values.each do |value|
         if  value[:name] == values[6][:name] ||
             value[:like_as].any?{|x| claim.tourist_stat.mb_chars.downcase[/#{x}/] != nil }
-          claim.tourist_stat = value[:name]
-          value[:stat] += 1
-          value[:old] << old_value
-          value[:old] = value[:old].uniq
+          if claim.update_column(:tourist_stat, value[:name])
+            logger.info() {"correct #{claim.id}: #{old_value} => #{value[:name]}"}
+            value[:stat] += 1
+            value[:old] << old_value
+            value[:old] = value[:old].uniq
+          else
+            logger.error() {"correct #{claim.id}: #{claim.errors.full_messages}"}
+          end
           break
         end
-      end
-      if claim.save(:validate => false)
-        logger.info() {"correct #{claim.id}: #{old_value} => #{claim.tourist_stat}"}
-      else
-        logger.error() {"correct #{claim.id}: #{claim.errors.full_messages}"}
       end
 
     end

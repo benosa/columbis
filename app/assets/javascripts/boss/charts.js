@@ -108,7 +108,15 @@
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-              enabled: false
+              enabled: true,
+              connectorWidth: 0,
+              distance: 5,
+              formatter: function() {
+                if (this.percentage.toFixed(0) != 0)
+                  return this.point.name.substr(0,4) + ':' + this.percentage.toFixed(0) + '%';
+                else
+                  return null;
+              }
             },
             showInLegend: true
           }

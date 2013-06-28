@@ -98,6 +98,7 @@ module Boss
           )
         .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
         .where(claims[:canceled].eq(false))
+        .where(claims[:excluded_from_profit].eq(false))
 
       end
 
@@ -108,7 +109,6 @@ module Boss
       end
 
       def amount_query
-        claims_query = base_query
         query = payments.project(payments[:claim_id], payments[:amount])
           .where(payments[:company_id].eq(company.id))
           .where(payments[:payer_type].eq('Tourist'))

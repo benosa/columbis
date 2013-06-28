@@ -35,6 +35,7 @@ module Boss
           startOnTick: false
         },
         yAxis: {
+          min: 0,
           title: {
             text: I18n.t('incraseclients_report.yaxis')
           }

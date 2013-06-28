@@ -85,7 +85,14 @@ module Boss
           type: 'pie',
           name: title,
           data: data.map{ |o| [o['name'], o[factor.to_s]] }
-        }]
+        }],
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              format: '{percentage:.0f}%'
+            }
+          }
+        }
       }.to_json
     end
 
@@ -96,6 +103,7 @@ module Boss
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:canceled].eq(false))
+          .where(claims[:excluded_from_profit].eq(false))
           .group('name', 'interval')
           .order('interval')
       end

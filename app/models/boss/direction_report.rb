@@ -92,7 +92,8 @@ module Boss
         query = payments.project(payments[:claim_id], payments[:amount])
           .where(payments[:company_id].eq(company.id))
           .where(payments[:payer_type].eq('Tourist'))
-          .where(payments[:recipient_type].eq('Company')).where(payments[:recipient_id].eq(company.id))
+          .where(payments[:recipient_type].eq('Company'))
+          .where(payments[:recipient_id].eq(company.id))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
           .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
           .as('amount_query')
@@ -103,7 +104,8 @@ module Boss
 
         claims_query = claims.project(claims[:id], claims[:country_id])
           .where(claims[:company_id].eq(company.id))
-          .where(claims[:canceled].eq(false)) # .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:excluded_from_profit].eq(false))
+          .where(claims[:canceled].eq(false))
           .as('claims_query')
 
         query = base_query.project(query[:amount].sum.as('amount'))
@@ -119,6 +121,7 @@ module Boss
                 .where(claims[:company_id].eq(company.id))
                 .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
                 .where(claims[:canceled].eq(false))
+                .where(claims[:excluded_from_profit].eq(false))
                 .group(claims[:country_id])
                 .as('items_query')
 

@@ -24,7 +24,7 @@ module Boss
 
       settings = {
         title: {
-          text: I18n.t('normalcheck_report.title')
+          text: I18n.t('normalcheck_report.column_title')
         },
         xAxis: {
           categories: categories,
@@ -87,6 +87,7 @@ module Boss
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:canceled].eq(false))
+          .where(claims[:excluded_from_profit].eq(false))
       end
 
       def default_query

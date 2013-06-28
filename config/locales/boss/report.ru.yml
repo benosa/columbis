@@ -48,7 +48,7 @@ ru:
   incraseclients_report:
     title: "Прирост клиентов"
     yaxis: "Соотношение"
-    count_title: "Количество новых туристов в каждый месяц"
+    count_title: "Количество новых туристов за каждый месяц"
 
   clientsbase_report:
     amount: '%{value} выручки'
@@ -110,7 +110,7 @@ ru:
       promotionchannel:
         title: 'Канал продвижения'
       repurchase:
-        title: "Количество повторных покупок одного человека"
+        title: "Количество повторных покупок"
         xtitle: "покупок, шт."
         tourist: "Турист"
         number: "Покупок"

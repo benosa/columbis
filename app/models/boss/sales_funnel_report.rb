@@ -34,22 +34,22 @@ module Boss
     end
 
     private
+      def base_query
+        claims.project(tourist_claims[:tourist_id].count)
+          .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
+          .where(claims[:company_id].eq(company.id))
+          .where(claims[:canceled].eq(false))
+          .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+          .where(claims[:excluded_from_profit].eq(false))
+      end
 
       def up_query
-        claims.project(tourist_claims[:tourist_id].count, "'#{I18n.t('.salesfunnel_report.up')}' as name")
-          .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
-          .where(claims[:company_id].eq(company.id))
-          .where(claims[:canceled].eq(false))
+        base_query.project("'#{I18n.t('.salesfunnel_report.up')}' as name")
           .where(claims[:closed].eq(true))
-          .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
       end
       def middle_query
-        claims.project(tourist_claims[:tourist_id].count, "'#{I18n.t('.salesfunnel_report.middle')}' as name")
-          .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
-          .where(claims[:company_id].eq(company.id))
-          .where(claims[:canceled].eq(false))
+        base_query.project("'#{I18n.t('.salesfunnel_report.middle')}' as name")
           .where(claims[:closed].eq(false))
-          .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
       end
       def down_query
         tourists.project(tourists[:id].count, "'#{I18n.t('.salesfunnel_report.down')}' as name")

@@ -1,6 +1,6 @@
 module Boss
   class ClientsBaseReport < Report
-    arel_tables :payments
+    arel_tables :payments, :claims
     available_results :count, :amount
     attribute :intervals
 
@@ -99,8 +99,11 @@ module Boss
             payments[:payer_id],
             payments[:amount].sum.as('amount')
           )
+          .join(claims, Arel::Nodes::OuterJoin).on(claims[:id].eq(payments[:claim_id]))
+          .where(claims[:excluded_from_profit].eq(false))
           .where(payments[:payer_type].eq('Tourist'))
           .where(payments[:recipient_id].eq(company.id))
+          .where(payments[:recipient_type].eq('Company'))
           .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
           .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
           .group(payments[:payer_id])

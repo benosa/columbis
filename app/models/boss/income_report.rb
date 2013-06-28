@@ -186,9 +186,11 @@ module Boss
               .where(claims[:company_id].eq(company.id))
               .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
               .where(claims[:canceled].eq(false))
+              .where(claims[:excluded_from_profit].eq(false))
           else
             query = payments.project("#{timestamp_field('payments.date_in')} AS timestamp", payments[:amount].sum.as('amount'))
               .join(claims).on(payments[:claim_id].eq(claims[:id]))
+              .where(claims[:excluded_from_profit].eq(false))
               .where(payments[:company_id].eq(company.id))
               .where(payments[:recipient_type].eq('Company'))
               .where(payments[:approved].eq(true))

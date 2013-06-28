@@ -144,6 +144,11 @@ body {
     span { margin-left: 0; }
     .clock { font-size: 1.3em; margin-top: 1px; }
   }
+
+  .low_resolution & {
+    li:first-child { height: 33px; padding: 15px 21px 0 10px; }
+    li span { background: url(/assets/new_design/images/user_ico.png) left bottom no-repeat; }
+  }
 }
 
 /*.user_panel li:first-child span { height: 38px; padding-top: 10px; background-position: left center; vertical-align: middle; }*/

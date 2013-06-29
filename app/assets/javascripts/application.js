@@ -22,6 +22,3 @@
 //= require claims
 //= require dashboard
 //= require offline
-//= require widgets
-//= require highcharts
-//= require highcharts/modules/funnel

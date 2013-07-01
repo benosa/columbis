@@ -1,6 +1,6 @@
 - if user_signed_in?
   %li
-    #clock.clock{ data: { datetime: current_zone_datetime } }
+    #clock.clock{ data: { datetime: current_zone_datetime, zone: Time.zone.to_s } }
       = current_zone_datetime(true)
   %li
     %span

@@ -921,14 +921,32 @@ label.checkbox {
   max-width: none;
 }
 
-.tooltip.error_message {
-  .tooltip-arrow {
-    border-top-color: #CD6A6A;
+.tooltip {
+  &.white {
+    opacity: 1 !important; filter: alpha(opacity=1) !important;
+    width: auto;
+    max-width: 400px;
+
+    .tooltip-arrow {
+      border-bottom-color: #999 !important;
+    }
+    .tooltip-inner {
+      background-color: #FFF;
+      border: 1px solid #999;
+      color: #222;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+    }
   }
-  .tooltip-inner {
-    background-color: #FCE8E9;
-    border: 1px solid #cd6a6a;
-    color: #990000;
+
+  &.error_message {
+    .tooltip-arrow {
+      border-top-color: #CD6A6A !important;
+    }
+    .tooltip-inner {
+      background-color: #FCE8E9;
+      border: 1px solid #cd6a6a;
+      color: #990000;
+    }
   }
 }
 

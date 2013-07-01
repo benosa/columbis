@@ -34,10 +34,14 @@ $(function() {
 			this.delta = this.server_time - new Date().getTime();
 		},
 
-		render: function() {
+		text: function(format) {
 			var timestamp = new Date().getTime() + this.delta,
-					text = Globalize.format(new Date(timestamp), this.format);
-			this.$el.html(text);
+					text = Globalize.format(new Date(timestamp), format || this.format);
+			return text;
+		},
+
+		render: function() {
+			this.$el.html(this.text());
 		},
 
 		set_timers: function() {
@@ -52,6 +56,25 @@ $(function() {
 			this.set_timers();
 		},
 
+		set_tooltip: function () {
+		  var options = {
+		    template: '<div class="tooltip white clock_tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+		    placement: 'bottom',
+		    container: 'body',
+		    animation: false,
+		    trigger: 'manual',
+		    html: true
+		  };
+		  this.$el.tooltip(options);
+		  this.$el.on('mouseenter', function(e) {
+		  	var	title = Clock.text('dd.MM.yyyy HH:mm') + '<br/> ' + Clock.$el.data('zone');
+		  	$(this).attr('data-original-title', title);
+	      $(this).tooltip('show');
+	    }).on('mouseout', function(e) {
+	      $(this).tooltip('hide');
+	    });
+		},
+
 		init: function() {
 			if (this.$el.length == 0) { return; }
 
@@ -63,6 +86,7 @@ $(function() {
 			// 	this.refresh();
 			// }
 			this.load_time();
+			this.set_tooltip();
 		}
 	}
 

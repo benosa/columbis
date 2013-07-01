@@ -19,7 +19,7 @@ class Dashboard::UsersController < ApplicationController
 
     office = Office.find_by_id(params[:user][:office_id])
     if office.default_password.nil? and params[:user][:password].nil?
-      render :action => 'new', :errors => "Необходимо задать пароль"
+      render :action => 'new', :errors => t('users.messages.need_password')
     end
     if @user.save
       Mailer.registrations_info(@user).deliver

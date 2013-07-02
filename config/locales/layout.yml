@@ -8,6 +8,7 @@ ru:
       addresses: 'Адреса'
       catalogs: 'Каталоги'
       operators: 'Туроператоры'
+      cities: 'Города'
       airlines: 'Авиалинии'
       fullscreen: 'На весь экран'
       fullscreen_cancel: 'Закрыть полный экран'

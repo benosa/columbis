@@ -10,7 +10,20 @@ class City < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => [:region_id, :company_id]
 
+  default_scope :order => :name
+
+  define_index do
+    indexes :name, :sortable => true
+    indexes country.name, as: :country_name, :sortable => true 
+    set_property :delta => true
+  end
+
   local_data :id, :name, :attributes => false, :scope => :local_data_scope
+
+  sphinx_scope(:by_name) { { :order => :name } }
+  default_sphinx_scope :by_name
+
+  extend SearchAndSort
 
   def self.local_data_scope
     c = ApplicationController.current

@@ -1,0 +1,16 @@
+- content_for(:error_messages) do
+  = f.error_messages
+
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p= f.label :name
+        = f.text_field :name, :class => 'website'
+        %p= f.label :country_id, t('.country')
+        = f.text_field :country_id, :class => 'website'
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

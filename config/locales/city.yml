@@ -1,0 +1,16 @@
+ru:
+  cities:
+    index:
+      title: 'Города'
+      new_city: 'Добавить город'
+    form:
+      common: 'Общие данные'
+      country: 'Страна'
+    list:
+      name: 'Название города'
+      country: 'Страна'
+
+    messages:
+      destroyed: 'Город удалён'
+      updated: 'Город обновлён'
+      created: 'Город создан'

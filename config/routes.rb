@@ -37,6 +37,7 @@ Tourism::Application.routes.draw do
     end
   end
 
+  resources :cities
   resources :payments
   resources :operators do
     match ':id' => :edit, :constraints => {:id => /\d+/}, :on => :collection, :via => :get

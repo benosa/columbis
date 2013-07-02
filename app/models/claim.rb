@@ -768,18 +768,21 @@ class Claim < ActiveRecord::Base
     end
 
     def presence_of_applicant
-      # self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant #self.applicant.valid?
-      tourist_i18n_key = 'activerecord.attributes.tourist'
-      messages_i18n_key = 'activerecord.errors.messages'
-      unless self.applicant.valid?
-        self.applicant.errors.each do |atr, message|
-          attr_i18n = I18n.t("#{tourist_i18n_key}.#{atr}")
-          self.errors.add(:applicant, "#{attr_i18n} #{message}")
+      # errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong'))
+      unless applicant
+        errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong'))
+      else
+        tourist_i18n_key = 'activerecord.attributes.tourist'
+        messages_i18n_key = 'activerecord.errors.messages'
+        unless applicant.valid?
+          applicant.errors.each do |atr, message|
+            errors.add(:applicant, "#{Tourist.human_attribute_name(atr)} #{message}")
+          end
         end
-      end
-      if new_record?
-        self.errors.add(:applicant, "#{I18n.t("#{tourist_i18n_key}.phone_number")} #{I18n.t("#{messages_i18n_key}.blank")}") if self.applicant.phone_number.blank?
-        self.errors.add(:applicant, "#{I18n.t("#{tourist_i18n_key}.address")} #{I18n.t("#{messages_i18n_key}.blank")}") if self.applicant.address.blank?
+        if new_record? && applicant.address.joint_address.blank?
+          applicant.errors.add(:address, I18n.t("errors.messages.blank"))
+          errors.add(:applicant, "#{Tourist.human_attribute_name(:address)} #{I18n.t("errors.messages.blank")}")
+        end
       end
     end
 

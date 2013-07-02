@@ -662,6 +662,7 @@ $(function(){
     });
     if($row.hasClass('applicant')) {
       $row.find('.phone_number').val(data.phone_number);
+      $row.find('.email').val(data.email);
       $row.find('.address').val(data.address);
     }
     $row.find('.hidden_id').val(data.id);

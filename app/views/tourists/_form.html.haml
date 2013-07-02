@@ -22,6 +22,8 @@
         = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(f.object.passport_valid_until, :format => :long)
         %p= f.label :phone_number
         = f.text_field :phone_number, :class => 'wide'
+        %p= f.label :email
+        = f.text_field :email, :class => 'wide'
         %p
           = f.check_box :potential, id: 'tourist_potential'
           = f.label :potential, :class => 'checkbox right_checkbox', id: 'tourist_potential'

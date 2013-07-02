@@ -3,39 +3,29 @@
     %h2= t('.tourists')
   .form_block_content
     .fake_table
-      - if small_width?
-        %span.fio= t('.full_name')
-        %span.dob= t('.date_of_birth')
-        %span.passport= t('.passport')
-        %span.expires= t('.passport_expire')
-        %span.tel= t('.phone')
-        %span.tourist_address= t('.address')
-      - elsif medium_width?
-        %span.fio= t('.full_name')
-        %span.dob= t('.date_of_birth')
-        %span.passport= t('.passport')
-        %span.expires= t('.passport_expire')
+      %span.fio= t('.full_name')
+      %span.dob= t('.date_of_birth')
+      %span.passport= t('.passport')
+      %span.expires= t('.passport_expire')
 
     = f.fields_for :applicant_attributes, @claim.applicant do |af|
       .fake_row.applicant.fields
-        - if small_width?
-          / %p= t('.tourists_full_name_hint') + ':'
-          %span.common_fields
-            = render :partial => 'tourist', :locals => { :f => af }
+        %p= t('.tourists_full_name_hint') + ':'
+        %span.common_fields
+          = render :partial => 'tourist', :locals => { :f => af }
+          = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
 
-          = af.text_field :phone_number, :class => 'phone_number phone'
-          = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
-          = link_to '', '#', :class => 'delete', :id => "del1"
-        - else
-          %p= t('.tourists_full_name_hint') + ':'
-          %span.common_fields
-            = render :partial => 'tourist', :locals => { :f => af }
-            = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
+        .additional_fields
+          .phone_number_col
+            %p= af.label :phone_number, t('.phone') + ':', :required => false
+            = af.text_field :phone_number, :class => 'phone_number phone'
+          .email_col
+            %p= af.label :email, t('.email') + ':', :required => false
+            = af.text_field :email, :class => 'email'
+          .address_col
+            %p= af.label :address, t('.address') + ':', :class => 'address_label'
+            = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
 
-          = af.label :phone_number, t('.phone') + ':'
-          = af.text_field :phone_number, :class => 'phone_number phone'
-          = af.label :address, t('.address') + ':', :class => 'address_label'
-          = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
         = af.hidden_field :id, :class => 'hidden_id'
 
     - ind = 0

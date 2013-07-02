@@ -1,5 +1,5 @@
 collection @tourists, :root => false, :object_root => false
-attributes :id, :passport_series, :passport_number, :phone_number
+attributes :id, :passport_series, :passport_number, :phone_number, :email
 node(:value) { |t| t.full_name }
 node(:label) { |t| t.full_name }
 node(:date_of_birth) { |t| t.date_of_birth.try(:strftime, '%d.%m.%Y') }

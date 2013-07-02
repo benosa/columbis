@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130621181321) do
+ActiveRecord::Schema.define(:version => 20130702202037) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20130621181321) do
     t.integer "region_id"
     t.integer "company_id"
     t.boolean "common",     :default => false
+    t.boolean "delta",      :default => true,  :null => false
   end
 
   add_index "cities", ["common"], :name => "index_cities_on_common"
@@ -114,8 +115,8 @@ ActiveRecord::Schema.define(:version => 20130621181321) do
     t.boolean  "delta",                                                              :default => true
     t.float    "operator_advance",                                                   :default => 0.0,            :null => false
     t.string   "operator_paid"
-    t.float    "profit",                                                             :default => 0.0,            :null => false
-    t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
+    t.float    "profit_acc",                                                         :default => 0.0,            :null => false
+    t.float    "profit_in_percent_acc",                                              :default => 0.0,            :null => false
     t.string   "transfer"
     t.string   "relocation"
     t.string   "service_class"
@@ -147,6 +148,8 @@ ActiveRecord::Schema.define(:version => 20130621181321) do
     t.boolean  "active",                                                             :default => true,           :null => false
     t.boolean  "excluded_from_profit",                                               :default => false,          :null => false
     t.integer  "tour_duration"
+    t.float    "profit",                                                             :default => 0.0,            :null => false
+    t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -343,6 +346,7 @@ ActiveRecord::Schema.define(:version => 20130621181321) do
     t.integer  "company_id"
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
+    t.string   "email"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

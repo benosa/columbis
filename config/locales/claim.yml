@@ -123,6 +123,7 @@ ru:
       phone: 'Телефон'
       address: 'Адрес'
       add_another_tourist: 'Добавить туриста'
+      email: 'Адрес эл. почты'
 
     flights:
       flights: 'Вылеты'
@@ -282,6 +283,7 @@ ru:
         passport_series: 'Основной турист: Сериия паспорта'
         passport_number: 'Основной турист: Номер паспорта'
         passport_valid_until: 'Основной турист: Действителен до'
+        email: 'Основной турист: Адрес эл. почты'
       claim/dependents:
         full_name: 'Турист:'
         last_name: 'Турист: Фамилия'
@@ -290,6 +292,7 @@ ru:
         passport_series: 'Турист: Сериия паспорта'
         passport_number: 'Турист: Номер паспорта'
         passport_valid_until: 'Турист: Действителен до'
+        email: 'Турист: Адрес эл. почты'
       claim/payments_in:
         currency: 'Оплата туристом: Валюта'
         date_in: 'Оплата туристом: Дата оплаты'

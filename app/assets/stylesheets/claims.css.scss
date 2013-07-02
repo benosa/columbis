@@ -377,6 +377,18 @@ option {
     .block_title { @include blue_block_title; }
   }
 
+  .additional_fields {
+    .phone_number_col { float: left; width: 106px;
+      .phone_number { width: 94px !important; }
+    }
+    .email_col { float: left; width: 140px; margin-left: 15px;
+      .email { width: 128px !important; }
+    }
+    .address_col { margin-left: 278px;
+      .address_label { margin-left: 0px !important; }
+    }
+  }
+
 }
 
 /* low_resolution */
@@ -461,7 +473,9 @@ option {
       .delete { float: right; margin: 4px 10px 0 0; }
     }
 
-    .name { width: 205px; }
+    .name { width: 500px; }
+    .fio { width: 506px !important; }
+    .address { width: 600px; }
     .city, .hotel { width: 230px; }
     .meals { width: 150px; }
     .placement { width: 190px; }

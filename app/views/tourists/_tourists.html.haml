@@ -10,6 +10,7 @@
     %th.date_of_birth
       = sort_link(:date_of_birth, Tourist.human_attribute_name(:date_of_birth))
     %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
+    %th.email= sort_link(:email, t('.email'))
     %th.address
       = sort_link(:joint_address, t('.address'))
     %th.actions
@@ -29,6 +30,8 @@
         %p= l(tourist.date_of_birth, :format => :long)
       %td
         %span= tourist.phone_number
+      %td
+        %span= tourist.email
       %td
         %p= tourist.address.try(:joint_address)
       %td

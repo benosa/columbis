@@ -13,6 +13,7 @@ ru:
         passport_valid_until: "Действителен до"
         date_of_birth: "Дата рождения"
         potential: "Потенциальный клиент"
+        email: 'Адрес электронной почты'
 
   tourists:
     index:
@@ -26,6 +27,7 @@ ru:
       passport: 'Паспорт'
       passport_series: 'Серия паспорта'
       passport_number: 'Номер паспорта'
+      email: 'Email'
     show:
       tourists: 'Список туристов'
     edit:
@@ -38,6 +40,7 @@ ru:
       common: 'Общие данные'
       passport: 'Паспорт (серия, номер)'
       address: 'Адрес'
+      email: 'Email'
 
     messages:
       created: 'Турист создан'

@@ -2,7 +2,7 @@
 class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
-                  :date_of_birth, :phone_number, :potential,
+                  :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes
 
   attr_protected :company_id
@@ -16,8 +16,10 @@ class Tourist < ActiveRecord::Base
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
 
-  validates_presence_of :company_id, :date_of_birth, :passport_series, :passport_number, :passport_valid_until
+  validates_presence_of :company_id
   validate :presence_of_full_name
+  validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until, :phone_number, on: :create
+  validates :email, email: true, presence: { on: :create }
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)
@@ -27,7 +29,7 @@ class Tourist < ActiveRecord::Base
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
-    indexes :phone_number, :sortable => true
+    indexes :phone_number, :email, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :passport_series
     has :passport_number

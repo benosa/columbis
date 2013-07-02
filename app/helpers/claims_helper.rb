@@ -174,4 +174,16 @@ module ClaimsHelper
     is_admin? or is_boss?
   end
 
+  def profit_tooltip(claim)
+    pcs = CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
+    ocs = CurrencyCourse.currency_symbol(claim.operator_price_currency)
+    tooltip = claim.profit.to_money + pcs
+    tooltip += ' = ' + claim.primary_currency_price.to_money + pcs
+    tooltip += ' - ' + claim.primary_currency_operator_price.to_money + pcs
+    if claim.operator_price_currency != CurrencyCourse::PRIMARY_CURRENCY
+      tooltip += ' (' + claim.operator_price.to_f.to_money + ocs + '*' + claim["course_#{claim.operator_price_currency}"].to_s + ')'
+    end
+    tooltip
+  end
+
 end

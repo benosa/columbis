@@ -16,8 +16,7 @@ class Tourist < ActiveRecord::Base
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
 
-  # validates_presence_of :first_name, :last_name, :company_id
-  validates_presence_of :company_id
+  validates_presence_of :company_id, :date_of_birth, :passport_series, :passport_number, :passport_valid_until
   validate :presence_of_full_name
 
   scope :clients, where(:potential => false)

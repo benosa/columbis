@@ -71,7 +71,8 @@ class Claim < ActiveRecord::Base
   #                       :tour_price, :hotel, :meals, :medical_insurance,
   #                       :placement, :transfer, :service_class, :relocation
 
-  # validates_presence_of :operator_confirmation, :operator_maturity, :if => Proc.new { |claim| claim.operator_confirmation_flag }
+  validates_presence_of :operator_confirmation, :if => Proc.new { |claim| claim.operator_confirmation_flag }
+  validates_presence_of :operator_maturity, :if => Proc.new { |claim| claim.operator_price.to_f > 0 }
 
   [:tour_price_currency, :visa_price_currency, :insurance_price_currency, :additional_insurance_price_currency, :fuel_tax_price_currency, :operator_price_currency].each do |a|
     # validates_presence_of a
@@ -478,6 +479,10 @@ class Claim < ActiveRecord::Base
     data
   end
 
+  def primary_currency_operator_price
+    @primary_currency_operator_price ||= self.operator_price.to_f * (course(self.operator_price_currency) || 1)
+  end
+
   private
 
     def self.to_js_type(column_type)
@@ -585,22 +590,8 @@ class Claim < ActiveRecord::Base
       self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
       self.tourist_paid = create_paid_string(:in)
 
-      # profit amount available only full payment
-      if approved_operator_advance_prim >= operator_price.to_f
-
-        self.profit = primary_currency_price - approved_operator_advance
-
-        self.profit_in_percent =
-          begin
-            perc = approved_operator_advance / 100
-            perc > 0 ? profit/perc : 0
-          rescue
-            0
-          end
-      else
-        self.profit = 0
-        self.profit_in_percent = 0
-      end
+      self.profit, self.profit_in_percent = calculate_profit
+      self.profit_acc, self.profit_in_percent_acc = calculate_profit_acc
     end
 
     def update_active
@@ -632,6 +623,44 @@ class Claim < ActiveRecord::Base
         total += send(f).to_f * count * course(send(f + '_currency')) if (count > 0)
       end
       (sum_price + total).round
+    end
+
+    # Profit for managment accounting
+    def calculate_profit
+      if primary_currency_operator_price > 1
+        profit = primary_currency_price - primary_currency_operator_price
+        profit_in_percent =
+          begin
+            perc = primary_currency_operator_price / 100
+            perc > 0 ? profit/perc : 0
+          rescue
+            0
+          end
+      else
+        profit = 0
+        profit_in_percent = 0
+      end
+      [profit, profit_in_percent]
+    end
+
+    # Profit for accounting, it's available only after full payment
+    def calculate_profit_acc
+      if approved_operator_advance_prim >= operator_price.to_f
+
+        profit_acc = primary_currency_price - approved_operator_advance
+
+        profit_in_percent_acc =
+          begin
+            perc = approved_operator_advance / 100
+            perc > 0 ? profit_acc/perc : 0
+          rescue
+            0
+          end
+      else
+        profit_acc = 0
+        profit_in_percent_acc = 0
+      end
+      [profit_acc, profit_in_percent_acc]
     end
 
     def course(curr)
@@ -739,7 +768,19 @@ class Claim < ActiveRecord::Base
     end
 
     def presence_of_applicant
-      self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant #self.applicant.valid?
+      # self.errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong')) unless self.applicant #self.applicant.valid?
+      tourist_i18n_key = 'activerecord.attributes.tourist'
+      messages_i18n_key = 'activerecord.errors.messages'
+      unless self.applicant.valid?
+        self.applicant.errors.each do |atr, message|
+          attr_i18n = I18n.t("#{tourist_i18n_key}.#{atr}")
+          self.errors.add(:applicant, "#{attr_i18n} #{message}")
+        end
+      end
+      if new_record?
+        self.errors.add(:applicant, "#{I18n.t("#{tourist_i18n_key}.phone_number")} #{I18n.t("#{messages_i18n_key}.blank")}") if self.applicant.phone_number.blank?
+        self.errors.add(:applicant, "#{I18n.t("#{tourist_i18n_key}.address")} #{I18n.t("#{messages_i18n_key}.blank")}") if self.applicant.address.blank?
+      end
     end
 
     def arrival_date_connot_be_greater_departure_date

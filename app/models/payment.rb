@@ -35,7 +35,7 @@ class Payment < ActiveRecord::Base
 
     def fill_fields
       # we also store amount in primary currency
-      crs = reversed_course ? (1 / course) : course
+      crs = reversed_course ? (course != 0 ? 1 / course : 0) : course
       self.amount_prim = (crs * amount).round(2)
       self.description = amount.amount_in_words(currency).mb_chars.capitalize.to_s
     end

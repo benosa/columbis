@@ -278,10 +278,18 @@ ru:
         full_name: 'Основной турист:'
         last_name: 'Основной турист: Фамилия'
         first_name: 'Основной турист: Имя'
+        date_of_birth: 'Основной турист: Дата рождения'
+        passport_series: 'Основной турист: Сериия паспорта'
+        passport_number: 'Основной турист: Номер паспорта'
+        passport_valid_until: 'Основной турист: Действителен до'
       claim/dependents:
         full_name: 'Турист:'
         last_name: 'Турист: Фамилия'
         first_name: 'Турист: Имя'
+        date_of_birth: 'Турист: Дата рождения'
+        passport_series: 'Турист: Сериия паспорта'
+        passport_number: 'Турист: Номер паспорта'
+        passport_valid_until: 'Турист: Действителен до'
       claim/payments_in:
         currency: 'Оплата туристом: Валюта'
         date_in: 'Оплата туристом: Дата оплаты'

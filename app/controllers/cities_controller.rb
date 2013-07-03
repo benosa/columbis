@@ -21,8 +21,7 @@ class CitiesController < ApplicationController
   end
 
   def create
-    @city.company = current_company
-    if @city.save
+    if @city.save_with_dropdown_lists(params[:city])
       redirect_to cities_path, :notice => t('cities.messages.created')
     else
       render :action => 'new'
@@ -33,8 +32,7 @@ class CitiesController < ApplicationController
   end
 
   def update
-    @city.company ||= current_company
-    if @city.update_attributes(params[:city])
+    if @city.save_with_dropdown_lists(params[:city])
       redirect_to cities_path, :notice => t('cities.messages.updated')
     else
       render :action => 'edit'

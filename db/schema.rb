@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130621181321) do
+ActiveRecord::Schema.define(:version => 20130702090030) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20130621181321) do
     t.integer "region_id"
     t.integer "company_id"
     t.boolean "common",     :default => false
+    t.boolean "delta",      :default => true,  :null => false
   end
 
   add_index "cities", ["common"], :name => "index_cities_on_common"

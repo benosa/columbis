@@ -10,7 +10,8 @@
         %p= f.label :name
         = f.text_field :name, :class => 'website'
         %p= f.label :country_id, t('.country')
-        = f.text_field :country_id, :class => 'website'
+        = f.fields_for :country, @city.country do |cf|
+          = cf.text_field :name, :class => 'autocomplete country', :data => { :id => @city.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

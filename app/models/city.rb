@@ -14,7 +14,7 @@ class City < ActiveRecord::Base
 
   define_index do
     indexes :name, :sortable => true
-    indexes country.name, as: :country_name, :sortable => true 
+    indexes country(:name), :as => :country, :sortable => true
     set_property :delta => true
   end
 
@@ -35,4 +35,23 @@ class City < ActiveRecord::Base
     end
   end
 
+  def save_with_dropdown_lists(params)
+    c = ApplicationController.current
+    company_id = c.current_company
+    country_name = params[:country][:name].strip rescue ''
+    unless country_name.blank?
+      conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+      Country.create({
+        :name => country_name,
+        :company_id => company_id
+      }) unless Country.where(conds).count > 0
+      self.country = Country.where(conds).first
+    end
+
+    unless self.errors.any?
+      self.save
+    else
+      false
+    end
+  end
 end

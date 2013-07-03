@@ -287,6 +287,7 @@ option {
     opacity: 1; filter: alpha(opacity=1);
     width: auto;
     max-width: 400px;
+    &.docs_note { max-width: none; min-width: 250px; }
 
     .tooltip-arrow {
       border-bottom-color: #999;
@@ -388,7 +389,7 @@ option {
       .address_label { margin-left: 0px !important; }
     }
   }
-
+  .docs_note { height: auto !important; min-height: 150px; }
 }
 
 /* low_resolution */

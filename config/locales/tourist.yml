@@ -17,7 +17,7 @@ ru:
 
   tourists:
     index:
-      tourists: 'Туристы'
+      tourists: 'Клиенты'
       add_tourist: 'Добавить туриста'
       clients: 'Клиенты'
       potential_clients: 'Потенциальные клиенты'

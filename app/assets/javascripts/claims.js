@@ -209,6 +209,10 @@ function set_claims_tooltip(init) {
   };
   $('#claims td[title], #claims td span[title]').each(function() {
     if (!$(this).hasClass('with_tooltip')) {
+      if ($(this).is('.docs_note')) {
+        options.template = '<div class="tooltip claims_tooltip docs_note"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
+        options.placement = 'left';
+      }
       $(this).tooltip(options).addClass('with_tooltip');
     }
   });

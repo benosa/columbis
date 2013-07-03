@@ -82,13 +82,8 @@
                 %li= link_to t('.potentials'), tourists_path(:potential => true)
                 %li= link_to t('.addresses'), addresses_path
                 %li= link_to t('.catalogs'), catalogs_path
-          %li{ :class => (params[:controller] == 'tourists' && params[:potential].blank?) && 'active' }
-            = link_to t('.tourists'), tourists_path
-          -#
-            %li= link_to 'Симки', '#'
-            %li= link_to 'Агентства', '#'
-          %li{ :class => (params[:controller] == 'tourists' && params[:potential].present?) && 'active' }
-            = link_to t('.potentials'), tourists_path(:potential => true)
+          %li{ :class => params[:controller] == 'tourists' && 'active' }
+            = link_to t('.clients'), tourists_path
           - if user_signed_in? && %w[admin boss].include?(current_user.role)
             -# %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
             %li.dropdown

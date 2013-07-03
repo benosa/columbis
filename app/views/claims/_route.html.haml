@@ -36,15 +36,14 @@
         %p= f.label :hotel
         = f.text_field :hotel, :class => 'autocomplete hotel color_select', data: ac_data(source: dropdown_autocomplete_claims_path('hotel')), :not_highlighted => true
       .two_line
-        %p= f.label :meals
-        = f.text_field :meals, :class => 'autocomplete meals food_select', data: ac_data(source: dropdown_autocomplete_claims_path('meals')), :not_highlighted => true
-      .two_line
         %p= f.label :placement
-        = f.text_field :placement, :class => 'autocomplete placement placement_select', data: ac_data(source: dropdown_autocomplete_claims_path('placement')), :not_highlighted => true
+        = f.select :placement, current_company.dropdown_values_for('placement'), { prompt: '' }, :class => 'placement_select'
+      .two_line
+        %p= f.label :meals
+        = f.select :meals, current_company.dropdown_values_for('meals'), { prompt: '' }, :class => 'food_select'
       .two_line
         %p= f.label :medical_insurance
-        = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {},
-            :class => 'editable-select medical_insurance_select', :not_highlighted => true
+        = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), { prompt: '' }, :class => 'medical_insurance_select'
       .two_line
         %p= f.label :nights
         = f.select :nights, (1..30).to_a, {}, :class => 'editable-select nights_select'

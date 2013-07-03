@@ -192,7 +192,8 @@ ru:
     errors:
       messages:
         blank_or_wrong: 'заполнен с ошибками'
-        departure_date: 'не может быть больше даты заезда'
+        cant_be_greater_departure_date: 'не может быть больше даты заезда'
+        is_selected_from_existing: 'должен быть выбран из существующих'
     attributes:
       claim:
         user_id: 'Менеджер'

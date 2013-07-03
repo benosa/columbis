@@ -80,7 +80,7 @@ class Claim < ActiveRecord::Base
   end
 
   validate :presence_of_applicant
-  validate :arrival_date_connot_be_greater_departure_date
+  validate :arrival_date_cant_be_greater_departure_date
 
   # before_validation :update_tourists
   before_validation :update_payments
@@ -719,9 +719,11 @@ class Claim < ActiveRecord::Base
       company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
       if claim_params[:operator_id].blank?
-        company.operators.create({ :name => claim_params[:operator] }) unless
-          company.operators.find_by_name(claim_params[:operator])
+        # Only boss can add operator and only from list
+        # company.operators.create({ :name => claim_params[:operator] }) unless
+        #   company.operators.find_by_name(claim_params[:operator])
         self.operator = company.operators.find_by_name(claim_params[:operator])
+        check_operator_correctness(claim_params[:operator])
       else
         self.operator_id = claim_params[:operator_id]
       end
@@ -786,10 +788,14 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def arrival_date_connot_be_greater_departure_date
+    def arrival_date_cant_be_greater_departure_date
       if !departure_date.nil? && (arrival_date > departure_date)
-        errors.add(:departure_date, I18n.t('activerecord.errors.messages.arrival_date'))
+        errors.add(:departure_date, :cant_be_greater_departure_date)
       end
+    end
+
+    def check_operator_correctness(operator_param)
+      errors.add(:operator_id, :is_selected_from_existing) if operator.nil? && operator_param.present?
     end
 
     def take_tour_duration

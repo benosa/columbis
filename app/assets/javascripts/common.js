@@ -290,6 +290,10 @@ function setAutocomplete(selector, is_container, options) {
     if ($h.length) {
       $t.on('autocompleteselect', function(event, ui) {
         $('#' + $(this).attr('id') + '_id').val(ui.item.id);
+      }).on('blur', function() {
+        if (!$(this).val().length) {
+          $('#' + $(this).attr('id') + '_id').val('');
+        }
       });
     }
 

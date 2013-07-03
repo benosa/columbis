@@ -744,12 +744,14 @@ class Claim < ActiveRecord::Base
 
       country_name = claim_params[:country][:name].strip rescue ''
       unless country_name.blank?
-        conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
-        Country.create({
-          :name => country_name,
-          :company_id => company_id
-        }) unless Country.where(conds).count > 0
-        self.country = Country.where(conds).first
+        # conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+        # Country.create({
+        #   :name => country_name,
+        #   :company_id => company_id
+        # }) unless Country.where(conds).count > 0
+        # self.country = Country.where(conds).first
+        self.country = Country.where(common: true, name: country_name).first
+        check_country_correctness(country_name)
       end
 
       resort_name = claim_params[:resort][:name].strip rescue ''
@@ -798,6 +800,10 @@ class Claim < ActiveRecord::Base
 
     def check_operator_correctness(operator_param)
       errors.add(:operator_id, :is_selected_from_existing) if operator.nil? && operator_param.present?
+    end
+
+    def check_country_correctness(country_name)
+      errors.add(:country_id, :is_selected_from_existing) if country.nil? && country_name.present?
     end
 
     def take_tour_duration

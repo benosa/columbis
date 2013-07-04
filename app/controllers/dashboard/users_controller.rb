@@ -15,13 +15,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new_by_user(params[:user], current_user)
-
-    office = Office.find_by_id(params[:user][:office_id])
-    if office.default_password.nil? and params[:user][:password].nil?
-      render :action => 'new', :errors => t('users.messages.need_password')
-    end
-    if @user.save
+    if @user.create_new(params[:user].merge(:company_id => current_user.company))
       Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else
@@ -56,9 +50,6 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def update
-    @user.role = params[:user][:role] if current_user.available_roles.include?(params[:user][:role])
-    params[:user][:role] = @user.role
-
     if params[:user][:password].present? && params[:user][:id] != current_user
       if @user.update_attribute(:password, params[:user][:password])
         Mailer.registrations_info(@user).deliver

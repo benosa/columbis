@@ -80,6 +80,9 @@ class User < ActiveRecord::Base
   end
 
   def update_by_params(params = {})
+    self.role = params[:role] if available_roles.include?(params[:role])
+    params[:role] = self.role
+
     if params[:password].present?
       update_with_password(params)
     else
@@ -94,12 +97,19 @@ class User < ActiveRecord::Base
     super(params)
   end
 
-  def self.new_by_user(params, user)
-    @user = User.new(params)
-    @user.company = user.company
-    @user.role = params[:role] if user.available_roles.include?(params[:role])
-    @user.password = @user.office.try(:default_password) if @user.password.blank?
-    @user
+  def create_new(params)
+    self.role = params[:role] if available_roles.include?(params[:role])
+    office = Office.where(:id => params[:office_id]).first
+    self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
+    self.password_confirmation = self.password
+    if self.password.blank?
+      errors.add(:password, I18n.t('users.messages.need_password'))
+      false
+    else
+      params.delete(:role)
+      params.delete(:password)
+      self.save(params)
+    end
   end
 
   private

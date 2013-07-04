@@ -83,7 +83,7 @@
             %p= f.label :password
             = f.text_field :password, :class => 'type_user'
             - if f.object.new_record?
-              %p= t('activerecord.attributes.user.if_not_password')
+              %p= t('.if_not_password')
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

@@ -81,7 +81,7 @@
         .form_block_content
           .fake_row.single_row
             %p= f.label :password
-            = f.text_field :password, :class => 'type_user'
+            = f.password_field :password, :class => 'type_user'
             - if f.object.new_record?
               %p= t('.if_not_password')
 

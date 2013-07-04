@@ -11,10 +11,15 @@ class City < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => [:region_id, :company_id]
 
   default_scope :order => :name
+  scope :with_country_columns, ->(apply_includes = false) do
+    country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
+    scope = joins("LEFT JOIN countries ON countries.id = cities.country_id").
+    select(['cities.*'] + country_columns)
+  end
 
   define_index do
     indexes :name, :sortable => true
-    indexes country(:name), :as => :country, :sortable => true
+    indexes country(:name), :as => :country_name, :sortable => true
     set_property :delta => true
   end
 
@@ -35,15 +40,13 @@ class City < ActiveRecord::Base
     end
   end
 
-  def save_with_dropdown_lists(params)
-    c = ApplicationController.current
-    company_id = c.current_company
+  def save_with_dropdown_lists(company, params)
     country_name = params[:country][:name].strip rescue ''
     unless country_name.blank?
-      conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+      conds = ['(common = ? OR company_id = ?) AND name = ?', true, company, country_name]
       Country.create({
         :name => country_name,
-        :company_id => company_id
+        :company_id => company
       }) unless Country.where(conds).count > 0
       self.country = Country.where(conds).first
     end

@@ -2,7 +2,7 @@
   %table.reservations.tour_operators
     %tr
       %th= sort_link(:name, t('.name'), :default)
-      %th= sort_link(:country, t('.country'))
+      %th= sort_link(:country_name, t('.country'))
       %th.actions
         %span= t('actions')
 
@@ -11,7 +11,7 @@
         %td
           %p= city.name
         %td
-          %p= city.country.try(:name)
+          %p= city.country_name
         %td
           = link_to '', edit_city_path(city), :class => 'edit_row', :title => t('edit'), id: "edit_city_#{city.id}"
           = link_to '', city, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{city.id}"

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.12'
+gem 'rails', '~> 3.2.13'
 gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
 gem 'unicorn', '~> 4.5.0'
@@ -66,7 +66,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request', '~> 0.2.1'
-  gem 'rack-mini-profiler', '~> 0.1.23'
+  # gem 'rack-mini-profiler', '~> 0.1.23'
   gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing for state_machine
 end
 

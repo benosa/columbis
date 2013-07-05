@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731184347) do
+ActiveRecord::Schema.define(:version => 20130702225246) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -67,7 +67,10 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.integer  "operator_id"
     t.string   "operator_confirmation"
     t.string   "visa",                                                               :default => "nothing_done", :null => false
+    t.string   "airport_to"
     t.string   "airport_back"
+    t.string   "flight_to"
+    t.string   "flight_back"
     t.date     "visa_check"
     t.float    "tour_price",                                                         :default => 0.0
     t.float    "visa_price",                                                         :default => 0.0
@@ -77,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.float    "primary_currency_price",                                             :default => 0.0
     t.float    "course_usd",                                                         :default => 0.0
     t.string   "tour_price_currency",                                                                            :null => false
+    t.string   "airline"
     t.integer  "visa_count"
     t.string   "meals"
     t.string   "placement"
@@ -136,15 +140,16 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.string   "tourist_stat"
     t.float    "approved_operator_advance_prim",                                     :default => 0.0,            :null => false
     t.integer  "company_id"
+    t.datetime "arrive_to"
+    t.datetime "arrive_back"
     t.integer  "assistant_id"
     t.decimal  "bonus",                               :precision => 15, :scale => 2, :default => 0.0,            :null => false
     t.decimal  "bonus_percent",                       :precision => 5,  :scale => 2, :default => 0.0,            :null => false
     t.boolean  "active",                                                             :default => true,           :null => false
     t.boolean  "excluded_from_profit",                                               :default => false,          :null => false
+    t.integer  "tour_duration"
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
-    t.integer  "tour_duration"
-    t.string   "airline"
   end
 
   create_table "companies", :force => true do |t|
@@ -170,7 +175,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.string  "name"
     t.integer "company_id"
     t.boolean "common",     :default => false
-    t.boolean "delta",      :default => true,  :null => false
   end
 
   add_index "countries", ["common"], :name => "index_countries_on_common"
@@ -215,18 +219,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
 
   add_index "dropdown_values", ["list"], :name => "index_dropdown_values_on_list"
   add_index "dropdown_values", ["value"], :name => "index_dropdown_values_on_value"
-
-  create_table "flights", :force => true do |t|
-    t.string   "airline"
-    t.string   "airport_from"
-    t.string   "airport_to"
-    t.string   "flight_number"
-    t.datetime "depart"
-    t.datetime "arrive"
-    t.integer  "claim_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
 
   create_table "item_fields", :force => true do |t|
     t.integer  "catalog_id"
@@ -308,7 +300,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.integer "country_id"
     t.string  "template"
     t.string  "mode"
-    t.boolean "delta",      :default => true, :null => false
   end
 
   create_table "regions", :force => true do |t|
@@ -318,37 +309,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
 
   add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
   add_index "regions", ["name"], :name => "index_regions_on_name"
-
-  create_table "sms_groups", :force => true do |t|
-    t.integer  "company_id"
-    t.string   "name"
-    t.integer  "contact_count"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  create_table "sms_sendings", :force => true do |t|
-    t.integer  "company_id"
-    t.datetime "send_an"
-    t.string   "signature"
-    t.integer  "contact_group_id"
-    t.string   "content"
-    t.integer  "count"
-    t.integer  "status_id"
-    t.boolean  "sending_priority"
-    t.integer  "user_id"
-    t.integer  "delivered_count"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
-  create_table "sms_touristgroups", :force => true do |t|
-    t.integer  "tourist_id"
-    t.integer  "sms_group_id"
-    t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
 
   create_table "tasks", :force => true do |t|
     t.integer  "user_id"
@@ -387,8 +347,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
     t.string   "email"
-    t.text     "note"
-    t.boolean  "special_offer",        :default => false
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

@@ -37,10 +37,10 @@ class City < ActiveRecord::Base
   def self.local_data_scope
     c = ApplicationController.current
     if c.can? :read, City
-    	self.joins(:city_companies).where(:city_companies => { :company_id => c.current_company }) \
+      self.joins(:city_companies).where(:city_companies => { :company_id => c.current_company }) \
           .select('cities.id, cities.name').group('cities.id, cities.name')
     else
-    	self.where("1 = 0")
+      self.where("1 = 0")
     end
   end
 

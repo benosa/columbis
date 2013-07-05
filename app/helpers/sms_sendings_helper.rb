@@ -1,0 +1,2 @@
+module SmsSendingsHelper
+end

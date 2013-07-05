@@ -1,6 +1,9 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  resources :sms_sendings
+
+
   match 'amount_in_word' => 'application#amount_in_word'
   match 'get_currency_course' => 'application#get_currency_course'
   match 'current_timestamp' => "application#current_timestamp"

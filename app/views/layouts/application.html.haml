@@ -112,6 +112,7 @@
                 %li= link_to t('.reports.increaseclients'), boss_reports_path(:increaseclients)
                 %li= link_to t('.reports.salesfunnel'), boss_reports_path(:salesfunnel)
           %li= link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'
+		  %li= link_to 'SMS-рассылки', sms_sendings_path
 
         - if view_switcher?
           .type
@@ -123,7 +124,12 @@
                 = t('claims.index.accountant_list')
 
       .clear
-
+      
+      .navigation
+        - if content_for? :navigation
+          = yield :navigation
+      .clear
+      
       .wrapper
         #content.content
           = render 'shared/messages'

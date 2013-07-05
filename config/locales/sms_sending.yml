@@ -1,0 +1,13 @@
+ru:
+  activerecord:
+    attributes:
+      sms_sending:
+
+  sms_sendings:
+    index:
+      sms_sendings: 'SMS-рассылка'
+      contacts_and_groups: 'Контакты и группы'
+      invoices: 'Счета'
+      add_balance: 'Пополнить баланс'
+      statistics: 'Статистика'
+      settings: 'Настройки'

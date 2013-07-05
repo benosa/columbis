@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(:version => 20130717171639) do
     t.integer "region_id"
     t.integer "company_id"
     t.boolean "common",     :default => false
-    t.boolean "delta",      :default => true,  :null => false
   end
 
   add_index "cities", ["common"], :name => "index_cities_on_common"
@@ -169,6 +168,20 @@ ActiveRecord::Schema.define(:version => 20130717171639) do
     t.string   "site"
     t.string   "inn"
     t.string   "time_zone"
+  end
+
+  create_table "contact_group_clients", :force => true do |t|
+    t.integer  "client_id"
+    t.integer  "contact_group_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "contact_groups", :force => true do |t|
+    t.text     "name"
+    t.integer  "company_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "countries", :force => true do |t|
@@ -311,6 +324,21 @@ ActiveRecord::Schema.define(:version => 20130717171639) do
 
   add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
   add_index "regions", ["name"], :name => "index_regions_on_name"
+
+  create_table "sms", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "message"
+    t.string   "sender_name"
+    t.datetime "sсheduled_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "sms_contacts", :force => true do |t|
+    t.integer "sms_id"
+    t.string  "entity_type"
+    t.integer "entity_id"
+  end
 
   create_table "tasks", :force => true do |t|
     t.integer  "user_id"

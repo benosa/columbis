@@ -40,14 +40,5 @@ FactoryGirl.define do
         user.office  = FactoryGirl.create(:office, company: user.company)
       end
     end
-
-    factory :abcd_user do
-      email       'a@a.com'
-      login       'b_user'
-      first_name  'c'
-      last_name   'c'
-      role        'd_role'
-    end
   end
-
 end

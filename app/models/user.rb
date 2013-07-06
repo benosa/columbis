@@ -102,14 +102,9 @@ class User < ActiveRecord::Base
     office = Office.where(:id => params[:office_id]).first
     self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
     self.password_confirmation = self.password
-    if self.password.blank?
-      errors.add(:password, I18n.t('users.messages.need_password'))
-      false
-    else
-      params.delete(:role)
-      params.delete(:password)
-      self.save(params)
-    end
+    params.delete(:role)
+    params.delete(:password)
+    self.save(params)
   end
 
   private

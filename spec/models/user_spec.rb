@@ -23,12 +23,14 @@ describe User do
       it { should validate_presence_of :role }
       it { should validate_presence_of :last_name }
       it { should validate_presence_of :first_name }
+      it { should validate_presence_of :password }
     end
     context "when invalid admin" do
       subject { FactoryGirl.build(:admin) }
       it { should_not allow_value(nil).for(:login) }
       it { should_not allow_value(nil).for(:last_name) }
       it { should_not allow_value(nil).for(:first_name) }
+      it { should_not allow_value(nil).for(:password) }
     end
   end
 end

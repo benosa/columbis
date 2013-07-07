@@ -10,7 +10,7 @@
       %tr{ :class => cycle('odd', 'even'), id: "city_#{city.id}" }
         %td
           %p= city.name
-        %td
+        %td{:style => "width:250px"}
           %p= city.country_name
         %td
           = link_to '', edit_city_path(city), :class => 'edit_row', :title => t('edit'), id: "edit_city_#{city.id}"

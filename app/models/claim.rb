@@ -158,8 +158,11 @@ class Claim < ActiveRecord::Base
       applicant.assign_attributes(attributes)
       address = applicant.address || applicant.build_address(company_id: company_id)
       address.joint_address = joint_address if address
-      self.applicant = applicant
+    else
+      applicant = Tourist.new
+      applicant.company = company
     end
+    self.applicant = applicant
   end
 
   def dependents_attributes=(attributes_hash)
@@ -633,8 +636,7 @@ class Claim < ActiveRecord::Base
         profit = primary_currency_price - primary_currency_operator_price
         profit_in_percent =
           begin
-            perc = primary_currency_operator_price / 100
-            perc > 0 ? profit/perc : 0
+            primary_currency_price > 0 ? profit / primary_currency_price * 100 : 0
           rescue
             0
           end
@@ -653,8 +655,7 @@ class Claim < ActiveRecord::Base
 
         profit_in_percent_acc =
           begin
-            perc = approved_operator_advance / 100
-            perc > 0 ? profit_acc/perc : 0
+            primary_currency_price > 0 ? profit_acc / primary_currency_price * 100 : 0
           rescue
             0
           end
@@ -775,17 +776,21 @@ class Claim < ActiveRecord::Base
 
     def presence_of_applicant
       # errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong'))
-      unless applicant
-        errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong'))
-      else
-        tourist_i18n_key = 'activerecord.attributes.tourist'
-        messages_i18n_key = 'activerecord.errors.messages'
+
+      if applicant.invalid? && applicant.errors[:full_name]
+        errors.add(:applicant, "#{applicant.errors[:full_name].join}")
+      end
+
+      # TODO: It is temporary solution to avoid errors for old records
+      validate_date = Date.parse('01.07.2013')
+      if new_record? || self.reservation_date >= validate_date
         unless applicant.valid?
           applicant.errors.each do |atr, message|
+            next if atr == :full_name
             errors.add(:applicant, "#{Tourist.human_attribute_name(atr)} #{message}")
           end
         end
-        if new_record? && applicant.address.joint_address.blank?
+        unless applicant.address && applicant.address.joint_address.present?
           applicant.errors.add(:address, I18n.t("errors.messages.blank"))
           errors.add(:applicant, "#{Tourist.human_attribute_name(:address)} #{I18n.t("errors.messages.blank")}")
         end

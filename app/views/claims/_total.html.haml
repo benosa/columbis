@@ -5,7 +5,7 @@
   %td
   %td= as_money(total.approved_operator_advance)
   %td= as_money(total.profit)
-  %td= total.profit_in_percent.to_percent
+  %td= (total.profit / total.primary_currency_price * 100).to_percent
   - if is_admin? or is_boss?
     %td
     %td= as_money(total.bonus)

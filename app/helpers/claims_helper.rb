@@ -186,4 +186,12 @@ module ClaimsHelper
     tooltip
   end
 
+  def profit_in_percent_tooltip(claim)
+    pcs = CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
+    tooltip = claim.profit_in_percent.to_percent + '%'
+    tooltip += ' = ' + claim.profit.to_money + pcs
+    tooltip += ' / ' + claim.primary_currency_price.to_money + pcs
+    tooltip += ' * 100%'
+  end
+
 end

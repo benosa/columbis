@@ -17,7 +17,6 @@ class ClaimsController < ApplicationController
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
     if search_or_sort? # Last search was restored from session
       # remover any sql order by reorder(nil), because there are might be composed columns
-      Rails.logger.debug "search_options: #{search_options}"
       @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables)).reorder(nil)
       @claims = Claim.sort_by_search_results(@claims_collection)
     else
@@ -243,7 +242,7 @@ class ClaimsController < ApplicationController
         SELECT sum(approved_tourist_advance) as approved_tourist_advance,
                sum(approved_operator_advance) as approved_operator_advance,
                sum(profit) as profit,
-               avg(profit_in_percent) as profit_in_percent,
+               sum(primary_currency_price) as primary_currency_price
                sum(bonus) as bonus,
                max(reservation_date) as reservation_date,
                EXTRACT(MONTH FROM reservation_date) as month,

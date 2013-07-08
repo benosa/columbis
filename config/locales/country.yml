@@ -3,6 +3,7 @@ ru:
     index:
       title: 'Страны'
       new_country: 'Добавить страну'
+      availability: 'Область видимости'
     new:
       new_country: 'Добавить страну'
     edit:
@@ -19,3 +20,8 @@ ru:
       destroyed: 'Страна удалена'
       updated: 'Страна обновлена'
       created: 'Страна создана'
+
+  country_availabilities:
+    all: 'все'
+    own: 'собственные'
+    open: 'общие'

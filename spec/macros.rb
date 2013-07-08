@@ -14,7 +14,6 @@ module Macros
   def create_users_with_company_and_office(factory = :user, count = 2)
     company = FactoryGirl.create(:company)
     office = FactoryGirl.create(:office, company: company)
-    FactoryGirl.create(factory, company: company, office: office)
     users = []
     count.times { users << FactoryGirl.create(factory, company: company, office: office) }
     users

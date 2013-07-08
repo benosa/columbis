@@ -9,4 +9,8 @@ module CountriesHelper
     country ? Region.select([:id, :name]).where(:country_id => country).all.map{ |o| [o.name, o.id] } : []
   end
 
+  def availability_filter_options
+  	Country::AVAILABILITIES.map{ |st| [ t("country_availabilities.#{st}"), st ] }
+  end
+
 end

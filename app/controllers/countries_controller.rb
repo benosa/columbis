@@ -5,7 +5,11 @@ class CountriesController < ApplicationController
     @countries =
       if search_or_sort?
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Country))
-        search_paginate(Country.search_and_sort(options), options)
+        search_paginate(
+          Country
+            .search_and_sort(options)
+            .what_available(params[:availability], current_company),
+          options)
       else
         Country.accessible_by(current_ability).paginate(:page => params[:page], :per_page => per_page)
       end

@@ -37,6 +37,7 @@ Tourism::Application.routes.draw do
     end
   end
 
+  resources :countries
   resources :cities
   resources :payments
   resources :operators do

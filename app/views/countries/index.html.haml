@@ -1,0 +1,15 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.title')
+
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_country'), new_country_path, :class => 'add_operator'
+

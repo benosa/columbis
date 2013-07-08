@@ -1,0 +1,12 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel edit_operator' }
+
+- title t('.new_country')
+
+= form_for @country do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }

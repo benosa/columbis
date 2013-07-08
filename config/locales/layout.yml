@@ -9,6 +9,7 @@ ru:
       catalogs: 'Каталоги'
       operators: 'Туроператоры'
       cities: 'Города'
+      countries: 'Страны'
       airlines: 'Авиалинии'
       fullscreen: 'На весь экран'
       fullscreen_cancel: 'Закрыть полный экран'

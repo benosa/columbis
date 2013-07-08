@@ -1,0 +1,17 @@
+.current_container
+  %table.reservations.tour_operators{:style => "width:550px"}
+    %tr
+      %th= sort_link(:name, t('.name'), :default)
+      %th.actions
+        %span= t('actions')
+
+    - for country in @countries
+      %tr{ :class => cycle('odd', 'even'), id: "country#{country.id}" }
+        %td{:style => "width:500px"}
+          %p= country.name
+        %td{:style => "width:50px"}
+          = link_to '', edit_country_path(country), :class => 'edit_row', :title => t('edit'), id: "edit_country_#{country.id}"
+          = link_to '', country, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{country.id}"
+
+  %div{:style => "clear:left"}
+    = render :partial => 'shared/pagination', :locals => { :collection => @countries }

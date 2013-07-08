@@ -1,10 +1,8 @@
 ru:
   countries:
     index:
-      countries: 'Страны'
+      title: 'Страны'
       new_country: 'Добавить страну'
-      name: 'Название'
-      memo: 'Для памятки'
     new:
       new_country: 'Добавить страну'
     edit:
@@ -12,9 +10,12 @@ ru:
     show:
       name: 'Название'
       country: 'Страна'
+    form:
+      common: 'Общие данные'
+    list:
+      name:  'Название страны'
 
-  activerecord:
-    attributes:
-      country:
-        name: 'Название'
-        memo: 'Название для памятки(латиницей)'
+    messages:
+      destroyed: 'Страна удалена'
+      updated: 'Страна обновлена'
+      created: 'Страна создана'

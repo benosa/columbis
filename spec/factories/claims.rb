@@ -7,8 +7,9 @@ FactoryGirl.define do
     association :applicant, factory: :tourist
     association :operator
 
-    check_date { 10.days.since }
-    arrival_date { 5.days.since }
+    reservation_date { Date.today }
+    check_date { 5.days.since }
+    arrival_date { 10.days.since }
     departure_date { 15.days.since }
 
     tour_price_currency 'rur'

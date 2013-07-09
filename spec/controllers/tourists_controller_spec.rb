@@ -25,7 +25,7 @@ describe TouristsController do
 
   describe 'POST create' do
     def do_tourist
-      post :create, :tourist => {:first_name => 'Billy', :last_name => 'G!' }
+      post :create, :tourist => FactoryGirl.build(:tourist).attributes
     end
 
     it 'should redirect to tourists/show.html' do

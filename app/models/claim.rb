@@ -783,7 +783,7 @@ class Claim < ActiveRecord::Base
 
       # TODO: It is temporary solution to avoid errors for old records
       validate_date = Date.parse('01.07.2013')
-      if new_record? || self.reservation_date >= validate_date
+      if new_record? || reservation_date.nil? || reservation_date >= validate_date
         unless applicant.valid?
           applicant.errors.each do |atr, message|
             next if atr == :full_name
@@ -798,7 +798,7 @@ class Claim < ActiveRecord::Base
     end
 
     def arrival_date_cant_be_greater_departure_date
-      if !departure_date.nil? && (arrival_date > departure_date)
+      if !arrival_date.nil? && !departure_date.nil? && (arrival_date > departure_date)
         errors.add(:departure_date, :cant_be_greater_departure_date)
       end
     end

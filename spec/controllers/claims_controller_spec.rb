@@ -9,7 +9,7 @@ describe ClaimsController do
     @city = FactoryGirl.create(:city)
 
     @company = FactoryGirl.create(:company)
-    @applicant = FactoryGirl.create(:applicant, company_id: @company.id)
+    @applicant = FactoryGirl.create(:applicant, company_id: @company.id, address: FactoryGirl.create(:address))
     @operator = FactoryGirl.create(:operator)
     stub_current_company(@company)
     stub_current_office(@office)
@@ -51,8 +51,8 @@ describe ClaimsController do
   describe 'POST create' do
     def do_claim
       post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14, 
-        office_id: @office.id, applicant_attributes: @applicant.attributes, operator_id: @operator.id, arrival_date: Time.zone.now + 14,
-        operator_price_currency: "rur", tour_price_currency: "rur" }
+        office_id: @office.id, applicant_attributes: @applicant.attributes.merge(address:  @applicant.address.joint_address),
+        operator_id: @operator.id, arrival_date: Time.zone.now + 14, operator_price_currency: "rur", tour_price_currency: "rur" }
     end
 
     it 'should redirect to claim edit' do

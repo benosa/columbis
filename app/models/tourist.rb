@@ -19,9 +19,9 @@ class Tourist < ActiveRecord::Base
   validates_presence_of :company_id
   validate :presence_of_full_name
   validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until, :phone_number,
-    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= '01.07.2013'} # TODO: It is temporary solution to avoid errors for old records
+    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= Date.parse('01.07.2013')} # TODO: It is temporary solution to avoid errors for old records
   validates :email, email: true, presence: true,
-    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= '01.07.2013'}
+    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= Date.parse('01.07.2013')}
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)

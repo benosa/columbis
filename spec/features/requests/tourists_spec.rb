@@ -35,11 +35,12 @@ describe "Tourist:", js: true do
         end
       end
 
-      context "when invalid attribute values" do
+      context "when valid attribute values" do
         it "should create an tourist, redirect to operators_path" do
           expect {
-            fill_in "tourist[last_name]", with: "TEST"
-            fill_in "tourist[first_name]", with: "test"
+            tourist_attrs.each do |atr, value|
+              fill_in "tourist[#{atr}]", with: value
+            end
             page.click_link I18n.t('save')
           }.to change(Tourist, :count).by(1)
           page.current_path.should eq(tourists_path)
@@ -49,13 +50,14 @@ describe "Tourist:", js: true do
       context "create tourist potential" do
         it "should create an tourist potential" do
           expect {
-            fill_in "tourist[last_name]", with: "TEST potential"
-            fill_in "tourist[first_name]", with: "TEST potential"
-            find('label[for=tourist_potential]').click
+            tourist_attrs.each do |atr, value|
+              fill_in "tourist[#{atr}]", with: value
+            end
+            find('label[for=tourist_potential]').trigger('click')
             page.click_link I18n.t('save')
           }.to change(Tourist, :count).by(1)
           page.current_path.should eq(tourists_path)
-          tourist = Tourist.find_by_last_name('TEST potential')
+          tourist = Tourist.find_by_last_name(tourist_attrs[:last_name])
           page.click_link('clients_potential')
           page.find("#tourist-#{tourist.id}").visible?.should be_true
         end
@@ -64,7 +66,7 @@ describe "Tourist:", js: true do
   end
 
 
-  describe "update tourist" do 
+  describe "update tourist" do
     let(:tourist) { create(:tourist) }
     #before(:all) {self.use_transactional_fixtures = false}
 
@@ -105,7 +107,7 @@ describe "Tourist:", js: true do
     end
   end
 
-  describe "delete tourist" do 
+  describe "delete tourist" do
     let(:tourist) { create(:tourist) }
     before do
       tourist

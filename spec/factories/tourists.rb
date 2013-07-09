@@ -12,6 +12,7 @@ FactoryGirl.define do
     passport_number '145623'
     passport_valid_until '20.10.11'
     date_of_birth '12.12.12'
+    email 'ivan.ivanov@test.mail.com'
   end
   
   factory :applicant, :class => Tourist do
@@ -26,5 +27,6 @@ FactoryGirl.define do
     passport_number '195963'
     passport_valid_until '20.10.11'
     date_of_birth '12.12.12'
+    email 'ivan.pohodov@test.mail.com'
   end
 end

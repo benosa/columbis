@@ -32,7 +32,7 @@ class CountriesController < ApplicationController
   end
 
   def update
-    if @country.save(params[:country])
+    if @country.update_attributes(params[:country])
       redirect_to countries_path, :notice => t('countries.messages.updated')
     else
       render :action => 'edit'

@@ -33,7 +33,7 @@ class CitiesController < ApplicationController
   end
 
   def update
-    if @city.save_with_dropdown_lists(current_company, params[:city])
+    if @city.update_with_dropdown_lists(current_company, params[:city])
       redirect_to cities_path, :notice => t('cities.messages.updated')
     else
       render :action => 'edit'

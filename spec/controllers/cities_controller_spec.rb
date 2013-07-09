@@ -1,147 +1,306 @@
 # -*- encoding : utf-8 -*-
-# require 'spec_helper'
+require 'spec_helper'
 
-# describe CitiesController do
-#   def create_city
-#     @city = Factory(:city)
-#   end
+describe CitiesController do
+  def create_testing_data
+  	@company_one = FactoryGirl.create(:company)
+  	@company_two = FactoryGirl.create(:company)
+  	3.times { FactoryGirl.create(:city, :company_id => @company_one.id) }
+  	3.times { FactoryGirl.create(:city, :company_id => @company_two.id) }
+  	3.times { FactoryGirl.create(:open_city) }
+  	@admin      = FactoryGirl.create(:admin, :company_id => @company_one.id)
+  	@boss       = FactoryGirl.create(:boss, :company_id => @company_one.id)
+  	@manager    = FactoryGirl.create(:manager, :company_id => @company_one.id)
+  	@accountant = FactoryGirl.create(:accountant, :company_id => @company_one.id)
+  end
 
-#   before (:each) do
-#     create_city
-#   end
+  before { create_testing_data }
 
-#   describe 'GET index' do
-#     def do_get
-#       get :index
-#     end
+  describe "GET index" do
 
-#     it 'should be successful' do
-#       do_get
-#       response.should be_success
-#     end
+    it "if user - admin then count = 9" do
+      test_sign_in(@admin)
+      get :index
+      assigns(:cities).length.should == 9
+    end
 
-#     it 'should find all cities' do
-#       do_get
-#       assigns[:cities].size.should > 0
-#     end
+    it "if user - boss, manager or accountant then count = 6" do
+      test_users = [@boss, @manager, @accountant]
+      test_users.each do |user|
+        test_sign_in(user)
+        get :index
+        assigns(:cities).length.should == 6
+      end
+    end
+  end
 
-#     it 'should render cities/index.html' do
-#       do_get
-#       response.should render_template('index')
-#     end
-#   end
+  describe "GET show" do
 
-#   describe 'GET new' do
-#     def do_get
-#       get :new
-#     end
+    describe "his company city" do
+      before do
+        @city = City.where(:company_id => @company_one.id).first
+      end
+      it "by all users should be true" do
+        test_users = [@boss, @admin, @manager, @accountant]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :show, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('show')
+        end
+      end
+    end
 
-#     before (:each) do
-#       do_get
-#     end
+    describe "not his company city" do
+      before do
+        @city = City.where(:company_id => @company_two.id).first
+      end
+      it "by admin should be true" do
+        test_users = [@admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :show, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('show')
+        end
+      end
+      it "by boss, manager or accountant should be false" do
+        test_users = [@manager, @accountant, @boss]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :show, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#     it 'should render cities/new' do
-#       response.should render_template('new')
-#     end
+    describe "open cities" do
+      before do
+        @city = City.where(:company_id => nil).first
+      end
+      it "by all users should be true" do
+        test_users = [@boss, @admin, @manager, @accountant]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :show, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('show')
+        end
+      end
+    end
+  end
 
-#     it 'should be successful' do
-#       response.should be_success
-#     end
-#   end
+  describe "GET new" do
 
-#   describe 'POST create' do
-#     def do_city
-#       post :create, :city => {:name => 'city'}
-#     end
+    describe "his company city" do
+      before do
+        @city = City.where(:company_id => @company_one.id).first
+      end
+      it "by admin and boss should be true" do
+        test_users = [@boss, @admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('new')
+        end
+      end
+      it "by manager or accountant should be false" do
+        test_users = [@manager, @accountant]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#     it 'should redirect to cities/show.html' do
-#       do_city
-#       response.should redirect_to(cities_path)
-#     end
+    describe "not his company city" do
+      before do
+        @city = City.where(:company_id => @company_two.id).first
+      end
+      it "by admin should be true" do
+        test_users = [@admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('new')
+        end
+      end
+      it "by boss, manager or accountant should be false" do
+        test_users = [@manager, @accountant, @boss]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#     it 'should change city count up by 1' do
-#       lambda { do_city }.should change{ City.count }.by(1)
-#     end
-#   end
+    describe "open cities" do
+      before do
+        @city = City.where(:company_id => nil).first
+      end
+      it "by admin should be true" do
+        test_users = [@admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('new')
+        end
+      end
+      it "by boss, manager or accountant should be false" do
+        test_users = [@manager, @accountant, @boss]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :new, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#   describe 'GET edit' do
-#     def do_get
-#       get :edit, :id => @city.id
-#     end
+  end
 
-#     before (:each) do
-#       do_get
-#     end
+  describe "GET edit" do
 
-#     it 'should render cities/edit' do
-#       response.should render_template('edit')
-#     end
+    describe "his company city" do
+      before do
+        @city = City.where(:company_id => @company_one.id).first
+      end
+      it "by admin and boss should be true" do
+        test_users = [@boss, @admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('edit')
+        end
+      end
+      it "by manager or accountant should be false" do
+        test_users = [@manager, @accountant]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#     it 'should be successful' do
-#       response.should be_success
-#     end
+    describe "not his company city" do
+      before do
+        @city = City.where(:company_id => @company_two.id).first
+      end
+      it "by admin should be true" do
+        test_users = [@admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('edit')
+        end
+      end
+      it "by boss, manager or accountant should be false" do
+        test_users = [@manager, @accountant, @boss]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
 
-#     it 'should find right city' do
-#       assigns[:city].id.should == @city.id
-#     end
-#   end
+    describe "open cities" do
+      before do
+        @city = City.where(:company_id => nil).first
+      end
+      it "by admin should be true" do
+        test_users = [@admin]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should respond_with :success
+          should assign_to(:city)
+          response.should render_template('edit')
+        end
+      end
+      it "by boss, manager or accountant should be false" do
+        test_users = [@manager, @accountant, @boss]
+        test_users.each do |user|
+          test_sign_in(user)
+          get :edit, :id => @city.id
+          should_not respond_with :success
+        end
+      end
+    end
+  end
 
-#   describe 'PUT update' do
-#     def do_put
-#       put :update, :id => @city.id, :city => {:name => 'first'}
-#     end
+  describe "POST create" do
+    before do
+      test_sign_in @boss
+    end
 
-#     before(:each) do
-#       do_put
-#     end
+    def post_create
+      post :create, :city => { :name => 'Russia', :company_id => @boss.company_id, :common => false }
+    end
 
-#     it 'should change city name' do
-#       assigns[:city].name.should == 'first'
-#     end
+    it 'should redirect to cities list' do
+      post_create
+      response.should redirect_to(cities_path)
+    end
 
-#     it 'should redirect to cities/show.html' do
-#       response.should redirect_to cities_path
-#     end
-#   end
+    it 'should change tourists count up by 1' do
+      expect { post_create }.to change{ City.count }.by(1)
+    end
+  end
 
-#   describe 'DELETE destroy' do
-#     def do_delete
-#       delete :destroy, :id => @city.id
-#     end
+  describe "PUT update" do
+    before do
+      test_sign_in(@boss)
+      @city = City.where(:company_id => @boss.company_id).first
+      put :update, id: @city.id, :city => { :name => "Moscow" }
+    end
+    
+    it { should assign_to(:city).with(@city) }
+    it { should redirect_to(cities_path)  }
 
-#     it 'should be successful' do
-#       response.should be_success
-#     end
+    it "changes city name" do
+      expect {
+        put :update, id: @city.id, :city => { :name => "Moscow1" }
+        @city.reload
+      }.to change(@city, :name).to("Moscow1")
+    end
+  end
 
-#     it 'should redirect to cities/index.html' do
-#       do_delete
-#       response.should redirect_to(cities_path)
-#     end
+  describe "DELETE destroy" do
+    before do
+      test_sign_in(@boss)
+      @city = City.where(:company_id => @boss.company_id).first
+    end
+    def do_delete
+      delete :destroy, :id => @city.id
+    end
 
-#     it 'should change city count down by 1' do
-#       lambda { do_delete }.should change{ City.count }.by(-1)
-#     end
-#   end
+    it 'should be successful' do
+      response.should be_success
+    end
 
-#   describe 'GET show' do
-#     def do_get
-#       get :show, :id => @city.id
-#     end
+    it 'should redirect to cities list' do
+      do_delete
+      response.should redirect_to(cities_path)
+    end
 
-#     before (:each) do
-#       do_get
-#     end
-
-#     it 'should be successful' do
-#       response.should be_success
-#     end
-
-#     it 'should find right city' do
-#       assigns[:city].id.should == @city.id
-#     end
-
-#     it 'should render cities/show.html' do
-#       response.should render_template('show')
-#     end
-#   end
-# end
+    it 'should change city count down by 1' do
+      expect { do_delete }.to change{ City.count }.by(-1)
+    end
+  end
+end

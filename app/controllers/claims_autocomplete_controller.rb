@@ -34,7 +34,7 @@ class ClaimsAutocompleteController < ApplicationController
 
   def country
     @list = Country.select([:id, :name])
-      .where(["(common = ? OR company_id = ?) AND name ILIKE '%' || ? || '%'", true, current_company.id, params[:term]])
+      .where(["common = ? AND name ILIKE '%' || ? || '%'", true, params[:term]])
       .order('name ASC')
       .limit(50)
     render 'claims/autocompletes/list'

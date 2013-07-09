@@ -744,7 +744,7 @@ class Claim < ActiveRecord::Base
       company_cities << self.city if self.city
 
       country_name = claim_params[:country][:name].strip rescue ''
-      unless country_name.blank?
+      if country_name.present?
         # conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
         # Country.create({
         #   :name => country_name,
@@ -756,7 +756,7 @@ class Claim < ActiveRecord::Base
       end
 
       resort_name = claim_params[:resort][:name].strip rescue ''
-      unless resort_name.blank?
+      if !country.nil? && resort_name.present?
         conds = ['(common = ? OR company_id = ?) AND name = ? AND country_id = ?', true, company_id, resort_name, self.country.id]
         City.create({
           :name => resort_name,

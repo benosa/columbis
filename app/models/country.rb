@@ -12,21 +12,14 @@ class Country < ActiveRecord::Base
 
   define_index do
     indexes :name, :sortable => true
+    has :common
+    has :company_id
 
     set_property :delta => true
   end
 
   sphinx_scope(:by_name) { { :order => :name } }
   default_sphinx_scope :by_name
-
-  scope :what_available, ->(availability = 'all', company = nil) do
-  	case availability
-      when 'own'
-      	scope = where(:common => false, :company_id => company.id)
-      when 'open'
-      	scope = where(:common => true)
-      end
-  end
 
   extend SearchAndSort
 end

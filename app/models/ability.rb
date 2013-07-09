@@ -24,6 +24,7 @@ class Ability
       can :users_sign_in_as, :user
       can :claims_all, :user
       can :offline_version, User
+      can :read, [Country, City], :common => true
       can :create, Task
     elsif user.role == 'accountant'
       can :switch_view, User
@@ -34,6 +35,7 @@ class Ability
       can :read, Company, :id => user.company_id
       can :claims_all, :user
       can :offline_version, User
+      can :read, [Country, City], :common => true
       can :create, Task
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
@@ -41,7 +43,8 @@ class Ability
       can [:read, :scroll], Claim, :company_id => user.company_id
       can :update, Payment, :company_id => user.company_id, :approved => false
       can [:update], User, :id => user.id
-      can :read, [Country, Region, City]
+      can :read, [Country, Region, City], :company_id => user.company_id
+      can :read, [Country, City], :common => true
       can :claims_all, :user
       can :offline_version, User
       can :create, Task
@@ -53,7 +56,8 @@ class Ability
       can :update, Payment, :claim => { :user_id => user.id }, :approved => false
       can :update, Payment, :claim => { :assistant_id => user.id }, :approved => false
       can [:update], User, :id => user.id
-      can :read, [Country, Region, City]
+      can :read, [Country, City, Region], :company_id => user.company_id
+      can :read, [Country, City], :common => true
       can :offline_version, User
       can :create, Task
     else

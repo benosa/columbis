@@ -13,13 +13,17 @@ class City < ActiveRecord::Base
   default_scope :order => :name
   scope :with_country_columns, ->(apply_includes = false) do
     country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
-    scope = joins("LEFT JOIN countries ON countries.id = cities.country_id").
-    select(['cities.*'] + country_columns)
+    scope = joins("LEFT JOIN countries ON countries.id = cities.country_id")
+      .select(['cities.*'] + country_columns)
   end
 
   define_index do
     indexes :name, :sortable => true
     indexes country(:name), :as => :country_name, :sortable => true
+
+    has :common
+    has :company_id
+    
     set_property :delta => true
   end
 

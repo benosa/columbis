@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702225246) do
+ActiveRecord::Schema.define(:version => 20130708055255) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -147,9 +147,9 @@ ActiveRecord::Schema.define(:version => 20130702225246) do
     t.decimal  "bonus_percent",                       :precision => 5,  :scale => 2, :default => 0.0,            :null => false
     t.boolean  "active",                                                             :default => true,           :null => false
     t.boolean  "excluded_from_profit",                                               :default => false,          :null => false
-    t.integer  "tour_duration"
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
+    t.integer  "tour_duration"
   end
 
   create_table "companies", :force => true do |t|
@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20130702225246) do
     t.string  "name"
     t.integer "company_id"
     t.boolean "common",     :default => false
+    t.boolean "delta",      :default => true,  :null => false
   end
 
   add_index "countries", ["common"], :name => "index_countries_on_common"

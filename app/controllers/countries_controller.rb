@@ -8,7 +8,7 @@ class CountriesController < ApplicationController
         set_filter_to options
         search_paginate( Country.search_and_sort(options), options)
       else
-        Country.accessible_by(current_ability).paginate(:page => params[:page], :per_page => per_page)
+        Country.accessible_by(current_ability).order("name ASC").paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end

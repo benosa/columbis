@@ -45,23 +45,23 @@ class City < ActiveRecord::Base
   end
 
   def save_with_dropdown_lists(company, params)
-    self.save(country_name(company, params))
+    self.save(with_country_name(company, params))
   end
 
   def update_with_dropdown_lists(company, params)
-    self.update_attributes(country_name(company, params))
+    self.update_attributes(with_country_name(company, params))
   end
 
   private
-    def country_name(company, params)
+    def with_country_name(company, params)
       country_name = params[:country][:name].strip rescue ''
       unless country_name.blank?
         conds = ['(common = ? OR company_id = ?) AND name = ?', true, company, country_name]
         Country.create({
           :name => country_name,
-          :company_id => company
+          :company_id => company.id
         }) unless Country.where(conds).count > 0
-        params[:country][:name] = Country.where(conds).first
+        self.country_id = Country.where(conds).first.id
       end
       params
     end

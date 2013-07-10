@@ -1,0 +1,35 @@
+.current_container
+  %table#sms_sendings.tourists.reservations.tour_operators
+    %tr
+      %th.send_an
+        = sort_link( :send_an, t('.send_an'), :default)
+      %th.signature
+        = sort_link( :signature, t('.signature') )
+      %th.contact_group
+        = sort_link( :contact_group, t('.contact_group') )
+      %th.content
+        = sort_link( :content, t('.content') )
+      %th.count
+        = sort_link( :count, t('.count') )
+      %th.status
+        = sort_link( :status, t('.status') )
+      / %th.actions
+      /   %span= t('actions')
+
+    - for sms_sendings in @sms_sendings
+      %tr{ :class => cycle('odd', 'even'), id: "tourist-#{sms_sendings.id}"}
+        %td
+          %p= sms_sendings.send_an
+        %td
+          %p= sms_sendings.signature
+        %td
+          %p= sms_sendings.contact_group_id
+        %td
+          %p= sms_sendings.content
+        %td
+          %p= sms_sendings.count
+        %td
+          %p= sms_sendings.status_id
+
+  - unless @sms_sendings.nil?
+    / = render partial: 'shared/pagination', locals: { collection: @sms_sendings }

@@ -125,10 +125,10 @@
 
       .clear
       
-      .navigation
-        - if content_for? :navigation
+      - if content_for? :navigation
+        .navigation
           = yield :navigation
-      .clear
+        .clear
       
       .wrapper
         #content.content

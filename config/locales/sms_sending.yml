@@ -2,6 +2,20 @@ ru:
   activerecord:
     attributes:
       sms_sending:
+        company_id: 'Компания'
+        company:    'Компания'
+        contact_group_id: 'Группа контактов'
+        contact_group:    'Группа контактов'
+        content: 'Текст'
+        count: 'Кол-во'
+        delivered_count: 'Кол-во доставленных'
+        send_an: 'Когда отправить'
+        sending_priority: 'Приоритет отправки'
+        signature: 'Подпись отправителя'
+        status_id: 'Статус'
+        status:    'Статус'
+        user_id: 'Пользователь'
+        user:    'Пользователь'
 
   sms_sendings:
     index:
@@ -11,3 +25,24 @@ ru:
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
+      add_sms_sending: 'Создать рассылку'
+    
+    new:
+      sms_sendings: 'SMS-рассылка'
+      new_sms_sendings: 'Создание рассылки'
+      contacts_and_groups: 'Контакты и группы'
+      invoices: 'Счета'
+      add_balance: 'Пополнить баланс'
+      statistics: 'Статистика'
+      settings: 'Настройки'
+      add_sms_sending: 'Создать рассылку'
+      title_1: 'Получатели и текст рассылки'
+      title_2: 'Время отправки'
+    
+    list:
+      send_an: 'Дата'
+      signature: 'Отправитель'
+      contact_group: 'Группа'
+      content: 'Текст'
+      count: 'Кол-во'
+      status: 'Статус'

@@ -242,6 +242,7 @@ class ClaimsController < ApplicationController
         SELECT sum(approved_tourist_advance) as approved_tourist_advance,
                sum(approved_operator_advance) as approved_operator_advance,
                sum(profit) as profit,
+               sum(profit_acc) as profit_acc,
                sum(primary_currency_price) as primary_currency_price
                sum(bonus) as bonus,
                max(reservation_date) as reservation_date,

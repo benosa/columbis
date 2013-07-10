@@ -121,7 +121,8 @@ class Claim < ActiveRecord::Base
         :arrival_date, :departure_date, :maturity, :operator_maturity, :type => :datetime
     has :operator_confirmation_flag, :active, :type => :boolean
     has :primary_currency_price, :tourist_advance, :tourist_debt, :operator_price, :operator_advance, :operator_debt,
-        :approved_tourist_advance, :approved_operator_advance, :approved_operator_advance_prim, :profit, :profit_in_percent,
+        :approved_tourist_advance, :approved_operator_advance, :approved_operator_advance_prim,
+        :profit, :profit_in_percent, :profit_acc, :profit_in_percent_acc,
         :bonus, :bonus_percent, :type => :float
 
     set_property :delta => true
@@ -298,7 +299,7 @@ class Claim < ActiveRecord::Base
   def update_bonus(_percent)
     percent = BigDecimal.new(_percent)
     percent = 0 if percent.nan? or percent < 0
-    bonus = profit * percent / 100
+    bonus = profit_acc * percent / 100
     update_attributes(:bonus => bonus, :bonus_percent => percent)
   end
 

@@ -34,9 +34,11 @@
             %th.thick_border.green_back.medium= sort_link 'approved_tourist_advance', t('claims.index.advance')
             %th.green_back.medium= sort_link 'approved_operator_advance', t('claims.index.operator_paid')
             %th.green_back.medium= sort_link 'approved_operator_advance_prim', t('claims.index.operator_paid_prim')
-            %th.green_back.medium= sort_link 'profit', 'Нац-ка'
-            %th.green_back.medium= sort_link 'profit_in_percent', '%'
+            %th.green_back.medium= sort_link 'profit_acc', 'Нац-ка'
+            %th.green_back.medium= sort_link 'profit_in_percent_acc', '%'
             - if show_bonus_columns
+              %th.green_back.medium= sort_link 'profit', 'Нац-ка упр.'
+              %th.green_back.medium= sort_link 'profit_in_percent', '%'
               %th.green_back.medium= sort_link 'bonus_percent', '% премии'
               %th.green_back.medium= sort_link 'bonus', 'Премия'
           %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs')

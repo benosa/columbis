@@ -4,9 +4,11 @@
   %td.thick_border= as_money(total.approved_tourist_advance)
   %td
   %td= as_money(total.approved_operator_advance)
-  %td= as_money(total.profit)
-  %td= (total.profit / total.primary_currency_price * 100).to_percent
+  %td= as_money(total.profit_acc)
+  %td= (total.profit_acc / total.primary_currency_price * 100).to_percent
   - if is_admin? or is_boss?
+    %td= as_money(total.profit)
+    %td= (total.profit / total.primary_currency_price * 100).to_percent
     %td
     %td= as_money(total.bonus)
   %td{ :colspan => 5 }

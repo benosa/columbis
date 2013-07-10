@@ -174,10 +174,11 @@ module ClaimsHelper
     is_admin? or is_boss?
   end
 
-  def profit_tooltip(claim)
+  def profit_tooltip(claim, accounting = false)
     pcs = CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
     ocs = CurrencyCourse.currency_symbol(claim.operator_price_currency)
-    tooltip = claim.profit.to_money + pcs
+    prof_atr = accounting ? :profit_acc : :profit
+    tooltip = claim[prof_atr].to_money + pcs
     tooltip += ' = ' + claim.primary_currency_price.to_money + pcs
     tooltip += ' - ' + claim.primary_currency_operator_price.to_money + pcs
     if claim.operator_price_currency != CurrencyCourse::PRIMARY_CURRENCY
@@ -186,10 +187,12 @@ module ClaimsHelper
     tooltip
   end
 
-  def profit_in_percent_tooltip(claim)
+  def profit_in_percent_tooltip(claim, accounting = false)
     pcs = CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
-    tooltip = claim.profit_in_percent.to_percent + '%'
-    tooltip += ' = ' + claim.profit.to_money + pcs
+    prof_atr = accounting ? :profit_acc : :profit
+    prof_in_per_atr = accounting ? :profit_in_percent_acc : :profit_in_percent
+    tooltip = claim[prof_in_per_atr].to_percent + '%'
+    tooltip += ' = ' + claim[prof_atr].to_money + pcs
     tooltip += ' / ' + claim.primary_currency_price.to_money + pcs
     tooltip += ' * 100%'
   end

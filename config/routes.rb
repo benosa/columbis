@@ -64,7 +64,10 @@ Tourism::Application.routes.draw do
     match 'claims/all' => 'claims#all'
 
     resources :companies, :except => [:index, :show, :destroy] do
-      get :printers
+      member do
+        get :printers
+        put :update_printers
+      end
     end
     resources :dropdown_values, :except => :show
     resources :users do

@@ -2,7 +2,7 @@
 
 - title t('.title')
 
-= form_for [:dashboard, @company], :builder => TourismFormBuilder, :html => { :multipart => true } do |form|
+= form_for [:dashboard, @company], :builder => TourismFormBuilder, :url => update_printers_dashboard_company_path(current_company), :html => { :multipart => true } do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'printers', :locals => { :f => form }
 

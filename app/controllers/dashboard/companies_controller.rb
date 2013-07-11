@@ -26,10 +26,6 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def update
-    if request.referer.present? and request.referer == dashboard_company_printers_url(current_company)
-      update_printers
-      return
-    end
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
@@ -47,7 +43,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   def update_printers
     if @company.update_attributes(params[:company])
-      redirect_to dashboard_company_printers_path(current_company), :notice => t('companies.messages.successfully_updated_company')
+      redirect_to printers_dashboard_company_path(current_company), :notice => t('companies.messages.successfully_updated_company')
     else
       build_company_edition_prerequisites
       render :action => "printers"

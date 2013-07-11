@@ -39,6 +39,7 @@ class Dashboard::CompaniesController < ApplicationController
   def printers
     edit
     @company.printers.build
+    ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers association
   end
 
   def update_printers
@@ -64,7 +65,6 @@ class Dashboard::CompaniesController < ApplicationController
     end
 
     def build_company_edition_prerequisites
-      ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers association
       build_empty_associations
       stub_currents
     end

@@ -1,0 +1,54 @@
+- company = f.object
+- content_for(:error_messages) do
+  = f.error_messages
+
+#printers_block.form_block.grey_block
+  .block_title
+    %h2= t('.printers')
+  .form_block_content.nested_attributes.printers
+    .fake_table
+      %span.type_form= t('.type')
+      %span.file_form= t('.file')
+      %span.activity= t('actions')
+
+    - index = 0
+    - first_memo = nil
+    = f.fields_for :printers, sort_printers(f.object.printers) do |pf|
+      - unless pf.object.new_record?
+        - if pf.object.mode == 'memo'
+          - unless first_memo
+            .fake_row{ :id => "memo_row", :class => cycle('even', 'odd') }
+              %span.type_form= t('.memos')
+            .fake_row.fields{ :id => "country_#{pf.object.country.try(:id)}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+              %span.type_form= pf.object.country.try(:name)
+              %span.file_form= pf.object.template.file.identifier
+              %span.activity
+                = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+                = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+                = pf.hidden_field(:_destroy)
+                = link_to '', '#', :class => 'del delete', :title => t('delete')
+            - first_memo = true
+          - else
+            .fake_row.fields{ :id => "country_#{pf.object.country.try(:id)}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+              %span.type_form= pf.object.country.try(:name)
+              %span.file_form= pf.object.template.file.identifier
+              %span.activity
+                = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+                = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+                = pf.hidden_field(:_destroy)
+                = link_to '', '#', :class => 'del delete', :title => t('delete')
+        - else
+          .fake_row.fields{ :id => "printers_row_#{index}", :class => cycle('even', 'odd'), :data => { :mode => pf.object.mode } }
+            %span.type_form= t("activerecord.attributes.printer.#{pf.object.mode}")
+            %span.file_form= pf.object.template.file.identifier
+            %span.activity
+              = link_to '', dashboard_template_path(pf.object), :class => 'download', :title => t('download')
+              = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+              = pf.hidden_field(:_destroy)
+              = link_to '', '#', :class => 'del delete', :title => t('delete')
+
+      - else
+        #add_printer_block.fake_row.file_block.odd
+          = link_to t('.add_file'), '#', :class => 'add add_file'
+
+      - index += 1

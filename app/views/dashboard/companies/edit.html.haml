@@ -2,7 +2,7 @@
 
 - title t('.edit_company')
 
-= form_for [:dashboard, @company], :builder => TourismFormBuilder, :html => { :multipart => true } do |form|
+= form_for [:dashboard, @company], :builder => TourismFormBuilder do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 

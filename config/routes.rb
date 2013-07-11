@@ -63,7 +63,9 @@ Tourism::Application.routes.draw do
     match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
     match 'claims/all' => 'claims#all'
 
-    resources :companies, :except => [:index, :show, :destroy]
+    resources :companies, :except => [:index, :show, :destroy] do
+      get :printers
+    end
     resources :dropdown_values, :except => :show
     resources :users do
       member do

@@ -29,18 +29,26 @@ class Dashboard::CompaniesController < ApplicationController
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
-      redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
+      if request.referer.present? && request.referer == dashboard_company_printers_url(current_company)
+        path = dashboard_company_printers_path(current_company)
+      else
+        path = dashboard_edit_company_path
+      end
+      redirect_to path, :notice => t('companies.messages.successfully_updated_company')
     else
       build_company_edition_prerequisites
       render :action => "edit"
     end
   end
 
+  def printers
+    edit
+  end
+
   private
 
     def build_empty_associations
       @company.offices.build(name: t('offices.default_name')) if @company.offices.empty?
-      @company.printers.build
       @company.build_address unless @company.address.present?
     end
 

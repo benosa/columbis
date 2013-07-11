@@ -3,6 +3,7 @@ ru:
     application:
       company: 'Моя компания'
       users: 'Сотрудники'
+      printers: 'Печатные формы'
       dropdown_values: 'Списки значений'
       clients: 'Клиенты'
       addresses: 'Адреса'

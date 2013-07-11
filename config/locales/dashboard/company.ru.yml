@@ -29,7 +29,12 @@ ru:
         add_city_fail_message: 'Такой город уже есть в списке'
         offices: 'Офисы'
         add_office: 'Добавить офис'
-        printers: 'Печатные формы'
+        office:
+          name: 'Название'
+          default_password: 'Пароль по умолчанию'
+      printers:
+        title: "Печатные формы"
+        printers: "Список документов компании"
         memos: 'Памятки:'
         type: 'Тип'
         file: 'Файл'
@@ -38,9 +43,6 @@ ru:
         add_file: 'Добавить файл'
         mode_select_tooltip: 'Печатная форма с таким типом уже существует'
         country_select_tooltip: 'Памятка для данной страны уже существует'
-        office:
-          name: 'Название'
-          default_password: 'Пароль по умолчанию'
 
   activerecord:
     models:

@@ -75,6 +75,8 @@
             %ul
               %li= link_to t('.company'), dashboard_edit_company_path
               %li= link_to t('.users'), dashboard_users_path
+              - if can? :read, Company
+                %li= link_to t('.printers'), dashboard_company_printers_path(current_company)
               %li= link_to t('.operators'), operators_path
               %li= link_to t('.cities'), cities_path
               %li= link_to t('.countries'), countries_path

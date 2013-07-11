@@ -7,6 +7,8 @@ class Tourist < ActiveRecord::Base
 
   attr_protected :company_id
 
+  attr_accessor :validate_secondary_attributes
+
   belongs_to :company
   has_many :payments, :as => :payer
 
@@ -18,10 +20,13 @@ class Tourist < ActiveRecord::Base
 
   validates_presence_of :company_id
   validate :presence_of_full_name
-  validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until, :phone_number,
-    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= Date.parse('01.07.2013')} # TODO: It is temporary solution to avoid errors for old records
-  validates :email, email: true, presence: true,
-    :if => proc {|tourist| tourist.new_record? || tourist.updated_at >= Date.parse('01.07.2013')}
+
+  # Additional attributes validation
+  validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until, :if => :additional_attributes_validation_condition
+
+  # Secondary attributes validation
+  validates_presence_of :phone_number, :if => :secondaty_attributes_validation_condition
+  validates :email, email: true #, presence: true, :if => :secondaty_attributes_validation_condition
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)
@@ -83,6 +88,15 @@ class Tourist < ActiveRecord::Base
       elsif first_name.blank? then :first_name
       end
       errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
+    end
+
+    # TODO: It is temporary solution to avoid errors for old records
+    def additional_attributes_validation_condition
+      new_record? or updated_at >= Date.parse('01.07.2013')
+    end
+
+    def secondaty_attributes_validation_condition
+      additional_attributes_validation_condition unless validate_secondary_attributes === false
     end
 
 end

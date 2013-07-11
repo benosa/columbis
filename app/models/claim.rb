@@ -197,8 +197,13 @@ class Claim < ActiveRecord::Base
         unless new_record?
           dependent = dependents.select{ |d| d.id == id.to_i }.first
           if !destroy and dependent
-            dependent.update_attributes(attributes)
-            self.errors.add(:dependents, :invalid) if dependent.invalid? and !errors.has_key?(:dependents)
+            dependent.validate_secondary_attributes = false
+            dependent.assign_attributes(attributes)
+            if dependent.valid?
+              dependent.save
+            else
+              self.errors.add(:dependents, :invalid) unless errors.has_key?(:dependents)
+            end
           else
             dependents.delete(dependent) if dependent
           end

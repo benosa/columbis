@@ -1,4 +1,3 @@
 %tbody#claims_body
-  - show_office = (is_admin? or is_boss? or is_supervisor? or is_accountant?) and current_company.offices.count > 1
   - @totals.each do |total|
-    = render :partial => 'total', :locals => { :total => total, :show_office => show_office, :description => l(total.reservation_date, :format => "%B %Y") }
+    = render :partial => 'total', :locals => { :total => total, :description => l(total.reservation_date, :format => "%B %Y") }

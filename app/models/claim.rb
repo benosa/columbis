@@ -650,7 +650,7 @@ class Claim < ActiveRecord::Base
 
     # Profit for accounting, it's available only after full payment
     def calculate_profit_acc
-      if approved_operator_advance_prim >= operator_price.to_f
+      if approved_operator_advance_prim > 0 && approved_operator_advance_prim >= operator_price.to_f
 
         profit_acc = primary_currency_price - approved_operator_advance
 

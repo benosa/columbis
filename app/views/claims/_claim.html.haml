@@ -56,9 +56,9 @@
       = approved_advance(claim, :tourist)
     %td.buh_col= approved_advance(claim, :operator_prim)
     %td.buh_col= approved_advance(claim, :operator)
-    %td.buh_col{ :class => claim.profit_acc < 0 && !claim.excluded_from_profit && 'red_back', :title => !claim.excluded_from_profit && profit_tooltip(claim, true) }
+    %td.buh_col{ :class => claim.profit_acc < 0 && !claim.excluded_from_profit && 'red_back', :title => !claim.excluded_from_profit && profit_tooltip_acc(claim) }
       = claim.profit_acc.to_money
-    %td.buh_col{ :title => !claim.excluded_from_profit && profit_in_percent_tooltip(claim, true) }
+    %td.buh_col{ :title => !claim.excluded_from_profit && profit_in_percent_tooltip_acc(claim) }
       = claim.profit_in_percent_acc.to_percent unless claim.excluded_from_profit
     - if show_bonus_columns
       %td.buh_col{ :class => claim.profit < 0 && !claim.excluded_from_profit && 'red_back', :title => !claim.excluded_from_profit && profit_tooltip(claim) }

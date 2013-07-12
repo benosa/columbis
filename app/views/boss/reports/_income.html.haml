@@ -18,7 +18,7 @@
       %table.reservations.tour_operators
         %thead
           %tr
-            %th
+            %th.number
               %span= t('report.n')
             %th= sort_link 'name', t(".#{params[:group]}")
             %th= sort_link 'amount', I18n.t('report.total'), :desc
@@ -27,4 +27,4 @@
             %tr
               %td= i + 1
               %td= row['name']
-              %td= row['amount']
+              %td.center= number_to_currency(row['amount'], :unit => "")

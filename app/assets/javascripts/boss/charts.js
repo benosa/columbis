@@ -51,7 +51,7 @@
           spacingBottom: 15,
           spacingTop: 10,
           spacingLeft: 10,
-          spacingRight: 30
+          spacingRight: 70
         },
         title: {
           text: 'Bar chart'

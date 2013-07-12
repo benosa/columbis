@@ -4,7 +4,7 @@ class Smsaero
   
   attr_accessor :data, :url
   
-  attr_reader :error, :error_message, :response
+  attr_reader :error, :error_message
   
   def initialize(user, password, json = true)
     @user, @password, @json = user.strip, password.strip, json
@@ -21,32 +21,34 @@ class Smsaero
   # to........Обязательно  Номер телефона получателя, в формате 71234567890
   # text......Обязательно  Текст сообщения, в UTF-8 кодировке
   # from......Обязательно  Подпись отправителя (например TEST)
-  # date......Обязательно  Дата для отложенной отправки сообщения (количество секунд с 1 января 1970 года) <-- ко времени необходимо прибавить 5-10 секунд
-  def send to, text, from, date
-    params = {'to' => to, 'text' => text, 'from' => from, 'date' => date}
+  # date......Обязательно  Дата для отложенной отправки сообщения (количество секунд с 1 января 1970 года)
+  def send to, text, from, date = nil
+    params = {'to' => to, 'text' => text, 'from' => from}
+    params = params.merge({'date' => date}) unless date.nil?
     params = @data.merge(params)
     response = self.send_query(@url + 'send/?' + params.to_param)
-    if defined?(response['result'])
-      @response = response
+    if response['result'].present?
       if response['result'] == 'reject'
         @error_message = self.send_message(response)
         @error = true
-        false
+        return false
       end
     end
+    response
   end
 
   ### Проверка состояния отправленного сообщения
   def status sms_id
     params = @data.merge({'id' => sms_id})
     response = self.send_query(@url + 'status/?' + params.to_param)
-    if defined?(response['result'])
+    if response['result'].present?
       if response['result'] == 'reject'
         @error_message = self.status_message(response)
         @error = true
-        false
+        return false
       end
     end
+    response
   end
   
   ### + Проверка состояния счета
@@ -59,7 +61,8 @@ class Smsaero
     self.send_query(@url + 'senders/?' + @data.to_param)
   end
   
-  ### +/- Запрос новой подписи <-- выявлены периодические несрабатывания на стороне оператора (проблема не решена, необходимы проверки)
+  ### +/- Добавляем новую подпись <-- выявлены периодические несрабатывания на стороне оператора (проблема не решена, необходимы проверки)
+  # подпись будет добавлена после ее подтверждения в смс-центре
   def add_signature signature
     params = @data.merge({'sign' => signature})
     self.send_query(@url + 'sign/?' + params.to_param)
@@ -67,11 +70,11 @@ class Smsaero
   
   def send_query path
     response = JSON.parse(open(path).read)
-    if defined?(response['result'])
+    if response['result'].present?
       if response['result'] == 'reject'
         @error_message = self.auth_error(response)
         @error = true
-        false
+        return false
       end
     end
     response
@@ -133,10 +136,3 @@ class Smsaero
     }
   end
 end
-# 
-# 
-# http://gate.smsaero.ru/send/?to=79042545741&text=test&from=PROVERKA&date=1373402693&user=sergey@columbis.ru&password=93279e3308bdbbeed946fc965017f67a&answer=json
-# 
-# 
-# 
-#  a.send('79042545741', 'test message eft', 'PROVERKA', Time.now.to_i + 10)

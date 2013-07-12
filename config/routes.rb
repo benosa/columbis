@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  resources :sms_clients
   resources :sms_sendings
 
 

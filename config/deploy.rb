@@ -112,14 +112,24 @@ namespace :update do
 
     remote_settings = YAML::load_file("tmp/database.yml")[rails_env]
     local_settings  = YAML::load_file("config/database.yml")["development"]
+    dump_name = "#{remote_settings["database"]}.dump"
+    dump_file = "#{shared_path}/#{dump_name}"
 
-    run "export PGPASSWORD=#{remote_settings["password"]} && pg_dump --host=#{remote_settings["host"]} --port=#{remote_settings["port"]} --username #{remote_settings["username"]} --file ~/#{remote_settings["database"]}_dump -Fc #{remote_settings["database"]}"
+    def pg_def_options(settings)
+      options = []
+      options << "--username=#{settings["username"]}" if settings["username"]
+      options << "--host=#{settings["host"]}" if settings["host"]
+      options << "--port=#{settings["port"]}" if settings["port"]
+      options.empty? ? '' : options.join(' ')
+    end
 
-    run_locally "rsync --recursive --times --rsh=ssh --compress --human-readable --progress #{user}@#{domain}:~/#{remote_settings["database"]}_dump tmp/"
+    run "export PGPASSWORD=#{remote_settings["password"]} && pg_dump #{pg_def_options(remote_settings)} --file=#{dump_file} -Fc #{remote_settings["database"]}"
 
-    run_locally "dropdb -U #{local_settings["username"]} --host=#{local_settings["host"]} --port=#{local_settings["port"]} #{local_settings["database"]}"
-    run_locally "createdb -U #{local_settings["username"]} --host=#{local_settings["host"]} --port=#{local_settings["port"]} -T template0 #{local_settings["database"]}"
-    run_locally "pg_restore -U #{local_settings["username"]} --host=#{local_settings["host"]} --port=#{local_settings["port"]} -d #{local_settings["database"]} tmp/#{remote_settings["database"]}_dump"
+    run_locally "rsync --recursive --times --rsh=ssh --compress --human-readable --progress #{user}@#{domain}:#{dump_file} tmp/"
+
+    run_locally "dropdb #{pg_def_options(local_settings)} #{local_settings["database"]}"
+    run_locally "createdb #{pg_def_options(local_settings)} -T template0 #{local_settings["database"]}"
+    run_locally "pg_restore #{pg_def_options(local_settings)} -d #{local_settings["database"]} tmp/#{dump_name}"
   end
 
   desc "Dump all remote data to localhost"

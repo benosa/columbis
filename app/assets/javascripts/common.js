@@ -450,8 +450,8 @@ function setDatetimepicker(selector, is_container, options) {
     // hourText: 'Часы',
     // minuteText: 'Минуты',
     // secondText: 'Секунды',
-    // currentText: 'Сейчас',
-    // closeText: 'Закрыть'
+    currentText: false,
+    closeText: 'Выбрать',
     // onSelect: function(text, inst) {
     //   var $dpdiv = $(inst.inst.dpDiv),
     //       $tp = $dpdiv.find(".ui-timepicker-div");

@@ -34,9 +34,10 @@ margin-right: 11px;
 
 .ui-datepicker-buttonpane{
     margin-top: 7px;
+    overflow: hidden;
 }
 
-.ui-datepicker-current{
+.ui-datepicker-current{ display: none;
     background:url("/assets/new_design/images/back.png") no-repeat scroll right transparent;
 border: none;
     border-radius: 4px;
@@ -57,7 +58,8 @@ padding:3px 10px;
 border: 1px solid #E7E7E7;
 font: bold 11px Arial;
 text-shadow: 0 -1px 0 #2B4B67;
-margin-left:98px;
+/*margin-left:98px;*/
+float: right;
 }
 
 .tpicker_select.ik_select{

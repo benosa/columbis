@@ -520,6 +520,23 @@ $(function(){
     adjust_calculation();
   });
 
+  // Change currency in tour_price block
+  $('#claim_tour_price_currency').on('change', function() {
+    var currency = $(this).val();
+    $('#tour_price [id$="_price"]').not('#claim_tour_price').each(function() {
+      var val = parseFloat($(this).val());
+      if (!val) {
+        var id = $(this).attr('id'),
+            $el = $('#tour_price #' + id + '_currency');
+        if ($el.ikSelect) {
+          $el.ikSelect('select', currency);
+        } else {
+          $el.val(currency);
+        }
+      }
+    });
+  });
+
   // city, resort, flights
   $('#claim_city').change(function(){
     if($('#claim_airport_to').val() === '') {

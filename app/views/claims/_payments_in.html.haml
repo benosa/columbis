@@ -51,9 +51,14 @@
             %strong= f.label :tourist_debt
         = f.text_field :tourist_debt, :disabled => true, :readonly => true, :class => 'debt text_right important'
         %label= t('rur')
+      .two_line.small_margin.pull-right.primary_currency_price_text
+        %p
+          = "#{t('.payable')}: "
+          %span.primary_currency_price_view= claim.primary_currency_price
+          = t('rur')
 
     - if small_width? or medium_width?
-      .fake_row.add_row
+      .fake_row.add_row.add_paying
         .add_btn.paying
           = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
         = yield :pi_last_fields

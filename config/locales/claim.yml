@@ -142,6 +142,7 @@ ru:
       paid_in_word: 'Сумма прописью'
       add_another_payment: 'Добавить платеж'
       tourist_debt_short: 'Долг'
+      payable: 'К оплате'
 
     payments_out:
       payments_out: 'Оплата оператору'

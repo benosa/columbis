@@ -504,7 +504,7 @@ $(function(){
         prev_tour_price = $('#claim_primary_currency_price').data('tour_price');
     if (tour_price != prev_tour_price) {
       $('#claim_primary_currency_price').val(tour_price);
-      $('#claim_primary_currency_price_view').text(tour_price);
+      $('.primary_currency_price_view').text(tour_price);
       $('#claim_primary_currency_price').change();
       calculate_tourist_debt();
       update_calculation();

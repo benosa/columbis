@@ -395,6 +395,11 @@ option {
   .visa.all_done, .confirmation.blue_back, .check_date.departed {
     background-color: #FFFFFF !important;
   }
+
+  #payments_in {
+    .primary_currency_price_view { float: none; color: #666; }
+    .primary_currency_price_text { margin: 3px 17px 0 0; }
+  }
 }
 
 /* low_resolution */

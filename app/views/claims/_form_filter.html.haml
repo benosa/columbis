@@ -27,7 +27,7 @@
             :title => t('.check_date')
       - else
         = f.label :check_date
-      = f.text_field :check_date, :class => 'visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long)
+      = f.text_field :check_date, :class => 'check_date visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long)
       = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
       = f.check_box :closed
       - if medium_width? or large_width?

@@ -130,7 +130,7 @@ module ClaimsHelper
     return '' if claim.canceled?
 
     if claim.visa_confirmation_flag?
-      (%w[docs_sent visa_approved all_done].include?(claim.visa)) ? 'green_back' : 'red_back'
+      (%w[docs_sent all_done].include?(claim.visa)) ? 'green_back' : 'red_back'
     end
   end
 

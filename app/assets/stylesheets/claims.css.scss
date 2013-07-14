@@ -107,7 +107,7 @@
       span { color: black !important; }
     }
 
-    .navy_back, .visa_approved {
+    .navy_back {
       background-color: #96B1F0 !important;
       span { color: black !important; }
     }
@@ -390,6 +390,11 @@ option {
     }
   }
   .docs_note { height: auto !important; min-height: 150px; }
+
+  // Replace blue color with white for highlighted fields
+  .visa.all_done, .confirmation.blue_back, .check_date.departed {
+    background-color: #FFFFFF !important;
+  }
 }
 
 /* low_resolution */

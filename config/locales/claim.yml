@@ -1,11 +1,10 @@
 ru:
   claims:
     visa_statuses:
-      nothing_done: 'Не готова'
-      docs_got: 'Получена'
+      nothing_done: 'Нет'
+      docs_got: 'Cобрана'
       docs_sent: 'Отправлена'
-      visa_approved: 'Подтверждена'
-      all_done: 'Готова'
+      all_done: 'Выдана'
 
     documents_statuses:
       not_ready: 'Не готовы'

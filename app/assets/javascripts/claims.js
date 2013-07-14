@@ -227,7 +227,7 @@ function set_claims_tooltip(init) {
 }
 
 $(function(){
-  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
+  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'all_done'];
 
   function trim(str) {
      return str.replace(/^\s+|\s+$/g, '');

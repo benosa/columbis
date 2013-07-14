@@ -37,6 +37,6 @@ class Payment < ActiveRecord::Base
       # we also store amount in primary currency
       crs = reversed_course ? (course != 0 ? 1 / course : 0) : course
       self.amount_prim = (crs * amount).round(2)
-      self.description = amount.amount_in_words(currency).mb_chars.capitalize.to_s
+      self.description = amount.to_f.amount_in_words(currency)[0,255] # Limit string length to database field length to avoid errors
     end
 end

@@ -107,6 +107,7 @@ class ClaimsController < ApplicationController
   def update_bonus
     authorize! :update, @claim
     @claim.update_bonus(params[:claim][:bonus_percent])
+    @claim.save
     # respond_with_bip(@claim)
     render :json => {
       :bonus => @claim.bonus.to_money,

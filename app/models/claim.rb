@@ -86,6 +86,7 @@ class Claim < ActiveRecord::Base
   before_validation :update_payments
 
   before_save :update_debts
+  before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
 
@@ -826,8 +827,7 @@ class Claim < ActiveRecord::Base
     end
 
     def primary_currency_price_in_word
-      str = primary_currency_price.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
-      str.mb_chars.capitalize.to_s
+      primary_currency_price.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
     end
 
     def printable_fields

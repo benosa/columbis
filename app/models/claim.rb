@@ -164,6 +164,7 @@ class Claim < ActiveRecord::Base
       applicant = Tourist.new
       applicant.company = company
     end
+    applicant.save if applicant.new_record?
     self.applicant = applicant
   end
 
@@ -802,6 +803,7 @@ class Claim < ActiveRecord::Base
           errors.add(:applicant, "#{Tourist.human_attribute_name(:address)} #{I18n.t("errors.messages.blank")}")
         end
       end
+      errors[:applicant].delete_if{ |msg| msg.blank? }
     end
 
     def arrival_date_cant_be_greater_departure_date

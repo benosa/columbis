@@ -32,14 +32,14 @@
 - elsif medium_width?
   %fieldset.form_column
     = render :partial => 'tourists', :locals => { :f => f, :claim => claim }
+    = render :partial => 'tour_price', :locals => { :f => f, :claim => claim }
     = render :partial => 'flights', :locals => { :f => f, :claim => claim }
-    = render :partial => 'payments_in', :locals => { :f => f, :claim => claim }
-    = render :partial => 'information', :locals => { :f => f, :claim => claim }
 
   %fieldset.form_column.small
     = render :partial => 'route', :locals => { :f => f, :claim => claim }
-    = render :partial => 'tour_price', :locals => { :f => f, :claim => claim }
+    = render :partial => 'payments_in', :locals => { :f => f, :claim => claim }
     = render :partial => 'payments_out', :locals => { :f => f, :claim => claim }
+    = render :partial => 'information', :locals => { :f => f, :claim => claim }
 
 - elsif large_width?
   = render :partial => 'information', :locals => { :f => f, :claim => claim }

@@ -582,6 +582,37 @@ option {
     .airline { width: 200px; }
     .airport_to, .airport_back { width: 150px; }
     .tourist_stat { width: 200px; }
+
+    // Temporary solution before transition to fluid layout
+    ///////////////////////////////////////////////////////
+    .wrapper { width: 1616px; }
+    .check_list { float: left; margin-left: 20px; }
+    .form_column { width: 783px;
+      .form_block { width: 783px; }
+    }
+    .form_column.small { float: left; margin: 0 0 0 20px !important;  }
+
+    #tourists .fake_table { width: 781px;
+      .fio { width: 295px; }
+    }
+    .name { width: 262px !important; }
+    .expires_date { width: 115px; }
+    .additional_fields .email_col { width: 195px; }
+    .additional_fields .email_col .email { width: 158px !important; }
+    .address { width: 390px; }
+
+    #claim_tour_price { width: 114px; }
+    .number_visas { width: 70px; }
+    .insurance { width: 43px; }
+    .fake_row textarea { width: 698px; }
+    .notes { width: 553px; }
+
+    #payments_in .expires_date, #payments_out .expires_date { width: 65px; }
+    .sum { width: 280px; }
+
+    #flights .expires_date { width: 92px; }
+    .airport_to, .airport_back { width: 220px; }
+    ///////////////////////////////////////////////////////
   }
   .high_resolution {
     .filter label {

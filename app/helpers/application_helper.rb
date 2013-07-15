@@ -183,8 +183,9 @@ module ApplicationHelper
     width = client_resolution[:width].to_i unless width > 0
     @current_width = case width
       when 0...1600 then :small
-      when 1600...1920 then :medium
-      else :large
+      else :medium
+      # when 1600...1920 then :medium
+      # else :large
     end
   end
 

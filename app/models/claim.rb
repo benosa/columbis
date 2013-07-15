@@ -303,11 +303,13 @@ class Claim < ActiveRecord::Base
     course(tour_price_currency).round > 0 ? (calculate_tour_price / course(tour_price_currency)).round : 0
   end
 
-  def update_bonus(_percent)
-    percent = BigDecimal.new(_percent)
+  def update_bonus(_percent = nil)
+    percent = _percent.nil? ? self.bonus_percent : BigDecimal.new(_percent)
     percent = 0 if percent.nan? or percent < 0
     bonus = profit_acc * percent / 100
-    update_attributes(:bonus => bonus, :bonus_percent => percent)
+
+    self.bonus = bonus
+    self.bonus_percent = percent
   end
 
   def self.local_data_extra_columns

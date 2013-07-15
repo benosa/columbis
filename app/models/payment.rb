@@ -9,12 +9,12 @@ class Payment < ActiveRecord::Base
   belongs_to :payer, :polymorphic => true
   belongs_to :recipient, :polymorphic => true
 
-  # validates_presence_of :claim # in claim inveres_of option must be used
+  validates_presence_of :claim # in claim inveres_of option must be used
   validates_presence_of :amount, :amount_prim, :form, :currency, :date_in, :course
-  # validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
+  validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
 
-  validates_numericality_of :course, :amount, :greater_than => 0
-  validates_numericality_of :amount
+  validates_numericality_of :course, :amount
+  # validates_numericality_of :course, :amount, :greater_than => 0
 
   # validates_inclusion_of :form, :in => Proc.new { |p| DropdownValue.values_for('form', p.company) }
 

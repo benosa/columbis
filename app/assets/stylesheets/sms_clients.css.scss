@@ -1,0 +1,13 @@
+#sms_clients {
+  width: 100%;
+  .sidebar {
+    width: 200px;
+    padding-top: 19px;
+    h1 { display: block; float: none; }
+    ul.sidebar_menu {
+      li { display: block; margin: 10px 0 }
+      li a { display: block; color: green; font-weight: bold;}
+      li a:hover, li a:active, li a.active { color: orange; }
+    }
+  }
+}

@@ -7,6 +7,8 @@
         = sort_link( :first_name, t('.first_name') )
       %th.contact_group
         = sort_link( :last_name, t('.last_name') )
+      %th.contact_group
+        = sort_link( :middle_name, t('.middle_name') )
       %th.content
         = sort_link( :date_of_birth, t('.date_of_birth') )
 
@@ -18,6 +20,8 @@
           %p= client.first_name
         %td
           %p= client.last_name
+        %td
+          %p= client.middle_name
         %td
           %p= client.date_of_birth
 

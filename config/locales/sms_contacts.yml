@@ -4,6 +4,7 @@ ru:
 
   sms_clients:
     index:
+      sms_contacts: 'Контакты и группы'
       sms_sendings: 'SMS-рассылка'
       contacts_and_groups: 'Контакты и группы'
       invoices: 'Счета'
@@ -16,4 +17,5 @@ ru:
       phone_number: 'Телефон'
       first_name: 'Имя'
       last_name: 'Фамилия'
+      middle_name: 'Отчество'
       date_of_birth: 'д/р'

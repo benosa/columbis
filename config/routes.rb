@@ -2,6 +2,8 @@
 Tourism::Application.routes.draw do
 
   resources :sms_clients
+  match 'sms_clients_birthday' => 'sms_clients#birthday', as: 'sms_clients_birthday', via: :get
+  
   resources :sms_sendings
 
 

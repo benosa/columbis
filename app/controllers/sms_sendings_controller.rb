@@ -5,6 +5,8 @@ class SmsSendingsController < ApplicationController
   
   def index
     @sms_sendings = SmsSending.all
+    
+    render :partial => 'list' if request.xhr?
   end
 
   def show

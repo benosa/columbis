@@ -601,6 +601,15 @@ option {
     .additional_fields .email_col .email { width: 158px !important; }
     .address { width: 390px; }
 
+    .additional_services { width: 200px; }
+    .crossing_select.ik_select,.crossing_select .ik_select_link {width: 152px;}
+    .crossing_select .ik_select_link_text {width: 137px;} /* -15 */
+    .crossing_select .ik_select_list {width: 150px;} /* -2 */
+
+    .nights_select.ik_select,.nights_select .ik_select_link{width: 86px;}
+    .nights_select .ik_select_link_text{width: 71px;}/* -15 */
+    .nights_select .ik_select_list{width: 84px;}/* -2 */
+
     #claim_tour_price { width: 114px; }
     .number_visas { width: 70px; }
     .insurance { width: 43px; }

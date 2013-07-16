@@ -2,7 +2,7 @@
 module Boss
   class TourpriceReport < Report
 
-    arel_tables :claims
+    arel_tables :claims, :tourist_claims
     available_results :count
     attribute :intervals # example: { values: [0, 10, 20], names: ['0-10', '10-20'] }
 
@@ -92,13 +92,21 @@ module Boss
     private
 
       def base_query
-        claims.project("#{interval_field('claims.primary_currency_price')} AS name", claims[:id].count.as('count'), "#{interval_field('claims.primary_currency_price', false)} AS interval")
+        tourists_number = tourist_claims.project(tourist_claims[:claim_id], tourist_claims[:claim_id].count.as('number'))
+          .group(:claim_id)
+          .as('tourists_number')
+
+        claims.project(
+            "#{interval_field('claims.primary_currency_price/tourists_number.number')} AS name",
+            claims[:id].count.as('count'),
+            "#{interval_field('claims.primary_currency_price/tourists_number.number', false)} AS interval")
+          .join(tourists_number).on(tourists_number[:claim_id].eq(claims[:id]))
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:canceled].eq(false))
           .where(claims[:excluded_from_profit].eq(false))
-          .group('name', 'interval')
-          .order('interval')
+          .group(:name, :interval)
+          .order(:interval)
       end
 
   end

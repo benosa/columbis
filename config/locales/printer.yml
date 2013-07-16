@@ -10,3 +10,12 @@ ru:
         act: 'Акт'
         template: 'Шаблон'
         country_id: 'Страна'
+  printers:
+    index:
+      title: 'Печатные формы'
+      mode_filter: 'По типу документа'
+      new_printer: 'Добавить документ'
+    list:
+      mode: 'Тип документа'
+      template_name: 'Название документа'
+      all: 'Все'

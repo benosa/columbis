@@ -1,0 +1,16 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.title')
+
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+    = label_tag :mode_filter, t('.mode_filter')
+    = select_tag :mode_filter, options_for_select(mode_filter_options, 'all'), class: 'filter_select', id: 'mode_filter_options', data: { param: 'mode_filter', filter: true }
+
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_printer'), new_printer_path, :class => 'add_operator'

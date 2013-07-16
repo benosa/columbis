@@ -1,0 +1,19 @@
+.current_container
+  %table.reservations.tour_operators
+    %tr
+      %th= sort_link(:mode, t('.mode'))
+      %th= sort_link(:template_name, t('.template_name'))
+      %th.actions
+        %span= t('actions')
+
+    - for printer in @printers
+      %tr{:id => "printer_#{printer.id}"}
+        %td{:style => "width: 100px"}
+          %p= printer.mode
+        %td
+          %p= printer.template_name
+        %td
+          = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
+          = link_to '', printer_path(printer.id), :class => 'del delete', :title => t('delete'), :remote => true, :method => :delete
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @printers }

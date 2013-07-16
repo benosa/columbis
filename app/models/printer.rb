@@ -9,7 +9,35 @@ class Printer < ActiveRecord::Base
   belongs_to :country
   validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' } # TODO: check company presence
 
+  scope :with_template_name, -> do
+    country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
+    scope = joins("LEFT JOIN countries ON countries.id = printers.country_id")
+      .select(["printers.id", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
+        "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END) AS template_name"] +
+        country_columns)
+  end
+
+  define_index do
+    indexes "(CASE mode
+      WHEN 'contract' THEN '#{I18n.t("activerecord.attributes.printer.contract")}'
+      WHEN 'memo' THEN '#{I18n.t("activerecord.attributes.printer.memo")}'
+      WHEN 'permit' THEN '#{I18n.t("activerecord.attributes.printer.permit")}'
+      WHEN 'warranty' THEN '#{I18n.t("activerecord.attributes.printer.warranty")}'
+      WHEN 'act' THEN '#{I18n.t("activerecord.attributes.printer.act")}' END)",
+      :as => :mode, :sortable => true
+    indexes country(:name), :as => :country_name, :sortable => true
+    indexes "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END)",
+      :as => :template_name, :sortable => true
+
+    set_property :delta => true
+  end
+
+  sphinx_scope(:by_mode) { { :order => :mode } }
+  default_sphinx_scope :by_mode
+
   mount_uploader :template, TemplateUploader
+
+  extend SearchAndSort
 
   after_destroy do
     templ_dir = Pathname.new(self.template.path).dirname
@@ -37,6 +65,15 @@ class Printer < ActiveRecord::Base
   end
 
   private
+
+  def self.translate_mode
+    ind = "(CASE mode "
+    MODES.each do |mode|
+      transl = "activerecord.attributes.printer.#{mode.to_s}"
+      ind += "WHEN '#{mode}' THEN '#{I18n.t(transl)}' "
+    end
+    ind += "END)"
+  end
 
   def setup_collections(collections)
     @empty_collection_fields = {}

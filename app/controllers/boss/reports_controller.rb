@@ -26,7 +26,7 @@ module Boss
       @report = TourpriceReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def repurchase
       @report = RepurchaseReport.new(report_params.merge({minim: params[:minim].to_i})).prepare
       @count  = @report.count
@@ -53,28 +53,31 @@ module Boss
       @all_offices = current_company.offices
       @all_managers = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
     end
-    
+
     def tourduration
       @report = TourDurationReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def hotelstars
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
-      @amount  = @report.amount
+      @amount = @report.amount
+      @amount80 = @report.amount80
+      @amount15 = @report.amount15
+      @amount5 = @report.amount5
     end
-    
+
     def normalcheck
       @report = NormalCheckReport.new(report_params.merge({view: params[:view]})).prepare
       @count  = @report.count
     end
-    
+
     def increaseclients
       @report = IncreaseClientsReport.new(report_params).prepare
       @count  = @report.count

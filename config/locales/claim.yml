@@ -156,7 +156,7 @@ ru:
       add_another_payment: 'Добавить платеж'
       save_before_pay: 'Добавление платежей будет доступно после сохранения'
       operator_debt_short: 'Долг'
-      can_edit_payment_after_save: 'редактирование оплат доступно после сохранения'
+      can_edit_payment_after_save: 'Редактирование оплат оператору будет доступно после сохранения брони'
 
     information:
       additional_information: 'Дополнительная информация'

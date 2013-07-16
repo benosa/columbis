@@ -388,7 +388,7 @@ option {
   }
 
   #payments_in {
-    .primary_currency_price_view { float: none; color: #666; }
+    .primary_currency_price_view { float: none; }
     .primary_currency_price_text { margin: 3px 17px 0 0; }
   }
 }
@@ -601,6 +601,7 @@ option {
     .nights_select .ik_select_link_text{width: 71px;}/* -15 */
     .nights_select .ik_select_list{width: 84px;}/* -2 */
 
+    #tour_price .expires_date { width: 65px; }
     #claim_tour_price { width: 114px; }
     .number_visas { width: 70px; }
     .insurance { width: 43px; }

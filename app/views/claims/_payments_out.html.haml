@@ -4,11 +4,17 @@
 #payments_out.payments.form_block.green_block{ :class => large_width? && 'payment_operator', :data => { :form_options => form_options, :approved_disabled => approved_disabled, :amount_width_class => amount_width_class } }
   .block_title.with_fields
     %h2= t('.payments_out')
-    %span= "(#{t('.can_edit_payment_after_save')})" if f.object.new_record?
     .rates
       %p= f.label :operator_maturity, t('activerecord.attributes.claim.maturity'), :required => claim.operator_confirmation_flag
       = f.text_field :operator_maturity, :class => 'datepicker date expires_date', :value => l(claim.operator_maturity, :format => :long), :not_highlighted => true, :required => claim.operator_confirmation_flag
+    .rates
+      %p= f.label :operator_price
+      = f.text_field :operator_price, :class => 'number_visas'
+      = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
   .form_block_content
+    - if f.object.new_record?
+      .fake_row
+        %label= "#{t('.can_edit_payment_after_save')}"
     - ind = 0
     = f.fields_for :payments_out, :highlight_only => [:amount] do |pof|
       - payment_out = pof.object
@@ -57,13 +63,6 @@
             %strong= f.label :operator_debt
         = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right important'
         %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)
-      .two_line.small_margin.pull-right
-        - if small_width?
-          = f.label :operator_price
-        - else
-          %p= f.label :operator_price
-        = f.text_field :operator_price, :class => 'number_visas'
-        = f.select :operator_price_currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
 
     - if small_width? or medium_width?
       .fake_row.add_row.add_paying

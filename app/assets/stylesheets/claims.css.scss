@@ -107,7 +107,7 @@
       span { color: black !important; }
     }
 
-    .navy_back {
+    .navy_back, .visa_approved {
       background-color: #96B1F0 !important;
       span { color: black !important; }
     }
@@ -317,20 +317,11 @@ option {
   .form_column { margin: 0 !important; }
   .form_block { box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.26) }
   .visa_status {
-    &.ik_select {
-      width: 122px !important;
-      margin-right: 0px;
-      margin-bottom: 4px;
-    }
-    .ik_select_link {
-      width: 120px !important;
-    }
-    .ik_select_link_text {
-      width: 95px !important;
-    }
-    .ik_select_list {
-      width: 118px !important;
-    }
+    &.ik_select { width: 152px !important; margin-right: 0px; margin-bottom: 4px; }
+    .ik_select_link { width: 150px !important; }
+    .ik_select_link_text { width: 125px !important; }
+    .ik_select_list { width: 148px !important; }
+    .ik_select_optgroup { border-top: 1px solid #999; }
   }
   .standart_select {
     &.ik_select {

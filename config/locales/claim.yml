@@ -1,10 +1,13 @@
 ru:
   claims:
     visa_statuses:
-      nothing_done: 'Нет'
-      docs_got: 'Cобрана'
-      docs_sent: 'Отправлена'
-      all_done: 'Выдана'
+      nothing_done: 'Нет документов'
+      docs_got: 'Док-ты собраны'
+      docs_sent: 'Док-ты отправлены'
+      visa_approved: 'Виза получена'
+      all_done: 'Выдано'
+      unrequired: 'Виза не нужна'
+      required_group_label: 'Виза нужна'
 
     documents_statuses:
       not_ready: 'Не готовы'

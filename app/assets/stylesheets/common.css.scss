@@ -653,6 +653,17 @@ div.left {
   margin: 5px 7px 0 0;
 }
 
+.ik_select_optgroup {
+  .ik_select_optgroup_label {
+    display: inline-block;
+    padding: 4px 35px 5px 10px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+
+  li { padding-left: 5px; }
+}
+
 /*** highlighted ***/
 
 .highlighted {

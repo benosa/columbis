@@ -227,7 +227,7 @@ function set_claims_tooltip(init) {
 }
 
 $(function(){
-  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'all_done'];
+  var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
 
   function trim(str) {
      return str.replace(/^\s+|\s+$/g, '');
@@ -288,29 +288,37 @@ $(function(){
   });
 
   $('#claim_visa_status').change(function(e) {
-    var status = $(this).val();
+    var status = $(this).val(),
+        visa_confirmation_flag = status !== 'unrequired';
     $('#claim_visa').val(status);
-    $('#claim_visa_check').removeClass(VISA_STATUSES.join(' ')).addClass(status);
-  });
-
-  $('#claim_visa_confirmation_flag').change(function(e){
-    var val = $('#claim_visa').val(),
-        initial_status = VISA_STATUSES[0],
-        done_status = VISA_STATUSES[VISA_STATUSES.length - 1];
-    $('#claim_visa_check').removeClass(val);
-    if (this.checked) {
-      $('#claim_visa_check').removeClass(done_status).addClass(initial_status).datepicker('enable');
-      $('#claim_visa').val(initial_status);
-      $('#claim_visa_status').ikSelect('enable').ikSelect('select', initial_status);
+    $('#claim_visa_confirmation_flag').attr('checked', visa_confirmation_flag);
+    var $visa_check = $('#claim_visa_check');
+    $visa_check.removeClass(VISA_STATUSES.join(' ')).addClass(status);
+    if (visa_confirmation_flag) {
+      $visa_check.datepicker('enable');
     } else {
-      $('#claim_visa_check').removeClass(VISA_STATUSES.join(' ')).addClass(done_status).val('').datepicker('disable');
-      $('#claim_visa').val(done_status);
-      $('#claim_visa_status').ikSelect('disable').ikSelect('select', initial_status);
+      $visa_check.val('').datepicker('disable');
     }
   });
 
+  // $('#claim_visa_confirmation_flag').change(function(e){
+  //   var val = $('#claim_visa').val(),
+  //       initial_status = VISA_STATUSES[0],
+  //       done_status = VISA_STATUSES[VISA_STATUSES.length - 1];
+  //   $('#claim_visa_check').removeClass(val);
+  //   if (this.checked) {
+  //     $('#claim_visa_check').removeClass(done_status).addClass(initial_status).datepicker('enable');
+  //     $('#claim_visa').val(initial_status);
+  //     $('#claim_visa_status').ikSelect('enable').ikSelect('select', initial_status);
+  //   } else {
+  //     $('#claim_visa_check').removeClass(VISA_STATUSES.join(' ')).addClass(done_status).val('').datepicker('disable');
+  //     $('#claim_visa').val(done_status);
+  //     $('#claim_visa_status').ikSelect('disable').ikSelect('select', initial_status);
+  //   }
+  // });
+
   // set initial state for visa fields
-  $('#claim_visa_confirmation_flag').triggerHandler('change');
+  // $('#claim_visa_confirmation_flag').triggerHandler('change');
 
   // td click full value
   $('#claims td').live('click', function(e){

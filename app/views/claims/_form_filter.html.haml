@@ -15,12 +15,12 @@
 
     .float_right
       = f.label :visa_check
+      = f.hidden_field :visa_check, :value => '', :id => ''
       = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long),
           :disabled => !claim.visa_confirmation_flag
       = f.hidden_field :visa
-      = select_tag '', options_for_select(Claim::VISA_STATUSES.map {|s| [ t("claims.visa_statuses.#{s}"), s ]}, claim.visa),
-          :id => 'claim_visa_status', :class => 'visa_status', :disabled => !claim.visa_confirmation_flag
-      = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
+      = select_tag '', visa_select_options(claim.visa), :id => 'claim_visa_status', :class => 'visa_status'
+      -# f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
       = f.check_box :visa_confirmation_flag
       - if small_width?
         = f.label :check_date, t('.check_date_two_line').html_safe, :class => 'two_row',

@@ -130,8 +130,14 @@ module ClaimsHelper
     return '' if claim.canceled?
 
     if claim.visa_confirmation_flag?
-      (%w[docs_sent all_done].include?(claim.visa)) ? 'green_back' : 'red_back'
+      (%w[docs_sent visa_approved all_done].include?(claim.visa)) ? 'green_back' : 'red_back'
     end
+  end
+
+  def visa_select_options(value)
+    options = options_for_select([ [t("claims.visa_statuses.unrequired"), 'unrequired'] ], value)
+    status_options = Claim::VISA_STATUSES.map {|s| [ t("claims.visa_statuses.#{s}"), s ] }
+    options += grouped_options_for_select({ t("claims.visa_statuses.required_group_label") => status_options }, value)
   end
 
   def color_for_flight(claim)

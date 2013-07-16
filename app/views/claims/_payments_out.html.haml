@@ -25,17 +25,16 @@
           %p= pof.label :date_in, t('.date')
           = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long), :not_highlighted => true, :readonly => disabled
         .two_line
-          %p= pof.label :amount, t('.paid')
-          = pof.text_field :amount, :class => "amount #{amount_width_class}", :readonly => disabled
-          %label.operator_currency= t('rur')
+          %p= pof.label :amount_prim, t('.paid_prim')
+          = pof.text_field :amount_prim, :class => 'amount_prim paid', :readonly => disabled, :not_highlighted => true
+          %label.operator_currency= t(claim.operator_price_currency.upcase)
         .two_line.big_select
           %p= pof.label :course, t('.course')
           = pof.text_field :course, :class => 'course date', :readonly => disabled, :not_highlighted => true
         .two_line
-          %p= pof.label :amount_prim, t('.paid')
-          = pof.text_field :amount_prim, :class => 'amount_prim paid', :readonly => disabled, :not_highlighted => true
-          %label= t(claim.operator_price_currency.upcase)
-          -# pof.select :currency, (CurrencyCourse::CURRENCIES).collect {|o| [ o.upcase, o ] }, {}, :class => 'currency', :readonly => true
+          %p= pof.label :amount, t('.paid')
+          = pof.text_field :amount, :class => "amount #{amount_width_class}", :readonly => disabled
+          %label= t('rur')
         .two_line.big_select
           %p= pof.label :form, t('.paid_type')
           = pof.select :form, form_options, { :include_blank => t('nope') }, :class => 'payment_form big_payment_select', :not_highlighted => true, :readonly => disabled

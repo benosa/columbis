@@ -56,8 +56,8 @@ class Claim < ActiveRecord::Base
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
   has_many :dependents, :through => :tourist_claims, :source => :tourist
 
-  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }
-  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }
+  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id'
+  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id'
 
   # accepts_nested_attributes_for :applicant, :reject_if => :empty_tourist_hash?
   # accepts_nested_attributes_for :dependents, :reject_if => :empty_tourist_hash?
@@ -568,7 +568,7 @@ class Claim < ActiveRecord::Base
 
     def update_payments
       payments_in.each do |payment|
-        payment.assign_attributes({
+        payment.update_attributes({
           :company => company,
           :recipient => company,
           :payer => applicant,
@@ -578,7 +578,7 @@ class Claim < ActiveRecord::Base
         }, :without_protection => true)
       end
       payments_out.each do |payment|
-        payment.assign_attributes({
+        payment.update_attributes({
           :company => company,
           :recipient => operator,
           :payer => company,
@@ -592,14 +592,14 @@ class Claim < ActiveRecord::Base
     def update_debts
       self.operator_advance = self.payments_out.sum('amount_prim')
       # no sense here anymore
-      self.approved_operator_advance = self.payments_out.where(:approved => true).sum('amount')
-      self.approved_operator_advance_prim = self.payments_out.where(:approved => true).sum('amount_prim')
+      self.approved_operator_advance = self.payments_out.approved.sum('amount')
+      self.approved_operator_advance_prim = self.payments_out.approved.sum('amount_prim')
 
       self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
       self.operator_paid = create_paid_string(:out)
 
       self.tourist_advance = self.payments_in.sum('amount_prim')
-      self.approved_tourist_advance = self.payments_in.where(:approved => true).sum('amount_prim')
+      self.approved_tourist_advance = self.payments_in.approved.sum('amount_prim')
 
       self.primary_currency_price = calculate_tour_price
       self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
@@ -724,9 +724,8 @@ class Claim < ActiveRecord::Base
     end
 
     def check_dropdowns(claim_params)
-      lists = DropdownValue.available_lists.map{|k, v| k.to_s}
-      lists.each do |l|
-        company.check_and_save_dropdown(l, claim_params[l.to_sym])
+      DropdownValue.available_lists.keys.each do |l|
+        company.check_and_save_dropdown(l.to_s, claim_params[l]) unless claim_params[l].nil?
       end
       company.check_and_save_dropdown('airport', claim_params[:airport_to])
       company.check_and_save_dropdown('airport', claim_params[:airport_back])

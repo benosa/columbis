@@ -8,17 +8,17 @@
     = text_field_tag "#{name_prefix}[date_in]", '{{date_in}}', :id => "#{id_prefix}_date_in", :class => 'datepicker date_in date'
   .two_line
     %p
-      %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
-    = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount {{amount_width_class}}'
-    %label.operator_currency= I18n.t('rur')
+      %label{ :for => "#{id_prefix}_amount_prim", :class => 'required' }= I18n.t("#{i18n_prefix}.paid_prim")
+    = text_field_tag "#{name_prefix}[amount_prim]", '{{amount_prim}}', :id => "#{id_prefix}_amount_prim", :class => 'amount_prim paid'
+    %label.operator_currency= '{{currency}}'
   .two_line.big_select
     %p
       %label{ :for => "#{id_prefix}_course" }= I18n.t("#{i18n_prefix}.course")
     = text_field_tag "#{name_prefix}[course]", '{{course}}', :id => "#{id_prefix}_course", :class => 'course date'
   .two_line
     %p
-      %label{ :for => "#{id_prefix}_amount_prim", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
-    = text_field_tag "#{name_prefix}[amount_prim]", '{{amount_prim}}', :id => "#{id_prefix}_amount_prim", :class => 'amount_prim paid'
+      %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
+    = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount {{amount_width_class}}'
     %label= I18n.t('rur')
   .two_line.big_select
     %p

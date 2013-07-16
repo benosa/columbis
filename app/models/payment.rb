@@ -31,6 +31,8 @@ class Payment < ActiveRecord::Base
     company.check_and_save_dropdown('form', payment.form)
   end
 
+  scope :approved, -> { where(:approved => true) }
+
   private
 
     def fill_fields

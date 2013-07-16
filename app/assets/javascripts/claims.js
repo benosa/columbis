@@ -610,55 +610,101 @@ $(function(){
     if (isNaN(price)) { price = 0 }
     var paid = 0.0;
     $('#payments_out .fields').each(function (i) {
-      var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount').val());
+      var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount_prim').val());
       if (!isNaN(val)) {
         paid += val;
       }
     });
-    $('#claim_operator_debt').val((price - paid).toFixed(2));
+    // var operator_debt = price - paid;
+    // if (operator_debt < 0) { operator_debt = 0; }
+    $('#claim_operator_debt').val(price - paid.toFixed(2));
   };
 
   $('#claim_operator_price').on('keyup', calculate_operator_debt);
 
-  var calculate_amount_prim = function(event){
-    var $tr = $(event.currentTarget).closest('.fields'),
-        course = parseFloat($tr.find('input.course').val());
-    if (isNaN(course) || course < 0) { course = 0 }
+  // var calculate_amount = function(el){
+  //   var $fields = $(el).closest('.fields'),
+  //       course = parseFloat($fields.find('input.course').val());
+  //   if (isNaN(course) || course < 0) { course = 0; }
 
-    var amount = parseFloat($tr.find('input.amount').val());
-    if (isNaN(amount)) { amount = 0 }
-    var amount_prim = (course * amount).toFixed(2);
-    $tr.find('input.amount_prim').val(amount_prim);
-  };
+  //   var amount_prim = parseFloat($fields.find('input.amount_prim').val());
+  //   if (isNaN(amount_prim)) { amount_prim = 0; }
+  //   var amount = (course * amount_prim).toFixed(2);
+  //   $fields.find('input.amount').val(amount);
+  // };
 
-  var reversive_calculate_amount = function(event){
-    var $tr = $(event.currentTarget).closest('.fields'),
-        course = parseFloat($tr.find('input.course').val());
-    if (isNaN(course) || course < 0) { course = 0 }
+  // var calculate_amount_prim = function(el){
+  //   var $fields = $(el).closest('.fields'),
+  //       course = parseFloat($fields.find('input.course').val());
+  //   if (isNaN(course) || course < 0) { course = 0; }
 
-    var amount_prim = parseFloat($tr.find('input.amount_prim').val());
-    if (course > 0) {
-      var amount = (amount_prim / course).toFixed(2);
-      $tr.find('input.amount').val(amount);
-    } else {
-      $tr.find('input.amount').val('0.00');
+  //   var amount = parseFloat($fields.find('input.amount').val());
+  //   if (isNaN(amount)) { amount = 0; }
+  //   var amount_prim = course > 0 ? (amount / course).toFixed(2) : '0.00';
+  //   $fields.find('input.amount_prim').val(amount_prim);
+  // };
+
+  var calculate_amount_or_course = function(el) {
+    var $el = $(el),
+        $fields = $el.closest('.fields'),
+        $course = $('input.course', $fields),
+        course = parseFloat($course.val()),
+        amount = parseFloat($('input.amount', $fields).val()),
+        amount_prim = parseFloat($('input.amount_prim', $fields).val());
+    if (isNaN(course) || course < 0) { course = 0; }
+    if (isNaN(amount)) { amount = 0; }
+    if (isNaN(amount_prim)) { amount_prim = 0; }
+
+    if ($el.is('.course')) {
+      if (amount_prim && course) {
+        amount = (course * amount_prim).toFixed(2);
+        $('input.amount', $fields).val(amount);
+      } else if (amount && course) {
+        amount_prim = course > 0 ? (amount / course).toFixed(2) : '0.00';
+        $('input.amount_prim', $fields).val(amount_prim);
+      }
+    } else if ($el.is('.amount_prim')) {
+      if (!$course.data('changing') && course && amount_prim) {
+        amount = (course * amount_prim).toFixed(2);
+        $('input.amount', $fields).val(amount);
+      } else if (amount && amount_prim) {
+        course = amount_prim > 0 ? (amount / amount_prim).toFixed(2) : '';
+        $('input.course', $fields).val(course);
+      }
+    } else if ($el.is('.amount')) {
+      if (!$course.data('changing') && course && amount) {
+        amount_prim = course > 0 ? (amount / course).toFixed(2) : '0.00';
+        $('input.amount_prim', $fields).val(amount_prim);
+      } else if (amount_prim && amount) {
+        course = amount_prim > 0 ? (amount / amount_prim).toFixed(2) : '';
+        $('input.course', $fields).val(course);
+      }
     }
   };
 
   $('#payments_in').on('keyup', 'input.amount', function(event){
     get_amount_in_word(event);
-  	calculate_tourist_debt(event);
+  	calculate_tourist_debt();
   });
 
-  $('#payments_out').on('keyup', 'input.amount, input.course', function(event){
-    calculate_amount_prim(event);
-  	// get_amount_in_word(event);
-  	calculate_operator_debt(event);
+  $('#payments_out').on('keyup', 'input.amount_prim, input.course, input.amount', function(event){
+    calculate_amount_or_course(event.currentTarget);
+  	calculate_operator_debt();
   });
 
-	$('#payments_out').on('keyup', 'input.amount_prim', function(event){
-    reversive_calculate_amount(event);
-  	calculate_operator_debt(event);
+  $('#payments_out').on('focusin focusout', 'input.amount_prim, input.amount', function(event) {
+    var $el = $(event.currentTarget),
+        $fields = $el.closest('.fields'),
+        $course = $('input.course', $fields);
+    if (event.type == 'focusin') {
+      var course = parseFloat($course.val());
+      if (isNaN(course) || course < 0) { course = 0; }
+      if (!course) {
+        $course.data('changing', true);
+      }
+    } else {
+      $course.data('changing', false);
+    }
   });
 
   $('#payments_in, #payments_out').on('change', 'input.approved', function(e) {
@@ -809,7 +855,9 @@ $(function(){
       };
       html = JST['claims/payment_in'].render(payment);
     } else {
-      var first_course = $block.find('.fields:first .course').val() || 1;
+      var $first_fields = $block.find('.fields:first')
+        first_course = $first_fields.find('.course').val() || 1,
+        currency = $('#claim_operator_price_currency option:selected').html();
       payment = {
         num: num,
         id: '',
@@ -818,6 +866,7 @@ $(function(){
         amount: '0.0',
         amount_width_class: $block.data('amount_width_class'),
         course: first_course,
+        currency: currency,
         amount_prim: '0.0',
         form_options: $block.data('form_options'),
         approved: false

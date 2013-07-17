@@ -81,6 +81,7 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
+  validates :hotel, :format => { :with => /([\s][1-5]\*)\Z/, :message => I18n.t('activerecord.errors.messages.hotel') }
 
   # before_validation :update_tourists
   before_validation :update_payments

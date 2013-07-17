@@ -8,6 +8,13 @@ ru:
       all_done: 'Выдано'
       unrequired: 'Виза не нужна'
       required_group_label: 'Виза нужна'
+    visa_statuses_short:
+      nothing_done: 'Нет док'
+      docs_got: 'Док собр'
+      docs_sent: 'Док отпр'
+      visa_approved: 'Получ'
+      all_done: 'Выдано'
+      unrequired: 'Не нужна'
 
     documents_statuses:
       not_ready: 'Не готовы'

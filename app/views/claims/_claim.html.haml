@@ -15,22 +15,22 @@
   %td{ :title => tourists_list(claim) }
     = truncate(claim.applicant.try(:initials_name), :length => 8)
   %td{ :title => claim.applicant.try(:phone_number) }
-    = text_value truncate(claim.applicant.try(:phone_number), :length => 10)
+    = truncate(claim.applicant.try(:phone_number), :length => 10)
   %td{ :class => color_for_flight(claim) }
     %span{ :title => l(claim.depart_to, :format => :long) }
-      = text_value l( claim.depart_to, :format => :short_date )
+      = l( claim.depart_to, :format => :short_date )
   %td
     %span{ :title => l(claim.depart_back, :format => :long) }
-      = text_value l( claim.depart_back, :format => :short_date )
+      = l( claim.depart_back, :format => :short_date )
   %td{ :title => claim.country.try(:name) }
-    = text_value truncate(claim.country.try(:name), :length => 8)
+    = truncate(claim.country.try(:name), :length => 8)
   %td{ :title => claim.city.try(:name) }
-    = text_value truncate(claim.city.try(:name), :length => 6)
+    = truncate(claim.city.try(:name), :length => 6)
+  %td{ :title => text_for_visa(claim) }
+    = text_for_visa(claim, true)
   %td{ :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
     %span{ :title => l( claim.visa_check, :format => :short ) }
-      = text_value l( claim.visa_check, :format => :short )
-  %td{ :title => text_for_visa(claim) }
-    = text_for_visa(claim)
+      = l( claim.visa_check, :format => :short )
   %td{ :title => claim.operator.try(:name) }
     = truncate(claim.operator.try(:name), :length => 8)
   %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }

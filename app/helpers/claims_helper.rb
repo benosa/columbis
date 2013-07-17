@@ -63,18 +63,10 @@ module ClaimsHelper
     ([claim.applicant.try(:full_name)] + claim.dependents.map{ |o| o.try(:full_name) }).join(', ')
   end
 
-  def text_for_visa(claim)
-    return '' if claim.canceled?
-
-    if claim.visa_confirmation_flag
-      if claim.visa == 'docs_sent'
-        t('claims.index.sent')
-      else
-        t('claims.index.visa')
-      end
-    else
-      t('nope')
-    end
+  def text_for_visa(claim, short = nil)
+    statuses_key = 'visa_statuses'
+    statuses_key += '_short' if short
+    t("claims.#{statuses_key}.#{claim.visa}")
   end
 
   def check_date_status(claim)

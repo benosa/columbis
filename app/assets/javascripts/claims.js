@@ -1,18 +1,18 @@
 // search
 function getCurrentParams(el){
   var currentParams = { sort:'reservation_date', dir:'desc', filter: '' },
-      $current_sort = $('#claims th a.current'),
+      $current_sort = $('#claims th a.sort_active'),
       $el = $(el),
       href;
 
   if ($el.is('#claims th a')) {
     href = $el.attr('href');
   } else {
-    href = $current_sort.attr('href');
+    // href = $current_sort.attr('href');
+    href = 'sort=' + $current_sort.data('sort') + '&dir=' + $current_sort.data('dir'); // temporary for old sorting
   }
 
   if (href) {
-    var href = $el.attr('href');
     href = href.replace(/\/claims.*\?/, '');
     var params = href.split('&');
     for (var i = 0, len = params.length; i < len; i++){
@@ -21,7 +21,7 @@ function getCurrentParams(el){
         case 'sort':
           currentParams.sort = pair[1];
           break;
-        case 'direction':
+        case 'dir':
           if ($el[0] == $current_sort[0]) {  // change direction for current sort column
             currentParams.dir = (pair[1]=='asc' ? 'desc' : 'asc');
           } else {

@@ -26,7 +26,7 @@ class ClaimsController < ApplicationController
       @claims = @claims_collection.all
     end
     set_list_type
-    #@totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+    @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
     render :partial => 'list' if request.xhr?
   end
 
@@ -36,7 +36,7 @@ class ClaimsController < ApplicationController
     @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables)).reorder(nil)
     @claims = Claim.sort_by_search_results(@claims_collection)
     set_list_type
-    #@totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
+    @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
     render 'scroll', :layout => false
   end
 
@@ -46,7 +46,7 @@ class ClaimsController < ApplicationController
     else
       :all
     end
-    #@totals = claim_totals(period, params)
+    @totals = claim_totals(period, params)
     render :partial => 'totals'
   end
 
@@ -246,7 +246,7 @@ class ClaimsController < ApplicationController
                sum(approved_operator_advance) as approved_operator_advance,
                sum(profit) as profit,
                sum(profit_acc) as profit_acc,
-               sum(primary_currency_price) as primary_currency_price
+               sum(primary_currency_price) as primary_currency_price,
                sum(bonus) as bonus,
                max(reservation_date) as reservation_date,
                EXTRACT(MONTH FROM reservation_date) as month,
@@ -262,9 +262,9 @@ class ClaimsController < ApplicationController
 
     def get_totals(claims)
       # show totals only if list is sorted by reservation_date
-      if (is_admin? or is_boss?) and sort_col == 'reservation_date' and !claims.empty?
+      if (is_admin? or is_boss?) and sort_col == :reservation_date and !claims.empty?
          # Get beginning of month of min date and end of month of max date from particular claims
-        period = if sort_direction == 'desc'
+        period = if sort_dir == :desc
           claims.last.reservation_date.beginning_of_month..claims.first.reservation_date.end_of_month
         else
           claims.first.reservation_date.beginning_of_month..claims.last.reservation_date.end_of_month

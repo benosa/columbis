@@ -123,6 +123,11 @@
       td { background-color: #e0e0e0 !important; }
     }
   }
+
+  tr.total {
+    td { background: #bde0fa !important; }
+    .description { text-align: center; }
+  }
 }
 
 .reservations th.double_sort a.sort_active.desc {

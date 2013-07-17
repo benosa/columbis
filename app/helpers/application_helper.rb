@@ -161,7 +161,11 @@ module ApplicationHelper
     col = column.to_sym
     title ||= col.titleize
     css_class = col == sort_col(default_and_dir ? col : nil) ? "sort_active #{sort_dir(default_and_dir == :desc ? :desc : :asc)}" : nil
-    dir = col == sort_col(default_and_dir ? col : nil) ? sort_dir(default_and_dir == :desc ? :desc : :asc) : :asc
+    dir = if col == sort_col(default_and_dir ? col : nil)
+      sort_dir(default_and_dir == :desc ? :desc : :asc)
+    else
+      (Claim.columns_hash[column].try(:type).try(:to_s) =~ /^date/ ? :desc : :asc)
+    end
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 

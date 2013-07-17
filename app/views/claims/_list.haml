@@ -48,7 +48,7 @@
           %th.last_cols
 
       %tbody#claims_body
-        = render partial: 'claims', object: @claims #, locals: { totals: @totals }
+        = render partial: 'claims', object: @claims, locals: { totals: @totals }
 
         - if next_page <= @claims_collection.total_pages
           %tr{ :class => "waypoint", :data => {:page => next_page} }

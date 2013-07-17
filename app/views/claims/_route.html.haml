@@ -8,8 +8,9 @@
       = f.text_field :arrival_date, :class => 'datepicker date important', :value => l(claim.arrival_date, :format => :long)
       %label= t('.till')
       = f.text_field :departure_date, :class => 'datepicker date important', :value => l(claim.departure_date, :format => :long)
-      %label= " " + t('.deys')
-      %label#deys 0
+      -#
+        %label= " " + t('.deys')
+        %label#deys 0
     .fake_row{ :class => large_width? && 'margin_small' }
       .two_line
         %p

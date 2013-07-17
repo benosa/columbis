@@ -154,7 +154,9 @@ class ClaimsController < ApplicationController
     end
 
     def set_commit_type
-      @commit_type = params[:commit] == I18n.t('save_and_close') ? :save_and_close : :save
+      @commit_type = :save_and_close if params[:save_and_close]
+      @commit_type = params[:commit] == I18n.t('save_and_close') ? :save_and_close : :save unless @commit_type
+      @commit_type
     end
 
     def search_options

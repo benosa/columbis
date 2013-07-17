@@ -13,4 +13,5 @@
   - if can? :delete, Claim
     = link_to t('delete'), claims_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('save_and_close'), '#', :class => 'save save_and_close', :data => { :submit => @form_id, :close => true }
   = link_to t('.list_of_claim'), claims_path, :class => 'list_operator'

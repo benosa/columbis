@@ -108,8 +108,17 @@ $(function(){
     e.preventDefault();
     var form_id = $(this).data('submit'),
         $form = $('#' + form_id);
-    if (form_id && $form.length)
+    if ($(this).data('close')) {
+      var $inp = $form.find('input[name="save_and_close"]');
+      if ($inp.length) {
+        $inp.val('1');
+      } else {
+        $form.append('<input type="hidden" name="save_and_close" value="1" />');
+      }
+    }
+    if (form_id && $form.length) {
       $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
+    }
   });
 
   // $('.error_message.input_wrapper').each(function() {

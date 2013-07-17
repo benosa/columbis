@@ -7,7 +7,7 @@ class FixingHotelStars < ActiveRecord::Migration
 
     Claim.select([:id, :hotel]).find_each(:batch_size => 500) do |claim|
 
-      hotel = Change.new(claim.hotel)
+      hotel = Change.new(claim.hotel, claim.id)
       case hotel.status
       when :renamed
         claim.update_column(:hotel, hotel.new_name)
@@ -23,8 +23,13 @@ class FixingHotelStars < ActiveRecord::Migration
     end
 
     if bads.length != 0
-      logger.info() {"|||||||||||||=====List of did not renamed hotels:"}
-      bads.each_with_index{|bad, i| logger.info() {"#{i}. #{bad.old_name}"} }
+      require 'csv'
+      CSV.open('log/hotels_without_stars.csv', 'w+') do |writer|
+        writer << ["No", "Name", "New name"]
+        bads.each_with_index do |bad, i|
+          writer << [bad.claim_id, bad.old_name, '']
+        end
+      end
     end
 
     logger.close
@@ -36,31 +41,78 @@ class FixingHotelStars < ActiveRecord::Migration
   private
 
     class Change
-      attr_accessor :old_name, :new_name, :status
-      def initialize(name)
+      attr_accessor :old_name, :new_name, :status, :claim_id
+      def initialize(name, id)
+        @claim_id = id
         @old_name = name
-        if (/(\s[1-5]\*)\Z/ =~ name).nil?
-          if (/[1-5]\*/ =~ name).nil?
-            if (/([^0-9][1-5])\Z/ =~ name).nil?
-              @new_name = nil #no template
-              @status = :bad
-            else
-              z = (/([^0-9][1-5])\Z/.match name).to_s #template: "ashdk1"
-              z = "#{z[1]}*"
-              @new_name = name.gsub(/([^0-9][1-5])\Z/, '')
-              @new_name = "#{@new_name} #{z}"
-              @status = :renamed
-            end
-          else
-            z = (/[1-5]\*/.match name).to_s #template: "asd1*dasd"
-            @new_name = name.gsub(/[1-5]\*/, '')
-            @new_name = "#{@new_name} #{z}"
-            @status = :renamed
-          end
+        if     !(TEMPLATES["aaaa 1*"][:filter] =~ name).nil?
+          @new_name = name
+          @status = TEMPLATES["aaaa 1*"][:status]
+
+        elsif !(TEMPLATES["aa1*aa"][:filter] =~ name).nil?
+          z = (TEMPLATES["aa1*aa"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aa1*aa"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aa1*aa"][:status]
+
+        elsif !(TEMPLATES["aaaa1"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1"][:status]
+
+        elsif !(TEMPLATES["aaaa1+"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1+"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1+"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1+"][:status]
+
+        elsif !(TEMPLATES["aaaa1 +"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1 +"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1 +"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1 +"][:status]
+
+        elsif !(TEMPLATES["aaaa1+*"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1+*"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1+*"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1+*"][:status]
+
+        elsif !(TEMPLATES["aaaa1*+"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1*+"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1*+"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1*+"][:status]
+
+        elsif !(TEMPLATES["aaaa1 *"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1 *"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1 *"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1 *"][:status]
+
+        elsif !(TEMPLATES["aaaa1+ *"][:filter] =~ name).nil?
+          z = (TEMPLATES["aaaa1+ *"][:filter].match name).to_s[1]
+          @new_name = name.gsub(TEMPLATES["aaaa1+ *"][:filter], '')
+          @new_name = "#{@new_name} #{z}*"
+          @status = TEMPLATES["aaaa1+ *"][:status]
         else
-          @new_name = name #template: "ASddsd 4*"
-          @status = :good
+          @status = :bad
         end
       end
+
+      private
+        TEMPLATES =
+          {
+            "aaaa 1*" => { :filter => /(\s[1-5]\*)\Z/, :status => :good },
+            "aa1*aa" => { :filter => /[^0-9][1-5]\*/, :status => :renamed },
+            "aaaa1" => { :filter => /([^0-9][1-5])\Z/, :status => :renamed },
+            "aaaa1+" => { :filter => /([^0-9][1-5]\+)\Z/, :status => :renamed },
+            "aaaa1 +" => { :filter => /([^0-9][1-5]\s\+)\Z/, :status => :renamed },
+            "aaaa1+*" => { :filter => /([^0-9][1-5]\+\*)\Z/, :status => :renamed },
+            "aaaa1*+" => { :filter => /([^0-9][1-5]\*\+)\Z/, :status => :renamed },
+            "aaaa1 *" => { :filter => /([^0-9][1-5]\s\*)\Z/, :status => :renamed },
+            "aaaa1+ *" => { :filter => /([^0-9][1-5]\+\s\*)\Z/, :status => :renamed }
+          }
     end
 end

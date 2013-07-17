@@ -856,7 +856,7 @@ $(function(){
       html = JST['claims/payment_in'].render(payment);
     } else {
       var $first_fields = $block.find('.fields:first')
-        first_course = $first_fields.find('.course').val() || 1,
+        first_course = $first_fields.find('.course').val(),
         currency = $('#claim_operator_price_currency option:selected').html();
       payment = {
         num: num,

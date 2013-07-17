@@ -1,0 +1,1 @@
+ENV["ETAG_VERSION_ID"] = Time.now # TODO: change value to release version if there are several servers

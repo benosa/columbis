@@ -40,6 +40,7 @@ gem 'oj' # optimized json, automatically used by multi_json
 gem 'rabl'
 
 gem 'i18n-timezones'
+gem 'bust_rails_etags'
 
 # Gems used only for assets and not required
 # in production environments by default.

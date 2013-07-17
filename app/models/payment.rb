@@ -26,7 +26,7 @@ class Payment < ActiveRecord::Base
     errors.add(:recipient, I18n.t('errors.messages.blank')) unless self.recipient
   end
 
-  before_save :fill_fields
+  before_validation :fill_fields
   before_save do |payment|
     company.check_and_save_dropdown('form', payment.form)
   end
@@ -36,9 +36,14 @@ class Payment < ActiveRecord::Base
   private
 
     def fill_fields
-      # we also store amount in primary currency
-      crs = reversed_course ? (course != 0 ? 1 / course : 0) : course
-      self.amount_prim = (crs * amount).round(2)
-      self.description = amount.to_f.amount_in_words(currency)[0,255] # Limit string length to database field length to avoid errors
+      unless self.amount
+        # we also store amount in primary currency
+        crs = reversed_course ? (course != 0 ? 1 / course : 0) : course
+        self.amount = (crs * amount_prim).round(2) # TODO: attention!!! now amount_prim is a currency value
+        self.description = ''
+      end
+      if description.blank?
+        self.description = amount.to_f.amount_in_words(currency)[0,255] # Limit string length to database field length to avoid errors
+      end
     end
 end

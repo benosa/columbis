@@ -82,10 +82,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
 
-  # before_validation :update_tourists
-  before_validation :update_payments
-
-  before_save :update_debts
+  before_validation :update_debts
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
@@ -138,6 +135,7 @@ class Claim < ActiveRecord::Base
   def assign_reflections_and_save(claim_params)
     self.transaction do
       check_dropdowns(claim_params)
+      check_payments
 
       unless self.errors.any?
         remove_unused_payments
@@ -513,97 +511,50 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    # def assign_applicant(applicant_params)
-    #   # Set address manually to avoid an exeption
-    #   applicant_address = applicant_params[:address] if applicant_params[:address].present?
-    #   applicant_params.delete :address
-
-    #   if applicant_params[:id].blank?
-    #     a = Tourist.new(applicant_params)
-    #     a.company_id = company_id
-    #     a.address.build_address(:company_id => company_id, :joint_address => applicant_address) if applicant_address
-    #     a.save
-    #     self.applicant = a
-    #   else
-    #     self.applicant = Tourist.where(:company_id => company_id).includes(:address).find(applicant_params[:id])
-    #     if self.applicant.present?
-    #       self.applicant.update_attributes(applicant_params)
-    #       if applicant_address
-    #         if self.applicant.address
-    #           self.applicant.address.update_attributes({ :joint_address => applicant_address })
-    #         else
-    #           self.applicant.create_address({:company_id => company_id, :joint_address => applicant_address},:without_protection => true)
-    #         end
-    #       end
-    #     end
-    #   end
-    # end
-
-    # def assign_dependents(tourists)
-    #   tourists.each do |key, tourist_hash|
-    #     next if empty_tourist_hash?(tourist_hash)
-
-    #     if tourist_hash[:id].blank?
-    #       tourist = Tourist.new(tourist_hash)
-    #       tourist.company_id = company_id
-    #     else
-    #       tourist = Tourist.where(:company_id => company_id).find(tourist_hash[:id])
-    #       tourist.update_attributes(tourist_hash) if tourist.present?
-    #     end
-
-    #     tourist.company_id = company_id
-    #     begin
-    #       self.dependents << tourist
-    #     rescue
-    #       tourist.errors.full_messages.each { |msg| self.errors.add(:tourists, msg) }
-    #     end
-    #   end
-    # end
-
-    # def update_tourists
-    #   dependents.each do |tourist|
-    #     tourist.company = company
-    #   end
-    # end
-
-    def update_payments
+    def check_payments
       payments_in.each do |payment|
-        payment.update_attributes({
+        payment.assign_attributes({
           :company => company,
           :recipient => company,
           :payer => applicant,
+          :amount_prim => payment.amount, # tourist can pay only in primary currency (rur)
           :currency => CurrencyCourse::PRIMARY_CURRENCY,
           :course => 1,
           :canceled => canceled?
         }, :without_protection => true)
+        payment.save
       end
       payments_out.each do |payment|
-        payment.update_attributes({
+        payment.assign_attributes({
           :company => company,
           :recipient => operator,
           :payer => company,
-          :currency => CurrencyCourse::PRIMARY_CURRENCY,
-          :reversed_course => payment.currency == 'rur',
+          :reversed_course => false, #payment.currency == 'rur',
           :canceled => canceled?
         }, :without_protection => true)
+        payment[:currency] = operator_price_currency if !payment.approved? || payment.currency.blank?
+        payment.save
       end
     end
 
     def update_debts
-      self.operator_advance = self.payments_out.sum('amount_prim')
-      # no sense here anymore
-      self.approved_operator_advance = self.payments_out.approved.sum('amount')
-      self.approved_operator_advance_prim = self.payments_out.approved.sum('amount_prim')
+      payments_in = self.payments_in.reject(&:marked_for_destruction?)
+      approved_payments_in = payments_in.select(&:approved?)
 
-      self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
-      self.operator_paid = create_paid_string(:out)
-
-      self.tourist_advance = self.payments_in.sum('amount_prim')
-      self.approved_tourist_advance = self.payments_in.approved.sum('amount_prim')
+      self.tourist_advance = payments_in.map(&:amount_prim).sum
+      self.approved_tourist_advance = approved_payments_in.map(&:amount_prim).sum
 
       self.primary_currency_price = calculate_tour_price
       self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
-      self.tourist_paid = create_paid_string(:in)
+
+      payments_out = self.payments_out.reject(&:marked_for_destruction?)
+      approved_payments_out = payments_out.select(&:approved?)
+
+      self.operator_advance = payments_out.map(&:amount_prim).sum
+      self.approved_operator_advance = approved_payments_out.map(&:amount).sum
+      self.approved_operator_advance_prim = approved_payments_out.map(&:amount_prim).sum
+
+      self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
 
       self.profit, self.profit_in_percent = calculate_profit
       self.profit_acc, self.profit_in_percent_acc = calculate_profit_acc
@@ -687,14 +638,14 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def create_paid_string(in_out)
-      str = ''
-      CurrencyCourse::CURRENCIES.each do |cur|
-        payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
-        (str += cur.upcase << ': ' << sprintf("%0.0f", payment_amount) << ' ') unless payment_amount == 0.0
-      end
-      str.strip!
-    end
+    # def create_paid_string(in_out)
+    #   str = ''
+    #   CurrencyCourse::CURRENCIES.each do |cur|
+    #     payment_amount = (in_out == :in ? self.payments_in : self.payments_out).sum(:amount, :conditions => "currency = '#{cur}'")
+    #     (str += cur.upcase << ': ' << sprintf("%0.0f", payment_amount) << ' ') unless payment_amount == 0.0
+    #   end
+    #   str.strip!
+    # end
 
     def remove_unused_payments
       Payment.where(:claim_id => nil, :company_id => company.id).destroy_all

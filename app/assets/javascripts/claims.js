@@ -596,7 +596,7 @@ $(function(){
     var price = parseFloat($('#claim_primary_currency_price').val());
     if (isNaN(price)) { price = 0 }
     var paid = 0.0;
-    $('#payments_in .fields').each(function (i) {
+    $('#payments_in .fields').not('.destroyed').each(function (i) {
       var val = parseFloat($('#claim_payments_in_attributes_' + i + '_amount').val());
       if (!isNaN(val)) {
         paid += val;
@@ -609,7 +609,7 @@ $(function(){
     var price = parseFloat($('#claim_operator_price').val());
     if (isNaN(price)) { price = 0 }
     var paid = 0.0;
-    $('#payments_out .fields').each(function (i) {
+    $('#payments_out .fields').not('.destroyed').each(function (i) {
       var val = parseFloat($('#claim_payments_out_attributes_' + i + '_amount_prim').val());
       if (!isNaN(val)) {
         paid += val;
@@ -621,28 +621,6 @@ $(function(){
   };
 
   $('#claim_operator_price').on('keyup', calculate_operator_debt);
-
-  // var calculate_amount = function(el){
-  //   var $fields = $(el).closest('.fields'),
-  //       course = parseFloat($fields.find('input.course').val());
-  //   if (isNaN(course) || course < 0) { course = 0; }
-
-  //   var amount_prim = parseFloat($fields.find('input.amount_prim').val());
-  //   if (isNaN(amount_prim)) { amount_prim = 0; }
-  //   var amount = (course * amount_prim).toFixed(2);
-  //   $fields.find('input.amount').val(amount);
-  // };
-
-  // var calculate_amount_prim = function(el){
-  //   var $fields = $(el).closest('.fields'),
-  //       course = parseFloat($fields.find('input.course').val());
-  //   if (isNaN(course) || course < 0) { course = 0; }
-
-  //   var amount = parseFloat($fields.find('input.amount').val());
-  //   if (isNaN(amount)) { amount = 0; }
-  //   var amount_prim = course > 0 ? (amount / course).toFixed(2) : '0.00';
-  //   $fields.find('input.amount_prim').val(amount_prim);
-  // };
 
   var calculate_amount_or_course = function(el) {
     var $el = $(el),

@@ -34,9 +34,9 @@ ru:
         income: 'Выручка'
         income_offices: 'Выручка по офисам'
         income_managers: 'Выручка по менеджерам'
-        maturity: 'Наценка'
-        maturity_offices: 'Наценка по офисам'
-        maturity_managers: 'Наценка по менеджерам'
+        margin: 'Наценка'
+        margin_offices: 'Наценка по офисам'
+        margin_managers: 'Наценка по менеджерам'
         normalcheck: "Средний чек"
         increaseclients: "Динамика прироста клиентской базы"
         salesfunnel: "Воронка продаж"

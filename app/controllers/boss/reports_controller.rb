@@ -34,7 +34,7 @@ module Boss
     end
 
     def income
-      @report = IncomeReport.new(report_params.merge(:period => params[:period])).prepare
+      @report = IncomeReport.new(report_params.merge(period: params[:period])).prepare
       @amount = @report.amount
     end
 
@@ -46,6 +46,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
+        .map {|office| { :id => office.id, :name => office.name } }
     end
 
     def managers_income
@@ -60,7 +61,7 @@ module Boss
     end
 
     def margin
-      @report = MarginReport.new(report_params.merge(:period => params[:period])).prepare
+      @report = MarginReport.new(report_params.merge(period: params[:period])).prepare
       @amount = @report.amount
     end
 
@@ -72,6 +73,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
+        .map {|office| { :id => office.id, :name => office.name } }
     end
 
     def managers_margin

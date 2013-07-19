@@ -3,14 +3,13 @@ module Boss
   class IncomeReport < Report
     arel_tables :payments, :claims
     available_results :amount
-    attribute :period
+    attribute :period, :default => 'day'
     attr_accessible :period
 
     def initialize(options = {})
       super
       @end_date = Time.zone.now
-      @period = options[:period]
-      case @period
+      case period
       when 'day'
         @start_date = @end_date - 30.days
       when 'week'
@@ -23,7 +22,7 @@ module Boss
     end
 
     def prepare(options = {})
-      case @period
+      case period
         when 'day'
           @results[:amount]  = build_result(query: days_query)
         when 'week'

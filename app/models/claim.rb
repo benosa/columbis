@@ -71,6 +71,7 @@ class Claim < ActiveRecord::Base
   #                       :tour_price, :hotel, :meals, :medical_insurance,
   #                       :placement, :transfer, :service_class, :relocation
 
+  validates_presence_of :visa_check, :if => Proc.new { |claim| claim.visa_confirmation_flag }
   validates_presence_of :operator_confirmation, :if => Proc.new { |claim| claim.operator_confirmation_flag }
   validates_presence_of :operator_maturity, :if => Proc.new { |claim| claim.operator_price.to_f > 0 }
 

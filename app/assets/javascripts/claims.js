@@ -210,10 +210,14 @@ function set_claims_tooltip(init) {
   $('#claims td[title], #claims td span[title]').each(function() {
     if (!$(this).hasClass('with_tooltip')) {
       if ($(this).is('.docs_note')) {
-        options.template = '<div class="tooltip claims_tooltip docs_note"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
-        options.placement = 'left';
+        var docs_note_opts = $.extend({}, options, {
+          template: '<div class="tooltip claims_tooltip docs_note"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+          placement: 'left'
+        });
+        $(this).tooltip(docs_note_opts).addClass('with_tooltip');
+      } else {
+        $(this).tooltip(options).addClass('with_tooltip');
       }
-      $(this).tooltip(options).addClass('with_tooltip');
     }
   });
 
@@ -930,3 +934,17 @@ function set_deys() {
 		$("label#deys").text(deys/1000/60/60/24+1)
 	}
 };
+
+// Row highlight
+$(function() {
+  $('body').on('click', '#claims td', function(e) {
+    var $row = $(this).closest('.row'),
+        $hrow = $('#claims .row.highlight');
+    if ($row.get(0) == $hrow.get(0)) {
+      $row.toggleClass('highlight');
+    } else {
+      $hrow.removeClass('highlight');
+      $row.addClass('highlight');
+    }
+  });
+});

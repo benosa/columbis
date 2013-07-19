@@ -128,6 +128,13 @@
     td { background: #bde0fa !important; }
     .description { text-align: center; }
   }
+
+  tr.row.highlight {
+    td { background-color: #bde0fa;
+      &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #bde0fa !important; }
+    }
+    &.gray_back td { background-color: #bde0fa !important; }
+  }
 }
 
 .reservations th.double_sort a.sort_active.desc {
@@ -293,7 +300,9 @@ option {
     opacity: 1; filter: alpha(opacity=1);
     width: auto;
     max-width: 400px;
-    &.docs_note { max-width: none; min-width: 250px; }
+    &.docs_note { max-width: none; min-width: 250px;
+      .tooltip-inner { max-width: none; }
+    }
 
     .tooltip-arrow {
       border-bottom-color: #999;

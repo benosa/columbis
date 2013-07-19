@@ -66,7 +66,11 @@ module ClaimsHelper
   def text_for_visa(claim, short = nil)
     statuses_key = 'visa_statuses'
     statuses_key += '_short' if short
-    t("claims.#{statuses_key}.#{claim.visa}")
+    if claim.visa_confirmation_flag
+      t("claims.#{statuses_key}.#{claim.visa}")
+    else
+      t("claims.#{statuses_key}.unrequired")
+    end
   end
 
   def check_date_status(claim)
@@ -114,7 +118,7 @@ module ClaimsHelper
   def color_for_visa(claim)
     return '' if claim.canceled?
 
-    return 'all_done' if claim.new_record?
+    # return 'nothing_done' if claim.new_record?
     !claim.visa_confirmation_flag ? 'all_done' : claim.visa
   end
 

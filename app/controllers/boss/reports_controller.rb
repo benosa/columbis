@@ -60,12 +60,29 @@ module Boss
     end
 
     def margin
+      @report = MarginReport.new(report_params.merge(:period => params[:period])).prepare
+      @amount = @report.amount
     end
 
     def offices_margin
+      @report = OfficesMarginReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.offices
     end
 
     def managers_margin
+      @report = ManagersMarginReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+        .map {|user| { :id => user.id, :name => user.name_for_list } }
     end
 
     def tourduration

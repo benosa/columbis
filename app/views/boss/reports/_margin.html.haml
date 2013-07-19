@@ -1,0 +1,11 @@
+.current_container
+  .charts
+    - case params[:period]
+      - when 'day'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings(@amount.data) } }
+      - when 'month'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@amount.data) } }
+      - when 'week'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@amount.data) } }
+      - else
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@amount.data) } }

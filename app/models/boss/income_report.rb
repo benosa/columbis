@@ -1,235 +1,282 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class IncomeReport < Report
-    VIEWS = %w(days months)
+    arel_tables :payments, :claims
+    available_results :amount
+    attribute :period
+    attr_accessible :period
 
-    attribute :view, default: 'days'
-    attribute :office_filter
-    attribute :manager_filter
-    attr_accessible :view, :office_filter, :manager_filter
-
-    arel_tables :payments, :offices, :claims, :users
-    available_results :amount, :amount_offices, :amount_managers, :total, :total_offices, :total_managers
-    
     def initialize(options = {})
       super
-      @is_maturity = options[:query_type]
+      @end_date = Time.zone.now
+      @period = options[:period]
+      case @period
+      when 'day'
+        @start_date = @end_date - 30.days
+      when 'week'
+        @start_date = @end_date - (12*7).days
+      when 'month'
+        @start_date = @end_date - @end_date.mon - 1.year
+      else
+        @start_date = @end_date - 20.year
+      end
     end
 
-    def prepare(results = nil)
-      results = [results] unless results.kind_of?(Array)
-      if results.empty? or results.include?(:amount)
-        @results[:amount] = build_result(query: amount_query, typecast: {amount: :to_f, timestamp: :to_i})
-        @results[:total] = {
-          'name' => I18n.t('report.total_for_period', start: I18n.l(start_date, format: :long), end: I18n.l(end_date, format: :long)),
-          'amount' => @results[:amount].inject(0){ |total, row| total += row['amount'] }.round(2)
-        }
-      end
-      if results.empty? or results.include?(:amount_offices)
-        result = build_result(query: offices_query, typecast: {amount: :to_f, timestamp: :to_i})
-        @results[:amount_offices] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount', defval: 0)
-        total_data = @results[:amount_offices].inject([]) do |res, group|
-          res << {
-            'name' => group[0],
-            'amount' => group[1].inject(0){ |total, row| total += row['amount'] }.round(2)
-          }
-        end
-        @results[:total_offices] = build_result(data: total_data).sort!
-      end
-      if results.empty? or results.include?(:amount_managers)
-        result = build_result(query: managers_query, typecast: {amount: :to_f, timestamp: :to_i})
-        @results[:amount_managers] = result.group_by!('name').adjust_groups!(points: 'timestamp', factor: 'amount', defval: 0)
-        total_data = @results[:amount_managers].inject([]) do |res, group|
-          res << {
-            'name' => group[0],
-            'amount' => group[1].inject(0){ |total, row| total += row['amount'] }.round(2)
-          }
-        end
-        @results[:total_managers] = build_result(data: total_data).sort!
+    def prepare(options = {})
+      case @period
+        when 'day'
+          @results[:amount]  = build_result(query: days_query)
+        when 'week'
+          @results[:amount]  = build_result(query: weeks_query)
+        when 'month'
+          @results[:amount]  = build_result(query: months_query)
+        else
+          @results[:amount]  = build_result(query: years_query)
       end
       self
     end
 
-    def area_settings(result)
-      title = I18n.t(result != :amount ? "income_report.#{result}" : 'report.amount')
-      title = "#{title}, #{I18n.t('rur')}"
-      ytitle = I18n.t('rur')
-
-      settings = {
-        series: []
-      }
-      if result != :amount
-        @results[result].each do |key, row|
-          h = {
-            name: key,
-            data: row.map{ |o| [o['timestamp'] * 1000, o['amount']] }
-          }
-          h[:color] = row[0]['color'] if row[0] || row[0]['color']
-          settings[:series] << h
-        end
-        settings[:legend] = { enabled: true }
-      else
-        settings[:series] << {
-          name: title,
-          data: @results[result].map{ |o| [o['timestamp'] * 1000, o['amount']] }
-        }
-      end
-
-      settings = {
-        chart: {
-          zoomType: 'x'
-        },
-        title: {
-          text: title
-        },
-        xAxis: {
-          type: 'datetime',
-          maxZoom: 15 * 24 * 3600000 # fifteen days
-        },
-        yAxis: {
-          title: {
-            text: ytitle
-          }
-        },
-        tooltip: {
-          borderColor: '#4572A7'
-        }
-      }.deep_merge(settings).to_json
+    def days_column_settings(data)
+      categories = days_categories(data)
+      series = days_serialize_data(data, categories)
+      categories.map! {|c| c.strftime('%d.%m.%Y') }
+      days_settings(categories, series).to_json
     end
 
-    def column_settings(result)
-      title = I18n.t(result != :amount ? "income_report.#{result}" : 'report.amount')
-      title = "#{title}, #{I18n.t('rur')}"
-      ytitle = I18n.t('rur')
-
-      settings = {
-        series: []
-      }
-      if result != :amount
-        @results[result].each do |key, row|
-          h = {
-            name: key,
-            data: row.map{ |o| o['amount'] }
-          }
-          h[:color] = row[0]['color'] if row[0] || row[0]['color']
-          settings[:series] << h
-        end
-        settings[:legend] = { enabled: true }
-        settings[:xAxis] = {
-          categories: @results[result].first[1].map{ |row| row['timestamp'] * 1000 }
-        }
-      else
-        settings[:series] << {
-          name: title,
-          data: @results[result].map{ |o| o['amount'] }
-        }
-        settings[:xAxis] = {
-          categories: @results[result].map{ |row| row['timestamp'] * 1000 }
-        }
-      end
-
-      settings = {
-        chart: {
-          zoomType: 'x'
-        },
-        title: {
-          text: title
-        },
-        yAxis: {
-          title: {
-            text: ytitle
-          }
-        },
-        tooltip: {
-          borderColor: '#4572A7'
-        }
-      }.deep_merge(settings).to_json
+    def months_column_settings(data)
+      categories = months_categories(data)
+      series = months_serialize_data(data, categories)
+      categories.map! {|c| I18n.t('.date.months')[c-1] }
+      months_settings(categories, series).to_json
     end
 
-    def bar_settings(result)
-      title = I18n.t('report.totals_for_period', start: I18n.l(start_date, format: :long), end: I18n.l(end_date, format: :long))
-      title = "#{title}, #{I18n.t('rur')}"
-      ytitle = I18n.t('rur')
-
-      settings = {
-        title: {
-          text: title
-        },
-        xAxis: {
-          categories: @results[result].map{ |row| row['name'] }
-        },
-        yAxis: {
-          title: {
-            text: ytitle
-          }
-        },
-        series: [{
-          name: title,
-          data: @results[result].map{ |row| row['amount'] }
-        }]
-      }.to_json
+    def weeks_column_settings(data)
+      categories = weeks_categories(data)
+      series = weeks_serialize_data(data, categories)
+      weeks_settings(categories, series).to_json
     end
 
-    private
+    def years_column_settings(data)
+      categories = years_categories(data)
+      series = years_serialize_data(data, categories)
+      years_settings(categories, series).to_json
+    end
 
-      def timestamp_field(column)
-        if view == 'months'
-          "EXTRACT(EPOCH FROM date_trunc('month', #{column}))"
-        else
-          "EXTRACT(EPOCH FROM #{column})"
-        end
+    protected
+
+      def query
+        payments.project(payments[:amount].sum.as('amount'))
+          .join(claims).on(payments[:claim_id].eq(claims[:id]))
+          .where(claims[:excluded_from_profit].eq(false))
+          .where(payments[:company_id].eq(company.id))
+          .where(payments[:recipient_type].eq('Company'))
+          .where(payments[:approved].eq(true))
+          .where(payments[:canceled].eq(false))
+          .where(payments[:date_in].gteq(@start_date))
+          .where(payments[:date_in].lteq(@end_date))
       end
 
       def base_query
-          if @is_maturity
-            query = claims.project("#{timestamp_field('claims.reservation_date')} AS timestamp", claims[:profit].sum.as('amount'))
-              .where(claims[:company_id].eq(company.id))
-              .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
-              .where(claims[:canceled].eq(false))
-              .where(claims[:excluded_from_profit].eq(false))
-          else
-            query = payments.project("#{timestamp_field('payments.date_in')} AS timestamp", payments[:amount].sum.as('amount'))
-              .join(claims).on(payments[:claim_id].eq(claims[:id]))
-              .where(claims[:excluded_from_profit].eq(false))
-              .where(payments[:company_id].eq(company.id))
-              .where(payments[:recipient_type].eq('Company'))
-              .where(payments[:approved].eq(true))
-              .where(payments[:canceled].eq(false))
-              .where(payments[:date_in].gteq(start_date))
-              .where(payments[:date_in].lteq(end_date))
+        query
+      end
+
+      def years_query
+        base_query.project("extract(year from date_in) AS year")
+          .group(:year)
+          .order(:year)
+      end
+
+      def months_query
+        years_query.project("extract(month from date_in) AS month")
+          .group(:month)
+          .order(:month)
+      end
+
+      def days_query
+        months_query.project("extract(day from date_in) AS day")
+          .group(:day)
+          .order(:day)
+      end
+
+      def weeks_query
+        years_query.project("extract(week from date_in) AS week")
+          .group(:week)
+          .order(:week)
+      end
+
+      def days_categories(data)
+        start_day = "#{data.first['day']}.#{data.first['month']}.#{data.first['year']}".to_datetime
+        end_date = @end_date.to_datetime
+        categories = []
+        x = start_day
+        while x <= end_date
+          categories << x
+          x += 1.day
+        end
+        categories
+      end
+
+      def months_categories(data)
+        (1..@end_date.mon).to_a
+      end
+
+      def weeks_categories(data)
+        start_day = "1.1.#{data.first['year']}".to_datetime + (data.first['week'].to_i*7).days - 4.days
+        end_date = @end_date.to_datetime
+        categories = []
+        x = start_day
+        while x <= end_date
+          categories << x
+          x += 7.day
+        end
+        categories
+      end
+
+      def years_categories(data)
+        (data.first['year'].to_i..@end_date.year).to_a
+      end
+
+      def days_serialize_data(data, categories)
+        [{
+          name: I18n.t('income_report.sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| "#{d['day']}.#{d['month']}.#{d['year']}".to_datetime == c }
+            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
           end
-          query
+        }]
       end
 
-      def amount_query
-        # base_query.project(payments[:date_in].as('date'), payments[:amount].sum.as('amount'))
-        base_query
-          .group('timestamp')
-          .order('timestamp')
+      def months_serialize_data(data, categories)
+        [{
+          name: @end_date.year,
+          data: categories.map do |c|
+            elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
+            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          end
+        }, {
+          name: @end_date.year-1,
+          data: categories.map do |c|
+            elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == (@end_date.year - 1) }
+            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          end
+        }]
       end
 
-      def offices_query
-        query = base_query.project(offices[:id].as('office_id'), offices[:name].as('name'))
-          .join(offices).on(claims[:office_id].eq(offices[:id]))
-          .group('timestamp', offices[:id])
-          .order('timestamp', offices[:id])
-
-        if office_filter
-          query = query.where(offices[:id].in(office_filter))
-        end
+      def weeks_serialize_data(data, categories)
+        [{
+          name: I18n.t('income_report.sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| ("1.1.#{d['year']}".to_datetime + (d['week'].to_i*7).days - 4.days) == c }
+            elem.length==0 ? [c.to_i * 1000, 0] : [c.to_i * 1000, elem.first['amount'].to_f.round(2)]
+          end
+        }]
       end
 
-      def managers_query
-        query = base_query.project(users[:id].as('manager_id'), users[:color].as('color'),
-        "(CASE WHEN users.first_name != '' OR users.last_name != '' THEN users.first_name || ' ' || users.last_name ELSE users.login END) AS name")
-          .join(users).on(claims[:user_id].eq(users[:id]))
-          .group('timestamp', users[:id])
-          .order('timestamp', users[:id])
-
-        if manager_filter
-          query = query.where(users[:id].in(manager_filter))
-        end
+      def years_serialize_data(data, categories)
+        [{
+          name: I18n.t('income_report.sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| d['year'].to_i == c }
+            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          end
+        }]
       end
 
+      def days_settings(categories, series)
+        {
+          title: {
+            text: I18n.t('income_report.title_days')
+          },
+          xAxis: {
+            categories: categories,
+            labels: {
+              rotation: -90,
+              align: 'right'
+            }
+          },
+          yAxis: {
+            title: {
+              text: I18n.t('income_report.yaxis_amount')
+            }
+          },
+          tooltip: {
+            formatter: nil
+          },
+          series: series
+        }
+      end
+
+      def months_settings(categories, series)
+        {
+          title: {
+            text: I18n.t('income_report.title_months')
+          },
+          xAxis: {
+            categories: categories,
+            labels: {
+              align: 'right'
+            }
+          },
+          yAxis: {
+            title: {
+              text: I18n.t('income_report.yaxis_amount')
+            }
+          },
+          tooltip: {
+            formatter: nil
+          },
+          legend: {
+            enabled: true,
+            symbolWidth: 10
+          },
+          series: series
+        }
+      end
+
+      def weeks_settings(categories, series)
+        {
+          title: {
+            text: I18n.t('income_report.title_weeks')
+          },
+          xAxis: {
+            type: 'datetime'
+          },
+          yAxis: {
+            title: {
+              text: I18n.t('income_report.yaxis_amount')
+            }
+          },
+          tooltip: {
+            formatter: nil,
+            shared: true,
+            useHTML: true,
+            headerFormat: ''
+          },
+          series: series
+        }
+      end
+
+      def years_settings(categories, series)
+        {
+          title: {
+            text: I18n.t('income_report.title_years')
+          },
+          xAxis: {
+            categories: categories,
+            labels: {
+              align: 'right'
+            }
+          },
+          yAxis: {
+            title: {
+              text: I18n.t('income_report.yaxis_amount')
+            }
+          },
+          tooltip: {
+            formatter: nil
+          },
+          series: series
+        }
+      end
   end
 end

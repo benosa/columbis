@@ -1,14 +1,15 @@
 -# local_assigns: [:row_count, :show_others_label]
 %form.filter
-  .field_wrapper
-    = label_tag :period, t('.period')
-    = select_tag :period, options_for_select(period_options, 'month'), class: 'period', data: { param: 'period', default: 'month' }
-  .field_wrapper
-    = label_tag :start_date, t('.start_date')
-    = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: l(@report.start_date, format: :long) }
-  .field_wrapper
-    = label_tag :end_date, t('.end_date')
-    = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: l(@report.end_date, format: :long) }
+  - unless local_assigns[:period_selects] === false
+    .field_wrapper
+      = label_tag :period, t('.period')
+      = select_tag :period, options_for_select(period_options, 'month'), class: 'period', data: { param: 'period', default: 'month' }
+    .field_wrapper
+      = label_tag :start_date, t('.start_date')
+      = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: l(@report.start_date, format: :long) }
+    .field_wrapper
+      = label_tag :end_date, t('.end_date')
+      = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: l(@report.end_date, format: :long) }
   - unless local_assigns[:row_count] === false
     .field_wrapper
       = label_tag :row_count, local_assigns[:row_count] || t('.row_count')

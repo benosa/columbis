@@ -132,6 +132,7 @@
   tr.row.highlight {
     td { background-color: #bde0fa;
       &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #bde0fa !important; }
+      &.buh_col.red_back { background-color: #ed2222 !important; }
     }
     &.gray_back td { background-color: #bde0fa !important; }
   }

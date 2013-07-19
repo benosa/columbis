@@ -34,50 +34,61 @@ module Boss
     end
 
     def income
-      type = false
-      if params[:is_maturity] == "true"
-        @title = I18n.t('boss.reports.income.maturity_title')
-        type = true
-      else
-        @title = I18n.t('boss.reports.income.amount_title')
-      end
-      @amount_factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
-      @total_factor  = params[:group] ? "total_#{params[:group]}".to_sym : :total
-      @report = IncomeReport.new(report_params.merge({
-        view: params[:view],
-        office_filter: params[:office_filter],
-        manager_filter: params[:manager_filter],
-        query_type: type
-      })).prepare(@amount_factor)
-      @total = @report.results[@total_factor]
-      @all_offices = current_company.offices
-      @all_managers = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+      @report = IncomeReport.new(report_params.merge(:period => params[:period])).prepare
+      @amount = @report.amount
+    end
+
+    def offices_income
+      @report = OfficesIncomeReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.offices
+    end
+
+    def managers_income
+      @report = ManagersIncomeReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+        .map {|user| { :id => user.id, :name => user.name_for_list } }
+    end
+
+    def margin
+    end
+
+    def offices_margin
+    end
+
+    def managers_margin
     end
 
     def tourduration
       @report = TourDurationReport.new(report_params).prepare
       @count  = @report.count
     end
-
+    
     def hotelstars
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
     end
-
+    
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
-      @amount = @report.amount
-      @amount80 = @report.amount80
-      @amount15 = @report.amount15
-      @amount5 = @report.amount5
+      @amount  = @report.amount
     end
-
+    
     def normalcheck
       @report = NormalCheckReport.new(report_params.merge({view: params[:view]})).prepare
       @count  = @report.count
     end
-
+    
     def increaseclients
       @report = IncreaseClientsReport.new(report_params).prepare
       @count  = @report.count

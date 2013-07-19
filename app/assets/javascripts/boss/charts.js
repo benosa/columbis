@@ -360,6 +360,11 @@
       return this.list[el];
     },
 
+    standart_column: function(el, options) {
+      this.list[el] = new Chart('column', el, options);
+      return this.list[el];
+    },
+
     init: function(selector) {
       $(selector || '.chart').each(function() {
         var $t = $(this),

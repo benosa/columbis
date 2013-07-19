@@ -1,19 +1,14 @@
+= t('.settings')
 %ul#settings-menu.settings-menu{ title: t('.settings') }
   %li
-    = label_tag :view, t('.view'), class: 'ik_select_label view'
-    = select_tag :view, options_for_select(Boss::IncomeReport::VIEWS.map{ |view| [t("income_report.views.#{view}"), view] }, @report.view), data: { param: 'view', filter: 1, default: 'days', event: false }
-  - if @amount_factor == :amount_offices
-    - @all_offices.each do |office|
-      - checked = !@report.office_filter || @report.office_filter.include?(office.id.to_s)
+    = label_tag :period, t('.period')
+    = select_tag :period, options_for_select(period_options, 'day'), data: { param: 'period', default: 'day' }
+  - if @total_names
+    - @total_names.each do |name|
+      - checked = !@report.total_filter || @report.total_filter.include?(name[:id])
       %li
-        = label_tag "offices-#{office.id}", office.name, class: ['checkbox left_checkbox', checked && 'active']
-        = check_box_tag "offices-#{office.id}", office.id, checked, data: { param: 'office_filter[]', filter: 1, default: true, event: false }
-  - elsif @amount_factor == :amount_managers
-    - @all_managers.each do |manager|
-      - checked = !@report.manager_filter || @report.manager_filter.include?(manager.id.to_s)
-      %li
-        = label_tag "offices-#{manager.id}", manager.name_for_list, class: 'checkbox left_checkbox'
-        = check_box_tag "offices-#{manager.id}", manager.id, checked, data: { param: 'manager_filter[]', filter: 1, default: true, event: false }
+        = label_tag "total-#{name[:id]}", name[:name], class: ['checkbox left_checkbox', checked && 'active']
+        = check_box_tag "total-#{name[:id]}", name[:id], checked, data: { param: 'total_filter[]', filter: 1, default: true, event: false }
   %li.settings-menu-buttons
     %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
     %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

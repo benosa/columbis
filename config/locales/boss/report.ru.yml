@@ -70,13 +70,12 @@ ru:
       default:  "Прочее"
 
   income_report:
-    amount: 'Сумма выручки'
-    margin: 'Сумма наценки'
-    amount_offices: 'Сумма по офисам'
-    amount_managers: 'Сумма по менеджерам'
-    views:
-      days: 'Дни'
-      months: 'Месяцы'
+    title_days: "Выручка компании по дням"
+    title_months: "Выручка компании по месяцам за этот и прошлый год"
+    title_weeks: "Выручка компании по неделям"
+    title_years: "Выручка компании по годам"
+    yaxis_amount: "руб."
+    sum: "Сумма"
 
   boss:
     reports:
@@ -135,13 +134,17 @@ ru:
         amount: 'Сумма'
         tourist: 'Турист'
       income:
-        amount_title: 'Выручка'
-        maturity_title: 'Наценка'
-        offices: 'Офисы'
-        managers: 'Менеджеры'
+        title: 'Выручка'
+      offices_inocme:
+        title: 'Выручка по офисам'
+        name: 'Офисы'
+      managers_income:
+        title: 'Выручка по менеджерам'
+        name: 'Менеджеры'
       income_settings_menu:
         settings: 'Настройки'
         view: 'Вид'
+        period: 'Период'
       normalcheck:
         title: "Средний чек"
       increaseclients:

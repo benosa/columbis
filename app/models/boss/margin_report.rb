@@ -1,6 +1,11 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class MarginReport < IncomeReport
+    MARGIN_TYPES = ['profit', 'profit_acc', 'profit_in_percent', 'profit_in_percent_acc']
+
+    attribute :margin_type, :default => 'profit_acc'
+    attr_accessible :margin_type
+
     protected
 
       def query

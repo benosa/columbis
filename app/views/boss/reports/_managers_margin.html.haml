@@ -9,3 +9,17 @@
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@amount.data) } }
       - else
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@amount.data) } }
+  .totals
+    %table.reservations.tour_operators
+      %thead
+        %tr
+          %th
+            %span= t('report.n')
+          %th= sort_link 'name', t(".name")
+          %th= sort_link 'total', I18n.t('report.total')
+      %tbody
+        - @total.each_with_index do |row, i|
+          %tr
+            %td= i + 1
+            %td= row['name']
+            %td= row['total']

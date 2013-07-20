@@ -5,6 +5,9 @@ module Boss
 
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
     before_filter :set_last_filter
+    before_filter only: [:margin, :offices_margin, :managers_margin] { @is_margin = true }
+    before_filter only: [:margin, :offices_margin, :managers_margin, :income, :offices_income, :managers_income] {
+      @is_income = true }
 
     def operators
       @report = OperatorReport.new(report_params).prepare
@@ -26,7 +29,7 @@ module Boss
       @report = TourpriceReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def repurchase
       @report = RepurchaseReport.new(report_params.merge({minim: params[:minim].to_i})).prepare
       @count  = @report.count
@@ -34,47 +37,88 @@ module Boss
     end
 
     def income
-      type = false
-      if params[:is_maturity] == "true"
-        @title = I18n.t('boss.reports.income.maturity_title')
-        type = true
-      else
-        @title = I18n.t('boss.reports.income.amount_title')
-      end
-      @amount_factor = params[:group] ? "amount_#{params[:group]}".to_sym : :amount
-      @total_factor  = params[:group] ? "total_#{params[:group]}".to_sym : :total
-      @report = IncomeReport.new(report_params.merge({
-        view: params[:view],
-        office_filter: params[:office_filter],
-        manager_filter: params[:manager_filter],
-        query_type: type
-      })).prepare(@amount_factor)
-      @total = @report.results[@total_factor]
-      @all_offices = current_company.offices
-      @all_managers = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+      @report = IncomeReport.new(report_params.merge(period: params[:period])).prepare
+      @amount = @report.amount
     end
-    
+
+    def offices_income
+      @report = OfficesIncomeReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.offices
+        .map {|office| { :id => office.id.to_s, :name => office.name } }
+    end
+
+    def managers_income
+      @report = ManagersIncomeReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+        .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
+    end
+
+    def margin
+      @report = MarginReport.new(report_params.merge({
+        period: params[:period],
+        margin_type: params[:margin_types]
+      })).prepare
+      @amount = @report.amount
+      @margin_type = @report.margin_type
+    end
+
+    def offices_margin
+      @report = OfficesMarginReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter],
+        margin_type: params[:margin_types]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.offices
+        .map {|office| { :id => office.id.to_s, :name => office.name } }
+      @margin_type = @report.margin_type
+    end
+
+    def managers_margin
+      @report = ManagersMarginReport.new(report_params.merge({
+        period: params[:period],
+        total_filter: params[:total_filter],
+        margin_type: params[:margin_types]
+      })).prepare
+      @amount = @report.amount
+      @total = @report.total
+      @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
+        .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
+      @margin_type = @report.margin_type
+    end
+
     def tourduration
       @report = TourDurationReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def hotelstars
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
       @amount  = @report.amount
     end
-    
+
     def normalcheck
       @report = NormalCheckReport.new(report_params.merge({view: params[:view]})).prepare
       @count  = @report.count
     end
-    
+
     def increaseclients
       @report = IncreaseClientsReport.new(report_params).prepare
       @count  = @report.count
@@ -113,16 +157,23 @@ module Boss
         params_key = [params[:action]]
         params_key << params[:group] if params[:group]
         filter_key = "reports-#{params_key.join('-')}-last-filter".to_sym
-
         if params[:filter_reset]
           session[filter_key] = nil
         elsif request.xhr?
           filter_params = params.select do |k,v|
             not ([:controller, :action, :group].include?(k.to_sym) or v.blank?)
           end
-          session[filter_key] = !filter_params.empty? ? filter_params : nil;
+          unless filter_params.empty?
+            if session[filter_key].present?
+              session[filter_key].merge!(filter_params)
+              params.merge!(session[filter_key])
+            else
+              session[filter_key] = filter_params
+              params.merge!(session[filter_key])
+            end
+          end
         elsif session[filter_key].present?
-          params.reverse_merge!(session[filter_key])
+          params.merge!(session[filter_key])
         end
       end
 

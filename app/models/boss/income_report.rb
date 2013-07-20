@@ -194,6 +194,8 @@ module Boss
             }
           },
           yAxis: {
+            min: 0,
+            tickPixelInterval: 25,
             title: {
               text: I18n.t('income_report.yaxis_amount')
             }
@@ -217,6 +219,8 @@ module Boss
             }
           },
           yAxis: {
+            min: 0,
+            tickPixelInterval: 25,
             title: {
               text: I18n.t('income_report.yaxis_amount')
             }
@@ -241,6 +245,8 @@ module Boss
             type: 'datetime'
           },
           yAxis: {
+            min: 0,
+            tickPixelInterval: 25,
             title: {
               text: I18n.t('income_report.yaxis_amount')
             }
@@ -267,6 +273,8 @@ module Boss
             }
           },
           yAxis: {
+            min: 0,
+            tickPixelInterval: 25,
             title: {
               text: I18n.t('income_report.yaxis_amount')
             }

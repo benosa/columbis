@@ -1,5 +1,3 @@
-= label_tag :period, t('.period')
-= select_tag :period, options_for_select(period_options, 'day'), data: { param: 'period', default: 'day' }
 %ul#settings-menu.settings-menu{ title: t('.settings') }
   - if @total_names
     - @total_names.each do |name|

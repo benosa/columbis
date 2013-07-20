@@ -5,6 +5,9 @@ module Boss
 
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
     before_filter :set_last_filter
+    before_filter only: [:margin, :offices_margin, :managers_margin] { @is_margin = true }
+    before_filter only: [:margin, :offices_margin, :managers_margin, :income, :offices_income, :managers_income] {
+      @is_income = true }
 
     def operators
       @report = OperatorReport.new(report_params).prepare
@@ -61,30 +64,38 @@ module Boss
     end
 
     def margin
-      @report = MarginReport.new(report_params.merge(period: params[:period])).prepare
+      @report = MarginReport.new(report_params.merge({
+        period: params[:period],
+        margin_type: params[:margin_types]
+      })).prepare
       @amount = @report.amount
+      @margin_type = @report.margin_type
     end
 
     def offices_margin
       @report = OfficesMarginReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        margin_type: params[:margin_types]
       })).prepare
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
         .map {|office| { :id => office.id.to_s, :name => office.name } }
+      @margin_type = @report.margin_type
     end
 
     def managers_margin
       @report = ManagersMarginReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        margin_type: params[:margin_types]
       })).prepare
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
         .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
+      @margin_type = @report.margin_type
     end
 
     def tourduration

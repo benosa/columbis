@@ -299,6 +299,7 @@ ActiveRecord::Schema.define(:version => 20130717171639) do
     t.integer "country_id"
     t.string  "template"
     t.string  "mode"
+    t.boolean "delta",      :default => true, :null => false
   end
 
   create_table "regions", :force => true do |t|

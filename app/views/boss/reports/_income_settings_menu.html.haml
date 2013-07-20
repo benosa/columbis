@@ -1,8 +1,6 @@
-= t('.settings')
+= label_tag :period, t('.period')
+= select_tag :period, options_for_select(period_options, 'day'), data: { param: 'period', default: 'day' }
 %ul#settings-menu.settings-menu{ title: t('.settings') }
-  %li
-    = label_tag :period, t('.period')
-    = select_tag :period, options_for_select(period_options, 'day'), data: { param: 'period', default: 'day' }
   - if @total_names
     - @total_names.each do |name|
       - checked = !@report.total_filter || @report.total_filter.include?(name[:id])

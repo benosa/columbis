@@ -46,7 +46,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
-        .map {|office| { :id => office.id, :name => office.name } }
+        .map {|office| { :id => office.id.to_s, :name => office.name } }
     end
 
     def managers_income
@@ -57,7 +57,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
-        .map {|user| { :id => user.id, :name => user.name_for_list } }
+        .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
     end
 
     def margin
@@ -73,7 +73,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
-        .map {|office| { :id => office.id, :name => office.name } }
+        .map {|office| { :id => office.id.to_s, :name => office.name } }
     end
 
     def managers_margin
@@ -84,7 +84,7 @@ module Boss
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
-        .map {|user| { :id => user.id, :name => user.name_for_list } }
+        .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
     end
 
     def tourduration
@@ -146,16 +146,23 @@ module Boss
         params_key = [params[:action]]
         params_key << params[:group] if params[:group]
         filter_key = "reports-#{params_key.join('-')}-last-filter".to_sym
-
         if params[:filter_reset]
           session[filter_key] = nil
         elsif request.xhr?
           filter_params = params.select do |k,v|
             not ([:controller, :action, :group].include?(k.to_sym) or v.blank?)
           end
-          session[filter_key] = !filter_params.empty? ? filter_params : nil;
+          unless filter_params.empty?
+            if session[filter_key].present?
+              session[filter_key].merge!(filter_params)
+              params.merge!(session[filter_key])
+            else
+              session[filter_key] = filter_params
+              params.merge!(session[filter_key])
+            end
+          end
         elsif session[filter_key].present?
-          params.reverse_merge!(session[filter_key])
+          params.merge!(session[filter_key])
         end
       end
 

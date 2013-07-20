@@ -9,7 +9,7 @@ module Boss
     attr_accessor :total_names
 
     def prepare(options = {})
-      @results[:total] = build_result(query: total_query, typecast: {amount: :to_f}).sort!
+      @results[:total] = build_result(query: total_query, typecast: {total: :to_i}).sort!
       @total_names = get_total_names @results[:total].data
       super
     end

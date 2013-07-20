@@ -11,6 +11,16 @@ ru:
       airlines: 'Авиалинии'
       fullscreen: 'На весь экран'
       fullscreen_cancel: 'Закрыть полный экран'
+      analytics: 'Аналитика'
+      management: 'Управление'
+      desktop: 'Рабочий стол'
+      reference: 'Справка'
+      contract: 'Договор'
+      task_list: 'Список задач'
+      claims: 'Брони'
+      new_claim: 'Новая заявка'
+      prihodnik: 'Приходник'
+      write_review: 'Оставить отзыв'
 
       reports:
         operators: 'Туроператоры'

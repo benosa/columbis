@@ -30,13 +30,13 @@
 
         %ul#documents_to_print_menu.reservation
           %li{:class => (params[:controller] == 'claims' and params[:action] == 'index') ? 'active' : ' '}
-            = link_to 'Брони', claims_path, :id => 'claims_link'
+            = link_to t('.claims'), claims_path, :id => 'claims_link'
           %li{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
-            = link_to 'Новая заявка', new_claim_path
+            = link_to t('.new_claim'), new_claim_path
           %li.dropdown
             %a{:href => '#'} Документы
             %ul
-              - { :contract => 'Договор',
+              - { :contract => t('.contract'),
               :permit => 'Путевка',
               :warranty => 'Фингарантии',
               :memo => ['Памятка', :memo_printer_for, :country],
@@ -52,12 +52,12 @@
                       = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
                     - else
                       %span= value[0]
-              %li= link_to 'Приходник', '#'
-          %li= link_to 'Оставить отзыв', '#', id: 'write_review'
+              %li= link_to t('.prihodnik'), '#'
+          %li= link_to t('.write_review'), '#', id: 'write_review'
           -#
             %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
           -#
-            %li= link_to 'Справка', '#'
+            %li= link_to t('.reference'), '#'
 
         - if user_signed_in?
           #review_form_container{ style: 'display: none;' }
@@ -71,7 +71,7 @@
         %ul#databases_menu.databases
           -# %li.dropdown { :class => (params[:controller] =~ /^dashboard/ or params[:controller] == 'operators') && 'active' }
           %li.dropdown
-            %a{:href => '#'} Управление
+            %a{:href => '#'}= t('.management')
             %ul
               %li= link_to t('.company'), dashboard_edit_company_path
               %li= link_to t('.users'), dashboard_users_path
@@ -87,7 +87,7 @@
           - if user_signed_in? && %w[admin boss].include?(current_user.role)
             -# %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
             %li.dropdown
-              %a{:href => '#'} Статистика
+              %a{:href => '#'}= t('.analytics')
               %ul
                 %li= link_to 'Рабочий стол', boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
                 %li= link_to t('.reports.operators'), boss_reports_path(:operators)
@@ -107,7 +107,7 @@
                 %li= link_to t('.reports.normalcheck'), boss_reports_path(:normalcheck)
                 %li= link_to t('.reports.increaseclients'), boss_reports_path(:increaseclients)
                 %li= link_to t('.reports.salesfunnel'), boss_reports_path(:salesfunnel)
-          %li= link_to 'Список задач', tasks_path if user_signed_in? && current_user.role == 'admin'
+          %li= link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'
 
         - if view_switcher?
           .type

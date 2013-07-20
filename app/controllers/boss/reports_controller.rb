@@ -111,7 +111,10 @@ module Boss
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
-      @amount  = @report.amount
+      @amount = @report.amount
+      @amount80 = @report.amount80
+      @amount15 = @report.amount15
+      @amount5 = @report.amount5
     end
 
     def normalcheck

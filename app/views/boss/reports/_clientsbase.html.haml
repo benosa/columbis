@@ -12,3 +12,37 @@
           #amount_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:amount, @amount) } }
         - unless params[:show_pies] == '0'
           #amount_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:amount, @amount) } }
+
+  - t('.aboutABC').each do |stroke|
+    %p= stroke
+
+  %table.totals.reservations.tour_operators
+    %thead
+      %tr
+        %th= sort_link 'last_name', t(".tourist")
+        %th= sort_link 'amount', t('.amount')
+    %tbody
+      %tr
+        %td{:colspan => 2}
+          %center
+            %b= t('.amount80')
+      - @amount80.each do |row|
+        %tr
+          %td= "#{row['last_name']} #{row['first_name']} #{row['middle_name']}"
+          %td= row['amount']
+      %tr
+        %td{:colspan => 2}
+          %center
+            %b{:colspan => 2}= t('.amount15')
+      - @amount15.each do |row|
+        %tr
+          %td= "#{row['last_name']} #{row['first_name']} #{row['middle_name']}"
+          %td= row['amount']
+      %tr
+        %td{:colspan => 2}
+          %center
+            %b{:colspan => 2}= t('.amount5')
+      - @amount5.each do |row|
+        %tr
+          %td= "#{row['last_name']} #{row['first_name']} #{row['middle_name']}"
+          %td= row['amount']

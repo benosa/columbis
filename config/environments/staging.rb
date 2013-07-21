@@ -60,23 +60,25 @@ Tourism::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-    config.action_mailer.default_url_options = { :host => 'tourism-dev.devmen.com' }
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.perform_deliveries = true
-    config.action_mailer.raise_delivery_errors = false
-    config.action_mailer.default :charset => "utf-8"
-    config.action_mailer.smtp_settings = {
-      :address => "smtp.gmail.com",
-      :port => 587,
-      :domain => "tourism.devmen.com",
-      :authentication => "plain",
-      :user_name => "mailer.devmen.com@gmail.com",
-      :password => "devmen.mailer",
-      :enable_starttls_auto => true
-    }
+  # Mail delivery settings
+  config.action_mailer.default_url_options = { :host => 'staging.columbis.ru' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :domain => "staging.columbis.ru",
+    :authentication => "plain",
+    :user_name => "mailer.devmen.com@gmail.com",
+    :password => "devmen.mailer",
+    :enable_starttls_auto => true
+  }
 
+  # Exception notification settings
   config.middleware.use ExceptionNotifier,
-    :email_prefix => '[Tourism Dev] ',
+    :email_prefix => '[Columbis Staging] ',
     :sender_address => %{ "notifier" <mailer.devmen.com@gmail.com> },
     :exception_recipients => %w{ alexzammer@gmail.com }
 end

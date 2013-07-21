@@ -10,6 +10,9 @@ role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
 
+set :rvm_ruby_string, "2.0.0@columbis-staging"
+set :rvm_type, :user
+
 set :rails_env, "staging"
 
 require 'capistrano-unicorn'

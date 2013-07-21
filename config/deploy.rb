@@ -18,9 +18,6 @@ set :default_stage, "dev"
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true
 
-set :rvm_ruby_string, "2.0.0@tourism"
-set :rvm_type, :user
-
 set :scm, :git
 set :keep_releases, 5
 set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"

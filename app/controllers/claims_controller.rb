@@ -202,7 +202,6 @@ class ClaimsController < ApplicationController
       params.each do |k, v|
         @search_params[k] = v unless exluded_params.include?(k.to_sym) || v.blank?
       end
-      Rails.logger.debug "@search_params: #{@search_params}"
       @search_params
     end
 
@@ -218,7 +217,6 @@ class ClaimsController < ApplicationController
       elsif search_or_sort?
         session[session_key] = !search_params.empty? ? search_params : nil;
       elsif session[session_key].present?
-        Rails.logger.debug "search_params: #{session[session_key]}"
         params.reverse_merge!(session[session_key])
       end
     end

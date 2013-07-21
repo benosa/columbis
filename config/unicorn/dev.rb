@@ -3,31 +3,30 @@
 # ------------------------------------------------------------------------------
 
 # Set your full path to application.
-rails_root = File.expand_path('../../../', __FILE__)
-app_path = rails_root
-shared_path = rails_root
+app_path = "/opt/apps/columbis-dev/current"
+shared_path = "/opt/apps/columbis-dev/shared"
 
 # Set unicorn options
 worker_processes 2
 preload_app true
 timeout 30
-listen 3000, :backlog => 2048
+listen "#{shared_path}/sockets/unicorn.sock", :backlog => 2048
 
 # Spawn unicorn master worker for user apps (group: apps)
-
+user 'deploy', 'deploy'
 
 # Fill path to your app
 working_directory app_path
 
 # Should be 'production' by default, otherwise use other env
-rails_env = ENV['RAILS_ENV'] || 'development'
+rails_env = ENV['RAILS_ENV'] || 'staging'
 
 # Log everything to one file
-stderr_path "#{rails_root}/log/unicorn.stderr.log"
-stdout_path "#{rails_root}/log/unicorn.stdout.log"
+stderr_path "#{shared_path}/log/unicorn.stderr.log"
+stdout_path "#{shared_path}/log/unicorn.stdout.log"
 
 # Set master PID location
-pid "#{rails_root}/tmp/pids/unicorn.pid"
+pid "#{app_path}/tmp/pids/unicorn.pid"
 
 # For memory saving with ruby 2.0
 if GC.respond_to?(:copy_on_write_friendly=)

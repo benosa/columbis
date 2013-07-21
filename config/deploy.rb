@@ -12,7 +12,8 @@ set :whenever_roles, [:db, :app]
 require 'whenever/capistrano'
 
 require 'capistrano/ext/multistage'
-set :default_stage, "staging"
+set :stages, %w(production staging dev)
+set :default_stage, "dev"
 
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true

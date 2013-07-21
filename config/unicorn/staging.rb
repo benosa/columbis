@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 
 # Set your full path to application.
-app_path = "/opt/apps/tourism-dev/current"
-shared_path = "/opt/apps/tourism-dev/shared"
+app_path = "/opt/apps/columbis-staging/current"
+shared_path = "/opt/apps/columbis-staging/shared"
 
 # Set unicorn options
 worker_processes 2
 preload_app true
-timeout 60
+timeout 30
 listen "#{shared_path}/sockets/unicorn.sock", :backlog => 2048
 
 # Spawn unicorn master worker for user apps (group: apps)
@@ -27,6 +27,11 @@ stdout_path "#{shared_path}/log/unicorn.stdout.log"
 
 # Set master PID location
 pid "#{app_path}/tmp/pids/unicorn.pid"
+
+# For memory saving with ruby 2.0
+if GC.respond_to?(:copy_on_write_friendly=)
+  GC.copy_on_write_friendly = true
+end
 
 before_fork do |server, worker|
   ActiveRecord::Base.connection.disconnect!

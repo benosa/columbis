@@ -86,7 +86,7 @@ module Boss
         data = data.map{ |o| {'name' => o['name'], factor.to_s => o[factor.to_s]}}
         @intervals.each do |value|
           unless data.any?{|o| o['name'] == value }
-            data.unshift({'name' => value, factor.to_s => 0})
+            data.push({'name' => value, factor.to_s => 0})
           end
         end
         data
@@ -105,7 +105,7 @@ module Boss
       def count_query
         base_query.project( claims[:id].count.as('count') )
           .group(:name)
-          .order(:count)
+          .order('count DESC')
       end
 
       def amount_query
@@ -120,7 +120,7 @@ module Boss
         base_query.project( query[:amount].sum.as('amount') )
           .join(query).on(query[:claim_id].eq(claims[:id]))
           .group(:name)
-          .order(:amount)
+          .order('amount DESC')
       end
   end
 end

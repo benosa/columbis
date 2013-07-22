@@ -9,7 +9,7 @@ module Boss
 
     def prepare(options = {})
       @results[:count]  = build_result(query: count_query,  typecast: {count: :to_i})
-      @results[:total]  = build_result(query: total_query(minim),  typecast: {count: :to_i}).sort!
+      @results[:total]  = build_result(query: total_query(options[:dir]),  typecast: {count: :to_i}).sort!
 
       @selects = @results[:count].map{|o| o["name"].to_s}
 
@@ -70,11 +70,21 @@ module Boss
           .as('payments')
       end
 
-      def total_query(minim)
+      def total_query(dir)
+        if minim == 0
+          min = 3
+        else
+          min = minim
+        end
         query = base_query
-        tourists.project(query[:number], query[:payer_id], tourists[:first_name], tourists[:last_name], tourists[:middle_name])
+        ret = tourists.project(query[:number], query[:payer_id], tourists[:first_name], tourists[:last_name], tourists[:middle_name])
           .join(query).on(query[:payer_id].eq(tourists[:id]))
-          .where(query[:number].gteq(minim))
+          .where(query[:number].gteq(min))
+          .take(100)
+        if dir == "asc" or dir == "desc"
+          ret.order("number #{dir}")
+        end
+        ret
       end
 
       def count_query

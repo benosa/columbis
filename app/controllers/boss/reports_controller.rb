@@ -31,7 +31,9 @@ module Boss
     end
 
     def repurchase
-      @report = RepurchaseReport.new(report_params.merge({minim: params[:minim].to_i})).prepare
+      @is_repurchase = true
+      @report = RepurchaseReport.new(report_params.merge({minim: params[:minim].to_i}))
+        .prepare({:dir => params[:dir]})
       @count  = @report.count
       @total  = @report.total
     end

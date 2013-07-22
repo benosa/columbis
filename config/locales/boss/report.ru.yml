@@ -100,6 +100,8 @@ ru:
         show_pies: 'Круговая диаграмма'
         show_amount: 'Сумма'
         show_items: 'Количество'
+        data_type: 'Параметры данных'
+        chart_type: 'Тип диаграммы'
       operators:
         title: 'Операторы'
         operator: 'Оператор'

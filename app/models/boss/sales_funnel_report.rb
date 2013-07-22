@@ -9,7 +9,7 @@ module Boss
       down  = build_result(query: down_query,  typecast: {count: :to_i, name: :to_s})
 
       @results[:count] = []
-      [down, middle, up].each do |data|
+      [up, middle, down].each do |data|
         @results[:count].unshift(data.map { |o| {"name" => o["name"], "count" => o["count"]}}.first)
       end
 

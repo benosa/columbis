@@ -1,10 +1,13 @@
 %ul#settings-menu.settings-menu{ title: t('.settings') }
-  %li
-    = label_tag :show_amount, t('.show_amount'), class: 'checkbox left_checkbox show_amount'
-    = check_box_tag :show_amount, 1, true, data: { param: 'show_amount', filter: 1, default: true, unchecked: '0', event: false }
+  %p= t('.data_type')
+  - unless @is_repurchase
+    %li
+      = label_tag :show_amount, t('.show_amount'), class: 'checkbox left_checkbox show_amount'
+      = check_box_tag :show_amount, 1, true, data: { param: 'show_amount', filter: 1, default: true, unchecked: '0', event: false }
   %li
     = label_tag :show_items, t('.show_items'), class: 'checkbox left_checkbox show_items'
     = check_box_tag :show_items, 1, true, data: { param: 'show_items', filter: 1, default: true, unchecked: '0', event: false }
+  %p= t('.chart_type')
   %li
     = label_tag :show_bars, t('.show_bars'), class: 'checkbox left_checkbox show_bars'
     = check_box_tag :show_bars, 1, true, data: { param: 'show_bars', filter: 1, default: true, unchecked: '0', event: false }

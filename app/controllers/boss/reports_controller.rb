@@ -6,8 +6,9 @@ module Boss
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
     before_filter :set_last_filter
     before_filter only: [:margin, :offices_margin, :managers_margin] { @is_margin = true }
-    before_filter only: [:margin, :offices_margin, :managers_margin, :income, :offices_income, :managers_income] {
-      @is_income = true }
+    before_filter only: [ :margin, :offices_margin, :managers_margin,
+                          :income, :offices_income, :managers_income,
+                          :normalcheck ] { @is_income = true }
 
     def operators
       @report = OperatorReport.new(report_params).prepare
@@ -120,8 +121,8 @@ module Boss
     end
 
     def normalcheck
-      @report = NormalCheckReport.new(report_params.merge({view: params[:view]})).prepare
-      @count  = @report.count
+      @report = NormalCheckReport.new(report_params.merge(period: params[:period])).prepare
+      @amount  = @report.amount
     end
 
     def increaseclients

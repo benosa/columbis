@@ -123,7 +123,7 @@ module Boss
     end
     
     def increaseclients
-      @report = IncreaseClientsReport.new(report_params).prepare
+      @report = IncreaseClientsReport.new(report_params.merge(year: params[:year])).prepare
       @count  = @report.count
     end
 

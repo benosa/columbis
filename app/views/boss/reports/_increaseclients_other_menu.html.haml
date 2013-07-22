@@ -1,0 +1,4 @@
+.field_wrapper
+  - now_year = Time.zone.now.year
+  = label_tag :year, t('.year')
+  = select_tag :year, options_for_select((2012..now_year).to_a, now_year), data: { param: 'year', default: now_year }

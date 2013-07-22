@@ -1,6 +1,8 @@
 .current_container
   .charts
-    .chart-left
-      #count_line.chart{ data: { type: 'line', settings: @report.line_settings(@count) } }
-    .chart-right
-      #count_bar.chart{ data: { type: 'column', settings: @report.bar_settings(@count) } }
+    - unless params[:show_line] == '0'
+      .chart-left
+        #count_line.chart{ data: { type: 'line', settings: @report.line_settings(@count) } }
+    - unless params[:show_bars] == '0'
+      .chart-right
+        #count_bar.chart{ data: { type: 'column', settings: @report.bar_settings(@count) } }

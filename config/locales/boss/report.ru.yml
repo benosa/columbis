@@ -93,7 +93,6 @@ ru:
         items: 'Количество броней'
         filter_reset: 'Сбросить фильтры'
         settings: 'Настройки'
-        margin_type: 'Вид наценки'
       settings_menu:
         settings: 'Настройки'
         show_bars: 'Полосовая диаграмма'
@@ -102,6 +101,25 @@ ru:
         show_items: 'Количество'
         data_type: 'Параметры данных'
         chart_type: 'Тип диаграммы'
+      empty_settings_menu:
+        title: "Нет настроек для этого отчёта"
+      income_settings_menu:
+        settings: 'Настройки'
+        view: 'Вид'
+        period: 'Период'
+      income_other_menu:
+        period: 'Период'
+      margin_other_menu:
+        margin_type: 'Вид наценки'
+      repurchase_settings_menu:
+        minim: 'Минимальное кол-во покупок'
+      increaseclients_settings_menu:
+        settings: 'Настройки'
+        chart_type: 'Тип диаграммы'
+        show_bars: 'Полосовая диаграмма'
+        show_line: 'Линейная диаграмма'
+      increaseclients_other_menu:
+        year: 'Выбор года'
       operators:
         title: 'Операторы'
         operator: 'Оператор'
@@ -121,11 +139,6 @@ ru:
         xtitle: "покупок, шт."
         tourist: "Турист"
         number: "Покупок"
-      empty_settings_menu:
-        title: "Нет настроек для этого отчёта"
-      repurchase_settings_menu:
-        settings: 'Настройки'
-        minim: 'Минимальное количество покупок'
       salesfunnel:
         title: "Воронка продаж"
       clientsbase:
@@ -157,10 +170,6 @@ ru:
       managers_margin:
         title: 'Наценка по менеджерам'
         name: 'Менеджеры'
-      income_settings_menu:
-        settings: 'Настройки'
-        view: 'Вид'
-        period: 'Период'
       normalcheck:
         title: "Средний чек"
       increaseclients:

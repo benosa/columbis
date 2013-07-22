@@ -1,13 +1,5 @@
 -# local_assigns: [:row_count, :show_others_label]
 %form.filter
-  - if @is_income
-    .field_wrapper
-      = label_tag :period, t('.period')
-      = select_tag :period, options_for_select(period_options, 'year'), data: { param: 'period', default: 'year' }
-    - if @is_margin
-      .field_wrapper
-        = label_tag :margin_types, t('.margin_type')
-        = select_tag :margin_types, options_for_select(margin_options, 'profit_acc'), data: { param: 'margin_types', default: 'profit_acc' }
   - unless local_assigns[:period_selects] === false
     .field_wrapper
       = label_tag :period, t('.period')
@@ -26,10 +18,8 @@
     .field_wrapper
       = label_tag :show_others, local_assigns[:show_others_label] || t('report.others'), class: 'checkbox left_checkbox show_others'
       = check_box_tag :show_others, 1, @report.show_others, data: { param: 'show_others', filter: 1, default: @report.show_others, unchecked: '0' }
-  -if @is_repurchase
-    .field_wrapper
-      = label_tag :minim, I18n.t('boss.reports.repurchase_settings_menu.minim')
-      = select_tag :minim, options_for_select(["1","2","3","4","5","6","7","8","9","10"], "3"), class: "minim", data: {param: "minim", filter: 1, default: "3"}
+  - if local_assigns[:other_menu]
+    = render partial: local_assigns[:other_menu]
 
   %fieldset
     - if small_width?

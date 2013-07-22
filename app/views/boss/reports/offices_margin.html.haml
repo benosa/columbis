@@ -3,6 +3,6 @@
 - title t('.title')
 
 - content_for :top do
-  = render partial: 'filter', locals: { :period_selects => false, :row_count => false, :show_others_label => false, :settings_menu => 'income_settings_menu' }
+  = render partial: 'filter', locals: { :period_selects => false, :row_count => false, :show_others_label => false, :settings_menu => 'income_settings_menu', :other_menu => 'margin_other_menu' }
 
 = render partial: 'offices_margin'

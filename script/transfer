@@ -2,7 +2,7 @@
 require 'yaml'
 
 bazoved_path = '/opt/apps/tourism'
-columbis_path = '/opt/apps/tourism-dev'
+columbis_path = '/opt/apps/columbis'
 
 bazoved_dump = 'bazoved.db'
 columbis_dump = 'columbis.db'
@@ -10,7 +10,7 @@ columbis_dump = 'columbis.db'
 rvm_ruby_string = '2.0.0@tourism'
 
 bazoved_env = 'production'
-columbis_env = 'staging'
+columbis_env = 'production'
 
 bazoved_db_config = YAML::load_file(File.join(bazoved_path, '/shared/config/database.yml'))[bazoved_env]
 columbis_db_config = YAML::load_file(File.join(columbis_path, '/shared/config/database.yml'))[columbis_env]

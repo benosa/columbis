@@ -142,6 +142,7 @@ class Claim < ActiveRecord::Base
         remove_unused_payments
         check_not_null_fields
         self.save
+        Rails.logger.debug "claim: #{errors.inspect}"
       end
     end
   end
@@ -218,7 +219,10 @@ class Claim < ActiveRecord::Base
         end
       elsif !destroy
         new_dependent = dependents.build(attributes)
+        new_dependent.validate_secondary_attributes = false
         new_dependent.company = company
+        Rails.logger.debug "new_dependent valid?: #{new_dependent.valid?}"
+        Rails.logger.debug "new_dependent: #{new_dependent.errors.inspect}"
       end
     end
   end

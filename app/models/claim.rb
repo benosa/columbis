@@ -253,7 +253,8 @@ class Claim < ActiveRecord::Base
   def fill_new
     self.applicant = Tourist.new
     self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
-    self.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
+    # Payments out might be created after save
+    # self.payments_out.build(:currency => operator_price_currency || CurrencyCourse::PRIMARY_CURRENCY, :course => '') if self.payments_out.empty?
     today = Date.today
 
     # Temporarily disabled
@@ -707,14 +708,14 @@ class Claim < ActiveRecord::Base
 
       country_name = claim_params[:country][:name].strip rescue ''
       if country_name.present?
-        # conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
-        # Country.create({
-        #   :name => country_name,
-        #   :company_id => company_id
-        # }) unless Country.where(conds).count > 0
-        # self.country = Country.where(conds).first
-        self.country = Country.where(common: true, name: country_name).first
-        check_country_correctness(country_name)
+        conds = ['(common = ? OR company_id = ?) AND name = ?', true, company_id, country_name]
+        Country.create({
+          :name => country_name,
+          :company_id => company_id
+        }) unless Country.where(conds).count > 0
+        self.country = Country.where(conds).first
+        # self.country = Country.where(common: true, name: country_name).first
+        # check_country_correctness(country_name)
       end
 
       resort_name = claim_params[:resort][:name].strip rescue ''

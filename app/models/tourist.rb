@@ -26,7 +26,7 @@ class Tourist < ActiveRecord::Base
 
   # Secondary attributes validation
   validates_presence_of :phone_number, :if => :secondaty_attributes_validation_condition
-  validates :email, email: true #, presence: true, :if => :secondaty_attributes_validation_condition
+  validates :email, email: true, presence: true, :if => :secondaty_attributes_validation_condition
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)

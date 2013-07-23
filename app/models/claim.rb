@@ -253,7 +253,8 @@ class Claim < ActiveRecord::Base
   def fill_new
     self.applicant = Tourist.new
     self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
-    self.payments_out.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
+    # Payments out might be created after save
+    # self.payments_out.build(:currency => operator_price_currency || CurrencyCourse::PRIMARY_CURRENCY, :course => '') if self.payments_out.empty?
     today = Date.today
 
     # Temporarily disabled

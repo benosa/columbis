@@ -1,0 +1,39 @@
+.current_container
+  = form_tag batch_add_to_group_sms_groups_path, :method => :put do
+    %table#sms_sendings.tourists.reservations.tour_operators
+      %tr
+        %th
+          &nbsp;
+        %th.send_an
+          = sort_link( :phone_number, t('.phone_number'), :default)
+        %th.signature
+          = sort_link( :first_name, t('.first_name') )
+        %th.contact_group
+          = sort_link( :last_name, t('.last_name') )
+        %th.contact_group
+          = sort_link( :middle_name, t('.middle_name') )
+        %th.content
+          = sort_link( :date_of_birth, t('.date_of_birth') )
+
+      - for client in @clients
+        %tr{ :class => cycle('odd', 'even'), id: "tourist-#{client.id}"}
+          %td
+            / = label_tag client.id, '', :class => 'checkbox total'
+            / = check_box_tag "client_ids[]", client.id
+            = check_box_tag "client_ids[]", client.id, nil, id: "client_ids_#{client.id}"
+            = label_tag "client_ids[#{client.id}]", '', :class => 'checkbox total'
+          %td
+            = client.phone_number
+          %td
+            = client.first_name
+          %td
+            = client.last_name
+          %td
+            = client.middle_name
+          %td
+            = client.date_of_birth
+    
+    = submit_tag "Save changes", :id => "submit", :name => "submit"
+    
+  - unless @clients.nil?
+    = render partial: 'shared/pagination', locals: { collection: @clients }

@@ -41,7 +41,7 @@ ru:
     
     list:
       send_an: 'Дата'
-      signature: 'Отправитель'
+      signature: 'Подпись'
       contact_group: 'Группа'
       content: 'Текст'
       count: 'Кол-во'

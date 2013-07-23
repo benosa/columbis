@@ -32,4 +32,4 @@
           %p= sms_sendings.status_id
 
   - unless @sms_sendings.nil?
-    / = render partial: 'shared/pagination', locals: { collection: @sms_sendings }
+    = render partial: 'shared/pagination', locals: { collection: @sms_sendings }

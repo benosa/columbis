@@ -4,8 +4,7 @@ class SmsSendingsController < ApplicationController
   respond_to :html
   
   def index
-    @sms_sendings = SmsSending.all
-    
+    @sms_sendings = SmsSending.where('company_id = ?', current_company.id).paginate(:page => params[:page], :per_page => per_page)
     render :partial => 'list' if request.xhr?
   end
 

@@ -1,8 +1,13 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
-  resources :sms_clients
-  match 'sms_clients_birthday' => 'sms_clients#birthday', as: 'sms_clients_birthday', via: :get
+  resources :sms_groups do
+    collection do
+      put :batch_add_to_group
+    end
+  end
+  
+  match 'sms_groups_birthday' => 'sms_groups#birthday', as: 'sms_groups_birthday', via: :get
   
   resources :sms_sendings
 

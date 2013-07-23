@@ -1,12 +1,12 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel' }
 
-- title t('.sms_sendings')
+- title t('.sms_contacts')
 
 - content_for :navigation do
   %ul
-    %li= link_to t('.sms_sendings'), sms_sendings_path, class: 'active'
-    %li= link_to t('.contacts_and_groups'), sms_groups_path
+    %li= link_to t('.sms_sendings'), sms_sendings_path
+    %li= link_to t('.contacts_and_groups'), sms_groups_path, class: 'active'
     %li= link_to t('.invoices'), '#'
     %li= link_to t('.add_balance'), '#'
     %li= link_to t('.statistics'), '#'
@@ -16,10 +16,17 @@
   .actions
     = link_to t('.add_sms_sending'), new_sms_sending_path, :class => 'button green add'
   .filter
-    %strong 97 SMS на вашем балансе
+    %strong
+      = sms_balance
+      SMS на вашем балансе
     %span по состоянию на 30 июня 2013 в 00:03
 
-= render 'list'
+%table#sms_clients
+  %tr
+    %td.sidebar
+      = render 'sidebar'
+    %td
+      = render 'list'
 
 - content_for(:float_panel) do
   = link_to t('.add_sms_sending'), new_sms_sending_path, :class => 'add_operator'

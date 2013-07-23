@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702225246) do
+ActiveRecord::Schema.define(:version => 20130705072453) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -170,20 +170,6 @@ ActiveRecord::Schema.define(:version => 20130702225246) do
     t.string   "time_zone"
   end
 
-  create_table "contact_group_clients", :force => true do |t|
-    t.integer  "client_id"
-    t.integer  "contact_group_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
-  create_table "contact_groups", :force => true do |t|
-    t.text     "name"
-    t.integer  "company_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "countries", :force => true do |t|
     t.string  "name"
     t.integer "company_id"
@@ -323,19 +309,19 @@ ActiveRecord::Schema.define(:version => 20130702225246) do
   add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
   add_index "regions", ["name"], :name => "index_regions_on_name"
 
-  create_table "sms", :force => true do |t|
+  create_table "sms_sendings", :force => true do |t|
     t.integer  "company_id"
-    t.string   "message"
-    t.string   "sender_name"
-    t.datetime "sсheduled_at"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  create_table "sms_contacts", :force => true do |t|
-    t.integer "sms_id"
-    t.string  "entity_type"
-    t.integer "entity_id"
+    t.datetime "send_an"
+    t.string   "signature"
+    t.integer  "contact_group_id"
+    t.string   "content"
+    t.integer  "count"
+    t.integer  "status_id"
+    t.boolean  "sending_priority"
+    t.integer  "user_id"
+    t.integer  "delivered_count"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "tasks", :force => true do |t|

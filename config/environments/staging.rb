@@ -61,18 +61,20 @@ Tourism::Application.configure do
   config.active_support.deprecation = :notify
 
   # Mail delivery settings
-  mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")
+  begin
+    mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")
 
-  config.action_mailer.default_url_options = { :host => mailer_config['smtp']['domain'] }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.smtp_settings = mailer_config['smtp']
+    config.action_mailer.default_url_options = { :host => mailer_config['smtp']['domain'] }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.default :charset => "utf-8"
+    config.action_mailer.smtp_settings = mailer_config['smtp']
 
-  # Exception notification settings
-  config.middleware.use ExceptionNotifier,
-    :email_prefix => "[#{mailer_config['exception_notification']['email_prefix']}] ",
-    :sender_address => %{ "notifier" <#{mailer_config['user_name']}> },
-    :exception_recipients => mailer_config['exception_notification']['recipients']
+    # Exception notification settings
+    config.middleware.use ExceptionNotifier,
+      :email_prefix => "[#{mailer_config['exception_notification']['email_prefix']}] ",
+      :sender_address => %{ "notifier" <#{mailer_config['smtp']['user_name']}> },
+      :exception_recipients => mailer_config['exception_notification']['recipients']
+  end
 end

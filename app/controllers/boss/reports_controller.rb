@@ -105,23 +105,26 @@ module Boss
       @report = TourDurationReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def hotelstars
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
     end
-    
+
     def clientsbase
       @report = ClientsBaseReport.new(report_params).prepare
       @count  = @report.count
-      @amount  = @report.amount
+      @amount = @report.amount
+      @amount80 = @report.amount80 || []
+      @amount15 = @report.amount15 || []
+      @amount5 = @report.amount5 || []
     end
-    
+
     def normalcheck
       @report = NormalCheckReport.new(report_params.merge(period: params[:period])).prepare
       @amount  = @report.amount
     end
-    
+
     def increaseclients
       @report = IncreaseClientsReport.new(report_params.merge(year: params[:year])).prepare
       @count  = @report.count

@@ -5,10 +5,6 @@ module Boss
 
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
     before_filter :set_last_filter
-    before_filter only: [:margin, :offices_margin, :managers_margin] { @is_margin = true }
-    before_filter only: [ :margin, :offices_margin, :managers_margin,
-                          :income, :offices_income, :managers_income,
-                          :normalcheck ] { @is_income = true }
 
     def operators
       @report = OperatorReport.new(report_params).prepare

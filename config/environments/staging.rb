@@ -76,5 +76,8 @@ Tourism::Application.configure do
       :email_prefix => "[#{mailer_config['exception_notification']['email_prefix']}] ",
       :sender_address => %{ "notifier" <#{mailer_config['smtp']['user_name']}> },
       :exception_recipients => mailer_config['exception_notification']['recipients']
+  rescue Exception => e
+    Rails.logger.error e.message
+    Rails.logger.error e.backtrace.inspect
   end
 end

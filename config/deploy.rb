@@ -38,7 +38,7 @@ after "deploy:update_code", "thinking_sphinx:start"
 # after 'deploy:finalize_update', 'deploy:symlink_sphinx_indexes'
 after "deploy:update_code", "deploy:precompile_assets"
 after "deploy:update_code", "deploy:create_manifest"
-after "deploy:update_code", "deploy:claims:expire_active_claims_cache"
+after "deploy:update_code", "deploy:claims:expire_active_cache"
 after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do

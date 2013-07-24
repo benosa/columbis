@@ -14,6 +14,7 @@ class SmsSendingsController < ApplicationController
 
   def new
     @sms_sendings = SmsSending.new
+    @sms_groups = SmsGroup.where('company_id = ?', current_company.id)
   end
 
   def edit

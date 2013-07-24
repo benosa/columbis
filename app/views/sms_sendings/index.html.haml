@@ -3,14 +3,7 @@
 
 - title t('.sms_sendings')
 
-- content_for :navigation do
-  %ul
-    %li= link_to t('.sms_sendings'), sms_sendings_path, class: 'active'
-    %li= link_to t('.contacts_and_groups'), sms_groups_path
-    %li= link_to t('.invoices'), '#'
-    %li= link_to t('.add_balance'), '#'
-    %li= link_to t('.statistics'), '#'
-    %li= link_to t('.settings'), '#'
+= render 'navigation'
     
 - content_for :top do
   .actions

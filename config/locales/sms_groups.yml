@@ -5,23 +5,17 @@ ru:
   sms_groups:
     index:
       sms_groups: 'Контакты и группы'
-      sms_sendings: 'SMS-рассылка'
-      contacts_and_groups: 'Контакты и группы'
-      invoices: 'Счета'
-      add_balance: 'Пополнить баланс'
-      statistics: 'Статистика'
-      settings: 'Настройки'
-      add_sms_sending: 'Создать рассылку'
 
     show:
       sms_groups: 'Контакты и группы'
+    
+    navigation:
       sms_sendings: 'SMS-рассылка'
       contacts_and_groups: 'Контакты и группы'
       invoices: 'Счета'
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
-      add_sms_sending: 'Создать рассылку'
     
     list:
       phone_number: 'Телефон'
@@ -29,4 +23,8 @@ ru:
       last_name: 'Фамилия'
       middle_name: 'Отчество'
       date_of_birth: 'д/р'
+      add: 'Добавить'
     
+    sidebar:
+      add: 'Добавить'
+      add_group: 'Добавить группу'

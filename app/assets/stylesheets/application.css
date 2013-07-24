@@ -12,4 +12,5 @@
 *= require buttons
 *= require sms_sendings
 *= require sms_clients
+*= require text_color
 */

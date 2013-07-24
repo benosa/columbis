@@ -11,5 +11,7 @@
 %hr
 
 = form_for @sms_group_new do |f|
+  %fieldset
+    = t('.add_group')
   = f.text_field :name
-  = f.submit "Submit", :disable_with => 'Submiting...'
+  = f.submit t('.add'), :disable_with => 'Submiting...'

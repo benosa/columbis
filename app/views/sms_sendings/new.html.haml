@@ -3,35 +3,44 @@
 
 - title t('.new_sms_sendings')
 
-- content_for :navigation do
-  %ul
-    %li= link_to t('.sms_sendings'), '#', class: 'active'
-    %li= link_to t('.contacts_and_groups'), '#'
-    %li= link_to t('.invoices'), '#'
-    %li= link_to t('.add_balance'), '#'
-    %li= link_to t('.statistics'), '#'
-    %li= link_to t('.settings'), '#'
+= render 'navigation'
 
 %br
-
-.form_column
-  .form_block
-    .block_title
-      %h2= t('.title_1')
-    .form_block_content
-      .fake_row
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-.form_column
-  .form_block
-    .block_title
-      %h2= t('.title_2')
-    .form_block_content
-      .fake_row
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+= form_for @sms_sending do |f|
+  .form_column
+    .form_block
+      .block_title
+        %h2= t('.title_1')
+      .form_block_content
+        .fake_row
+          = f.label :contact_group_id
+          = f.select :contact_group_id, @sms_groups.map {|o| [ o.name, o.id ] }
+          / = f.text_field :contact_group_id
+        .fake_row
+          = f.label :content
+          = f.text_area :content
+          .text_orange
+            Внимание! Максимальное число сообщений — 4
+          Подставьте данный из контакта:
+          %ul
+            %li
+              
+          
+  .form_column
+    .form_block
+      .block_title
+        %h2= t('.title_2')
+      .form_block_content
+        .fake_row
+          = f.radio_button :sending_priority, :on
+          = f.label :sending_priority
+          %br
+          = f.radio_button :sending_priority, :off
+          = f.label :sending_priority
+        .fake_row
+          = f.label :send_an
+          = f.text_field :send_an, :class => 'datepicker date_of_birth date'
+          
+          = f.label :send_an
+          = f.select :send_an, 13.times.map{|a| a + 9}
+          = f.select :send_an, 12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}

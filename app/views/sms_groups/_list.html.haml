@@ -18,8 +18,6 @@
       - for client in @clients
         %tr{ :class => cycle('odd', 'even'), id: "tourist-#{client.id}"}
           %td
-            / = label_tag client.id, '', :class => 'checkbox total'
-            / = check_box_tag "client_ids[]", client.id
             = check_box_tag "client_ids[]", client.id, nil, id: "client_ids_#{client.id}"
             = label_tag "client_ids[#{client.id}]", '', :class => 'checkbox total'
           %td
@@ -32,8 +30,14 @@
             = client.middle_name
           %td
             = client.date_of_birth
-    
-    = submit_tag "Save changes", :id => "submit", :name => "submit"
+    .bath_actions
+      / = select_tag 'selected_group_name', options_from_collection_for_select(@sms_groups, "id", "name"), prompt: "Select group name..."
+      = select_tag 'selected_group_name', options_from_collection_for_select(@sms_groups, "id", "name")
+      or
+      = text_field_tag 'new_group_name', nil, placeholder: 'Enter group name...'
+      = submit_tag t('.add'), :id => "submit", :name => "submit", class: 'button mini'
+      %br
+      %br
     
   - unless @clients.nil?
     = render partial: 'shared/pagination', locals: { collection: @clients }

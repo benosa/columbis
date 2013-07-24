@@ -37,6 +37,18 @@ class SmsGroupsController < ApplicationController
   end
   
   def batch_add_to_group
+    tourists = Tourist.find_all_by_id(params[:client_ids])
+    if params[:new_group_name].empty?
+      group = params[:selected_group_name]
+    else
+      group = SmsGroup.new(name: params[:new_group_name], company_id: current_company.id)
+      group.save
+      group = group.id
+    end
+    tourists.map do |e|
+      sms_touristgroup = SmsTouristgroup.new(tourist_id: e.id, sms_group_id: group)
+      sms_touristgroup.save
+    end
     redirect_to sms_groups_path
   end
   

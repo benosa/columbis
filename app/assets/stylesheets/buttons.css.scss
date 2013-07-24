@@ -1,5 +1,5 @@
 .button.green.add {
-  background: url(/assets/new_design/images/add_operator.png) no-repeat;
+  background: url('/assets/new_design/images/add_operator.png') no-repeat;
   float: right;
   margin-left: 20px;
   padding: 9px 0 0 37px;
@@ -11,4 +11,32 @@
   font-weight: bold;
   height: 25px;
   line-height: 14px;
+}
+
+.button {
+  cursor: pointer;
+  position: relative;
+  font-size: 1em;
+  padding: 5px 10px 5px 10px;
+  border-radius: 4px;
+  color: #333;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eee));
+  background-image: -webkit-linear-gradient(#fff, #eee);
+  background-image: -moz-linear-gradient(#fff, #eee);
+  background-image: linear-gradient(#fff, #eee);
+  
+  &.mini{
+    padding: 3px 6px;
+    border-radius: 3px;
+  }
+  
+  input {
+    border: 0;
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
 }

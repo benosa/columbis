@@ -827,9 +827,12 @@ input[type="checkbox"]{display: none;}
 		.fake_row input{
 			margin: 0 17px 11px 0;
 		}
-			.fake_row input.number_password{
-				margin-right: 2px;
-			}
+    .fake_row input[type="radio"]{
+      margin: 4px 10px 6px 0;
+    }
+		.fake_row input.number_password{
+			margin-right: 2px;
+		}
 		.delete{
 			background: url(/assets/new_design/images/delete.png) no-repeat;
 			display: inline-block;

@@ -20,24 +20,21 @@ ru:
   sms_sendings:
     index:
       sms_sendings: 'SMS-рассылка'
-      contacts_and_groups: 'Контакты и группы'
-      invoices: 'Счета'
-      add_balance: 'Пополнить баланс'
-      statistics: 'Статистика'
-      settings: 'Настройки'
       add_sms_sending: 'Создать рассылку'
     
     new:
       sms_sendings: 'SMS-рассылка'
-      new_sms_sendings: 'Создание рассылки'
+      new_sms_sendings: 'Создать рассылку'
+      title_1: 'Получатели и текст рассылки'
+      title_2: 'Время отправки'
+    
+    navigation:
+      sms_sendings: 'SMS-рассылка'
       contacts_and_groups: 'Контакты и группы'
       invoices: 'Счета'
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
-      add_sms_sending: 'Создать рассылку'
-      title_1: 'Получатели и текст рассылки'
-      title_2: 'Время отправки'
     
     list:
       send_an: 'Дата'

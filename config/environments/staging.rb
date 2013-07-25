@@ -62,20 +62,20 @@ Tourism::Application.configure do
 
   # Mail delivery settings
   begin
-    mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")
+    mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")[Rails.env]
 
-    config.action_mailer.default_url_options = { :host => mailer_config['smtp']['domain'] }
+    config.action_mailer.default_url_options = { :host => mailer_config['smtp_settings']['domain'] }
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.perform_deliveries = true
     config.action_mailer.raise_delivery_errors = false
     config.action_mailer.default :charset => "utf-8"
-    config.action_mailer.smtp_settings = mailer_config['smtp']
+    config.action_mailer.smtp_settings = mailer_config['smtp_settings'].symbolize_keys
 
     # Exception notification settings
-    config.middleware.use ExceptionNotifier,
-      :email_prefix => "[#{mailer_config['exception_notification']['email_prefix']}] ",
-      :sender_address => %{ "notifier" <#{mailer_config['smtp']['user_name']}> },
-      :exception_recipients => mailer_config['exception_notification']['recipients']
+    config.middleware.use ExceptionNotifier, mailer_config['exception_notification'].symbolize_keys
+      # :email_prefix => "[#{mailer_config['exception_notification']['email_prefix']}] ",
+      # :sender_address => %{ "Notifier" <#{mailer_config['smtp_settings']['user_name']}> },
+      # :exception_recipients => mailer_config['exception_notification']['recipients']
   rescue Exception => e
     # No mailer config or it's incorrect
   end

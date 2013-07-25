@@ -61,24 +61,20 @@ Tourism::Application.configure do
   config.active_support.deprecation = :notify
 
   # Mail delivery settings
-  config.action_mailer.default_url_options = { :host => 'columbis.ru' }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.smtp_settings = {
-    :address => "smtp.gmail.com",
-    :port => 587,
-    :domain => "columbis.ru",
-    :authentication => "plain",
-    :user_name => "mailer.devmen.com@gmail.com",
-    :password => "devmen.mailer",
-    :enable_starttls_auto => true
-  }
+  begin
+    mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")[Rails.env]
 
-  # Exception notification settings
-  config.middleware.use ExceptionNotifier,
-    :email_prefix => '[Columbis Production] ',
-    :sender_address => %{ "notifier" <mailer.devmen.com@gmail.com> },
-    :exception_recipients => %w{ alexzammer@gmail.com }
+    config.action_mailer.default_url_options = { :host => mailer_config['smtp_settings']['domain'] }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.default :charset => "utf-8"
+    config.action_mailer.smtp_settings = mailer_config['smtp_settings'].symbolize_keys
+
+    # Exception notification settings
+    config.middleware.use ExceptionNotifier, mailer_config['exception_notification'].symbolize_keys
+
+  rescue Exception => e
+    # No mailer config or it's incorrect
+  end
 end

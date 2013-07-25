@@ -2,8 +2,8 @@ class SmsGroupsController < ApplicationController
   
   load_and_authorize_resource
   
-  before_filter :sms_groups, :except => [:create]
-  before_filter :sms_group_new, :only => [:index, :birthday, :show]
+  before_filter :sms_groups
+  before_filter :sms_group_new, :only => [:index, :birthday, :show, :create]
   
   respond_to :html
   
@@ -26,7 +26,7 @@ class SmsGroupsController < ApplicationController
       if @sms_group.save
         format.html { redirect_to sms_groups_path, notice: 'added sms group' }
       else
-        format.html { render action: 'index' }
+        format.html { redirect_to sms_groups_path, alert: 'cant add sms group' }
       end
     end
   end

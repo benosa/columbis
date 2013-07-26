@@ -17,8 +17,7 @@ class Claim < ActiveRecord::Base
                   :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
-  attr_accessible :airline, :airport_to,  :airport_back, :flight_to, :flight_back, :depart_to, :depart_back,
-                  :arrive_to, :arrive_back
+  attr_accessible :airport_back, :depart_to, :depart_back
 
   # marchroute block
   attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
@@ -59,15 +58,19 @@ class Claim < ActiveRecord::Base
   has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id'
   has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id'
 
+  has_many :flights, :dependent => :destroy
+
   # accepts_nested_attributes_for :applicant, :reject_if => :empty_tourist_hash?
   # accepts_nested_attributes_for :dependents, :reject_if => :empty_tourist_hash?
   accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?, :allow_destroy => true
   accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?, :allow_destroy => true
 
+  accepts_nested_attributes_for :flights, :allow_destroy => true
+
   validates_presence_of :user_id, :check_date, :arrival_date
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
-  #                       :airline, :airport_to, :airport_back,
+  #                       :airport_back,
   #                       :tour_price, :hotel, :meals, :medical_insurance,
   #                       :placement, :transfer, :service_class, :relocation
 
@@ -82,17 +85,18 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
-  validates :hotel, :format => { :with => /([\s][1-5]\*)\Z/, :message => I18n.t('activerecord.errors.messages.hotel') }
+  validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
 
   before_validation :update_debts
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
+  before_save :set_flights_block
 
   scope :active, lambda { where(:active => true) }
 
   define_index do
-    indexes :airport_to, :airport_back, :visa, :calculation, :documents_status, :docs_note, :flight_to, :flight_back, :meals, :placement,
+    indexes :airport_back, :visa, :calculation, :documents_status, :docs_note, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
             :operator_confirmation, :sortable => true
 
@@ -252,6 +256,7 @@ class Claim < ActiveRecord::Base
   end
 
   def fill_new
+    self.flights = [Flights.new(), Flights.new()]
     self.applicant = Tourist.new
     self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
     # Payments out might be created after save
@@ -312,6 +317,12 @@ class Claim < ActiveRecord::Base
 
     self.bonus = bonus
     self.bonus_percent = percent
+  end
+
+  def set_flights_block
+    self.airport_back = self.flights.last.airport_to
+    self.depart_to = self.flights.first.depart
+    self.depart_back = self.flights.last.depart
   end
 
   def self.local_data_extra_columns
@@ -682,7 +693,7 @@ class Claim < ActiveRecord::Base
       DropdownValue.available_lists.keys.each do |l|
         company.check_and_save_dropdown(l.to_s, claim_params[l]) unless claim_params[l].nil?
       end
-      company.check_and_save_dropdown('airport', claim_params[:airport_to])
+
       company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
       if claim_params[:operator_id].blank?
@@ -856,18 +867,11 @@ class Claim < ActiveRecord::Base
         'СерияПаспорта' => applicant.try(:passport_series),
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
-        'АэропортТуда' => airport_to,
         'АэропортОбратно' => airport_back,
-        'РейсТуда' => flight_to,
-        'РейсОбратно' => flight_back,
         'ВылетТуда' => depart_to,
         'ВылетОбратно' => depart_back,
         'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
         'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
-        'ПрибытиеТуда' => arrive_to,
-        'ПрибытиеОбратно' => arrive_back,
-        'ВремяПрибытияТуда' => (arrive_to.strftime('%H:%M') if arrive_to),
-        'ВремяПрибытияОбратно' => (arrive_back.strftime('%H:%M') if arrive_back)
       }
     end
 
@@ -900,10 +904,7 @@ end
 #  operator_id                         :integer
 #  operator_confirmation               :string(255)
 #  visa                                :string(255)      default("nothing_done"), not null
-#  airport_to                          :string(255)
 #  airport_back                        :string(255)
-#  flight_to                           :string(255)
-#  flight_back                         :string(255)
 #  visa_check                          :date
 #  tour_price                          :float            default(0.0)
 #  visa_price                          :float            default(0.0)
@@ -913,7 +914,6 @@ end
 #  primary_currency_price              :float            default(0.0)
 #  course_usd                          :float            default(0.0)
 #  tour_price_currency                 :string(255)      not null
-#  airline                             :string(255)
 #  visa_count                          :integer
 #  meals                               :string(255)
 #  placement                           :string(255)
@@ -973,6 +973,3 @@ end
 #  tourist_stat                        :string(255)
 #  approved_operator_advance_prim      :float            default(0.0), not null
 #  company_id                          :integer
-#  arrive_to                           :datetime
-#  arrive_back                         :datetime
-#

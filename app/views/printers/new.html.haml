@@ -1,7 +1,7 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel edit_operator' }
 
-- title t('.new_printer')
+- title t('.title')
 
 = form_for @printer, :html => {:multipart => true} do |form|
   - @form_id = form.options[:html][:id]

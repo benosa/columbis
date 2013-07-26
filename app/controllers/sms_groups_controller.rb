@@ -8,7 +8,16 @@ class SmsGroupsController < ApplicationController
   respond_to :html
   
   def index
-    @clients = Tourist.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
+    @clients =
+      if search_or_sort?
+        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist), condition: {company_id: current_company.id})
+        scoped = Tourist.search_and_sort(options)
+        scoped = search_paginate(scoped, options)
+      else
+        scoped = Tourist.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
+      end
+    
+    # @clients = Tourist.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
     render :partial => 'list' if request.xhr?
   end
   
@@ -50,6 +59,17 @@ class SmsGroupsController < ApplicationController
       sms_touristgroup.save
     end
     redirect_to sms_groups_path
+  end
+  
+  def destroy
+    @cart_item = SmsGroup.find(params[:id])
+    @cart_item.destroy
+    
+    redirect_to sms_groups_path
+    # respond_to do |format|
+    #   format.js   {@status = true, @id = params[:id]}
+    # end
+    # 
   end
   
 private

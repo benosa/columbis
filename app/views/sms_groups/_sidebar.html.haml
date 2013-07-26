@@ -8,6 +8,9 @@
   - for sms_group in @sms_groups
     %li
       = link_to sms_group.name, sms_group_path(sms_group.id)
+      .destroy_group
+        = button_to "X", sms_group, method: :delete, class: 'destroy'
+      
 %hr
 
 = form_for @sms_group_new do |f|

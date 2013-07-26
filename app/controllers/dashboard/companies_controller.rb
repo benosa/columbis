@@ -36,21 +36,6 @@ class Dashboard::CompaniesController < ApplicationController
     end
   end
 
-  def printers
-    edit
-    @company.printers.build
-    ActiveRecord::Associations::Preloader.new(@company, :printers => :country).run # preload printers association
-  end
-
-  def update_printers
-    if @company.update_attributes(params[:company])
-      redirect_to printers_dashboard_company_path(current_company), :notice => t('companies.messages.successfully_updated_company')
-    else
-      build_company_edition_prerequisites
-      render :action => "printers"
-    end
-  end
-
   private
 
     def build_empty_associations

@@ -13,7 +13,8 @@
         %td
           %p= printer.template_name
         %td
-          = link_to '', '#', :class => 'edit edit_row', :title => t('edit')
-          = link_to '', printer_path(printer.id), :class => 'del delete', :title => t('delete'), :remote => true, :method => :delete
+          = link_to '', template_path(printer.id), :class => 'download', :title => t('download')
+          = link_to '', edit_printer_path(printer.id), :class => 'edit edit_row', :title => t('edit')
+          = link_to '', printer_path(printer.id), :class => 'del delete', :title => t('delete'), :remote => true, :method => :delete, :confirm => "What?"
 
   = render :partial => 'shared/pagination', :locals => { :collection => @printers }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708055255) do
+ActiveRecord::Schema.define(:version => 20130712135051) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -301,6 +301,7 @@ ActiveRecord::Schema.define(:version => 20130708055255) do
     t.integer "country_id"
     t.string  "template"
     t.string  "mode"
+    t.boolean "delta",      :default => true, :null => false
   end
 
   create_table "regions", :force => true do |t|

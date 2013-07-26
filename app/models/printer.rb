@@ -2,12 +2,14 @@
 class Printer < ActiveRecord::Base
   MODES = %w[contract memo permit warranty act].freeze
 
-  attr_accessible :country_id, :template, :mode
-  attr_protected :company_id
+  attr_accessible :template, :mode
+  attr_protected :company_id, :country_id
 
   belongs_to :company, inverse_of: :printers
   belongs_to :country
   validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' } # TODO: check company presence
+
+  accepts_nested_attributes_for :country
 
   scope :with_template_name, -> do
     country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
@@ -64,7 +66,32 @@ class Printer < ActiveRecord::Base
     @text
   end
 
+  def assign_reflections_and_save(params)
+    self.transaction do
+      check_dropdowns(params)
+
+      unless self.errors.any?
+        self.save
+      end
+    end
+  end
+
   private
+
+  def check_dropdowns(params)
+    country_name = params[:country_attributes][:name].strip rescue ''
+    if country_name.present?
+      if Country.where(common: true, name: country_name).first == nil
+        Country.new(:name => country_name, :company => self.company, :common => false).save
+      end
+      self.country = Country.where(common: true, name: country_name).first
+      check_country_correctness(country_name)
+    else
+      params.delete(:country)
+      params.delete(:country_attributes)
+      self.country = nil
+    end
+  end
 
   def self.translate_mode
     ind = "(CASE mode "
@@ -135,5 +162,9 @@ class Printer < ActiveRecord::Base
     e = @text.index('{НЕОБЯЗАТЕЛЬНЫЕ_ПОЛЯ}%').to_i
     @unrequired_fields += @text[s, e - s].strip.gsub(/[\s\n]/, '').split(',') if (s < e)
     @unrequired_fields
+  end
+
+  def check_country_correctness(country_name)
+    errors.add(:country_id, :is_selected_from_existing) if country.nil? && country_name.present?
   end
 end

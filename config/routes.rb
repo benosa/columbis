@@ -4,6 +4,7 @@ Tourism::Application.routes.draw do
   match 'amount_in_word' => 'application#amount_in_word'
   match 'get_currency_course' => 'application#get_currency_course'
   match 'current_timestamp' => "application#current_timestamp"
+  match 'template/:template' => 'printers#download', :as => :template, :via => :get
 
   resources :airlines
   resources :currency_courses
@@ -37,7 +38,7 @@ Tourism::Application.routes.draw do
     end
   end
 
-  resources :printers, :only => [:index, :destroy, :new]
+  resources :printers, :except => :show
   resources :countries
   resources :cities
   resources :payments

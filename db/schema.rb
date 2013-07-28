@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705072453) do
+ActiveRecord::Schema.define(:version => 20130723114846) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -309,6 +309,14 @@ ActiveRecord::Schema.define(:version => 20130705072453) do
   add_index "regions", ["country_id", "name"], :name => "index_regions_on_country_id_and_name"
   add_index "regions", ["name"], :name => "index_regions_on_name"
 
+  create_table "sms_groups", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.integer  "contact_count"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "sms_sendings", :force => true do |t|
     t.integer  "company_id"
     t.datetime "send_an"
@@ -322,6 +330,14 @@ ActiveRecord::Schema.define(:version => 20130705072453) do
     t.integer  "delivered_count"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+  end
+
+  create_table "sms_touristgroups", :force => true do |t|
+    t.integer  "tourist_id"
+    t.integer  "sms_group_id"
+    t.integer  "position"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "tasks", :force => true do |t|

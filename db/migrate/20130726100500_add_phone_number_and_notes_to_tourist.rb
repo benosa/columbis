@@ -14,7 +14,7 @@ class AddPhoneNumberAndNotesToTourist < ActiveRecord::Migration
       puts "======> #{note.note}"
       normal_phone = normalize_phone(note.note)
       puts "normal phone: #{normal_phone}"
-      if normal_phone.length == 11
+      if normal_phone.length == 10
         a = note.update_attributes({ phone_number: normal_phone, note: nil })
         puts a.to_yaml
       end
@@ -27,6 +27,9 @@ class AddPhoneNumberAndNotesToTourist < ActiveRecord::Migration
   end
   
   def normalize_phone number
-    number.gsub!(/\D/, '') || number
+    unless number.gsub(/^[8,7]/,'').nil?
+      a = number.gsub!(/\D/, '') || number
+      a = a.gsub(/^[8,7]/,'')
+    end
   end
 end

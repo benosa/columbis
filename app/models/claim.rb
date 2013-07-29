@@ -38,7 +38,7 @@ class Claim < ActiveRecord::Base
 
   # nested attributes
   attr_accessible :applicant_attributes, :dependents_attributes,
-                  :payments_in_attributes, :payments_out_attributes
+                  :payments_in_attributes, :flights_attributes
 
   belongs_to :company
   belongs_to :user
@@ -85,7 +85,7 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
-  validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
+  validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
 
   before_validation :update_debts
   before_save :update_bonus

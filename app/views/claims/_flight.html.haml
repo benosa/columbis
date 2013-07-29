@@ -1,23 +1,23 @@
 - ind ||= 1
-- flight = f.object
+- flight = flight_form.object
 
 - if ind == 0
-  %p= f.label :airline, t('.airline')
-  = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline'))
+  %p= flight_form.label :airline, t('.airline')
+  = flight_form.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline'))
   %br
 .two_line
-  %p= f.label :airport_from, t('.from')
-  = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
+  %p= flight_form.label :airport_from, t('.from')
+  = flight_form.text_field :airport_from, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
 .two_line
-  %p= f.label :depart, t('.depart')
-  = f.text_field :depart, :class => 'datetimepicker time_departure', :value => l(flight.depart, :format => :long)
+  %p= flight_form.label :depart, t('.depart')
+  = flight_form.text_field :depart, :class => 'datetimepicker time_departure', :value => l(flight.depart, :format => :long)
 .two_line
-  %p= f.label :flight_number, t('.flight')
-  = f.text_field :flight_number, :class => 'expires_date'
+  %p= flight_form.label :flight_number, t('.flight')
+  = flight_form.text_field :flight_number, :class => 'expires_date'
 %br
 .two_line
-  %p= f.label :airport_to, t('.to')
-  = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
+  %p= flight_form.label :airport_to, t('.to')
+  = flight_form.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
 .two_line
-  %p= f.label :arrive, t('.arrive')
-  = f.text_field :arrive, :class => 'datetimepicker time_departure', :value => l(flight.arrive, :format => :long)
+  %p= flight_form.label :arrive, t('.arrive')
+  = flight_form.text_field :arrive, :class => 'datetimepicker time_departure', :value => l(flight.arrive, :format => :long)

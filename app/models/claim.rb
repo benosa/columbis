@@ -91,7 +91,6 @@ class Claim < ActiveRecord::Base
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
-  before_save :set_flights_block
 
   scope :active, lambda { where(:active => true) }
 
@@ -256,7 +255,6 @@ class Claim < ActiveRecord::Base
   end
 
   def fill_new
-    self.flights = [Flights.new(), Flights.new()]
     self.applicant = Tourist.new
     self.payments_in.build(:currency => CurrencyCourse::PRIMARY_CURRENCY) if self.payments_in.empty?
     # Payments out might be created after save
@@ -323,6 +321,14 @@ class Claim < ActiveRecord::Base
     self.airport_back = self.flights.last.airport_to
     self.depart_to = self.flights.first.depart
     self.depart_back = self.flights.last.depart
+    self.flights.each_with_index do |flight, i|
+      if i == 0
+        airline = flight.airline
+      end
+      if self.flights[i].airline != airline
+        self.flights[i].airline = airline
+      end
+    end
   end
 
   def self.local_data_extra_columns

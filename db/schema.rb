@@ -140,15 +140,9 @@ ActiveRecord::Schema.define(:version => 20130726100500) do
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.integer  "tour_duration"
-    t.string   "airline"
-    t.string   "airport_to"
     t.string   "airport_back"
-    t.string   "flight_to"
-    t.string   "flight_back"
     t.datetime "depart_to"
     t.datetime "depart_back"
-    t.datetime "arrive_to"
-    t.datetime "arrive_back"
   end
 
   create_table "companies", :force => true do |t|

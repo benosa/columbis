@@ -2,32 +2,18 @@
   .block_title
     %h2= t('.flights')
   .form_block_content
-    .fake_row
-      %p= f.label :airline, t('.airline'), :required => true
-      = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline'))
-    .fake_row
-      .two_line
-        %p= f.label :airport_to, t('.there'), :required => true
-        = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
-      .two_line
-        %p= f.label :flight_to, t('.flight')
-        = f.text_field :flight_to, :class => 'expires_date'
-      .two_line
-        %p= f.label :depart_to, t('.depart')
-        = f.text_field :depart_to, :class => 'datetimepicker time_departure', :value => l(claim.depart_to, :format => :long)
-      .two_line
-        %p= f.label :arrive_to, t('.arrive')
-        = f.text_field :arrive_to, :class => 'datetimepicker time_departure', :value => l(claim.arrive_to, :format => :long)
-    .fake_row
-      .two_line
-        %p= f.label :airport_back, t('.back'), :required => true
-        = f.text_field :airport_back, :class => 'autocomplete airport_back standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
-      .two_line
-        %p= f.label :flight_back, t('.flight')
-        = f.text_field :flight_back, :class => 'expires_date'
-      .two_line
-        %p= f.label :depart_back, t('.depart')
-        = f.text_field :depart_back, :class => 'datetimepicker time_departure', :value => l(claim.depart_back, :format => :long)
-      .two_line
-        %p= f.label :arrive_back, t('.arrive')
-        = f.text_field :arrive_back, :class => 'datetimepicker time_departure', :value => l(claim.arrive_back, :format => :long)
+    - ind = 0
+    = f.fields_for :flights, @claim.flights do |ff|
+      .fake_row.flight.fields{ :id => "flight-#{ind}", :class => ff.object.try(:_destroy) && 'destroyed' }
+        = render :partial => 'flight', :locals => { :f => ff, :ind => ind }
+        .two_line
+          .panel_content{:style => "padding-top:15px; padding-left:0px;"}
+            = link_to t('.cansel'), '#', :class => 'delete_operator', :title => t('delete'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"
+
+        = ff.hidden_field :_destroy, :class => '_destroy'
+        = ff.hidden_field :id, :class => 'hidden_id'
+      - ind += 1
+
+    .fake_row.add_row
+      .add_btn
+        = link_to t('.add_another_flight'), '#', :class => 'add add_tourist', :id => 'add_flight'

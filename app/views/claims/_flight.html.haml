@@ -1,0 +1,23 @@
+- ind ||= 1
+- flight = f.object
+
+- if ind == 0
+  %p= f.label :airline, t('.airline')
+  = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline'))
+  %br
+.two_line
+  %p= f.label :airport_from, t('.from')
+  = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
+.two_line
+  %p= f.label :depart, t('.depart')
+  = f.text_field :depart, :class => 'datetimepicker time_departure', :value => l(flight.depart, :format => :long)
+.two_line
+  %p= f.label :flight_number, t('.flight')
+  = f.text_field :flight_number, :class => 'expires_date'
+%br
+.two_line
+  %p= f.label :airport_to, t('.to')
+  = f.text_field :airport_to, :class => 'autocomplete airport_to standart_select', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
+.two_line
+  %p= f.label :arrive, t('.arrive')
+  = f.text_field :arrive, :class => 'datetimepicker time_departure', :value => l(flight.arrive, :format => :long)

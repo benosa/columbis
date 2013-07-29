@@ -71,6 +71,7 @@ class ClaimsController < ApplicationController
 
   def new
     @claim.fill_new
+    check_flights
   end
 
   def create
@@ -81,6 +82,7 @@ class ClaimsController < ApplicationController
     else
       @claim.applicant ||= Tourist.new #Tourist.new(params[:claim][:applicant_attributes])
       check_payments
+      check_flights
       render :action => 'new'
     end
   end
@@ -153,6 +155,17 @@ class ClaimsController < ApplicationController
       if !@claim.new_record? && @claim.payments_out.empty?
         @claim.payments_out.build(:currency => @claim.operator_price_currency || CurrencyCourse::PRIMARY_CURRENCY, :course => '')
       end
+    end
+
+    def check_flights
+      step = 2
+      if @claim.flights.length == 1
+        step = 1
+      end
+      if @claim.flights.length >= 2
+        step = 0
+      end
+      step.times {|i| @claim.flights.build}
     end
 
     def set_commit_type

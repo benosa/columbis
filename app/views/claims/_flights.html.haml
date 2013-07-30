@@ -1,14 +1,12 @@
 #flights.form_block.yellow_block{ :class => large_width? && 'departures' }
   .block_title
-    %h2= t('.flights')
+    %h2= t('.title')
   .form_block_content
     - ind = 0
     = f.fields_for :flights, @claim.flights do |ff|
       .fake_row.flight.fields{ :id => "flight-#{ind}", :class => ff.object.try(:_destroy) && 'destroyed' }
         = render :partial => 'flight', :locals => { :flight_form => ff, :ind => ind }
-        .two_line
-          .panel_content{:style => "padding-top:15px; padding-left:0px;"}
-            = link_to t('.cansel'), '#', :class => 'delete_operator', :title => t('delete'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"
+        = link_to '', '#', :class => 'delete', :title => t('cancel'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"
 
         = ff.hidden_field :_destroy, :class => '_destroy'
         = ff.hidden_field :id, :class => 'hidden_id'

@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20130726100500) do
     t.integer  "operator_id"
     t.string   "operator_confirmation"
     t.string   "visa",                                                               :default => "nothing_done", :null => false
+    t.string   "airport_back"
     t.date     "visa_check"
     t.float    "tour_price",                                                         :default => 0.0
     t.float    "visa_price",                                                         :default => 0.0
@@ -90,6 +91,8 @@ ActiveRecord::Schema.define(:version => 20130726100500) do
     t.float    "operator_price",                                                     :default => 0.0,            :null => false
     t.float    "operator_debt",                                                      :default => 0.0,            :null => false
     t.float    "tourist_debt",                                                       :default => 0.0,            :null => false
+    t.datetime "depart_to"
+    t.datetime "depart_back"
     t.date     "maturity"
     t.boolean  "visa_confirmation_flag",                                             :default => false
     t.integer  "resort_id"
@@ -140,9 +143,6 @@ ActiveRecord::Schema.define(:version => 20130726100500) do
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.integer  "tour_duration"
-    t.string   "airport_back"
-    t.datetime "depart_to"
-    t.datetime "depart_back"
   end
 
   create_table "companies", :force => true do |t|

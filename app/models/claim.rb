@@ -58,7 +58,7 @@ class Claim < ActiveRecord::Base
   has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id'
   has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id'
 
-  has_many :flights, :dependent => :destroy
+  has_many :flights, :dependent => :destroy, :order => 'created_at ASC'
 
   # accepts_nested_attributes_for :applicant, :reject_if => :empty_tourist_hash?
   # accepts_nested_attributes_for :dependents, :reject_if => :empty_tourist_hash?
@@ -91,6 +91,7 @@ class Claim < ActiveRecord::Base
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
+  before_save :set_airlines_in_flights
 
   scope :active, lambda { where(:active => true) }
 
@@ -798,6 +799,13 @@ class Claim < ActiveRecord::Base
         self.tour_duration = (departure_date - arrival_date + 1)
       else
         self.tour_duration = 0
+      end
+    end
+
+    def set_airlines_in_flights
+      airline = self.flights.first.airline
+      self.flights.each do |flight|
+        flight.airline = airline
       end
     end
 

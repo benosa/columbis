@@ -24,6 +24,7 @@ ru:
       new_claim: 'Новая заявка'
       prihodnik: 'Приходник'
       write_review: 'Оставить отзыв'
+      sms_sendings: 'SMS-рассылки'
 
       reports:
         operators: 'Туроператоры'

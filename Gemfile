@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.13'
+gem 'rails', '~> 3.2.14'
 gem 'json', '~> 1.7.7' # to avoid json vulnerability
 gem 'pg', '~> 0.14.1'
 gem 'unicorn', '~> 4.5.0'

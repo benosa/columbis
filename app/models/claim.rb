@@ -91,7 +91,7 @@ class Claim < ActiveRecord::Base
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
-  before_save :set_airlines_in_flights
+  before_save :set_flights_block
 
   scope :active, lambda { where(:active => true) }
 
@@ -322,13 +322,9 @@ class Claim < ActiveRecord::Base
     self.airport_back = self.flights.last.airport_to
     self.depart_to = self.flights.first.depart
     self.depart_back = self.flights.last.depart
-    self.flights.each_with_index do |flight, i|
-      if i == 0
-        airline = flight.airline
-      end
-      if self.flights[i].airline != airline
-        self.flights[i].airline = airline
-      end
+    airline = self.flights.first.airline
+    self.flights.each do |flight|
+      flight.airline = airline
     end
   end
 
@@ -802,13 +798,6 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def set_airlines_in_flights
-      airline = self.flights.first.airline
-      self.flights.each do |flight|
-        flight.airline = airline
-      end
-    end
-
     def primary_currency_price_in_word
       primary_currency_price.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
     end
@@ -886,6 +875,9 @@ class Claim < ActiveRecord::Base
         'ВылетОбратно' => depart_back,
         'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
         'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
+        'АэропортТуда' => flights.first.airport_from,
+        'РейсТуда' => flights.first.flight_number,
+        'РейсОбратно' => flights.last.flight_number
       }
     end
 

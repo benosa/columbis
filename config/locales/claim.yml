@@ -135,8 +135,8 @@ ru:
       email: 'Адрес эл. почты'
 
     flights:
-      title: 'Вылеты'
-      add_another_flight: 'Добавить вылет'
+      title: 'Авиаперелёты'
+      add_another_flight: 'Добавить'
     flight:
       airline: 'Авиакомпания'
       from: 'Откуда'

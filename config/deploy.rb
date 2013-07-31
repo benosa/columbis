@@ -96,12 +96,12 @@ namespace :deploy do
   namespace :claims do
     desc 'expire view cache of active claims'
     task :expire_active_cache, :roles => :app do
-      run "cd #{current_path} && bundle exec rake claims:expire_active_cache RAILS_ENV=#{rails_env}"
+      run "cd #{release_path} && bundle exec rake claims:expire_active_cache RAILS_ENV=#{rails_env}"
     end
 
     desc 'expire view cache of all claims'
     task :expire_all_cache, :roles => :app do
-      run "cd #{current_path} && bundle exec rake claims:expire_all_cache RAILS_ENV=#{rails_env}"
+      run "cd #{release_path} && bundle exec rake claims:expire_all_cache RAILS_ENV=#{rails_env}"
     end
   end
 end

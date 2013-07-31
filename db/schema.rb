@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130723114846) do
+ActiveRecord::Schema.define(:version => 20130726100500) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -377,6 +377,7 @@ ActiveRecord::Schema.define(:version => 20130723114846) do
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
     t.string   "email"
+    t.text     "note"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

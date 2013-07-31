@@ -10,20 +10,25 @@ class SmsGroupsController < ApplicationController
   def index
     @clients =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist), condition: {company_id: current_company.id})
+        options = search_and_sort_options(
+                                          with:      current_ability.attributes_for(:read, Tourist),
+                                          condition: {company_id: current_company.id},
+                                          without:   {phone_number_crc32: 0})
+        if options[:order] == :full_name
+          options[:sql_order] = %w[last_name first_name middle_name].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
+        end
         scoped = Tourist.search_and_sort(options)
         scoped = search_paginate(scoped, options)
       else
-        scoped = Tourist.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
+        scoped = Tourist.where('company_id = ? and length(phone_number) > 0', current_company.id).paginate(:page => params[:page], :per_page => per_page)
       end
     
-    # @clients = Tourist.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
     render :partial => 'list' if request.xhr?
   end
   
   def show
     @sms_group = SmsGroup.find(params[:id])
-    @clients = @sms_group.tourists.where('company_id = ? and length(phone_number) > 5', current_company.id).paginate(:page => params[:page], :per_page => per_page)
+    @clients = @sms_group.tourists.where('company_id = ?', current_company.id).paginate(:page => params[:page], :per_page => per_page)
     render :partial => 'list' if request.xhr?
   end
 
@@ -66,10 +71,6 @@ class SmsGroupsController < ApplicationController
     @cart_item.destroy
     
     redirect_to sms_groups_path
-    # respond_to do |format|
-    #   format.js   {@status = true, @id = params[:id]}
-    # end
-    # 
   end
   
 private

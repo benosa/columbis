@@ -4,15 +4,14 @@ ru:
       sms_sending:
         company_id: 'Компания'
         company:    'Компания'
-        contact_group_id: 'Группа контактов'
-        contact_group:    'Группа контактов'
+        sms_group_id: 'Группа контактов'
+        sms_group:    'Группа контактов'
         content: 'Текст'
         count: 'Кол-во'
         delivered_count: 'Кол-во доставленных'
-        send_an: 'Когда отправить'
+        sending_at: 'Когда отправить'
         sending_priority: 'Приоритет отправки'
         signature: 'Подпись отправителя'
-        status_id: 'Статус'
         status:    'Статус'
         user_id: 'Пользователь'
         user:    'Пользователь'
@@ -27,6 +26,11 @@ ru:
       new_sms_sendings: 'Создать рассылку'
       title_1: 'Получатели и текст рассылки'
       title_2: 'Время отправки'
+      sending_at: 'Дата'
+      send_leter: Отправить позже
+      send_now: Отправить сейчас
+      date: 'Дата'
+      time: 'Время'
     
     navigation:
       sms_sendings: 'SMS-рассылка'
@@ -37,9 +41,9 @@ ru:
       settings: 'Настройки'
     
     list:
-      send_an: 'Дата'
+      sending_at: 'Дата'
       signature: 'Подпись'
-      contact_group: 'Группа'
+      sms_group: 'Группа'
       content: 'Текст'
       count: 'Кол-во'
       status: 'Статус'

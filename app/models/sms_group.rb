@@ -5,4 +5,5 @@ class SmsGroup < ActiveRecord::Base
   attr_accessible :contact_count, :name, :company_id
   
   validates :name,  :presence => true
+  
 end

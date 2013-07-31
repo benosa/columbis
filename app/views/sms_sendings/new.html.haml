@@ -13,18 +13,23 @@
         %h2= t('.title_1')
       .form_block_content
         .fake_row
-          = f.label :contact_group_id
-          = f.select :contact_group_id, @sms_groups.map {|o| [ o.name, o.id ] }
-          / = f.text_field :contact_group_id
+          = f.label :sms_group_id
+          = f.select :sms_group_id, @sms_groups.map {|o| [ o.name, o.id ] }
         .fake_row
           = f.label :content
           = f.text_area :content
           .text_orange
             Внимание! Максимальное число сообщений — 4
-          Подставьте данный из контакта:
-          %ul.list_params
-            %li
-              
+          %p
+            Подставьте данный из контакта:
+            %ul.list_params
+              %li
+          %p
+            Подпись отправителя:
+            %strong BABABA
+            %br
+            %small Подпись настраивается в настройках
+          
           
   .form_column
     .form_block
@@ -33,14 +38,14 @@
       .form_block_content
         .fake_row
           = f.radio_button :sending_priority, :on
-          = f.label :sending_priority
+          = f.label t('.send_leter')
           %br
-          = f.radio_button :sending_priority, :off
-          = f.label :sending_priority
+          = f.radio_button :sending_priority, :off, checked: :checked
+          = f.label t('.send_now')
         .fake_row
-          = f.label :send_an
-          = f.text_field :send_an, :class => 'datepicker date_of_birth date'
+          = f.label t('.date')
+          = f.text_field :sending_at, :class => 'datepicker date_of_birth date'
           
-          = f.label :send_an
-          = f.select :send_an, 13.times.map{|a| a + 9}
-          = f.select :send_an, 12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}
+          = f.label t('.time')
+          = f.select :sending_at, 13.times.map{|a| a + 9}
+          = f.select :sending_at, 12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}

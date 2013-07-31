@@ -50,9 +50,10 @@ describe ClaimsController do
 
   describe 'POST create' do
     def do_claim
-      post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14, 
+      post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14,
         office_id: @office.id, applicant_attributes: @applicant.attributes.merge(address:  @applicant.address.joint_address),
-        operator_id: @operator.id, arrival_date: Time.zone.now + 14, operator_price_currency: "rur", tour_price_currency: "rur" }
+        operator_id: @operator.id, arrival_date: Time.zone.now + 14, operator_price_currency: "rur", tour_price_currency: "rur",
+        flights_attributes: [{},{}] }
     end
 
     it 'should redirect to claim edit' do
@@ -62,6 +63,10 @@ describe ClaimsController do
 
     it 'should change claim count up by 1' do
       expect { do_claim }.to change{ Claim.count }.by(1)
+    end
+
+    it 'should change flight count up by 2' do
+      expect { do_claim }.to change{ Flight.count }.by(2)
     end
   end
 
@@ -74,7 +79,7 @@ describe ClaimsController do
 
   # describe 'PUT update' do
   #   reservation_date = Time.zone.now + 20
-  #   before{ put :update, id: @claim.id, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: reservation_date, 
+  #   before{ put :update, id: @claim.id, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: reservation_date,
   #     office_id: @office.id, applicant: @applicant.attributes, operator_id: @operator.id, arrival_date: reservation_date, operator_price_currency: "rur", tour_price_currency: "rur" } }
   #   # it 'should change claim name' do
   #   #   assigns[:claim].reservation_date.should == reservation_date

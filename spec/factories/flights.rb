@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
   factory :flight do
-    airline "MyString"
-    airport_from "MyString"
-    airport_to "MyString"
-    flight_number "MyString"
+    airline ""
+    airport_from ""
+    airport_to ""
+    flight_number ""
     depart "2013-07-26 17:40:23"
     arrive "2013-07-26 17:40:23"
   end

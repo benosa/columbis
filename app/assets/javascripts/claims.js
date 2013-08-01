@@ -995,3 +995,17 @@ $(function() {
     }
   });
 });
+
+//Tourist special_offer
+$(function(){
+  $('#special_offer_checkbox.active').bind('click', function() {
+    var classList = $(this).attr('class').split(/\s+/);
+    var data = $(this).attr("data");
+    if ($(this).hasClass('active')) {
+      if(!confirm(data)) {
+        $(this).toggleClass('active');
+        $('#' + $(this).attr('for')).attr('checked', $(this).hasClass('active')).trigger('change');
+      }
+    }
+  });
+});

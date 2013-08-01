@@ -141,6 +141,7 @@ class Claim < ActiveRecord::Base
     self.transaction do
       check_dropdowns(claim_params)
       check_payments
+      special_offer_set(claim_params)
 
       unless self.errors.any?
         remove_unused_payments
@@ -148,6 +149,14 @@ class Claim < ActiveRecord::Base
         self.save
       end
     end
+  end
+
+  def special_offer_get
+    applicant.special_offer
+  end
+
+  def special_offer_set(params)
+    applicant.special_offer = params.delete(:special_offer_get)
   end
 
   def applicant_attributes=(attributes)

@@ -90,6 +90,7 @@ class ClaimsController < ApplicationController
   def edit
     @claim.applicant ||= Tourist.new
     check_payments
+    check_flights
   end
 
   def update
@@ -102,6 +103,7 @@ class ClaimsController < ApplicationController
       # @claim.applicant ||=
       #   (params[:claim][:applicant][:id].empty? ? Tourist.new(params[:claim][:applicant]) : Tourist.find(params[:claim][:applicant][:id]))
       check_payments
+      check_flights
       render :action => 'edit'
     end
   end
@@ -158,14 +160,9 @@ class ClaimsController < ApplicationController
     end
 
     def check_flights
-      step = 2
-      if @claim.flights.length == 1
-        step = 1
-      end
-      if @claim.flights.length >= 2
-        step = 0
-      end
-      step.times {|i| @claim.flights.build}
+      new_records = 2 - @claim.flights.length
+      Rails.logger.debug "new_records: #{new_records}"
+      new_records.times {|i| @claim.flights.build} if new_records > 0
     end
 
     def set_commit_type

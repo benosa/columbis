@@ -17,7 +17,7 @@ class Claim < ActiveRecord::Base
                   :primary_currency_price, :course_eur, :course_usd, :calculation
 
   # flight block
-  attr_accessible :airport_back, :depart_to, :depart_back
+  attr_accessible :airport_back, :depart_to, :depart_back, :airline
 
   # marchroute block
   attr_accessible :meals, :placement, :nights, :hotel, :arrival_date, :departure_date,
@@ -27,7 +27,6 @@ class Claim < ActiveRecord::Base
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
                   :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id
-
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
@@ -65,7 +64,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :payments_in, :reject_if => :empty_payment_hash?, :allow_destroy => true
   accepts_nested_attributes_for :payments_out, :reject_if => :empty_payment_hash?, :allow_destroy => true
 
-  accepts_nested_attributes_for :flights, :allow_destroy => true
+  accepts_nested_attributes_for :flights, :reject_if => :all_blank, :allow_destroy => true
 
   validates_presence_of :user_id, :check_date, :arrival_date
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
@@ -319,11 +318,10 @@ class Claim < ActiveRecord::Base
   end
 
   def set_flights_block
-    self.airport_back = self.flights.last.airport_to
-    self.depart_to = self.flights.first.depart
-    self.depart_back = self.flights.last.depart
-    airline = self.flights.first.airline
-    self.flights.each do |flight|
+    self.depart_to = flights.first.try(:depart)
+    self.depart_back = flights.last.try(:depart)
+    self.airport_back = flights.last.try(:airport_to)
+    flights.each do |flight|
       flight.airline = airline
     end
   end

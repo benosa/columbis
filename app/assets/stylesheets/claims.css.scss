@@ -407,6 +407,24 @@ option {
     .primary_currency_price_view { float: none; }
     .primary_currency_price_text { margin: 3px 17px 0 0; }
   }
+
+  #flights {
+    .fake_table { width: 781px; }
+    .fake_table span.from{width: 175px; padding-left: 20px;}
+    .fake_table span.depart{width: 110px;}
+    .fake_table span.flight{width: 60px;}
+    .fake_table span.to{width: 175px;}
+    .fake_table span.arrive{width: 143px;}
+    .two_line input.from{width: 170px;}
+    .two_line input.depart{width: 100px;}
+    .two_line input.flight{width: 50px;}
+    .two_line input.to{width: 170px;}
+    .two_line input.arrive{width: 100px;}
+    .add_btn { 
+      height: 55px;
+      .add { margin-top: 13px; }
+    }
+  }
 }
 
 /* low_resolution */
@@ -492,6 +510,7 @@ option {
     }
 
     #flights {
+      .fake_table { width: 958px; }
       .fake_table span.from{width: 255px;}
       .fake_table span.depart{width: 110px;}
       .fake_table span.flight{width: 60px;}
@@ -502,7 +521,6 @@ option {
       .two_line input.flight{width: 50px;}
       .two_line input.to{width: 260px;}
       .two_line input.arrive{width: 100px;}
-      .fake_table { width: 958px; }
     }
 
     .name { width: 500px; }
@@ -616,7 +634,7 @@ option {
     #tourists .fake_table { width: 781px;
       .fio { width: 295px; }
     }
-    #flights .fake_table { width: 761px; }
+    
     .name { width: 262px !important; }
     .expires_date { width: 115px; }
     .additional_fields .email_col { width: 195px; }

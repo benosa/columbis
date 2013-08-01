@@ -839,16 +839,18 @@ $(function(){
   });
   // delete flight function
   var del_flight = function(fields){
-    var $fields = $(fields);
-    var id = $fields.attr('id')
-    if (id == 'flight-0' || id == 'flight-1')
-      $fields.find('div.two_line').find(':input').val('');
-    else {
-      $fields.find('.datepicker').datepicker('destroy');
-      // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
-      $fields.find('._destroy').val('1');
-      $fields.addClass('destroyed').hide();
-    }
+    var $fields = $(fields),
+        $block = $fields.closest('.form_block');
+        
+    $fields.find('.datepicker').datepicker('destroy');
+    // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
+    $fields.find('._destroy').val('1');
+    $fields.addClass('destroyed').hide();
+
+    var count = $block.find('.fields:not(.destroyed)').length;
+    if (count < 2) {
+      add_flight($block);
+    }    
   };
   // click to delete flight
   $('#flights').on('click', 'a.delete', function(e) {
@@ -856,7 +858,10 @@ $(function(){
     var $t = $(this),
         $fields = $t.closest('.fields');
 
-    del_flight($fields);
+    var is_empty_fields = !$fields.find(':input[value!=""]').filter(':visible').length;
+    if (is_empty_fields || confirm($t.data('check'))) {
+      del_flight($fields);
+    }
   });
 
   // add paymnet

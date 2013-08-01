@@ -2,6 +2,13 @@
   .block_title
     %h2= t('.title')
   .form_block_content
+    .fake_table
+      %span.from= t('.from')
+      %span.depart= t('.depart')
+      %span.flight= t('.flight')
+      %span.to= t('.to')
+      %span.arrive= t('.arrive')
+
     - ind = 0
     = f.fields_for :flights, @claim.flights do |ff|
       .fake_row.flight.fields{ :id => "flight-#{ind}", :class => ff.object.try(:_destroy) && 'destroyed' }
@@ -15,3 +22,7 @@
     .fake_row.add_row
       .add_btn
         = link_to t('.add_another_flight'), '#', :class => 'add add_tourist', :id => 'add_flight'
+
+      .two_line.pull-right
+        %p= f.label :airline, t('.airline')
+        = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline')), :style => "width:170px;"

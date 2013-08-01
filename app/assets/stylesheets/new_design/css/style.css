@@ -766,29 +766,18 @@ input[type="checkbox"]{display: none;}
 		padding: 8px 10px 0 12px;
 		text-shadow: #fff 0px 1px 0px;
 	}
-	.fake_table span:first-child{background: #f4f4f4;}
-	.fake_table span em{
-		font-size: 11px;
-		line-height: 16px;
-	}
-	.fake_table span.fio{
-		padding-left: 20px;
-		width: 265px;
-	}
-	.fake_table span.dob{width: 92px;}
-	.fake_table span.passport{width: 145px;}
-  .fake_table span.expires{width: 110px;}
-  /*Flights*/
-  .fake_table span.from{width: 165px;}
-  .fake_table span.depart{width: 110px;}
-  .fake_table span.flight{width: 60px;}
-  .fake_table span.to{width: 175px;}
-  .fake_table span.arrive{width: 100px;}
-  .two_line input.from{width: 170px;}
-  .two_line input.depart{width: 100px;}
-  .two_line input.flight{width: 50px;}
-  .two_line input.to{width: 170px;}
-  .two_line input.arrive{width: 100px;}
+		.fake_table span:first-child{background: #f4f4f4;}
+		.fake_table span em{
+			font-size: 11px;
+			line-height: 16px;
+		}
+		.fake_table span.fio{
+			padding-left: 20px;
+			width: 265px;
+		}
+		.fake_table span.dob{width: 92px;}
+		.fake_table span.passport{width: 145px;}
+		.fake_table span.expires{width: 110px;}
 	.fake_row{
 		border-top: 1px #d5d5d5 solid;
 		border-radius: 0 0 4px 4px;

@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20130726134338) do
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.integer  "tour_duration"
+    t.string   "airline"
   end
 
   create_table "companies", :force => true do |t|

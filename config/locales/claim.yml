@@ -136,8 +136,7 @@ ru:
 
     flights:
       title: 'Авиаперелёты'
-      add_another_flight: 'Добавить'
-    flight:
+      add_another_flight: 'Добавить перелет'
       airline: 'Авиакомпания'
       from: 'Откуда'
       to: 'Куда'

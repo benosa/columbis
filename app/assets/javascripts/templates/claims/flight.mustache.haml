@@ -12,5 +12,5 @@
   .two_line
     = text_field_tag "#{name_prefix}[arrive]", '', :id => "#{id_prefix}_arrive", :class => 'datetimepicker arrive'
   = link_to '', '#', :class => 'delete', :title => I18n.t('cancel'), data: { check: I18n.t('are_you_sure') }
-  = hidden_field_tag "#{name_prefix}[_destroy]", false, :id => "#{id_prefix}__destroy", :class => '_destroy'
+  = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
   = hidden_field_tag "#{name_prefix}[id]", '', :id => "#{id_prefix}_id", :class => 'hidden_id'

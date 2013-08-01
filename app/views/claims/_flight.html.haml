@@ -1,16 +1,5 @@
-- ind ||= 1
 - flight = flight_form.object
 
-- if ind == 0
-  %p= flight_form.label :airline, t('.airline')
-  = flight_form.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline')), :style => "width:170px;"
-  .fake_table
-    %span.from= t('.from')
-    %span.depart= t('.depart')
-    %span.flight= t('.flight')
-    %span.to= t('.to')
-    %span.arrive= t('.arrive')
-  %br
 .two_line
   = flight_form.text_field :airport_from, :class => 'autocomplete standart_select from', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
 .two_line

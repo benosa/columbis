@@ -13,7 +13,6 @@ class ClaimFlightsToFligths < ActiveRecord::Migration
         :claim_id => claim.id).save
     end
 
-    remove_column :claims, :airline
     remove_column :claims, :airport_to
     remove_column :claims, :flight_to
     remove_column :claims, :flight_back
@@ -22,12 +21,13 @@ class ClaimFlightsToFligths < ActiveRecord::Migration
   end
 
   def down
-    add_column :claims, :airline, :string
     add_column :claims, :airport_to, :string
     add_column :claims, :flight_to, :string
     add_column :claims, :flight_back, :string
     add_column :claims, :arrive_to, :datetime
     add_column :claims, :arrive_back, :datetime
+
+    Claim.reset_column_information
 
     Claim.select([:id, :airline, :airport_to, :airport_back, :flight_to,
       :flight_back, :depart_to, :depart_back, :arrive_to, :arrive_back])
@@ -35,15 +35,19 @@ class ClaimFlightsToFligths < ActiveRecord::Migration
       flights = Flight.where(:claim_id => claim.id).order("depart ASC")
       to = flights.first
       back = flights.last
-      claim.update_column(:airline, to.airline)
-      claim.update_column(:airport_to, to.airport_to)
-      claim.update_column(:airport_back, back.airport_to)
-      claim.update_column(:flight_to, to.flight_number)
-      claim.update_column(:flight_back, back.flight_number)
-      claim.update_column(:depart_to, to.depart)
-      claim.update_column(:depart_back, back.depart)
-      claim.update_column(:arrive_to, to.arrive)
-      claim.update_column(:arrive_back, back.arrive)
+      if to
+        claim.update_column(:airline, to.airline)
+        claim.update_column(:airport_to, to.airport_to)
+        claim.update_column(:flight_to, to.flight_number)
+        claim.update_column(:depart_to, to.depart)
+        claim.update_column(:arrive_to, to.arrive)
+      end
+      if back
+        claim.update_column(:airport_back, back.airport_to)
+        claim.update_column(:flight_back, back.flight_number)      
+        claim.update_column(:depart_back, back.depart)      
+        claim.update_column(:arrive_back, back.arrive)
+      end
     end
   end
 end

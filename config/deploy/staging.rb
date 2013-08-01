@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-set :branch, "staging"
+set :branch, "master"
 
 set :application, "columbis-staging"
 set(:deploy_to) { "/opt/apps/#{application}" }

@@ -161,7 +161,6 @@ class ClaimsController < ApplicationController
 
     def check_flights
       new_records = 2 - @claim.flights.length
-      Rails.logger.debug "new_records: #{new_records}"
       new_records.times {|i| @claim.flights.build} if new_records > 0
     end
 

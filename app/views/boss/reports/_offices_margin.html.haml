@@ -16,7 +16,7 @@
           %th.number
             %span= t('report.n')
           %th= sort_link 'name', t(".name")
-          %th= sort_link 'total', I18n.t('report.total')
+          %th= sort_link 'total', I18n.t('report.total'), :desc
       %tbody
         - @total.each_with_index do |row, i|
           %tr

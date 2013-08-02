@@ -1,3 +1,4 @@
 .field_wrapper
+  - now_period = !params[:period].blank? ? params[:period] : 'year'
   = label_tag :period, t('.period')
-  = select_tag :period, options_for_select(period_options, 'year'), data: { param: 'period', default: 'year' }
+  = select_tag :period, options_for_select(period_options, now_period), data: { param: 'period', default: now_period }

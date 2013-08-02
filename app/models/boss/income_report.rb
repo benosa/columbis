@@ -146,19 +146,30 @@ module Boss
       end
 
       def months_serialize_data(data, categories)
-        [{
-          name: @end_date.year,
-          data: categories.map do |c|
-            elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
-          end
-        }, {
-          name: @end_date.year-1,
-          data: categories.map do |c|
-            elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == (@end_date.year - 1) }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
-          end
-        }]
+        name1 = @end_date.year-1
+        data1 = categories.map do |c|
+          elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == (@end_date.year - 1) }
+          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+        end
+        name2 = @end_date.year
+        data2 = categories.map do |c|
+          elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
+          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+        end
+        seria = []
+        if data1.any? {|elem| elem != 0}
+          seria.push( {
+            name: name1,
+            data: data1
+          })
+        end
+        if data2.any? {|elem| elem != 0}
+          seria.push( {
+            name: name2,
+            data: data2
+          })
+        end
+        seria
       end
 
       def weeks_serialize_data(data, categories)

@@ -9,6 +9,8 @@ module Boss
     attr_accessor :total_names
 
     def prepare(options = {})
+      self.sort_dir = "desc" if !(options[:sort_dir] || options[:dir] || self.sort_dir)
+      self.sort_col = "total" if !(options[:sort_col] || options[:col] || self.sort_col)
       @results[:total] = build_result(query: total_query, typecast: {total: :to_i}).sort!
       @total_names = get_total_names @results[:total].data
       super
@@ -77,7 +79,14 @@ module Boss
             stack: @end_date.year - 1
           }
         end
-        this_year + last_year
+        seria = []
+        if last_year.any? {|elem| elem[:data].any?{|e| e != 0} == true }
+          seria+=last_year
+        end
+        if this_year.any? {|elem| elem[:data].any?{|e| e != 0} == true }
+          seria+=this_year
+        end
+        seria
       end
 
       def weeks_serialize_data(data, categories)
@@ -113,46 +122,32 @@ module Boss
         settings[:yAxis].merge!(:stackLabels => {:enabled => true})
         settings[:tooltip].merge!(:shared => false)
         settings.merge!(
-          plotOptions: {
-            column: {
-              stacking: 'normal'
-            }
-          },
           legend: {
             enabled: true,
             symbolWidth: 10,
             margin: 35
           }
         )
+        settings
       end
 
       def months_settings(categories, series)
         settings = super
         settings[:yAxis].merge!(:stackLabels => {:enabled => true})
         settings[:tooltip].merge!(:shared => false)
-        settings.merge!(
-          plotOptions: {
-            column: {
-              stacking: 'normal'
-            }
-          }
-        )
+        settings
       end
 
       def weeks_settings(categories, series)
         settings = super
         settings[:yAxis].merge!(:stackLabels => {:enabled => true})
         settings.merge!(
-          plotOptions: {
-            column: {
-              stacking: 'normal'
-            }
-          },
           legend: {
             enabled: true,
             symbolWidth: 10
           }
         )
+        settings
       end
 
       def years_settings(categories, series)
@@ -160,16 +155,12 @@ module Boss
         settings[:yAxis].merge!(:stackLabels => {:enabled => true})
         settings[:tooltip].merge!(:shared => false)
         settings.merge!(
-          plotOptions: {
-            column: {
-              stacking: 'normal'
-            }
-          },
           legend: {
             enabled: true,
             symbolWidth: 10
           }
         )
+        settings
       end
 
       def get_total_names(data)

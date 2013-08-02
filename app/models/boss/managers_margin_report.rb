@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 module Boss
   class ManagersMarginReport < ManagersIncomeReport
-    include Boss::Margin
+    include Margin
   end
 end

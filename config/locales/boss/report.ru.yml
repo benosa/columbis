@@ -159,17 +159,21 @@ ru:
       offices_income:
         title: 'Выручка по офисам'
         name: 'Офисы'
+        extra: 'Подробнее по офису: '
       managers_income:
         title: 'Выручка по менеджерам'
         name: 'Менеджеры'
+        extra: 'Подробнее по менеджеру: '
       margin:
         title: 'Наценка'
       offices_margin:
         title: 'Наценка по офисам'
         name: 'Офисы'
+        extra: 'Подробнее по офису: '
       managers_margin:
         title: 'Наценка по менеджерам'
         name: 'Менеджеры'
+        extra: 'Подробнее по менеджеру: '
       normalcheck:
         title: "Средний чек"
       increaseclients:

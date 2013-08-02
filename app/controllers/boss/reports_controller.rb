@@ -46,7 +46,8 @@ module Boss
     def offices_income
       @report = OfficesIncomeReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
@@ -56,9 +57,11 @@ module Boss
     end
 
     def managers_income
+      @grouping = true
       @report = ManagersIncomeReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
@@ -81,7 +84,8 @@ module Boss
       @report = OfficesMarginReport.new(report_params.merge({
         period: params[:period],
         total_filter: params[:total_filter],
-        margin_type: params[:margin_types]
+        margin_type: params[:margin_types],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
@@ -95,7 +99,8 @@ module Boss
       @report = ManagersMarginReport.new(report_params.merge({
         period: params[:period],
         total_filter: params[:total_filter],
-        margin_type: params[:margin_types]
+        margin_type: params[:margin_types],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
@@ -206,6 +211,7 @@ module Boss
         filter.delete("margin_types")
         filter.delete("period")
         filter.delete("year")
+        filter.delete("extra")
       end
   end
 end

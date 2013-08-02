@@ -60,7 +60,6 @@ module Boss
           settings = super
           if margin_type == 'profit_in_percent' || margin_type == 'profit_in_percent_acc'
             settings[:yAxis].merge!(:stackLabels => {:enabled => false})
-            settings.merge!(:plotOptions => {:column => {:stacking => 'percent'}})
           end
           settings
         end
@@ -69,7 +68,6 @@ module Boss
           settings = super
           if margin_type == 'profit_in_percent' || margin_type == 'profit_in_percent_acc'
             settings[:yAxis].merge!(:stackLabels => {:enabled => false})
-            settings.merge!(:plotOptions => {:column => {:stacking => 'percent'}})
           end
           settings
         end
@@ -78,7 +76,6 @@ module Boss
           settings = super
           if margin_type == 'profit_in_percent' || margin_type == 'profit_in_percent_acc'
             settings[:yAxis].merge!(:stackLabels => {:enabled => false})
-            settings.merge!(:plotOptions => {:column => {:stacking => 'percent'}})
           end
           settings
         end
@@ -87,7 +84,6 @@ module Boss
           settings = super
           if margin_type == 'profit_in_percent' || margin_type == 'profit_in_percent_acc'
             settings[:yAxis].merge!(:stackLabels => {:enabled => false})
-            settings.merge!(:plotOptions => {:column => {:stacking => 'percent'}})
           end
           settings
         end

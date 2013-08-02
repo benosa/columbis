@@ -135,14 +135,14 @@ ru:
       email: 'Адрес эл. почты'
 
     flights:
-      flights: 'Вылеты'
+      title: 'Авиаперелёты'
+      add_another_flight: 'Добавить перелет'
       airline: 'Авиакомпания'
-      there: 'Туда (город прилета)'
-      back: 'Обратно (город прилета)'
-      airport: 'Аэропорт'
-      flight: 'Номер рейса'
+      from: 'Откуда'
+      to: 'Куда'
       depart: 'Время вылета'
       arrive: 'Время прибытия'
+      flight: '№ рейса'
 
     payments_in:
       payments_in: 'Оплата туристом'

@@ -817,6 +817,53 @@ $(function(){
     }
   });
 
+  //Flights
+  // add flight function
+  var add_flight = function(flight_block) {
+    var $block = $(flight_block),
+        num = $block.find('div.flight').length,
+        html;
+
+    html = JST['claims/flight'].render({num: num});
+
+    $block.find(' .add_row').before(html);
+
+    setDatetimepicker($block, true);
+    setAutocomplete($block, true);
+  }
+  // click to add flight
+  $('#flights').on('click', 'a.add', function(e) {
+    e.preventDefault();
+    var $t = $(this);
+    add_flight($t.closest('.form_block'));
+  });
+  // delete flight function
+  var del_flight = function(fields){
+    var $fields = $(fields),
+        $block = $fields.closest('.form_block');
+        
+    $fields.find('.datepicker').datepicker('destroy');
+    // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
+    $fields.find('._destroy').val('1');
+    $fields.addClass('destroyed').hide();
+
+    var count = $block.find('.fields:not(.destroyed)').length;
+    if (count < 2) {
+      add_flight($block);
+    }    
+  };
+  // click to delete flight
+  $('#flights').on('click', 'a.delete', function(e) {
+    e.preventDefault();
+    var $t = $(this),
+        $fields = $t.closest('.fields');
+
+    var is_empty_fields = !$fields.find(':input[value!=""]').filter(':visible').length;
+    if (is_empty_fields || confirm($t.data('check'))) {
+      del_flight($fields);
+    }
+  });
+
   // add paymnet
   var add_payment = function(payment_block) {
     var $block = $(payment_block),

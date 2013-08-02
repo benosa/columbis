@@ -12,6 +12,7 @@ FactoryGirl.define do
     arrival_date { 10.days.since }
     departure_date { 15.days.since }
 
+    airline 'test'
     tour_price_currency 'rur'
     visa_price_currency 'rur'
     insurance_price_currency 'rur'

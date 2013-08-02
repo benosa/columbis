@@ -6,8 +6,8 @@ describe ApplicationController do
 
   describe "time zone" do
 
-    it "Time.zone when user isn't login == UTC" do
-      Time.zone.name.should == "UTC"
+    it "Time.zone when user isn't login == Moscow" do
+      Time.zone.name.should == "Moscow"
     end
 
     it "Time.zone when user is login == Moscow" do

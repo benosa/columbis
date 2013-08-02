@@ -1,0 +1,16 @@
+- id_prefix = 'claim_flights_attributes_{{num}}'
+- name_prefix = 'claim[flights_attributes][{{num}}]'
+.fake_row.flight.fields{ :id => "flight-{{num}}", :class => 'new_record' }
+  .two_line
+    = text_field_tag "#{name_prefix}[airport_from]", '', :id => "#{id_prefix}_airport_from", :class => 'autocomplete standart_select from', data: { ac: { source: dropdown_autocomplete_claims_path('airport') } }
+  .two_line
+    = text_field_tag "#{name_prefix}[depart]", '', :id => "#{id_prefix}_depart", :class => 'datetimepicker depart'
+  .two_line
+    = text_field_tag "#{name_prefix}[flight_number]", '', :id => "#{id_prefix}_flight_number", :class => 'flight'
+  .two_line
+    = text_field_tag "#{name_prefix}[airport_to]", '', :id => "#{id_prefix}_airport_to", :class => 'autocomplete standart_select to', data: { ac: { source: dropdown_autocomplete_claims_path('airport') } }
+  .two_line
+    = text_field_tag "#{name_prefix}[arrive]", '', :id => "#{id_prefix}_arrive", :class => 'datetimepicker arrive'
+  = link_to '', '#', :class => 'delete', :title => I18n.t('cancel'), data: { check: I18n.t('are_you_sure') }
+  = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
+  = hidden_field_tag "#{name_prefix}[id]", '', :id => "#{id_prefix}_id", :class => 'hidden_id'

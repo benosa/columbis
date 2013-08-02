@@ -17,6 +17,7 @@ describe Claim do
     it { should have_many :tourist_claims }
     it { should have_many :payments_in }
     it { should have_many :payments_out }
+    it { should have_many :flights }
 
 
     it { should have_one :tourist_claim }

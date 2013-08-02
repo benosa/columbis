@@ -260,7 +260,7 @@ html, body {height: 100%;}
 		text-align: center;
 		text-shadow: #fff 0px 1px 0px;
 	}
-	.client.active{ 
+	.client.active{
 		background: url(/assets/new_design/images/client_right.png) right top no-repeat;
 		color: #fff;
 		display: inline-block;
@@ -558,10 +558,8 @@ input[type="checkbox"]{display: none;}
 	.name{width: 252px;}
 	.date{width: 82px;}
 	.number_password{width: 32px;}
-	.expires_date{width: 65px;}
 	.phone{width: 94px;}
 	.address{width: 346px;}
-	.time_departure{width: 162px;}
 	.sum{width: 205px;}
 	.debt{width: 122px;}
 	.website{width: 266px;}
@@ -908,7 +906,7 @@ input[type="checkbox"]{display: none;}
 	width: 100%;
 }
 	.panel_content{
-		padding: 10px 9px 0 23px; 
+		padding: 10px 9px 0 23px;
 		width: 1568px;
 	}
 		.panel_content a{
@@ -920,7 +918,7 @@ input[type="checkbox"]{display: none;}
 			line-height: 14px;
 		}
 			.back{
-				background: url(/assets/new_design/images/back.png) no-repeat;	
+				background: url(/assets/new_design/images/back.png) no-repeat;
 				float: left;
 				padding: 9px 0 0 27px;
 				text-shadow: #345a80 0px -1px 0px;
@@ -1031,7 +1029,7 @@ input[type="checkbox"]{display: none;}
 			font-weight: bold;
 			height: 25px;
 			text-align: center;
-			text-transform: uppercase; 
+			text-transform: uppercase;
 			vertical-align: middle;
 		}
 		.ui-datepicker-calendar td{

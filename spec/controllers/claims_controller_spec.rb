@@ -53,7 +53,7 @@ describe ClaimsController do
       post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14,
         office_id: @office.id, applicant_attributes: @applicant.attributes.merge(address:  @applicant.address.joint_address),
         operator_id: @operator.id, arrival_date: Time.zone.now + 14, operator_price_currency: "rur", tour_price_currency: "rur",
-        flights_attributes: [{},{}] }
+        flights_attributes: [attributes_for(:flight), attributes_for(:flight)] }
     end
 
     it 'should redirect to claim edit' do

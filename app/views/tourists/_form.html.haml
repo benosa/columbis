@@ -24,9 +24,12 @@
         = f.text_field :phone_number, :class => 'wide'
         %p= f.label :email
         = f.text_field :email, :class => 'wide'
-        %p
+        %p.one_row
           = f.check_box :potential, id: 'tourist_potential'
-          = f.label :potential, :class => 'checkbox right_checkbox', id: 'tourist_potential'
+          = f.label :potential, :class => 'checkbox left_checkbox', id: 'tourist_potential'
+        %p.one_row
+          = f.check_box :special_offer, id: 'tourist_special_offer'
+          = f.label :special_offer, t('.special_offer'), :class => 'checkbox left_checkbox', id: 'tourist_special_offer'
 
 %fieldset.form_column.form_column-small
   .form_block

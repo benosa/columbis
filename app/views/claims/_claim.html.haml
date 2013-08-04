@@ -75,6 +75,6 @@
   %td{ :title => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }
     = l( claim.check_date, :format => :default )
   %td.docs_note{ :title => claim.docs_note }
-    %span{ :class => !claim.docs_note.empty? && 'attention' }
+    %span{ :class => !claim.docs_note.try(:empty?) && 'attention' }
   %td
     = link_to '', edit_claim_path(claim), :class => 'edit_row'

@@ -10,7 +10,11 @@
       .two_line
         %p= f.label :tourist_stat, t('.tourist_stat')
         = f.select :tourist_stat, I18n.t("intervals.channels").map{|o| o[1]}
+      .two_line.special_offer
+        = f.label :special_offer, t('.special_offer'), :class => 'checkbox', :style => "padding-left:20px;", :id => "special_offer_checkbox", :data => t('.special_offer_warning', :value => claim.applicant.full_name)
+        = f.check_box :special_offer
     .fake_row
       .two_line
         %p= f.label :docs_note
         = f.text_area :docs_note, :rows => 6, :class => 'docs_note'
+      

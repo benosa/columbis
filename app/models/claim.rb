@@ -26,7 +26,7 @@ class Claim < ActiveRecord::Base
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
-                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id
+                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id, :special_offer
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
@@ -150,6 +150,15 @@ class Claim < ActiveRecord::Base
     end
   end
 
+  def special_offer
+    @special_offer ||= applicant.special_offer
+  end
+
+  def special_offer=(value)
+    @special_offer = value
+    applicant.special_offer = @special_offer if applicant
+  end
+
   def applicant_attributes=(attributes)
     unless empty_tourist_hash?(attributes)
       id = attributes.delete('id')
@@ -167,6 +176,7 @@ class Claim < ActiveRecord::Base
       applicant = Tourist.new
       applicant.company = company
     end
+    applicant.special_offer = special_offer if applicant
     applicant.save if applicant.new_record?
     self.applicant = applicant
   end

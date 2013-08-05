@@ -13,6 +13,8 @@
         = sort_link( :count, t('.count') )
       %th.status
         = sort_link( :status, t('.status') )
+      %th.actions
+        
 
     - for sms_sendings in @sms_sendings
       %tr{ :class => cycle('odd', 'even'), id: "tourist-#{sms_sendings.id}"}
@@ -28,6 +30,10 @@
           %p= sms_sendings.count
         %td
           %p= sms_sendings.status
+        %td{width: '120'}
+          = link_to "Show", sms_sendings
+          = link_to "Edit", edit_sms_sending_path(sms_sendings)
+          = link_to "Delete", sms_sendings, confirm: 'Are you sure?', method: :delete
 
   - unless @sms_sendings.nil?
     = render partial: 'shared/pagination', locals: { collection: @sms_sendings }

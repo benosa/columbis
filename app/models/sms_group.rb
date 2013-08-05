@@ -6,4 +6,5 @@ class SmsGroup < ActiveRecord::Base
   
   validates :name,  :presence => true
   
+  scope :current_company, lambda { |id| where(company_id: id) }
 end

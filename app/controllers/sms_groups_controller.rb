@@ -67,8 +67,8 @@ class SmsGroupsController < ApplicationController
   end
   
   def destroy
-    @cart_item = SmsGroup.find(params[:id])
-    @cart_item.destroy
+    @sms_group = SmsGroup.find(params[:id])
+    @sms_group.destroy
     
     redirect_to sms_groups_path
   end

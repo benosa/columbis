@@ -25,11 +25,13 @@ module Boss
     end
 
     def prepare(options = {})
+      self.sort_dir = "desc" if !(options[:sort_dir] || options[:dir] || self.sort_dir)
+      self.sort_col = "amount" if !(options[:sort_col] || options[:col] || self.sort_col)
       @results[:count]  = build_result(query: count_query,  typecast: {count: :to_i})
       @results[:amount] = build_result(query: amount_query,  typecast: {amount: :to_i})
       payers            = build_result(query: payer_query,  typecast: {amount: :to_i}).sort!
 
-      @results[:count].data.each{ |d| d['name'] = I18n.t(".clientsbase_report.payer_id", value: to_procent(d['name'])) }
+      @results[:count].data.each{ |d| d['name'] = I18n.t(".clientsbase_report.count", value: to_procent(d['name'])) }
       @results[:amount].data.each{ |d| d['name'] = I18n.t(".clientsbase_report.amount", value: to_procent(d['name'])) }
 
       @results[:amount80] = []
@@ -58,12 +60,12 @@ module Boss
     end
 
     def bar_settings(factor, data)
+      sum = data.inject(0) {|sum, x| sum.to_f + x[factor.to_s].to_f }
+      ytitle = '%'
       if factor == :amount
-        title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
-        ytitle = I18n.t('rur')
+        title = I18n.t('.clientsbase_report.amount_percent')
       elsif factor == :count
-        title = I18n.t('report.tourist_quantity')
-        ytitle = I18n.t('report.pcs')
+        title = I18n.t('.clientsbase_report.count_percent')
       end
 
       settings = {
@@ -78,28 +80,20 @@ module Boss
             text: ytitle
           }
         },
-        series: [{
-          name: title,
-          data: data.map{ |o| o[factor.to_s] }
-        }]
-      }.to_json
-    end
-
-    def pie_settings(factor, data)
-      if factor == :amount
-        title = "#{I18n.t('report.amount')}, #{I18n.t('rur')}"
-      elsif factor == :count
-        title = I18n.t('report.tourist_quantity')
-      end
-
-      settings = {
-        title: {
-          text: title
+        plotOptions: {
+          column: {
+            dataLabels: {
+              enabled: true
+            }
+          }
+        },
+        tooltip: {
+          valueSuffix: ' %',
+          formatter: ""
         },
         series: [{
-          type: 'pie',
           name: title,
-          data: data.map{ |o| [o['name'], o[factor.to_s]] }
+          data: data.map{ |o| (o[factor.to_s].to_f * 100 / sum).round(2) }
         }]
       }.to_json
     end
@@ -160,7 +154,7 @@ module Boss
           .order("name")
           .as('payers')
 
-        p = tourists.project(tourists[:last_name], tourists[:first_name], tourists[:middle_name],
+        tourists.project(tourists[:last_name], tourists[:first_name], tourists[:middle_name],
             payers[:amount], payers[:name])
           .join(payers).on(payers[:payer_id].eq(tourists[:id]))
       end

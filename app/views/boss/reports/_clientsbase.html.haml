@@ -1,26 +1,22 @@
 .current_container
   .charts
     .chart-left
-      - unless params[:show_items] == '0'
-        - unless params[:show_bars] == '0'
-          #count_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:count, @count) } }
-        - unless params[:show_pies] == '0'
-          #count_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:count, @count) } }
+      - unless params[:show_bars] == '0'
+        #count_bar.chart{ data: { type: 'standart_column', settings: @report.bar_settings(:count, @count) } }
     .chart-right
-      - unless params[:show_amount] == '0'
-        - unless params[:show_bars] == '0'
-          #amount_bar.chart{ data: { type: 'bar', settings: @report.bar_settings(:amount, @amount) } }
-        - unless params[:show_pies] == '0'
-          #amount_pie.chart{ data: { type: 'pie', settings: @report.pie_settings(:amount, @amount) } }
-
-  - t('.aboutABC').each do |stroke|
-    %p= stroke
+      - unless params[:show_bars] == '0'
+        #amount_bar.chart{ data: { type: 'standart_column', settings: @report.bar_settings(:amount, @amount) } }
+  .alert.alert-info{:style=>"clear:both"}
+    %button.close{"data-dismiss" => "alert", "type" => "button"}
+      ×
+    - t('.aboutABC').each do |stroke|
+      %p= stroke
 
   %table.totals.reservations.tour_operators
     %thead
       %tr
         %th= sort_link 'last_name', t(".tourist")
-        %th= sort_link 'amount', t('.amount')
+        %th= sort_link 'amount', t('.amount'), :desc
     %tbody
       %tr
         %td{:colspan => 2}

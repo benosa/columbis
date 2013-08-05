@@ -76,6 +76,8 @@ module Boss
         margin_type: params[:margin_types]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @margin_type = @report.margin_type
       render partial: 'margin' if request.xhr?
     end
@@ -88,6 +90,8 @@ module Boss
         extra: params[:extra]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @total = @report.total
       @total_names = current_company.offices
         .map {|office| { :id => office.id.to_s, :name => office.name } }
@@ -103,6 +107,8 @@ module Boss
         extra: params[:extra]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
         .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }

@@ -176,7 +176,7 @@ class Claim < ActiveRecord::Base
       applicant = Tourist.new
       applicant.company = company
     end
-    applicant.special_offer = special_offer if applicant
+    applicant.special_offer = @special_offer if applicant && !@special_offer.nil?
     applicant.save if applicant.new_record?
     self.applicant = applicant
   end

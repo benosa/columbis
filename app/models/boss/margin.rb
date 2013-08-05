@@ -109,7 +109,7 @@ module Boss
         def days_serialize_data_with_percent(data, categories)
           seria = days_serialize_data(data.select{|e| !e[:percent] }, categories)
           seria.push({
-            name: I18n.t('income_report.sum'),
+            name: I18n.t('income_report.percent'),
             data: categories.map do |c|
               elem = data.select{|e| e["percent"] }.find_all { |d| "#{d['day']}.#{d['month']}.#{d['year']}".to_datetime == c }
               elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
@@ -126,7 +126,7 @@ module Boss
         def months_serialize_data_with_percent(data, categories)
           seria = months_serialize_data(data.select{|e| !e[:percent] }, categories)
           seria.push({
-            name: I18n.t('income_report.sum'),
+            name: I18n.t('income_report.percent'),
             data: categories.map do |c|
               elem = data.select{|e| e["percent"] }.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
               elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
@@ -143,7 +143,7 @@ module Boss
         def weeks_serialize_data_with_percent(data, categories)
           seria = weeks_serialize_data(data.select{|e| !e[:percent] }, categories)
           seria.push({
-            name: I18n.t('income_report.sum'),
+            name: I18n.t('income_report.percent'),
             data: categories.map do |c|
               elem = data.select{|e| e["percent"] }.find_all { |d| ("1.1.#{d['year']}".to_datetime + (d['week'].to_i*7).days - 4.days) == c }
               elem.length==0 ? [c.to_i * 1000, 0] : [c.to_i * 1000, elem.first['amount'].to_f.round(2)]
@@ -160,7 +160,7 @@ module Boss
         def years_serialize_data_with_percent(data, categories)
           seria = years_serialize_data(data.select{|e| !e[:percent] }, categories)
           seria.push({
-            name: I18n.t('income_report.sum'),
+            name: I18n.t('income_report.percent'),
             data: categories.map do |c|
               elem = data.select{|e| e["percent"] }.find_all { |d| d['year'].to_i == c }
               elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
@@ -178,11 +178,11 @@ module Boss
           settings = days_settings(categories, series)
           settings[:yAxis] = [{
             title: {
-              text: "Text1"
+              text: I18n.t('income_report.yaxis_amount')
             }
           }, {
             title: {
-              text: "Text2"
+              text: "%"
             },
             opposite: true,
             min: 0,
@@ -195,11 +195,11 @@ module Boss
           settings = months_settings(categories, series)
           settings[:yAxis] = [{
             title: {
-              text: "Text1"
+              text: I18n.t('income_report.yaxis_amount')
             }
           }, {
             title: {
-              text: "Text2"
+              text: "%"
             },
             opposite: true,
             min: 0,
@@ -212,11 +212,11 @@ module Boss
           settings = weeks_settings(categories, series)
           settings[:yAxis] = [{
             title: {
-              text: "Text1"
+              text: I18n.t('income_report.yaxis_amount')
             }
           }, {
             title: {
-              text: "Text2"
+              text: "%"
             },
             opposite: true,
             min: 0,
@@ -229,11 +229,11 @@ module Boss
           settings = years_settings(categories, series)
           settings[:yAxis] = [{
             title: {
-              text: "Text1"
+              text: I18n.t('income_report.yaxis_amount')
             }
           }, {
             title: {
-              text: "Text2"
+              text: "%"
             },
             opposite: true,
             min: 0,

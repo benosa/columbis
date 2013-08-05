@@ -46,12 +46,13 @@ module Boss
 
         def months_serialize_data_with_extra(data, categories)
           seria = []
+          group_id = !extra.blank? ? extra : data.first['id']
           this_year = categories.map do |c|
-            elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == extra }
+            elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id }
             elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
           end
           last_year = categories.map do |c|
-            elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == extra }
+            elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == group_id }
             elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
           end
           if last_year.any? {|elem| elem != 0 }
@@ -116,7 +117,6 @@ module Boss
         def days_settings(categories, series)
           settings = super
           settings[:yAxis].merge!(:stackLabels => {:enabled => true})
-          settings[:tooltip].merge!(:shared => false)
           settings.merge!(
             legend: {
               enabled: true,
@@ -130,7 +130,6 @@ module Boss
         def months_settings(categories, series)
           settings = super
           settings[:yAxis].merge!(:stackLabels => {:enabled => true})
-          settings[:tooltip].merge!(:shared => false)
           settings
         end
 
@@ -149,7 +148,6 @@ module Boss
         def years_settings(categories, series)
           settings = super
           settings[:yAxis].merge!(:stackLabels => {:enabled => true})
-          settings[:tooltip].merge!(:shared => false)
           settings.merge!(
             legend: {
               enabled: true,

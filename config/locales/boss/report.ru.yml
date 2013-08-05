@@ -56,12 +56,8 @@ ru:
     count_title: "Количество новых туристов за каждый месяц"
 
   clientsbase_report:
-    amount_title: 'Сумма'
-    count_title: 'Количество туристов'
     amount: '%{value} клиентов'
     count: '%{value} выручки'
-    amount_percent: 'Процент от общей суммы'
-    count_percent: 'Процент от количества туристов'
 
   intervals:
     names:
@@ -79,12 +75,9 @@ ru:
       default:  "Прочее"
 
   income_report:
-    title_days: "по дням"
-    title_months: "по месяцам за этот и прошлый год"
-    title_weeks: "по неделям"
-    title_years: "по годам"
     yaxis_amount: "руб."
     sum: "Сумма"
+    percent: 'Средний процент'
 
   boss:
     reports:

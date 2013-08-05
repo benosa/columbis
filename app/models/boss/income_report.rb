@@ -194,8 +194,11 @@ module Boss
 
       def days_settings(categories, series)
         {
+          chart: {
+                zoomType: 'x'
+          },
           title: {
-            text: I18n.t('income_report.title_days')
+            text: I18n.t('income_report.sum')
           },
           xAxis: {
             categories: categories,
@@ -220,8 +223,11 @@ module Boss
 
       def months_settings(categories, series)
         {
+          chart: {
+                zoomType: 'x'
+          },
           title: {
-            text: I18n.t('income_report.title_months')
+            text: I18n.t('income_report.sum')
           },
           xAxis: {
             categories: categories,
@@ -249,8 +255,11 @@ module Boss
 
       def weeks_settings(categories, series)
         {
+          chart: {
+                zoomType: 'x'
+          },
           title: {
-            text: I18n.t('income_report.title_weeks')
+            text: I18n.t('income_report.sum')
           },
           xAxis: {
             type: 'datetime'
@@ -275,7 +284,7 @@ module Boss
       def years_settings(categories, series)
         {
           title: {
-            text: I18n.t('income_report.title_years')
+            text: I18n.t('income_report.sum')
           },
           xAxis: {
             categories: categories,

@@ -6,9 +6,10 @@
         #percent_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings(@percent.data) } }
       - when 'month'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@amount.data) } }
-        %p
-          - now_extra = params[:extra]
-          = t('.extra')
+        #percent_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@percent.data) } }
+        %div{:style => "display: table-cell; vertical-align: middle; clear:both;"}
+          - now_extra = !params[:extra].blank? ? params[:extra] : @total_names.first[:id]
+          %label{:style => "vertical-align: middle;"}= t('.extra')
           = select_tag :extra, options_for_select(@total_names.map{|e| [e[:name], e[:id]]}, now_extra), data: { param: 'extra', :default => now_extra }
         %br
         #amount_area_group.chart{ data: { type: 'standart_column', settings: @report.months_column_settings_with_extra(@percent_data) } }

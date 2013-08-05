@@ -4,16 +4,14 @@
       %tr
         %th
           &nbsp;
-        %th.send_an
-          = sort_link( :phone_number, t('.phone_number'), :default)
-        %th.signature
-          = sort_link( :first_name, t('.first_name') )
-        %th.contact_group
-          = sort_link( :last_name, t('.last_name') )
-        %th.contact_group
-          = sort_link( :middle_name, t('.middle_name') )
-        %th.content
-          = sort_link( :date_of_birth, t('.date_of_birth') )
+        %th.phone_number
+          = sort_link(:phone_number, t('.phone_number'), :default)
+        %th.full_name
+          = sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')))
+        %th.date_of_birth
+          = sort_link(:date_of_birth, t('.date_of_birth'))
+        %th.actions
+          = t('.actions')
 
       - for client in @clients
         %tr{ :class => cycle('odd', 'even'), id: "tourist-#{client.id}"}
@@ -23,15 +21,13 @@
           %td
             = client.phone_number
           %td
-            = client.first_name
-          %td
-            = client.last_name
-          %td
-            = client.middle_name
+            = client.name
           %td
             = client.date_of_birth
+          %td{:style => "white-space: nowrap", width: '100'}
+            = link_to '', edit_tourist_path(client), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{client.id}"
+            / # = link_to '', sms_touristgroup_path(client), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', id: "delete_tourist_#{client.id}", :title => t('delete')
     .bath_actions
-      / = select_tag 'selected_group_name', options_from_collection_for_select(@sms_groups, "id", "name"), prompt: "Select group name..."
       = select_tag 'selected_group_name', options_from_collection_for_select(@sms_groups, "id", "name")
       or
       = text_field_tag 'new_group_name', nil, placeholder: 'Enter group name...'

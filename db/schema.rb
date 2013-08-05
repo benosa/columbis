@@ -329,17 +329,17 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
 
   create_table "sms_sendings", :force => true do |t|
     t.integer  "company_id"
-    t.datetime "send_an"
+    t.datetime "sending_at"
     t.string   "signature"
-    t.integer  "contact_group_id"
+    t.integer  "sms_group_id"
     t.string   "content"
     t.integer  "count"
-    t.integer  "status_id"
     t.boolean  "sending_priority"
     t.integer  "user_id"
     t.integer  "delivered_count"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.boolean  "status"
   end
 
   create_table "sms_touristgroups", :force => true do |t|

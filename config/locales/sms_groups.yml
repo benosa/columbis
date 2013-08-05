@@ -22,8 +22,10 @@ ru:
       first_name: 'Имя'
       last_name: 'Фамилия'
       middle_name: 'Отчество'
+      full_name: 'ФИО'
       date_of_birth: 'д/р'
       add: 'Добавить'
+      actions: 'Действия'
     
     sidebar:
       add: 'Добавить'

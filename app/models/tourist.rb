@@ -43,6 +43,8 @@ class Tourist < ActiveRecord::Base
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :passport_series
     has :passport_number
+    # has :phone_number
+    has "CRC32(tourists.phone_number)", as: :phone_number_crc32, :type => :integer
     has :passport_valid_until, :date_of_birth, :type => :datetime
     has :potential, :type => :boolean
     has :company_id

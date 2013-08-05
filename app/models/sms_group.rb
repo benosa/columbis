@@ -5,4 +5,6 @@ class SmsGroup < ActiveRecord::Base
   attr_accessible :contact_count, :name, :company_id
   
   validates :name,  :presence => true
+  
+  scope :current_company, lambda { |id| where(company_id: id) }
 end

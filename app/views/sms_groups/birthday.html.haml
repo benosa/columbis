@@ -1,13 +1,11 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel' }
 
-- title t('.sms_contacts')
+- title t('.sms_groups')
 
 = render 'navigation'
-    
+
 - content_for :top do
-  .actions
-    = link_to t('.add_sms_sending'), new_sms_sending_path, :class => 'button green add'
   .filter
     %strong
       = sms_balance

@@ -20,10 +20,8 @@ ru:
     index:
       sms_sendings: 'SMS-рассылка'
       add_sms_sending: 'Создать рассылку'
-    
-    new:
-      sms_sendings: 'SMS-рассылка'
-      new_sms_sendings: 'Создать рассылку'
+
+    form:
       title_1: 'Получатели и текст рассылки'
       title_2: 'Время отправки'
       sending_at: 'Дата'
@@ -31,7 +29,15 @@ ru:
       send_now: Отправить сейчас
       date: 'Дата'
       time: 'Время'
-    
+      
+    edit:
+      sms_sendings: 'SMS-рассылка'
+      new_sms_sendings: 'Создать рассылку'
+      
+    new:
+      sms_sendings: 'SMS-рассылка'
+      new_sms_sendings: 'Создать рассылку'
+
     navigation:
       sms_sendings: 'SMS-рассылка'
       contacts_and_groups: 'Контакты и группы'
@@ -39,7 +45,7 @@ ru:
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
-    
+
     list:
       sending_at: 'Дата'
       signature: 'Подпись'

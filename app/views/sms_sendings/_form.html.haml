@@ -35,10 +35,10 @@
           %br
           = f.radio_button :sending_priority, :off, checked: :checked
           = f.label t('.send_now')
-        / .fake_row
-        /   = f.label t('.date')
-        /   = f.text_field :sending_at_date, :class => 'datepicker date_of_birth date'
-        /   
-        /   = f.label t('.time')
-        /   = f.select :sending_at_time_hour, 13.times.map{|a| a + 9}
-        /   = f.select :sending_at_time_minute, 12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}
+        .fake_row
+          = f.label t('.date')
+          = text_field_tag :sending_at_date, nil, class: 'datepicker date_of_birth date'
+
+          = f.label t('.time')
+          = select_tag :sending_at_time_hour, options_for_select(13.times.map{|a| a + 9})
+          = select_tag :sending_at_time_minute, options_for_select(12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b})

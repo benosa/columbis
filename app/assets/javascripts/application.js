@@ -25,3 +25,4 @@
 //= require offline
 //= require boss
 //= require rmenu
+//= require textarea_count.plugin

@@ -7,34 +7,4 @@ class SmsSending < ActiveRecord::Base
                       length: { maximum: 165 }
                       
   scope :current_company, lambda { |id| where(company_id: id) }
-  
-  # before_save :sending_time
-  # 
-  # def sending_at_date
-  #   
-  # end
-  # 
-  # def sending_at_time_hour
-  #   
-  # end
-  # 
-  # def sending_at_time_minute
-  #   
-  # end
-  # 
-  # def sending_at_date=(date)
-  #   
-  # end
-  # 
-  # def sending_at_time_hour=(hour)
-  #   
-  # end
-  # 
-  # def sending_at_time_minute=(minute)
-  #   
-  # end
-  # 
-  # def sending_time
-  #   self.sending_at = "#{self.sending_at_date} #{self.sending_at_time_hour}:#{self.sending_at_time_minute}"
-  # end
 end

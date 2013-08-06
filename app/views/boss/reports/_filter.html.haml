@@ -3,7 +3,7 @@
   - unless local_assigns[:period_selects] === false
     .field_wrapper
       = label_tag :period, t('.period')
-      = select_tag :period, options_for_select(period_options, 'month'), class: 'period', data: { param: 'period', default: 'month' }
+      = select_tag :period, options_for_select(period_options, 'year'), class: 'period', data: { param: 'period', filter: 1, default: 'year' }
     .field_wrapper
       = label_tag :start_date, t('.start_date')
       = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: l(@report.start_date, format: :long) }

@@ -56,8 +56,12 @@ ru:
     count_title: "Количество новых туристов за каждый месяц"
 
   clientsbase_report:
+    amount_title: 'Сумма'
+    count_title: 'Количество туристов'
     amount: '%{value} клиентов'
     count: '%{value} выручки'
+    amount_percent: 'Процент от общей суммы'
+    count_percent: 'Процент от количества туристов'
 
   intervals:
     names:

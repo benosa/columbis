@@ -217,7 +217,6 @@ module Boss
         filter.delete("margin_types")
         filter.delete("period")
         filter.delete("year")
-        filter.delete("extra")
       end
   end
 end

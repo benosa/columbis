@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 module Boss
-  class OfficesIncomeReport < ManagersIncomeReport
+  class OfficesIncomeReport < IncomeReport
+    include IncomeGroup
+
     arel_tables :offices
 
     protected

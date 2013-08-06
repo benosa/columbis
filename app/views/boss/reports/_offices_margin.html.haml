@@ -3,12 +3,22 @@
     - case params[:period]
       - when 'day'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings(@amount.data) } }
+        #percent_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings(@percent.data) } }
       - when 'month'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@amount.data) } }
+        #percent_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@percent.data) } }
+        %div{:style => "display: table-cell; vertical-align: middle; clear:both;"}
+          - now_extra = params[:extra] ? params[:extra] : (@total_names ? @total_names.first[:id] : nil)
+          %label{:style => "vertical-align: middle;"}= t('.extra')
+          = select_tag :extra, options_for_select(@total_names.map{|e| [e[:name], e[:id]]}, now_extra), data: { param: 'extra', filter: 1, :default => now_extra }
+        %br
+        #amount_area_group.chart{ data: { type: 'standart_column', settings: @report.months_column_settings_with_extra(@percent_data) } }
       - when 'week'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@amount.data) } }
+        #percent_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@percent.data) } }
       - else
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@amount.data) } }
+        #percent_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@percent.data) } }
   .totals
     %table.reservations.tour_operators
       %thead
@@ -16,7 +26,7 @@
           %th.number
             %span= t('report.n')
           %th= sort_link 'name', t(".name")
-          %th= sort_link 'total', I18n.t('report.total')
+          %th= sort_link 'total', I18n.t('report.total'), :desc
       %tbody
         - @total.each_with_index do |row, i|
           %tr

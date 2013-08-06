@@ -1,4 +1,4 @@
 = render partial: 'income_other_menu'
 .field_wrapper
   = label_tag :margin_types, t('.margin_type')
-  = select_tag :margin_types, options_for_select(margin_options, 'profit_acc'), data: { param: 'margin_types', default: 'profit_acc' }
+  = select_tag :margin_types, options_for_select(margin_options, 'profit_acc'), data: { param: 'margin_types', filter: 1, default: 'profit_acc' }

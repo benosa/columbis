@@ -25,6 +25,7 @@ module Boss
     def tourprice
       @report = TourpriceReport.new(report_params).prepare
       @count  = @report.count
+      render partial: 'tourprice' if request.xhr?
     end
 
     def repurchase
@@ -33,33 +34,40 @@ module Boss
         .prepare({:dir => params[:dir]})
       @count  = @report.count
       @total  = @report.total
+      render partial: 'repurchase' if request.xhr?
     end
 
     def income
       @report = IncomeReport.new(report_params.merge(period: params[:period])).prepare
       @amount = @report.amount
+      render partial: 'income' if request.xhr?
     end
 
     def offices_income
       @report = OfficesIncomeReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.offices
         .map {|office| { :id => office.id.to_s, :name => office.name } }
+      render partial: 'offices_income' if request.xhr?
     end
 
     def managers_income
+      @grouping = true
       @report = ManagersIncomeReport.new(report_params.merge({
         period: params[:period],
-        total_filter: params[:total_filter]
+        total_filter: params[:total_filter],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
         .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
+      render partial: 'managers_income' if request.xhr?
     end
 
     def margin
@@ -68,43 +76,56 @@ module Boss
         margin_type: params[:margin_types]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @margin_type = @report.margin_type
+      render partial: 'margin' if request.xhr?
     end
 
     def offices_margin
       @report = OfficesMarginReport.new(report_params.merge({
         period: params[:period],
         total_filter: params[:total_filter],
-        margin_type: params[:margin_types]
+        margin_type: params[:margin_types],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @total = @report.total
       @total_names = current_company.offices
         .map {|office| { :id => office.id.to_s, :name => office.name } }
       @margin_type = @report.margin_type
+      render partial: 'offices_margin' if request.xhr?
     end
 
     def managers_margin
       @report = ManagersMarginReport.new(report_params.merge({
         period: params[:period],
         total_filter: params[:total_filter],
-        margin_type: params[:margin_types]
+        margin_type: params[:margin_types],
+        extra: params[:extra]
       })).prepare
       @amount = @report.amount
+      @percent = @report.percent
+      @percent_data = @report.data
       @total = @report.total
       @total_names = current_company.users.where(role: User::ROLES - ['admin', 'accountant'])
         .map {|user| { :id => user.id.to_s, :name => user.name_for_list } }
       @margin_type = @report.margin_type
+      render partial: 'managers_margin' if request.xhr?
     end
 
     def tourduration
       @report = TourDurationReport.new(report_params).prepare
       @count  = @report.count
+      render partial: 'tourduration' if request.xhr?
     end
 
     def hotelstars
       @report = HotelStarsReport.new(report_params).prepare
       @count  = @report.count
+      render partial: 'hotelstars' if request.xhr?
     end
 
     def clientsbase
@@ -114,27 +135,32 @@ module Boss
       @amount80 = @report.amount80 || []
       @amount15 = @report.amount15 || []
       @amount5 = @report.amount5 || []
+      render partial: 'clientsbase' if request.xhr?
     end
 
     def normalcheck
       @report = NormalCheckReport.new(report_params.merge(period: params[:period])).prepare
       @amount  = @report.amount
+      render partial: 'normalcheck' if request.xhr?
     end
 
     def increaseclients
       @report = IncreaseClientsReport.new(report_params.merge(year: params[:year])).prepare
       @count  = @report.count
+      render partial: 'increaseclients' if request.xhr?
     end
 
     def promotionchannel
       @report = PromotionChannelReport.new(report_params).prepare
       @amount = @report.amount
       @count  = @report.count
+      render partial: 'promotionchannel' if request.xhr?
     end
 
     def salesfunnel
       @report = SalesFunnelReport.new(report_params).prepare
       @count  = @report.count
+      render partial: 'salesfunnel' if request.xhr?
     end
 
     private
@@ -160,7 +186,8 @@ module Boss
         params_key << params[:group] if params[:group]
         filter_key = "reports-#{params_key.join('-')}-last-filter".to_sym
         if params[:filter_reset]
-          session[filter_key] = nil
+          clear_session_filter(session[filter_key])
+          params.merge!(session[filter_key])
         elsif request.xhr?
           filter_params = params.select do |k,v|
             not ([:controller, :action, :group].include?(k.to_sym) or v.blank?)
@@ -179,5 +206,17 @@ module Boss
         end
       end
 
+      def clear_session_filter(filter)
+        filter.delete("start_date")
+        filter.delete("end_date")
+        filter.delete("minim")
+        filter.delete("row_count")
+        filter.delete("show_others")
+        filter.delete("sort")
+        filter.delete("dir")
+        filter.delete("margin_types")
+        filter.delete("period")
+        filter.delete("year")
+      end
   end
 end

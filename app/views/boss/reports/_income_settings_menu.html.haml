@@ -1,7 +1,7 @@
 %ul#settings-menu.settings-menu{ title: t('.settings') }
   - if @total_names
     - @total_names.each do |name|
-      - checked = !@report.total_filter || @report.total_filter.include?(name[:id])
+      - checked = !params[:total_filter].blank? ? params[:total_filter].any? { |elem| elem == name[:id] } : true
       %li
         = label_tag "total-#{name[:id]}", name[:name], class: ['checkbox left_checkbox', checked && 'active']
         = check_box_tag "total-#{name[:id]}", name[:id], checked, data: { param: 'total_filter[]', filter: 1, default: true, event: false }

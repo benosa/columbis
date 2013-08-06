@@ -1,3 +1,3 @@
 .field_wrapper
   = label_tag :period, t('.period')
-  = select_tag :period, options_for_select(period_options, 'year'), data: { param: 'period', default: 'year' }
+  = select_tag :period, options_for_select(period_options, 'year'), data: { param: 'period', filter: 1, default: 'year' }

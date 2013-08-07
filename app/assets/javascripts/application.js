@@ -27,4 +27,4 @@
 //= require rmenu
 //= require jquery.jqEasyCharCounter
 //= require sms_sendings
-// require claim-edit
+//= require claim-edit

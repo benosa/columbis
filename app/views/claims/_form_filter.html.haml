@@ -16,13 +16,11 @@
       .filter_group.group-visas
         .filter_group_inner
           = f.label :visa_check
-          .wrap-flag.visa_confirmation_flag-wrap
-            = f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
-            = f.check_box :visa_confirmation_flag
+          = f.check_box :visa_confirmation_flag
           .block-main
             = f.hidden_field :visa
             .wrap-select.visa_status-wrap
-              = select_tag '', options_for_select(Claim::VISA_STATUSES.map {|s| [ t("claims.visa_statuses.#{s}"), s ]}, claim.visa), :id => 'claim_visa_status', :class => 'visa_status', :disabled => !claim.visa_confirmation_flag
+              = select_tag '', visa_select_options(claim.visa), :id => 'claim_visa_status', :class => 'visa_status'
             = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long), :disabled => !claim.visa_confirmation_flag, wrapper: {class: 'visa-wrap'}
 
       .filter_group.group-check-date

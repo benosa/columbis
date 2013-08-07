@@ -134,9 +134,9 @@
           .ik_select_link, .ik_select_link_text { width: auto !important; }
         }
         .visa_confirmation_flag-wrap { float: right; width: 21px; }
-        .block-main { margin-right: 21px;
-          .visa-wrap { margin-right: 130px; }
-          .visa_status-wrap { float: right; width: 120px; }
+        .block-main { //margin-right: 21px;
+          .visa-wrap { margin-right: 160px; }
+          .visa_status-wrap { float: right; width: 150px; }
         }
       }
       .group-check-date { float: left; width: 33%;
@@ -152,6 +152,7 @@
         .block-office { float: left; width: 30%; margin-right: 5%; }
         .block-user { float: left; width: 30%; margin-right: 5%; }
         .block-assistant { float: left; width: 30%; }
+        .office_id-wrap .ik_select, .user_id-wrap .ik_select, .assistant_id-wrap .ik_select { width: auto !important; }
       }
       .group-early_reservation { float: right; width: 410px;
         label.checkbox { margin: 0 !important;

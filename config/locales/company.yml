@@ -37,7 +37,9 @@ ru:
         ogrn: 'ОРГН'
         okpo: 'ОКПО'
         inn: 'ИНН'
-        time_zone: "Часовой пояс"
+        time_zone: 'Часовой пояс'
+        sms_signature: 'Подпись'
+        sms_birthday_send: 'Отправлять смс с днем рождения?'
       company/printers:
           template: 'Шаблон'
       company/offices:

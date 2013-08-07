@@ -2,7 +2,7 @@
 Tourism::Application.routes.draw do
 
   resources :tariff_plans
-
+  resources :sms_settings
 
   resources :sms_groups do
     collection do

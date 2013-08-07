@@ -1,0 +1,34 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.sms_settings')
+
+= render 'navigation'
+
+- content_for :top do
+  .filter
+    %strong
+      = sms_balance
+      SMS на вашем балансе
+    %span по состоянию на 30 июня 2013 в 00:03
+
+
+.form_column
+  .form_block
+    .block_title
+      %h2= t('.signature')
+    .form_block_content
+      .fake_row
+        = form_for @company, url: sms_settings_path do |f|
+          - @form_id = f.options[:html][:id]
+          %p
+            %strong Введите подпись латинскими символами, важно что бы в подпись была узнаваема и предполагала отношение к вашей фирме
+          = f.label :sms_signature
+          = f.text_field :sms_signature
+          %p
+            %strong Отправка поздравлений с днем рождения от лица фирмы
+          = f.check_box :sms_birthday_send, id: 'sms_birthday_send'
+          = f.label :sms_birthday_send, nil, :class => 'checkbox left_checkbox', id: 'sms_birthday_send'
+
+- content_for(:float_panel) do
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }

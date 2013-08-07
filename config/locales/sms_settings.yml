@@ -1,0 +1,23 @@
+ru:
+  activerecord:
+    attributes:
+      company:
+        sms_signature: 'Подпись'
+        sms_birthday_send: 'Отправлять смс с днем рождения?'
+
+  sms_settings:
+    index:
+      sms_settings: 'Настройки'
+      add_sms_sending: 'Создать рассылку'
+
+    navigation:
+      sms_sendings: 'SMS-рассылка'
+      contacts_and_groups: 'Контакты и группы'
+      invoices: 'Счета'
+      add_balance: 'Пополнить баланс'
+      statistics: 'Статистика'
+      settings: 'Настройки'
+    
+    index:
+      signature: 'Подпись'
+      

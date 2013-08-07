@@ -17,7 +17,7 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
       required = required?(name) if required.nil?
       options[:class] = add_required_class(options[:class]) if required
 
-      wrapper_options = options.delete(:wrapper) || {}
+      wrapper_options = options.delete(:wrapper)
 
       args << options
       content = super(name, *args)
@@ -78,21 +78,22 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
     end
 
     def wrapper(method_name, name, content, wrapper_options, options)
+      wrapper_options = {} unless wrapper_options
       wrap_class = wrapper_options.delete(:wrap_class)
       _options = {}
-      _options[:class] = "#{wrapper_options[:class] || ''} #{wrap_class || wrap_class(method_name)}".strip unless wrap_class === false
+      _options[:class] = "#{wrapper_options[:class] || ''} #{wrap_class || wrap_class(method_name, name)}".strip unless wrap_class === false
       _options[:class] = "#{_options[:class]} highlight".strip if highlight?(name, options)
       _options.reverse_merge! wrapper_options
       @template.content_tag('div', content, _options)
     end
 
-    def wrap_class(method_name)
-      type = case method_name
-      when %w(text_field password_field) then 'input'
-      when 'text_area' then 'textarea'
+    def wrap_class(method_name, name)
+      type = case
+      when %w(text_field password_field).include?(method_name) then 'input'
+      when method_name == 'text_area' then 'textarea'
       else method_name
       end
-      "wrap-#{type}"
+      "wrap-#{type} #{name}-wrap"
     end
 
 end

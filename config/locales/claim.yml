@@ -125,7 +125,6 @@ ru:
     tourists:
       tourists: 'Туристы'
       full_name: 'ФИО туриста'
-      tourists_full_name_hint: 'Договор оформлен на'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
       passport_expire: 'Действит. до'
@@ -133,6 +132,9 @@ ru:
       address: 'Адрес'
       add_another_tourist: 'Добавить туриста'
       email: 'Адрес эл. почты'
+
+    tourist:
+      tourists_full_name_hint: 'Договор оформлен на'
 
     flights:
       title: 'Авиаперелёты'
@@ -186,6 +188,7 @@ ru:
     tour_price:
       tour_price: 'Стоимость тура'
       price_as_string: 'Стоимость прописью'
+      count: 'Кол-во'
 
     new:
       title: 'Новая бронь'

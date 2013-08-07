@@ -1,0 +1,588 @@
+.all {
+  &.w1 { max-width: 1023px; }
+  &.w2 { min-width: 1024px; max-width: 1219px; }
+  &.w3 { min-width: 1220px; max-width: 1919px; }
+  &.w4 { min-width: 1920px; }
+}
+
+.wrapper { width: auto !important; min-width: 980px; min-height: 301px; padding: 0 22px !important; }
+
+.wrap-select {
+  select { width: 100%; }
+  .ik_select {
+    width: auto; display: block; height: 20px; position: relative;
+    margin: 0;
+    .ik_select_link {
+      width: auto;
+      padding: 0 25px 0 0;
+      background: url(/assets/new_design/images/select.png) right center no-repeat #FFF;
+      border: 1px #D5D5D5 solid; border-radius: 3px; cursor: default; height: 20px;
+      overflow: hidden; position: relative; white-space: nowrap;
+    }
+
+    .ik_select_link_text {
+      display: block;
+      width: auto;
+      padding: 1px 5px 0 5px;
+    }
+  }
+}
+.wrap-input {
+  padding: 0 5px;
+  input { width: 100% !important; padding: 0 5px !important; margin: 0 -5px !important; }
+  &.autocomplete-wrap {
+    padding-right: 25px;
+    input {
+      background: url("/assets/select_menu_2.png") right center no-repeat #FFF;
+      padding-right: 25px !important;
+      margin-right: -25px !important;
+    }
+  }
+}
+.wrap-textarea {
+  padding: 0 10px;
+  textarea { width: 100%; padding: 10px 10px; margin: 0 -12px; }
+}
+
+// Claim page
+.edit_page {
+
+  .forms {
+    width: 100%;
+    &.cols1 {
+      .form_col { float: none; clear: none; width: auto !important; }
+    }
+    &.cols {
+      .form_col { float: left;
+        .form_block { margin-right: 10px; margin-left: 10px; }
+        &:first-child .form_block { margin-left: 0; }
+        &:last-child .form_block { margin-right: 0; }
+      }
+    }
+    &.cols2 .form_col { width: 50%; }
+    &.cols3 .form_col { width: 33.33%; }
+    &.cols4 .form_col { width: 25%; }
+  }
+
+  .form_block {
+    width: auto !important; display: block; clear: both; margin-top: 25px;
+    // min-width: 915px; max-width: 1220px;
+    .block_title { width: auto !important; }
+  }
+
+  // Fake row
+  .fake_row {
+    // overflow: hidden;
+    width: auto !important;
+    padding: 11px 20px 15px 20px;
+
+    .two_line {
+      display: block;
+      p { white-space: nowrap; }
+    }
+  }
+  .fake_table {
+    width: auto !important; padding: 0 20px; background: #f4f4f4;
+    span {
+      background: #f4f4f4 url(/assets/new_design/images/grey_border.gif) left center repeat-y;
+      &:first-child { background: #f4f4f4 url(/assets/new_design/images/grey_border.gif) left center repeat-y; }
+      &.first { background: #f4f4f4; padding-left: 0; }
+      &.last { padding-right: 0; }
+    }
+  }
+  .fake_row, .fake_table {
+    .col-actions { float: right; width: 28px;
+      .delete-wrap { float: right; width: 13px;
+        a { margin: 4px 0 0 !important; float: none !important; }
+      }
+    }
+    .col-main { margin-right: 28px; }
+  }
+
+  // Filter
+  .filter_area { //max-width: 1220px;
+    margin: 25px 0 0; }
+  .check_list { margin: 0 !important; height: 120px !important; }
+  .filter {
+    float: none !important; width: auto !important; height: auto !important; margin: 0 170px 0 0 !important;
+    .filter_row {
+      float: none !important; width: auto !important; padding: 9px 11px 10px 10px;
+
+      .filter_group { float: left;
+        .filter_group_inner { margin: 0 10px;
+          > label { display: block; margin: 0; white-space: nowrap; }
+        }
+        &:first-child .filter_group_inner { margin-left: 0; }
+        &:last-child .filter_group_inner { margin-right: 0; }
+      }
+      .filter_block {
+        > label { display: block; margin: 0; white-space: nowrap; }
+        .wrap-flag { float: right; width: 21px;
+          label.checkbox { margin: 4px 0 0 4px !important; white-space: nowrap; }
+        }
+      }
+
+      .group-number { float: left; width: 33%;
+        .block-number { float: left; width: 90px; }
+        .block-confirmation { margin-left: 100px;
+          // .confirmation_flag-wrap { float: right; width: 21px; }
+          .confirmation-wrap { margin-right: 21px; }
+        }
+      }
+      .group-visas { float: left; width: 33%;
+        .visa_status.ik_select { width: auto !important;
+          .ik_select_link, .ik_select_link_text { width: auto !important; }
+        }
+        .visa_confirmation_flag-wrap { float: right; width: 21px; }
+        .block-main { margin-right: 21px;
+          .visa-wrap { margin-right: 130px; }
+          .visa_status-wrap { float: right; width: 120px; }
+        }
+      }
+      .group-check-date { float: left; width: 33%;
+        .block-check_date { float: left; width: 55%;
+          .check_date-wrap { margin-right: 31px; }
+          .closed-wrap { margin-right: 10px; }
+        }
+        .block-reservation_date { float: left; width: 45%;
+          label, .reservation_date-wrap { margin-left: 10px; }
+        }
+      }
+      .group-office { float: none; margin-right: 410px;
+        .block-office { float: left; width: 30%; margin-right: 5%; }
+        .block-user { float: left; width: 30%; margin-right: 5%; }
+        .block-assistant { float: left; width: 30%; }
+      }
+      .group-early_reservation { float: right; width: 410px;
+        label.checkbox { margin: 0 !important;
+          // &.two_line { background-position: left 5px; }
+          // &.two_line.right_checkbox { background-position: right 5px; }
+        }
+        .filter_group_inner { margin-top: 16px; }
+        .block-early_reservation { float: left; width: 137px; margin-right: 10px; }
+        .block-canceled { float: left; width: 98px; margin-right: 10px; }
+        .block-excluded_from_profit { float: left; width: 143px; }
+      }
+    }
+  }
+
+  .all.w1 .filter .filter_row {
+    .group-number { width: 48%; margin-right: 4%; }
+    .group-visas { width: 48%; }
+    .group-check-date { float: none; width: auto; margin-right: 410px;
+      .filter_group_inner { margin-right: 10px; margin-left: 0; }
+    }
+    .group-early_reservation .filter_group_inner { margin-right: 0; margin-left: 10px; }
+    .group-office { width: 100%; }
+  }
+
+  // Tour price
+  .tour_price_block .fake_row {
+    &.row1 {
+      .amount-input-wrap { margin-right: 80px; }
+      .currency-select-wrap { float: right; width: 70px; }
+      .col1 { float: left; width: 30%; }
+      .col2, .col3 {
+        float: left; width: 35%;
+        .block-right { float: right; width: 75px; }
+        .block-stretch {
+          margin-right: 75px;
+          .two_line { margin: 0 10px 0 30px; }
+        }
+      }
+      .col3 .block-right .two_line { margin-right: 0; }
+    }
+
+    &.row2 {
+      .fake_col {
+        float: left; width: 27%;
+        .block-right {
+          float: right; width: 75px;
+          .two_line { margin-right: 15px; }
+        }
+        .block-stretch {
+          margin-right: 75px;
+          .two_line { margin: 0 10px 0 15px; }
+        }
+        &:first-child {
+          .block-stretch .two_line { margin-left: 0; }
+        }
+        &:last-child {
+          width: 19%;
+          .amount-input-wrap { margin-right: 80px; }
+          .currency-select-wrap { float: right; width: 70px; margin: 0; }
+          .two_line { margin-right: 0; margin-left: 15px; }
+        }
+      }
+      .amount-input-wrap { margin-right: 80px; }
+      .currency-select-wrap { float: right; width: 70px; }
+    }
+
+    &.row3 {
+      .col1 {
+        float: left; width: 25%;
+        .two_line { margin-right: 15px; }
+      }
+      .col2 {
+        float: left; width: 75%;
+        .two_line { margin-left: 15px; }
+      }
+    }
+
+  }
+
+  // Route
+  .route_block .fake_row {
+    &.row1 {
+      .dates {
+        padding: 7px 0 3px 0;
+        input {
+          margin: 0;
+          &:last-child { margin-right: 90px; }
+        }
+      }
+    }
+    &.row2, &.row4 {
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 20px; }
+      }
+      .col1, .col4 {  width: 23%; }
+      .col2, .col3 {  width: 27%; }
+      .col1 .two_line { margin-left: 0; }
+      .col4 .two_line { margin-right: 0; }
+    }
+    &.row3 {
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 20px; }
+      }
+      .col1 { width: 23%; }
+      .col2, .col3, .col4 { width: 20%; }
+      .col5 { width: 17%; }
+      .col1 .two_line { margin-left: 0; }
+      .col5 .two_line { margin-right: 0; }
+    }
+    &.row5 {
+      .memo-wrap { margin-right: 220px; }
+      .memo_tasks_done-wrap {
+        float: right; width: 200px;
+        text-align: right;
+        label.checkbox { margin: 4px 0 0 0; }
+      }
+    }
+  }
+
+  // Flights
+  .flights_block .fake_row {
+    &.row1 {
+      .col1 {
+        width: 40%;
+        .two_line { margin: 0 20px 0 0; }
+      }
+    }
+    &.row2, &.row3 {
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 20px; }
+      }
+      .col1 {  width: 40%; }
+      .col2, .col3 {  width: 21%; }
+      .col4 {  width: 18%; }
+      .col1 .two_line { margin-left: 0; }
+      .col4 .two_line { margin-right: 0; }
+    }
+  }
+
+  // Tourists
+  .tourists_block {
+    .fake_row, .fake_table {
+      .common_fields {
+        float: left; width: 65%;
+        .block-stretch {
+          margin: 0 430px 0 0;
+          .name-wrap { margin: 0 10px 0 0; }
+        }
+        .block-right {
+          float: right; width: 430px;
+          > div { float: left; margin: 0 10px; }
+          .date_of_birth-wrap { width: 90px; }
+          .passport-wrap { width: 170px;
+            .passport_series-wrap { float: left; width: 50px; margin-right: 10px; }
+            .passport_number-wrap { float: left; width: 90px; }
+          }
+          .expires_date-wrap { width: 100px; margin-right: 0; }
+        }
+        label { display: none; }
+      }
+      .additional_fields {
+        float: left; width: 35%;
+        .phone-wrap { float: left; width: 92px; margin-left: 10px; }
+        .address-wrap { margin: 0 0 0 130px; }
+        label { display: none; }
+      }
+    }
+    .fake_table {
+      span { display: block; }
+      .fio { float: none; width: auto !important; }
+      .dob { width: 96px !important; }
+      .passport { width: 170px !important; }
+      .expires { width: 93px !important; }
+      .tourist_address { width: auto !important; }
+    }
+  }
+
+  // Information
+  .information_block .fake_row {
+    &.row1 {
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 20px; }
+      }
+      .col1, .col2 { width: 35%; }
+      .col1 .two_line { margin-left: 0; }
+      .col2 .two_line { margin-right: 0; }
+    }
+  }
+
+  // Payments in
+  .payments_in_block .fake_row {
+    &.fields {
+      .col-actions .delete-wrap { margin-top: 24px; }
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 10px; }
+      }
+      .col1 {
+        width: 35%;
+        .block-left { float: left; width: 110px; }
+        .block-stretch {
+          margin-left: 110px;
+          // .two_line { margin: 0 10px 0 30px; }
+          .amount-input-wrap { margin-right: 35px; }
+          label { float: right; margin: 4px 0 0; }
+        }
+      }
+      .col2 { width: 45%; }
+      .col3 {
+        width: 20%;
+        .form-select-wrap { margin-right: 30px; }
+        .approved-wrap { float: right;
+          label { margin: 4px 0 0; padding: 0; }
+        }
+      }
+      .col1 .block-left .two_line { margin-left: 0; }
+      .col3 .two_line { margin-right: 0; }
+    }
+  }
+
+  // Payments out
+  .payments_out_block .fake_row {
+    &.fields {
+      .col-actions .delete-wrap { margin-top: 24px; }
+      .fake_col {
+        float: left;
+        .two_line { margin: 0 10px; }
+      }
+      .col1 {
+        width: 40%;
+        .block-left { float: left; width: 110px; }
+        .block-stretch {
+          margin-left: 110px;
+          // .two_line { margin: 0 10px 0 30px; }
+          .amount-input-wrap { margin-right: 35px; }
+          label { float: right; margin: 4px 0 0; }
+        }
+      }
+      .col2 {
+        width: 40%;
+        .block-left { float: left; width: 110px; }
+        .block-stretch {
+          margin-left: 110px;
+          .amount-input-wrap { margin-right: 35px; }
+          label { float: right; margin: 4px 0 0; }
+        }
+      }
+      .col3 {
+        width: 20%;
+        .form-select-wrap { margin-right: 30px; }
+        .approved-wrap { float: right;
+          label { margin: 4px 0 0; padding: 0; }
+        }
+      }
+      .col1 .block-left .two_line { margin-left: 0; }
+      .col3 .two_line { margin-right: 0; }
+    }
+  }
+
+  // Media queries
+
+  // Filter
+  @media only screen and (max-width: 1024px) {
+
+  }
+
+  // Blocks
+  // @media only screen and (max-width: 979px) {
+  //   .wrapper { min-width: 610px; }
+  //   .form_block { min-width: 610px; max-width: 979px; }
+
+  .forms.small_forms {
+
+    // Tour price
+    .tour_price_block .fake_row {
+      &.row1 {
+        .col1 {
+          width: 100%; margin-bottom: 11px;
+          .two_line { margin-right: 50%; }
+          .amount-input-wrap { margin-right: 97px; }
+          .currency-select-wrap { margin-right: 15px; }
+        }
+        .col2 {
+          width: 50%;
+          .block-stretch {
+            margin-right: 90px;
+            .two_line { margin: 0 10px 0 0; }
+          }
+          .block-right {
+            width: 90px;
+            .two_line { margin: 0 15px 0 0; }
+          }
+        }
+        .col3 {
+          width: 50%;
+          .block-stretch .two_line { margin-left: 15px; }
+        }
+      }
+
+      &.row2 {
+        .fake_col, .fake_col.col4 { width: 50%; }
+        .col1, .col2 { margin-bottom: 11px; }
+        .col1, .col3 {
+          .block-stretch { margin-right: 90px; }
+          .block-right { width: 90px; }
+        }
+        .col2 .block-right .two_line { margin-right: 0; }
+        .col3 .block-stretch .two_line { margin-left: 0; }
+      }
+    }
+
+    // Route
+    .route_block .fake_row {
+      &.row2 {
+        .col1, .col2 {  width: 50%; margin-bottom: 11px; }
+        .col3, .col4 {  width: 50%; }
+        .col2 .two_line { margin-right: 0; }
+        .col3 .two_line { margin-left: 0; }
+      }
+      &.row3 {
+        .col1, .col2 {  width: 50%; margin-bottom: 11px; }
+        .col3 {  width: 50%; }
+        .col4, .col5 {  width: 25%; }
+        .col2 .two_line { margin-right: 0; }
+        .col3 .two_line { margin-left: 0; }
+      }
+      &.row4 {
+        .col1, .col2, .col3 {  width: 33.33%; margin-bottom: 11px; }
+        .col4 {  width: 100%; }
+        .col3 .two_line { margin-right: 0; }
+        .col4 .two_line { margin-left: 0; }
+      }
+    }
+
+    // Flights
+    .flights_block .fake_row {
+      &.row2, &.row3 {
+        .fake_col .two_line { margin: 0 8%; }
+        .col1 .two_line { margin: 0 20px 0 0; }
+        .col2 .two_line { margin-left: 20px; }
+        .col4 .two_line { margin-right: 0; }
+      }
+    }
+
+    // Tourists
+    .tourists_block {
+      .fake_row {
+        .common_fields {
+          float: none; width: 100%; margin-bottom: 10px;
+          label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
+        }
+        .additional_fields {
+          float: none; width: 100%;
+          .phone-wrap { width: 112px; margin-left: 0px; }
+          .address-wrap { margin: 0 0 0 140px; }
+          label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
+          // .phone-wrap { float: left; width: 30%; margin-left: 0 }
+          // .address-wrap { float: left; width: 70%; }
+        }
+        &.applicant {
+          .block-right, .delete-wrap { margin-top: 24px; }
+        }
+      }
+      .fake_table {
+        .common_fields { float: none; width: 100%; }
+        .additional_fields { display: none; }
+      }
+    }
+
+    // Information
+    .information_block .fake_row {
+      &.row1 {
+        .col1, .col2 { width: 50%; }
+      }
+    }
+
+    // Payments in
+    .payments_in_block .fake_row {
+      &.fields {
+        .col1 { width: 45%; }
+        .col2 { width: 30%; }
+        .col3 { width: 25%; }
+        .col1, .col2 {
+          .block-left { width: 90px; }
+          .block-stretch { margin-left: 90px; }
+        }
+      }
+    }
+
+    // Payments out
+    .payments_out_block .fake_row {
+      &.fields {
+        .col1 { width: 38%; }
+        .col2 { width: 37%; }
+        .col3 { width: 25%; }
+        .col1, .col2 {
+          .block-left { width: 90px; }
+          .block-stretch { margin-left: 90px; }
+        }
+      }
+    }
+  }
+
+}
+
+// @media only screen and (min-width: 1280px) {
+//   .form_block { float: left; width: 48% !important; }
+// }
+ 
+//header
+.header{
+  width: auto;
+  min-width: 1024px;
+  a.logout { margin-right: 0px}
+}
+ .user_panel {
+     li {padding: 15px 21px 0 15px;}
+     }
+  .logo{
+        background: url("/assets/logo.png") no-repeat scroll 20px 12px transparent;
+    float: right;
+    height: 50px;
+    width: 175px;
+    }
+
+.reservations { width: 100%; }
+
+//booking
+
+//tourists

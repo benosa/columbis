@@ -37,8 +37,8 @@
           %br
           .one_row
             = f.label t('.date')
-            = text_field_tag :sending_at_date, (@sms_sending.sending_at.strftime("%d.%m.%Y") unless @sms_sending.sending_at.nil? ), class: 'datepicker sending_at_date date', placeholder: 'Select date'
+            = text_field_tag :sending_at_date, (@sms_sending.sending_at.utc.strftime("%d.%m.%Y") unless @sms_sending.sending_at.nil? ), class: 'datepicker sending_at_date date', placeholder: 'Select date'
 
             = f.label t('.time')
-            = select_tag :sending_at_time_hour, options_for_select(13.times.map{|a| a + 9}, (@sms_sending.sending_at.strftime("%H") unless @sms_sending.sending_at.nil?))
-            = select_tag :sending_at_time_minute, options_for_select(12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}, (@sms_sending.sending_at.strftime("%M") unless @sms_sending.sending_at.nil?))
+            = select_tag :sending_at_time_hour, options_for_select(13.times.map{|a| a + 9}, (@sms_sending.sending_at.utc.strftime("%H") unless @sms_sending.sending_at.nil?))
+            = select_tag :sending_at_time_minute, options_for_select(12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}, (@sms_sending.sending_at.utc.strftime("%M") unless @sms_sending.sending_at.nil?))

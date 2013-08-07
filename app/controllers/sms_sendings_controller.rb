@@ -34,7 +34,7 @@ class SmsSendingsController < ApplicationController
   end
 
   def update
-    params[:sms_sending][:sending_at] = DateTime.parse("#{params[:sending_at_date]} #{params[:sending_at_time_hour]}:#{params[:sending_at_time_minute]}:00")
+    params[:sms_sending][:sending_at] = "#{params[:sending_at_date]} #{params[:sending_at_time_hour]}:#{params[:sending_at_time_minute]}:00".to_time
     @sms_sending = SmsSending.find(params[:id])
     if @sms_sending.update_attributes(params[:sms_sending])
       redirect_to edit_sms_sending_path(@sms_sending), notice: 'sms sendings was successfully updated'

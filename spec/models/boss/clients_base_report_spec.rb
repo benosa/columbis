@@ -21,7 +21,6 @@ describe Boss::ClientsBaseReport do
     clients_percent20 *= 10000
     clients_percent30 *= 10000
     clients_percent50 *= 10000
-    [amount,clients_percent20,clients_percent30,clients_percent50].should == 1
     (amount.any? {|value| value["amount"] == clients_percent20 and
         value["name"] == I18n.t(".clientsbase_report.amount", value: "20%") } and
       amount.any? {|value| value["amount"] == clients_percent30 and

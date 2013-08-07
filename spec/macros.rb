@@ -22,6 +22,7 @@ module Macros
   def create_claims_with_prerequisites(company, factory = :claim, count = 2)
     claims = []
     count.times { claims << FactoryGirl.create(factory, company: company) }
+    claims
   end
 
   def login_as_admin

@@ -15,5 +15,9 @@ FactoryGirl.define do
       approved true
       canceled false
       amount 10000
+
+      before(:create) do |payment|
+        payment.payer = FactoryGirl.create(:tourist, :company => payment.company)
+      end
     end
 end

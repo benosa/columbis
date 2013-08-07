@@ -8,7 +8,7 @@ FactoryGirl.define do
   end
 
   factory :clientbase_payment, parent: :payment do
-      association :payer, factory: :tourist
+      association :payer, factory: :random_tourist
       form 'nal'
       payer_type 'Tourist'
       recipient_type 'Company'
@@ -17,7 +17,7 @@ FactoryGirl.define do
       amount 10000
 
       before(:create) do |payment|
-        payment.payer = FactoryGirl.create(:tourist, :company => payment.company)
+        payment.payer = FactoryGirl.create(:random_tourist, :company => payment.company)
       end
     end
 end

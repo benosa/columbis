@@ -3,9 +3,9 @@ FactoryGirl.define do
   factory :tourist do
     association :address
     association :company
-    first_name { Faker::Name.name }
-    last_name  { Faker::Name.name }
-    middle_name { Faker::Name.name }
+    first_name 'Ivan'
+    last_name  'Ivanov'
+    middle_name 'Sergeevich'
     #address 'Dachniy prospekt'
     phone_number '89211231213'
     passport_series '1234'
@@ -18,9 +18,9 @@ FactoryGirl.define do
   factory :applicant, :class => Tourist do
     association :company
     association :address
-    first_name { Faker::Name.name }
-    last_name  { Faker::Name.name }
-    middle_name { Faker::Name.name }
+    first_name 'Походов'
+    last_name  'Иван'
+    middle_name 'Акакиевич'
     #address 'Ленина, 13'
     phone_number '8-921-1231213'
     passport_series '322'
@@ -28,5 +28,11 @@ FactoryGirl.define do
     passport_valid_until '20.10.11'
     date_of_birth '12.12.12'
     email 'ivan.pohodov@test.mail.com'
+  end
+
+  factory :random_tourist, :parent => :tourist do
+    first_name { Faker::Name.name }
+    last_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
   end
 end

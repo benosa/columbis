@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.float    "primary_currency_price",                                             :default => 0.0
     t.float    "course_usd",                                                         :default => 0.0
     t.string   "tour_price_currency",                                                                            :null => false
+    t.string   "airline"
     t.integer  "visa_count"
     t.string   "meals"
     t.string   "placement"
@@ -144,7 +145,6 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.float    "profit",                                                             :default => 0.0,            :null => false
     t.float    "profit_in_percent",                                                  :default => 0.0,            :null => false
     t.integer  "tour_duration"
-    t.string   "airline"
   end
 
   create_table "companies", :force => true do |t|

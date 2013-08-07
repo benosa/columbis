@@ -14,13 +14,16 @@
           #sms_sending_content_text
           .text_orange
             Внимание! Максимальное число сообщений — 4
-          %p
-            Подставьте данные из контакта:
-            %ul.list_params
-              %li
+          / %p
+          /   Подставьте данные из контакта:
+          /   %ul.list_params
+          /     %li
           %p
             Подпись отправителя:
-            %strong BABABA
+            %strong
+              = current_company.sms_signature
+              - if current_company.sms_signature.nil?
+                Необходимо запросить подпись перед отправкой!!
             %br
             %small
               %i Подпись настраивается в настройках

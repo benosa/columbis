@@ -10,4 +10,4 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id } unless current_company.sms_signature.nil?

@@ -39,6 +39,12 @@ html, body {height: 100%;}
 					font-weight: bold;
 					text-shadow: none;
 				}
+        .reservation li.active ul li a{
+          font-weight: normal;
+        }
+        .reservation li.active ul li.active a{
+          font-weight: bold;
+        }
 				.reservation li.dropdown a,.databases li.dropdown a{padding-right: 30px;}
 		.reservation li.dropdown ul,.databases li.dropdown ul{
 			background: #f4f4f4 url(/assets/new_design/images/reservation_dropdown.png) top no-repeat;

@@ -28,100 +28,11 @@
 
       .header
 
-        %ul#documents_to_print_menu.reservation
-          %li{:class => (params[:controller] == 'claims' and params[:action] == 'index') ? 'active' : ' '}
-            = link_to t('.claims'), claims_path, :id => 'claims_link'
-          %li{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
-            = link_to t('.new_claim'), new_claim_path
-          %li.dropdown
-            %a{:href => '#'} Документы
-            %ul
-              - { :contract => t('.contract'),
-              :permit => 'Путевка',
-              :warranty => 'Фингарантии',
-              :memo => ['Памятка', :memo_printer_for, :country],
-              :act => 'Акт' }.each do |mode, value|
-                %li{ :class => li_class(@claim, mode) }
-                  - unless value.is_a?(Array)
-                    - if @claim && !@claim.new_record? && @claim.company.try("#{mode}_printer".to_sym)
-                      = link_to(value, claim_path(@claim.id, :print => mode), :target => '_blank')
-                    - else
-                      %span= value
-                  - else
-                    - if @claim && !@claim.new_record? && @claim.company.try(value[1], @claim.try(value[2]))
-                      = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
-                    - else
-                      %span= value[0]
-              %li= link_to t('.prihodnik'), '#'
-          %li= link_to t('.write_review'), '#', id: 'write_review'
-          -#
-            %li= link_to t('.fullscreen'), '#', :id => 'fullscreen-link', :data => { :flscr => t('.fullscreen'), :'flscr-cancel' => t('.fullscreen_cancel') }
-          -#
-            %li= link_to t('.reference'), '#'
-
-        - if user_signed_in?
-          #review_form_container{ style: 'display: none;' }
-            = render 'tasks/review_form'
-        %ul.user_panel
-          = render 'devise/menu/registration_items'
-          = render 'devise/menu/login_items'
+        = render 'layouts/main_menu/menu'
 
         .clear
 
-        %ul#databases_menu.databases
-          -# %li.dropdown { :class => (params[:controller] =~ /^dashboard/ or params[:controller] == 'operators') && 'active' }
-          %li.dropdown
-            %a{:href => '#'}= t('.management')
-            %ul
-              %li= link_to t('.company'), dashboard_edit_company_path
-              %li= link_to t('.users'), dashboard_users_path
-              - if can? :read, Company
-                %li= link_to t('.printers'), printers_path(current_company)
-              %li= link_to t('.operators'), operators_path
-              %li= link_to t('.cities'), cities_path
-              %li= link_to t('.countries'), countries_path
-              %li= link_to t('.dropdown_values'), dashboard_dropdown_values_path
-              -#
-                %li= link_to t('.tourists'), tourists_path
-                %li= link_to t('.potentials'), tourists_path(:potential => true)
-                %li= link_to t('.addresses'), addresses_path
-                %li= link_to t('.catalogs'), catalogs_path
-          %li{ :class => params[:controller] == 'tourists' && 'active' }
-            = link_to t('.clients'), tourists_path
-          - if user_signed_in? && %w[admin boss].include?(current_user.role)
-            -# %li.dropdown{ :class => params[:controller] == 'reports' && 'active' }
-            %li.dropdown
-              %a{:href => '#'}= t('.analytics')
-              %ul
-                %li= link_to 'Рабочий стол', boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
-                %li= link_to t('.reports.operators'), boss_reports_path(:operators)
-                %li= link_to t('.reports.directions'), boss_reports_path(:directions)
-                %li= link_to t('.reports.tourprice'), boss_reports_path(:tourprice)
-                %li= link_to t('.reports.tourduration'), boss_reports_path(:tourduration)
-                %li= link_to t('.reports.hotelstars'), boss_reports_path(:hotelstars)
-                %li= link_to t('.reports.promotionchannel'), boss_reports_path(:promotionchannel)
-                %li= link_to t('.reports.income'), boss_reports_path(:income)
-                %li= link_to t('.reports.income_managers'), boss_reports_path(:managers_income)
-                %li= link_to t('.reports.income_offices'), boss_reports_path(:offices_income)
-                %li= link_to t('.reports.margin'), boss_reports_path(:margin)
-                %li= link_to t('.reports.margin_managers'), boss_reports_path(:managers_margin)
-                %li= link_to t('.reports.margin_offices'), boss_reports_path(:offices_margin)
-                %li= link_to t('.reports.repurchase'), boss_reports_path(:repurchase)
-                %li= link_to t('.reports.clientsbase'), boss_reports_path(:clientsbase)
-                %li= link_to t('.reports.normalcheck'), boss_reports_path(:normalcheck)
-                %li= link_to t('.reports.increaseclients'), boss_reports_path(:increaseclients)
-                %li= link_to t('.reports.salesfunnel'), boss_reports_path(:salesfunnel)
-          %li= link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'
-          %li= link_to t('.sms_sendings'), sms_sendings_path
-
-        - if view_switcher?
-          .type
-            %p Вид:
-            %select#view_switcher.view_switcher
-              %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
-                = t('claims.index.manager_list')
-              %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
-                = t('claims.index.accountant_list')
+        = render 'layouts/main_menu/second_menu'
 
       .clear
 

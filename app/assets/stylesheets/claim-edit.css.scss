@@ -10,7 +10,7 @@
 .wrap-select {
   select { width: 100%; }
   .ik_select {
-    width: auto; display: block; height: 20px; position: relative;
+    width: auto; display: block; position: relative; height: auto; //22px;
     margin: 0;
     .ik_select_link {
       width: auto;
@@ -102,7 +102,7 @@
   // Filter
   .filter_area { //max-width: 1220px;
     margin: 25px 0 0; }
-  .check_list { margin: 0 !important; height: 120px !important; }
+  .check_list { margin: 0 !important; height: 110px !important; }
   .filter {
     float: none !important; width: auto !important; height: auto !important; margin: 0 170px 0 0 !important;
     .filter_row {
@@ -312,7 +312,7 @@
             .passport_series-wrap { float: left; width: 50px; margin-right: 10px; }
             .passport_number-wrap { float: left; width: 90px; }
           }
-          .expires_date-wrap { width: 100px; margin-right: 0; }
+          .passport_valid_until-wrap { width: 100px; margin-right: 0; }
         }
         label { display: none; }
       }

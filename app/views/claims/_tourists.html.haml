@@ -17,7 +17,7 @@
             %span.tel= t('.phone')
             %span.tourist_address= t('.address')
 
-    = f.fields_for :applicant_attributes, @claim.applicant do |af|
+    = f.fields_for :applicant_attributes, @claim.applicant, :wrapper => true do |af|
       .fake_row.applicant.fields
         .clearfix
           .col-actions
@@ -36,7 +36,7 @@
 
     - ind = 0
     - @claim.dependents << Tourist.new
-    = f.fields_for :dependents do |df|
+    = f.fields_for :dependents, :wrapper => true do |df|
       .fake_row.dependent.fields{ :id => "dependent-#{ind}", :class => df.object.try(:_destroy) && 'destroyed' }
         .clearfix
           .col-actions
@@ -44,7 +44,7 @@
               %a.delete
           .col-main.clearfix
             .common_fields
-              = render :partial => 'tourist', :locals => { :f => df }
+              = render :partial => 'tourist', :locals => { :f => df, :full_name_label => false }
 
         = df.hidden_field :_destroy, :class => '_destroy'
         = df.hidden_field :id, :class => 'hidden_id'

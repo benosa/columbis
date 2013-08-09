@@ -10,7 +10,7 @@
       %span.arrive= t('.arrive')
 
     - ind = 0
-    = f.fields_for :flights, @claim.flights do |ff|
+    = f.fields_for :flights, @claim.flights, :wrapper => true do |ff|
       .fake_row.flight.fields{ :id => "flight-#{ind}", :class => ff.object.try(:_destroy) && 'destroyed' }
         = render :partial => 'flight', :locals => { :flight_form => ff, :ind => ind }
         = link_to '', '#', :class => 'delete', :title => t('cancel'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"

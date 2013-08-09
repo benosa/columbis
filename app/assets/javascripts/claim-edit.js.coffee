@@ -2,12 +2,13 @@ jQuery ->
 
   columnWidths  = [1280, 1920, 2560]
   smallFormWidths = [979, 785, 785]
-  blocks = ['tourists', 'route', 'flights', 'tour_price', 'payments_in', 'payments_out', 'information']
+  blocks = {0: 'tourists', 1: 'route', 2: 'flights', 3: 'tour_price', 4: 'payments_in', 5: 'payments_out', 6: 'information'}
+  # Key - column count
   blockPriorities =
-    1: [0, 1, 2, 3, 4, 5, 6]
-    2: [0, 3, 1, 4, 2, 5, -1, 6]
-    3: [0, 3, 4, 1, 2, 5, -1, -1, 6]
-    4: [0, 3, 1, 2, 6, 4, 5]
+    1: [[0, 1, 2, 3, 4, 5, 6]]
+    2: [[0, 3, 2], [1, 4, 5, 6]]
+    3: [[0, 3], [1, 2], [4, 5, 6]]
+    4: [[0, 4], [1, 5], [3, 6], [2]]
 
   setColumns = ->
     curWidth = $(@).width()
@@ -33,18 +34,11 @@ jQuery ->
       $forms.empty()
       $forms.append $form_col.clone() for i in [1..newColumns]
 
-      blockGroups = []
-      blockOrder = blockPriorities[newColumns]
-      for i in [0..blockOrder.length - 1]
-        group = i % newColumns
-        blockGroups[group] = [] unless blockGroups[group]
-        blockGroups[group].push blocks[blockOrder[i]] if blockOrder[i] isnt -1
-
       $form_cols = $forms.find('.form_col')
-      for group, i in blockGroups
-        for block in group
+      for group, i in blockPriorities[newColumns]
+        for block_id in group
+          block = blocks[block_id]
           $form_blocks.filter("##{block}").appendTo $form_cols.eq(i)
-
 
     formColWidth = $forms.find('.form_col:first').width()
     smallFormWidth = smallFormWidths[0] # smallFormWidths[newColumns - 1]

@@ -74,7 +74,7 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
     end
 
     def wrapper?(wrapper_options)
-      @options[:wrapper] and not wrapper_options === false
+      @options[:wrapper] and !(wrapper_options === false)
     end
 
     def wrapper(method_name, name, content, wrapper_options, options)

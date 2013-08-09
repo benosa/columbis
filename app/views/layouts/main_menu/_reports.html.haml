@@ -2,40 +2,70 @@
 - a = params[:action]
 %li.dropdown{:class => (c == 'boss/reports' || c == 'boss/base') && 'active' }
   %a{:href => '#'}= t('.analytics')
-  %ul
-    %li{:class => c == 'boss/base' && 'active' }
-      = link_to t('.desktop'), boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
-    %li{:class => c == 'boss/reports' && a == 'operators' && 'active' }
-      = link_to t('.operators'), boss_reports_path(:operators)
-    %li{:class => c == 'boss/reports' && a == 'directions' && 'active' }
-      = link_to t('.directions'), boss_reports_path(:directions)
-    %li{:class => c == 'boss/reports' && a == 'tourprice' && 'active' }
-      = link_to t('.tourprice'), boss_reports_path(:tourprice)
-    %li{:class => c == 'boss/reports' && a == 'tourduration' && 'active' }
-      = link_to t('.tourduration'), boss_reports_path(:tourduration)
-    %li{:class => c == 'boss/reports' && a == 'hotelstars' && 'active' }
-      = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
-    %li{:class => c == 'boss/reports' && a == 'promotionchannel' && 'active' }
-      = link_to t('.promotionchannel'), boss_reports_path(:promotionchannel)
-    %li{:class => c == 'boss/reports' && a == 'income' && 'active' }
-      = link_to t('.income'), boss_reports_path(:income)
-    %li{:class => c == 'boss/reports' && a == 'managers_income' && 'active' }
-      = link_to t('.income_managers'), boss_reports_path(:managers_income)
-    %li{:class => c == 'boss/reports' && a == 'offices_income' && 'active' }
-      = link_to t('.income_offices'), boss_reports_path(:offices_income)
-    %li{:class => c == 'boss/reports' && a == 'margin' && 'active' }
-      = link_to t('.margin'), boss_reports_path(:margin)
-    %li{:class => c == 'boss/reports' && a == 'managers_margin' && 'active' }
-      = link_to t('.margin_managers'), boss_reports_path(:managers_margin)
-    %li{:class => c == 'boss/reports' && a == 'offices_margin' && 'active' }
-      = link_to t('.margin_offices'), boss_reports_path(:offices_margin)
-    %li{:class => c == 'boss/reports' && a == 'repurchase' && 'active' }
-      = link_to t('.repurchase'), boss_reports_path(:repurchase)
-    %li{:class => c == 'boss/reports' && a == 'clientsbase' && 'active' }
-      = link_to t('.clientsbase'), boss_reports_path(:clientsbase)
-    %li{:class => c == 'boss/reports' && a == 'normalcheck' && 'active' }
-      = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
-    %li{:class => c == 'boss/reports' && a == 'increaseclients' && 'active' }
-      = link_to t('.increaseclients'), boss_reports_path(:increaseclients)
-    %li{:class => c == 'boss/reports' && a == 'salesfunnel' && 'active' }
-      = link_to t('.salesfunnel'), boss_reports_path(:salesfunnel)
+  %ul{:style => "width: 1024px"}
+    .reservation_dropdown_row
+      %li{:class => c == 'boss/base' && 'active' }
+        = link_to t('.desktop'), boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
+      %li{:class => c == 'boss/reports' && (a == 'income' || a == 'offices_income') && 'active' }
+        = link_to t('.income_title'), '#'
+      %li{:class => c == 'boss/reports' && (a == 'margin' || a == 'offices_margin') && 'active' }
+        = link_to t('.margin_title'), '#'
+      %li{:class => c == 'boss/reports' && (a == 'managers_income' || a == 'managers_margin') && 'active' }
+        = link_to t('.managers_title'), '#'
+      %li{:class => c == 'boss/reports' && (a == 'normalcheck' || a == 'directions' || a == 'operators' || a == 'tourprice' || a == 'tourduration' || a == 'hotelstars') && 'active' }
+        = link_to t('.segmentation_title'), '#'
+      %li{:class => c == 'boss/reports' && (a == 'clientsbase' || a == 'repurchase' || a == 'increaseclients' || a == 'salesfunnel') && 'active' }
+        = link_to t('.clientbase_title'), '#'
+      %li{:class => c == 'boss/reports' && a == 'promotionchannel' && 'active' }
+        = link_to t('.promotionchannel_title'), '#'
+      .top_row
+        &nbsp;
+    .reservation_dropdown_column
+      &nbsp;
+    .reservation_dropdown_column
+      %li{:class => c == 'boss/reports' && a == 'income' && 'active' }
+        = link_to t('.income'), boss_reports_path(:income)
+      %li{:class => c == 'boss/reports' && a == 'offices_income' && 'active' }
+        = link_to t('.income_offices'), boss_reports_path(:offices_income)
+    .reservation_dropdown_column
+      %li{:class => c == 'boss/reports' && a == 'margin' && 'active' }
+        = link_to t('.margin'), boss_reports_path(:margin)
+      %li{:class => c == 'boss/reports' && a == 'offices_margin' && 'active' }
+        = link_to t('.margin_offices'), boss_reports_path(:offices_margin)
+    .reservation_dropdown_column
+      %li{:class => c == 'boss/reports' && a == 'managers_income' && 'active' }
+        = link_to t('.income_managers'), boss_reports_path(:managers_income)
+      %li{:class => c == 'boss/reports' && a == 'managers_margin' && 'active' }
+        = link_to t('.margin_managers'), boss_reports_path(:managers_margin)
+    .reservation_dropdown_column.row
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'normalcheck' && 'active' }
+          = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'directions' && 'active' }
+          = link_to t('.directions'), boss_reports_path(:directions)
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'operators' && 'active' }
+          = link_to t('.operators'), boss_reports_path(:operators)
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'tourprice' && 'active' }
+          = link_to t('.tourprice'), boss_reports_path(:tourprice)
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'tourduration' && 'active' }
+          = link_to t('.tourduration'), boss_reports_path(:tourduration)
+      .col-lg-2
+        %li{:class => c == 'boss/reports' && a == 'hotelstars' && 'active' }
+          = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
+    .reservation_dropdown_column
+      %li{:class => c == 'boss/reports' && a == 'clientsbase' && 'active' }
+        = link_to t('.clientsbase'), boss_reports_path(:clientsbase)
+      %li{:class => c == 'boss/reports' && a == 'repurchase' && 'active' }
+        = link_to t('.repurchase'), boss_reports_path(:repurchase)
+      %li{:class => c == 'boss/reports' && a == 'increaseclients' && 'active' }
+        = link_to t('.increaseclients'), boss_reports_path(:increaseclients)
+      %li{:class => c == 'boss/reports' && a == 'salesfunnel' && 'active' }
+        = link_to t('.salesfunnel'), boss_reports_path(:salesfunnel)
+    .reservation_dropdown_column
+      %li{:class => c == 'boss/reports' && a == 'promotionchannel' && 'active' }
+        = link_to t('.promotionchannel'), boss_reports_path(:promotionchannel)
+

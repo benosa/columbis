@@ -19,6 +19,8 @@ html, body {height: 100%;}
 			.reservation li.dropdown{
 				background: url(/assets/new_design/images/dropdown.gif) right 21px no-repeat;
 				position: relative;
+        float: left;
+        height: 48px;
 			}
 			.reservation li a{
 				background: url(/assets/new_design/images/reservation_border.png) right top no-repeat;
@@ -42,42 +44,62 @@ html, body {height: 100%;}
         .reservation li.active ul li a{
           font-weight: normal;
         }
-        .reservation li.active ul li.active a{
-          font-weight: bold;
-        }
-				.reservation li.dropdown a,.databases li.dropdown a{padding-right: 30px;}
-		.reservation li.dropdown ul,.databases li.dropdown ul{
-			background: #f4f4f4 url(/assets/new_design/images/reservation_dropdown.png) top no-repeat;
-			border: 1px #c4c4c4 solid;
-			border-top: none;
-			box-shadow: #c4c4c4 0px 1px 3px;
-			display: none;
-			left: -2px;
-			padding: 12px 20px 9px 20px;
-			position: absolute;
-			top: 47px;
-			width: 131px;
-			z-index: 9;
-		}
-			.reservation li.dropdown ul li,.databases li.dropdown ul li{
-				border-top: 1px #e7e7e7 solid;
+				.reservation li.dropdown a{padding-right: 30px;}
+    		.reservation li.dropdown ul{
+    			background: #121212 url(/assets/new_design/images/float_panel.png) top repeat-x;
+    			border-top: none;
+    			display: none;
+    			left: 0;
+    			padding: 0;
+          padding-top: 2px;
+    			position: fixed;
+    			top: 47px;
+    			width: 100%;
+    			z-index: 9;
+    		}
+			.reservation li.dropdown ul li{
 				display: block;
-				float: none;
-				height: auto;
+				float: left;
+				height: 50px;
 			}
-				.reservation li.dropdown ul li:first-child,.databases li.dropdown ul li:first-child{border-top: none;}
-			.reservation li.dropdown ul li a{
-				background: none;
-				color: #646464;
-				height: auto;
-				padding: 5px 0 7px 0;
-				text-align: left;
-				text-shadow: #fbfbfb 0px -1px 0px;
-			}
-				.reservation li.dropdown ul li a:hover{
-					background: none;
-					color: #000;
+				.reservation li.dropdown ul li:first-child{border-top: none;}
+  			.reservation li.dropdown ul li a{
+  				background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+          color: #fff;
+          display: block;
+          font-size: 13px;
+          height: 33px;
+          line-height: 14px;
+          padding: 15px 22px 0 17px;
+          text-align: center;
+          text-shadow: #000 0px -1px 0px;
+  			}
+				.reservation li.dropdown ul li:hover, .reservation li.dropdown ul li.active{
+					background: url(/assets/new_design/images/databases_hover.png) repeat-x;
 				}
+        .reservation li.dropdown ul a:hover,.reservation li.dropdown ul li.active a{
+          background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+          color: #000;
+          text-shadow: #fff 0px 1px 0px;
+        }
+        .reservation li.dropdown .reservation_dropdown_row li{
+          width: 143px;
+          float: left;
+        }
+        .reservation li.dropdown .top_row{
+          padding-top: 35px;
+          border-bottom: 1px dotted white;
+          width: 100%;
+        }
+        .reservation li.dropdown .reservation_dropdown_column{
+          width: 143px;
+          float: left;
+        }
+        .reservation li.dropdown .reservation_dropdown_column li a{
+          width: 143px;
+          padding: 0;
+          padding-top: 15px;
+        }
 	.user_panel{float: right;}
 		.user_panel li{
 			background: url(/assets/new_design/images/reservation_border.png) right no-repeat;
@@ -115,17 +137,7 @@ html, body {height: 100%;}
 			float: left;
 			height: 48px;
 		}
-			.databases li.dropdown,.databases li.dropdown:hover{
-				background: url(/assets/new_design/images/dropdown_black.png) right 21px no-repeat;
-				position: relative;
-			}
-				.databases li.dropdown ul{
-					background: #f4f4f4 url(/assets/new_design/images/databases_dropdown.png) top no-repeat;
-					top: 49px;
-					width: 141px;
-				}
 			.databases li:hover,.databases li.active{background: url(/assets/new_design/images/databases_hover.png) repeat-x;}
-			.databases li.dropdown ul li:hover{background: none;}
 			.databases li a{
 				background: url(/assets/new_design/images/databases_border.png) right no-repeat;
 				color: #fff;
@@ -140,23 +152,6 @@ html, body {height: 100%;}
 				.databases li:hover a,.databases li.active a{
 					color: #000;
 					text-shadow: #fff 0px 1px 0px;
-				}
-				.databases li.dropdown a{
-					color: #fff;
-					text-shadow: #000 0px -1px 0px;
-				}
-			.databases li.dropdown ul li a{
-				background: none;
-				color: #646464;
-				height: auto;
-				padding: 5px 0 7px 0;
-				text-align: left;
-				text-shadow: #fbfbfb 0px -1px 0px;
-			}
-				.databases li.dropdown ul li a:hover,.databases li.dropdown ul li:hover a{
-					background: none;
-					color: #000;
-					text-shadow: #fbfbfb 0px -1px 0px;
 				}
 	.type{
 		float: right;

@@ -27,6 +27,12 @@ ru:
           potentials: 'Потенциальные клиенты'
         - &reports
           analytics: 'Аналитика'
+          income_title: 'Анализ выручки'
+          margin_title: 'Анализ наценки'
+          managers_title: "Анализ работы турменеджеров"
+          segmentation_title: 'Сегментация продукта'
+          clientbase_title: 'Анализ клиентской базы'
+          promotionchannel_title: 'Эффективность продвижения'
           desktop: 'Рабочий стол'
           operators: 'Туроператоры'
           directions: 'Направления'
@@ -49,6 +55,8 @@ ru:
           support: 'Техподдержка'
           write_review: 'Оставить отзыв'
           task_list: 'Список задач'
+      second_menu:
+        view: 'Вид'
       management:
         *management
       second_management:

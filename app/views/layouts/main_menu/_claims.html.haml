@@ -1,18 +1,19 @@
-%li.dropdown{:class => (params[:controller] == 'claims' and params[:action] == 'index') ? 'active' : ' '}
+%li.dropdown{:class => (params[:controller] == 'claims') ? 'active' : ' '}
   = link_to t('.claims'), claims_path, :id => 'claims_link'
   %ul
     %li{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
       = link_to t('.new_claim'), new_claim_path
-    - { :contract => t('.contract'), :permit => t('.permit'), :warranty => t('.warranty'), :memo => [t('.memo'), :memo_printer_for, :country], :act => t('.act') }.each do |mode, value|
-      %li{ :class => li_class(@claim, mode) }
-        - unless value.is_a?(Array)
-          - if @claim && !@claim.new_record? && @claim.company.try("#{mode}_printer".to_sym)
-            = link_to(value, claim_path(@claim.id, :print => mode), :target => '_blank')
+    - if params[:controller] == 'claims' && params[:action] == 'edit'
+      - { :contract => t('.contract'), :permit => t('.permit'), :warranty => t('.warranty'), :memo => [t('.memo'), :memo_printer_for, :country], :act => t('.act') }.each do |mode, value|
+        %li{ :class => li_class(@claim, mode) }
+          - unless value.is_a?(Array)
+            - if @claim && !@claim.new_record? && @claim.company.try("#{mode}_printer".to_sym)
+              = link_to(value, claim_path(@claim.id, :print => mode), :target => '_blank')
+            - else
+              %span= value
           - else
-            %span= value
-        - else
-          - if @claim && !@claim.new_record? && @claim.company.try(value[1], @claim.try(value[2]))
-            = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
-          - else
-            %span= value[0]
+            - if @claim && !@claim.new_record? && @claim.company.try(value[1], @claim.try(value[2]))
+              = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
+            - else
+              %span= value[0]
     %li= link_to t('.prihodnik'), '#'

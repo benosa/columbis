@@ -186,6 +186,7 @@ class ClaimsController < ApplicationController
         end
         opts[:with][:office_id] = params[:office_id] unless params[:office_id].blank?
       else
+        params[:only_my] = '1' # TODO: temporary for Mistral, need change abilities
         opts[:with][:office_id] = current_office.id
         if params[:only_my] == '1'
           manager = current_user.id

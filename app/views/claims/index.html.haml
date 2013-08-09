@@ -21,7 +21,7 @@
         = label_tag :total_years, t('.only_totals')
         = select_tag :total_years, options_for_select(total_years.unshift([t('claims.index.options_all'), 'all']), params[:year]), :prompt => t('nope'), :name => 'year', :class => 'total_years', :data => { :param=> 'total_years', :filter => 1 }
 
-    - else
+    -# else
 
       = check_box_tag :only_my, nil, (params[:only_my] == '1'), data: { param: 'only_my', filter: 1, value: 1 }
       = label_tag :only_my, t('.only_my'), class: 'checkbox left_checkbox'

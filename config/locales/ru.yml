@@ -24,6 +24,7 @@ ru:
   back_to_list: 'Вернуться к списку'
   back: 'Вернуться'
   search: 'Поиск'
+  all: 'Все'
   view_all: 'Показать все'
   required_field: 'Обязательное поле'
 

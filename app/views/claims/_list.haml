@@ -8,8 +8,8 @@
           %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
           %th= sort_link 'tourist_stat', t('claims.index.tourist_stat')
           - if show_office
-            %th.blue_box= sort_link 'user_id', t('claims.index.manager')
             %th.blue_box= sort_link 'office', t('claims.index.office')
+            %th.blue_box= sort_link 'user_id', t('claims.index.manager')
           - else
             %th.blue_box= sort_link 'user_id', t('claims.index.manager')
           %th.blue_box= sort_link 'applicant', t('claims.index.full_name')

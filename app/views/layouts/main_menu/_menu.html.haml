@@ -2,7 +2,8 @@
   = render 'layouts/main_menu/claims'
   = render 'layouts/main_menu/management'
   = render 'layouts/main_menu/clients'
-  = render 'layouts/main_menu/reports'
+  - if user_signed_in? && %w(admin boss).include?(current_user.role)
+    = render 'layouts/main_menu/reports'
   = render 'layouts/main_menu/support'
 - if user_signed_in?
   #review_form_container{ style: 'display: none;' }

@@ -27,31 +27,47 @@
       %li{:class => a == 'managers_margin' && 'active' }
         = link_to t('.margin_managers'), boss_reports_path(:managers_margin)
     - when 'normalcheck', 'directions', 'operators', 'tourprice', 'tourduration', 'hotelstars'
-      %li.active
-        = link_to t('.segmentation_title'), '#'
-      %li{:class => a == 'normalcheck' && 'active' }
-        = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
-      %li{:class => a == 'directions' && 'active' }
-        = link_to t('.directions'), boss_reports_path(:directions)
-      %li{:class => a == 'operators' && 'active' }
-        = link_to t('.operators'), boss_reports_path(:operators)
-      %li{:class => a == 'tourprice' && 'active' }
-        = link_to t('.tourprice'), boss_reports_path(:tourprice)
-      %li{:class => a == 'tourduration' && 'active' }
-        = link_to t('.tourduration'), boss_reports_path(:tourduration)
-      %li{:class => a == 'hotelstars' && 'active' }
-        = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
+      %table
+        %tr
+          %td
+            %li.active
+              = link_to t('.segmentation_title'), '#'
+          %td
+            %li{:class => a == 'normalcheck' && 'active' }
+              = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
+          %td
+            %li{:class => a == 'directions' && 'active' }
+              = link_to t('.directions'), boss_reports_path(:directions)
+          %td
+            %li{:class => a == 'operators' && 'active' }
+              = link_to t('.operators'), boss_reports_path(:operators)
+          %td
+            %li{:class => a == 'tourprice' && 'active' }
+              = link_to t('.tourprice'), boss_reports_path(:tourprice)
+          %td
+            %li{:class => a == 'tourduration' && 'active' }
+              = link_to t('.tourduration'), boss_reports_path(:tourduration)
+          %td
+            %li{:class => a == 'hotelstars' && 'active' }
+              = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
     - when 'clientsbase', 'repurchase', 'increaseclients', 'salesfunnel'
-      %li.active
-        = link_to t('.clientbase_title'), '#'
-      %li{:class => a == 'clientsbase' && 'active' }
-        = link_to t('.clientsbase'), boss_reports_path(:clientsbase)
-      %li{:class => a == 'repurchase' && 'active' }
-        = link_to t('.repurchase'), boss_reports_path(:repurchase)
-      %li{:class => a == 'increaseclients' && 'active' }
-        = link_to t('.increaseclients'), boss_reports_path(:increaseclients)
-      %li{:class => a == 'salesfunnel' && 'active' }
-        = link_to t('.salesfunnel'), boss_reports_path(:salesfunnel)
+      %table
+        %tr
+          %td
+            %li.active
+              = link_to t('.clientbase_title'), '#'
+          %td
+            %li{:class => a == 'clientsbase' && 'active' }
+              = link_to t('.clientsbase'), boss_reports_path(:clientsbase)
+          %td
+            %li{:class => a == 'repurchase' && 'active' }
+              = link_to t('.repurchase'), boss_reports_path(:repurchase)
+          %td
+            %li{:class => a == 'increaseclients' && 'active' }
+              = link_to t('.increaseclients'), boss_reports_path(:increaseclients)
+          %td
+            %li{:class => a == 'salesfunnel' && 'active' }
+              = link_to t('.salesfunnel'), boss_reports_path(:salesfunnel)
     - when 'promotionchannel'
       %li.active
         = link_to t('.promotionchannel_title'), '#'

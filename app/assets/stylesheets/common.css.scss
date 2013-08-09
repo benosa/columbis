@@ -516,6 +516,7 @@ div.left {
     background: url("/assets/new_design/images/reset.png") no-repeat;
     margin-right: 17px;
   }
+  input + label { margin-left: 11px; }
 }
 
 .low_resolution .filter {

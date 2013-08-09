@@ -8,7 +8,7 @@
     = render 'shared/search_field'
 
     = label_tag :list_filter, t('.list')
-    = select_tag :list_filter, options_for_select(DropdownValue.available_lists.map{ |k,v| [v, k] }.sort{ |o1, o2| o1[0] <=> o2[0] }), :prompt => t('nope'), :class => 'importance_select', :data => { :param => 'list', :filter => '1' }
+    = select_tag :list_filter, options_for_select(DropdownValue.available_lists.map{ |k,v| [v, k] }.sort{ |o1, o2| o1[0] <=> o2[0] }), :prompt => t('all'), :class => 'importance_select', :data => { :param => 'list', :filter => '1' }
 
 = render 'list'
 

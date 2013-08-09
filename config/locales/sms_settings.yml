@@ -8,6 +8,7 @@ ru:
   sms_settings:
     index:
       sms_settings: 'Настройки'
+      signature: 'Подпись'
       add_sms_sending: 'Создать рассылку'
 
     navigation:
@@ -17,7 +18,4 @@ ru:
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
-    
-    index:
-      signature: 'Подпись'
       

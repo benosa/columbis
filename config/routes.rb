@@ -2,7 +2,8 @@
 Tourism::Application.routes.draw do
 
   resources :tariff_plans
-  resources :sms_settings
+  get 'sms_settings' => 'sms_settings#index', as: 'sms_settings'
+  put 'sms_settings' => 'sms_settings#update', as: 'sms_settings'
 
   resources :sms_groups do
     collection do

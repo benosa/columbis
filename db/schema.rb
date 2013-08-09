@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807090410) do
+ActiveRecord::Schema.define(:version => 20130807112711) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(:version => 20130807090410) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
+    t.boolean  "sms_birthday_send"
   end
 
   create_table "countries", :force => true do |t|

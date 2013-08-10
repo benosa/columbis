@@ -14,7 +14,7 @@ FactoryGirl.define do
     date_of_birth '12.12.12'
     email 'ivan.ivanov@test.mail.com'
   end
-  
+
   factory :applicant, :class => Tourist do
     association :company
     association :address
@@ -28,5 +28,11 @@ FactoryGirl.define do
     passport_valid_until '20.10.11'
     date_of_birth '12.12.12'
     email 'ivan.pohodov@test.mail.com'
+  end
+
+  factory :random_tourist, :parent => :tourist do
+    first_name { Faker::Name.name }
+    last_name { Faker::Name.name }
+    middle_name { Faker::Name.name }
   end
 end

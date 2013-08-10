@@ -1,9 +1,9 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
-  
+
 describe "City:", js: true do
   include ActionView::Helpers
-  
+
   subject { page }
 
   before do
@@ -46,7 +46,7 @@ describe "City:", js: true do
       end
 
       it "should sort by column name" do
-        # It's checking by first characters, because sorts in the test 
+        # It's checking by first characters, because sorts in the test
         # and sort on the page may a little different
         columns = [:name, :country_name]
         columns.each_with_index do |column, i|

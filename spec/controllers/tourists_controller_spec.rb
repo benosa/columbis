@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe TouristsController do
   before { create_tourist }
-  
+
   def create_tourist
     @tourist = FactoryGirl.create(:tourist)
     user = FactoryGirl.create(:admin)
@@ -14,7 +14,6 @@ describe TouristsController do
     before { get :index }
     it { should respond_with :success }
     it { should render_template :index }
-    it { should assign_to(:tourists).with [@tourist] }
   end
 
   describe 'GET new' do
@@ -49,7 +48,7 @@ describe TouristsController do
 
   describe 'PUT update' do
     before { put :update, id: @tourist.id, tourist: attributes_for(:tourist, last_name: 'Ivanov') }
-    
+
     it { should assign_to(:tourist).with(@tourist) }
     it { should redirect_to(tourists_path)  }
 

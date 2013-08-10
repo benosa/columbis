@@ -19,6 +19,12 @@ module Macros
     users
   end
 
+  def create_claims_with_prerequisites(company, factory = :claim, count = 2)
+    claims = []
+    count.times { claims << FactoryGirl.create(factory, company: company) }
+    claims
+  end
+
   def login_as_admin
     # company = FactoryGirl.create(:company)
     # office = FactoryGirl.create(:office)
@@ -26,7 +32,7 @@ module Macros
     # country = FactoryGirl.create(:country)
     login_as admin
   end
-  
+
   def login_as(user)
     visit new_user_session_path
     fill_in "user[login]", :with => user.login
@@ -43,9 +49,9 @@ module Macros
 
   def wait_for_filter_refresh(seconds = Capybara.default_wait_time)
     # wait_until(seconds) { page.has_no_selector?('.refreshing') } or puts("Ran out of time waiting for ajax refresh.\n")
-    wait_until(seconds) { 
+    wait_until(seconds) {
       # puts page.find('#ajax-indicator').visible?.inspect
-      !page.find('#ajax-indicator').visible? 
+      !page.find('#ajax-indicator').visible?
     } #or puts("Ran out of time waiting for ajax refresh.\n")
   rescue Capybara::TimeoutError
     flunk 'Expected ajax indicator to be hidden'

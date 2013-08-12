@@ -556,8 +556,16 @@ var ajaxCounter = 0;
 
 function ajaxCounterInc(num) {
   ajaxCounter += num || 1;
-  if (ajaxCounter > 0)
+  if (ajaxCounter > 0) {
+    // temporary place indicator after h1 in top in absolute position, to fix content jumping
+    var $h1 = $('.top h1');
+    $('#ajax-indicator').css({
+      position: 'absolute',
+      top: $h1.offset().top,
+      left: $h1.offset().left + $h1.width()
+    })
     $('#ajax-indicator').show();
+  }
   return ajaxCounter;
 }
 

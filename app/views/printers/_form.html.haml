@@ -7,15 +7,7 @@
       %h2= t('.common')
     .form_block_content
       .fake_row
-        - if @printer.id != nil
-          %p.activity{:style => "display:block;"}
-            = "#{t('.download')} \"#{@printer.template.model[:template]}\""
-            = link_to '', template_path(@printer.id), :class => 'download', :title => t('.download')
-          %br
-        %p.file
-          = f.file_field :template
-          = link_to t(".choose_file"), '#', :class => 'select_file'
-        %p#mode_name{:style => "clear:both;flot:none"}
+        %p#mode_name
           = f.label :mode, t('.mode')
           - default_mode = @printer.mode == nil ? "contract" : @printer.mode.to_s
           = f.select :mode, options_for_select(Printer::MODES.map{ |m| [Printer.human_attribute_name(m), m] }, default_mode), :class => 'mode_select list_select', :not_highlighted => true
@@ -24,3 +16,11 @@
           = f.label :country, t('.country')
           = f.fields_for :country, @printer.country do |cf|
             = cf.text_field :name, :class => 'autocomplete country', :style => "width:250px;", :data => { :id => @printer.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
+        %p.file
+          = f.file_field :template
+          = link_to t(".choose_file"), '#', :class => 'select_file'
+          = label_tag t('.choose_file_label')
+        - if @printer.id != nil
+          = label_tag t('.download')
+          %br
+          = link_to @printer.template.model[:template], template_path(@printer.id), :title => t('.download')

@@ -1,0 +1,47 @@
+- content_for(:error_messages) do
+  = f.error_messages
+
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= t('.settings')
+    .form_block_content
+      .fake_row
+        %p= f.label :name
+        = f.text_field :name
+        %p= f.label :price
+        = f.number_field :price
+        = f.select :currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
+        %p= f.label :users_count
+        = f.number_field :users_count
+        %p= f.label :place_size
+        = f.text_field :place_size
+        %p
+          = f.check_box :back_office
+          = f.label :back_office, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :documents_flow
+          = f.label :documents_flow, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :claims_base
+          = f.label :claims_base, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :crm_system
+          = f.label :crm_system, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :managers_reminder
+          = f.label :managers_reminder, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :analytics
+          = f.label :analytics, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :boss_desktop
+          = f.label :boss_desktop, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :sms_sending
+          = f.label :sms_sending, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :active
+          = f.label :active, :class => 'checkbox left_checkbox'
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

@@ -1,13 +1,14 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel edit_operator' }
 
-- title t('.title')
+- title t('.edit', :tariff_plan => @tariff_plan.name)
 
-= form_for @printer, :html => {:multipart => true} do |form|
+= form_for @tariff_plan do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
+  = link_to t('delete'), tariff_plan_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
-  = link_to t('view_all'), printers_path, :class => 'list_operator'
+  = link_to t('.index_tariff_plan'), tariff_plans_path, :class => 'list_operator'

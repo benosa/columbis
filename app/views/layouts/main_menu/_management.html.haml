@@ -4,11 +4,24 @@
 %li.dropdown{:class => a_class}
   %a{:href => '#'}= t('.management')
   %ul
-    %li{:class => c == 'dashboard/companies' && 'active' }= link_to t('.company'), dashboard_edit_company_path
-    %li{:class => c == 'dashboard/users' && 'active' }= link_to t('.users'), dashboard_users_path
-    %li{:class => c == 'printers' && 'active' }= link_to t('.printers'), printers_path
-    %li{:class => c == 'operators' && 'active' }= link_to t('.operators'), operators_path
-    %li{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path
-    %li{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
-    %li{:class => c == 'dashboard/dropdown_values' && 'active' }= link_to t('.dropdown_values'), dashboard_dropdown_values_path
-    %li{:class => c == 'sms_sendings' && 'active' }= link_to t('.sms_sendings'), sms_sendings_path
+    %table
+      %tr
+        %td
+          %li{:class => c == 'dashboard/companies' && 'active' }= link_to t('.company'), dashboard_edit_company_path
+        %td
+          %li{:class => c == 'dashboard/users' && 'active' }= link_to t('.users'), dashboard_users_path
+        %td
+          %li{:class => c == 'printers' && 'active' }= link_to t('.printers'), printers_path
+        %td
+          %li{:class => c == 'operators' && 'active' }= link_to t('.operators'), operators_path
+        %td
+          %li{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path
+        %td
+          %li{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
+        %td
+          %li{:class => c == 'dashboard/dropdown_values' && 'active' }= link_to t('.dropdown_values'), dashboard_dropdown_values_path
+        %td
+          %li{:class => c == 'sms_sendings' && 'active' }= link_to t('.sms_sendings'), sms_sendings_path
+        %td
+          %li{ :class => params[:controller] == 'tariff_plans' && 'active' }
+            = link_to t('.tariff_plans'), tariff_plans_path if can? :manage, TariffPlan

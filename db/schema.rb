@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731184347) do
+ActiveRecord::Schema.define(:version => 20130812075648) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -348,6 +348,25 @@ ActiveRecord::Schema.define(:version => 20130731184347) do
     t.integer  "position"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "tariff_plans", :force => true do |t|
+    t.integer  "price",             :default => 0,     :null => false
+    t.string   "currency",          :default => "rur", :null => false
+    t.string   "name",                                 :null => false
+    t.boolean  "active",            :default => true,  :null => false
+    t.integer  "users_count",                          :null => false
+    t.string   "place_size",                           :null => false
+    t.boolean  "back_office",       :default => false, :null => false
+    t.boolean  "documents_flow",    :default => false, :null => false
+    t.boolean  "claims_base",       :default => false, :null => false
+    t.boolean  "crm_system",        :default => false, :null => false
+    t.boolean  "managers_reminder", :default => false, :null => false
+    t.boolean  "analytics",         :default => false, :null => false
+    t.boolean  "boss_desktop",      :default => false, :null => false
+    t.boolean  "sms_sending",       :default => false, :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   create_table "tasks", :force => true do |t|

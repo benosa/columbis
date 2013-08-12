@@ -1,0 +1,91 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.title')
+
+%table.reservations.tour_operators
+  %tr
+    %th
+      %span=t('.name')
+    %th
+      %span=t('.price')
+    %th
+      %span=t('.active')
+    %th
+      %span=t('.settings')
+    %th.actions
+      %span= t('actions')
+
+  - @tariff_plans.each do |tariff_plan|
+    %tr
+      %td= tariff_plan.name
+      %td= tariff_plan.price.to_s + " " + t(tariff_plan.currency)
+      %td
+        - if tariff_plan.active
+          %i.icon-ok
+        - else
+          %i.icon-minus
+      %td{:style => "width: 500px;"}
+        %div
+          =t('.users_count') + ": "
+          = tariff_plan.users_count
+        %p
+          =t('.place_size') + ": "
+          = tariff_plan.place_size
+        %p
+          =t('.back_office') + ": "
+          - if tariff_plan.back_office
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.documents_flow') + ": "
+          - if tariff_plan.documents_flow
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.claims_base') + ": "
+          - if tariff_plan.claims_base
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.crm_system') + ": "
+          - if tariff_plan.crm_system
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.managers_reminder') + ": "
+          - if tariff_plan.managers_reminder
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.analytics') + ": "
+          - if tariff_plan.analytics
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.boss_desktop') + ": "
+          - if tariff_plan.boss_desktop
+            %i.icon-ok
+          - else
+            %i.icon-minus
+        %p
+          =t('.sms_sending') + ": "
+          - if tariff_plan.sms_sending
+            %i.icon-ok
+          - else
+            %i.icon-minus
+      %td
+        = link_to '', edit_tariff_plan_path(tariff_plan), :class => 'edit_row', :title => t('edit')
+        = link_to '', tariff_plan, method: :delete, data: { confirm: t('are_you_sure') }, :class => 'delete', :title => t('delete')
+
+%br
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_tariff_plan'), new_tariff_plan_path, :class => 'add_operator'

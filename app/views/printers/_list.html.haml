@@ -3,7 +3,7 @@
     %tr
       %th= sort_link(:mode, t('.mode'), :default)
       %th= sort_link(:template_name, t('.template_name'))
-      %th.actions
+      %th
         %span= t('actions')
 
     - for printer in @printers
@@ -13,8 +13,8 @@
         %td
           %p= printer.template_name
         %td.activity
-          = link_to '', template_path(printer.id), :class => 'download', :style => "margin:0 0 0 5px;", :title => t('download')
-          = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :style => "margin:0 0 0 6px;", :title => t('edit')
-          = link_to '', printer_path(printer.id), :class => 'delete', :style => "margin:1px 0 0 5px;", :title => t('delete'), :remote => true, :method => :delete, :confirm => I18n.t('printers.messages.confirm')
+          = link_to '', template_path(printer.id), :class => 'download', :title => t('download')
+          = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :title => t('edit')
+          = link_to '', printer_path(printer.id), :class => 'delete', :title => t('delete'), :remote => true, :method => :delete, :confirm => I18n.t('printers.messages.confirm')
 
   = render :partial => 'shared/pagination', :locals => { :collection => @printers }

@@ -29,6 +29,7 @@ body {
 
 .header {
   overflow: visible;
+  position: relative;
 }
 
 .wrapper {
@@ -145,14 +146,16 @@ body {
   text-align: center;
   text-shadow: #000 0px -1px 0px;
 }
-.reservation li.dropdown ul .reservation_dropdown_column li{
+.reservation li.dropdown ul .reservation_dropdown_column li a{
   background: right no-repeat #121212;
 }
 .reservation li.dropdown ul li:hover, .reservation li.dropdown ul li.active{
   background: url(/assets/new_design/images/databases_hover.png) repeat-x;
 }
-.reservation li.dropdown ul a:hover,.reservation li.dropdown ul li.active a{
-  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+.reservation li.dropdown ul a:hover,.reservation li.dropdown ul li.active a,
+  .reservation li.dropdown ul .reservation_dropdown_column li a:hover,
+  .reservation li.dropdown ul .reservation_dropdown_column li.active a{
+  background: url(/assets/new_design/images/databases_hover.png) right no-repeat;
   color: #000;
   text-shadow: #fff 0px 1px 0px;
 }
@@ -204,6 +207,8 @@ body {
 }*/
 
 .user_panel {
+  position: absolute;
+  right: 0;
   background: url("/assets/new_design/images/reservation_border.png") no-repeat scroll left top transparent;
   padding-left: 10px;
   li {

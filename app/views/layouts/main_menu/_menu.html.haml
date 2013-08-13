@@ -1,0 +1,13 @@
+%ul#documents_to_print_menu.reservation
+  = render 'layouts/main_menu/claims'
+  = render 'layouts/main_menu/management'
+  = render 'layouts/main_menu/clients'
+  - if user_signed_in? && %w(admin boss).include?(current_user.role)
+    = render 'layouts/main_menu/reports'
+  = render 'layouts/main_menu/support'
+- if user_signed_in?
+  #review_form_container{ style: 'display: none;' }
+    = render 'tasks/review_form'
+%ul.user_panel
+  = render 'devise/menu/registration_items'
+  = render 'devise/menu/login_items'

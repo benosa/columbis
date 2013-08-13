@@ -1,46 +1,79 @@
 ru:
   layouts:
-    application:
-      company: 'Моя компания'
-      users: 'Сотрудники'
-      printers: 'Печатные формы'
-      dropdown_values: 'Списки значений'
-      clients: 'Клиенты'
-      addresses: 'Адреса'
-      catalogs: 'Каталоги'
-      operators: 'Туроператоры'
-      cities: 'Города'
-      countries: 'Страны'
-      airlines: 'Авиалинии'
-      fullscreen: 'На весь экран'
-      fullscreen_cancel: 'Закрыть полный экран'
-      analytics: 'Аналитика'
-      management: 'Управление'
-      desktop: 'Рабочий стол'
-      reference: 'Справка'
-      contract: 'Договор'
-      task_list: 'Список задач'
-      claims: 'Брони'
-      new_claim: 'Новая заявка'
-      prihodnik: 'Приходник'
-      write_review: 'Оставить отзыв'
-      sms_sendings: 'SMS-рассылки'
-
+    main_menu:
+      aliases:
+        - &management
+          management: 'Управление'
+          company: 'Моя компания'
+          users: 'Сотрудники'
+          printers: 'Печатные формы'
+          dropdown_values: 'Списки значений'
+          sms_sendings: 'SMS-рассылки'
+          cities: 'Города'
+          countries: 'Страны'
+          operators: 'Туроператоры'
+        - &claims
+          claims: 'Брони'
+          new_claim: 'Новая заявка'
+          contract: 'Договор'
+          prihodnik: 'Приходник'
+          permit: 'Путевка'
+          warranty: 'Фингарантии'
+          memo: 'Памятка'
+          act: 'Акт'
+        - &clients
+          clients: 'Клиенты'
+          tourists: 'Туристы'
+          potentials: 'Потенциальные клиенты'
+        - &reports
+          analytics: 'Аналитика'
+          income_title: 'Анализ выручки'
+          margin_title: 'Анализ наценки'
+          managers_title: "Анализ работы турменеджеров"
+          segmentation_title: 'Сегментация продукта'
+          clientbase_title: 'Анализ клиентской базы'
+          promotionchannel_title: 'Эффективность продвижения'
+          desktop: 'Рабочий стол'
+          operators: 'Туроператоры'
+          directions: 'Направления'
+          tourprice: 'Стоимость тура'
+          tourduration: 'Длительность тура'
+          hotelstars: 'Количество звёзд у отеля'
+          promotionchannel: 'Канал продвижения'
+          repurchase: 'Анализ повторных покупок'
+          clientsbase: 'ABC Анализ клиентской базы'
+          income: 'Выручка'
+          income_offices: 'Выручка по офисам'
+          income_managers: 'Выручка по менеджерам'
+          margin: 'Наценка'
+          margin_offices: 'Наценка по офисам'
+          margin_managers: 'Наценка по менеджерам'
+          normalcheck: "Средний чек"
+          increaseclients: "Динамика прироста клиентской базы"
+          salesfunnel: "Воронка продаж"
+        - &support
+          support: 'Техподдержка'
+          write_review: 'Оставить отзыв'
+          task_list: 'Список задач'
+      second_menu:
+        view: 'Вид'
+      management:
+        *management
+      second_management:
+        *management
+      claims:
+        *claims
+      second_claims:
+        *claims
+      clients:
+        *clients
+      second_clients:
+        *clients
       reports:
-        operators: 'Туроператоры'
-        directions: 'Направления'
-        tourprice: 'Стоимость тура'
-        tourduration: 'Длительность тура'
-        hotelstars: 'Количество звёзд у отеля'
-        promotionchannel: 'Канал продвижения'
-        repurchase: 'Анализ повторных покупок'
-        clientsbase: 'ABC Анализ клиентской базы'
-        income: 'Выручка'
-        income_offices: 'Выручка по офисам'
-        income_managers: 'Выручка по менеджерам'
-        margin: 'Наценка'
-        margin_offices: 'Наценка по офисам'
-        margin_managers: 'Наценка по менеджерам'
-        normalcheck: "Средний чек"
-        increaseclients: "Динамика прироста клиентской базы"
-        salesfunnel: "Воронка продаж"
+        *reports
+      second_reports:
+        *reports
+      support:
+        *support
+      second_support:
+        *support

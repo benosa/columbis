@@ -3,7 +3,7 @@ module Boss
   class IncomeReport < Report
     arel_tables :payments, :claims
     available_results :amount
-    attribute :period, :default => 'day'
+    attribute :period, :default => 'month'
     attr_accessible :period
 
     def initialize(options = {})
@@ -14,10 +14,10 @@ module Boss
         @start_date = @end_date - 30.days
       when 'week'
         @start_date = @end_date - (12*7).days
-      when 'month'
-        @start_date = @end_date - @end_date.mon - 1.year
-      else
+      when 'year'
         @start_date = @end_date - 20.year
+      else
+        @start_date = @end_date - @end_date.mon - 1.year
       end
     end
 
@@ -27,10 +27,10 @@ module Boss
           @results[:amount]  = build_result(query: days_query)
         when 'week'
           @results[:amount]  = build_result(query: weeks_query)
-        when 'month'
-          @results[:amount]  = build_result(query: months_query)
-        else
+        when 'year'
           @results[:amount]  = build_result(query: years_query)
+        else
+          @results[:amount]  = build_result(query: months_query)
       end
       self
     end

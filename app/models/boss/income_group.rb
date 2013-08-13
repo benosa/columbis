@@ -14,7 +14,7 @@ module Boss
     def prepare(options = {})
       self.sort_dir = "desc" if !(options[:sort_dir] || options[:dir] || self.sort_dir)
       self.sort_col = "total" if !(options[:sort_col] || options[:col] || self.sort_col)
-      @results[:total] = build_result(query: total_query, typecast: {total: :to_i}).sort!
+      total_result
       @total_names = get_total_names @results[:total].data
       super
     end
@@ -27,6 +27,9 @@ module Boss
     end
 
     protected
+      def total_result
+        @results[:total] = build_result(query: total_query, typecast: {total: :to_i}).sort!
+      end
 
       def days_serialize_data(data, categories)
         @total_names.map do |manager|

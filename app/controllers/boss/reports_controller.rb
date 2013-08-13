@@ -38,6 +38,7 @@ module Boss
     end
 
     def income
+      p = params
       @report = IncomeReport.new(report_params.merge(period: params[:period])).prepare
       @amount = @report.amount
       render partial: 'income' if request.xhr?
@@ -186,6 +187,7 @@ module Boss
         params_key << params[:group] if params[:group]
         filter_key = "reports-#{params_key.join('-')}-last-filter".to_sym
         if params[:filter_reset]
+          session[filter_key] = {} if session[filter_key].blank?
           clear_session_filter(session[filter_key])
           params.merge!(session[filter_key])
         elsif request.xhr?
@@ -207,15 +209,19 @@ module Boss
       end
 
       def clear_session_filter(filter)
-        filter.delete("start_date")
-        filter.delete("end_date")
-        filter.delete("minim")
-        filter.delete("row_count")
+        filter.merge!({"start_date"=>Time.zone.now.beginning_of_month.strftime("%d.%m.%Y")})
+        filter.merge!({"end_date"=>Time.zone.now.strftime("%d.%m.%Y")})
+        filter.merge!({"show_amount"=>1})
+        filter.merge!({"show_bars"=>1})
+        filter.merge!({"show_pies"=>1})
+        filter.merge!({"show_items"=>1})
+        filter.merge!({"minim"=>3})
+        filter.merge!({"row_count"=>10})
+        filter.merge!({"period"=>'month'})
         filter.delete("show_others")
         filter.delete("sort")
         filter.delete("dir")
         filter.delete("margin_types")
-        filter.delete("period")
         filter.delete("year")
       end
   end

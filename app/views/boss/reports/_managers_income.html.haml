@@ -3,7 +3,11 @@
     - case params[:period]
       - when 'day'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings(@amount.data) } }
-      - when 'month'
+      - when 'year'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@amount.data) } }
+      - when 'week'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@amount.data) } }
+      - else
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings(@amount.data) } }
         %div{:style => "display: table-cell; vertical-align: middle; clear:both;"}
           - now_extra = params[:extra] ? params[:extra] : (@total_names ? @total_names.first[:id] : nil)
@@ -11,10 +15,6 @@
           = select_tag :extra, options_for_select(@total_names.map{|e| [e[:name], e[:id]]}, now_extra), data: { param: 'extra', filter: 1, :default => now_extra }
         %br
         #amount_area_group.chart{ data: { type: 'standart_column', settings: @report.months_column_settings_with_extra(@amount.data) } }
-      - when 'week'
-        #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings(@amount.data) } }
-      - else
-        #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings(@amount.data) } }
   .totals
     %table.reservations.tour_operators
       %thead

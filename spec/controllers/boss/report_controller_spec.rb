@@ -15,7 +15,7 @@ describe Boss::ReportsController do
 
   describe "client base report" do
     before(:all) do
-      create_claims_with_prerequisites(@company, :clientbase_claim, 10)
+      create_claims_with_prerequisites(@company, :clientbase_claim, 20)
     end
 
     it "should be exist count" do

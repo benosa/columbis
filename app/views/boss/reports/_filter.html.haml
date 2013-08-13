@@ -2,18 +2,19 @@
 %form.filter
   - unless local_assigns[:period_selects] === false
     .field_wrapper
+      - period = !params['period'].blank? ? params['period'] : 'month'
       = label_tag :period, t('.period')
-      = select_tag :period, options_for_select(period_options, 'month'), class: 'period', data: { param: 'period', filter: 1, default: 'month' }
+      = select_tag :period, options_for_select(period_options, period), class: 'period', data: { param: 'period', filter: 1, default: 'month' }
     .field_wrapper
       = label_tag :start_date, t('.start_date')
-      = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: l(@report.start_date, format: :long) }
+      = text_field_tag :start_date, l(@report.start_date, format: :long), class: 'datepicker start_date date', data: { param: 'start_date', filter: 1, default: Time.zone.now.beginning_of_month.strftime("%d.%m.%Y") }
     .field_wrapper
       = label_tag :end_date, t('.end_date')
-      = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: l(@report.end_date, format: :long) }
+      = text_field_tag :end_date, l(@report.end_date, format: :long), class: 'datepicker end_date date', data: { param: 'end_date', filter: 1, default: Time.zone.now.strftime("%d.%m.%Y") }
   - unless local_assigns[:row_count] === false
     .field_wrapper
       = label_tag :row_count, local_assigns[:row_count] || t('.row_count')
-      = select_tag :row_count, options_for_select(row_count_options, @report.row_count), class: 'row_count', data: { param: 'row_count', filter: 1, default: @report.row_count }
+      = select_tag :row_count, options_for_select(row_count_options, @report.row_count), class: 'row_count', data: { param: 'row_count', filter: 1, default: 10 }
   - unless local_assigns[:show_others_label] === false
     .field_wrapper
       = label_tag :show_others, local_assigns[:show_others_label] || t('report.others'), class: 'checkbox left_checkbox show_others'

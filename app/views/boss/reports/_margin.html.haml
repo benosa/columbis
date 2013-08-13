@@ -3,9 +3,9 @@
     - case params[:period]
       - when 'day'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.days_column_settings_with_percent(@percent_data) } }
-      - when 'month'
-        #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings_with_percent(@percent_data) } }
+      - when 'year'
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings_with_percent(@percent_data) } }
       - when 'week'
         #amount_area.chart{ data: { type: 'standart_column', settings: @report.weeks_column_settings_with_percent(@percent_data) } }
       - else
-        #amount_area.chart{ data: { type: 'standart_column', settings: @report.years_column_settings_with_percent(@percent_data) } }
+        #amount_area.chart{ data: { type: 'standart_column', settings: @report.months_column_settings_with_percent(@percent_data) } }

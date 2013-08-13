@@ -22,3 +22,4 @@
 //= require claims
 //= require dashboard
 //= require offline
+//= require boss

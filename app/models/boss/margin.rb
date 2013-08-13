@@ -25,12 +25,13 @@ module Boss
           @results[:percent]  = build_result(query: days_query)
         when 'week'
           @results[:percent]  = build_result(query: weeks_query)
-        when 'month'
-          @results[:percent]  = build_result(query: months_query)
-        else
+        when 'year'
           @results[:percent]  = build_result(query: years_query)
+        else
+          @results[:percent]  = build_result(query: months_query)
       end
-      @results[:data] = @results[:amount].data + @results[:percent].data.map!{|e| e.merge("percent" => true)}
+      @results[:data] = @results[:amount].data.map!{|e| e.merge("percent" => false)} +
+        @results[:percent].data.map!{|e| e.merge("percent" => true)}
       self
     end
 
@@ -45,13 +46,13 @@ module Boss
           .where(claims[:excluded_from_profit].eq(false))
         case @query_type
         when 'profit'
-          query.project(claims[:profit].sum.as('amount'))
+          query.project(claims[:profit].sum.as('amount'), claims[:profit_in_percent].average.as('percent'))
         when 'profit_in_percent'
           query.project(claims[:profit_in_percent].average.as('amount'))
         when 'profit_in_percent_acc'
           query.project(claims[:profit_in_percent_acc].average.as('amount'))
         else
-          query.project(claims[:profit_acc].sum.as('amount'))
+          query.project(claims[:profit_acc].sum.as('amount'), claims[:profit_in_percent_acc].average.as('percent'))
         end
       end
 

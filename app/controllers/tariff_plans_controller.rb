@@ -18,24 +18,20 @@ class TariffPlansController < ApplicationController
   def create
     @tariff_plan = TariffPlan.new(params[:tariff_plan])
 
-    respond_to do |format|
-      if @tariff_plan.save
-        redirect_to tariff_plans_url, notice: t('.tariff_plans.messages.created')
-      else
-        render action: "new"
-      end
+    if @tariff_plan.save
+      redirect_to tariff_plans_path, notice: t('.tariff_plans.messages.created')
+    else
+      render action: "new"
     end
   end
 
   def update
     @tariff_plan = TariffPlan.find(params[:id])
 
-    respond_to do |format|
-      if @tariff_plan.update_attributes(params[:tariff_plan])
-        redirect_to tariff_plans_url, notice: t('.tariff_plans.messages.updated')
-      else
-        render action: "edit"
-      end
+    if @tariff_plan.update_attributes(params[:tariff_plan])
+      redirect_to tariff_plans_path, notice: t('.tariff_plans.messages.updated')
+    else
+      render action: "edit"
     end
   end
 
@@ -43,6 +39,6 @@ class TariffPlansController < ApplicationController
     @tariff_plan = TariffPlan.find(params[:id])
     @tariff_plan.destroy
 
-    redirect_to tariff_plans_url, notice: t('.tariff_plans.messages.destroyed')
+    redirect_to tariff_plans_path, notice: t('.tariff_plans.messages.destroyed')
   end
 end

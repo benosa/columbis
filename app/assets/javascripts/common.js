@@ -338,6 +338,8 @@ function customizeSelect(selector, is_container, options) {
       $sel = $(sel),
       opts = options || {
         autoWidth: true,
+        ddMaxHeight: false,
+        ddFullWidth: false,
         editable: '.editable-select',
         useSelectClasses: true
       };

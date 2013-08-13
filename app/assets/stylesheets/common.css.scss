@@ -622,8 +622,10 @@ div.left {
   }
 }
 
-.ik_select_list, .filter_select .ik_select_list {
-  width: auto;
+.ik_select_list {
+  width: auto; max-height: none;
+  .filter_select & { width: auto; }
+  ul { max-height: 300px; }
 }
 
 .error .ik_select_link, .error_message .ik_select_link {

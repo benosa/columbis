@@ -1,0 +1,217 @@
+/*
+Simple Responsive Mega Menu
+Licensed under http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
+/*
+
+TABLE OF CONTENTS
+
+01 MENU BAR
+02 DROP DOWNS
+03 MOBILES
+
+*/
+
+
+
+.page_content {
+	width:960px;
+	margin: 0 auto;
+}
+@media only screen and (max-width: 960px){
+	.page_content {
+		width:90%;
+		margin: 0 auto;
+	}
+}
+
+
+
+/*  _______________________________________
+
+    01 MENU BAR
+    _______________________________________  */
+
+
+
+.rmenu {
+	width:100%;
+	position:relative;
+	margin: 0;
+	padding:0;
+	list-style: none;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height:1em;
+	overflow:visible;
+	zoom:1;
+	display:block;
+	float:left;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+	.rmenu > li {
+		text-align:left;
+		float:left;
+		position:static;
+		display:inline-block;
+		-webkit-transition: background 0.5s ease;
+		-moz-transition: background 0.5s ease;
+		-o-transition: background 0.5s ease;
+		-ms-transition: background 0.5s ease;
+		transition: background 0.5s ease;
+	}
+	.rmenu > li.right {
+		float:right;
+	}
+		.rmenu > li:hover{
+      background: url(/assets/new_design/images/reservation_hover.png) right no-repeat;
+    }
+		.rmenu > li.active {
+			background: url(/assets/new_design/images/reservation_active.png) right no-repeat;
+		}
+    .rmenu > li.active a{
+      color: #006591;
+      font-weight: bold;
+      text-shadow: none;
+    }
+		.rmenu > li.noactive {
+			background: none;
+		}
+		.rmenu > li > a {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+      background: url(/assets/new_design/images/reservation_border.png) right top no-repeat;
+      color: #fff;
+      display: block;
+      font-size: 13px;
+      height: 47px;
+      line-height: 14px;
+      padding: 15px 21px 0 19px;
+      text-align: center;
+      text-shadow: #004d6e 0px -1px 0px;
+		}
+
+
+
+/*  _______________________________________
+
+    02 DROP DOWNS
+    _______________________________________  */
+
+
+
+.rmenu .rmenu_dropdown {
+	width:auto;
+	position:absolute;
+	margin:0 auto;
+	background: #FAFAFA;
+	color: #212121;
+	left:-9999em;
+	z-index:9998;
+	padding:20px 0 20px 0;
+	border:1px solid #CCCCCC;
+	border-top:none;
+	opacity:0;
+	-moz-border-radius: 0 0 3px 3px;
+	-webkit-border-radius: 0 0 3px 3px;
+	border-radius: 0 0 3px 3px;
+	-webkit-transition: opacity 0.5s 0.2s ease;
+	-moz-transition: opacity 0.5s 0.2s ease;
+	-o-transition: opacity 0.5s 0.2s ease;
+	-ms-transition: opacity 0.5s 0.2s ease;
+	transition: opacity 0.5s 0.2s ease;
+}
+	.rmenu li:hover .rmenu_dropdown {
+		left:auto;
+		opacity:1;
+	}
+	.rmenu li:hover .rmenu_dropdown_right {
+		right:0;
+	}
+
+/* Drop Down Lists */
+
+.rmenu .rmenu_dropdown > ul {
+	font-size:12px;
+	line-height:21px;
+	padding:0;
+	margin:0 0 18px 0;
+	list-style: none;
+	display:inline;
+	float: left;
+	position: relative;
+	margin:0 20px;
+	width:auto;
+}
+.rmenu .rmenu_dropdown > ul a {
+	color:#888888;
+	text-decoration: none;
+	-webkit-transition: color 0.2s ease;
+	-moz-transition: color 0.2s ease;
+	-o-transition: color 0.2s ease;
+	-ms-transition: color 0.2s ease;
+	transition: color 0.2s ease;
+}
+.rmenu .rmenu_dropdown > ul a:hover {
+	color:#222222;
+}
+.rmenu .list_heading {
+	color: #333333;
+	margin:0 0  12px 0;
+	font-weight:bold;
+	font-size:14px;
+}
+.rmenu .clear {
+	clear: both;
+	width:100%;
+	height:18px;
+}
+
+
+
+/*  _______________________________________
+
+    03 MOBILES
+    _______________________________________  */
+
+
+
+@media only screen and (max-width: 767px) {
+
+	.rmenu > li {
+		width: 100%;
+	}
+	.rmenu > li.right {
+		float:left;
+	}
+		.rmenu > li > a {
+			padding:14px;
+		}
+	.rmenu li .rmenu_dropdown {
+		width:100%;
+		border: none;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		border-radius: 0;
+	}
+	.rmenu .clear {
+		clear:none;
+		height:0;
+	}
+
+}
+
+@media only screen and (max-width: 480px) {
+
+	.rmenu .rmenu_dropdown > ul {
+		width:100%;
+		display:block;
+		margin-bottom:18px;
+	}
+
+}
+
+

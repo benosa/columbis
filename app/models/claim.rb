@@ -872,7 +872,7 @@ class Claim < ActiveRecord::Base
         'СайтКомпании' => company.try(:site),
         'ФИО' => applicant.try(:full_name),
         'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', '),
-        'Адрес' => applicant.try(:address),
+        'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
         'СерияПаспорта' => applicant.try(:passport_series),

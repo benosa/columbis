@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ClaimsAutocompleteController < ApplicationController
 
-  before_filter { user_signed_in? }
+  before_filter :check_user
 
   def tourist
     # tourists_arel = Tourist.accessible_by(current_ability)
@@ -61,5 +61,14 @@ class ClaimsAutocompleteController < ApplicationController
       .limit(50)
     render 'claims/autocompletes/dropdown_list'
   end
+
+  private
+
+    def check_user
+      unless user_signed_in?
+        render text: '' if request.xhr?
+        redirect_to root_path unless request.xhr?
+      end
+    end
 
 end

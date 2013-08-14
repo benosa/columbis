@@ -39,12 +39,8 @@ class Tourist < ActiveRecord::Base
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
-    indexes :phone_number, :email, :sortable => true
+    indexes :passport_series, :passport_number, :phone_number, :email, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
-    has :passport_series
-    has :passport_number
-    # has :phone_number
-    has "CRC32(tourists.phone_number)", as: :phone_number_crc32, :type => :integer
     has :passport_valid_until, :date_of_birth, :type => :datetime
     has :potential, :type => :boolean
     has :company_id

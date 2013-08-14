@@ -6,7 +6,7 @@ FactoryGirl.define do
     name { Faker::Name.name }
     active false
     users_count 1
-    place_size { Faker::Name.name }
+    place_size 1
     back_office false
     documents_flow false
     claims_base false

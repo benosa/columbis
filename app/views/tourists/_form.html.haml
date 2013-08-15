@@ -38,7 +38,7 @@
     .form_block_content
       .fake_row
         = f.fields_for :address do |address|
-          = render :partial => 'shared/address', :locals => { :f => address }
+          = render :partial => 'shared/address', :locals => { :f => address, :show_joint_address => true }
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

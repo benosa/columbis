@@ -31,8 +31,8 @@ ru:
       destroyed: 'Адрес удален'
 
     shared:
-      presentation: 'Представление (удалите для обновления)'
-
+      presentation: 'Представление'
+      presentation_title: 'Представление адреса в виде строки, можно задать любое, если не задано, генерируется автоматически.'
 
   activerecord:
     attributes:

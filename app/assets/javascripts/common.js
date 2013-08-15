@@ -149,7 +149,7 @@ $(function(){
     placement: 'top'
   });
 
-  $('label.required').tooltip();
+  $('.with_tooltip[title], label.required').tooltip();
 
   // Prevent default submit of fiter form
   $('form.filter').on('submit', function(e) { e.preventDefault(); });

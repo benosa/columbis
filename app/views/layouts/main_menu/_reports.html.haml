@@ -2,7 +2,7 @@
 - a = params[:action]
 %li{:class => (c == 'boss/reports' || c == 'boss/base') && 'active' }
   %a{:href => '#'}= t('.analytics')
-  .rmenu_dropdown
+  .rmenu_dropdown.report_types_shadow
     %ul
       %li.first_menu_stroke.report_types{:class => c == 'boss/base' && 'active' }
         = link_to t('.desktop'), boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)

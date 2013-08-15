@@ -11,11 +11,11 @@
         = render 'layouts/main_menu/second_reports'
       - when 'tasks'
         = render 'layouts/main_menu/second_support'
-  - if view_switcher?
-    .type
-      %p= t('.view')
-      %select#view_switcher.view_switcher
-        %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
-          = t('claims.index.manager_list')
-        %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
-          = t('claims.index.accountant_list')
+    - if view_switcher?
+      .type
+        %p= t('.view')
+        %select#view_switcher.view_switcher
+          %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
+            = t('claims.index.manager_list')
+          %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
+            = t('claims.index.accountant_list')

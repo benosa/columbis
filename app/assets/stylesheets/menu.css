@@ -195,20 +195,15 @@ TABLE OF CONTENTS
   text-shadow: #000 0px -1px 0px;
   font-weight: normal;
 }
-.rmenu .rmenu_dropdown > ul a:hover {
-	color:#222222;
-}
 
-.rmenu .rmenu_dropdown:hover ul li.active{
+.rmenu .rmenu_dropdown:hover ul li.active,
+  .rmenu .rmenu_dropdown .report_column li.active,
+  .rmenu .rmenu_dropdown:hover .report_column li:hover{
   background: none;
 }
 .rmenu .rmenu_dropdown:hover ul li.active a{
   color: #fff;
   text-shadow: #000 0px -1px 0px;
-}
-.rmenu .rmenu_dropdown:hover .report_column li.active a{
-  color: #000;
-  text-shadow: none;
 }
 .rmenu .rmenu_dropdown ul li:hover, .rmenu .rmenu_dropdown ul li.active,
   .rmenu .rmenu_dropdown:hover ul li:hover{
@@ -219,11 +214,23 @@ TABLE OF CONTENTS
   color: #000;
   text-shadow: #fff 0px 1px 0px;
 }
+.rmenu .rmenu_dropdown:hover .report_column li.active a{
+  color: #646464;
+  text-shadow: none;
+  font-weight:normal;
+}
 .rmenu .rmenu_dropdown .report_column a, .rmenu:hover .rmenu_dropdown .report_column a{
-  color:#000;
+  color: #646464;
   text-shadow: none;
   height: 15px;
   width:120px;
+  font-weight:normal;
+}
+.rmenu .rmenu_dropdown .report_column li.active a,
+  .rmenu .rmenu_dropdown:hover .report_column li:hover a{
+  color: #000;
+  font-weight:bold;
+  text-shadow: none;
 }
 .rmenu .list_heading {
 	color: #333333;
@@ -236,7 +243,12 @@ TABLE OF CONTENTS
 	width:100%;
 	height:0px;
 }
-
+.report_types_shadow{
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.rmenu li.disabled a.no_active_a{
+   color: #666;
+}
 
 
 /*  _______________________________________

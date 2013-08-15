@@ -10,10 +10,10 @@
             - if @claim && !@claim.new_record? && @claim.company.try("#{mode}_printer".to_sym)
               = link_to(value, claim_path(@claim.id, :print => mode), :target => '_blank')
             - else
-              = link_to(value, '#')
+              = link_to value, '#', :class => "no_active_a"
           - else
             - if @claim && !@claim.new_record? && @claim.company.try(value[1], @claim.try(value[2]))
               = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
             - else
-              = link_to(value[0], '#')
+              = link_to value[0], '#', :class => "no_active_a"
       %li.first_menu_stroke= link_to t('.prihodnik'), '#'

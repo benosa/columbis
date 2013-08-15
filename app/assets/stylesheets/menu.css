@@ -61,20 +61,30 @@ TABLE OF CONTENTS
 	.rmenu > li.right {
 		float:right;
 	}
-		.rmenu > li:hover{
-      background: url(/assets/new_design/images/reservation_hover.png) right repeat-x;
+    .rmenu:hover li.active{
+      background: none;
     }
-		.rmenu > li.active {
+    .rmenu:hover li.active a{
+      color: #fff;
+      font-weight: normal;
+      text-shadow: #004d6e 0px -1px 0px;
+    }
+		.rmenu:hover li:hover{
+      background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
+    }
+		.rmenu li.active {
 			background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
 		}
-    .rmenu > li.active a{
+    .rmenu:hover li:hover a{
       color: #006591;
       font-weight: bold;
       text-shadow: none;
     }
-		.rmenu > li.noactive {
-			background: none;
-		}
+    .rmenu li.active a{
+      color: #006591;
+      font-weight: bold;
+      text-shadow: none;
+    }
 		.rmenu > li > a {
 			-webkit-box-sizing: border-box;
 			-moz-box-sizing: border-box;
@@ -179,7 +189,7 @@ TABLE OF CONTENTS
 .rmenu .rmenu_dropdown > ul li.first_menu_stroke a {
   background: url(/assets/new_design/images/databases_border.png) right no-repeat;
 }
-.rmenu .rmenu_dropdown > ul a {
+.rmenu .rmenu_dropdown > ul a, .rmenu:hover .rmenu_dropdown > ul a {
   color: #fff;
   display: block;
   font-size: 13px;
@@ -192,6 +202,23 @@ TABLE OF CONTENTS
 }
 .rmenu .rmenu_dropdown > ul a:hover {
 	color:#222222;
+}
+
+.rmenu .rmenu_dropdown:hover ul li.active{
+  background: none;
+}
+.rmenu .rmenu_dropdown:hover ul li.active a{
+  color: #fff;
+  text-shadow: #000 0px -1px 0px;
+}
+.rmenu .rmenu_dropdown ul li:hover, .rmenu .rmenu_dropdown ul li.active,
+  .rmenu .rmenu_dropdown:hover ul li:hover{
+  background: url(/assets/new_design/images/databases_hover.png) repeat-x scroll right center;
+}
+.rmenu .rmenu_dropdown ul li:hover a, .rmenu .rmenu_dropdown ul li.active a,
+  .rmenu:hover .rmenu_dropdown ul li:hover a{
+  color: #000;
+  text-shadow: #fff 0px 1px 0px;
 }
 .rmenu .list_heading {
 	color: #333333;

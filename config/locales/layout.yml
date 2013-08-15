@@ -12,6 +12,7 @@ ru:
           cities: 'Города'
           countries: 'Страны'
           operators: 'Туроператоры'
+          tariff_plans: 'Тарифные планы'
         - &claims
           claims: 'Брони'
           new_claim: 'Новая заявка'

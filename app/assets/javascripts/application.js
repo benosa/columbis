@@ -23,3 +23,4 @@
 //= require dashboard
 //= require offline
 //= require boss
+//= require rmenu

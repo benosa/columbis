@@ -14,4 +14,7 @@
 *= require sms_clients
 *= require text_color
 *= require sms_groups
+*= require tariff_plans
+*= require printers
+*= require menu
 */

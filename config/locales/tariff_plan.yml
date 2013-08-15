@@ -1,0 +1,40 @@
+ru:
+  aliases:
+    - &name
+      title: 'Тарифные планы'
+      settings: 'Настройки'
+      name: 'Имя'
+      price: 'Цена'
+      active: 'Активный'
+      users_count: 'Количество пользователей'
+      place_size: 'Пространство, ГБ'
+      back_office: 'Бэк офис'
+      documents_flow: 'Документооборот'
+      claims_base: 'База заявок - одно окно'
+      crm_system: 'CRM система'
+      managers_reminder: 'Система напоминаний турменеджерам'
+      analytics: 'Система аналитики'
+      boss_desktop: 'Рабочий стол руководителя'
+      sms_sending: 'Модуль SMS-рассылки'
+      new_tariff_plan: 'Добавить план'
+      index_tariff_plan: 'Показать все планы'
+      edit: "Изменение тарифного плана %{tariff_plan}"
+      new: 'Добавление тарифного плана'
+  activerecord:
+    attributes:
+      tariff_plan:
+        *name
+  tariff_plans:
+    index:
+      *name
+    edit:
+      *name
+    new:
+      *name
+    form:
+      *name
+
+    messages:
+      created: 'Тарифный план создан'
+      updated: 'Тарифный план обновлен'
+      destroyed: 'Тарифный план удален'

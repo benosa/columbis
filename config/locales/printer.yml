@@ -20,10 +20,11 @@ ru:
       template_name: 'Название документа'
       all: 'Все'
     form:
+      choose_file_label: 'Загрузить другой файл'
       choose_file: 'Выбрать файл'
       mode: 'Тип'
       country: 'Страна'
-      download: 'Скачать'
+      download: 'Скачать исходный файл'
       common: 'Настройки'
     edit:
       title: 'Изменить печатную форму'

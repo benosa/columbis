@@ -93,91 +93,6 @@ body {
   text-shadow: 0 -1px 0 #004D6E;
 }*/
 
-.reservation li.dropdown ul li span {
-  display: block;
-  font-size: 13px;
-  line-height: 14px;
-  background: none repeat scroll 0 0 transparent;
-  color: #CCC;
-  height: auto;
-  padding: 5px 0 7px;
-  text-align: left;
-  text-shadow: 0 -1px 0 #fbfbfb;
-}
-
-.reservation li.dropdown{
-  background: url(/assets/new_design/images/dropdown.gif) right 21px no-repeat;
-  position: relative;
-  float: left;
-  height: 48px;
-}
-
-.reservation li.active ul li a{
-  font-weight: normal;
-}
-.reservation li.dropdown a{padding-right: 30px;}
-.reservation li.dropdown ul{
-  background: #121212 url(/assets/new_design/images/float_panel.png) top repeat-x;
-  border: none;
-  display: none;
-  left: 0;
-  padding: 0;
-  padding-top: 2px;
-  position: fixed;
-  top: 47px;
-  width: 100%;
-  z-index: 9;
-  box-shadow: none;
-}
-.reservation li.dropdown ul li{
-  display: block;
-  float: left;
-  height: 50px;
-}
-.reservation li.dropdown ul li:first-child, .reservation li.dropdown ul li{border: none;}
-.reservation li.dropdown ul li a{
-  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
-  color: #fff;
-  display: block;
-  font-size: 13px;
-  height: 33px;
-  line-height: 14px;
-  padding: 15px 22px 0 17px;
-  text-align: center;
-  text-shadow: #000 0px -1px 0px;
-}
-.reservation li.dropdown ul .reservation_dropdown_column li a{
-  background: right no-repeat #121212;
-}
-.reservation li.dropdown ul li:hover, .reservation li.dropdown ul li.active{
-  background: url(/assets/new_design/images/databases_hover.png) repeat-x;
-}
-.reservation li.dropdown ul a:hover,.reservation li.dropdown ul li.active a,
-  .reservation li.dropdown ul .reservation_dropdown_column li a:hover,
-  .reservation li.dropdown ul .reservation_dropdown_column li.active a{
-  background: url(/assets/new_design/images/databases_hover.png) right no-repeat;
-  color: #000;
-  text-shadow: #fff 0px 1px 0px;
-}
-.reservation li.dropdown .reservation_dropdown_row li{
-  width: 143px;
-  float: left;
-}
-.reservation li.dropdown .top_row{
-  padding-top: 35px;
-  border-bottom: 1px dotted white;
-  width: 100%;
-}
-.reservation li.dropdown .reservation_dropdown_column{
-  width: 143px;
-  float: left;
-}
-.reservation li.dropdown .reservation_dropdown_column li a{
-  width: 143px;
-  padding: 0;
-  padding-top: 15px;
-}
-
 .databases li {
   span {
     background: url("/assets/new_design/images/databases_border.png") no-repeat scroll right center transparent;
@@ -483,6 +398,7 @@ body {
   td {
     height: auto;
     padding: 5px 5px;
+    background: none;
   }
 }
 

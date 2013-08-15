@@ -1,0 +1,284 @@
+/*
+Simple Responsive Mega Menu
+Licensed under http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
+/*
+
+TABLE OF CONTENTS
+
+01 MENU BAR
+02 DROP DOWNS
+03 MOBILES
+
+*/
+
+
+
+.page_content {
+	width:960px;
+	margin: 0 auto;
+}
+@media only screen and (max-width: 960px){
+	.page_content {
+		width:90%;
+		margin: 0 auto;
+	}
+}
+
+
+
+/*  _______________________________________
+
+    01 MENU BAR
+    _______________________________________  */
+
+
+
+.rmenu {
+  background: url("/assets/new_design/images/header_top.png") repeat scroll;
+	width:100%;
+	position:relative;
+	margin: 0;
+	padding:0;
+	list-style: none;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height:1em;
+	overflow:visible;
+	zoom:1;
+	display:block;
+	float:left;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+	.rmenu > li {
+		text-align:left;
+		float:left;
+		position:static;
+		display:inline-block;
+	}
+	.rmenu > li.right {
+		float:right;
+	}
+    .rmenu:hover li.active{
+      background: none;
+    }
+    .rmenu:hover li.active a{
+      color: #fff;
+      font-weight: normal;
+      text-shadow: #004d6e 0px -1px 0px;
+    }
+		.rmenu:hover li:hover{
+      background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
+    }
+		.rmenu li.active {
+			background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
+		}
+    .rmenu:hover li:hover a, .rmenu li.active a{
+      color: #006591;
+      font-weight: normal;
+      text-shadow: none;
+    }
+		.rmenu > li > a {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+      background: url(/assets/new_design/images/reservation_border.png) right top no-repeat;
+      color: #fff;
+      display: block;
+      font-size: 13px;
+      height: 47px;
+      line-height: 14px;
+      padding: 15px 10px 17px;
+      text-align: center;
+      text-shadow: #004d6e 0px -1px 0px;
+		}
+    .rmenu li.segmentation_report{
+      width:167px;
+    }
+    .rmenu li.management{
+      width:111px;
+    }
+    .rmenu li.report_types, .rmenu .rmenu_dropdown .report_column{
+      width:140px;
+    }
+
+
+/*  _______________________________________
+
+    02 DROP DOWNS
+    _______________________________________  */
+
+
+
+.second_menu .rmenu{
+  background: url(/assets/new_design/images/float_panel.png) repeat-x #e7e7e7;
+}
+.second_menu .rmenu li a{
+  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  height: 52px;
+  line-height: 14px;
+  padding: 15px 10px 17px;
+  text-align: center;
+  text-shadow: #000 0px -1px 0px;
+  font-weight: normal;
+}
+.second_menu .rmenu:hover li.active{
+  background: none;
+}
+.second_menu .rmenu:hover li.active a{
+  color: #fff;
+  text-shadow: #000 0px -1px 0px;
+}
+.second_menu .rmenu li:hover, .second_menu .rmenu li.active, .second_menu .rmenu:hover li:hover{
+  background: url(/assets/new_design/images/databases_hover.png) repeat-x scroll right center;
+}
+.second_menu .rmenu li:hover a, .second_menu .rmenu li.active a, .second_menu .rmenu:hover li:hover a{
+  color: #000;
+  text-shadow: #fff 0px 1px 0px;
+}
+.rmenu .rmenu_dropdown {
+  background: url(/assets/new_design/images/float_panel.png) repeat-x #e7e7e7;
+  width:100%;
+  position:absolute;
+  margin:0;
+  color: #212121;
+  left:-9999em;
+  top:47px;
+  z-index:9998;
+  padding: 0px;
+  border:none;
+  opacity:0;
+}
+  .rmenu .rmenu_dropdown ul li{
+    float: left;
+  }
+  .rmenu .rmenu_dropdown ul li.clear{
+    clear: both;
+  }
+	.rmenu li:hover .rmenu_dropdown {
+    left:0px;
+		opacity:1;
+	}
+	.rmenu li:hover .rmenu_dropdown_right {
+		right:0;
+	}
+
+/* Drop Down Lists */
+
+.rmenu .rmenu_dropdown > ul {
+	font-size:12px;
+	line-height:21px;
+	padding:0;
+	list-style: none;
+	display:inline;
+	float: left;
+	position: relative;
+	margin:0;
+	width:auto;
+}
+.rmenu .rmenu_dropdown > ul li.first_menu_stroke a {
+  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+}
+.rmenu .rmenu_dropdown > ul a, .rmenu:hover .rmenu_dropdown > ul a {
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  height: 20px;
+  line-height: 14px;
+  padding: 15px 10px 17px;
+  text-align: center;
+  text-shadow: #000 0px -1px 0px;
+  font-weight: normal;
+}
+.rmenu .rmenu_dropdown > ul a:hover {
+	color:#222222;
+}
+
+.rmenu .rmenu_dropdown:hover ul li.active{
+  background: none;
+}
+.rmenu .rmenu_dropdown:hover ul li.active a{
+  color: #fff;
+  text-shadow: #000 0px -1px 0px;
+}
+.rmenu .rmenu_dropdown:hover .report_column li.active a{
+  color: #000;
+  text-shadow: none;
+}
+.rmenu .rmenu_dropdown ul li:hover, .rmenu .rmenu_dropdown ul li.active,
+  .rmenu .rmenu_dropdown:hover ul li:hover{
+  background: url(/assets/new_design/images/databases_hover.png) repeat-x scroll right center;
+}
+.rmenu .rmenu_dropdown ul li:hover a, .rmenu .rmenu_dropdown ul li.active a,
+  .rmenu:hover .rmenu_dropdown ul li:hover a{
+  color: #000;
+  text-shadow: #fff 0px 1px 0px;
+}
+.rmenu .rmenu_dropdown .report_column a, .rmenu:hover .rmenu_dropdown .report_column a{
+  color:#000;
+  text-shadow: none;
+  height: 15px;
+  width:120px;
+}
+.rmenu .list_heading {
+	color: #333333;
+	margin:0 0  12px 0;
+	font-weight:bold;
+	font-size:14px;
+}
+.rmenu .clear {
+	clear: both;
+	width:100%;
+	height:0px;
+}
+
+
+
+/*  _______________________________________
+
+    03 MOBILES
+    _______________________________________  */
+
+
+
+@media only screen and (max-width: 767px) {
+
+	.rmenu > li {
+		width: 100%;
+	}
+	.rmenu > li.right {
+		float:left;
+	}
+		.rmenu > li > a {
+			padding:14px;
+		}
+	.rmenu li .rmenu_dropdown {
+		width:100%;
+		border: none;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		border-radius: 0;
+	}
+	.rmenu .clear {
+		clear:none;
+		height:0;
+	}
+
+}
+
+@media only screen and (max-width: 480px) {
+
+	.rmenu .rmenu_dropdown > ul {
+		width:100%;
+		display:block;
+		margin-bottom:18px;
+	}
+
+}
+
+

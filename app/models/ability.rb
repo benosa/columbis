@@ -13,6 +13,7 @@ class Ability
       can :manage, DropdownValue, :common=> true
       can :offline_version, User
       can :manage, Task
+      can :manage, TariffPlan
     elsif user.role == 'boss'
       can :switch_view, User
       can :manage, :all, :company_id => user.company_id
@@ -26,6 +27,7 @@ class Ability
       can :offline_version, User
       can :read, [Country, City], :common => true
       can :create, Task
+      cannot :manage, TariffPlan
     elsif user.role == 'accountant'
       can :switch_view, User
       can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
@@ -37,6 +39,7 @@ class Ability
       can :offline_version, User
       can :read, [Country, City], :common => true
       can :create, Task
+      cannot :manage, TariffPlan
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id
@@ -48,6 +51,7 @@ class Ability
       can :claims_all, :user
       can :offline_version, User
       can :create, Task
+      cannot :manage, TariffPlan
     elsif user.role == 'manager'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
@@ -60,6 +64,7 @@ class Ability
       can :read, [Country, City], :common => true
       can :offline_version, User
       can :create, Task
+      cannot :manage, TariffPlan
     else
       can [:update, :destroy], User, :id => user.id
     end

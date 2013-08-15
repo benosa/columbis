@@ -1,6 +1,9 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  resources :tariff_plans
+
+
   resources :sms_groups do
     collection do
       put :batch_add_to_group

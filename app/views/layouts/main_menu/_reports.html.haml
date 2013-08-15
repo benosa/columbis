@@ -3,7 +3,7 @@
 %li{:class => (c == 'boss/reports' || c == 'boss/base') && 'active' }
   %a{:href => '#'}= t('.analytics')
   .rmenu_dropdown
-    %ul{:style => "width: 1024px"}
+    %ul
       %li.first_menu_stroke.report_types{:class => c == 'boss/base' && 'active' }
         = link_to t('.desktop'), boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'income' || a == 'offices_income') && 'active' }
@@ -20,21 +20,27 @@
         = link_to t('.promotionchannel_title'), '#'
       %li.clear
         &nbsp;
+    %ul.report_column
+      &nbsp;
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'income' && 'active' }
         = link_to t('.income'), boss_reports_path(:income)
       %li{:class => c == 'boss/reports' && a == 'offices_income' && 'active' }
         = link_to t('.income_offices'), boss_reports_path(:offices_income)
 
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'margin' && 'active' }
         = link_to t('.margin'), boss_reports_path(:margin)
       %li{:class => c == 'boss/reports' && a == 'offices_margin' && 'active' }
         = link_to t('.margin_offices'), boss_reports_path(:offices_margin)
 
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'managers_income' && 'active' }
         = link_to t('.income_managers'), boss_reports_path(:managers_income)
       %li{:class => c == 'boss/reports' && a == 'managers_margin' && 'active' }
         = link_to t('.margin_managers'), boss_reports_path(:managers_margin)
 
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'normalcheck' && 'active' }
         = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
       %li{:class => c == 'boss/reports' && a == 'directions' && 'active' }
@@ -48,6 +54,7 @@
       %li{:class => c == 'boss/reports' && a == 'hotelstars' && 'active' }
         = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
 
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'clientsbase' && 'active' }
         = link_to t('.clientsbase'), boss_reports_path(:clientsbase)
       %li{:class => c == 'boss/reports' && a == 'repurchase' && 'active' }
@@ -57,6 +64,7 @@
       %li{:class => c == 'boss/reports' && a == 'salesfunnel' && 'active' }
         = link_to t('.salesfunnel'), boss_reports_path(:salesfunnel)
 
+    %ul.report_column
       %li{:class => c == 'boss/reports' && a == 'promotionchannel' && 'active' }
         = link_to t('.promotionchannel'), boss_reports_path(:promotionchannel)
 

@@ -75,14 +75,9 @@ TABLE OF CONTENTS
 		.rmenu li.active {
 			background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
 		}
-    .rmenu:hover li:hover a{
+    .rmenu:hover li:hover a, .rmenu li.active a{
       color: #006591;
-      font-weight: bold;
-      text-shadow: none;
-    }
-    .rmenu li.active a{
-      color: #006591;
-      font-weight: bold;
+      font-weight: normal;
       text-shadow: none;
     }
 		.rmenu > li > a {
@@ -105,7 +100,7 @@ TABLE OF CONTENTS
     .rmenu li.management{
       width:111px;
     }
-    .rmenu li.report_types{
+    .rmenu li.report_types, .rmenu .rmenu_dropdown .report_column{
       width:140px;
     }
 
@@ -211,6 +206,10 @@ TABLE OF CONTENTS
   color: #fff;
   text-shadow: #000 0px -1px 0px;
 }
+.rmenu .rmenu_dropdown:hover .report_column li.active a{
+  color: #000;
+  text-shadow: none;
+}
 .rmenu .rmenu_dropdown ul li:hover, .rmenu .rmenu_dropdown ul li.active,
   .rmenu .rmenu_dropdown:hover ul li:hover{
   background: url(/assets/new_design/images/databases_hover.png) repeat-x scroll right center;
@@ -219,6 +218,12 @@ TABLE OF CONTENTS
   .rmenu:hover .rmenu_dropdown ul li:hover a{
   color: #000;
   text-shadow: #fff 0px 1px 0px;
+}
+.rmenu .rmenu_dropdown .report_column a, .rmenu:hover .rmenu_dropdown .report_column a{
+  color:#000;
+  text-shadow: none;
+  height: 15px;
+  width:120px;
 }
 .rmenu .list_heading {
 	color: #333333;
@@ -229,7 +234,7 @@ TABLE OF CONTENTS
 .rmenu .clear {
 	clear: both;
 	width:100%;
-	height:18px;
+	height:0px;
 }
 
 

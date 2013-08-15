@@ -1,20 +1,21 @@
-%ul#databases_menu.databases
-  - case params[:controller]
-    - when 'claims'
-      = render 'layouts/main_menu/second_claims'
-    - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans'
-      = render 'layouts/main_menu/second_management'
-    - when 'tourists'
-      = render 'layouts/main_menu/second_clients'
-    - when 'boss/reports', 'boss/base'
-      = render 'layouts/main_menu/second_reports'
-    - when 'tasks'
-      = render 'layouts/main_menu/second_support'
-- if view_switcher?
-  .type
-    %p= t('.view')
-    %select#view_switcher.view_switcher
-      %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
-        = t('claims.index.manager_list')
-      %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
-        = t('claims.index.accountant_list')
+.second_menu
+  %ul.rmenu
+    - case params[:controller]
+      - when 'claims'
+        = render 'layouts/main_menu/second_claims'
+      - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans'
+        = render 'layouts/main_menu/second_management'
+      - when 'tourists'
+        = render 'layouts/main_menu/second_clients'
+      - when 'boss/reports', 'boss/base'
+        = render 'layouts/main_menu/second_reports'
+      - when 'tasks'
+        = render 'layouts/main_menu/second_support'
+  - if view_switcher?
+    .type
+      %p= t('.view')
+      %select#view_switcher.view_switcher
+        %option{ :value => 'manager_list', :selected => params[:list_type] == 'manager_list' && 'selected' }
+          = t('claims.index.manager_list')
+        %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
+          = t('claims.index.accountant_list')

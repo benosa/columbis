@@ -36,6 +36,7 @@ TABLE OF CONTENTS
 
 
 .rmenu {
+  background: url("/assets/new_design/images/header_top.png") repeat scroll;
 	width:100%;
 	position:relative;
 	margin: 0;
@@ -56,20 +57,15 @@ TABLE OF CONTENTS
 		float:left;
 		position:static;
 		display:inline-block;
-		-webkit-transition: background 0.5s ease;
-		-moz-transition: background 0.5s ease;
-		-o-transition: background 0.5s ease;
-		-ms-transition: background 0.5s ease;
-		transition: background 0.5s ease;
 	}
 	.rmenu > li.right {
 		float:right;
 	}
 		.rmenu > li:hover{
-      background: url(/assets/new_design/images/reservation_hover.png) right no-repeat;
+      background: url(/assets/new_design/images/reservation_hover.png) right repeat-x;
     }
 		.rmenu > li.active {
-			background: url(/assets/new_design/images/reservation_active.png) right no-repeat;
+			background: url(/assets/new_design/images/reservation_active.png) right repeat-x;
 		}
     .rmenu > li.active a{
       color: #006591;
@@ -89,11 +85,19 @@ TABLE OF CONTENTS
       font-size: 13px;
       height: 47px;
       line-height: 14px;
-      padding: 15px 21px 0 19px;
+      padding: 15px 10px 17px;
       text-align: center;
       text-shadow: #004d6e 0px -1px 0px;
 		}
-
+    .rmenu li.segmentation_report{
+      width:167px;
+    }
+    .rmenu li.management{
+      width:111px;
+    }
+    .rmenu li.report_types{
+      width:140px;
+    }
 
 
 /*  _______________________________________
@@ -103,29 +107,56 @@ TABLE OF CONTENTS
 
 
 
-.rmenu .rmenu_dropdown {
-	width:auto;
-	position:absolute;
-	margin:0 auto;
-	background: #FAFAFA;
-	color: #212121;
-	left:-9999em;
-	z-index:9998;
-	padding:20px 0 20px 0;
-	border:1px solid #CCCCCC;
-	border-top:none;
-	opacity:0;
-	-moz-border-radius: 0 0 3px 3px;
-	-webkit-border-radius: 0 0 3px 3px;
-	border-radius: 0 0 3px 3px;
-	-webkit-transition: opacity 0.5s 0.2s ease;
-	-moz-transition: opacity 0.5s 0.2s ease;
-	-o-transition: opacity 0.5s 0.2s ease;
-	-ms-transition: opacity 0.5s 0.2s ease;
-	transition: opacity 0.5s 0.2s ease;
+.second_menu .rmenu{
+  background: url(/assets/new_design/images/float_panel.png) repeat-x #e7e7e7;
 }
+.second_menu .rmenu li a{
+  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  height: 52px;
+  line-height: 14px;
+  padding: 15px 10px 17px;
+  text-align: center;
+  text-shadow: #000 0px -1px 0px;
+  font-weight: normal;
+}
+.second_menu .rmenu:hover li.active{
+  background: none;
+}
+.second_menu .rmenu:hover li.active a{
+  color: #fff;
+  text-shadow: #000 0px -1px 0px;
+}
+.second_menu .rmenu li:hover, .second_menu .rmenu li.active, .second_menu .rmenu:hover li:hover{
+  background: url(/assets/new_design/images/databases_hover.png) repeat-x scroll right center;
+}
+.second_menu .rmenu li:hover a, .second_menu .rmenu li.active a, .second_menu .rmenu:hover li:hover a{
+  color: #000;
+  text-shadow: #fff 0px 1px 0px;
+}
+.rmenu .rmenu_dropdown {
+  background: url(/assets/new_design/images/float_panel.png) repeat-x #e7e7e7;
+  width:100%;
+  position:absolute;
+  margin:0;
+  color: #212121;
+  left:-9999em;
+  top:47px;
+  z-index:9998;
+  padding: 0px;
+  border:none;
+  opacity:0;
+}
+  .rmenu .rmenu_dropdown ul li{
+    float: left;
+  }
+  .rmenu .rmenu_dropdown ul li.clear{
+    clear: both;
+  }
 	.rmenu li:hover .rmenu_dropdown {
-		left:auto;
+    left:0px;
 		opacity:1;
 	}
 	.rmenu li:hover .rmenu_dropdown_right {
@@ -138,22 +169,26 @@ TABLE OF CONTENTS
 	font-size:12px;
 	line-height:21px;
 	padding:0;
-	margin:0 0 18px 0;
 	list-style: none;
 	display:inline;
 	float: left;
 	position: relative;
-	margin:0 20px;
+	margin:0;
 	width:auto;
 }
+.rmenu .rmenu_dropdown > ul li.first_menu_stroke a {
+  background: url(/assets/new_design/images/databases_border.png) right no-repeat;
+}
 .rmenu .rmenu_dropdown > ul a {
-	color:#888888;
-	text-decoration: none;
-	-webkit-transition: color 0.2s ease;
-	-moz-transition: color 0.2s ease;
-	-o-transition: color 0.2s ease;
-	-ms-transition: color 0.2s ease;
-	transition: color 0.2s ease;
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  height: 20px;
+  line-height: 14px;
+  padding: 15px 10px 17px;
+  text-align: center;
+  text-shadow: #000 0px -1px 0px;
+  font-weight: normal;
 }
 .rmenu .rmenu_dropdown > ul a:hover {
 	color:#222222;

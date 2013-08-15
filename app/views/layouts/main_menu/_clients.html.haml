@@ -13,5 +13,5 @@
   = link_to t('.clients'), tourists_path
   .rmenu_dropdown
     %ul
-      %li{ :class => tourists_class }= link_to t('.tourists'), tourists_path
-      %li{ :class => potentials_class }= link_to t('.potentials'), tourists_path(:potential => true)
+      %li.first_menu_stroke{ :class => tourists_class }= link_to t('.tourists'), tourists_path
+      %li.first_menu_stroke{ :class => potentials_class }= link_to t('.potentials'), tourists_path(:potential => true)

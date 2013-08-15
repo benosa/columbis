@@ -5,7 +5,7 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
 
 
 (function($) {
-    
+
 
     $.rMenu = function(element, options) {
 
@@ -13,9 +13,9 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
         var defaults = {
 
         };
-        
+
         var plugin = this;
-        
+
         plugin.options = {}
 
         var $element = $(element);
@@ -36,7 +36,7 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
 
 
         var megaMenuEvents = function(){
- 
+
             if ("ontouchstart" in document.documentElement) {
 
                 megaMenuToggleElements();
@@ -45,7 +45,7 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
 
                     var $this = $(this);
                     $this.siblings().removeClass('active').addClass('noactive')
-                        .find(menuDropDown).hide(0); 
+                        .find(menuDropDown).hide(0);
                     $this.toggleClass('active noactive').find(menuDropDown).first().toggle(0)
                         .click(function (event) {
                             event.stopPropagation();
@@ -74,9 +74,9 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
                 });
 
             }
-            
+
         }
-        
+
 
         var megaMenuToggleElements = function(){
 
@@ -85,8 +85,8 @@ Licensed under http://creativecommons.org/licenses/by-sa/3.0/
             $(menuDropdownRight).css({'right': '0'}).hide(0);
 
         }
-        
-       
+
+
         plugin.init();
 
     }

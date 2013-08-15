@@ -21,17 +21,17 @@
       %li{:class => a == 'managers_margin' && 'active' }
         = link_to t('.margin_managers'), boss_reports_path(:managers_margin)
     - when 'normalcheck', 'directions', 'operators', 'tourprice', 'tourduration', 'hotelstars'
-      %li{:class => a == 'normalcheck' && 'active' }
+      %li.segmentation_report{:class => a == 'normalcheck' && 'active' }
         = link_to t('.normalcheck'), boss_reports_path(:normalcheck)
-      %li{:class => a == 'directions' && 'active' }
+      %li.segmentation_report{:class => a == 'directions' && 'active' }
         = link_to t('.directions'), boss_reports_path(:directions)
-      %li{:class => a == 'operators' && 'active' }
+      %li.segmentation_report{:class => a == 'operators' && 'active' }
         = link_to t('.operators'), boss_reports_path(:operators)
-      %li{:class => a == 'tourprice' && 'active' }
+      %li.segmentation_report{:class => a == 'tourprice' && 'active' }
         = link_to t('.tourprice'), boss_reports_path(:tourprice)
-      %li{:class => a == 'tourduration' && 'active' }
+      %li.segmentation_report{:class => a == 'tourduration' && 'active' }
         = link_to t('.tourduration'), boss_reports_path(:tourduration)
-      %li{:class => a == 'hotelstars' && 'active' }
+      %li.segmentation_report{:class => a == 'hotelstars' && 'active' }
         = link_to t('.hotelstars'), boss_reports_path(:hotelstars)
     - when 'clientsbase', 'repurchase', 'increaseclients', 'salesfunnel'
       %li{:class => a == 'clientsbase' && 'active' }

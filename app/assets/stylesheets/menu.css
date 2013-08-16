@@ -229,13 +229,13 @@ TABLE OF CONTENTS
 .rmenu .rmenu_dropdown .report_column li.active a,
   .rmenu .rmenu_dropdown:hover .report_column li:hover a{
   color: #000;
-  font-weight:bold;
+  font-weight:normal;
   text-shadow: none;
 }
 .rmenu .list_heading {
 	color: #333333;
 	margin:0 0  12px 0;
-	font-weight:bold;
+	font-weight:normal;
 	font-size:14px;
 }
 .rmenu .clear {

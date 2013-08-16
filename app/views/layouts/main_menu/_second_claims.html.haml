@@ -12,4 +12,7 @@
         = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
       - else
         = link_to value[0], '#', :class => "no_active_a"
-%li= link_to t('.prihodnik'), '#'
+- if params[:controller] == 'claims' and (params[:action] == 'edit' || params[:action] == 'new')
+  %li= link_to t('.prihodnik'), '#'
+- else
+  %li.disabled= link_to t('.prihodnik'), '#', :class => "no_active_a"

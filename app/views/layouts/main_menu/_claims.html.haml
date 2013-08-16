@@ -16,4 +16,8 @@
               = link_to(value[0], claim_path(@claim.id, :print => mode), :target => '_blank')
             - else
               = link_to value[0], '#', :class => "no_active_a"
-      %li.first_menu_stroke= link_to t('.prihodnik'), '#'
+
+      - if params[:controller] == 'claims' and (params[:action] == 'edit' || params[:action] == 'new')
+        %li.first_menu_stroke= link_to t('.prihodnik'), '#'
+      - else
+        %li.first_menu_stroke.disabled= link_to t('.prihodnik'), '#', :class => "no_active_a"

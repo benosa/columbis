@@ -216,11 +216,14 @@
       }
     }
   }
-  .sticky-element.stuck {
-    position: fixed !important;
-    top: 0 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    margin-left: -1px;
+  thead {
+    .stuck {
+      position: absolute !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 100;
+    }
+    &.stuck_active .stuck { display: block; }
   }
   .waypoint {
     height: 0;

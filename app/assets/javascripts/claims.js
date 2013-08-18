@@ -163,8 +163,17 @@ function set_claims_waypoint() {
 function set_claims_sticky_header() {
 
   function fill_stuck($claims_header, $stuck) {
-    var css_props = ['border', 'background', 'padding', 'width', 'height'],
-        css_a_props = ['display', 'text-align', 'text-shadow', 'font', 'margin', 'color'];
+    var css_props = ['width', 'height',
+          'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width',
+          'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style',
+          'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color',
+          'background-image', 'background-position', 'background-color', 'background-repeat',
+          'padding-top', 'padding-right', 'padding-bottom', 'padding-left'
+        ],
+        css_a_props = ['display', 'text-align', 'text-shadow', 'color',
+          'font-size', 'font-weight',
+          'margin-top', 'margin-right', 'margin-bottom', 'margin-left'
+        ];
 
     $claims_header.find('th').each(function(index) {
       var css = {}, css_a = {}, prop, i,
@@ -193,11 +202,15 @@ function set_claims_sticky_header() {
   }
 
   function adjust_stuck($claims_header, $stuck) {
-    var $divs = $stuck.find('div');
+    var $divs = $stuck.find('div'),
+        full_width = 0;
     $claims_header.find('th').each(function(index) {
-      $divs.eq(index).css('width', parseInt($(this).css('width')) + 1);
+      // $divs.eq(index).css('width', parseInt($(this).css('width')) + 1);
+      var w = $(this).outerWidth();
+      full_width += w;
+      $divs.eq(index).css('width', w - 1);
     });
-    $stuck.css('width', $claims_header.outerWidth() + 1);
+    $stuck.css('width', full_width + 1);
   }
 
   var $claims_header = $('#claims .claims_header'),

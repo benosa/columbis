@@ -1,11 +1,14 @@
+- claims_data = widget.claims_widget_data
+- data = claims_data[:data]
+- total = claims_data[:total]
 .widget.widget-small
-  = render partial: 'boss/widgets/menu_small' unless local_assigns[:menu] === false
+  = render partial: 'boss/widgets/menu_small'
   .widget-title
-    %h2= widget[:title]
+    %h2= widget.title
   .widget-content
     .widget-stats
-      - widget[:data].count.downto(1) do |i|
-        - col = widget[:data][i-1]
+      - data.count.downto(1) do |i|
+        - col = data[i-1]
         %div{ class: "widget-col-#{i}" }
           - col.each do |value|
             - if value.kind_of?(Hash)
@@ -15,7 +18,6 @@
               %p= value
 
     .widget-total
-      - total = widget[:total]
       .widget-text= total[:title]
       .widget-sum= total[:data]
       .widget-text= total[:text]

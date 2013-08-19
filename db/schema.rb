@@ -456,4 +456,17 @@ ActiveRecord::Schema.define(:version => 20130820151629) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
+  create_table "widgets", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "title"
+    t.integer  "position"
+    t.string   "view"
+    t.text     "settings"
+    t.string   "widget_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
 end

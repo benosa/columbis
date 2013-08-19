@@ -6,31 +6,11 @@ module Boss
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
 
     def index
-      widget = {
-        type: :data,
-        width: :small,
-        title: 'Заглушка',
-        data: [
-          ['Среда', '7 дней', '31 день'],
-          ['31', '5,420', '338,786'],
-          [{class: 'sign-up'}, '&ndash;'.html_safe, {class: 'sign-down'}],
-          ['00.01%', '17.30%', '21.40%']
-        ],
-        total: {
-          title: 'Всего',
-          data: '23,460 <span>p.<span/>'.html_safe,
-          text: '(не включая продажи по другим <br> каналам)'.html_safe
-        }
-      }
-      @widgets = []
-      4.times{ @widgets << widget.dup }
-
-      @tourists_widget = {
-        type: :table,
-        width: :large,
-        title: 'Новые туристы',
-        data: Tourist.clients.accessible_by(current_ability).includes(:address).order('created_at DESC').limit(10)
-      }
+      @widgets = Widget.where(:company_id => current_company.id)
+        .where(:user_id => current_user.id)
+      if @widgets.length == 0
+        @widgets = Widget.create_default_widgets(current_user, current_company)
+      end
 
       render 'boss/index'
     end

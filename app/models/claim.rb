@@ -567,8 +567,8 @@ class Claim < ActiveRecord::Base
       payments_in = self.payments_in.reject(&:marked_for_destruction?)
       approved_payments_in = payments_in.select(&:approved?)
 
-      self.tourist_advance = payments_in.map(&:amount_prim).sum
-      self.approved_tourist_advance = approved_payments_in.map(&:amount_prim).sum
+      self.tourist_advance = payments_in.map(&:amount_prim).map(&:to_f).sum
+      self.approved_tourist_advance = approved_payments_in.map(&:amount_prim).map(&:to_f).sum
 
       self.primary_currency_price = calculate_tour_price
       self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
@@ -576,9 +576,9 @@ class Claim < ActiveRecord::Base
       payments_out = self.payments_out.reject(&:marked_for_destruction?)
       approved_payments_out = payments_out.select(&:approved?)
 
-      self.operator_advance = payments_out.map(&:amount_prim).sum
-      self.approved_operator_advance = approved_payments_out.map(&:amount).sum
-      self.approved_operator_advance_prim = approved_payments_out.map(&:amount_prim).sum
+      self.operator_advance = payments_out.map(&:amount_prim).map(&:to_f).sum
+      self.approved_operator_advance = approved_payments_out.map(&:amount).map(&:to_f).sum
+      self.approved_operator_advance_prim = approved_payments_out.map(&:amount_prim).map(&:to_f).sum
 
       self.operator_debt = self.operator_price.to_f - self.operator_advance.to_f
 

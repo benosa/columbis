@@ -15,6 +15,8 @@ ru:
         potential: "Потенциальный клиент"
         email: 'Адрес электронной почты'
         special_offer: 'Спецпредложения'
+        wishes: 'Куда хочет поехать'
+        actions: 'Что сделать'
 
   tourists:
     index:
@@ -22,6 +24,7 @@ ru:
       add_tourist: 'Добавить туриста'
       clients: 'Клиенты'
       potential_clients: 'Потенциальные клиенты'
+      manager_filter: 'Менеджер'
     tourists:
       full_name: "ФИО"
       address: "Адрес"
@@ -29,17 +32,22 @@ ru:
       passport_series: 'Серия паспорта'
       passport_number: 'Номер паспорта'
       email: 'Email'
+      manager: 'Менеджер'
+      wishes: 'Хочет'
+      actions: 'Что сделать'
     show:
       tourists: 'Список туристов'
     edit:
       edit_tourist: 'Редактирование туриста %{tourist}'
       list_of_tourist: 'Список туристов'
+      created_by: 'Создан: %{user}'
     new:
       new_tourist: 'Новый турист'
       list_of_tourist: 'Список туристов'
     form:
       common: 'Общие данные'
       passport: 'Паспорт (серия, номер)'
+      passport_valid_until: 'Паспорт действителен до'
       address: 'Адрес'
       email: 'Email'
       special_offer: 'Получать спецпредложения на телефон и электронную почту'

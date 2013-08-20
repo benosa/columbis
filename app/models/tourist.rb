@@ -5,11 +5,12 @@ class Tourist < ActiveRecord::Base
                   :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes, :special_offer
 
-  attr_protected :company_id
+  attr_protected :company_id, :user_id
 
   attr_accessor :validate_secondary_attributes
 
   belongs_to :company
+  belongs_to :user
   has_many :payments, :as => :payer
 
   has_many :tourist_claims, :dependent => :destroy
@@ -25,11 +26,13 @@ class Tourist < ActiveRecord::Base
   validate :presence_of_full_name
 
   # Additional attributes validation
-  validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until, :if => :additional_attributes_validation_condition
+  validates_presence_of :date_of_birth, :if => :additional_attributes_validation_condition
+  validates_presence_of :passport_series, :passport_number, :passport_valid_until,
+    :if => proc{ |tourist| !tourist.potential && tourist.send(:additional_attributes_validation_condition) }
 
   # Secondary attributes validation
-  validates_presence_of :phone_number, :if => :secondaty_attributes_validation_condition
-  validates :email, email: true, presence: true, :if => :secondaty_attributes_validation_condition
+  validates_presence_of :phone_number, :if => :secondary_attributes_validation_condition
+  validates :email, email: true, presence: true, :if => :secondary_attributes_validation_condition # uniqueness: { scope: :company_id }
 
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)
@@ -44,6 +47,7 @@ class Tourist < ActiveRecord::Base
     has :passport_valid_until, :date_of_birth, :type => :datetime
     has :potential, :type => :boolean
     has :company_id
+    has :user_id
 
     set_property :delta => true
   end
@@ -88,7 +92,8 @@ class Tourist < ActiveRecord::Base
       elsif last_name.blank? then :last_name
       elsif first_name.blank? then :first_name
       end
-      errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
+      # errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
+      errors.add(atr, I18n.t('activerecord.errors.messages.blank')) if atr
     end
 
     # TODO: It is temporary solution to avoid errors for old records
@@ -96,7 +101,7 @@ class Tourist < ActiveRecord::Base
       new_record? or updated_at >= Date.parse('01.07.2013')
     end
 
-    def secondaty_attributes_validation_condition
+    def secondary_attributes_validation_condition
       additional_attributes_validation_condition unless validate_secondary_attributes === false
     end
 

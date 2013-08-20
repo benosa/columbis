@@ -21,6 +21,7 @@
 //= require filter
 //= require claims
 //= require dashboard
+//= require tourists
 //= require offline
 //= require boss
 //= require rmenu

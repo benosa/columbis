@@ -3,6 +3,10 @@
 
 - title t('.edit_tourist', :tourist => @tourist.name)
 
+- content_for :top do
+  - if @tourist.user
+    .user= t('.created_by', user: @tourist.user.name_for_list)
+
 = form_for @tourist do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }

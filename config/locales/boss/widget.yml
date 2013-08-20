@@ -3,6 +3,16 @@ ru:
   week: '7 дней'
   month: '31 день'
   in_all: 'Всего'
+  normal: 'Среднее'
   claim_number: 'шт.'
   claim_text: '(данные по активным и завершенным броням)'
-  claims: 'Брони'
+  payment_sum: 'руб.'
+  income_text: '(по данным подтвержденных оплат активных и завершенныx броней)'
+  normalcheck_text: '(данные по активным и завершенным броням)'
+
+  boss:
+    active_record:
+      claims: 'Брони'
+      incomes: 'Доход'
+      normalcheck: 'Средний чек'
+      tourprice: 'Средняя стоимость'

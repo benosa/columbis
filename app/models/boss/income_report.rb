@@ -67,6 +67,7 @@ module Boss
         payments.project(payments[:amount].sum.as('amount'))
           .join(claims).on(payments[:claim_id].eq(claims[:id]))
           .where(claims[:excluded_from_profit].eq(false))
+          .where(claims[:canceled].eq(false))
           .where(payments[:company_id].eq(company.id))
           .where(payments[:recipient_type].eq('Company'))
           .where(payments[:approved].eq(true))

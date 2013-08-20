@@ -270,7 +270,7 @@ ru:
         medical_insurance: 'Медстраховка'
         canceled: 'Аннулирована'
         memo_tasks_done: 'Примечания учтены'
-        tourist_stat: 'Откуда пришел клиент'
+        tourist_stat: 'Статистика'
         excluded_from_profit: 'Не включать в наценку'
         payments_in:
           currency: 'Оплата туристом: Валюта'

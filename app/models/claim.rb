@@ -37,7 +37,7 @@ class Claim < ActiveRecord::Base
 
   # nested attributes
   attr_accessible :applicant_attributes, :dependents_attributes,
-                  :payments_in_attributes, :flights_attributes
+                  :payments_in_attributes, :payments_out_attributes, :flights_attributes
 
   belongs_to :company
   belongs_to :user
@@ -54,8 +54,8 @@ class Claim < ActiveRecord::Base
   has_many :tourist_claims, :dependent => :destroy, :conditions => { :applicant => false }
   has_many :dependents, :through => :tourist_claims, :source => :tourist
 
-  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id'
-  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id'
+  has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id', :autosave => false
+  has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id', :autosave => false
 
   has_many :flights, :dependent => :destroy, :order => 'created_at ASC'
 
@@ -66,7 +66,7 @@ class Claim < ActiveRecord::Base
 
   accepts_nested_attributes_for :flights, :reject_if => :all_blank, :allow_destroy => true
 
-  validates_presence_of :user_id, :check_date, :arrival_date
+  validates_presence_of :user_id, :check_date, :arrival_date, :tourist_stat
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
   #                       :airport_back,
@@ -143,9 +143,10 @@ class Claim < ActiveRecord::Base
       check_payments
 
       unless self.errors.any?
-        remove_unused_payments
+        # remove_unused_payments
         check_not_null_fields
         self.save
+        check_validation_messages if invalid?
       end
     end
   end
@@ -225,6 +226,7 @@ class Claim < ActiveRecord::Base
         else
           dependent = Tourist.where(id: id, company_id: company).first
           if !destroy and dependent
+            dependent.validate_secondary_attributes = false
             dependent.assign_attributes(attributes)
             dependent.company = company
             dependents << dependent
@@ -563,6 +565,12 @@ class Claim < ActiveRecord::Base
       end
     end
 
+    def check_validation_messages
+      # Remove message about payer and recipient of payments
+      [:payer, :payer_id, :payer_type].each { |key| errors.delete(:"payments_in.#{key}") }
+      [:recipient, :recipient_id, :recipient_type].each{ |key| errors.delete(:"payments_out.#{key}") }
+    end
+
     def update_debts
       payments_in = self.payments_in.reject(&:marked_for_destruction?)
       approved_payments_in = payments_in.select(&:approved?)
@@ -673,9 +681,9 @@ class Claim < ActiveRecord::Base
     #   str.strip!
     # end
 
-    def remove_unused_payments
-      Payment.where(:claim_id => nil, :company_id => company.id).destroy_all
-    end
+    # def remove_unused_payments
+    #   Payment.where(:claim_id => nil, :company_id => company.id).destroy_all
+    # end
 
     def process_payment_hash(ph, in_out_payments)
       company.check_and_save_dropdown('form', ph[:form])

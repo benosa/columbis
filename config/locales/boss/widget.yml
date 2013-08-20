@@ -9,6 +9,7 @@ ru:
   payment_sum: 'руб.'
   income_text: '(по данным подтвержденных оплат активных и завершенныx броней)'
   normalcheck_text: '(данные по активным и завершенным броням)'
+  margin_text: '(данные по активным и завершенным броням)'
 
   boss:
     active_record:
@@ -16,3 +17,4 @@ ru:
       incomes: 'Доход'
       normalcheck: 'Средний чек'
       tourprice: 'Средняя стоимость'
+      margin: 'Наценка'

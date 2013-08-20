@@ -19,6 +19,7 @@ module Boss
       widgets << create_default_income_widget(user, company)
       widgets << create_default_normalcheck_widget(user, company)
       widgets << create_default_tourprice_widget(user, company)
+      widgets << create_default_margin_widget(user, company)
     end
 
     def self.create_default_claim_widget(user, company)
@@ -53,6 +54,14 @@ module Boss
       widget
     end
 
+    def self.create_default_margin_widget(user, company)
+      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 2,
+        :title => I18n.t('boss.active_record.margin'), :view => 'small', :widget_type => 'factor',
+        :name => 'margin', :settings => {})
+      widget.save
+      widget
+    end
+
     def widget_data
       case name
       when 'claim'
@@ -63,6 +72,8 @@ module Boss
         normalcheck_widget_data
       when 'tourprice'
         tourprice_widget_data
+      when 'margin'
+        margin_widget_data
       end
     end
 
@@ -185,6 +196,26 @@ module Boss
         })
     end
 
+    def margin_widget_data
+      data = Claim.select("AVG(profit_in_percent_acc) AS total, reservation_date AS date")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now - 61.days).to_date)
+        .group(:reservation_date)
+        .order("reservation_date DESC")
+      total = Claim.select("AVG(profit_in_percent_acc) AS total")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+      data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_f.round(2)]}
+      create_data(data, true).merge(:total => {
+        title: I18n.t('.normal'),
+        data: "#{commas(total.first.try('total').to_f.round(2))} <span>%<span/>".html_safe,
+        text: I18n.t('.margin_text')
+      })
+    end
+
     def create_data(data, is_mean = false)
       now_day        = get_by_date(data, is_mean, Time.zone.now.to_date,         Time.zone.now.to_date        )
       previous_day   = get_by_date(data, is_mean, Time.zone.now.to_date-1.days,  Time.zone.now.to_date-1.days )
@@ -210,9 +241,9 @@ module Boss
       x = data.select{|d| (d[0] >= start_date) && (d[0] <= end_date)}.map{|d| d[1]}
       x.delete(0)
       if is_mean
-        x.blank? ? 0 : (x.sum/x.length).to_i
+        x.blank? ? 0 : (x.sum/x.length).round(2)
       else
-        x.blank? ? 0 : x.sum.to_i
+        x.blank? ? 0 : x.sum.round(2)
       end
     end
 

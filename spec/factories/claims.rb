@@ -12,8 +12,9 @@ FactoryGirl.define do
     arrival_date { 10.days.since }
     departure_date { 15.days.since }
     hotel "Ekaterina 5*"
-
     airline 'test'
+    tourist_stat 'Рекомендации'
+
     tour_price_currency 'rur'
     visa_price_currency 'rur'
     insurance_price_currency 'rur'

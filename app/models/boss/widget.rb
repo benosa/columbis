@@ -4,7 +4,8 @@ module Boss
 
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table].freeze
-    NAMES = %w[claim].freeze
+    NAMES = %w[claim income normalcheck tourprice margin].freeze
+    PERIODS = %w[day week month].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
 
@@ -15,27 +16,39 @@ module Boss
 
     def self.create_default_widgets(user, company)
       widgets = []
-      widgets << create_default_widget(user, company, I18n.t('boss.active_record.claims'),
-        'small', 'factor', 'claim')
-      widgets << create_default_widget(user, company, I18n.t('boss.active_record.incomes'),
-        'small', 'factor', 'income')
-      widgets << create_default_widget(user, company, I18n.t('boss.active_record.normalcheck'),
-        'small', 'factor', 'normalcheck')
-      widgets << create_default_widget(user, company, I18n.t('boss.active_record.tourprice'),
-        'small', 'factor', 'tourprice')
-      widgets << create_default_widget(user, company, I18n.t('boss.active_record.margin'),
-        'small', 'factor', 'margin')
+      widgets << create_default_widget(user, company, 1,
+        'boss.active_record.widget.factors.claims', 'small', 'factor', 'claim')
+      widgets << create_default_widget(user, company, 2,
+        'boss.active_record.widget.factors.incomes', 'small', 'factor', 'income')
+      widgets << create_default_widget(user, company, 3,
+        'boss.active_record.widget.factors.normalcheck', 'small', 'factor', 'normalcheck')
+      widgets << create_default_widget(user, company, 4,
+        'boss.active_record.widget.factors.tourprice', 'small', 'factor', 'tourprice')
+      widgets << create_default_widget(user, company, 5,
+        'boss.active_record.widget.factors.margin', 'small', 'factor', 'margin')
+      widgets << create_default_widget(user, company, 6,
+        'boss.active_record.widget.charts.income_title_day', 'small2', 'chart', 'income',
+        {:period => 'day', :yAxis_text => 'RUR'})
     end
 
-    def self.create_default_widget(user, company, title, view, widget_type, name)
-      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 1,
+    def self.create_default_widget(user, company, position, title, view, widget_type, name, settings = {})
+      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => position,
         :title => title, :view => view, :widget_type => widget_type,
-        :name => name, :settings => {})
+        :name => name, :settings => settings)
       widget.save
       widget
     end
 
     def widget_data
+      case widget_type
+      when 'factor'
+        factor_widget_data
+      when 'chart'
+        chart_widget_data
+      end
+    end
+
+    def factor_widget_data
       case name
       when 'claim'
         claims_factor_data
@@ -50,6 +63,12 @@ module Boss
       end
     end
 
+    def chart_widget_data
+      case name
+      when 'income'
+        income_chart_data
+      end
+    end
 
 
 
@@ -69,9 +88,9 @@ module Boss
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
       create_factor_data(data).merge(:total => {
-        title: I18n.t('.in_all'),
-        data: "#{total.first.try('total')} <span>#{I18n.t('.claim_number')}<span/>".html_safe,
-        text: I18n.t('.claim_text')
+        title: I18n.t('boss.active_record.widget.factors.in_all'),
+        data: "#{total.first.try('total')} <span>#{I18n.t('boss.active_record.widget.factors.claim_number')}<span/>".html_safe,
+        text: I18n.t('boss.active_record.widget.factors.claim_text')
       })
     end
 
@@ -97,9 +116,9 @@ module Boss
           .where(claims: {canceled: false})
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
       create_factor_data(data).merge(:total => {
-        title: I18n.t('.in_all'),
-        data: "#{commas(total.first.try('total'))} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
-        text: I18n.t('.income_text')
+        title: I18n.t('boss.active_record.widget.factors.in_all'),
+        data: "#{commas(total.first.try('total'))} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
+        text: I18n.t('boss.active_record.widget.factors.income_text')
       })
     end
 
@@ -117,9 +136,9 @@ module Boss
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
       create_factor_data(data, true).merge(:total => {
-        title: I18n.t('.normal'),
-        data: "#{commas(total.first.try('total').to_i)} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
-        text: I18n.t('.normalcheck_text')
+        title: I18n.t('boss.active_record.widget.factors.normal'),
+        data: "#{commas(total.first.try('total').to_i)} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
+        text: I18n.t('boss.active_record.widget.factors.normalcheck_text')
         })
     end
 
@@ -163,9 +182,9 @@ module Boss
 
       create_factor_data(data, true).merge(
         :total => {
-          title: I18n.t('.normal'),
-          data: "#{commas(total)} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
-          text: I18n.t('.normalcheck_text')
+          title: I18n.t('boss.active_record.widget.factors.normal'),
+          data: "#{commas(total)} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
+          text: I18n.t('boss.active_record.widget.factors.normalcheck_text')
         })
     end
 
@@ -183,10 +202,163 @@ module Boss
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_f.round(2)]}
       create_factor_data(data, true).merge(:total => {
-        title: I18n.t('.normal'),
+        title: I18n.t('boss.active_record.widget.factors.normal'),
         data: "#{commas(total.first.try('total').to_f.round(2))} <span>%<span/>".html_safe,
-        text: I18n.t('.margin_text')
+        text: I18n.t('boss.active_record.widget.factors.margin_text')
       })
+    end
+
+    def income_chart_data
+      end_date = Time.zone.now.to_date
+      case settings[:period]
+      when 'day'
+        start_date = end_date - 6.days
+      when 'week'
+        start_date = end_date - (7*6-1).days
+        start_date = start_date - (start_date.cwday-1).days
+      else
+        start_date = (end_date - 6.months)
+        start_date = start_date - start_date.day + 1.days
+      end
+      data = Payment.select("SUM(amount) AS total, date_in AS date")
+        .where(company_id: company.id)
+        .where(recipient_type: 'Company')
+        .where(approved: true)
+        .where(canceled: false)
+        .where("date_in >= ?", start_date)
+        .where("date_in <= ?", end_date)
+        .joins("INNER JOIN claims ON payments.claim_id = claims.id")
+          .where(claims: {excluded_from_profit: false})
+          .where(claims: {canceled: false})
+        .group(:date)
+        .order("date DESC")
+      chart_settings(data, start_date, end_date)
+    end
+
+    def chart_settings(data, start_date, end_date)
+      case settings[:period]
+      when 'day'
+        categories = []
+        x = start_date
+        while x <= end_date
+          categories << x
+          x += 1.days
+        end
+        series = [{
+          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| d.try(:date).to_date == c }
+            elem.length==0 ? 0 : elem.try(:total).to_f.round(2)
+          end
+        }]
+        chart_day_settings(categories, series)
+      when 'week'
+        categories = []
+        x = start_date
+        while x <= end_date
+          categories << (x + 3.days)
+          x += 7.days
+        end
+        series = [{
+          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| d.try(:date).to_date >= (c-3.days) && d.try(:date).to_date <= (c+6.days) }
+            elem.length==0 ? [c.to_datetime.to_i * 1000, 0] :
+              [c.to_datetime.to_i * 1000, elem.map{|e| e.try(:total).to_f}.sum.round(2)]
+          end
+        }]
+        chart_week_settings(categories, series)
+      else
+        categories = []
+        x = start_date
+        while x <= end_date
+          categories << x
+          x += 1.months
+        end
+        series = [{
+          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          data: categories.map do |c|
+            elem = data.find_all { |d| d.try(:date).to_date.month == c.month }
+            elem.length==0 ? 0 : elem.map{|e| e.try(:total).to_f}.sum.round(2)
+          end
+        }]
+        chart_month_settings(categories, series)
+      end
+    end
+
+    def chart_day_settings(categories, series)
+      {
+        title: {
+          text: nil
+        },
+        xAxis: {
+          categories: categories.map{|c| c.day.to_s + " " + I18n.t('date.months')[c.month][0..3]},
+          labels: {
+            align: 'center'
+          }
+        },
+        yAxis: {
+          min: 0,
+          tickPixelInterval: 25,
+          title: {
+            text: I18n.t(settings[:yAxis_text])
+          }
+        },
+        tooltip: {
+          formatter: nil
+        },
+        series: series
+      }
+    end
+
+    def chart_week_settings(categories, series)
+      {
+        title: {
+          text: nil
+        },
+        xAxis: {
+          type: 'datetime'
+        },
+        yAxis: {
+          min: 0,
+          tickPixelInterval: 25,
+          title: {
+            text: I18n.t(settings[:yAxis_text])
+          }
+        },
+        tooltip: {
+          formatter: nil,
+          shared: true,
+          useHTML: true,
+          headerFormat: ''
+        },
+        series: series
+      }
+    end
+
+    def chart_month_settings(categories, series)
+      {
+        title: {
+          text: nil
+        },
+        xAxis: {
+          categories: categories.map{|c| I18n.t('date.months')[c.month-1][0..5]},
+          labels: {
+            align: 'center'
+          }
+        },
+        yAxis: {
+          min: 0,
+          tickPixelInterval: 25,
+          title: {
+            text: I18n.t(settings[:yAxis_text])
+          }
+        },
+        tooltip: {
+          formatter: nil
+        },
+        series: series
+      }
     end
 
     def create_factor_data(data, is_mean = false)
@@ -198,7 +370,9 @@ module Boss
       previous_month = get_by_date(data, is_mean, Time.zone.now.to_date-61.days, Time.zone.now.to_date-31.days)
       {
         data: [
-          [I18n.t('.today'), I18n.t('.week'), I18n.t('.month')],
+          [ I18n.t('boss.active_record.widget.factors.today'),
+            I18n.t('boss.active_record.widget.factors.week'),
+            I18n.t('boss.active_record.widget.factors.month')],
           [commas(now_day.to_s), commas(now_week.to_s), commas(now_month.to_s)],
           [get_class(now_day, previous_day),
             get_class(now_week, previous_week),

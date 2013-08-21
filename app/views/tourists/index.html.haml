@@ -20,10 +20,17 @@
       %span= t('.potential_clients')
 
   %form.filter
-    = render 'shared/search_field'
+    - unless params[:potential].present?
+      = render partial: 'shared/search_field'
+
+    - else
+      = render partial: 'shared/search_field', locals: { filter_class: 'search small_filter' }
+
+      = label_tag :user_id, t('.manager_filter')
+      = select_tag :user_id,  options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:user_id]), :prompt => t('all'), :class => 'filter_select', :data => { :param=> 'user_id', :filter => 1 }
 
 = render 'list'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('.add_tourist'), new_tourist_path, :class => 'add_operator'
+  = link_to t('.add_tourist'), params[:potential].blank? ? new_tourist_path : new_tourist_path(potential: 1), :class => 'add_operator'

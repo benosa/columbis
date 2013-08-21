@@ -10,6 +10,7 @@ ru:
         list: 'Список'
         value: 'Значение'
         common: 'Общее'
+        action_title_for_common: 'Значение доступное по умолчанию'
       new:
         title: 'Новое значение'
         list_of_dropdown_values: 'Список значений'

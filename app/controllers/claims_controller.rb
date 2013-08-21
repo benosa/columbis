@@ -22,7 +22,11 @@ class ClaimsController < ApplicationController
     else
       page_options = { :page => params[:page], :per_page => per_page }
       default_order = "claims.#{Claim::DEFAULT_SORT[:col]} #{Claim::DEFAULT_SORT[:dir]}, claims.id DESC"
-      @claims_collection = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables).paginate(page_options)
+      scoped = Claim.accessible_by(current_ability).order(default_order).includes(inluded_tables)
+      if is_manager? # manager can see only his claims
+        scoped = scoped.where('claims.user_id = :manager OR claims.assistant_id = :manager', manager: current_user.id)
+      end
+      @claims_collection = scoped.paginate(page_options)
       @claims = @claims_collection.all
     end
     set_list_type
@@ -186,6 +190,7 @@ class ClaimsController < ApplicationController
         end
         opts[:with][:office_id] = params[:office_id] unless params[:office_id].blank?
       else
+        params[:only_my] = '1' # TODO: temporary for Mistral, need change abilities
         opts[:with][:office_id] = current_office.id
         if params[:only_my] == '1'
           manager = current_user.id

@@ -22,7 +22,7 @@ module LayoutHelper
   end
 
   def view_switcher?
-    params[:controller] == 'claims' and params[:action] == 'index'
+    params[:controller] == 'claims' and params[:action] == 'index' and (is_admin? or is_boss? or is_accountant?)
   end
 
   def body_class

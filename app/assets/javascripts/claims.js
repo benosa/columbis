@@ -99,6 +99,7 @@ function loadClaimsByScroll(data){
 
       $('#claims_body').append(resp);
 
+      set_claims_sticky_header();
       set_claims_waypoint();
       setTitles();
       set_editable_bonus_percent();
@@ -160,32 +161,91 @@ function set_claims_waypoint() {
 }
 
 function set_claims_sticky_header() {
-  var options = {
-    wrapper: null, //'<table class="sticky-wrapper" />',
-    stuckClass: 'stuck',
-    offset: function() { return -$(this).height(); }
-  };
 
-  var selector = '#claims .sticky-element',
-      $tr = $(selector),
-      w = $tr.width(),
-      $table = $tr.closest('table'),
-      $thead = $table.find('thead'),
-      $tbody = $table.find('tbody');
+  function fill_stuck($claims_header, $stuck) {
+    var css_props = ['width', 'height',
+          'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width',
+          'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style',
+          'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color',
+          'background-image', 'background-position', 'background-color', 'background-repeat',
+          'padding-top', 'padding-right', 'padding-bottom', 'padding-left'
+        ],
+        css_a_props = ['display', 'text-align', 'text-shadow', 'color',
+          'font-size', 'font-weight',
+          'margin-top', 'margin-right', 'margin-bottom', 'margin-left'
+        ];
 
-  // Fix width for thead and tbody
-  $tr.width(w);
-  $table.width(w);
-  $thead.width(w);
-  $tbody.width(w);
-  $tr.find('th').each(function() {
-    $(this).width($(this).width());
-  });
-  $tbody.find('tr:first-child td').each(function() {
-    $(this).width($(this).width());
-  });
+    $claims_header.find('th').each(function(index) {
+      var css = {}, css_a = {}, prop, i,
+          $a = $(this).find('a');
 
-  set_sticky_elements(selector, options);
+      for (i in css_props) {
+        prop = css_props[i];
+        css[prop] = $(this).css(prop);
+        css_a[prop] = $a.css(prop);
+      }
+      css['float'] = 'left';
+      css['width'] = parseInt(css['width']) + 1;
+      if (index > 0) {
+        css['border-left'] = 'none';
+      }
+
+      for (i in css_a_props) {
+        prop = css_a_props[i];
+        css_a[prop] = $a.css(prop);
+      }
+
+      var $div = $('<div>').css(css),
+          $a1 = $a.clone(true, true).css(css_a);
+      $stuck.append($div.append($a1));
+    });
+  }
+
+  function adjust_stuck($claims_header, $stuck) {
+    var $divs = $stuck.find('div'),
+        full_width = 0;
+    $claims_header.find('th').each(function(index) {
+      // $divs.eq(index).css('width', parseInt($(this).css('width')) + 1);
+      var w = $(this).outerWidth();
+      full_width += w;
+      $divs.eq(index).css('width', w - 1);
+    });
+    $stuck.css('width', full_width + 1);
+  }
+
+  var $claims_header = $('#claims .claims_header'),
+      $thead = $claims_header.closest('thead'),
+      $stuck = $thead.find('.stuck');
+
+  if ($stuck.length == 0) {
+    $stuck = $('<div class="stuck"></div>');
+    $stuck.css('width', $claims_header.outerWidth() + 1);
+    fill_stuck($claims_header, $stuck);
+    $stuck.appendTo($thead);
+  }
+
+  adjust_stuck($claims_header, $stuck);
+
+  // Initialization
+  if (!$claims_header.data('waypointsWaypointIds')) {
+    set_waypoints('#claims .claims_header', {
+      offset: function() { return -$(this).height(); },
+      handler: function(direction) {
+        var $thead = $(this).closest('thead');
+        if (direction == 'down') {
+          $thead.addClass('stuck_active');
+        } else {
+          $thead.removeClass('stuck_active');
+        }
+      }
+    });
+
+    $(window).on('scroll.claims', function() {
+      $('#claims .stuck').css({
+        top: $(this).scrollTop()
+      });
+    });
+  }
 }
 
 function remove_duplicated_totals() {
@@ -960,6 +1020,7 @@ $(function(){
 
   // After refresh claims container, addition to default after refresh
   $('body').on('refreshed', '.claims', function(e) {
+    set_claims_sticky_header();
     set_claims_waypoint();
     set_claims_tooltip();
   });
@@ -982,8 +1043,9 @@ function set_deys() {
 	}
 };
 
-// Row highlight
+// On ready
 $(function() {
+  // Row highlight
   $('body').on('click', '#claims td', function(e) {
     var $row = $(this).closest('.row'),
         $hrow = $('#claims .row.highlight');
@@ -993,6 +1055,11 @@ $(function() {
       $hrow.removeClass('highlight');
       $row.addClass('highlight');
     }
+  });
+
+  // Window scroll event
+  $(window).scroll(function() {
+    $(window).trigger('scroll.claims');
   });
 });
 

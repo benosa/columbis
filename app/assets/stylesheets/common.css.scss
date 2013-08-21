@@ -516,6 +516,8 @@ div.left {
     background: url("/assets/new_design/images/reset.png") no-repeat;
     margin-right: 17px;
   }
+  input + label { margin-left: 11px; }
+  .search.small { width: 150px; }
 }
 
 .low_resolution .filter {
@@ -621,8 +623,10 @@ div.left {
   }
 }
 
-.ik_select_list, .filter_select .ik_select_list {
-  width: auto;
+.ik_select_list {
+  width: auto; max-height: none;
+  .filter_select & { width: auto; }
+  ul { max-height: 300px; }
 }
 
 .error .ik_select_link, .error_message .ik_select_link {
@@ -876,6 +880,8 @@ label.checkbox {
 .save.save_and_close { width: 160px; background: url(/assets/new_design/images/save_and_close.png) no-repeat; }
 .save.save_and_close:hover { background: url(/assets/new_design/images/save_and_close_hover.png) no-repeat; }
 .edit_page .save { margin-left: 8px; }
+
+label.question_mark { background: url(/assets/question.png) 100% 2px no-repeat; padding-right: 15px; }
 
 /*** END forms ***/
 

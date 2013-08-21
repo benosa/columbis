@@ -18,7 +18,11 @@
           %td
             %p= dropdown_value.common? ? t('yep') : t('nope')
         %td
-          = link_to '', edit_dashboard_dropdown_value_path(dropdown_value), :class => 'edit_row', :title => t('edit')
-          = link_to '', [:dashboard, dropdown_value], :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
+          - if dropdown_value.common? && !is_admin?
+            %div{ :title => t('.action_title_for_common') }
+              = t('nope')
+          - else
+            = link_to '', edit_dashboard_dropdown_value_path(dropdown_value), :class => 'edit_row', :title => t('edit')
+            = link_to '', [:dashboard, dropdown_value], :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete')
 
   = render :partial => 'shared/pagination', :locals => { :collection => @dropdown_values }

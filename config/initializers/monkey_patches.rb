@@ -9,9 +9,13 @@ class Float
   end
 
   def amount_in_words(currency)
-    str = RuPropisju.amount_in_words(self.abs, currency).mb_chars.capitalize.to_s
-    str = '-' + str if self < 0
-    str
+    begin
+      str = RuPropisju.amount_in_words(self.abs, currency).mb_chars.capitalize.to_s
+      str = '-' + str if self < 0
+      str
+    rescue
+      ''
+    end
   end
 
   def amount_in_word(currency)

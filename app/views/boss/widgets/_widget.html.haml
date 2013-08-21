@@ -13,6 +13,6 @@
       - when 'factor'
         = render partial: 'boss/widgets/factor', locals: { data: widget_data[:data], total: widget_data[:total]}
       - when 'chart'
-        = render partial: 'boss/widgets/chart', locals: { data: widget_data}
+        = render partial: 'boss/widgets/chart', locals: { data: widget_data, id: "chart_#{widget.name}_#{widget.settings[:period]}"}
       - when 'table'
         = render partial: 'boss/widgets/table', locals: { data: widget_data[:data], total: widget_data[:total]}

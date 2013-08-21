@@ -29,6 +29,12 @@ module Boss
       widgets << create_default_widget(user, company, 6,
         'boss.active_record.widget.charts.income_title_day', 'small2', 'chart', 'income',
         {:period => 'day', :yAxis_text => 'RUR'})
+      widgets << create_default_widget(user, company, 7,
+        'boss.active_record.widget.charts.margin_title_week', 'large', 'chart', 'margin',
+        {:period => 'week', :yAxis_text => 'boss.active_record.widget.charts.percent'})
+      widgets << create_default_widget(user, company, 8,
+        'boss.active_record.widget.charts.claim_title_month', 'medium', 'chart', 'claim',
+        {:period => 'month', :yAxis_text => 'boss.active_record.widget.charts.claim_number'})
     end
 
     def self.create_default_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -64,9 +70,25 @@ module Boss
     end
 
     def chart_widget_data
+      end_date = Time.zone.now.to_date
+      case settings[:period]
+      when 'day'
+        start_date = end_date - 6.days
+      when 'week'
+        start_date = end_date - (7*6-1).days
+        start_date = start_date - (start_date.cwday-1).days
+      else
+        start_date = (end_date - 6.months)
+        start_date = start_date - start_date.day + 1.days
+      end
+
       case name
       when 'income'
-        income_chart_data
+        income_chart_data(start_date, end_date)
+      when 'margin'
+        margin_chart_data(start_date, end_date)
+      when 'claim'
+        claim_chart_data(start_date, end_date)
       end
     end
 
@@ -208,18 +230,82 @@ module Boss
       })
     end
 
-    def income_chart_data
-      end_date = Time.zone.now.to_date
-      case settings[:period]
-      when 'day'
-        start_date = end_date - 6.days
-      when 'week'
-        start_date = end_date - (7*6-1).days
-        start_date = start_date - (start_date.cwday-1).days
+    def create_factor_data(data, is_mean = false)
+      now_day        = get_by_date(data, is_mean, Time.zone.now.to_date,         Time.zone.now.to_date        )
+      previous_day   = get_by_date(data, is_mean, Time.zone.now.to_date-1.days,  Time.zone.now.to_date-1.days )
+      now_week       = get_by_date(data, is_mean, Time.zone.now.to_date-6.days,  Time.zone.now.to_date        )
+      previous_week  = get_by_date(data, is_mean, Time.zone.now.to_date-13.days, Time.zone.now.to_date-7.days )
+      now_month      = get_by_date(data, is_mean, Time.zone.now.to_date-30.days, Time.zone.now.to_date        )
+      previous_month = get_by_date(data, is_mean, Time.zone.now.to_date-61.days, Time.zone.now.to_date-31.days)
+      {
+        data: [
+          [ I18n.t('boss.active_record.widget.factors.today'),
+            I18n.t('boss.active_record.widget.factors.week'),
+            I18n.t('boss.active_record.widget.factors.month')],
+          [commas(now_day.to_s), commas(now_week.to_s), commas(now_month.to_s)],
+          [get_class(now_day, previous_day),
+            get_class(now_week, previous_week),
+            get_class(now_month, previous_month)],
+          [get_percent(now_day, previous_day),
+            get_percent(now_week, previous_week),
+            get_percent(now_month, previous_month)]
+        ]
+      }
+    end
+
+    def get_by_date(data, is_mean = false, start_date, end_date)
+      avg_or_sum( data.select{|d| (d[0] >= start_date) && (d[0] <= end_date)}.map{|d| d[1]},
+        is_mean)
+    end
+
+    def avg_or_sum(array, is_mean = false)
+      array.delete(0)
+      if is_mean
+        array.blank? ? 0 : (array.sum/array.length).round(2)
       else
-        start_date = (end_date - 6.months)
-        start_date = start_date - start_date.day + 1.days
+        array.blank? ? 0 : array.sum.round(2)
       end
+    end
+
+    def get_class(now, previous)
+      if now == 0 && previous == 0
+        '&ndash;'.html_safe
+      elsif now != 0 && previous == 0
+        {class: 'sign-up'}
+      elsif now == 0 && previous != 0
+        {class: 'sign-down'}
+      elsif now > previous
+        {class: 'sign-up'}
+      elsif now == previous
+        '&ndash;'.html_safe
+      else
+        {class: 'sign-down'}
+      end
+    end
+
+    def get_percent(now, previous)
+      if now == 0 && previous == 0
+        "0%"
+      elsif now != 0 && previous == 0
+        "100%"
+      elsif now == 0 && previous != 0
+        "100%"
+      elsif now < previous
+        ((previous-now)*100/previous).round(2).to_s + "%"
+      elsif now == previous
+        "0%"
+      else
+        ((now-previous)*100/previous).round(2).to_s + "%"
+      end
+    end
+
+    def commas(x)
+      str = x.to_s.reverse
+      str.gsub!(/([0-9]{3})/,"\\1,")
+      str.gsub(/,$/,"").reverse
+    end
+
+    def income_chart_data(start_date, end_date)
       data = Payment.select("SUM(amount) AS total, date_in AS date")
         .where(company_id: company.id)
         .where(recipient_type: 'Company')
@@ -235,7 +321,31 @@ module Boss
       chart_settings(data, start_date, end_date)
     end
 
-    def chart_settings(data, start_date, end_date)
+    def margin_chart_data(start_date, end_date)
+      data = Claim.select("AVG(profit_in_percent_acc) AS total, reservation_date AS date")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", start_date)
+        .where("reservation_date <= ?", end_date)
+        .group(:reservation_date)
+        .order("reservation_date DESC")
+      chart_settings(data, start_date, end_date, true)
+    end
+
+    def claim_chart_data(start_date, end_date)
+      data = Claim.select("COUNT(id) AS total, reservation_date AS date")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", start_date)
+        .where("reservation_date <= ?", end_date)
+        .group(:reservation_date)
+        .order("reservation_date DESC")
+      chart_settings(data, start_date, end_date)
+    end
+
+    def chart_settings(data, start_date, end_date, is_mean = false)
       case settings[:period]
       when 'day'
         categories = []
@@ -264,7 +374,7 @@ module Boss
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date >= (c-3.days) && d.try(:date).to_date <= (c+6.days) }
             elem.length==0 ? [c.to_datetime.to_i * 1000, 0] :
-              [c.to_datetime.to_i * 1000, elem.map{|e| e.try(:total).to_f}.sum.round(2)]
+              [c.to_datetime.to_i * 1000, avg_or_sum(elem.map{|e| e.try(:total).to_f}, is_mean).round(2)]
           end
         }]
         chart_week_settings(categories, series)
@@ -279,7 +389,7 @@ module Boss
           name: I18n.t('boss.active_record.widget.charts.income_sum'),
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date.month == c.month }
-            elem.length==0 ? 0 : elem.map{|e| e.try(:total).to_f}.sum.round(2)
+            elem.length==0 ? 0 : avg_or_sum(elem.map{|e| e.try(:total).to_f}, is_mean).round(2)
           end
         }]
         chart_month_settings(categories, series)
@@ -359,77 +469,6 @@ module Boss
         },
         series: series
       }
-    end
-
-    def create_factor_data(data, is_mean = false)
-      now_day        = get_by_date(data, is_mean, Time.zone.now.to_date,         Time.zone.now.to_date        )
-      previous_day   = get_by_date(data, is_mean, Time.zone.now.to_date-1.days,  Time.zone.now.to_date-1.days )
-      now_week       = get_by_date(data, is_mean, Time.zone.now.to_date-6.days,  Time.zone.now.to_date        )
-      previous_week  = get_by_date(data, is_mean, Time.zone.now.to_date-13.days, Time.zone.now.to_date-7.days )
-      now_month      = get_by_date(data, is_mean, Time.zone.now.to_date-30.days, Time.zone.now.to_date        )
-      previous_month = get_by_date(data, is_mean, Time.zone.now.to_date-61.days, Time.zone.now.to_date-31.days)
-      {
-        data: [
-          [ I18n.t('boss.active_record.widget.factors.today'),
-            I18n.t('boss.active_record.widget.factors.week'),
-            I18n.t('boss.active_record.widget.factors.month')],
-          [commas(now_day.to_s), commas(now_week.to_s), commas(now_month.to_s)],
-          [get_class(now_day, previous_day),
-            get_class(now_week, previous_week),
-            get_class(now_month, previous_month)],
-          [get_percent(now_day, previous_day),
-            get_percent(now_week, previous_week),
-            get_percent(now_month, previous_month)]
-        ]
-      }
-    end
-
-    def get_by_date(data, is_mean, start_date, end_date)
-      x = data.select{|d| (d[0] >= start_date) && (d[0] <= end_date)}.map{|d| d[1]}
-      x.delete(0)
-      if is_mean
-        x.blank? ? 0 : (x.sum/x.length).round(2)
-      else
-        x.blank? ? 0 : x.sum.round(2)
-      end
-    end
-
-    def get_class(now, previous)
-      if now == 0 && previous == 0
-        '&ndash;'.html_safe
-      elsif now != 0 && previous == 0
-        {class: 'sign-up'}
-      elsif now == 0 && previous != 0
-        {class: 'sign-down'}
-      elsif now > previous
-        {class: 'sign-up'}
-      elsif now == previous
-        '&ndash;'.html_safe
-      else
-        {class: 'sign-down'}
-      end
-    end
-
-    def get_percent(now, previous)
-      if now == 0 && previous == 0
-        "0%"
-      elsif now != 0 && previous == 0
-        "100%"
-      elsif now == 0 && previous != 0
-        "100%"
-      elsif now < previous
-        ((previous-now)*100/previous).round(2).to_s + "%"
-      elsif now == previous
-        "0%"
-      else
-        ((now-previous)*100/previous).round(2).to_s + "%"
-      end
-    end
-
-    def commas(x)
-      str = x.to_s.reverse
-      str.gsub!(/([0-9]{3})/,"\\1,")
-      str.gsub(/,$/,"").reverse
     end
   end
 end

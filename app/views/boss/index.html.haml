@@ -5,4 +5,4 @@
 
 .widget-area.clearfix
   - @widgets.each do |widget|
-    = render partial: "boss/widgets/#{widget.view}", locals: { widget: widget }
+    = render partial: "boss/widgets/widget", locals: { widget: widget }

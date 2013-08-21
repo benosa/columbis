@@ -1,0 +1,16 @@
+- widget_data = widget.widget_data
+- widget_class = "widget-#{widget.view}"
+- if widget.widget_type == 'table'
+  - widget_class += " widget-table"
+.widget{:class => widget_class}
+  = render partial: "boss/widgets/menu"
+  .widget-title
+    %h2= widget.title
+  .widget-content
+    - case widget.widget_type
+      - when 'factor'
+        = render partial: 'boss/widgets/factor', locals: { data: widget_data[:data], total: widget_data[:total]}
+      - when 'chart'
+        = render partial: 'boss/widgets/chart', locals: { data: widget_data[:data], total: widget_data[:total]}
+      - when 'table'
+        = render partial: 'boss/widgets/table', locals: { data: widget_data[:data], total: widget_data[:total]}

@@ -1,6 +1,0 @@
-.widget.widget-small.widget-medium
-  = render partial: 'boss/widgets/menu'
-  .widget-title
-    %h2= widget[:title]
-  .widget-content
-    .chart{ id: chart_id, data: { type: 'bar', settings: report.bar_settings(data) } }

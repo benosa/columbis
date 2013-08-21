@@ -15,49 +15,22 @@ module Boss
 
     def self.create_default_widgets(user, company)
       widgets = []
-      widgets << create_default_claim_widget(user, company)
-      widgets << create_default_income_widget(user, company)
-      widgets << create_default_normalcheck_widget(user, company)
-      widgets << create_default_tourprice_widget(user, company)
-      widgets << create_default_margin_widget(user, company)
+      widgets << create_default_widget(user, company, I18n.t('boss.active_record.claims'),
+        'small', 'factor', 'claim')
+      widgets << create_default_widget(user, company, I18n.t('boss.active_record.incomes'),
+        'small', 'factor', 'income')
+      widgets << create_default_widget(user, company, I18n.t('boss.active_record.normalcheck'),
+        'small', 'factor', 'normalcheck')
+      widgets << create_default_widget(user, company, I18n.t('boss.active_record.tourprice'),
+        'small', 'factor', 'tourprice')
+      widgets << create_default_widget(user, company, I18n.t('boss.active_record.margin'),
+        'small', 'factor', 'margin')
     end
 
-    def self.create_default_claim_widget(user, company)
+    def self.create_default_widget(user, company, title, view, widget_type, name)
       widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 1,
-        :title => I18n.t('boss.active_record.claims'), :view => 'small', :widget_type => 'factor',
-        :name => 'claim', :settings => {})
-      widget.save
-      widget
-    end
-
-    def self.create_default_income_widget(user, company)
-      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 2,
-        :title => I18n.t('boss.active_record.incomes'), :view => 'small', :widget_type => 'factor',
-        :name => 'income', :settings => {})
-      widget.save
-      widget
-    end
-
-    def self.create_default_normalcheck_widget(user, company)
-      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 2,
-        :title => I18n.t('boss.active_record.normalcheck'), :view => 'small', :widget_type => 'factor',
-        :name => 'normalcheck', :settings => {})
-      widget.save
-      widget
-    end
-
-    def self.create_default_tourprice_widget(user, company)
-      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 2,
-        :title => I18n.t('boss.active_record.tourprice'), :view => 'small', :widget_type => 'factor',
-        :name => 'tourprice', :settings => {})
-      widget.save
-      widget
-    end
-
-    def self.create_default_margin_widget(user, company)
-      widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => 2,
-        :title => I18n.t('boss.active_record.margin'), :view => 'small', :widget_type => 'factor',
-        :name => 'margin', :settings => {})
+        :title => title, :view => view, :widget_type => widget_type,
+        :name => name, :settings => {})
       widget.save
       widget
     end
@@ -65,15 +38,15 @@ module Boss
     def widget_data
       case name
       when 'claim'
-        claims_widget_data
+        claims_factor_data
       when 'income'
-        income_widget_data
+        income_factor_data
       when 'normalcheck'
-        normalcheck_widget_data
+        normalcheck_factor_data
       when 'tourprice'
-        tourprice_widget_data
+        tourprice_factor_data
       when 'margin'
-        margin_widget_data
+        margin_factor_data
       end
     end
 
@@ -82,7 +55,7 @@ module Boss
 
     private
 
-    def claims_widget_data
+    def claims_factor_data
       data = Claim.select("COUNT(id) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -95,14 +68,14 @@ module Boss
         .where(excluded_from_profit: false)
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
-      create_data(data).merge(:total => {
+      create_factor_data(data).merge(:total => {
         title: I18n.t('.in_all'),
         data: "#{total.first.try('total')} <span>#{I18n.t('.claim_number')}<span/>".html_safe,
         text: I18n.t('.claim_text')
       })
     end
 
-    def income_widget_data
+    def income_factor_data
       data = Payment.select("SUM(amount) AS total, date_in AS date")
         .where(company_id: company.id)
         .where(recipient_type: 'Company')
@@ -123,14 +96,14 @@ module Boss
           .where(claims: {excluded_from_profit: false})
           .where(claims: {canceled: false})
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
-      create_data(data).merge(:total => {
+      create_factor_data(data).merge(:total => {
         title: I18n.t('.in_all'),
         data: "#{commas(total.first.try('total'))} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
         text: I18n.t('.income_text')
       })
     end
 
-    def normalcheck_widget_data
+    def normalcheck_factor_data
       data = Claim.select("AVG(primary_currency_price) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -143,14 +116,14 @@ module Boss
         .where(excluded_from_profit: false)
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_i]}
-      create_data(data, true).merge(:total => {
+      create_factor_data(data, true).merge(:total => {
         title: I18n.t('.normal'),
         data: "#{commas(total.first.try('total').to_i)} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
         text: I18n.t('.normalcheck_text')
         })
     end
 
-    def tourprice_widget_data
+    def tourprice_factor_data
       data_count = TouristClaim.select("claims.reservation_date AS date, COUNT(tourist_id) as count")
         .joins("INNER JOIN claims ON tourist_claims.claim_id = claims.id")
           .where(claims: {excluded_from_profit: false})
@@ -188,7 +161,7 @@ module Boss
       end
       total = total == [] ? 0 : total.first
 
-      create_data(data, true).merge(
+      create_factor_data(data, true).merge(
         :total => {
           title: I18n.t('.normal'),
           data: "#{commas(total)} <span>#{I18n.t('.payment_sum')}<span/>".html_safe,
@@ -196,7 +169,7 @@ module Boss
         })
     end
 
-    def margin_widget_data
+    def margin_factor_data
       data = Claim.select("AVG(profit_in_percent_acc) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -209,14 +182,14 @@ module Boss
         .where(excluded_from_profit: false)
         .where(canceled: false)
       data = data.map{|d| [d.try(:date).to_date, d.try(:total).to_f.round(2)]}
-      create_data(data, true).merge(:total => {
+      create_factor_data(data, true).merge(:total => {
         title: I18n.t('.normal'),
         data: "#{commas(total.first.try('total').to_f.round(2))} <span>%<span/>".html_safe,
         text: I18n.t('.margin_text')
       })
     end
 
-    def create_data(data, is_mean = false)
+    def create_factor_data(data, is_mean = false)
       now_day        = get_by_date(data, is_mean, Time.zone.now.to_date,         Time.zone.now.to_date        )
       previous_day   = get_by_date(data, is_mean, Time.zone.now.to_date-1.days,  Time.zone.now.to_date-1.days )
       now_week       = get_by_date(data, is_mean, Time.zone.now.to_date-6.days,  Time.zone.now.to_date        )
@@ -267,9 +240,9 @@ module Boss
       if now == 0 && previous == 0
         "0%"
       elsif now != 0 && previous == 0
-        "0%"
+        "100%"
       elsif now == 0 && previous != 0
-        "0%"
+        "100%"
       elsif now < previous
         ((previous-now)*100/previous).round(2).to_s + "%"
       elsif now == previous

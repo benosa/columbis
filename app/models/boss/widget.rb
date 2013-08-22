@@ -4,7 +4,7 @@ module Boss
 
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table].freeze
-    NAMES = %w[claim income normalcheck tourprice margin tourists].freeze
+    NAMES = %w[claim income normalcheck tourprice margin tourists promotion].freeze
     PERIODS = %w[day week month].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
@@ -37,6 +37,8 @@ module Boss
         {:period => 'month', :yAxis_text => 'boss.active_record.widget.charts.claim_number'})
       widgets << create_default_widget(user, company, 9,
         'boss.active_record.widget.tables.tourists', 'large', 'table', 'tourists')
+      #widgets << create_default_widget(user, company, 10,
+      #  'boss.active_record.widget.tables.promotion', 'medium', 'table', 'promotion')
     end
 
     def self.create_default_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -100,6 +102,8 @@ module Boss
       case name
       when 'tourists'
         tourists_table_data
+      when 'promotion'
+        promotion_table_data
       end
     end
 
@@ -369,7 +373,7 @@ module Boss
           name: I18n.t('boss.active_record.widget.charts.income_sum'),
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date == c }
-            elem.length==0 ? 0 : elem.try(:total).to_f.round(2)
+            elem.length==0 ? 0 : elem.first.try(:total).to_f.round(2)
           end
         }]
         chart_day_settings(categories, series)
@@ -488,6 +492,24 @@ module Boss
         .where(:company_id => company.id)
         .order("created_at DESC")
         .first(10)
+    end
+
+    def promotion_table_data
+      data_now = Claim.select("COUNT(id) AS total, tourist_stat AS name")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
+        .group(:name)
+        .order("total DESC")
+      data_previous = Claim.select("COUNT(id) AS total, tourist_stat AS name")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
+        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
+        .group(:name)
+        .order("total DESC")
     end
   end
 end

@@ -1,3 +1,5 @@
 - case widget.name
   - when 'tourists'
     = render partial: 'boss/widgets/tourists', locals: { tourists: widget.widget_data }
+  - when 'promotion'
+    = render partial: 'boss/widgets/promotion', locals: { channels: widget.widget_data }

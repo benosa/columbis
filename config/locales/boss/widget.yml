@@ -32,3 +32,6 @@ ru:
           claim_title_month: 'Брони (динамика по месяцам)'
           claim_number: 'шт.'
           percent: '%'
+        tables:
+          tourists: 'Список последних десяти зарегестрированных туристов'
+          tourists_created_at: 'Зарегестрирован'

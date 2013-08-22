@@ -4,7 +4,7 @@ module Boss
 
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table].freeze
-    NAMES = %w[claim income normalcheck tourprice margin].freeze
+    NAMES = %w[claim income normalcheck tourprice margin tourists].freeze
     PERIODS = %w[day week month].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
@@ -35,6 +35,8 @@ module Boss
       widgets << create_default_widget(user, company, 8,
         'boss.active_record.widget.charts.claim_title_month', 'medium', 'chart', 'claim',
         {:period => 'month', :yAxis_text => 'boss.active_record.widget.charts.claim_number'})
+      widgets << create_default_widget(user, company, 9,
+        'boss.active_record.widget.tables.tourists', 'large', 'table', 'tourists')
     end
 
     def self.create_default_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -51,6 +53,8 @@ module Boss
         factor_widget_data
       when 'chart'
         chart_widget_data
+      when 'table'
+        table_widget_data
       end
     end
 
@@ -89,6 +93,13 @@ module Boss
         margin_chart_data(start_date, end_date)
       when 'claim'
         claim_chart_data(start_date, end_date)
+      end
+    end
+
+    def table_widget_data
+      case name
+      when 'tourists'
+        tourists_table_data
       end
     end
 
@@ -469,6 +480,14 @@ module Boss
         },
         series: series
       }
+    end
+
+    def tourists_table_data
+      Tourist.unscoped
+        .clients
+        .where(:company_id => company.id)
+        .order("created_at DESC")
+        .first(10)
     end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807112711) do
+ActiveRecord::Schema.define(:version => 20130820151629) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20130807112711) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
-    t.boolean  "sms_birthday_send"
+    t.boolean  "sms_birthday_send",        :default => true
   end
 
   create_table "countries", :force => true do |t|
@@ -352,6 +352,25 @@ ActiveRecord::Schema.define(:version => 20130807112711) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "tariff_plans", :force => true do |t|
+    t.integer  "price",             :default => 0,     :null => false
+    t.string   "currency",          :default => "rur", :null => false
+    t.string   "name",                                 :null => false
+    t.boolean  "active",            :default => true,  :null => false
+    t.integer  "users_count",                          :null => false
+    t.string   "place_size",                           :null => false
+    t.boolean  "back_office",       :default => false, :null => false
+    t.boolean  "documents_flow",    :default => false, :null => false
+    t.boolean  "claims_base",       :default => false, :null => false
+    t.boolean  "crm_system",        :default => false, :null => false
+    t.boolean  "managers_reminder", :default => false, :null => false
+    t.boolean  "analytics",         :default => false, :null => false
+    t.boolean  "boss_desktop",      :default => false, :null => false
+    t.boolean  "sms_sending",       :default => false, :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
   create_table "tasks", :force => true do |t|
     t.integer  "user_id"
     t.text     "body"
@@ -378,8 +397,8 @@ ActiveRecord::Schema.define(:version => 20130807112711) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_name"
-    t.integer  "passport_series"
-    t.integer  "passport_number"
+    t.string   "passport_series"
+    t.string   "passport_number"
     t.date     "date_of_birth"
     t.date     "passport_valid_until"
     t.string   "phone_number"
@@ -389,8 +408,11 @@ ActiveRecord::Schema.define(:version => 20130807112711) do
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
     t.string   "email"
-    t.text     "note"
+    t.integer  "user_id"
+    t.text     "wishes"
+    t.text     "actions"
     t.boolean  "special_offer",        :default => false
+    t.text     "note"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

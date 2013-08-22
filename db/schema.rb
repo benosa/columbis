@@ -164,6 +164,8 @@ ActiveRecord::Schema.define(:version => 20130820151629) do
     t.string   "site"
     t.string   "inn"
     t.string   "time_zone"
+    t.string   "sms_signature"
+    t.boolean  "sms_birthday_send",        :default => true
   end
 
   create_table "countries", :force => true do |t|
@@ -406,11 +408,11 @@ ActiveRecord::Schema.define(:version => 20130820151629) do
     t.boolean  "delta",                :default => true
     t.boolean  "potential",            :default => false, :null => false
     t.string   "email"
-    t.text     "note"
-    t.boolean  "special_offer",        :default => false
     t.integer  "user_id"
     t.text     "wishes"
     t.text     "actions"
+    t.boolean  "special_offer",        :default => false
+    t.text     "note"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

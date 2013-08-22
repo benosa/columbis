@@ -22,7 +22,14 @@ class SmsSendingsController < ApplicationController
   end
 
   def create
+    if params[:sending_at_date].empty?
+      params[:sms_sending][:sending_at] = Time.now
+    else
+      params[:sms_sending][:sending_at] = "#{params[:sending_at_date]} #{params[:sending_at_time_hour]}:#{params[:sending_at_time_minute]}:00".to_time
+    end
+    params[:sms_sending][:count] = SmsGroup.find(4).tourists.length
     params[:sms_sending][:company_id] = current_company.id
+    params[:sms_sending][:signature] = current_company.sms_signature
     @sms_sending = SmsSending.new(params[:sms_sending])
 
     if @sms_sending.save
@@ -33,12 +40,20 @@ class SmsSendingsController < ApplicationController
   end
 
   def update
-    
+    params[:sms_sending][:sending_at] = "#{params[:sending_at_date]} #{params[:sending_at_time_hour]}:#{params[:sending_at_time_minute]}:00".to_time
+    params[:sms_sending][:signature] = current_company.sms_signature
+    params[:sms_sending][:count] = SmsGroup.find(params[:sms_sending][:sms_group_id]).tourists.length
+    @sms_sending = SmsSending.find(params[:id])
+    if @sms_sending.update_attributes(params[:sms_sending])
+      redirect_to edit_sms_sending_path(@sms_sending), notice: 'sms sendings was successfully updated'
+    else
+      render action: :edit
+    end
   end
 
   def destroy
-    @sms_sendings = SmsSending.find(params[:id])
-    @sms_sendings.destroy
+    @sms_sending = SmsSending.find(params[:id])
+    @sms_sending.destroy
     redirect_to sms_sendings_path, notice: 'рассылка была удалена'
   end
 

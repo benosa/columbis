@@ -11,15 +11,19 @@
         .fake_row
           = f.label :content
           = f.text_area :content
+          #sms_sending_content_text
           .text_orange
             Внимание! Максимальное число сообщений — 4
-          %p
-            Подставьте данные из контакта:
-            %ul.list_params
-              %li
+          / %p
+          /   Подставьте данные из контакта:
+          /   %ul.list_params
+          /     %li
           %p
             Подпись отправителя:
-            %strong BABABA
+            %strong
+              = current_company.sms_signature
+              - if current_company.sms_signature.nil?
+                Необходимо запросить подпись перед отправкой!!
             %br
             %small
               %i Подпись настраивается в настройках
@@ -30,15 +34,14 @@
         %h2= t('.title_2')
       .form_block_content
         .fake_row
-          = f.radio_button :sending_priority, :on
-          = f.label t('.send_leter')
+          = f.check_box :sending_priority, id: 'sms_sending_sending_priority'
+          = f.label :sending_priority, t('.send_leter'), :class => 'checkbox left_checkbox', id: 'sms_sending_sending_priority'
           %br
-          = f.radio_button :sending_priority, :off, checked: :checked
-          = f.label t('.send_now')
-        / .fake_row
-        /   = f.label t('.date')
-        /   = f.text_field :sending_at_date, :class => 'datepicker date_of_birth date'
-        /   
-        /   = f.label t('.time')
-        /   = f.select :sending_at_time_hour, 13.times.map{|a| a + 9}
-        /   = f.select :sending_at_time_minute, 12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}
+          %br
+          .one_row
+            = f.label t('.date')
+            = text_field_tag :sending_at_date, (@sms_sending.sending_at.utc.strftime("%d.%m.%Y") unless @sms_sending.sending_at.nil? ), class: 'datepicker sending_at_date date', placeholder: 'Select date'
+
+            = f.label t('.time')
+            = select_tag :sending_at_time_hour, options_for_select(13.times.map{|a| a + 9}, (@sms_sending.sending_at.utc.strftime("%H") unless @sms_sending.sending_at.nil?))
+            = select_tag :sending_at_time_minute, options_for_select(12.times.map{|a| ((b = (a * 5)) <= 9) ? "0#{b}" : b}, (@sms_sending.sending_at.utc.strftime("%M") unless @sms_sending.sending_at.nil?))

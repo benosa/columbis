@@ -25,3 +25,5 @@
 //= require offline
 //= require boss
 //= require rmenu
+//= require jquery.jqEasyCharCounter
+//= require sms_sendings

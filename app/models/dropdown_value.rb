@@ -56,7 +56,7 @@ class DropdownValue < ActiveRecord::Base
   end
 
   def self.dd_for(list, company_id, include_common = true)
-    DropdownValue.where( 'list = ? AND (company_id = ? OR common = ?)', list, company_id, true ).order('common DESC, value ASC')
+    DropdownValue.where( 'list = ? AND (company_id = ? OR common = ?)', list, company_id, include_common ).order('common DESC, value ASC')
   end
 
   def self.values_for(list, company_id, include_common = true)

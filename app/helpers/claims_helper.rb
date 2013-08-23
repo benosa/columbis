@@ -218,4 +218,18 @@ module ClaimsHelper
     end
   end
 
+  def tourist_stat_options
+    options = nil
+    if current_company.id == 8 # Temporary solution for Mistral
+      specific_options = %w(Повтор Знакомые Рекомендации Интернет Медиа Соседи Инфотур Сами)
+      options = if is_admin? or is_boss? # Bring specific options to top
+        all_options = DropdownValue.values_for('tourist_stat', current_company.id, false)
+        specific_options + all_options.select{ |o| !specific_options.include?(o) }
+      else # Restrict to specific set of options
+        specific_options
+      end
+    end
+    options || current_company.dropdown_values_for('tourist_stat')
+  end
+
 end

@@ -26,8 +26,7 @@ class Tourist < ActiveRecord::Base
   validate :presence_of_full_name
 
   # Additional attributes validation
-  validates_presence_of :date_of_birth, :if => :additional_attributes_validation_condition
-  validates_presence_of :passport_series, :passport_number, :passport_valid_until,
+  validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until,
     :if => proc{ |tourist| !tourist.potential && tourist.send(:additional_attributes_validation_condition) }
 
   # Secondary attributes validation
@@ -44,7 +43,7 @@ class Tourist < ActiveRecord::Base
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
     indexes :passport_series, :passport_number, :phone_number, :email, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
-    has :passport_valid_until, :date_of_birth, :type => :datetime
+    has :passport_valid_until, :date_of_birth, :created_at, :type => :datetime
     has :potential, :type => :boolean
     has :company_id
     has :user_id
@@ -88,9 +87,13 @@ class Tourist < ActiveRecord::Base
   private
 
     def presence_of_full_name
-      atr = if last_name.blank? && first_name.blank? then :full_name
-      elsif last_name.blank? then :last_name
-      elsif first_name.blank? then :first_name
+      unless potential?
+        atr = if last_name.blank? && first_name.blank? then :full_name
+        elsif last_name.blank? then :last_name
+        elsif first_name.blank? then :first_name
+        end
+      else
+        atr = :full_name if full_name.blank?
       end
       # errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
       errors.add(atr, I18n.t('activerecord.errors.messages.blank')) if atr

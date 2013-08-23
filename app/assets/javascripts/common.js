@@ -9,8 +9,10 @@ $(function(){
   $(document.body).on('click', 'label.checkbox', function(e){
     e.preventDefault();
     var $t = $(this),
-        $checkbox = $('#' + $t.attr('for'));
+        $checkbox = $('#' + $t.attr('for')),
+        confirm_msg = $t.data('confirm');
     if ($t.hasClass('disabled')) { return; }
+    if (confirm_msg && !confirm(confirm_msg)) { return; }
     $t.toggleClass('active');
     $checkbox.attr('checked', $t.hasClass('active')).trigger('change');
   });

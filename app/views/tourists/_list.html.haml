@@ -1,4 +1,4 @@
 .current_container
-  = render partial: 'tourists', locals: { tourists: @tourists, potentials: params[:potential] }
+  = render partial: !show_potential_clients ? 'tourists' : 'potential_clients', locals: { tourists: @tourists, potentials: params[:potential] }
 
   = render partial: 'shared/pagination', locals: { collection: @tourists }

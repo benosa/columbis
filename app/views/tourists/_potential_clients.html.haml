@@ -1,0 +1,36 @@
+%table#tourists.tourists.reservations.tour_operators
+  %tr
+    %th.created_at
+      = sort_link(:created_at, Tourist.human_attribute_name(:created_at))
+    %th.manager= sort_link(:user_id, t('.manager'))
+    %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
+    %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
+    %th.email= sort_link(:email, t('.email'))
+    %th.wishes
+      %span= t('.wishes')
+    %th.what_to_do
+      %span= t('.actions')
+    %th.actions
+      %span= t('actions')
+
+  - for tourist in tourists
+    %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
+      %td
+        %p= l(tourist.created_at.to_date, :format => :long)
+      %td{ title: tourist.user.try(:full_name), style: tourist.user.try(:color) && "background: none #{tourist.user.try(:color)} !important;" }
+        %p= tourist.user.try(:login)
+      %td.full_name{ title: tourist.name }
+        %p= tourist.name
+      %td
+        %span= tourist.phone_number
+      %td
+        %span= tourist.email
+      %td.wishes{ title: tourist.wishes }
+        %p= tourist.wishes
+      %td.what_to_do{ title: tourist.actions }
+        %p= tourist.actions
+      %td
+        = link_to '', edit_tourist_path(tourist, potential: 1), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
+
+        = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', id: "delete_tourist_#{tourist.id}", :title => t('delete')
+

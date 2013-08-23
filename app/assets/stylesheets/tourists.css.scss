@@ -1,7 +1,8 @@
 .tourists {
-  .actions {
-    width: 68px;
-  }
+  th, td { max-width: 130px; }
+  td p, td span { white-space: nowrap; overflow: hidden;}
+  .what_to_do { max-width: 350px; }
+  .actions { width: 68px; }
 }
 
 /*.tourists .address { width: 300px; }*/
@@ -31,11 +32,6 @@
     .passport_series { width: 80px; margin-right: 2px; }
     .passport_number { width: 168px; }
     .wishes, .actions { height: 130px; }
-    .potential_fields { display: none; }
-    &.potential {
-      .passport_block { display: none; }
-      .potential_fields { display: block; }
-    }
     p.one_row { margin-bottom: 13px; }
   }
 }

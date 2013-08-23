@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class TouristsController < ApplicationController
+  include TouristsHelper
   load_and_authorize_resource
 
   before_filter :set_last_search, :only => :index
@@ -10,41 +11,46 @@ class TouristsController < ApplicationController
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
         options[:with][:user_id] = params[:user_id].to_i if params[:user_id].present?
         checkout_order(options)
-        scoped = Tourist.search_and_sort(options).includes(:address, (:user if params[:potential]))
-        scoped = scoped.potentials if params[:potential].present?
+        scoped = Tourist.search_and_sort(options).includes(:address, (:user if show_potential_clients))
+        scoped = scoped.potentials if show_potential_clients
         scoped = search_paginate(scoped, options)
       else
-        scoped = Tourist.send(params[:potential] ? :potentials : :clients)
-        scoped.accessible_by(current_ability).includes(:address, (:user if params[:potential])).paginate(:page => params[:page], :per_page => per_page)
+        scoped = Tourist.send(show_potential_clients ? :potentials : :clients)
+        scoped.accessible_by(current_ability).includes(:address, (:user if show_potential_clients)).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
 
   def new
-    @tourist.build_address
-    @tourist.potential = true if params[:potential]
+    @tourist.potential = true if show_potential_clients
+    check_address(@tourist)
   end
 
   def create
     @tourist.company = current_company
     @tourist.user = current_user
     if @tourist.save
-      redirect_to @tourist.potential ? tourists_path(potential: 1) : tourists_path, :notice => t('tourists.messages.created')
+      redirect_to_tourists(@tourist.potential?, :created)
     else
       @tourist.user = nil
+      check_address(@tourist)
       render :action => "new"
     end
   end
 
   def edit
-    @tourist.build_address unless @tourist.address
+    check_address(@tourist)
   end
 
   def update
     @tourist.company = current_company
+    manager = @tourist.user
+    @tourist.user = current_user unless manager
     if @tourist.update_attributes(params[:tourist])
-      redirect_to @tourist.potential ? tourists_path(potential: 1) : tourists_path, :notice => t('tourists.messages.updated')
+      redirect_to_tourists(@tourist.potential?, :updated)
     else
+      @tourist.user = nil unless manager
+      check_address(@tourist, params[:potential])
       render :action => "edit"
     end
   end
@@ -55,7 +61,7 @@ class TouristsController < ApplicationController
   def destroy
     @tourist.destroy
     unless request.xhr?
-      redirect_to tourists_path, :notice => t('tourists.messages.destroyed')
+      redirect_to_tourists(@tourist.potential?, :destroyed)
     else
       render :text => ''
     end
@@ -71,7 +77,7 @@ class TouristsController < ApplicationController
     end
 
     def checkout_order(options)
-      options[:with].merge!(:potential => params[:potential].present?)
+      options[:with].merge!(:potential => show_potential_clients)
       if options[:order] == :full_name
         options[:sql_order] = %w[last_name first_name middle_name].map{|f| "#{f} #{options[:sort_mode]}"}.join(',')
       elsif options[:order] == :passport
@@ -90,7 +96,7 @@ class TouristsController < ApplicationController
     end
 
     def set_last_search
-      session_key = params[:potential].present? ? :potential_tourists_last_search : :tourists_last_search
+      session_key = show_potential_clients ? :potential_tourists_last_search : :tourists_last_search
       if params[:unset_filters]
         session[session_key] = nil
       elsif search_or_sort?
@@ -98,6 +104,19 @@ class TouristsController < ApplicationController
       elsif session[session_key].present?
         params.reverse_merge!(session[session_key])
       end
+    end
+
+    def redirect_to_tourists(is_potential, message_key)
+      message = t("tourists.messages.#{is_potential ? 'client_' : ''}#{message_key}")
+      unless is_potential
+        redirect_to tourists_path, :notice => message
+      else
+        redirect_to tourists_path(potential: 1), :notice => message
+      end
+    end
+
+    def check_address(tourist, is_potential = nil)
+      tourist.build_address unless tourist.address && (is_potential.nil? ? tourist.potential? : is_potential)
     end
 
 end

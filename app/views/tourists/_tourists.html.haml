@@ -1,4 +1,3 @@
-- show_potentials = local_assigns[:potentials]
 %table#tourists.tourists.reservations.tour_operators
   %tr
     %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
@@ -6,19 +5,12 @@
       = sort_link(:date_of_birth, Tourist.human_attribute_name(:date_of_birth))
     %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
     %th.email= sort_link(:email, t('.email'))
-    - unless show_potentials
-      %th.passport_series
-        = sort_link(:passport_series, t('.passport_series'))
-      %th.passport_number
-        = sort_link(:passport_number, t('.passport_number'))
-      %th.passport_valid_until
-        = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
-    - else
-      %th.manager= sort_link(:user_id, t('.manager'))
-      %th.wishes
-        %span= t('.wishes')
-      %th.actions
-        %span= t('.actions')
+    %th.passport_series
+      = sort_link(:passport_series, t('.passport_series'))
+    %th.passport_number
+      = sort_link(:passport_number, t('.passport_number'))
+    %th.passport_valid_until
+      = sort_link(:passport_valid_until, Tourist.human_attribute_name(:passport_valid_until))
     %th.address
       = sort_link(:joint_address, t('.address'))
     %th.actions
@@ -26,29 +18,21 @@
 
   - for tourist in tourists
     %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
-      %td
+      %td{ title: tourist.name }
         %p= tourist.name
       %td
         %p= l(tourist.date_of_birth, :format => :long)
-      %td
+      %td{ title: tourist.phone_number }
         %span= tourist.phone_number
       %td
         %span= tourist.email
-      - unless show_potentials
-        %td
-          %p= tourist.passport_series
-        %td
-          %p= tourist.passport_number
-        %td
-          %p= l(tourist.passport_valid_until, :format => :long)
-      - else
-        %td
-          %p= tourist.user.try(:name_for_list)
-        %td{ title: tourist.wishes }
-          %p= truncate(tourist.wishes, length: 30, separator: ' ')
-        %td{ title: tourist.actions }
-          %p= truncate(tourist.actions, length: 30, separator: ' ')
       %td
+        %p= tourist.passport_series
+      %td
+        %p= tourist.passport_number
+      %td
+        %p= l(tourist.passport_valid_until, :format => :long)
+      %td{ title: tourist.address.try(:joint_address) }
         %p= tourist.address.try(:joint_address)
       %td
         = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"

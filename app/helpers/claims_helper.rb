@@ -228,7 +228,8 @@ module ClaimsHelper
       special_value_index = all_options.index{ |val| val =~ /\A%{.+}/ }
       if special_value_index
         special_value = all_options[special_value_index]
-        specific_options = special_value[2..-2].split
+        new_specific_options = special_value[2..-2].split(';')
+        specific_options = new_specific_options unless new_specific_options.empty?
       end
 
       options = if is_admin? or is_boss? # Bring specific options to top

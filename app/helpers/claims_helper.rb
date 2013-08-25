@@ -227,18 +227,17 @@ module ClaimsHelper
       # For manual set of specific options
       special_value_index = all_options.index{ |val| val =~ /\A%{.+}/ }
       if special_value_index
-        special_value = all_options[special_value_index]
+        special_value = all_options.delete_at(special_value_index)
         new_specific_options = special_value[2..-2].split(';')
         specific_options = new_specific_options unless new_specific_options.empty?
       end
 
-      options = if is_admin? or is_boss? # Bring specific options to top
-        specific_options + all_options.select{ |o| !specific_options.include?(o) }
-      else # Restrict to specific set of options
-        current_value = claim.tourist_stat.to_s
-        specific_options << current_value if !specific_options.include?(current_value)
-        specific_options
+      if is_admin? or is_boss? # Bring specific options to top
+        options = specific_options + all_options.select{ |o| !specific_options.include?(o) }
       end
+
+      current_value = claim.tourist_stat.to_s
+      options << current_value if !specific_options.include?(current_value)
     end
     options || current_company.dropdown_values_for('tourist_stat')
   end

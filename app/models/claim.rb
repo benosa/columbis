@@ -86,6 +86,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
   validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/,/\A([1-5]\*)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
+  validates :num, :presence => true, :numericality => { :greater_than => 0 }, :uniqueness => true
 
   before_validation :update_debts
   before_save :update_bonus
@@ -115,7 +116,7 @@ class Claim < ActiveRecord::Base
     indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
     indexes applicant(:phone_number), :as => :phone_number, :sortable => true
 
-    has :id
+    has :num
     has :company_id
     has :office_id
     has :user_id
@@ -287,6 +288,12 @@ class Claim < ActiveRecord::Base
 
     self.reservation_date = today
     self.maturity = today + 3.days
+  end
+
+  def generate_num
+      if self.num.to_i == 0 
+        self.num = Claim.where(company_id: company_id).maximum(:num).to_i + 1
+      end
   end
 
   def self.next_id
@@ -911,7 +918,6 @@ class Claim < ActiveRecord::Base
           }
       }
     end
-
 end
 
 # == Schema Information

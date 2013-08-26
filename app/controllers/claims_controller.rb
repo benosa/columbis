@@ -141,6 +141,7 @@ class ClaimsController < ApplicationController
     def set_claim
       @claim = params[:id].present? ? Claim.find(params[:id]) : Claim.new
       @claim.company ||= current_company
+      @claim.generate_num
       if params[:claim]
         if is_admin? or is_boss?
           @claim.user_id = params[:claim][:user_id]

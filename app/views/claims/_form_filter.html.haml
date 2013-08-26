@@ -1,7 +1,7 @@
 %fieldset.filter.clearfix
   .filter_row
-    = f.label :id
-    = f.text_field :id, :disabled => true, :value => (claim.new_record? ? Claim.next_id : claim.id), :class => 'number'
+    = f.label :num
+    = f.text_field :num, :disabled => true, :value => claim.num, :class => 'number'
     - if small_width?
       = f.label :operator_confirmation, t('.operator_confirmation_two_line').html_safe, :class => 'two_row',
           :title => t('.operator_confirmation'), :required => claim.operator_confirmation_flag,

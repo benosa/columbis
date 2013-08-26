@@ -1,5 +1,5 @@
 %tr.row{ :class => [claim.canceled? && 'gray_back', cycle("odd", "even")] }
-  %td= link_to claim.id, edit_claim_path(claim), :class => 'id_link'
+  %td= link_to claim.num, edit_claim_path(claim), :class => 'id_link'
   %td= l( claim.reservation_date, :format => :default )
   %td{ :title => claim.tourist_stat }
     = truncate(claim.tourist_stat, :length => 4)

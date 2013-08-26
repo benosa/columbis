@@ -1,5 +1,5 @@
 %li{:class => params[:controller] == 'tasks' && 'active' }
-  %a{:href => '#'}= t('.support')
+  %a{:href => can?(:read, Task) ? tasks_path : '#'}= t('.support')
   .rmenu_dropdown
     %ul
       %li.first_menu_stroke= link_to t('.write_review'), '#', id: 'write_review'

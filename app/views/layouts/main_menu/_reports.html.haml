@@ -1,25 +1,25 @@
 - c = params[:controller]
 - a = params[:action]
 %li{:class => (c == 'boss/reports' || c == 'boss/base') && 'active' }
-  %a{:href => '#'}= t('.analytics')
+  %a{:href => boss_index_path}= t('.analytics')
   .rmenu_dropdown.report_types_shadow
     %ul
       %li.first_menu_stroke.report_types{:class => c == 'boss/base' && 'active' }
-        = link_to t('.desktop'), boss_index_path if user_signed_in? && %w(admin boss).include?(current_user.role)
+        = link_to t('.desktop'), boss_index_path
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'income' || a == 'offices_income') && 'active' }
-        = link_to t('.income_title'), '#'
+        = link_to t('.income_title'), boss_reports_path(:income)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'margin' || a == 'offices_margin') && 'active' }
-        = link_to t('.margin_title'), '#'
+        = link_to t('.margin_title'), boss_reports_path(:margin)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'managers_income' || a == 'managers_margin') && 'active' }
-        = link_to t('.managers_title'), '#'
+        = link_to t('.managers_title'), boss_reports_path(:managers_income)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'normalcheck' || a == 'directions' || a == 'operators' || a == 'tourprice' || a == 'tourduration' || a == 'hotelstars') && 'active' }
-        = link_to t('.segmentation_title'), '#'
+        = link_to t('.segmentation_title'), boss_reports_path(:normalcheck)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && (a == 'clientsbase' || a == 'repurchase' || a == 'increaseclients' || a == 'salesfunnel') && 'active' }
-        = link_to t('.clientbase_title'), '#'
+        = link_to t('.clientbase_title'), boss_reports_path(:clientsbase)
       %li.first_menu_stroke.report_types{:class => c == 'boss/reports' && a == 'promotionchannel' && 'active' }
-        = link_to t('.promotionchannel_title'), '#'
-      %li.clear
-        &nbsp;
+        = link_to t('.promotionchannel_title'), boss_reports_path(:promotionchannel)
+    .clear
+      &nbsp;
     %ul.report_column
       &nbsp;
     %ul.report_column

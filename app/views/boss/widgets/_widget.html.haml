@@ -5,7 +5,7 @@
 - else
   - widget_class += " widget-#{widget.view}"
 .widget{:class => widget_class}
-  = render partial: "boss/widgets/menu"
+  = render partial: "boss/widgets/menu", locals: { widget: widget }
   .widget-title
     %h2= I18n.t(widget.title)
   .widget-content

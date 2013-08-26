@@ -1,0 +1,6 @@
+%ul.dropdown-menu
+  %li
+    - period = !params['period'].blank? ? params['period'] : 'month'
+    - options = %w(day week month).map{ |p| [t("report.period_options.#{p}"), p] }
+    = label_tag :period, t('boss.active_record.widget.charts.period')
+    = select_tag :period, options_for_select(options, period), class: 'period', data: { param: 'period', filter: 1, default: 'month' }

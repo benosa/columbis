@@ -1,8 +1,14 @@
 .widget-menu
   -#.widget-btn.widget-btn-type
     -#%a{ href: "#"} Тип
-  .widget-btn.widget-btn-settings
-    %a{ href: "#"} Настройки
+  .widget-btn.widget-btn-settings.btn-group
+    %a{ href: "#", "data-toggle" => "dropdown"} Настройки
+    - case widget.widget_type
+    - when 'factor'
+    - when 'chart'
+      = render partial: 'boss/widgets/charts_menu', locals: { widget: widget }
+    - when 'table'
+    - when 'leader'
   -#.widget-btn.widget-btn-delete
     -#%a{ href: "#"} Удалить
   .widget-btn.widget-btn-more

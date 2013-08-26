@@ -1,9 +1,9 @@
 - widget_data = widget.widget_data
-- widget_class = "widget-#{widget.view}"
-- if widget.widget_type == 'table'
-  - widget_class += " widget-table"
+- widget_class = "widget-#{widget.widget_type}"
 - if widget.view == "small2"
-  - widget_class = "widget-small widget-double-small"
+  - widget_class += " widget-small widget-double-small"
+- else
+  - widget_class += " widget-#{widget.view}"
 .widget{:class => widget_class}
   = render partial: "boss/widgets/menu"
   .widget-title
@@ -16,3 +16,5 @@
         = render partial: 'boss/widgets/chart', locals: { data: widget_data, id: "chart_#{widget.name}_#{widget.settings[:period]}" }
       - when 'table'
         = render partial: 'boss/widgets/table', locals: { widget: widget }
+      - when 'leader'
+        = render partial: 'boss/widgets/leader', locals: { data: widget_data[:data], text: widget_data[:text] }

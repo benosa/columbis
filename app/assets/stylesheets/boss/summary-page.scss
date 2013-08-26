@@ -188,6 +188,11 @@
       }
     }
   }
+  .widget-small.widget-leader {
+    .widget-stats {
+      height: 80px;
+    }
+  }
   .widget-medium {
     width: 504px;
     .widget-content {

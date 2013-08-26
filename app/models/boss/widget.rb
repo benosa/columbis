@@ -3,7 +3,7 @@ module Boss
   class Widget < ActiveRecord::Base
 
     VIEWS = %w[small small2 medium large].freeze
-    TYPES = %w[factor chart table].freeze
+    TYPES = %w[factor chart table leader].freeze
     NAMES = %w[claim income normalcheck tourprice margin tourists promotion].freeze
     PERIODS = %w[day week month].freeze
 
@@ -16,32 +16,34 @@ module Boss
 
     def self.create_default_widgets(user, company)
       widgets = []
-      widgets << create_default_widget(user, company, 1,
+      widgets << create_widget(user, company, 1,
         'boss.active_record.widget.factors.claims', 'small', 'factor', 'claim')
-      widgets << create_default_widget(user, company, 2,
+      widgets << create_widget(user, company, 2,
         'boss.active_record.widget.factors.incomes', 'small', 'factor', 'income')
-      widgets << create_default_widget(user, company, 3,
+      widgets << create_widget(user, company, 3,
         'boss.active_record.widget.factors.normalcheck', 'small', 'factor', 'normalcheck')
-      widgets << create_default_widget(user, company, 4,
+      widgets << create_widget(user, company, 4,
         'boss.active_record.widget.factors.tourprice', 'small', 'factor', 'tourprice')
-      widgets << create_default_widget(user, company, 5,
+      widgets << create_widget(user, company, 5,
         'boss.active_record.widget.factors.margin', 'small', 'factor', 'margin')
-      widgets << create_default_widget(user, company, 6,
+      widgets << create_widget(user, company, 6,
         'boss.active_record.widget.charts.income_title_day', 'small2', 'chart', 'income',
         {:period => 'day', :yAxis_text => 'RUR'})
-      widgets << create_default_widget(user, company, 7,
+      widgets << create_widget(user, company, 7,
         'boss.active_record.widget.charts.margin_title_week', 'large', 'chart', 'margin',
         {:period => 'week', :yAxis_text => 'boss.active_record.widget.charts.percent'})
-      widgets << create_default_widget(user, company, 8,
+      widgets << create_widget(user, company, 8,
         'boss.active_record.widget.charts.claim_title_month', 'medium', 'chart', 'claim',
         {:period => 'month', :yAxis_text => 'boss.active_record.widget.charts.claim_number'})
-      widgets << create_default_widget(user, company, 9,
+      widgets << create_widget(user, company, 9,
         'boss.active_record.widget.tables.tourists', 'large', 'table', 'tourists')
-      #widgets << create_default_widget(user, company, 10,
-      #  'boss.active_record.widget.tables.promotion', 'medium', 'table', 'promotion')
+      widgets << create_widget(user, company, 10,
+        'boss.active_record.widget.leaders.promotion', 'small', 'leader', 'promotion')
+      widgets << create_widget(user, company, 11,
+        'boss.active_record.widget.leaders.direction', 'small', 'leader', 'direction')
     end
 
-    def self.create_default_widget(user, company, position, title, view, widget_type, name, settings = {})
+    def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})
       widget = Widget.new(:user_id => user.id, :company_id => company.id, :position => position,
         :title => title, :view => view, :widget_type => widget_type,
         :name => name, :settings => settings)
@@ -50,68 +52,14 @@ module Boss
     end
 
     def widget_data
-      case widget_type
-      when 'factor'
-        factor_widget_data
-      when 'chart'
-        chart_widget_data
-      when 'table'
-        table_widget_data
-      end
-    end
-
-    def factor_widget_data
-      case name
-      when 'claim'
-        claims_factor_data
-      when 'income'
-        income_factor_data
-      when 'normalcheck'
-        normalcheck_factor_data
-      when 'tourprice'
-        tourprice_factor_data
-      when 'margin'
-        margin_factor_data
-      end
-    end
-
-    def chart_widget_data
-      end_date = Time.zone.now.to_date
-      case settings[:period]
-      when 'day'
-        start_date = end_date - 6.days
-      when 'week'
-        start_date = end_date - (7*6-1).days
-        start_date = start_date - (start_date.cwday-1).days
-      else
-        start_date = (end_date - 6.months)
-        start_date = start_date - start_date.day + 1.days
-      end
-
-      case name
-      when 'income'
-        income_chart_data(start_date, end_date)
-      when 'margin'
-        margin_chart_data(start_date, end_date)
-      when 'claim'
-        claim_chart_data(start_date, end_date)
-      end
-    end
-
-    def table_widget_data
-      case name
-      when 'tourists'
-        tourists_table_data
-      when 'promotion'
-        promotion_table_data
-      end
+      send(:"#{name}_#{widget_type}_data")
     end
 
 
 
     private
 
-    def claims_factor_data
+    def claim_factor_data
       data = Claim.select("COUNT(id) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -320,7 +268,18 @@ module Boss
       str.gsub(/,$/,"").reverse
     end
 
-    def income_chart_data(start_date, end_date)
+    def income_chart_data
+      end_date = Time.zone.now.to_date
+      case settings[:period]
+      when 'day'
+        start_date = end_date - 6.days
+      when 'week'
+        start_date = end_date - (7*6-1).days
+        start_date = start_date - (start_date.cwday-1).days
+      else
+        start_date = (end_date - 6.months)
+        start_date = start_date - start_date.day + 1.days
+      end
       data = Payment.select("SUM(amount) AS total, date_in AS date")
         .where(company_id: company.id)
         .where(recipient_type: 'Company')
@@ -336,7 +295,18 @@ module Boss
       chart_settings(data, start_date, end_date)
     end
 
-    def margin_chart_data(start_date, end_date)
+    def margin_chart_data
+      end_date = Time.zone.now.to_date
+      case settings[:period]
+      when 'day'
+        start_date = end_date - 6.days
+      when 'week'
+        start_date = end_date - (7*6-1).days
+        start_date = start_date - (start_date.cwday-1).days
+      else
+        start_date = (end_date - 6.months)
+        start_date = start_date - start_date.day + 1.days
+      end
       data = Claim.select("AVG(profit_in_percent_acc) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -348,7 +318,18 @@ module Boss
       chart_settings(data, start_date, end_date, true)
     end
 
-    def claim_chart_data(start_date, end_date)
+    def claim_chart_data
+      end_date = Time.zone.now.to_date
+      case settings[:period]
+      when 'day'
+        start_date = end_date - 6.days
+      when 'week'
+        start_date = end_date - (7*6-1).days
+        start_date = start_date - (start_date.cwday-1).days
+      else
+        start_date = (end_date - 6.months)
+        start_date = start_date - start_date.day + 1.days
+      end
       data = Claim.select("COUNT(id) AS total, reservation_date AS date")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -494,7 +475,7 @@ module Boss
         .first(10)
     end
 
-    def promotion_table_data
+    def promotion_leader_data
       data_now = Claim.select("COUNT(id) AS total, tourist_stat AS name")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
@@ -502,14 +483,77 @@ module Boss
         .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
         .group(:name)
         .order("total DESC")
+        .first(4)
+      where = ""
+      data_now.each do |d|
+        if where != ""
+          where += " or "
+        end
+        where += "tourist_stat = '#{d.try(:name)}'"
+      end
+      if where != ""
+        where = "(" + where + ")"
+      end
       data_previous = Claim.select("COUNT(id) AS total, tourist_stat AS name")
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
         .where(canceled: false)
         .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
         .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
+        .where(where)
         .group(:name)
         .order("total DESC")
+      leader_data(data_now, data_previous).merge(
+        :text => I18n.t('boss.active_record.widget.leaders.promotion_text'))
+    end
+
+    def direction_leader_data
+      data_now = Claim.select("COUNT(claims.id) AS total, countries.name AS name")
+        .joins("INNER JOIN countries ON countries.id = claims.country_id")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
+        .group(:name)
+        .order("total DESC")
+        .first(4)
+      where = ""
+      data_now.each do |d|
+        if where != ""
+          where += " or "
+        end
+        where += "countries.name = '#{d.try(:name)}'"
+      end
+      if where != ""
+        where = "(" + where + ")"
+      end
+      data_previous = Claim.select("COUNT(claims.id) AS total, countries.name AS name")
+        .joins("INNER JOIN countries ON countries.id = claims.country_id")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
+        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
+        .where(where)
+        .group(:name)
+        .order("total DESC")
+      leader_data(data_now, data_previous).merge(
+        :text => I18n.t('boss.active_record.widget.leaders.direction_text'))
+    end
+
+    def leader_data(data_now, data_previous)
+      data = [[],[],[],[]]
+      data_now.each do |d|
+        name = d.try(:name)
+        now  = d.try(:total).to_i
+        prev = data_previous.select{|p| p.try(:name) == name}
+        prev = prev.blank? ? 0 : prev.first.try(:total).to_i
+        data[0] << name
+        data[1] << commas(now)
+        data[2] << get_class(now, prev)
+        data[3] << get_percent(now, prev)
+      end
+      { data: data }
     end
   end
 end

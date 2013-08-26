@@ -41,8 +41,12 @@ module Boss
         'boss.active_record.widget.leaders.promotion', 'small', 'leader', 'promotion')
       widgets << create_widget(user, company, 11,
         'boss.active_record.widget.leaders.direction', 'small', 'leader', 'direction')
-      widgets << create_widget(user, company, 11,
+      widgets << create_widget(user, company, 12,
         'boss.active_record.widget.leaders.hotelstars', 'small', 'leader', 'hotelstars')
+      widgets << create_widget(user, company, 13,
+        'boss.active_record.widget.leaders.officesincome', 'small', 'leader', 'officesincome')
+      widgets << create_widget(user, company, 14,
+        'boss.active_record.widget.leaders.managersincome', 'small', 'leader', 'managersincome')
     end
 
     def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -548,6 +552,7 @@ module Boss
         .where(company_id: company.id)
         .where(excluded_from_profit: false)
         .where(canceled: false)
+        .where("substring(hotel from char_length(hotel) for 1) = '*'")
         .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
         .group(:name)
         .order("total DESC")
@@ -575,13 +580,43 @@ module Boss
         :text => I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
     end
 
+    def officesincome_leader_data
+      report = OfficesIncomeReport.new({
+        period: 'day',
+        company: company
+      }).prepare
+      data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
+        .sort{|x,y| x['amount'] <=> y['amount']}.first(4)
+        .map{|d| {:name => d['name'], :total => d['amount']}}
+      data_previous = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == (Time.zone.now.to_date-1.days)}
+        .sort{|x,y| x['amount'] <=> y['amount']}
+        .map{|d| {:name => d['name'], :total => d['amount']}}
+      leader_data(data_now, data_previous).merge(
+        :text => I18n.t('boss.active_record.widget.leaders.officesincome_text'))
+    end
+
+    def managersincome_leader_data
+      report = ManagersIncomeReport.new({
+        period: 'day',
+        company: company
+      }).prepare
+      data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
+        .sort{|x,y| x['amount'] <=> y['amount']}.first(4)
+        .map{|d| {:name => d['name'], :total => d['amount']}}
+      data_previous = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == (Time.zone.now.to_date-1.days)}
+        .sort{|x,y| x['amount'] <=> y['amount']}
+        .map{|d| {:name => d['name'], :total => d['amount']}}
+      leader_data(data_now, data_previous).merge(
+        :text => I18n.t('boss.active_record.widget.leaders.managersincome_text'))
+    end
+
     def leader_data(data_now, data_previous)
       data = [[],[],[],[]]
       data_now.each do |d|
-        name = d.try(:name)
-        now  = d.try(:total).to_i
-        prev = data_previous.select{|p| p.try(:name) == name}
-        prev = prev.blank? ? 0 : prev.first.try(:total).to_i
+        name = d[:name] or d.try(:name)
+        now  = (d[:total] or d.try(:total)).to_i
+        prev = data_previous.select{|p| (p[:name] or p.try(:name)) == name}
+        prev = prev.blank? ? 0 : (prev.first[:total] or prev.first.try(:total)).to_i
         data[0] << name
         data[1] << commas(now)
         data[2] << get_class(now, prev)

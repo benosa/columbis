@@ -2,13 +2,13 @@
   %table#tourists.tourists.reservations.tour_operators
     %tr
       %th.full_name
-        %span= Tourist.human_attribute_name(:full_name)
+        %span= t('boss.active_record.widget.tables.full_name')
       %th.phone_number
-        %span= Tourist.human_attribute_name(:phone_number)
+        %span= t('boss.active_record.widget.tables.phone_number')
       %th.email
-        %span= Tourist.human_attribute_name(:email)
+        %span= t('boss.active_record.widget.tables.email')
       %th.address
-        %span= Tourist.human_attribute_name(:address)
+        %span= t('boss.active_record.widget.tables.address')
       %th.actions
         %span= t('actions')
       %th.actions
@@ -26,4 +26,4 @@
         %td
           = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
         %td
-          %span= tourist.created_at.strftime("%Y-%m-%d %H:%M:%S %Z")
+          %span= Russian::strftime(tourist.created_at, "%d %B %Y, %H:%M")

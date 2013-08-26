@@ -41,6 +41,8 @@ module Boss
         'boss.active_record.widget.leaders.promotion', 'small', 'leader', 'promotion')
       widgets << create_widget(user, company, 11,
         'boss.active_record.widget.leaders.direction', 'small', 'leader', 'direction')
+      widgets << create_widget(user, company, 11,
+        'boss.active_record.widget.leaders.hotelstars', 'small', 'leader', 'hotelstars')
     end
 
     def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -539,6 +541,38 @@ module Boss
         .order("total DESC")
       leader_data(data_now, data_previous).merge(
         :text => I18n.t('boss.active_record.widget.leaders.direction_text'))
+    end
+
+    def hotelstars_leader_data
+      data_now = Claim.select("COUNT(id) AS total, substring(hotel from (char_length(hotel)-1) for 2) AS name")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
+        .group(:name)
+        .order("total DESC")
+        .first(4)
+      where = ""
+      data_now.each do |d|
+        if where != ""
+          where += " or "
+        end
+        where += "substring(hotel from (char_length(hotel)-1) for 2) = '#{d.try(:name)}'"
+      end
+      if where != ""
+        where = "(" + where + ")"
+      end
+      data_previous = Claim.select("COUNT(id) AS total, substring(hotel from (char_length(hotel)-1) for 2) AS name")
+        .where(company_id: company.id)
+        .where(excluded_from_profit: false)
+        .where(canceled: false)
+        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
+        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
+        .where(where)
+        .group(:name)
+        .order("total DESC")
+      leader_data(data_now, data_previous).merge(
+        :text => I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
     end
 
     def leader_data(data_now, data_previous)

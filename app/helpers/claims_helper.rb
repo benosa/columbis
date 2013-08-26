@@ -234,6 +234,8 @@ module ClaimsHelper
 
       if is_admin? or is_boss? # Bring specific options to top
         options = specific_options + all_options.select{ |o| !specific_options.include?(o) }
+      else
+        options = specific_options
       end
 
       current_value = claim.tourist_stat.to_s

@@ -275,202 +275,36 @@ module Boss
     end
 
     def income_chart_data
-      end_date = Time.zone.now.to_date
-      case settings[:period]
-      when 'day'
-        start_date = end_date - 6.days
-      when 'week'
-        start_date = end_date - (7*6-1).days
-        start_date = start_date - (start_date.cwday-1).days
-      else
-        start_date = (end_date - 6.months)
-        start_date = start_date - start_date.day + 1.days
-      end
-      data = Payment.select("SUM(amount) AS total, date_in AS date")
-        .where(company_id: company.id)
-        .where(recipient_type: 'Company')
-        .where(approved: true)
-        .where(canceled: false)
-        .where("date_in >= ?", start_date)
-        .where("date_in <= ?", end_date)
-        .joins("INNER JOIN claims ON payments.claim_id = claims.id")
-          .where(claims: {excluded_from_profit: false})
-          .where(claims: {canceled: false})
-        .group(:date)
-        .order("date DESC")
-      chart_settings(data, start_date, end_date, false, I18n.t('boss.active_record.widget.charts.income_sum'))
+      report = IncomeReport.new({
+        period: settings[:period],
+        company: company
+      }).prepare
+      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
+      hash["title"]["text"] = nil
+      hash.delete "legend"
+      hash.to_json
     end
 
     def margin_chart_data
-      end_date = Time.zone.now.to_date
-      case settings[:period]
-      when 'day'
-        start_date = end_date - 6.days
-      when 'week'
-        start_date = end_date - (7*6-1).days
-        start_date = start_date - (start_date.cwday-1).days
-      else
-        start_date = (end_date - 6.months)
-        start_date = start_date - start_date.day + 1.days
-      end
-      data = Claim.select("AVG(profit_in_percent_acc) AS total, reservation_date AS date")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", start_date)
-        .where("reservation_date <= ?", end_date)
-        .group(:reservation_date)
-        .order("reservation_date DESC")
-      chart_settings(data, start_date, end_date, true, I18n.t('boss.active_record.widget.charts.income_normal'))
+      report = MarginReport.new({
+        period: settings[:period],
+        company: company
+      }).prepare
+      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
+      hash["title"]["text"] = nil
+      hash.delete "legend"
+      hash.to_json
     end
 
     def claim_chart_data
-      end_date = Time.zone.now.to_date
-      case settings[:period]
-      when 'day'
-        start_date = end_date - 6.days
-      when 'week'
-        start_date = end_date - (7*6-1).days
-        start_date = start_date - (start_date.cwday-1).days
-      else
-        start_date = (end_date - 6.months)
-        start_date = start_date - start_date.day + 1.days
-      end
-      data = Claim.select("COUNT(id) AS total, reservation_date AS date")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", start_date)
-        .where("reservation_date <= ?", end_date)
-        .group(:reservation_date)
-        .order("reservation_date DESC")
-      chart_settings(data, start_date, end_date, false, I18n.t('boss.active_record.widget.charts.income_number'))
-    end
-
-    def chart_settings(data, start_date, end_date, is_mean = false, name)
-      case settings[:period]
-      when 'day'
-        categories = []
-        x = start_date
-        while x <= end_date
-          categories << x
-          x += 1.days
-        end
-        series = [{
-          name: name,
-          data: categories.map do |c|
-            elem = data.find_all { |d| d.try(:date).to_date == c }
-            elem.length==0 ? 0 : elem.first.try(:total).to_f.round(2)
-          end
-        }]
-        chart_day_settings(categories, series)
-      when 'week'
-        categories = []
-        x = start_date
-        while x <= end_date
-          categories << (x + 3.days)
-          x += 7.days
-        end
-        series = [{
-          name: name,
-          data: categories.map do |c|
-            elem = data.find_all { |d| d.try(:date).to_date >= (c-3.days) && d.try(:date).to_date <= (c+6.days) }
-            elem.length==0 ? [c.to_datetime.to_i * 1000, 0] :
-              [c.to_datetime.to_i * 1000, avg_or_sum(elem.map{|e| e.try(:total).to_f}, is_mean).round(2)]
-          end
-        }]
-        chart_week_settings(categories, series)
-      else
-        categories = []
-        x = start_date
-        while x <= end_date
-          categories << x
-          x += 1.months
-        end
-        series = [{
-          name: name,
-          data: categories.map do |c|
-            elem = data.find_all { |d| d.try(:date).to_date.month == c.month }
-            elem.length==0 ? 0 : avg_or_sum(elem.map{|e| e.try(:total).to_f}, is_mean).round(2)
-          end
-        }]
-        chart_month_settings(categories, series)
-      end
-    end
-
-    def chart_day_settings(categories, series)
-      {
-        title: {
-          text: nil
-        },
-        xAxis: {
-          categories: categories.map{|c| c.day.to_s + " " + I18n.t('date.months')[c.month][0..3]},
-          labels: {
-            align: 'center'
-          }
-        },
-        yAxis: {
-          min: 0,
-          tickPixelInterval: 25,
-          title: {
-            text: I18n.t(settings[:yAxis_text])
-          }
-        },
-        tooltip: {
-          formatter: nil
-        },
-        series: series
-      }
-    end
-
-    def chart_week_settings(categories, series)
-      {
-        title: {
-          text: nil
-        },
-        xAxis: {
-          type: 'datetime'
-        },
-        yAxis: {
-          min: 0,
-          tickPixelInterval: 25,
-          title: {
-            text: I18n.t(settings[:yAxis_text])
-          }
-        },
-        tooltip: {
-          formatter: nil,
-          shared: true,
-          useHTML: true,
-          headerFormat: ''
-        },
-        series: series
-      }
-    end
-
-    def chart_month_settings(categories, series)
-      {
-        title: {
-          text: nil
-        },
-        xAxis: {
-          categories: categories.map{|c| I18n.t('date.months')[c.month-1][0..5]},
-          labels: {
-            align: 'center'
-          }
-        },
-        yAxis: {
-          min: 0,
-          tickPixelInterval: 25,
-          title: {
-            text: I18n.t(settings[:yAxis_text])
-          }
-        },
-        tooltip: {
-          formatter: nil
-        },
-        series: series
-      }
+      report = ClaimReport.new({
+        period: settings[:period],
+        company: company
+      }).prepare
+      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
+      hash["title"]["text"] = nil
+      hash.delete "legend"
+      hash.to_json
     end
 
     def tourists_table_data

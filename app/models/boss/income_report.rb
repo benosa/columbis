@@ -4,20 +4,26 @@ module Boss
     arel_tables :payments, :claims
     available_results :amount
     attribute :period, :default => 'month'
-    attr_accessible :period
+    attribute :check_date, :default => false
+    attr_accessible :period, :check_date
 
     def initialize(options = {})
       super
-      @end_date = Time.zone.now
-      case period
-      when 'day'
-        @start_date = @end_date - 30.days
-      when 'week'
-        @start_date = @end_date - (12*7).days
-      when 'year'
-        @start_date = @end_date - 20.year
+      if check_date
+        @start_date = start_date
+        @end_date = end_date
       else
-        @start_date = @end_date - @end_date.mon - 1.year
+        @end_date = Time.zone.now
+        case period
+        when 'day'
+          @start_date = @end_date - 30.days
+        when 'week'
+          @start_date = @end_date - (12*7).days
+        when 'year'
+          @start_date = @end_date - 20.year
+        else
+          @start_date = @end_date - @end_date.mon - 1.year
+        end
       end
     end
 
@@ -105,15 +111,19 @@ module Boss
       end
 
       def days_categories(data)
-        start_day = "#{data.first['day']}.#{data.first['month']}.#{data.first['year']}".to_datetime
-        end_date = @end_date.to_datetime
-        categories = []
-        x = start_day
-        while x <= end_date
-          categories << x
-          x += 1.day
+        if data.first.nil?
+          []
+        else
+          start_day = "#{data.first['day']}.#{data.first['month']}.#{data.first['year']}".to_datetime
+          end_date = @end_date.to_datetime
+          categories = []
+          x = start_day
+          while x <= end_date
+            categories << x
+            x += 1.day
+          end
+          categories
         end
-        categories
       end
 
       def months_categories(data)
@@ -121,19 +131,27 @@ module Boss
       end
 
       def weeks_categories(data)
-        start_day = "1.1.#{data.first['year']}".to_datetime + (data.first['week'].to_i*7).days - 4.days
-        end_date = @end_date.to_datetime
-        categories = []
-        x = start_day
-        while x <= end_date
-          categories << x
-          x += 7.day
+        if data.first.nil?
+          []
+        else
+          start_day = "1.1.#{data.first['year']}".to_datetime + (data.first['week'].to_i*7).days - 4.days
+          end_date = @end_date.to_datetime
+          categories = []
+          x = start_day
+          while x <= end_date
+            categories << x
+            x += 7.day
+          end
+          categories
         end
-        categories
       end
 
       def years_categories(data)
-        (data.first['year'].to_i..@end_date.year).to_a
+        if data.first.nil?
+          []
+        else
+          (data.first['year'].to_i..@end_date.year).to_a
+        end
       end
 
       def days_serialize_data(data, categories)

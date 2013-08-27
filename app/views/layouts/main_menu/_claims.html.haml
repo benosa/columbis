@@ -1,9 +1,7 @@
-%li{:class => (params[:controller] == 'claims') ? 'active' : ''}
+%li{:class => (params[:controller] == 'claims' && params[:action] != 'new') ? 'active' : ''}
   = link_to t('.claims'), claims_path, :id => 'claims_link'
   .rmenu_dropdown
     %ul
-      %li.first_menu_stroke{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
-        = link_to t('.new_claim'), new_claim_path
       - { :contract => t('.contract'), :permit => t('.permit'), :warranty => t('.warranty'), :memo => [t('.memo'), :memo_printer_for, :country], :act => t('.act') }.each do |mode, value|
         %li.first_menu_stroke{ :class => li_class(@claim, mode) }
           - unless value.is_a?(Array)

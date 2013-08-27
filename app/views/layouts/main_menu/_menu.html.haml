@@ -1,5 +1,6 @@
 %ul.rmenu
   = render 'layouts/main_menu/claims'
+  = render 'layouts/main_menu/newclaim'
   = render 'layouts/main_menu/management'
   = render 'layouts/main_menu/clients'
   - if user_signed_in? && %w(admin boss).include?(current_user.role)

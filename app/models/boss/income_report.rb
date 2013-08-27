@@ -4,20 +4,26 @@ module Boss
     arel_tables :payments, :claims
     available_results :amount
     attribute :period, :default => 'month'
-    attr_accessible :period
+    attribute :check_date, :default => false
+    attr_accessible :period, :check_date
 
     def initialize(options = {})
       super
-      @end_date = Time.zone.now
-      case period
-      when 'day'
-        @start_date = @end_date - 30.days
-      when 'week'
-        @start_date = @end_date - (12*7).days
-      when 'year'
-        @start_date = @end_date - 20.year
+      if check_date
+        @start_date = start_date
+        @end_date = end_date
       else
-        @start_date = @end_date - @end_date.mon - 1.year
+        @end_date = Time.zone.now
+        case period
+        when 'day'
+          @start_date = @end_date - 30.days
+        when 'week'
+          @start_date = @end_date - (12*7).days
+        when 'year'
+          @start_date = @end_date - 20.year
+        else
+          @start_date = @end_date - @end_date.mon - 1.year
+        end
       end
     end
 

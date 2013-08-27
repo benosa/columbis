@@ -482,100 +482,70 @@ module Boss
     end
 
     def promotion_leader_data
-      data_now = Claim.select("COUNT(id) AS total, tourist_stat AS name")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
-        .group(:name)
-        .order("total DESC")
-        .first(4)
-      where = ""
-      data_now.each do |d|
-        if where != ""
-          where += " or "
-        end
-        where += "tourist_stat = '#{d.try(:name)}'"
-      end
-      if where != ""
-        where = "(" + where + ")"
-      end
-      data_previous = Claim.select("COUNT(id) AS total, tourist_stat AS name")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
-        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
-        .where(where)
-        .group(:name)
-        .order("total DESC")
+      report = PromotionChannelReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-30.days,
+        end_date: Time.zone.now.to_date
+      }).prepare
+      data_now = report.count.data
+        .sort{|x,y| y['count'] <=> x['count']}.first(4)
+        .map{|d| {:name => d['name'], :total => d['count']}}
+
+      report = PromotionChannelReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-61.days,
+        end_date: Time.zone.now.to_date-31.days
+      }).prepare
+      data_previous = report.count.data
+        .sort{|x,y| y['count'] <=> x['count']}
+        .map{|d| {:name => d['name'], :total => d['count']}}
+
       leader_data(data_now, data_previous).merge(
         :text => I18n.t('boss.active_record.widget.leaders.promotion_text'))
     end
 
     def direction_leader_data
-      data_now = Claim.select("COUNT(claims.id) AS total, countries.name AS name")
-        .joins("INNER JOIN countries ON countries.id = claims.country_id")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
-        .group(:name)
-        .order("total DESC")
-        .first(4)
-      where = ""
-      data_now.each do |d|
-        if where != ""
-          where += " or "
-        end
-        where += "countries.name = '#{d.try(:name)}'"
-      end
-      if where != ""
-        where = "(" + where + ")"
-      end
-      data_previous = Claim.select("COUNT(claims.id) AS total, countries.name AS name")
-        .joins("INNER JOIN countries ON countries.id = claims.country_id")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
-        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
-        .where(where)
-        .group(:name)
-        .order("total DESC")
+      report = DirectionReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-30.days,
+        end_date: Time.zone.now.to_date
+      }).prepare
+      data_now = report.items.data
+        .sort{|x,y| y['items'] <=> x['items']}.first(4)
+        .map{|d| {:name => d['name'], :total => d['items']}}
+
+      report = DirectionReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-61.days,
+        end_date: Time.zone.now.to_date-31.days
+      }).prepare
+      data_previous = report.items.data
+        .sort{|x,y| y['items'] <=> x['items']}
+        .map{|d| {:name => d['name'], :total => d['items']}}
+
       leader_data(data_now, data_previous).merge(
         :text => I18n.t('boss.active_record.widget.leaders.direction_text'))
     end
 
     def hotelstars_leader_data
-      data_now = Claim.select("COUNT(id) AS total, substring(hotel from (char_length(hotel)-1) for 2) AS name")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("substring(hotel from char_length(hotel) for 1) = '*'")
-        .where("reservation_date >= ?", (Time.zone.now.to_date-30.days))
-        .group(:name)
-        .order("total DESC")
-        .first(4)
-      where = ""
-      data_now.each do |d|
-        if where != ""
-          where += " or "
-        end
-        where += "substring(hotel from (char_length(hotel)-1) for 2) = '#{d.try(:name)}'"
-      end
-      if where != ""
-        where = "(" + where + ")"
-      end
-      data_previous = Claim.select("COUNT(id) AS total, substring(hotel from (char_length(hotel)-1) for 2) AS name")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now.to_date-61.days))
-        .where("reservation_date <= ?", (Time.zone.now.to_date-31.days))
-        .where(where)
-        .group(:name)
-        .order("total DESC")
+      report = HotelStarsReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-30.days,
+        end_date: Time.zone.now.to_date
+      }).prepare
+      data_now = report.count.data
+        .sort{|x,y| y['count'] <=> x['count']}.first(4)
+        .map{|d| {:name => d['name'], :total => d['count']}}
+
+      report = HotelStarsReport.new({
+        company: company,
+        start_date: Time.zone.now.to_date-61.days,
+        end_date: Time.zone.now.to_date-31.days
+      }).prepare
+      data_previous = report.count.data
+        .sort{|x,y| y['count'] <=> x['count']}
+        .map{|d| {:name => d['name'], :total => d['count']}}
+
       leader_data(data_now, data_previous).merge(
         :text => I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
     end
@@ -583,7 +553,10 @@ module Boss
     def officesincome_leader_data
       report = OfficesIncomeReport.new({
         period: 'day',
-        company: company
+        company: company,
+        start_date: Time.zone.now.to_date-1.days,
+        end_date: Time.zone.now.to_date,
+        check_date: true
       }).prepare
       data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
         .sort{|x,y| x['amount'] <=> y['amount']}.first(4)
@@ -598,7 +571,10 @@ module Boss
     def managersincome_leader_data
       report = ManagersIncomeReport.new({
         period: 'day',
-        company: company
+        company: company,
+        start_date: Time.zone.now.to_date-1.days,
+        end_date: Time.zone.now.to_date,
+        check_date: true
       }).prepare
       data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
         .sort{|x,y| x['amount'] <=> y['amount']}.first(4)

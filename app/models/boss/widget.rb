@@ -93,15 +93,15 @@ module Boss
     end
 
     def income_chart_data
-      chart_data(IncomeReport).to_json
+      chart_data(IncomeReport, I18n.t('boss.active_record.widget.charts.sum')).to_json
     end
 
     def margin_chart_data
-      chart_data(MarginReport).to_json
+      chart_data(MarginReport, I18n.t('boss.active_record.widget.charts.normal')).to_json
     end
 
     def claim_chart_data
-      chart_data(ClaimReport).to_json
+      chart_data(ClaimReport, I18n.t('boss.active_record.widget.charts.number')).to_json
     end
 
     def tourists_table_data
@@ -177,7 +177,7 @@ module Boss
       })
     end
 
-    def chart_data(report_class)
+    def chart_data(report_class, name)
       report = report_class.new({
         period: settings[:period],
         company: company
@@ -185,6 +185,9 @@ module Boss
       hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
       hash["title"]["text"] = nil
       hash.delete "legend"
+      hash['series'].each do |s|
+        s['name'] = name
+      end
       hash
     end
 

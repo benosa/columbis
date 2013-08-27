@@ -15,7 +15,6 @@ ru:
           tariff_plans: 'Тарифные планы'
         - &claims
           claims: 'Брони'
-          new_claim: 'Новая заявка'
           contract: 'Договор'
           prihodnik: 'Приходник'
           permit: 'Путевка'
@@ -78,3 +77,5 @@ ru:
         *support
       second_support:
         *support
+      newclaim:
+        new_claim: 'Новая заявка'

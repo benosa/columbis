@@ -23,9 +23,15 @@ ru:
           income_title_day: 'Доход (динамика по дням)'
           income_title_week: 'Доход (динамика по неделям)'
           income_title_month: 'Доход (динамика по месяцам)'
+<<<<<<< HEAD
           income_sum: 'Сумма'
           income_normal: 'Среднее'
           income_number: 'Количество'
+=======
+          sum: 'Сумма'
+          normal: 'Среднее'
+          number: 'Количество'
+>>>>>>> [#155] Some fixes on top menu, on widgets
           margin_title_day: 'Наценка (динамика по дням)'
           margin_title_week: 'Наценка (динамика по неделям)'
           margin_title_month: 'Наценка (динамика по месяцам)'
@@ -53,4 +59,4 @@ ru:
           officesincome_text: '(4 наиболее производительных офиса за сегодняшний день)'
           managersincome: 'Лучшие менеджеры'
           managersincome_text: '(4 наиболее производительных менеджера за сегодняшний день)'
-          no_data: 'Нет данных'
+          no_data: 'Нет данных за выбранный период'

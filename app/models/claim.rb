@@ -86,7 +86,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
   validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/,/\A([1-5]\*)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
-  validates :num, :presence => true, :numericality => { :greater_than => 0 }, :uniqueness => true
+  validates :num, :presence => true, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }
 
   before_validation :update_debts
   before_save :update_bonus
@@ -828,7 +828,7 @@ class Claim < ActiveRecord::Base
 
     def printable_fields
       {
-        'Номер' => id,
+        'Номер' => num,
         'Туроператор' => operator.try(:name),
         'ТуроператорНомер' => operator.try(:register_number),
         'ТуроператорСерия' => operator.try(:register_series),

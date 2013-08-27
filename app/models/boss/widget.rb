@@ -4,7 +4,7 @@ module Boss
 
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table leader].freeze
-    NAMES = %w[claim income normalcheck tourprice margin tourists promotion].freeze
+    NAMES = %w[claim income normalcheck normalprice margin tourists promotion].freeze
     PERIODS = %w[day week month].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
@@ -23,7 +23,7 @@ module Boss
       widgets << create_widget(user, company, 3,
         'boss.active_record.widget.factors.normalcheck', 'small', 'factor', 'normalcheck')
       widgets << create_widget(user, company, 4,
-        'boss.active_record.widget.factors.tourprice', 'small', 'factor', 'tourprice')
+        'boss.active_record.widget.factors.normalprice', 'small', 'factor', 'normalprice')
       widgets << create_widget(user, company, 5,
         'boss.active_record.widget.factors.margin', 'small', 'factor', 'margin')
       widgets << create_widget(user, company, 6,
@@ -61,192 +61,47 @@ module Boss
       send(:"#{name}_#{widget_type}_data")
     end
 
-
-
     private
 
     def claim_factor_data
-      report = ClaimReport.new({
-        period: 'day',
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      data = report.amount.data.map{|d| ["#{d['year']}.#{d['month']}.#{d['day']}".to_date, d['amount'].to_i]}
-
-      report = ClaimReport.new({
-        period: 'year',
-        company: company,
-        start_date: Time.zone.now.beginning_of_year,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      total = report.amount.data.first
-      total = total.nil? ? 0 : total['amount'].to_i
-
-      create_factor_data(data).merge(:total => {
-        title: I18n.t('boss.active_record.widget.factors.in_all'),
-        data: "#{total} <span>#{I18n.t('boss.active_record.widget.factors.claim_number')}<span/>".html_safe,
-        text: I18n.t('boss.active_record.widget.factors.claim_text')
-      })
+      factor_data(ClaimReport, "amount", I18n.t('boss.active_record.widget.factors.in_all'),
+        I18n.t('boss.active_record.widget.factors.claim_number'),
+        I18n.t('boss.active_record.widget.factors.claim_text'))
     end
 
     def income_factor_data
-      report = IncomeReport.new({
-        period: 'day',
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      data = report.amount.data.map{|d| ["#{d['year']}.#{d['month']}.#{d['day']}".to_date, d['amount'].to_i]}
-
-      report = IncomeReport.new({
-        period: 'year',
-        company: company,
-        start_date: Time.zone.now.beginning_of_year,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      total = report.amount.data.first
-      total = total.nil? ? 0 : total['amount'].to_i
-
-      create_factor_data(data).merge(:total => {
-        title: I18n.t('boss.active_record.widget.factors.in_all'),
-        data: "#{commas(total)} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
-        text: I18n.t('boss.active_record.widget.factors.income_text')
-      })
+      factor_data(IncomeReport, "amount", I18n.t('boss.active_record.widget.factors.in_all'),
+        I18n.t('boss.active_record.widget.factors.payment_sum'),
+        I18n.t('boss.active_record.widget.factors.income_text'))
     end
 
     def normalcheck_factor_data
-      report = NormalCheckReport.new({
-        period: 'day',
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      data = report.amount.data.map{|d| ["#{d['year']}.#{d['month']}.#{d['day']}".to_date, d['amount'].to_i]}
-
-      report = NormalCheckReport.new({
-        period: 'year',
-        company: company,
-        start_date: Time.zone.now.beginning_of_year,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      total = report.amount.data.first
-      total = total.nil? ? 0 : total['amount'].to_i
-
-      create_factor_data(data, true).merge(:total => {
-        title: I18n.t('boss.active_record.widget.factors.normal'),
-        data: "#{commas(total)} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
-        text: I18n.t('boss.active_record.widget.factors.normalcheck_text')
-        })
+      factor_data(NormalCheckReport, "amount", I18n.t('boss.active_record.widget.factors.normal'),
+        I18n.t('boss.active_record.widget.factors.payment_sum'),
+        I18n.t('boss.active_record.widget.factors.normalcheck_text'))
     end
 
-    def tourprice_factor_data
-      data_count = TouristClaim.select("claims.reservation_date AS date, COUNT(tourist_id) as count")
-        .joins("INNER JOIN claims ON tourist_claims.claim_id = claims.id")
-          .where(claims: {excluded_from_profit: false})
-          .where(claims: {canceled: false})
-          .where("claims.reservation_date >= ?", (Time.zone.now - 61.days).to_date)
-        .group(:date)
-        .order("claims.reservation_date DESC")
-      data_amount = Claim.select("SUM(primary_currency_price) AS amount, reservation_date AS date")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-        .where("reservation_date >= ?", (Time.zone.now - 61.days).to_date)
-        .group(:date)
-        .order("reservation_date DESC")
-
-      data = []
-      data_count.each_with_index do |count, i|
-        normal = data_count[i].try(:count).to_i == 0 ? 0 : data_amount[i].try(:amount).to_i/data_count[i].try(:count).to_i
-        data << [count.date.to_date, normal]
-      end
-
-      total_count = TouristClaim.select("COUNT(tourist_id) as count")
-        .joins("INNER JOIN claims ON tourist_claims.claim_id = claims.id")
-          .where(claims: {excluded_from_profit: false})
-          .where(claims: {canceled: false})
-      total_amount = Claim.select("SUM(primary_currency_price) AS amount")
-        .where(company_id: company.id)
-        .where(excluded_from_profit: false)
-        .where(canceled: false)
-
-      total = []
-      total_count.each_with_index do |count, i|
-        normal = total_count[i].try(:count).to_i == 0 ? 0 : total_amount[i].try(:amount).to_i/total_count[i].try(:count).to_i
-        total << normal
-      end
-      total = total == [] ? 0 : total.first
-
-      create_factor_data(data, true).merge(
-        :total => {
-          title: I18n.t('boss.active_record.widget.factors.normal'),
-          data: "#{commas(total)} <span>#{I18n.t('boss.active_record.widget.factors.payment_sum')}<span/>".html_safe,
-          text: I18n.t('boss.active_record.widget.factors.normalcheck_text')
-        })
+    def normalprice_factor_data
+      factor_data(NormalPriceReport, "amount", I18n.t('boss.active_record.widget.factors.normal'),
+        I18n.t('boss.active_record.widget.factors.payment_sum'),
+        I18n.t('boss.active_record.widget.factors.normalcheck_text'))
     end
 
     def margin_factor_data
-      report = MarginReport.new({
-        period: 'day',
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
+      factor_data(MarginReport, "percent", I18n.t('boss.active_record.widget.factors.normal'),
+        '%', I18n.t('boss.active_record.widget.factors.margin_text'), true)
+    end
 
-      data = report.percent.data.map{|d| ["#{d['year']}.#{d['month']}.#{d['day']}".to_date, d['amount'].to_f.round(2)]}
-
-      report = MarginReport.new({
-        period: 'year',
-        company: company,
-        start_date: Time.zone.now.beginning_of_year,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-
-      total = report.percent.data.first
-      total = total.nil? ? 0.00 : total['amount'].to_f.round(2)
-
-      create_factor_data(data, true).merge(:total => {
-        title: I18n.t('boss.active_record.widget.factors.normal'),
-        data: "#{commas(total)} <span>%<span/>".html_safe,
-        text: I18n.t('boss.active_record.widget.factors.margin_text')
-      })
+    def income_chart_data
+      chart_data(IncomeReport).to_json
     end
 
     def margin_chart_data
-      report = MarginReport.new({
-        period: settings[:period],
-        company: company
-      }).prepare
-      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
-      hash["title"]["text"] = nil
-      hash.delete "legend"
-      hash.to_json
+      chart_data(MarginReport).to_json
     end
 
     def claim_chart_data
-      report = ClaimReport.new({
-        period: settings[:period],
-        company: company
-      }).prepare
-      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
-      hash["title"]["text"] = nil
-      hash.delete "legend"
-      hash.to_json
+      chart_data(ClaimReport).to_json
     end
 
     def tourists_table_data
@@ -258,123 +113,108 @@ module Boss
     end
 
     def promotion_leader_data
-      report = PromotionChannelReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-30.days,
-        end_date: Time.zone.now.to_date
-      }).prepare
-      data_now = report.count.data
-        .sort{|x,y| y['count'] <=> x['count']}.first(4)
-        .map{|d| {:name => d['name'], :total => d['count']}}
-
-      report = PromotionChannelReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date-31.days
-      }).prepare
-      data_previous = report.count.data
-        .sort{|x,y| y['count'] <=> x['count']}
-        .map{|d| {:name => d['name'], :total => d['count']}}
-
-      leader_data(data_now, data_previous).merge(
-        :text => I18n.t('boss.active_record.widget.leaders.promotion_text'))
+      leader_data(PromotionChannelReport, (Time.zone.now.to_date-61.days),
+        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
+        I18n.t('boss.active_record.widget.leaders.promotion_text'))
     end
 
     def direction_leader_data
-      report = DirectionReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-30.days,
-        end_date: Time.zone.now.to_date
-      }).prepare
-      data_now = report.items.data
-        .sort{|x,y| y['items'] <=> x['items']}.first(4)
-        .map{|d| {:name => d['name'], :total => d['items']}}
-
-      report = DirectionReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date-31.days
-      }).prepare
-      data_previous = report.items.data
-        .sort{|x,y| y['items'] <=> x['items']}
-        .map{|d| {:name => d['name'], :total => d['items']}}
-
-      leader_data(data_now, data_previous).merge(
-        :text => I18n.t('boss.active_record.widget.leaders.direction_text'))
+      leader_data(DirectionReport, (Time.zone.now.to_date-61.days),
+        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'items',
+        I18n.t('boss.active_record.widget.leaders.direction_text'))
     end
 
     def hotelstars_leader_data
-      report = HotelStarsReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-30.days,
-        end_date: Time.zone.now.to_date
-      }).prepare
-      data_now = report.count.data
-        .sort{|x,y| y['count'] <=> x['count']}.first(4)
-        .map{|d| {:name => d['name'], :total => d['count']}}
-
-      report = HotelStarsReport.new({
-        company: company,
-        start_date: Time.zone.now.to_date-61.days,
-        end_date: Time.zone.now.to_date-31.days
-      }).prepare
-      data_previous = report.count.data
-        .sort{|x,y| y['count'] <=> x['count']}
-        .map{|d| {:name => d['name'], :total => d['count']}}
-
-      leader_data(data_now, data_previous).merge(
-        :text => I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
+      leader_data(HotelStarsReport, (Time.zone.now.to_date-61.days),
+        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
+        I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
     end
 
     def officesincome_leader_data
-      report = OfficesIncomeReport.new({
-        period: 'day',
-        company: company,
-        start_date: Time.zone.now.to_date-1.days,
-        end_date: Time.zone.now.to_date,
-        check_date: true
-      }).prepare
-      data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
-        .sort{|x,y| x['amount'] <=> y['amount']}.first(4)
-        .map{|d| {:name => d['name'], :total => d['amount']}}
-      data_previous = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == (Time.zone.now.to_date-1.days)}
-        .sort{|x,y| x['amount'] <=> y['amount']}
-        .map{|d| {:name => d['name'], :total => d['amount']}}
-      leader_data(data_now, data_previous).merge(
-        :text => I18n.t('boss.active_record.widget.leaders.officesincome_text'))
+      leader_data(OfficesIncomeReport, (Time.zone.now.to_date-1.days),
+        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
+        I18n.t('boss.active_record.widget.leaders.officesincome_text'))
     end
 
     def managersincome_leader_data
-      report = ManagersIncomeReport.new({
+      leader_data(ManagersIncomeReport, (Time.zone.now.to_date-1.days),
+        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
+        I18n.t('boss.active_record.widget.leaders.managersincome_text'))
+    end
+
+    def factor_data(report_class, method_name, total_title, total_data_prefix, total_text, is_f = false, round = 2)
+      report = report_class.new({
         period: 'day',
         company: company,
-        start_date: Time.zone.now.to_date-1.days,
+        start_date: Time.zone.now.to_date-61.days,
         end_date: Time.zone.now.to_date,
         check_date: true
       }).prepare
-      data_now = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == Time.zone.now.to_date}
-        .sort{|x,y| x['amount'] <=> y['amount']}.first(4)
-        .map{|d| {:name => d['name'], :total => d['amount']}}
-      data_previous = report.amount.data.select{|d| "#{d['year']}.#{d['month']}.#{d['day']}".to_date == (Time.zone.now.to_date-1.days)}
-        .sort{|x,y| x['amount'] <=> y['amount']}
-        .map{|d| {:name => d['name'], :total => d['amount']}}
-      leader_data(data_now, data_previous).merge(
-        :text => I18n.t('boss.active_record.widget.leaders.managersincome_text'))
+
+      data = report.try(method_name.to_sym).data
+        .map{|d| ["#{d['year']}.#{d['month']}.#{d['day']}".to_date, d['amount'].to_f.round(2)]}
+
+      report = report_class.new({
+        period: 'year',
+        company: company,
+        start_date: Time.zone.now.beginning_of_year,
+        end_date: Time.zone.now.to_date,
+        check_date: true
+      }).prepare
+
+      total = report.try(method_name.to_sym).data.first
+      total = total.nil? ? 0 : total['amount']
+      if is_f
+        total = total.to_f.round(round)
+      else
+        total = total.to_i
+      end
+
+      create_factor_data(data, true).merge(:total => {
+        title: total_title,
+        data: "#{commas(total)} <span>#{total_data_prefix}<span/>".html_safe,
+        text: total_text
+      })
     end
 
-    def leader_data(data_now, data_previous)
-      data = [[],[],[],[]]
-      data_now.each do |d|
-        name = d[:name] or d.try(:name)
-        now  = (d[:total] or d.try(:total)).to_i
-        prev = data_previous.select{|p| (p[:name] or p.try(:name)) == name}
-        prev = prev.blank? ? 0 : (prev.first[:total] or prev.first.try(:total)).to_i
-        data[0] << name
-        data[1] << commas(now)
-        data[2] << get_class(now, prev)
-        data[3] << get_percent(now, prev)
-      end
-      { data: data }
+    def chart_data(report_class)
+      report = report_class.new({
+        period: settings[:period],
+        company: company
+      }).prepare
+      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
+      hash["title"]["text"] = nil
+      hash.delete "legend"
+      hash
+    end
+
+    def leader_data(report_class, start_date, middle_date, end_date, column_name, text)
+      report = report_class.new({
+        period: 'day',
+        company: company,
+        start_date: start_date,
+        end_date: middle_date,
+        check_date: true
+      }).prepare
+
+      data_previous = report.try(column_name.to_sym).data
+        .sort{|x,y| y[column_name] <=> x[column_name]}.first(4)
+        .map{|d| {:name => d['name'], :total => d[column_name]}}
+
+      report = report_class.new({
+        period: 'day',
+        company: company,
+        start_date: middle_date+1.days,
+        end_date: end_date,
+        check_date: true
+      }).prepare
+
+      data_now = report.try(column_name.to_sym).data
+        .sort{|x,y| y[column_name] <=> x[column_name]}
+        .map{|d| {:name => d['name'], :total => d[column_name]}}
+        .first(4)
+
+      create_leader_data(data_now, data_previous).merge(:text => text)
     end
 
     def create_factor_data(data, is_mean = false)
@@ -398,6 +238,21 @@ module Boss
             get_percent(now_month, previous_month)]
         ]
       }
+    end
+
+    def create_leader_data(data_now, data_previous)
+      data = [[],[],[],[]]
+      data_now.each do |d|
+        name = d[:name] or d.try(:name)
+        now  = (d[:total] or d.try(:total)).to_i
+        prev = data_previous.select{|p| (p[:name] or p.try(:name)) == name}
+        prev = prev.blank? ? 0 : (prev.first[:total] or prev.first.try(:total)).to_i
+        data[0] << name
+        data[1] << commas(now)
+        data[2] << get_class(now, prev)
+        data[3] << get_percent(now, prev)
+      end
+      { data: data }
     end
 
     def get_by_date(data, is_mean = false, start_date, end_date)
@@ -450,17 +305,6 @@ module Boss
       str = x.to_s.reverse
       str.gsub!(/([0-9]{3})/,"\\1,")
       str.gsub(/,$/,"").reverse
-    end
-
-    def income_chart_data
-      report = IncomeReport.new({
-        period: settings[:period],
-        company: company
-      }).prepare
-      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
-      hash["title"]["text"] = nil
-      hash.delete "legend"
-      hash.to_json
     end
   end
 end

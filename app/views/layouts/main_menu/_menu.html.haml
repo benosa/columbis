@@ -1,5 +1,7 @@
 %ul.rmenu
   = render 'layouts/main_menu/claims'
+  %li{:class => (params[:controller] == 'claims') ? 'active' : ''}
+    = link_to t('.claims'), claims_path, :id => 'claims_link'
   = render 'layouts/main_menu/management'
   = render 'layouts/main_menu/clients'
   - if user_signed_in? && %w(admin boss).include?(current_user.role)

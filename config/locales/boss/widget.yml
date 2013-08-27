@@ -6,7 +6,7 @@ ru:
           claims: 'Брони'
           incomes: 'Доход'
           normalcheck: 'Средний чек'
-          tourprice: 'Средняя стоимость'
+          normalprice: 'Средняя стоимость'
           margin: 'Наценка'
           today: 'Сегодня'
           week: '7 дней'

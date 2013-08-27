@@ -39,18 +39,11 @@ after "deploy:update_code", "thinking_sphinx:start"
 after "deploy:update_code", "deploy:precompile_assets"
 after "deploy:update_code", "deploy:create_manifest"
 after "deploy:update_code", "deploy:claims:expire_active_cache"
+
+after 'deploy:restart', 'unicorn:restart'  # app preloaded
 after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
-  task :start do
-  end
-
-  task :stop do
-  end
-
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-  end
 
   task :config do
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/database.yml database.yml"

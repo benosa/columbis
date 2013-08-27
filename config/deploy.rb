@@ -45,6 +45,18 @@ after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
 
+  task :stop do
+    unicorn.stop
+    thinking_sphinx.stop
+    delayed_job.stop
+  end
+
+  task :start do
+    thinking_sphinx.start
+    unicorn.start
+    delayed_job.start
+  end
+
   task :config do
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/database.yml database.yml"
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/sphinx.yml sphinx.yml"

@@ -27,10 +27,10 @@ module Boss
       widgets << create_widget(user, company, 5,
         'boss.active_record.widget.factors.margin', 'small', 'factor', 'margin')
       widgets << create_widget(user, company, 6,
-        'boss.active_record.widget.charts.income_title_day', 'small2', 'chart', 'income',
+        'boss.active_record.widget.charts.income_title_day', 'medium', 'chart', 'income',
         {:period => 'day', :yAxis_text => 'RUR'})
       widgets << create_widget(user, company, 7,
-        'boss.active_record.widget.charts.margin_title_week', 'large', 'chart', 'margin',
+        'boss.active_record.widget.charts.margin_title_week', 'medium', 'chart', 'margin',
         {:period => 'week', :yAxis_text => 'boss.active_record.widget.charts.percent'})
       widgets << create_widget(user, company, 8,
         'boss.active_record.widget.charts.claim_title_month', 'medium', 'chart', 'claim',
@@ -298,7 +298,7 @@ module Boss
           .where(claims: {canceled: false})
         .group(:date)
         .order("date DESC")
-      chart_settings(data, start_date, end_date)
+      chart_settings(data, start_date, end_date, false, I18n.t('boss.active_record.widget.charts.income_sum'))
     end
 
     def margin_chart_data
@@ -321,7 +321,7 @@ module Boss
         .where("reservation_date <= ?", end_date)
         .group(:reservation_date)
         .order("reservation_date DESC")
-      chart_settings(data, start_date, end_date, true)
+      chart_settings(data, start_date, end_date, true, I18n.t('boss.active_record.widget.charts.income_normal'))
     end
 
     def claim_chart_data
@@ -344,10 +344,10 @@ module Boss
         .where("reservation_date <= ?", end_date)
         .group(:reservation_date)
         .order("reservation_date DESC")
-      chart_settings(data, start_date, end_date)
+      chart_settings(data, start_date, end_date, false, I18n.t('boss.active_record.widget.charts.income_number'))
     end
 
-    def chart_settings(data, start_date, end_date, is_mean = false)
+    def chart_settings(data, start_date, end_date, is_mean = false, name)
       case settings[:period]
       when 'day'
         categories = []
@@ -357,7 +357,7 @@ module Boss
           x += 1.days
         end
         series = [{
-          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          name: name,
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date == c }
             elem.length==0 ? 0 : elem.first.try(:total).to_f.round(2)
@@ -372,7 +372,7 @@ module Boss
           x += 7.days
         end
         series = [{
-          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          name: name,
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date >= (c-3.days) && d.try(:date).to_date <= (c+6.days) }
             elem.length==0 ? [c.to_datetime.to_i * 1000, 0] :
@@ -388,7 +388,7 @@ module Boss
           x += 1.months
         end
         series = [{
-          name: I18n.t('boss.active_record.widget.charts.income_sum'),
+          name: name,
           data: categories.map do |c|
             elem = data.find_all { |d| d.try(:date).to_date.month == c.month }
             elem.length==0 ? 0 : avg_or_sum(elem.map{|e| e.try(:total).to_f}, is_mean).round(2)

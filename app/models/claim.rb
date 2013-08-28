@@ -800,7 +800,7 @@ class Claim < ActiveRecord::Base
     end
 
     def check_operator_correctness(operator_param)
-      errors.add(:operator_id, :is_selected_from_existing) if operator.nil? && operator_param.present?
+      errors.add(:operator, :is_selected_from_existing) if operator.nil? && operator_param.present?
     end
 
     def check_country_correctness(country_name)

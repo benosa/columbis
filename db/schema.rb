@@ -412,7 +412,6 @@ ActiveRecord::Schema.define(:version => 20130820151629) do
     t.text     "wishes"
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
-    t.text     "note"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

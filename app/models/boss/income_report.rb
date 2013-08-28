@@ -44,7 +44,7 @@ module Boss
     def days_column_settings(data)
       categories = days_categories(data)
       series = days_serialize_data(data, categories)
-      categories.map! {|c| c.strftime('%d.%m.%Y') }
+      categories.map! {|c| c.strftime('%d.%m') }
       days_settings(categories, series).to_json
     end
 

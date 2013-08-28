@@ -244,4 +244,38 @@ module ClaimsHelper
     options || current_company.dropdown_values_for('tourist_stat')
   end
 
+  # Specific list of operator permitted for manager
+  def specific_operators_for_mistral
+    operators = Operator.where('name ILIKE \'\%{%}\'').pluck(:name)
+    operators = operators.map{ |value| value[2..-2].split(';') }.flatten.uniq unless operators.empty?
+    operators
+  end
+
+  def mistral_operator_list(term)
+    list = current_company.operators.select("min(operators.id) id, btrim(operators.name) as name")
+      .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
+      .where('operators.name NOT ILIKE \'\%{%}\'')
+      .group('btrim(operators.name)')
+      .order('name ASC, id ASC')
+      .limit(50)
+
+    specific_operators = specific_operators_for_mistral
+    if is_supervisor? or is_manager?
+      list = list.where(name: specific_operators) unless specific_operators.empty?
+    elsif params[:term].present?
+      # Special operators must be on top
+      first_part, second_part = [], []
+      list.each do |operator|
+        if specific_operators.include?(operator.name)
+          first_part << operator
+        else
+          second_part << operator
+        end
+      end
+      list = first_part + [id: '', name: ''] + second_part
+    end
+
+    list
+  end
+
 end

@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ClaimsAutocompleteController < ApplicationController
+  include ClaimsHelper
 
   before_filter :check_user
 
@@ -26,9 +27,15 @@ class ClaimsAutocompleteController < ApplicationController
   end
 
   def operator
-    @list = current_company.operators.select('operators.id, operators.name')
-      .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
-      .limit(50)
+    unless current_company.id == 8
+      @list = current_company.operators.select('operators.id, operators.name')
+        .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
+        .limit(50)
+    else
+      # Special conditions for Mistral
+      @list = mistral_operator_list(params[:term])
+    end
+
     render 'claims/autocompletes/list'
   end
 

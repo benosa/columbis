@@ -7,12 +7,23 @@ module Boss
 
     def index
       @widgets = Widget.where(:company_id => current_company.id)
-        .where(:user_id => current_user.id)
+        .where(:user_id => current_user.id).order("position ASC")
       if @widgets.length == 0
         @widgets = Widget.create_default_widgets(current_user, current_company)
       end
 
       render 'boss/index'
+    end
+
+    def sort_widget
+      if request.xhr?
+        positions = {}
+        params["data"].split(/,/).each_with_index { |id, i| positions.merge!({id.to_i => {"position" => (i+1)}}) }
+        Widget.update(positions.keys, positions.values)
+      else
+        head :bad_request
+      end
+      render nothing: true
     end
 
   end

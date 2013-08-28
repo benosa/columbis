@@ -10,9 +10,9 @@ Tourism::Application.routes.draw do
       put :batch_add_to_group
     end
   end
-  
+
   match 'sms_groups_birthday' => 'sms_groups#birthday', as: 'sms_groups_birthday', via: :get
-  
+
   resources :sms_sendings
 
 
@@ -88,6 +88,7 @@ Tourism::Application.routes.draw do
   namespace :boss do
     match 'reports/:action' => 'reports#:action', :as => :reports
     match '/' => 'base#index', :as => :index
+    post '/sort_widget' => 'base#sort_widget', :as => :sort_widget
   end
 
   scope 'dashboard' do

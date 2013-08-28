@@ -6,8 +6,15 @@ jQuery(function($) {
     containment: '.widget-area',
     cursor: 'move',
     distance: 5,
-    // grid: [247, 213],
-    handle: '.widget-btn-more'
+    handle: '.widget-btn-more',
+    update: function(event, ui) {
+      var widgets = $(event.target).children(".widget");
+      var positions = [];
+      widgets.each(function() {
+        positions.push($(this).attr("position"));
+      });
+      $.post("/boss/sort_widget", {"data": positions.toString()});
+    }
   });
 
 });

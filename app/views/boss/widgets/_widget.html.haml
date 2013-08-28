@@ -4,7 +4,7 @@
   - widget_class += " widget-small widget-double-small"
 - else
   - widget_class += " widget-#{widget.view}"
-.widget{:class => widget_class}
+.widget{:class => widget_class, :position => widget.id}
   = render partial: "boss/widgets/menu", locals: { widget: widget }
   .widget-title
     %h2= I18n.t(widget.title)

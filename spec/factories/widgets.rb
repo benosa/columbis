@@ -1,7 +1,7 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :widget do
+  factory :widget, :class => Boss::Widget do
     association :company
     association :user
     name "claim"

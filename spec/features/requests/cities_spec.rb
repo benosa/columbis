@@ -16,7 +16,7 @@ describe "City:", js: true do
     login_as @boss
   end #create test data and login by boss
 
-  describe "cities list" do
+  describe "cities list", js: true do
     clean_once_with_sphinx do
 
       before do

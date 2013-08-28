@@ -260,6 +260,15 @@ class Claim < ActiveRecord::Base
     !self.memo.blank?
   end
 
+  def locked?
+    self.locked_by.to_i != 0
+  end
+
+  def lock(user_id)
+    self.locked_by = user_id
+    self.locked_at = Time.zone.now
+  end
+
   def is_active?
     inactive = canceled?
     if not inactive

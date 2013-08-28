@@ -123,6 +123,16 @@ class ClaimsController < ApplicationController
     }
   end
 
+  def lock
+    authorize! :update, @claim
+    @claim.lock(current_user.id)
+    @claim.save
+    render :json => {
+      :success => 1,
+      :message => I18n.t('claims.messages.locked')
+    }
+  end
+
   def destroy
     @claim.destroy
     redirect_to claims_url, :notice =>  t('claims.messages.successfully_destroyed_claim')

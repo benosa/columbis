@@ -1057,6 +1057,16 @@ $(function() {
     }
   });
 
+  $('.edit_claim').on('change', 'input', function() {
+     $.ajax({
+       url: $('.edit_claim').data('lockpath'),
+       success: function(data) {
+         $('#content .top h1').append(' ' + data.message);
+         //$('#claim_applicant_attributes_address').attr('value', data.message);
+       }
+    });
+  })
+
   // Window scroll event
   $(window).scroll(function() {
     $(window).trigger('scroll.claims');

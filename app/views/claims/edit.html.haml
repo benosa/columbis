@@ -1,10 +1,10 @@
 - content_for(:html_class) { 'edit_page' }
 - content_for(:body_class) { 'order panel' << (small_width? ? ' edit_tourists' : '') }
 
-- title t('.title', :num => @claim.num, :created_at => l(@claim.created_at, :format => :long))
+- title claim_title(@claim)
 
 -# highlighted_fields = [:airline, :documents_status, :arrival_date, :departure_date, :resort, :tour_price, :visa_price]
-= form_for @claim, :builder => TourismFormBuilder, html: {  data: { lockpath: lock_claims_path }  } do |form|
+= form_for @claim, :builder => TourismFormBuilder, html: claim_form_data(@claim) do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 

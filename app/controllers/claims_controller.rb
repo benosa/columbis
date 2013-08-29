@@ -98,6 +98,9 @@ class ClaimsController < ApplicationController
   end
 
   def update
+    if !@claim.locked_another_user(current_user.id)
+      @claim.unlock
+    end
     @claim.assign_reflections_and_save(params[:claim])
 
     unless @claim.errors.any?
@@ -125,12 +128,13 @@ class ClaimsController < ApplicationController
 
   def lock
     authorize! :update, @claim
-    @claim.lock(current_user.id)
-    @claim.save
-    render :json => {
-      :success => 1,
-      :message => I18n.t('claims.messages.locked')
-    }
+    if (!@claim.locked? || @claim.locked_by == current_user.id)
+      @claim.lock(current_user.id)
+      @claim.save
+      render :json => {
+        :message => I18n.t('claims.messages.locked')
+      }
+    end
   end
 
   def destroy

@@ -202,6 +202,7 @@ ru:
       successfully_destroyed_claim: 'Бронь удалена'
       locked: '(редактируется)'
       locked_by: '(редактируется %{user})'
+      is_editing: 'Редактируется другим пользователем'
 
   activerecord:
     errors:

@@ -47,6 +47,7 @@ class Claim < ActiveRecord::Base
   belongs_to :country
   belongs_to :city
   belongs_to :resort, :class_name => 'City'
+  belongs_to :blocker, :class_name => 'User', :foreign_key => 'locked_by'
 
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
@@ -269,6 +270,10 @@ class Claim < ActiveRecord::Base
     self.locked_at = Time.zone.now
   end
 
+  def unlock
+    self.locked_by = 0
+  end
+
   def is_active?
     inactive = canceled?
     if not inactive
@@ -445,6 +450,14 @@ class Claim < ActiveRecord::Base
     end
 
     selected
+  end
+
+  def locked_another_user(current_user_id)
+    if self.locked? && current_user_id != self.locked_by
+      errors.add(:base, I18n.t('claims.messages.is_editing'))
+    else
+      false
+    end
   end
 
   def local_extra_data

@@ -1058,14 +1058,34 @@ $(function() {
   });
 
   $('.edit_claim').on('change', 'input', function() {
-     $.ajax({
-       url: $('.edit_claim').data('lockpath'),
-       success: function(data) {
-         $('#content .top h1').append(' ' + data.message);
-         //$('#claim_applicant_attributes_address').attr('value', data.message);
-       }
-    });
-  })
+    if ($('.edit_claim').data('changed') != true) {
+      $.ajax({
+         url: $('.edit_claim').data('lockpath'),
+         success: function(data) {
+           $('#content .top h1').append(' ' + data.message);
+           $('.edit_claim').data('changed', true);
+         }
+      });
+    }
+  });
+
+  $('.edit_claim').data('changed', true)
+
+  $('a.save').mouseup(function(){
+    $('.edit_claim').data('changed', false)
+  });
+
+  $(window).bind('beforeunload', function() {
+      if ($('.edit_claim').data('changed')) {
+       return 'Внесены изменения, вы уверены, что хотите отказаться?';
+      }
+   });
+
+  // $(window).unload(function() {
+  //     if ($('.edit_claim').data('changed')) {
+  //      alert ('ololo');
+  //     }
+  //  });
 
   // Window scroll event
   $(window).scroll(function() {

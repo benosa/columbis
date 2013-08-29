@@ -247,32 +247,29 @@ module ClaimsHelper
   # Specific list of operator permitted for manager
   def specific_operators_for_mistral
     operators = Operator.where('name ILIKE \'\%{%}\'').pluck(:name)
-    operators = operators.map{ |value| value[2..-2].split(';') }.flatten.uniq unless operators.empty?
+    operators = operators.map{ |value| value[2..-2].gsub(/\s*;\s*/, ';').split(';') }.flatten.uniq unless operators.empty?
     operators
   end
 
   def mistral_operator_list(term)
-    list = current_company.operators.select("min(operators.id) id, btrim(operators.name) as name")
-      .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
+    specific_operators = specific_operators_for_mistral
+    specific_field = "(CASE WHEN btrim(operators.name) in (#{specific_operators.map{|o| ActiveRecord::Base.sanitize(o) }.join(',')}) THEN 0 ELSE 1 END)"
+
+    list = current_company.operators
+      .select("min(operators.id) id, btrim(operators.name) as name, #{specific_field} as spec")
+      .where(["operators.name ILIKE '%' || ? || '%'", term])
       .where('operators.name NOT ILIKE \'\%{%}\'')
       .group('btrim(operators.name)')
-      .order('name ASC, id ASC')
-      .limit(50)
+      .reorder('spec, name')
+      # .limit(50)
 
-    specific_operators = specific_operators_for_mistral
     if is_supervisor? or is_manager?
       list = list.where(name: specific_operators) unless specific_operators.empty?
-    elsif params[:term].present?
+    else
       # Special operators must be on top
-      first_part, second_part = [], []
-      list.each do |operator|
-        if specific_operators.include?(operator.name)
-          first_part << operator
-        else
-          second_part << operator
-        end
-      end
-      list = first_part + [id: '', name: ''] + second_part
+      list = list.all
+      i = list.index{ |operator| !specific_operators.include?(operator.name) }
+      list.insert(i, Operator.new(id: '', name: '=' * 15)) if i > 0
     end
 
     list

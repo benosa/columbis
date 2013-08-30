@@ -14,4 +14,18 @@ module TouristsHelper
       :destroy_link => link_to(t('destroy'), tourist, :method => :delete, :confirm => t('are_you_sure')),
     }
   end
+
+  def show_potential_clients
+    params[:potential].present?
+  end
+
+  # alias_method :orig_tourists_path, :tourists_path
+  # def tourists_path(args = nil)
+  #   if tourist || show_potential_clients
+  #     orig_tourists_path(potential: 1)
+  #   else
+  #     orig_tourists_path
+  #   end
+  # end
+
 end

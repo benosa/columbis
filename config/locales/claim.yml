@@ -214,6 +214,7 @@ ru:
         check_date: 'Контрольная дата'
         office_id: 'Офис'
         operator_id: 'Туроператор'
+        operator: 'Туроператор'
         operator_confirmation: 'Подтверждение оператора'
         visa: 'Виза'
         children_visa_price: 'Виза детская'

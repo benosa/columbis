@@ -282,9 +282,9 @@ function set_claims_tooltip(init) {
   });
 
   if (init) {
-    $('body').on('click', '.with_tooltip', function(e) {
+    $('body').on('click', '#claims .with_tooltip', function(e) {
       $(this).tooltip('toggle');
-    }).on('mouseout', '.with_tooltip', function(e) {
+    }).on('mouseout', '#claims .with_tooltip', function(e) {
       $(this).tooltip('hide');
     });
   }

@@ -14,8 +14,7 @@ class Operator < ActiveRecord::Base
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
 
-  validates_presence_of :name
-  validates_uniqueness_of :name
+  validates :name, presence: true, uniqueness: { scope: :company_id }, length: { maximum: 255 }
 
   default_scope :order => :name
 

@@ -7,7 +7,7 @@
     .block_title
       %h2= t('.common')
     .form_block_content
-      .fake_row.fields{ :class => tourist.potential? && 'potential' }
+      .fake_row.fields
         %p= f.label :last_name
         = f.text_field :last_name, :class => 'wide'
         %p= f.label :first_name
@@ -20,23 +20,14 @@
         = f.text_field :phone_number, :class => 'wide'
         %p= f.label :email
         = f.text_field :email, :class => 'wide'
-        .passport_block
-          %p= f.label t('.passport')
-          = f.text_field :passport_series, :class => 'passport_series'
-          = f.text_field :passport_number, :class => 'passport_number'
-          %p= f.label :passport_valid_until, t('.passport_valid_until')
-          = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
-        %p.one_row
-          = f.check_box :special_offer, id: 'tourist_special_offer'
-          = f.label :special_offer, t('.special_offer'), :class => 'checkbox left_checkbox', id: 'tourist_special_offer'
-        %p.one_row
+        %p= f.label t('.passport')
+        = f.text_field :passport_series, :class => 'passport_series'
+        = f.text_field :passport_number, :class => 'passport_number'
+        %p= f.label :passport_valid_until, t('.passport_valid_until')
+        = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
+        %p
           = f.check_box :potential, id: 'tourist_potential'
-          = f.label :potential, :class => 'checkbox left_checkbox', id: 'tourist_potential'
-        .potential_fields
-          %p= f.label :wishes
-          = f.text_area :wishes, :class => 'wide wishes'
-          %p= f.label :actions
-          = f.text_area :actions, :class => 'wide actions'
+          = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.tourist_to_potential_warning', tourist: tourist.full_name) }
 
 %fieldset.form_column.form_column-small
   .form_block

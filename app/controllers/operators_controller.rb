@@ -2,6 +2,8 @@
 class OperatorsController < ApplicationController
   load_and_authorize_resource
 
+  before_filter :set_last_search, :only => :index
+
   def index
     @operators =
       if search_or_sort?
@@ -56,4 +58,28 @@ class OperatorsController < ApplicationController
     @operator.destroy
     redirect_to operators_path, :notice => t('operators.messages.destroyed')
   end
+
+  private
+
+    def search_params
+      return @search_params if @search_params
+      @search_params = {}
+      exluded_params = [:controller, :action, :potential]
+      params.each do |k, v|
+        @search_params[k] = v unless exluded_params.include?(k.to_sym) || v.blank?
+      end
+      @search_params
+    end
+
+    def set_last_search
+      session_key = :operators_last_search
+      if params[:unset_filters]
+        session[session_key] = nil
+      elsif search_or_sort?
+        session[session_key] = !search_params.empty? ? search_params : nil;
+      elsif session[session_key].present?
+        params.reverse_merge!(session[session_key])
+      end
+    end
+
 end

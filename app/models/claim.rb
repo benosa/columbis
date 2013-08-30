@@ -66,7 +66,8 @@ class Claim < ActiveRecord::Base
 
   accepts_nested_attributes_for :flights, :reject_if => :all_blank, :allow_destroy => true
 
-  validates_presence_of :user_id, :check_date, :arrival_date, :tourist_stat
+  validates_presence_of :user_id, :office_id, :check_date, :arrival_date, :tourist_stat
+  validates_presence_of :operator, :if => Proc.new { |claim| claim.payments_out && claim.payments_out.count > 0 }
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
   #                       :airport_back,
@@ -799,7 +800,7 @@ class Claim < ActiveRecord::Base
     end
 
     def check_operator_correctness(operator_param)
-      errors.add(:operator_id, :is_selected_from_existing) if operator.nil? && operator_param.present?
+      errors.add(:operator, :is_selected_from_existing) if operator.nil? && operator_param.present?
     end
 
     def check_country_correctness(country_name)

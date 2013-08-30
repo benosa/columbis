@@ -1,13 +1,16 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel tourist edit_operator' }
 
-- title t('.new_tourist')
+- title !@tourist.potential? ? t('.new_tourist') : t('.new_client')
 
-= form_for @tourist do |form|
+= form_for @tourist, url: !@tourist.potential? ? tourists_path : tourists_path(potential: 1) do |form|
   - @form_id = form.options[:html][:id]
-  = render :partial => 'form', :locals => { :f => form }
+  = render :partial => !@tourist.potential? ? 'form' : 'form_potential', :locals => { :f => form }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
-  = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'
+  - unless @tourist.potential?
+    = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'
+  - else
+    = link_to t('.list_of_clients'), tourists_path(potential: 1), :class => 'list_operator'

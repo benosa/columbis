@@ -48,9 +48,6 @@
     //   border-right: none;
     // }
     p, span { margin: 0; }
-    // temporary solution for Mistral
-    p, span { color: #000; }
-    border: 1px #333 solid;
   }
   th {
     min-width: 36px;
@@ -86,18 +83,11 @@
         background: url(/assets/new_design/images/sort_active_desc.gif) right center no-repeat;
       }
     }
-    // temporary solution for Mistral
-    p, span { color: #000; }
-    border: 1px #666 solid;
-    &:first-child, &:last-child { border: 1px #666 solid; }
   }
 
-  th.purple_box a { padding-top: 15px; color: #000; } // temporary
+  th.purple_box a { padding-top: 15px; } // temporary
 
-  // .even td, .odd td { background: #F5F5F5; } // #FCFCFC gray background used only for canceled claims
-
-  // Temporary solution for Mistral
-  .even td, .odd td { background: #BDE0FA; }
+  .even td, .odd td { background: #F5F5F5; } // #FCFCFC gray background used only for canceled claims
 
   // Оld coloring for claims
   tbody {
@@ -124,8 +114,7 @@
 
     .blue_back, .all_done, .departed {
       // background-color: #bde0fa !important;
-      // background-color: #F5F5F5 !important; // temporary solution, in this meaning blue_back is just clear cell
-      background-color: #BDE0FA !important; // Temporary solution for Mistral
+      background-color: #F5F5F5 !important; // temporary solution, in this meaning blue_back is just clear cell
       span { color: black !important; }
     }
 
@@ -136,16 +125,16 @@
   }
 
   tr.total {
-    td { background: #E5F5FE !important; } // #bde0fa
+    td { background: #bde0fa !important; }
     .description { text-align: center; }
   }
 
   tr.row.highlight {
-    td { background-color: #E5F5FE; // #bde0fa;
-      &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #E5F5FE !important; }
+    td { background-color: #bde0fa;
+      &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #bde0fa !important; }
       &.buh_col.red_back { background-color: #ed2222 !important; }
     }
-    &.gray_back td { background-color: #E5F5FE !important; }
+    &.gray_back td { background-color: #bde0fa !important; }
   }
 }
 
@@ -308,8 +297,7 @@ option {
   .wrapper, .claims, .reservations_wrapper { overflow: visible; }
   // .claims .reservations { margin-bottom: 171px; }
 
-  // .buh_col { background: #FFFFFF !important; } // #FCFFD5
-  .buh_col { background: #BDE0FA !important; } // temporary solution for Mistral
+  .buh_col { background: #FFFFFF !important; } // #FCFFD5
   .thick_border { border-left: 2px solid #999; }
 
   .claims_tooltip {
@@ -329,6 +317,38 @@ option {
       color: #222;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
     }
+  }
+}
+
+// Temporary solution for Mistral company
+.main_page.mistral-company {
+  .claims .reservations {
+    th {
+      p, span { color: #000; }
+      border: 1px #666 solid;
+      &:first-child, &:last-child { border: 1px #666 solid; }
+      &.purple_box a { color: #000; }
+    }
+    td {
+      p, span { color: #000; }
+      border: 1px #333 solid;
+      &.buh_col { background: #BDE0FA !important; }
+    }
+    tr {
+      &.even, &.odd {
+        td { background: #BDE0FA; }
+      }
+      &.total {
+        td { background: #E5F5FE !important; }
+      }
+      &.row.highlight {
+        td { background-color: #E5F5FE;
+          &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #E5F5FE !important; }
+        }
+        &.gray_back td { background-color: #E5F5FE !important; }
+      }
+    }
+    .blue_back, .all_done, .departed { background-color: #BDE0FA !important; }
   }
 }
 

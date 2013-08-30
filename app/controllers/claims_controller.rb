@@ -134,6 +134,25 @@ class ClaimsController < ApplicationController
       render :json => {
         :message => I18n.t('claims.messages.locked')
       }
+    else
+      render :json => {
+        :locked => @claim.locked_by
+      }
+    end
+  end
+
+  def unlock
+    authorize! :update, @claim
+    if (@claim.locked? && @claim.locked_by == current_user.id)
+      @claim.unlock
+      @claim.save
+      render :json => {
+        :unlocked => 1
+      }
+    else
+      render :json => {
+        :wrong_user => 1
+      }
     end
   end
 

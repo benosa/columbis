@@ -1057,19 +1057,27 @@ $(function() {
     }
   });
 
-  $('.edit_claim').on('change', 'input', function() {
-    if ($('.edit_claim').data('changed') != true) {
+  $('.edit_claim').on('change autocompleteselect', ':input', function() {
+    if ($('.edit_claim').data('changed') != true && !$('.edit_claim').data('locked')) {
       $.ajax({
          url: $('.edit_claim').data('lockpath'),
          success: function(data) {
-           $('#content .top h1').append(' ' + data.message);
-           $('.edit_claim').data('changed', true);
+           if (data.message) {
+             setTimeout(function(){
+                $('.edit_claim').data('changed', false);
+             }, 174000);
+             if ($('#content .top h1').text().indexOf(data.message) == -1) {
+               $('#content .top h1').append(' ' + data.message);
+             }
+             $('.edit_claim').data('changed', true);
+           } else if(data.locked) {
+             $('.edit_claim').data('locked', data.locked);
+           }
+
          }
       });
     }
   });
-
-  $('.edit_claim').data('changed', true)
 
   $('a.save').mouseup(function(){
     $('.edit_claim').data('changed', false)
@@ -1077,15 +1085,17 @@ $(function() {
 
   $(window).bind('beforeunload', function() {
       if ($('.edit_claim').data('changed')) {
-       return 'Внесены изменения, вы уверены, что хотите отказаться?';
+        return 'Внесены изменения, вы уверены, что хотите отказаться?';
       }
    });
 
-  // $(window).unload(function() {
-  //     if ($('.edit_claim').data('changed')) {
-  //      alert ('ololo');
-  //     }
-  //  });
+  $(window).unload(function() {
+      if ($('.edit_claim').data('changed')) {
+        $.ajax({
+          url: $('.edit_claim').data('unlockpath'),
+        });
+      }
+   });
 
   // Window scroll event
   $(window).scroll(function() {

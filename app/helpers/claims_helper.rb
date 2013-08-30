@@ -284,7 +284,11 @@ module ClaimsHelper
   end
 
   def claim_form_data(claim)
-    data = { data: { lockpath: lock_claims_path } }
+    data = { data: { lockpath: lock_claims_path, unlockpath: unlock_claims_path } }
+    if claim.locked?
+      data[:data][:locked] = claim.locked_by
+    end
+    data
   end
 
 

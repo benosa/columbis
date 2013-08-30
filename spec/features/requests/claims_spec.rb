@@ -126,6 +126,12 @@ describe "Claim:", js: true do
         page.should have_selector('a.id_link', :text => '321123')
       end
     end
+
+    describe "Lock block" do
+      before do
+        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+      end
+    end
   end
 
 end

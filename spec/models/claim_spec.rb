@@ -50,4 +50,21 @@ describe Claim do
     end
     it { @claim.num.should == 2 }
   end
+
+  describe ".locked" do
+    context "when locked" do
+      before do
+        @claim = FactoryGirl.create(:claim, locked_by: 1, locked_at: Time.zone.now)
+      end
+      it { @claim.locked?.should == true }
+    end
+    context "when not locked" do
+      before do
+        @claim = FactoryGirl.create(:claim, locked_by: 1, locked_at: Time.zone.now - 31.minutes)
+        @claim2 = FactoryGirl.create(:claim, locked_by: 0, locked_at: Time.zone.now)
+      end
+      it { @claim.locked?.should == false }
+      it { @claim2.locked?.should == false }
+    end
+  end
 end

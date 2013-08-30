@@ -262,7 +262,7 @@ class Claim < ActiveRecord::Base
   end
 
   def locked?
-    self.locked_by.to_i != 0
+    self.locked_by.to_i != 0 && Time.zone.now - self.locked_at < 30.minutes
   end
 
   def lock(user_id)

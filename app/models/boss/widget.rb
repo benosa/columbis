@@ -5,14 +5,25 @@ module Boss
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table leader].freeze
     NAMES = %w[claim income normalcheck normalprice margin tourists promotion].freeze
-    PERIODS = %w[day week month].freeze
+    PERIODS = %w[month day week].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
+
+    attr_accessible :period
 
     belongs_to :user
     belongs_to :company
 
     serialize :settings, Hash
+
+    def period
+      @period ||= settings[:period]
+    end
+
+    def period=(value)
+      @period = value
+      settings.merge!({:period => @period})
+    end
 
     def self.create_default_widgets(user, company)
       widgets = []

@@ -201,6 +201,32 @@ $(function(){
     }
   });
 
+  // Settings menu on widget
+  $('.widget-menu ul.settings-menu').dialog({
+    autoOpen: false,
+    modal: false,
+    draggable: false,
+    resizable: false,
+    dialogClass: 'settings-menu-dialog',
+    open: function() {
+      $(':input[data-param]', this).each(function() {
+        var $t = $(this);
+        $t.data('current-value', $t.val());
+      });
+      $('.ik_select select', this).ikSelect('redraw');
+    }
+  });
+
+  // Settings menu on widget open button
+  $('.widget-menu a.settings').on('click', function(e) {
+    e.preventDefault();
+    var widget_id = $(e.target).attr('id').split('_');
+    var id = widget_id[widget_id.length-1];
+    $("ul#settings-menu-" + id)
+      .dialog('option', 'position', { my: 'right top', at: 'right bottom', of: this })
+      .dialog('open');
+  });
+
   // Settings menu open button
   $('#settings').on('click', function(e) {
     e.preventDefault();

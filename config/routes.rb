@@ -89,6 +89,7 @@ Tourism::Application.routes.draw do
     match 'reports/:action' => 'reports#:action', :as => :reports
     match '/' => 'base#index', :as => :index
     post '/sort_widget' => 'base#sort_widget', :as => :sort_widget
+    put '/save_widget_settings' => 'base#save_widget_settings', :as => :save_widget_settings
   end
 
   scope 'dashboard' do

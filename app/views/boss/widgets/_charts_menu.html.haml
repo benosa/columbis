@@ -1,6 +1,9 @@
-%ul.dropdown-menu
+%ul.settings-menu{id: "settings-menu-#{widget.id}"}
   %li
-    - period = !params['period'].blank? ? params['period'] : 'month'
-    - options = %w(day week month).map{ |p| [t("report.period_options.#{p}"), p] }
-    = label_tag :period, t('boss.active_record.widget.charts.period')
-    = select_tag :period, options_for_select(options, period), class: 'period', data: { param: 'period', filter: 1, default: 'month' }
+    = form_for widget, :remote => true, url:  boss_save_widget_settings_path(widget), html: {method: "put"} do |f|
+      - options = Boss::Widget::PERIODS.map{ |p| [t("report.period_options.#{p}"), p] }
+      = f.label :period, t('boss.active_record.widget.charts.period')
+      = f.select :period, options_for_select(options), { prompt: '' }, :class => 'standart_select'
+      = f.submit "I working here"
+      %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
+      %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

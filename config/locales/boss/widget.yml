@@ -2,6 +2,8 @@ ru:
   boss:
     active_record:
       widget:
+        menu:
+          settings: 'Настройки'
         factors:
           claims: 'Брони'
           incomes: 'Доход'

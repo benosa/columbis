@@ -2,7 +2,7 @@
   -#.widget-btn.widget-btn-type
     -#%a{ href: "#"} Тип
   .widget-btn.widget-btn-settings.btn-group
-    %a{ href: "#", "data-toggle" => "dropdown"} Настройки
+    = link_to t('boss.active_record.widget.menu.settings'), '#', id: "settings_#{widget.id}", class: "settings", "data-toggle" => "dropdown"
     - case widget.widget_type
     - when 'factor'
     - when 'chart'

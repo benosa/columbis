@@ -13,7 +13,6 @@ FactoryGirl.define do
     departure_date { 15.days.since }
     hotel "Ekaterina 5*"
     airline 'test'
-    tourist_stat 'Рекомендации'
 
     tour_price_currency 'rur'
     visa_price_currency 'rur'
@@ -21,6 +20,12 @@ FactoryGirl.define do
     additional_insurance_price_currency 'rur'
     fuel_tax_price_currency 'rur'
     operator_price_currency 'rur'
+
+    tourist_stat 'Рекомендации'
+    # Need to create one dropdown_value, because of tourist_stat is required and must be in select box in claim form
+    after(:create) do |claim|
+      FactoryGirl.create(:dropdown_value, company: claim.company, list: 'tourist_stat', value: 'Рекомендации')
+    end
   end
 
   factory :clientbase_claim, parent: :claim do

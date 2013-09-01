@@ -1,5 +1,5 @@
-require 'spec_helper'
+# require 'spec_helper'
 
-describe SmsGroupsController do
+# describe SmsGroupsController do
 
-end
+# end

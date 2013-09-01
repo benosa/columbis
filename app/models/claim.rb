@@ -57,7 +57,7 @@ class Claim < ActiveRecord::Base
   has_many :payments_in, :class_name => 'Payment', :conditions => { :recipient_type => 'Company' }, :order => 'payments.id', :autosave => false
   has_many :payments_out, :class_name => 'Payment', :conditions => { :payer_type => 'Company' }, :order => 'payments.id', :autosave => false
 
-  has_many :flights, :dependent => :destroy, :order => 'created_at ASC'
+  has_many :flights, :dependent => :destroy, :order => 'flights.created_at, flights.id'
 
   # accepts_nested_attributes_for :applicant, :reject_if => :empty_tourist_hash?
   # accepts_nested_attributes_for :dependents, :reject_if => :empty_tourist_hash?

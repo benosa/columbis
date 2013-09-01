@@ -1,5 +1,5 @@
-require 'spec_helper'
+# require 'spec_helper'
 
-describe SmsSendingsController do
+# describe SmsSendingsController do
 
-end
+# end

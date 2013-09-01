@@ -49,16 +49,25 @@ describe ClaimsController do
   end
 
   describe 'POST create' do
-    def do_claim
-      post :create, claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14,
+    def do_claim(extra_params = {})
+      params = {
+        claim: { user_id: @manager.id, check_date: Time.zone.now, reservation_date: Time.zone.now + 14,
         office_id: @office.id, applicant_attributes: @applicant.attributes.merge(address:  @applicant.address.joint_address),
         operator_id: @operator.id, arrival_date: Time.zone.now + 14, operator_price_currency: "rur", tour_price_currency: "rur",
-        flights_attributes: [attributes_for(:flight), attributes_for(:flight)] }
+        flights_attributes: [attributes_for(:flight), attributes_for(:flight)], tourist_stat: 'some category' }
+      }
+      params.merge!(extra_params) unless extra_params.empty?
+      post :create, params
     end
 
-    it 'should redirect to claim edit' do
+    it 'should redirect to claim list' do
+      do_claim(commit: I18n.t('save_and_close'))
+      response.should redirect_to claims_path
+    end
+
+    it 'should redirect to claim form' do
       do_claim
-      response.should redirect_to(edit_claim_path(Claim.last.id))
+      response.should redirect_to edit_claim_path(Claim.last.id)
     end
 
     it 'should change claim count up by 1' do

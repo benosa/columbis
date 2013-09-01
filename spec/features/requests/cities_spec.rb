@@ -21,7 +21,7 @@ describe "City:", js: true do
 
       before do
         visit cities_path
-        @cities_for_sort = @cities.map{ |city| {:name => city.name, :country_name => city.country.name } }
+        @cities_for_sort = @cities.map{ |city| {id: city.id, name: city.name, country_name: city.country.name } }
       end
 
       def take_elements(column_number)
@@ -66,9 +66,9 @@ describe "City:", js: true do
         fill_in('filter', with: filter)
         @cities_for_sort.each do |city|
           if city[:name].index(filter) or city[:country_name].index(filter)
-            page.has_content?(city[:name]).should be_true
+            page.find("#city_#{city[:id]}").has_content?(city[:name]).should be_true
           else
-            page.has_no_content?(city[:name]).should == true
+            page.has_no_selector?("#city_#{city[:id]}").should be_true
           end
         end
       end

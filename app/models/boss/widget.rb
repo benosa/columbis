@@ -52,15 +52,15 @@ module Boss
       widgets << create_widget(user, company, 9,
         'boss.active_record.widget.table.tourists', 'large', 'table', 'tourists')
       widgets << create_widget(user, company, 10,
-        'boss.active_record.widget.leader.promotion', 'small', 'leader', 'promotion')
+        'boss.active_record.widget.leader.promotion', 'small', 'leader', 'promotion', {:period => 'month'})
       widgets << create_widget(user, company, 11,
-        'boss.active_record.widget.leader.direction', 'small', 'leader', 'direction')
+        'boss.active_record.widget.leader.direction', 'small', 'leader', 'direction', {:period => 'month'})
       widgets << create_widget(user, company, 12,
-        'boss.active_record.widget.leader.hotelstars', 'small', 'leader', 'hotelstars')
+        'boss.active_record.widget.leader.hotelstars', 'small', 'leader', 'hotelstars', {:period => 'month'})
       widgets << create_widget(user, company, 13,
-        'boss.active_record.widget.leader.officesincome', 'small', 'leader', 'officesincome')
+        'boss.active_record.widget.leader.officesincome', 'small', 'leader', 'officesincome', {:period => 'month'})
       widgets << create_widget(user, company, 14,
-        'boss.active_record.widget.leader.managersincome', 'small', 'leader', 'managersincome')
+        'boss.active_record.widget.leader.managersincome', 'small', 'leader', 'managersincome', {:period => 'month'})
     end
 
     def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -127,33 +127,23 @@ module Boss
     end
 
     def promotion_leader_data
-      leader_data(PromotionChannelReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
-        I18n.t('boss.active_record.widget.leader.promotion_text'))
+      leader_data(PromotionChannelReport, 'count')
     end
 
     def direction_leader_data
-      leader_data(DirectionReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'items',
-        I18n.t('boss.active_record.widget.leader.direction_text'))
+      leader_data(DirectionReport, 'items')
     end
 
     def hotelstars_leader_data
-      leader_data(HotelStarsReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
-        I18n.t('boss.active_record.widget.leader.hotelstars_text'))
+      leader_data(HotelStarsReport, 'count')
     end
 
     def officesincome_leader_data
-      leader_data(OfficesIncomeReport, (Time.zone.now.to_date-1.days),
-        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
-        I18n.t('boss.active_record.widget.leader.officesincome_text'))
+      leader_data(OfficesIncomeReport, 'amount')
     end
 
     def managersincome_leader_data
-      leader_data(ManagersIncomeReport, (Time.zone.now.to_date-1.days),
-        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
-        I18n.t('boss.active_record.widget.leader.managersincome_text'))
+      leader_data(ManagersIncomeReport, 'amount')
     end
 
     def factor_data(report_class, method_name, total_title, total_data_prefix, total_text, is_f = false, round = 2)
@@ -205,25 +195,45 @@ module Boss
       hash
     end
 
-    def leader_data(report_class, start_date, middle_date, end_date, column_name, text)
+    def leader_data(report_class, column_name)
+      case period
+      when 'day'
+        start_date = Time.zone.now.to_date-1.days
+        middle_date = Time.zone.now.to_date-1.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_day')
+      when 'week'
+        start_date = Time.zone.now.to_date-13.days
+        middle_date = Time.zone.now.to_date-7.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_week')
+      else
+        start_date = Time.zone.now.to_date-61.days
+        middle_date = Time.zone.now.to_date-31.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_month')
+      end
+
       report = report_class.new({
-        period: 'day',
         company: company,
         start_date: start_date,
         end_date: middle_date,
-        check_date: true
+        check_date: true,
+        no_group_date: true
       }).prepare
 
       data_previous = report.try(column_name.to_sym).data
-        .sort{|x,y| y[column_name] <=> x[column_name]}.first(4)
         .map{|d| {:name => d['name'], :total => d[column_name]}}
 
       report = report_class.new({
-        period: 'day',
         company: company,
         start_date: middle_date+1.days,
         end_date: end_date,
-        check_date: true
+        check_date: true,
+        no_group_date: true
       }).prepare
 
       data_now = report.try(column_name.to_sym).data

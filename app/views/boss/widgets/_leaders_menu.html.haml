@@ -1,10 +1,10 @@
-.settings-menu{id: "settings-menu-#{widget.id}"}
+.settings-menu{id: "settings-menu-#{widget.id}", title: t('boss.active_record.widget.menu.settings')}
   = form_for widget, :remote => true, url:  boss_save_widget_settings_path(widget), html: {method: "post"} do |f|
     %ul
       %li
         - options = Boss::Widget::PERIODS.map{ |p| [t("report.period_options.#{p}"), p] }
         = f.label :period, t('boss.active_record.widget.leader.period')
-        = f.select :period, options_for_select(options), { prompt: '' }
+        = f.select :period, options_for_select(options, widget.period), { prompt: '' }
       %li
         .settings-menu-buttons
           = f.submit t('save'), :class => "btn btn-small btn-primary", :role => "button"

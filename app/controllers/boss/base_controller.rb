@@ -28,11 +28,9 @@ module Boss
 
     def save_widget_settings
       if request.xhr?
-        widget = Widget.find(params["format"])
-        widget.update_attributes(params["boss_widget"])
-        respond_to do |format|
-          format.js { render }
-        end
+        @widget = Widget.find(params["format"])
+        @widget.update_attributes params["boss_widget"]
+        render 'boss/save_widget_settings'
       else
         head :bad_request
         render nothing: true

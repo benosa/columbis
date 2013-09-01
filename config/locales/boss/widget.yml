@@ -4,7 +4,7 @@ ru:
       widget:
         menu:
           settings: 'Настройки'
-        factors:
+        factor:
           claims: 'Брони'
           incomes: 'Доход'
           normalcheck: 'Средний чек'
@@ -21,7 +21,7 @@ ru:
           income_text: '(по данным подтвержденных оплат активных и завершенныx броней)'
           normalcheck_text: '(данные по активным и завершенным броням)'
           margin_text: '(данные по активным и завершенным броням)'
-        charts:
+        chart:
           income_title_day: 'Доход (динамика по дням)'
           income_title_week: 'Доход (динамика по неделям)'
           income_title_month: 'Доход (динамика по месяцам)'
@@ -37,14 +37,21 @@ ru:
           claim_number: 'шт.'
           percent: '%'
           period: 'Период'
-        tables:
+          view: 'Размер'
+          views:
+            small: 'маленький'
+            small2: 'удлинённый маленький'
+            medium: 'средний'
+            large: 'большой'
+        table:
           tourists: 'Список последних десяти зарегестрированных туристов'
           tourists_created_at: 'Зарегестрирован'
           full_name: 'Полное имя'
           phone_number: 'Телефон'
           email: 'Почта'
           address: 'Адрес'
-        leaders:
+        leader:
+          period: 'Период'
           promotion: 'Каналы продвижения'
           promotion_text: '(4 лучших канала продвижения за последнии 31 день)'
           direction: 'Направление'

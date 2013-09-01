@@ -1,1 +1,3 @@
-$("#work_at_form").html("<%= escape_javascript("render('boss/index')") %>")
+$(".widget-area.clearfix [position='<%= @widget.id %>']").replaceWith("<%= j(render partial: 'boss/widgets/widget', locals: { widget: @widget }) %>");
+Charts.init();
+bind_settings_dialog($('.widget-menu .settings-menu'));

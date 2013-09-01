@@ -185,46 +185,24 @@ $(function(){
     listRefresh(data);
   });
 
-  // Settings menu
-  $('#settings-menu').dialog({
-    autoOpen: false,
-    modal: false,
-    draggable: false,
-    resizable: false,
-    dialogClass: 'settings-menu-dialog',
-    open: function() {
-      $(':input[data-param]', this).each(function() {
-        var $t = $(this);
-        $t.data('current-value', $t.val());
-      });
-      $('.ik_select select', this).ikSelect('redraw');
-    }
-  });
-
-  // Settings menu on widget
-  $('.widget-menu ul.settings-menu').dialog({
-    autoOpen: false,
-    modal: false,
-    draggable: false,
-    resizable: false,
-    dialogClass: 'settings-menu-dialog',
-    open: function() {
-      $(':input[data-param]', this).each(function() {
-        var $t = $(this);
-        $t.data('current-value', $t.val());
-      });
-      $('.ik_select select', this).ikSelect('redraw');
-    }
-  });
+  bind_settings_dialog($('.widget-menu .settings-menu'));
+  bind_settings_dialog($('#settings-menu'));
 
   // Settings menu on widget open button
-  $('.widget-menu a.settings').on('click', function(e) {
+  $('.widget-menu a.settings').live('click', function(e) {
     e.preventDefault();
-    var widget_id = $(e.target).attr('id').split('_');
-    var id = widget_id[widget_id.length-1];
-    $("ul#settings-menu-" + id)
+    var widget_id = $(e.target).attr('id').split('_'),
+        id = widget_id[widget_id.length-1];
+    $("#settings-menu-" + id)
       .dialog('option', 'position', { my: 'right top', at: 'right bottom', of: this })
       .dialog('open');
+  });
+
+  // Settings menu on widget save and close button
+  $('form.edit_boss_widget .settings-menu-buttons input').live('click', function(e) {
+    var widget_id = $(e.target).closest('form.edit_boss_widget').attr("id").split('_'),
+        id = widget_id[widget_id.length-1];
+    $("#settings-menu-" + id).dialog('close');
   });
 
   // Settings menu open button
@@ -631,4 +609,21 @@ function set_waypoints(selector, options) {
 
 function set_content_bottom_padding() {
   $('#container').css('padding-bottom', $('#footer').outerHeight());
+}
+
+function bind_settings_dialog(elements) {
+  elements.dialog({
+    autoOpen: false,
+    modal: false,
+    draggable: false,
+    resizable: false,
+    dialogClass: 'settings-menu-dialog',
+    open: function() {
+      $(':input[data-param]', this).each(function() {
+        var $t = $(this);
+        $t.data('current-value', $t.val());
+      });
+      $('.ik_select select', this).ikSelect('redraw');
+    }
+  });
 }

@@ -3,12 +3,8 @@
     %ul
       %li
         - options = Boss::Widget::PERIODS.map{ |p| [t("report.period_options.#{p}"), p] }
-        = f.label :period, t('boss.active_record.widget.chart.period')
+        = f.label :period, t('boss.active_record.widget.leader.period')
         = f.select :period, options_for_select(options), { prompt: '' }
-      %li
-        - options = Boss::Widget::VIEWS.map{ |p| [t("boss.active_record.widget.chart.views.#{p}"), p] }
-        = f.label :view, t('boss.active_record.widget.chart.view')
-        = f.select :view, options_for_select(options), { prompt: '' }
       %li
         .settings-menu-buttons
           = f.submit t('save'), :class => "btn btn-small btn-primary", :role => "button"

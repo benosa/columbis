@@ -1,6 +1,6 @@
 .widget-stats
   - if data == [[],[],[],[]]
-    %p= t('boss.active_record.widget.leaders.no_data')
+    %p= t('boss.active_record.widget.leader.no_data')
   - else
     - data.count.downto(1) do |i|
       - col = data[i-1]

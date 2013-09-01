@@ -26,5 +26,16 @@ module Boss
       render nothing: true
     end
 
+    def save_widget_settings
+      if request.xhr?
+        @widget = Widget.find(params["format"])
+        @widget.update_attributes params["boss_widget"]
+        render 'boss/save_widget_settings'
+      else
+        head :bad_request
+        render nothing: true
+      end
+    end
+
   end
 end

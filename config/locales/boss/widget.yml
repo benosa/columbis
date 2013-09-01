@@ -2,7 +2,9 @@ ru:
   boss:
     active_record:
       widget:
-        factors:
+        menu:
+          settings: 'Настройки'
+        factor:
           claims: 'Брони'
           incomes: 'Доход'
           normalcheck: 'Средний чек'
@@ -19,7 +21,7 @@ ru:
           income_text: '(по данным подтвержденных оплат активных и завершенныx броней)'
           normalcheck_text: '(данные по активным и завершенным броням)'
           margin_text: '(данные по активным и завершенным броням)'
-        charts:
+        chart:
           income_title_day: 'Доход (динамика по дням)'
           income_title_week: 'Доход (динамика по неделям)'
           income_title_month: 'Доход (динамика по месяцам)'
@@ -35,22 +37,32 @@ ru:
           claim_number: 'шт.'
           percent: '%'
           period: 'Период'
-        tables:
+          view: 'Размер'
+          views:
+            small: 'Маленький'
+            small2: 'Удлинённый маленький'
+            medium: 'Средний'
+            large: 'Большой'
+        table:
           tourists: 'Список последних десяти зарегестрированных туристов'
           tourists_created_at: 'Зарегестрирован'
           full_name: 'Полное имя'
           phone_number: 'Телефон'
           email: 'Почта'
           address: 'Адрес'
-        leaders:
+        leader:
+          period: 'Период'
           promotion: 'Каналы продвижения'
-          promotion_text: '(4 лучших канала продвижения за последнии 31 день)'
+          promotion_text: '(4 лучших канала продвижения '
           direction: 'Направление'
-          direction_text: '(4 наиболее популярных направленя за последнии 31 день)'
+          direction_text: '(4 наиболее популярных направления '
           hotelstars: 'Отели'
-          hotelstars_text: '(4 наиболее популярные звёздности отелей за последнии 31 день)'
+          hotelstars_text: '(4 наиболее популярные звёздности отелей '
           officesincome: 'Лучшие офисы'
-          officesincome_text: '(4 наиболее производительных офиса за сегодняшний день)'
+          officesincome_text: '(4 наиболее производительных офиса '
           managersincome: 'Лучшие менеджеры'
-          managersincome_text: '(4 наиболее производительных менеджера за сегодняшний день)'
+          managersincome_text: '(4 наиболее производительных менеджера '
           no_data: 'Нет данных за выбранный период'
+          by_month: 'за последнии 31 день)'
+          by_week: 'за последнии 7 дней)'
+          by_day: 'за сегодняшний день)'

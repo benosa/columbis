@@ -5,6 +5,7 @@ module Boss
     available_results :amount
     attribute :period, :default => 'month'
     attribute :check_date, :default => false
+    attribute :no_group_date, :default => false
     attr_accessible :period, :check_date
 
     def initialize(options = {})
@@ -28,15 +29,19 @@ module Boss
     end
 
     def prepare(options = {})
-      case period
-        when 'day'
-          @results[:amount]  = build_result(query: days_query)
-        when 'week'
-          @results[:amount]  = build_result(query: weeks_query)
-        when 'year'
-          @results[:amount]  = build_result(query: years_query)
-        else
-          @results[:amount]  = build_result(query: months_query)
+      if no_group_date
+        @results[:amount]  = build_result(query: base_query, typecast: {amount: :to_f})
+      else
+        case period
+          when 'day'
+            @results[:amount]  = build_result(query: days_query, typecast: {amount: :to_f})
+          when 'week'
+            @results[:amount]  = build_result(query: weeks_query, typecast: {amount: :to_f})
+          when 'year'
+            @results[:amount]  = build_result(query: years_query, typecast: {amount: :to_f})
+          else
+            @results[:amount]  = build_result(query: months_query, typecast: {amount: :to_f})
+        end
       end
       self
     end

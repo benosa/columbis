@@ -5,48 +5,62 @@ module Boss
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table leader].freeze
     NAMES = %w[claim income normalcheck normalprice margin tourists promotion].freeze
-    PERIODS = %w[day week month].freeze
+    PERIODS = %w[month day week].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
+
+    attr_accessible :period
 
     belongs_to :user
     belongs_to :company
 
     serialize :settings, Hash
 
+    def period
+      @period ||= settings[:period]
+    end
+
+    def period=(value)
+      @period = value
+      if self.widget_type == 'chart'
+        self.title = "boss.active_record.widget.#{self.widget_type}.#{self.name}_title_#{value}"
+      end
+      self.settings.merge!({:period => @period})
+    end
+
     def self.create_default_widgets(user, company)
       widgets = []
       widgets << create_widget(user, company, 1,
-        'boss.active_record.widget.factors.claims', 'small', 'factor', 'claim')
+        'boss.active_record.widget.factor.claims', 'small', 'factor', 'claim')
       widgets << create_widget(user, company, 2,
-        'boss.active_record.widget.factors.incomes', 'small', 'factor', 'income')
+        'boss.active_record.widget.factor.incomes', 'small', 'factor', 'income')
       widgets << create_widget(user, company, 3,
-        'boss.active_record.widget.factors.normalcheck', 'small', 'factor', 'normalcheck')
+        'boss.active_record.widget.factor.normalcheck', 'small', 'factor', 'normalcheck')
       widgets << create_widget(user, company, 4,
-        'boss.active_record.widget.factors.normalprice', 'small', 'factor', 'normalprice')
+        'boss.active_record.widget.factor.normalprice', 'small', 'factor', 'normalprice')
       widgets << create_widget(user, company, 5,
-        'boss.active_record.widget.factors.margin', 'small', 'factor', 'margin')
+        'boss.active_record.widget.factor.margin', 'small', 'factor', 'margin')
       widgets << create_widget(user, company, 6,
-        'boss.active_record.widget.charts.income_title_day', 'medium', 'chart', 'income',
+        'boss.active_record.widget.chart.income_title_day', 'medium', 'chart', 'income',
         {:period => 'day', :yAxis_text => 'RUR'})
       widgets << create_widget(user, company, 7,
-        'boss.active_record.widget.charts.margin_title_week', 'medium', 'chart', 'margin',
-        {:period => 'week', :yAxis_text => 'boss.active_record.widget.charts.percent'})
+        'boss.active_record.widget.chart.margin_title_week', 'medium', 'chart', 'margin',
+        {:period => 'week', :yAxis_text => 'boss.active_record.widget.chart.percent'})
       widgets << create_widget(user, company, 8,
-        'boss.active_record.widget.charts.claim_title_month', 'medium', 'chart', 'claim',
-        {:period => 'month', :yAxis_text => 'boss.active_record.widget.charts.claim_number'})
+        'boss.active_record.widget.chart.claim_title_month', 'medium', 'chart', 'claim',
+        {:period => 'month', :yAxis_text => 'boss.active_record.widget.chart.claim_number'})
       widgets << create_widget(user, company, 9,
-        'boss.active_record.widget.tables.tourists', 'large', 'table', 'tourists')
+        'boss.active_record.widget.table.tourists', 'large', 'table', 'tourists')
       widgets << create_widget(user, company, 10,
-        'boss.active_record.widget.leaders.promotion', 'small', 'leader', 'promotion')
+        'boss.active_record.widget.leader.promotion', 'small', 'leader', 'promotion', {:period => 'month'})
       widgets << create_widget(user, company, 11,
-        'boss.active_record.widget.leaders.direction', 'small', 'leader', 'direction')
+        'boss.active_record.widget.leader.direction', 'small', 'leader', 'direction', {:period => 'month'})
       widgets << create_widget(user, company, 12,
-        'boss.active_record.widget.leaders.hotelstars', 'small', 'leader', 'hotelstars')
+        'boss.active_record.widget.leader.hotelstars', 'small', 'leader', 'hotelstars', {:period => 'month'})
       widgets << create_widget(user, company, 13,
-        'boss.active_record.widget.leaders.officesincome', 'small', 'leader', 'officesincome')
+        'boss.active_record.widget.leader.officesincome', 'small', 'leader', 'officesincome', {:period => 'month'})
       widgets << create_widget(user, company, 14,
-        'boss.active_record.widget.leaders.managersincome', 'small', 'leader', 'managersincome')
+        'boss.active_record.widget.leader.managersincome', 'small', 'leader', 'managersincome', {:period => 'month'})
     end
 
     def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})
@@ -64,44 +78,44 @@ module Boss
     private
 
     def claim_factor_data
-      factor_data(ClaimReport, "amount", I18n.t('boss.active_record.widget.factors.in_all'),
-        I18n.t('boss.active_record.widget.factors.claim_number'),
-        I18n.t('boss.active_record.widget.factors.claim_text'))
+      factor_data(ClaimReport, "amount", I18n.t('boss.active_record.widget.factor.in_all'),
+        I18n.t('boss.active_record.widget.factor.claim_number'),
+        I18n.t('boss.active_record.widget.factor.claim_text'))
     end
 
     def income_factor_data
-      factor_data(IncomeReport, "amount", I18n.t('boss.active_record.widget.factors.in_all'),
-        I18n.t('boss.active_record.widget.factors.payment_sum'),
-        I18n.t('boss.active_record.widget.factors.income_text'))
+      factor_data(IncomeReport, "amount", I18n.t('boss.active_record.widget.factor.in_all'),
+        I18n.t('boss.active_record.widget.factor.payment_sum'),
+        I18n.t('boss.active_record.widget.factor.income_text'))
     end
 
     def normalcheck_factor_data
-      factor_data(NormalCheckReport, "amount", I18n.t('boss.active_record.widget.factors.normal'),
-        I18n.t('boss.active_record.widget.factors.payment_sum'),
-        I18n.t('boss.active_record.widget.factors.normalcheck_text'))
+      factor_data(NormalCheckReport, "amount", I18n.t('boss.active_record.widget.factor.normal'),
+        I18n.t('boss.active_record.widget.factor.payment_sum'),
+        I18n.t('boss.active_record.widget.factor.normalcheck_text'))
     end
 
     def normalprice_factor_data
-      factor_data(NormalPriceReport, "amount", I18n.t('boss.active_record.widget.factors.normal'),
-        I18n.t('boss.active_record.widget.factors.payment_sum'),
-        I18n.t('boss.active_record.widget.factors.normalcheck_text'))
+      factor_data(NormalPriceReport, "amount", I18n.t('boss.active_record.widget.factor.normal'),
+        I18n.t('boss.active_record.widget.factor.payment_sum'),
+        I18n.t('boss.active_record.widget.factor.normalcheck_text'))
     end
 
     def margin_factor_data
-      factor_data(MarginReport, "percent", I18n.t('boss.active_record.widget.factors.normal'),
-        '%', I18n.t('boss.active_record.widget.factors.margin_text'), true)
+      factor_data(MarginReport, "percent", I18n.t('boss.active_record.widget.factor.normal'),
+        '%', I18n.t('boss.active_record.widget.factor.margin_text'), true)
     end
 
     def income_chart_data
-      chart_data(IncomeReport, I18n.t('boss.active_record.widget.charts.sum')).to_json
+      chart_data(IncomeReport, I18n.t('boss.active_record.widget.chart.sum')).to_json
     end
 
     def margin_chart_data
-      chart_data(MarginReport, I18n.t('boss.active_record.widget.charts.normal')).to_json
+      chart_data(MarginReport, I18n.t('boss.active_record.widget.chart.normal')).to_json
     end
 
     def claim_chart_data
-      chart_data(ClaimReport, I18n.t('boss.active_record.widget.charts.number')).to_json
+      chart_data(ClaimReport, I18n.t('boss.active_record.widget.chart.number')).to_json
     end
 
     def tourists_table_data
@@ -113,33 +127,23 @@ module Boss
     end
 
     def promotion_leader_data
-      leader_data(PromotionChannelReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
-        I18n.t('boss.active_record.widget.leaders.promotion_text'))
+      leader_data(PromotionChannelReport, 'count')
     end
 
     def direction_leader_data
-      leader_data(DirectionReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'items',
-        I18n.t('boss.active_record.widget.leaders.direction_text'))
+      leader_data(DirectionReport, 'items')
     end
 
     def hotelstars_leader_data
-      leader_data(HotelStarsReport, (Time.zone.now.to_date-61.days),
-        (Time.zone.now.to_date-31.days), Time.zone.now.to_date, 'count',
-        I18n.t('boss.active_record.widget.leaders.hotelstars_text'))
+      leader_data(HotelStarsReport, 'count')
     end
 
     def officesincome_leader_data
-      leader_data(OfficesIncomeReport, (Time.zone.now.to_date-1.days),
-        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
-        I18n.t('boss.active_record.widget.leaders.officesincome_text'))
+      leader_data(OfficesIncomeReport, 'amount')
     end
 
     def managersincome_leader_data
-      leader_data(ManagersIncomeReport, (Time.zone.now.to_date-1.days),
-        (Time.zone.now.to_date-1.days), Time.zone.now.to_date, 'amount',
-        I18n.t('boss.active_record.widget.leaders.managersincome_text'))
+      leader_data(ManagersIncomeReport, 'amount')
     end
 
     def factor_data(report_class, method_name, total_title, total_data_prefix, total_text, is_f = false, round = 2)
@@ -191,25 +195,45 @@ module Boss
       hash
     end
 
-    def leader_data(report_class, start_date, middle_date, end_date, column_name, text)
+    def leader_data(report_class, column_name)
+      case period
+      when 'day'
+        start_date = Time.zone.now.to_date-1.days
+        middle_date = Time.zone.now.to_date-1.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_day')
+      when 'week'
+        start_date = Time.zone.now.to_date-13.days
+        middle_date = Time.zone.now.to_date-7.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_week')
+      else
+        start_date = Time.zone.now.to_date-61.days
+        middle_date = Time.zone.now.to_date-31.days
+        end_date = Time.zone.now.to_date
+        text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
+          I18n.t('boss.active_record.widget.leader.by_month')
+      end
+
       report = report_class.new({
-        period: 'day',
         company: company,
         start_date: start_date,
         end_date: middle_date,
-        check_date: true
+        check_date: true,
+        no_group_date: true
       }).prepare
 
       data_previous = report.try(column_name.to_sym).data
-        .sort{|x,y| y[column_name] <=> x[column_name]}.first(4)
         .map{|d| {:name => d['name'], :total => d[column_name]}}
 
       report = report_class.new({
-        period: 'day',
         company: company,
         start_date: middle_date+1.days,
         end_date: end_date,
-        check_date: true
+        check_date: true,
+        no_group_date: true
       }).prepare
 
       data_now = report.try(column_name.to_sym).data
@@ -229,9 +253,9 @@ module Boss
       previous_month = get_by_date(data, is_mean, Time.zone.now.to_date-61.days, Time.zone.now.to_date-31.days)
       {
         data: [
-          [ I18n.t('boss.active_record.widget.factors.today'),
-            I18n.t('boss.active_record.widget.factors.week'),
-            I18n.t('boss.active_record.widget.factors.month')],
+          [ I18n.t('boss.active_record.widget.factor.today'),
+            I18n.t('boss.active_record.widget.factor.week'),
+            I18n.t('boss.active_record.widget.factor.month')],
           [commas(now_day.to_s), commas(now_week.to_s), commas(now_month.to_s)],
           [get_class(now_day, previous_day),
             get_class(now_week, previous_week),

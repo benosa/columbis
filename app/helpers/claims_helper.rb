@@ -269,7 +269,7 @@ module ClaimsHelper
       # Special operators must be on top
       list = list.all
       i = list.index{ |operator| !specific_operators.include?(operator.name) }
-      list.insert(i, Operator.new(id: '', name: '=' * 15)) if i > 0
+      list.insert(i, Operator.new(id: '', name: '=' * 15)) if i && i > 0
     end
 
     list

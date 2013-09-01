@@ -2,17 +2,17 @@
   %table#tourists.tourists.reservations.tour_operators
     %tr
       %th.full_name
-        %span= t('boss.active_record.widget.tables.full_name')
+        %span= t('boss.active_record.widget.table.full_name')
       %th.phone_number
-        %span= t('boss.active_record.widget.tables.phone_number')
+        %span= t('boss.active_record.widget.table.phone_number')
       %th.email
-        %span= t('boss.active_record.widget.tables.email')
+        %span= t('boss.active_record.widget.table.email')
       %th.address
-        %span= t('boss.active_record.widget.tables.address')
+        %span= t('boss.active_record.widget.table.address')
       %th.actions
         %span= t('actions')
       %th.actions
-        %span= t('boss.active_record.widget.tables.tourists_created_at')
+        %span= t('boss.active_record.widget.table.tourists_created_at')
     - for tourist in tourists
       %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
         %td

@@ -29,11 +29,11 @@ ru:
       send_now: Отправить сейчас
       date: 'Дата'
       time: 'Время'
-      
+
     edit:
       sms_sendings: 'SMS-рассылка'
       new_sms_sendings: 'Создать рассылку'
-      
+
     new:
       sms_sendings: 'SMS-рассылка'
       new_sms_sendings: 'Создать рассылку'

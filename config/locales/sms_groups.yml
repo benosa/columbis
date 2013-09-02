@@ -1,6 +1,9 @@
 ru:
   activerecord:
     attributes:
+      sms_group:
+        name: 'Название'
+        contact_count: 'Количество'
 
   sms_groups:
     index:
@@ -8,7 +11,7 @@ ru:
 
     show:
       sms_groups: 'Контакты и группы'
-    
+
     navigation:
       sms_sendings: 'SMS-рассылка'
       contacts_and_groups: 'Контакты и группы'
@@ -16,7 +19,7 @@ ru:
       add_balance: 'Пополнить баланс'
       statistics: 'Статистика'
       settings: 'Настройки'
-    
+
     list:
       phone_number: 'Телефон'
       first_name: 'Имя'
@@ -26,7 +29,7 @@ ru:
       date_of_birth: 'д/р'
       add: 'Добавить'
       actions: 'Действия'
-    
+
     sidebar:
       add: 'Добавить'
       add_group: 'Добавить группу'

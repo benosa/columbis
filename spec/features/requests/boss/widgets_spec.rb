@@ -7,10 +7,10 @@ describe "Widgets:" do
   before(:all) do
     @boss = create_user_with_company_and_office(:boss)
     @company = @boss.company
-    login_as @boss
   end
 
-  before do
+  before(:each) do
+    login_as @boss
     visit boss_index_path
   end
 
@@ -41,5 +41,28 @@ describe "Widgets:" do
     visit boss_index_path
 
     all('.widget').map{|widget| widget['position'].to_i}.should == widgets
+  end
+
+  it 'should have buttons for editing widgets position and settings' do
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
+    widgets.each do |widget|
+      page.should have_selector("div.widget[position='#{widget.id}'] div.widget-menu div.widget-btn-more")
+      page.should have_selector("div.widget[position='#{widget.id}'] div.widget-menu a.settings\#settings_#{widget.id}")
+    end
+  end
+
+  it 'chart widgets should have period and size settings' do
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id).where(:widget_type => "chart")
+    widgets.each do |widget|
+      page.should have_selector("form.edit_boss_widget[id='edit_boss_widget_#{widget.id}'] select\#boss_widget_period[name='boss_widget[period]']")
+      page.should have_selector("form.edit_boss_widget[id='edit_boss_widget_#{widget.id}'] select\#boss_widget_view[name='boss_widget[view]']")
+    end
+  end
+
+  it 'leader widgets should have period settings' do
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id).where(:widget_type => "leader")
+    widgets.each do |widget|
+      page.should have_selector("form.edit_boss_widget[id='edit_boss_widget_#{widget.id}'] select\#boss_widget_period[name='boss_widget[period]']")
+    end
   end
 end

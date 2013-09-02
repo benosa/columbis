@@ -287,12 +287,21 @@
         },
         tooltip: {
           shared: true,
-          formatter: function() {
-            var point, i,
-                labels = [Charts.dateFormatter(this.x)];
+          is_middle_day_of_week: false,
+          formatter: function(options) {
+            var point, i, labels, date;
+            if (options.options.is_middle_day_of_week == true) {
+              date = Charts.dateFormatter((parseInt(this.x) - 3*24*60*60*1000), '%d.%b') + " - " +
+                Charts.dateFormatter((parseInt(this.x) + 3*24*60*60*1000), '%d.%b');
+            } else {
+              date = Charts.dateFormatter(this.x);
+            }
+            labels = [date];
             for (i = 0; i < this.points.length; i++) {
               point = this.points[i];
-              labels.push(point.series.name + ': ' + point.y.toFixed(2));
+              y = Highcharts.numberFormat(point.y);
+              labels.push('<span style="color: ' + point.series.color +'">' +
+                point.series.name + '</span>: <b>' + y + '</b>');
             }
             return labels.join('<br/>');
           }

@@ -14,7 +14,7 @@ module Boss
         @start_date = start_date
         @end_date = end_date
       else
-        @end_date = Time.zone.now
+        @end_date = Time.zone.now.to_date
         case period
         when 'day'
           @start_date = @end_date - 30.days
@@ -49,14 +49,12 @@ module Boss
     def days_column_settings(data)
       categories = days_categories(data)
       series = days_serialize_data(data, categories)
-      categories.map! {|c| c.strftime('%d.%m') }
       days_settings(categories, series).to_json
     end
 
     def months_column_settings(data)
       categories = months_categories(data)
       series = months_serialize_data(data, categories)
-      categories.map! {|c| I18n.t('.date.months')[c-1] }
       months_settings(categories, series).to_json
     end
 
@@ -116,19 +114,15 @@ module Boss
       end
 
       def days_categories(data)
-        if data.first.nil?
-          []
-        else
-          start_day = "#{data.first['day']}.#{data.first['month']}.#{data.first['year']}".to_datetime
-          end_date = @end_date.to_datetime
-          categories = []
-          x = start_day
-          while x <= end_date
+        categories = []
+        unless data.first.nil?
+          x = Date.new( data.first['year'].to_i, data.first['month'].to_i, data.first['day'].to_i )
+          while x <= @end_date
             categories << x
-            x += 1.day
+            x += 1.days
           end
-          categories
         end
+        categories
       end
 
       def months_categories(data)
@@ -136,35 +130,32 @@ module Boss
       end
 
       def weeks_categories(data)
-        if data.first.nil?
-          []
-        else
-          start_day = "1.1.#{data.first['year']}".to_datetime + (data.first['week'].to_i*7).days - 4.days
-          end_date = @end_date.to_datetime
-          categories = []
-          x = start_day
-          while x <= end_date
+        categories = []
+        unless data.first.nil?
+          x = Date.new(data.first['year'].to_i, 1, 1) + (data.first['week'].to_i*7).days - 4.days
+          while x <= @end_date
             categories << x
             x += 7.day
           end
-          categories
         end
+        categories
       end
 
       def years_categories(data)
-        if data.first.nil?
-          []
-        else
-          (data.first['year'].to_i..@end_date.year).to_a
+        categories = []
+        unless data.first.nil?
+          categories = (data.first['year'].to_i..@end_date.year).to_a
         end
+        categories
       end
 
       def days_serialize_data(data, categories)
         [{
           name: I18n.t('income_report.sum'),
           data: categories.map do |c|
-            elem = data.find_all { |d| "#{d['day']}.#{d['month']}.#{d['year']}".to_datetime == c }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+            check_elements(
+              data.find_all { |d| Date.new(d['year'].to_i, d['month'].to_i, d['day'].to_i) == c },
+              c)
           end
         }]
       end
@@ -172,22 +163,24 @@ module Boss
       def months_serialize_data(data, categories)
         name1 = @end_date.year-1
         data1 = categories.map do |c|
-          elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == (@end_date.year - 1) }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.find_all { |d| d['month'].to_i == c and d['year'].to_i == (@end_date.year - 1) },
+            Date.new(@end_date.year, c, 1))
         end
         name2 = @end_date.year
         data2 = categories.map do |c|
-          elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year },
+            Date.new(@end_date.year, c, 1))
         end
         seria = []
-        if data1.any? {|elem| elem != 0}
+        if data1.any? {|elem| elem[1] != 0}
           seria.push( {
             name: name1,
             data: data1
           })
         end
-        if data2.any? {|elem| elem != 0}
+        if data2.any? {|elem| elem[1] != 0}
           seria.push( {
             name: name2,
             data: data2
@@ -200,8 +193,9 @@ module Boss
         [{
           name: I18n.t('income_report.sum'),
           data: categories.map do |c|
-            elem = data.find_all { |d| ("1.1.#{d['year']}".to_datetime + (d['week'].to_i*7).days - 4.days) == c }
-            elem.length==0 ? [c.to_i * 1000, 0] : [c.to_i * 1000, elem.first['amount'].to_f.round(2)]
+            check_elements(
+              data.find_all { |d| (Date.new(d['year'].to_i, 1, 1) + (d['week'].to_i*7).days - 4.days) == c },
+              c)
           end
         }]
       end
@@ -225,10 +219,9 @@ module Boss
             text: I18n.t('income_report.sum')
           },
           xAxis: {
-            categories: categories,
-            labels: {
-              rotation: -90,
-              align: 'right'
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              month: '%b'
             }
           },
           yAxis: {
@@ -239,7 +232,13 @@ module Boss
             }
           },
           tooltip: {
-            formatter: nil
+            formatter: nil,
+            dateTimeLabelFormats: {
+              day: '%e. %b',
+              week: '%e. %b',
+              month: '%e. %b',
+              year: '%e. %b'
+            }
           },
           series: series
         }
@@ -254,9 +253,9 @@ module Boss
             text: I18n.t('income_report.sum')
           },
           xAxis: {
-            categories: categories,
-            labels: {
-              align: 'right'
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              month: '%b'
             }
           },
           yAxis: {
@@ -267,7 +266,10 @@ module Boss
             }
           },
           tooltip: {
-            formatter: nil
+            formatter: nil,
+            dateTimeLabelFormats: {
+              month: '%B'
+            }
           },
           legend: {
             enabled: true,
@@ -286,7 +288,10 @@ module Boss
             text: I18n.t('income_report.sum')
           },
           xAxis: {
-            type: 'datetime'
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              week: '%e. %b'
+            }
           },
           yAxis: {
             min: 0,
@@ -296,10 +301,7 @@ module Boss
             }
           },
           tooltip: {
-            formatter: nil,
-            shared: true,
-            useHTML: true,
-            headerFormat: ''
+            is_middle_day_of_week: true
           },
           series: series
         }
@@ -328,6 +330,12 @@ module Boss
           },
           series: series
         }
+      end
+
+      def check_elements(elements, categoria)
+        elem = elements.first
+        date = categoria.to_datetime.to_i * 1000
+        elem.nil? ? [date, 0] : [date, elem['amount'].to_f.round(2)]
       end
   end
 end

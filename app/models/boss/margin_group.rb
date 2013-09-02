@@ -5,7 +5,6 @@ module Boss
     def months_column_settings_with_extra(data)
       categories = months_categories(data)
       series = months_serialize_data_with_extra(data, categories)
-      categories.map! {|c| I18n.t('.date.months')[c-1] }
       months_settings_with_extra(categories, series).to_json
     end
 
@@ -44,16 +43,16 @@ module Boss
         seria = []
         group_id = !extra.blank? ? extra : data.first['id']
         this_year = categories.map do |c|
-          elem = data
-            .select{|e| !e["percent"] }
-            .find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.select{|e| !e["percent"] }
+              .find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id },
+            Date.new(@end_date.year, c, 1))
         end
         last_year = categories.map do |c|
-          elem = data
-            .select{|e| !e["percent"] }
-            .find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == group_id }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.select{|e| !e["percent"] }
+              .find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == group_id },
+            Date.new(@end_date.year, c, 1))
         end
         if last_year.any? {|elem| elem != 0 }
           seria.push({
@@ -64,10 +63,10 @@ module Boss
           seria.push({
             name: I18n.t('income_report.percent') + ' ' + (@end_date.year-1).to_s,
             data: categories.map do |c|
-              elem = data
-                .select{|e| e["percent"] }
-                .find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year-1) && d['id'] == group_id }
-              elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+              check_elements(
+                data.select{|e| e["percent"] }
+                  .find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == group_id },
+                Date.new(@end_date.year, c, 1))
             end,
             type: 'spline',
             yAxis: 1,
@@ -85,10 +84,10 @@ module Boss
           seria.push({
             name: I18n.t('income_report.percent') + ' ' + @end_date.year.to_s,
             data: categories.map do |c|
-              elem = data
-                .select{|e| e["percent"] }
-                .find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id }
-              elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+              check_elements(
+                data.select{|e| e["percent"] }
+                    .find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id },
+                  Date.new(@end_date.year, c, 1))
             end,
             type: 'spline',
             yAxis: 1,

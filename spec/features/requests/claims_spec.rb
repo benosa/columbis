@@ -129,34 +129,30 @@ describe "Claim:", js: true do
 
     describe "Lock_block" do
       before do
-        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id,
-         company_id: @company.id, operator_confirmation: '222')
+        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
       end
-
-      it "Olo" do
+      it "should check locking and saving" do
         visit(edit_claim_path(@claim))
-       #expect {
-        fill_in "claim_operator_confirmation", :with => "6E-154600652"
-        all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
-        visit(edit_claim_path(@claim))
-        @claim.reload
-        #}.to change(@claim, :operator_confirmation).from('222').to('6E-154600652')
+        expect {
+          fill_in "claim_operator_confirmation", :with => "6E-154600652"
+          all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+          @claim.reload
+        }.to change(@claim, :operator_confirmation).from(nil).to('6E-154600652')
         find("#claim_operator_confirmation").value.should == "6E-154600652"
-       # visit(edit_claim_path(@claim))
-       # all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
-        #visit(edit_claim_path(@claim))
-        # @claim.reload
-        #find("#claim_operator_confirmation").value.should == "6E-154600652"
-       # page.should have_content('sfsdf')
-        #@claim.operator_confirmation.should eq("6E-154600652")
-        #@claim.reload
-        #find("#claim_operator_confirmation").value.should == "6E-154600652"
-       # page.should should have_selector('input', :text => "6E-154600652")
-       # page.should have_content(@claim.locked_by.to_s + 'sddsd')#@boss.id.to_s + ' ' + @claim.locked_by.to_s)
-     # @claim.operator_confirmation.should eq("6E-154600652")
-        #current_path.should eq(edit_claim_path(@claim))
+        @claim.locked_at.should_not == nil
       end
 
+      it "should check locked claim for error after saving" do
+        @claim.lock(@boss.id + 1)
+        @claim.save
+        visit(edit_claim_path(@claim))
+        expect {
+          fill_in "claim_operator_confirmation", :with => "6E-154600652"
+          all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+          @claim.reload
+        }.to_not change(@claim, :operator_confirmation).from(nil).to('6E-154600652')
+        page.should have_content(I18n.t('claims.messages.is_editing'))
+      end
     end
   end
 

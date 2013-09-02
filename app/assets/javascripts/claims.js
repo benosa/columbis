@@ -1078,7 +1078,7 @@ $(function() {
       });
     }
   });
-
+// Firefox bug click after beforeunload
   $('a.save').mouseup(function(){
     $('.edit_claim').data('changed', false)
   });

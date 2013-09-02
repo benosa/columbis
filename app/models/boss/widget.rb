@@ -107,15 +107,18 @@ module Boss
     end
 
     def income_chart_data
-      chart_data(IncomeReport, I18n.t('boss.active_record.widget.chart.sum')).to_json
+      chart_data(IncomeReport, I18n.t('boss.active_record.widget.chart.sum'),
+        I18n.t('RUR')).to_json
     end
 
     def margin_chart_data
-      chart_data(MarginReport, I18n.t('boss.active_record.widget.chart.normal')).to_json
+      chart_data(MarginReport, I18n.t('boss.active_record.widget.chart.normal'),
+        I18n.t('boss.active_record.widget.chart.percent'), "percent").to_json
     end
 
     def claim_chart_data
-      chart_data(ClaimReport, I18n.t('boss.active_record.widget.chart.number')).to_json
+      chart_data(ClaimReport, I18n.t('boss.active_record.widget.chart.number'),
+        I18n.t('boss.active_record.widget.chart.claim_number')).to_json
     end
 
     def tourists_table_data
@@ -181,13 +184,26 @@ module Boss
       })
     end
 
-    def chart_data(report_class, name)
+    def chart_data(report_class, name, yaxis, column_name = "amount")
+      case period
+      when 'day'
+        start_date = Time.zone.now.to_date-12.days
+      when 'week'
+        start_date = Time.zone.now.beginning_of_week-(7*12).days
+      else
+        start_date = Time.zone.now.beginning_of_year
+      end
       report = report_class.new({
         period: settings[:period],
-        company: company
+        company: company,
+        start_date: start_date,
+        end_date: Time.zone.now.to_date,
+        check_date: true
       }).prepare
-      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings", report.amount)
+      hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings",
+        report.try(column_name.to_sym))
       hash["title"]["text"] = nil
+      hash["yAxis"]["title"]["text"] = yaxis
       hash.delete "legend"
       hash['series'].each do |s|
         s['name'] = name
@@ -289,10 +305,10 @@ module Boss
 
     def avg_or_sum(array, is_mean = false)
       array.delete(0)
-      if is_mean
-        array.blank? ? 0 : (array.sum/array.length).round(2)
+      if array.blank?
+        0
       else
-        array.blank? ? 0 : array.sum.round(2)
+        is_mean ? (array.sum/array.length).round(2) : array.sum.round(2)
       end
     end
 

@@ -22,7 +22,6 @@ module Boss
     def months_column_settings_with_extra(data)
       categories = months_categories(data)
       series = months_serialize_data_with_extra(data, categories)
-      categories.map! {|c| I18n.t('.date.months')[c-1] }
       months_settings(categories, series).to_json
     end
 
@@ -34,8 +33,9 @@ module Boss
       def days_serialize_data(data, categories)
         @total_names.map do |manager|
           series_data = categories.map do |c|
-            elem = data.find_all { |d| "#{d['day']}.#{d['month']}.#{d['year']}".to_datetime == c and d['id'] == manager[:id] }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+            check_elements(
+              data.find_all{ |d| Date.new(d['year'].to_i, d['month'].to_i, d['day'].to_i) == c &&
+                d['id'] == manager[:id]}, c)
           end
           {
             name: manager[:name],
@@ -49,12 +49,14 @@ module Boss
         seria = []
         group_id = !extra.blank? ? extra : data.first['id']
         this_year = categories.map do |c|
-          elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id },
+            Date.new(@end_date.year, c, 1))
         end
         last_year = categories.map do |c|
-          elem = data.find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year - 1) && d['id'] == group_id }
-          elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+          check_elements(
+            data.find_all { |d| d['month'].to_i == c && d['year'].to_i == (@end_date.year-1) && d['id'] == group_id },
+            Date.new(@end_date.year, c, 1))
         end
         if last_year.any? {|elem| elem != 0 }
           seria.push({
@@ -76,8 +78,9 @@ module Boss
       def months_serialize_data(data, categories)
         @total_names.map do |manager|
           series_data = categories.map do |c|
-            elem = data.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year and d['id'] == manager[:id] }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+            check_elements(
+              data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == manager[:id] },
+              Date.new(@end_date.year, c, 1))
           end
           {
             name: manager[:name],
@@ -90,8 +93,10 @@ module Boss
       def weeks_serialize_data(data, categories)
         @total_names.map do |manager|
           series_data = categories.map do |c|
-            elem = data.find_all { |d| ("1.1.#{d['year']}".to_datetime + (d['week'].to_i*7).days - 4.days) == c and d['id'] == manager[:id] }
-            elem.length==0 ? [c.to_i * 1000, 0] : [c.to_i * 1000, elem.first['amount'].to_f.round(2)]
+            check_elements(
+              data.find_all { |d| (Date.new(d['year'].to_i, 1, 1) + (d['week'].to_i*7).days - 4.days) == c &&
+                d['id'] == manager[:id] },
+              c)
           end
           {
             name: manager[:name],

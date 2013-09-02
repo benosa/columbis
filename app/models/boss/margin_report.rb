@@ -36,8 +36,10 @@ module Boss
         seria.push({
           name: I18n.t('income_report.percent'),
           data: categories.map do |c|
-            elem = data.select{|e| e["percent"] }.find_all { |d| "#{d['day']}.#{d['month']}.#{d['year']}".to_datetime == c }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+            check_elements(
+              data.select{|e| e["percent"] }
+                .find_all { |d| Date.new(d['year'].to_i, d['month'].to_i, d['day'].to_i) == c },
+              c)
           end,
           type: 'spline',
           yAxis: 1,
@@ -53,8 +55,10 @@ module Boss
         seria.push({
           name: I18n.t('income_report.percent'),
           data: categories.map do |c|
-            elem = data.select{|e| e["percent"] }.find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year }
-            elem.length==0 ? 0 : elem.first['amount'].to_f.round(2)
+            check_elements(
+              data.select{|e| e["percent"] }
+                .find_all { |d| d['month'].to_i == c and d['year'].to_i == @end_date.year },
+                Date.new(@end_date.year, c, 1))
           end,
           type: 'spline',
           yAxis: 1,
@@ -70,8 +74,10 @@ module Boss
         seria.push({
           name: I18n.t('income_report.percent'),
           data: categories.map do |c|
-            elem = data.select{|e| e["percent"] }.find_all { |d| ("1.1.#{d['year']}".to_datetime + (d['week'].to_i*7).days - 4.days) == c }
-            elem.length==0 ? [c.to_i * 1000, 0] : [c.to_i * 1000, elem.first['amount'].to_f.round(2)]
+            check_elements(
+              data.select{|e| e["percent"] }
+                .find_all { |d| (Date.new(d['year'].to_i, 1, 1) + (d['week'].to_i*7).days - 4.days) == c },
+              c)
           end,
           type: 'spline',
           yAxis: 1,

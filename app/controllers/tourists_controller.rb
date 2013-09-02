@@ -116,7 +116,7 @@ class TouristsController < ApplicationController
     end
 
     def check_address(tourist, is_potential = nil)
-      tourist.build_address unless tourist.address && (is_potential.nil? ? tourist.potential? : is_potential)
+      tourist.build_address unless tourist.address || (is_potential.nil? ? tourist.potential? : is_potential)
     end
 
 end

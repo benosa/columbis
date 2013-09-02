@@ -24,7 +24,9 @@ FactoryGirl.define do
     tourist_stat 'Рекомендации'
     # Need to create one dropdown_value, because of tourist_stat is required and must be in select box in claim form
     after(:create) do |claim|
-      FactoryGirl.create(:dropdown_value, company: claim.company, list: 'tourist_stat', value: 'Рекомендации')
+      if DropdownValue.where(company_id: claim.company_id, list: 'tourist_stat', value: 'Рекомендации').count == 0
+        FactoryGirl.create(:dropdown_value, company: claim.company, list: 'tourist_stat', value: 'Рекомендации')
+      end
     end
   end
 

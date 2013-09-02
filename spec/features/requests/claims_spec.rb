@@ -127,10 +127,36 @@ describe "Claim:", js: true do
       end
     end
 
-    describe "Lock block" do
+    describe "Lock_block" do
       before do
-        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id,
+         company_id: @company.id, operator_confirmation: '222')
       end
+
+      it "Olo" do
+        visit(edit_claim_path(@claim))
+       #expect {
+        fill_in "claim_operator_confirmation", :with => "6E-154600652"
+        all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+        visit(edit_claim_path(@claim))
+        @claim.reload
+        #}.to change(@claim, :operator_confirmation).from('222').to('6E-154600652')
+        find("#claim_operator_confirmation").value.should == "6E-154600652"
+       # visit(edit_claim_path(@claim))
+       # all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+        #visit(edit_claim_path(@claim))
+        # @claim.reload
+        #find("#claim_operator_confirmation").value.should == "6E-154600652"
+       # page.should have_content('sfsdf')
+        #@claim.operator_confirmation.should eq("6E-154600652")
+        #@claim.reload
+        #find("#claim_operator_confirmation").value.should == "6E-154600652"
+       # page.should should have_selector('input', :text => "6E-154600652")
+       # page.should have_content(@claim.locked_by.to_s + 'sddsd')#@boss.id.to_s + ' ' + @claim.locked_by.to_s)
+     # @claim.operator_confirmation.should eq("6E-154600652")
+        #current_path.should eq(edit_claim_path(@claim))
+      end
+
     end
   end
 

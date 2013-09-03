@@ -293,7 +293,7 @@ module Boss
         now  = (d[:total] or d.try(:total)).to_i
         prev = data_previous.select{|p| (p[:name] or p.try(:name)) == name}
         prev = prev.blank? ? 0 : (prev.first[:total] or prev.first.try(:total)).to_i
-        data[0] << name
+        data[0] << ((name.length > 12) ? name.first(11)+"..." : name)
         data[1] << commas(now)
         data[2] << get_class(now, prev)
         data[3] << get_percent(now, prev)

@@ -1,0 +1,24 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'dashboard' }
+
+- title t('.key_indexes')
+
+
+- content_for :top do
+  %form.filter#widget_date_settings
+    = link_to '', '#', id: 'settings', class: 'settings', title: t('boss.active_record.widget.index.date_edit')
+    %ul#settings-menu.settings-menu{ title: t('boss.active_record.widget.menu.settings') }
+      %li
+        = text_field_tag :widget_date, l(@date, format: :long), class: 'datepicker start_date date', data: { param: 'widget_date', filter: 1, default: @date }
+      %li.settings-menu-buttons
+        %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')
+  .current-date
+    = l @date, :format => "%A, %d %B %Y, #{t('date.week')} %V"
+
+.current_container
+  .widget-area.clearfix
+    - @widgets.each do |widget|
+      = render partial: "boss/widgets/widget", locals: { widget: widget }
+
+- if request.xhr?
+  = render partial: "boss/index.js"

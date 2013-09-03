@@ -501,6 +501,7 @@ div.left {
 }
 
 .filter {
+  padding: 4px 4px 0px 10px;
   .settings, .filter_reset {
     color: #000000;
     display: block;
@@ -511,6 +512,7 @@ div.left {
   }
   .settings {
     background: url("/assets/new_design/images/settings.png") no-repeat;
+    height: 14px;
   }
   .filter_reset {
     background: url("/assets/new_design/images/reset.png") no-repeat;

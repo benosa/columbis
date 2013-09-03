@@ -1,6 +1,7 @@
 /*jshint sub:true */
-
 jQuery(function($) {
+
+  bind_settings_dialog($('.widget-menu .settings-menu'));
 
   $('.dashboard .widget-area').sortable({
     containment: '.widget-area',
@@ -17,4 +18,20 @@ jQuery(function($) {
     }
   });
 
+  // Settings menu on widget open button
+  $('.widget-menu a.settings').live('click', function(e) {
+    e.preventDefault();
+    var widget_id = $(e.target).attr('id').split('_'),
+        id = widget_id[widget_id.length-1];
+    $("#settings-menu-" + id)
+      .dialog('option', 'position', { my: 'right top', at: 'right bottom', of: this })
+      .dialog('open');
+  });
+
+  // Settings menu on widget save and close button
+  $('form.edit_boss_widget .settings-menu-buttons input').live('click', function(e) {
+    var widget_id = $(e.target).closest('form.edit_boss_widget').attr("id").split('_'),
+        id = widget_id[widget_id.length-1];
+    $("#settings-menu-" + id).dialog('close');
+  });
 });

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe "Widgets:" do
+describe "Widgets:", js: true do
   include ActionView::Helpers
 
   before(:all) do
@@ -64,5 +64,12 @@ describe "Widgets:" do
     widgets.each do |widget|
       page.should have_selector("form.edit_boss_widget[id='edit_boss_widget_#{widget.id}'] select\#boss_widget_period[name='boss_widget[period]']")
     end
+  end
+
+  it 'should change widget date' do
+    find('#widget_date_settings a').click
+    fill_in "widget_date", :with => "01.01.2012"
+    find("ul#settings-menu li.settings-menu-buttons button[rel='close']").click
+    page.should have_content( l(Date.new(2012, 1, 1), :format => "%A, %d %B %Y, #{t("date.week")} %V") )
   end
 end

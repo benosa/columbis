@@ -4,6 +4,7 @@ module Boss
     include BossHelper
 
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
+    before_filter :set_widget_date
 
     def index
       @widgets = Widget.where(:company_id => current_company.id)
@@ -12,7 +13,11 @@ module Boss
         @widgets = Widget.create_default_widgets(current_user, current_company)
       end
 
-      render 'boss/index'
+      if request.xhr?
+        render partial: 'boss/index'
+      else
+        render 'boss/index'
+      end
     end
 
     def sort_widget
@@ -34,6 +39,24 @@ module Boss
       else
         head :bad_request
         render nothing: true
+      end
+    end
+
+    private
+
+    def set_widget_date
+      unless params["widget_date"].nil?
+        session.merge!({"widget_date" => params["widget_date"]})
+      else
+        unless request.xhr?
+          session.delete("widget_date")
+        end
+      end
+
+      if session["widget_date"].nil?
+        @date = Time.zone.now.to_date
+      else
+        @date = session["widget_date"].to_date
       end
     end
 

@@ -3,7 +3,7 @@
     %table#claims.reservations{ :rules => 'all'}
       %thead
         %tr.claims_header
-          %th= sort_link 'id', t('claims.index.num')
+          %th= sort_link 'num', t('claims.index.num')
           %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
           %th= sort_link 'tourist_stat', t('claims.index.tourist_stat')
           - if show_office

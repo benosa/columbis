@@ -30,11 +30,24 @@ describe Claim do
       it { should validate_presence_of :user_id }
       it { should validate_presence_of :check_date }
       it { should validate_presence_of :arrival_date }
-
+      it { should validate_presence_of :num }
     end
     context "when invalid" do
-      subject { FactoryGirl.build(:claim) }
+      before { FactoryGirl.create(:claim, num: 1, company_id: 1) }
+      subject { FactoryGirl.build(:claim, company_id: 1) }
       it { should_not allow_value(nil).for(:user_id) }
+      it { should_not allow_value(0).for(:num) }
+      it { should_not allow_value(1).for(:num) }
     end
+  end
+
+  describe ".generate_num" do
+    before do
+      FactoryGirl.create(:claim, num: 1, company_id: 1)
+      FactoryGirl.create(:claim, num: 2, company_id: 2)
+      @claim = FactoryGirl.build(:claim, num: 0, company_id: 1)
+      @claim.generate_num
+    end
+    it { @claim.num.should == 2 }
   end
 end

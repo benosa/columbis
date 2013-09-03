@@ -113,6 +113,19 @@ describe "Claim:", js: true do
         find('#claim_special_offer')['checked'].should == !old_checkbox
       end
     end
+
+    describe "num_column" do
+      before do
+        @claim = FactoryGirl.build(:claim, company_id: @company.id)
+        @claim.num = 321123
+        @claim.save
+      end
+
+      it "should be link with content 321123" do
+        visit claims_path
+        page.should have_selector('a.id_link', :text => '321123')
+      end
+    end
   end
 
 end

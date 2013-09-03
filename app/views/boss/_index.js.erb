@@ -1,5 +1,5 @@
 <script type='text/javascript'>
   bind_settings_dialog($('#settings-menu'));
   bind_settings_dialog($('.widget-menu .settings-menu'));
-  $(".current-date").html('<%= l Boss::Widget.class_variable_get(:@@date), :format => "%A, %d %B %Y, #{t("date.week")} %V" %>');
+  $(".current-date").html('<%= l @date, :format => "%A, %d %B %Y, #{t("date.week")} %V" %>');
 </script>

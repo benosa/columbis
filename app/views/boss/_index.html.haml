@@ -9,11 +9,11 @@
     = link_to '', '#', id: 'settings', class: 'settings'
     %ul#settings-menu.settings-menu{ title: t('.settings') }
       %li
-        = text_field_tag :widget_date, l(Boss::Widget.class_variable_get(:@@date), format: :long), class: 'datepicker start_date date', data: { param: 'widget_date', filter: 1, default: Boss::Widget.class_variable_get(:@@date) }
+        = text_field_tag :widget_date, l(@date, format: :long), class: 'datepicker start_date date', data: { param: 'widget_date', filter: 1, default: @date }
       %li.settings-menu-buttons
         %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')
   .current-date
-    = l Boss::Widget.class_variable_get(:@@date), :format => "%A, %d %B %Y, #{t('date.week')} %V"
+    = l @date, :format => "%A, %d %B %Y, #{t('date.week')} %V"
 
 .current_container
   .widget-area.clearfix

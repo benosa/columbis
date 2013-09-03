@@ -2,21 +2,30 @@
 module Boss
   class Widget < ActiveRecord::Base
 
-    @@date = Time.zone.now.to_date
-
     VIEWS = %w[small small2 medium large].freeze
     TYPES = %w[factor chart table leader].freeze
     NAMES = %w[claim income normalcheck normalprice margin tourists promotion].freeze
     PERIODS = %w[month day week].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
-
     attr_accessible :period
+
+    attr_reader :date
 
     belongs_to :user
     belongs_to :company
 
     serialize :settings, Hash
+
+    def date
+      @date.nil? ? Time.zone.now.to_date : @date
+    end
+
+    def date=(value)
+      unless value.nil?
+        @date = value
+      end
+    end
 
     def period
       @period ||= settings[:period]
@@ -127,7 +136,7 @@ module Boss
       Tourist.unscoped
         .clients
         .where(:company_id => company.id)
-        .where("created_at <= '#{@@date}'")
+        .where("created_at <= '#{date}'")
         .order("created_at DESC")
         .first(10)
     end
@@ -156,8 +165,8 @@ module Boss
       report = report_class.new({
         period: 'day',
         company: company,
-        start_date: @@date-61.days,
-        end_date: @@date,
+        start_date: date-61.days,
+        end_date: date,
         check_date: true
       }).prepare
 
@@ -167,8 +176,8 @@ module Boss
       report = report_class.new({
         period: 'year',
         company: company,
-        start_date: @@date.beginning_of_year,
-        end_date: @@date,
+        start_date: date.beginning_of_year,
+        end_date: date,
         check_date: true
       }).prepare
 
@@ -190,17 +199,17 @@ module Boss
     def chart_data(report_class, name, yaxis, column_name = "amount")
       case period
       when 'day'
-        start_date = @@date-12.days
+        start_date = date-12.days
       when 'week'
-        start_date = @@date.beginning_of_week-(7*12).days
+        start_date = date.beginning_of_week-(7*12).days
       else
-        start_date = @@date.beginning_of_year
+        start_date = date.beginning_of_year
       end
       report = report_class.new({
         period: settings[:period],
         company: company,
         start_date: start_date,
-        end_date: @@date,
+        end_date: date,
         check_date: true
       }).prepare
       hash = ActiveSupport::JSON.decode report.send(:"#{settings[:period]}s_column_settings",
@@ -217,21 +226,21 @@ module Boss
     def leader_data(report_class, column_name)
       case period
       when 'day'
-        start_date = @@date-1.days
-        middle_date = @@date-1.days
-        end_date = @@date
+        start_date = date-1.days
+        middle_date = date-1.days
+        end_date = date
         text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
           I18n.t('boss.active_record.widget.leader.by_day')
       when 'week'
-        start_date = @@date-13.days
-        middle_date = @@date-7.days
-        end_date = @@date
+        start_date = date-13.days
+        middle_date = date-7.days
+        end_date = date
         text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
           I18n.t('boss.active_record.widget.leader.by_week')
       else
-        start_date = @@date-61.days
-        middle_date = @@date-31.days
-        end_date = @@date
+        start_date = date-61.days
+        middle_date = date-31.days
+        end_date = date
         text = I18n.t("boss.active_record.widget.leader.#{self.name}_text") +
           I18n.t('boss.active_record.widget.leader.by_month')
       end
@@ -264,12 +273,12 @@ module Boss
     end
 
     def create_factor_data(data, is_mean = false)
-      now_day        = get_by_date(data, is_mean, @@date,         @@date        )
-      previous_day   = get_by_date(data, is_mean, @@date-1.days,  @@date-1.days )
-      now_week       = get_by_date(data, is_mean, @@date-6.days,  @@date        )
-      previous_week  = get_by_date(data, is_mean, @@date-13.days, @@date-7.days )
-      now_month      = get_by_date(data, is_mean, @@date-30.days, @@date        )
-      previous_month = get_by_date(data, is_mean, @@date-61.days, @@date-31.days)
+      now_day        = get_by_date(data, is_mean, date,         date        )
+      previous_day   = get_by_date(data, is_mean, date-1.days,  date-1.days )
+      now_week       = get_by_date(data, is_mean, date-6.days,  date        )
+      previous_week  = get_by_date(data, is_mean, date-13.days, date-7.days )
+      now_month      = get_by_date(data, is_mean, date-30.days, date        )
+      previous_month = get_by_date(data, is_mean, date-61.days, date-31.days)
       {
         data: [
           [ I18n.t('boss.active_record.widget.factor.today'),

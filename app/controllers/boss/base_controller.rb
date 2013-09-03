@@ -6,13 +6,20 @@ module Boss
     before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
 
     def index
+      if params["widget_date"]
+        Widget.class_variable_set :@@date, params["widget_date"].to_date
+      end
       @widgets = Widget.where(:company_id => current_company.id)
         .where(:user_id => current_user.id).order("position ASC")
       if @widgets.length == 0
         @widgets = Widget.create_default_widgets(current_user, current_company)
       end
 
-      render 'boss/index'
+      if request.xhr?
+        render partial: 'boss/index'
+      else
+        render 'boss/index'
+      end
     end
 
     def sort_widget

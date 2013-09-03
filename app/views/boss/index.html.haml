@@ -1,8 +1,1 @@
-- set_current_width(:small)
-- content_for(:body_class) { 'dashboard' }
-
-- title t('.key_indexes')
-
-.widget-area.clearfix
-  - @widgets.each do |widget|
-    = render partial: "boss/widgets/widget", locals: { widget: widget }
+= render partial: "boss/index"

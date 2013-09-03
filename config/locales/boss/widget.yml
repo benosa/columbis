@@ -2,6 +2,8 @@ ru:
   boss:
     active_record:
       widget:
+        index:
+          date_edit: 'Изменить дату на которую происходит подсчёт показателей'
         menu:
           settings: 'Настройки'
         factor:

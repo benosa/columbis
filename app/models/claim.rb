@@ -86,9 +86,11 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
   validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/,/\A([1-5]\*)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
-  validates :num, :presence => true, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }
+  validates :num, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }, :if => proc{ |claim| claim.num.present? }
+  validates_presence_of :num, :unless => :new_record?
 
   before_validation :update_debts
+  before_save :generate_num
   before_save :update_bonus
   before_save :update_active
   before_save :take_tour_duration
@@ -291,9 +293,9 @@ class Claim < ActiveRecord::Base
   end
 
   def generate_num
-      if self.num.to_i == 0 
-        self.num = Claim.where(company_id: company_id).maximum(:num).to_i + 1
-      end
+    if company_id && num.to_i == 0
+      self.num = Claim.where(company_id: company_id).maximum(:num).to_i + 1
+    end
   end
 
   def self.next_id

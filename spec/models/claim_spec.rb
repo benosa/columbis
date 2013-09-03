@@ -36,7 +36,6 @@ describe Claim do
       before { FactoryGirl.create(:claim, num: 1, company_id: 1) }
       subject { FactoryGirl.build(:claim, company_id: 1) }
       it { should_not allow_value(nil).for(:user_id) }
-      it { should_not allow_value(nil).for(:num) }
       it { should_not allow_value(0).for(:num) }
       it { should_not allow_value(1).for(:num) }
     end

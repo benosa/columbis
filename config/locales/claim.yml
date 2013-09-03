@@ -191,10 +191,10 @@ ru:
       title: 'Новая бронь'
       list_of_claim: 'Список броней'
     edit:
-      title: 'Редактирование брони №%{id} от %{created_at}'
+      title: 'Редактирование брони №%{num} от %{created_at}'
       list_of_claim: 'Список броней'
     show:
-      title: 'Редактирование брони №%{id} от %{created_at}'
+      title: 'Редактирование брони №%{num} от %{created_at}'
       list_of_claim: 'Список броней'
     messages:
       successfully_created_claim: 'Бронь создана'
@@ -230,7 +230,7 @@ ru:
         course_usd: 'Курс USD'
         currency: 'Валюта'
         airline: 'Авиакомпания'
-        id: 'Номер'
+        num: 'Номер'
         visa_count: 'Кол-во виз'
         meals: 'Питание'
         placement: 'Размещение'

@@ -1,7 +1,7 @@
 - content_for(:html_class) { 'edit_page' }
 - content_for(:body_class) { 'order panel' << (small_width? ? ' edit_tourists' : '') }
 
-- title t('.title', :id => @claim.id, :created_at => l(@claim.created_at, :format => :long))
+- title t('.title', :num => @claim.num, :created_at => l(@claim.created_at, :format => :long))
 
 -# highlighted_fields = [:airline, :documents_status, :arrival_date, :departure_date, :resort, :tour_price, :visa_price]
 = form_for @claim, :builder => TourismFormBuilder do |form|

@@ -116,12 +116,14 @@ describe "Claim:", js: true do
 
     describe "num_column" do
       before do
-        FactoryGirl.create(:claim, num: 321123, company_id: 1)
+        @claim = FactoryGirl.build(:claim, company_id: @company.id)
+        @claim.num = 321123
+        @claim.save
       end
 
       it "should be link with content 321123" do
         visit claims_path
-        page.should have_selector('a', :text => '321123')
+        page.should have_selector('a.id_link', :text => '321123')
       end
     end
   end

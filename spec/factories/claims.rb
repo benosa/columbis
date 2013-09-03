@@ -7,7 +7,6 @@ FactoryGirl.define do
     association :applicant, factory: :tourist
     association :operator
 
-    sequence(:num) { |n| n}
     reservation_date { Date.today }
     check_date { 5.days.since }
     arrival_date { 10.days.since }

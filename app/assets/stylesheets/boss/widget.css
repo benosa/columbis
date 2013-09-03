@@ -1,3 +1,8 @@
 .widget-menu .period {
   width: 200px;
 }
+
+form.filter#widget_date_settings {
+  background: none;
+  border-width: 0;
+}

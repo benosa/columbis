@@ -1073,7 +1073,7 @@ $(function() {
           if (data.message) {
             setTimeout(function(){
               $('.edit_claim').data('changed', false);
-            }, 174000);
+            }, 1800 * 1000); // 30 minutes
             if ($('#content .top h1').text().indexOf(data.message) == -1) {
               $('#content .top h1').append(' ' + data.message);
             }

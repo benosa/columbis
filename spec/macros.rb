@@ -63,6 +63,14 @@ module Macros
     page.execute_script "$(':input[name=\"#{field}\"]').trigger('#{trigger}')"
   end
 
+  def wait_until
+    require "timeout"
+    Timeout.timeout(Capybara.default_wait_time) do
+      sleep(0.1) until value = yield
+      value
+    end
+  end
+
   module ClassMethods
 
     def clean(options = {}, &block)

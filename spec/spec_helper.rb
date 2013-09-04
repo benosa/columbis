@@ -14,7 +14,8 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'thinking_sphinx/test'
 require File.dirname(__FILE__) + '/activerecord_shared_connection'
-require File.dirname(__FILE__) + "/macros"
+require File.dirname(__FILE__) + '/macros'
+require File.dirname(__FILE__) + '/matchers'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -25,6 +26,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.include Macros
+  config.include Matchers
   config.include Devise::TestHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods
 

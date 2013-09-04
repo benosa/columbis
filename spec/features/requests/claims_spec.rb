@@ -143,8 +143,9 @@ describe "Claim:", js: true do
       end
 
       it "should check locked claim for error after saving" do
-        @claim.lock(@boss.id + 1)
-        @claim.save
+        @another_boss = FactoryGirl.create(:boss, company: @boss.company, office: @boss.office)
+        @claim.lock(@another_boss)
+        @claim.reload
         visit(edit_claim_path(@claim))
         expect {
           fill_in "claim_operator_confirmation", :with => "6E-154600652"

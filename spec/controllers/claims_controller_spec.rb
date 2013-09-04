@@ -119,32 +119,31 @@ describe ClaimsController do
   describe 'lock_unlock' do
     context "success lock" do
       before do
-        get :lock, :id => @claim.id
+        put :lock, :id => @claim.id
       end
       it{ response.body.should == { :message  => I18n.t('claims.messages.locked') }.to_json }
     end
 
     context "success unlock" do
       before do
-        @claim.lock(@admin.id)
-        @claim.save
-        get :unlock, :id => @claim.id
+        @claim.lock(@admin)
+        put :unlock, :id => @claim.id
       end
       it{ response.body.should == { :unlocked => 1 }.to_json }
     end
 
     context "unsuccess lock" do
       before do
-        @claim.lock(@manager.id)
-        @claim.save
-        get :lock, :id => @claim.id
+        @claim.lock(@manager)
+        put :lock, :id => @claim.id
       end
       it{ response.body.should == { :locked => @manager.id }.to_json }
     end
 
     context "unsuccess unlock" do
       before do
-        get :unlock, :id => @claim.id
+        @claim.lock(@manager)
+        put :unlock, :id => @claim.id
       end
       it{ response.body.should == { :wrong_user => 1 }.to_json }
     end

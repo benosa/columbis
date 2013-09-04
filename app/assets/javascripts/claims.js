@@ -1060,21 +1060,22 @@ $(function() {
   $('.edit_claim').on('change autocompleteselect', ':input', function() {
     if ($('.edit_claim').data('changed') != true && !$('.edit_claim').data('locked')) {
       $.ajax({
-         url: $('.edit_claim').data('lockpath'),
-         success: function(data) {
-           if (data.message) {
-             setTimeout(function(){
-                $('.edit_claim').data('changed', false);
-             }, 174000);
-             if ($('#content .top h1').text().indexOf(data.message) == -1) {
-               $('#content .top h1').append(' ' + data.message);
-             }
-             $('.edit_claim').data('changed', true);
-           } else if(data.locked) {
-             $('.edit_claim').data('locked', data.locked);
-           }
-
-         }
+        url: $('.edit_claim').data('lockpath'),
+        type: 'post',
+        data: { _method: 'put' },
+        success: function(data) {
+          if (data.message) {
+            setTimeout(function(){
+              $('.edit_claim').data('changed', false);
+            }, 174000);
+            if ($('#content .top h1').text().indexOf(data.message) == -1) {
+              $('#content .top h1').append(' ' + data.message);
+            }
+            $('.edit_claim').data('changed', true);
+          } else if(data.locked) {
+            $('.edit_claim').data('locked', data.locked);
+          }
+        }
       });
     }
   });
@@ -1084,17 +1085,19 @@ $(function() {
   });
 
   $(window).bind('beforeunload', function() {
-      if ($('.edit_claim').data('changed')) {
-        return 'Внесены изменения, вы уверены, что хотите отказаться?';
-      }
-   });
+    if ($('.edit_claim').data('changed')) {
+      return 'Внесены изменения, вы уверены, что хотите отказаться?';
+    }
+  });
 
   $(window).unload(function() {
-      if ($('.edit_claim').data('changed')) {
-        $.ajax({
-          url: $('.edit_claim').data('unlockpath'),
-        });
-      }
+    if ($('.edit_claim').data('changed')) {
+      $.ajax({
+        url: $('.edit_claim').data('unlockpath'),
+        type: 'post',
+        data: { _method: 'put' }
+      });
+    }
    });
 
   // Window scroll event

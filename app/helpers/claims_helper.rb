@@ -286,7 +286,13 @@ module ClaimsHelper
   end
 
   def claim_form_data(claim)
-    data = { data: { lockpath: lock_claims_path, unlockpath: unlock_claims_path } }
+    data = {
+      data: { 
+        lockpath: lock_claims_path,
+        unlockpath: unlock_claims_path,
+        warning: I18n.t('claims.messages.warning_of_editing') 
+      }
+    }
     data[:data][:locked] = claim.locked_by if claim.locked?
     data
   end

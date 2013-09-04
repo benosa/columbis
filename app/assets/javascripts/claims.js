@@ -1057,8 +1057,14 @@ $(function() {
     }
   });
 
+  // Window scroll event
+  $(window).scroll(function() {
+    $(window).trigger('scroll.claims');
+  });
+
+  // Claim locking
   $('.edit_claim').on('change autocompleteselect', ':input', function() {
-    if ($('.edit_claim').data('changed') != true && !$('.edit_claim').data('locked')) {
+    if (!$('.edit_claim').data('changed') && !$('.edit_claim').data('locked')) {
       $.ajax({
         url: $('.edit_claim').data('lockpath'),
         type: 'post',
@@ -1079,31 +1085,33 @@ $(function() {
       });
     }
   });
-// Firefox bug click after beforeunload
+
+  // Firefox bug click after beforeunload
   $('a.save').mouseup(function(){
     $('.edit_claim').data('changed', false)
   });
 
-  $(window).bind('beforeunload', function() {
-    if ($('.edit_claim').data('changed')) {
-      return 'Внесены изменения, вы уверены, что хотите отказаться?';
+  // Message of editing
+  $(window).on('beforeunload', function() {
+    var message = $('.edit_claim').data('warning');
+    if (message && $('.edit_claim').data('changed')) {
+      return message;
     }
   });
 
-  $(window).unload(function() {
+  // Claim unlocking
+  $(window).on('unload', function() {
     if ($('.edit_claim').data('changed')) {
       $.ajax({
         url: $('.edit_claim').data('unlockpath'),
         type: 'post',
-        data: { _method: 'put' }
+        data: { _method: 'put' },
+        async: false, // use sync request, else it may not be sent
+        timeout: 10 * 1000 // 10 seconds
       });
     }
-   });
-
-  // Window scroll event
-  $(window).scroll(function() {
-    $(window).trigger('scroll.claims');
   });
+
 });
 
 //Tourist special_offer

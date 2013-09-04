@@ -47,6 +47,9 @@ class Claim < ActiveRecord::Base
   belongs_to :country
   belongs_to :city
   belongs_to :resort, :class_name => 'City'
+  
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'locked_by'
+  attr_accessor :current_editor
 
   has_one :tourist_claim, :dependent => :destroy, :conditions => { :applicant => true }
   has_one :applicant, :through => :tourist_claim, :source => :tourist
@@ -88,6 +91,7 @@ class Claim < ActiveRecord::Base
   validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/,/\A([1-5]\*)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
   validates :num, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }, :if => proc{ |claim| claim.num.present? }
   validates_presence_of :num, :unless => :new_record?
+  validate :check_lock, :on => :update
 
   before_validation :update_debts
   before_save :generate_num
@@ -151,6 +155,7 @@ class Claim < ActiveRecord::Base
         check_not_null_fields
         self.save
         check_validation_messages if invalid?
+        self.unlock if edited? && valid?
       end
     end
   end
@@ -260,6 +265,25 @@ class Claim < ActiveRecord::Base
     !self.memo.blank?
   end
 
+  def edited?
+    editor.present? && Time.zone.now - locked_at < 30.minutes
+  end
+
+  def locked?
+    edited? && editor != current_editor
+  end
+
+  def lock(user)
+    self.editor, self.locked_at = user, Time.zone.now
+    self.current_editor ||= user
+    self.save
+  end
+
+  def unlock
+    self.editor, self.locked_at = nil, nil
+    self.save
+  end
+
   def is_active?
     inactive = canceled?
     if not inactive
@@ -293,7 +317,7 @@ class Claim < ActiveRecord::Base
   end
 
   def generate_num
-    if company_id && num.to_i == 0
+    if company.present? && num.to_i == 0
       self.num = Claim.where(company_id: company_id).maximum(:num).to_i + 1
     end
   end
@@ -436,6 +460,10 @@ class Claim < ActiveRecord::Base
     end
 
     selected
+  end
+
+  def check_lock
+    errors.add(:base, I18n.t('claims.messages.is_editing')) if locked?
   end
 
   def local_extra_data

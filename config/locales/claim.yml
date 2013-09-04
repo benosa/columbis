@@ -200,6 +200,10 @@ ru:
       successfully_created_claim: 'Бронь создана'
       successfully_updated_claim: 'Бронь изменена'
       successfully_destroyed_claim: 'Бронь удалена'
+      locked: '(редактируется)'
+      locked_by: '(редактируется %{user})'
+      is_editing: 'Редактируется другим пользователем'
+      warning_of_editing: 'Внесены изменения, вы уверены, что хотите отказаться?'
 
   activerecord:
     errors:

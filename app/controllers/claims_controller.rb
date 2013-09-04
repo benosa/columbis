@@ -3,7 +3,7 @@ class ClaimsController < ApplicationController
   include ClaimsHelper
   ADDITIONAL_ACTIONS = [:totals, :update_bonus].freeze
 
-  before_filter :set_claim, :only => [:new, :create, :edit, :update, :update_bonus] # override loading resource by cancan
+  before_filter :set_claim, :only => [:new, :create, :edit, :update, :update_bonus, :lock, :unlock] # override loading resource by cancan
 
   load_and_authorize_resource :except => ADDITIONAL_ACTIONS
 
@@ -80,6 +80,7 @@ class ClaimsController < ApplicationController
 
   def create
     @claim.assign_reflections_and_save(params[:claim])
+
     unless @claim.errors.any?
       redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
       redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
@@ -123,6 +124,33 @@ class ClaimsController < ApplicationController
     }
   end
 
+  def lock
+    authorize! :update, @claim
+    unless @claim.locked?
+      @claim.lock(current_user)
+      render :json => {
+        :message => I18n.t('claims.messages.locked')
+      }
+    else
+      render :json => {
+        :locked => @claim.locked_by
+      }
+    end
+  end
+
+  def unlock
+    authorize! :update, @claim
+    if @claim.edited?
+      unless @claim.locked?
+        @claim.unlock
+      else
+        render :json => { :wrong_user => 1 }
+        return
+      end
+    end
+    render :json => { :unlocked => 1 }
+  end
+
   def destroy
     @claim.destroy
     redirect_to claims_url, :notice =>  t('claims.messages.successfully_destroyed_claim')
@@ -141,6 +169,7 @@ class ClaimsController < ApplicationController
     def set_claim
       @claim = params[:id].present? ? Claim.find(params[:id]) : Claim.new
       @claim.company ||= current_company
+      @claim.current_editor ||= current_user
       if params[:claim]
         if is_admin? or is_boss?
           @claim.user_id = params[:claim][:user_id]

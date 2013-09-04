@@ -47,6 +47,8 @@ Tourism::Application.routes.draw do
       get 'scroll' => 'claims#scroll', as: :scroll
       get 'totals' => 'claims#totals', as: :totals
       put 'update_bonus/:id' => 'claims#update_bonus', :as => 'update_bonus'
+      put 'lock/:id' => 'claims#lock', :as => 'lock'
+      put 'unlock/:id' => 'claims#unlock', :as => 'unlock'
     end
     member do
       match 'print/:document' => 'claims#print'

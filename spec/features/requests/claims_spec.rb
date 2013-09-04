@@ -126,6 +126,47 @@ describe "Claim:", js: true do
         page.should have_selector('a.id_link', :text => '321123')
       end
     end
+
+    describe "Locking" do
+      before do
+        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+      end
+
+      it "should be edited and locked" do
+        visit(edit_claim_path(@claim))
+        fill_in_with_trigger "claim_operator_confirmation", :with => "6E-154600652" # trigger change event and lock request
+        expect { page.evaluate_script("$('.edit_claim').data('changed');") }.to become_true
+        find('#content .top h1').text.should have_content(I18n.t('claims.messages.locked'))
+        @claim.reload
+        @claim.edited?.should be_true
+        @claim.locked_by.should == @boss.id
+      end
+
+      it "should check locking and saving" do
+        visit(edit_claim_path(@claim))
+        expect {
+          fill_in "claim_operator_confirmation", :with => "6E-154600652"
+          all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+          @claim.reload
+        }.to change(@claim, :operator_confirmation).from(nil).to('6E-154600652')
+        find("#claim_operator_confirmation").value.should == "6E-154600652"
+        @claim.edited?.should be_false
+        @claim.locked_by.should == nil
+      end
+
+      it "should check locked claim for error after saving" do
+        @another_boss = FactoryGirl.create(:boss, company: @boss.company, office: @boss.office)
+        @claim.lock(@another_boss)
+        @claim.reload
+        visit(edit_claim_path(@claim))
+        expect {
+          fill_in "claim_operator_confirmation", :with => "6E-154600652"
+          all("a.save[data-submit='edit_claim_#{@claim.id}']").first.click
+          @claim.reload
+        }.to_not change(@claim, :operator_confirmation).from(nil).to('6E-154600652')
+        page.should have_content(I18n.t('claims.messages.is_editing'))
+      end
+    end
   end
 
 end

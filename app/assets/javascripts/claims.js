@@ -1061,6 +1061,57 @@ $(function() {
   $(window).scroll(function() {
     $(window).trigger('scroll.claims');
   });
+
+  // Claim locking
+  $('.edit_claim').on('change autocompleteselect', ':input', function() {
+    if (!$('.edit_claim').data('changed') && !$('.edit_claim').data('locked')) {
+      $.ajax({
+        url: $('.edit_claim').data('lockpath'),
+        type: 'post',
+        data: { _method: 'put' },
+        success: function(data) {
+          if (data.message) {
+            setTimeout(function(){
+              $('.edit_claim').data('changed', false);
+            }, 1800 * 1000); // 30 minutes
+            if ($('#content .top h1').text().indexOf(data.message) == -1) {
+              $('#content .top h1').append(' ' + data.message);
+            }
+            $('.edit_claim').data('changed', true);
+          } else if(data.locked) {
+            $('.edit_claim').data('locked', data.locked);
+          }
+        }
+      });
+    }
+  });
+
+  // Firefox bug click after beforeunload
+  $('a.save').mouseup(function(){
+    $('.edit_claim').data('changed', false)
+  });
+
+  // Message of editing
+  $(window).on('beforeunload', function() {
+    var message = $('.edit_claim').data('warning');
+    if (message && $('.edit_claim').data('changed')) {
+      return message;
+    }
+  });
+
+  // Claim unlocking
+  $(window).on('unload', function() {
+    if ($('.edit_claim').data('changed')) {
+      $.ajax({
+        url: $('.edit_claim').data('unlockpath'),
+        type: 'post',
+        data: { _method: 'put' },
+        async: false, // use sync request, else it may not be sent
+        timeout: 10 * 1000 // 10 seconds
+      });
+    }
+  });
+
 });
 
 //Tourist special_offer

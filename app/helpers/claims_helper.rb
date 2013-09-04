@@ -275,4 +275,27 @@ module ClaimsHelper
     list
   end
 
+  def claim_title(claim)
+    title = t('.title', :num => claim.num, :created_at => l(claim.created_at, :format => :long))
+    if claim.locked?
+      title += ' ' + I18n.t('claims.messages.locked_by', user: claim.editor.try(:name_for_list))
+    elsif claim.edited?
+      title += ' ' + I18n.t('claims.messages.locked')
+    end      
+    title
+  end
+
+  def claim_form_data(claim)
+    data = {
+      data: { 
+        lockpath: lock_claims_path,
+        unlockpath: unlock_claims_path,
+        warning: I18n.t('claims.messages.warning_of_editing') 
+      }
+    }
+    data[:data][:locked] = claim.locked_by if claim.locked?
+    data
+  end
+
+
 end

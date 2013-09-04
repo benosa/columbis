@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :tasks
 
   before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
+  before_validation :generate_login
+  before_validation :generate_password
 
   validates_uniqueness_of :login
   validates_presence_of :login, :role
@@ -105,6 +107,19 @@ class User < ActiveRecord::Base
     params.delete(:role)
     params.delete(:password)
     self.save(params)
+  end
+
+  def generate_login
+    login = Russian.transliterate(self.first_name)[0] + Russian.transliterate(self.last_name)
+    i = 0
+    while !User.where(:login => login + (i > 0 ? i.to_s : '')).empty?
+      i += 1
+    end
+    self.login = login + (i > 0 ? i.to_s : '')
+  end
+
+  def generate_password
+    self.password = Devise.friendly_token.first(8);
   end
 
   private

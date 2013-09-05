@@ -48,7 +48,7 @@ class Operator < ActiveRecord::Base
 
   # Potentially long operation
   def touch_claims
-    Claim.where(operator_id: id).update_all(updated_at: Time.now.utc) if !new_record? and name_changed?
+    Claim.where(operator_id: id).update_all(updated_at: Time.now.utc) if (!new_record? and name_changed?) or destroyed?
   end
   handle_asynchronously :touch_claims
 

@@ -1,5 +1,5 @@
 - cache_params = [show_office, show_accountant_columns, show_bonus_columns, totals.present?]
-- cache [:claim_list, claims.hash] + cache_params do
+- cache [:claim_list, claims_cache_key(claims)] + cache_params do
   - cur_month = prev_month = false
 
   - claims.each do |claim|

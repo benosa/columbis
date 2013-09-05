@@ -1,6 +1,9 @@
-%p= f.label :email
+%p= f.label :email, :required => true
 = f.text_field :email
-%p= f.label :first_name
+%p= f.label :first_name, :required => true
 = f.text_field :first_name
-%p= f.label :last_name
+%p= f.label :last_name, :required => true
 = f.text_field :last_name
+%p= f.label :phone, :required => true
+= f.text_field :phone, :value => "+7"
+

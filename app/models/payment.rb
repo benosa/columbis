@@ -11,7 +11,7 @@ class Payment < ActiveRecord::Base
 
   # validates_presence_of :claim # in claim inveres_of option must be used
   validates_presence_of :amount, :amount_prim, :form, :currency, :date_in, :course
-  # validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
+  validates_presence_of :recipient_id, :recipient_type, :payer_id, :payer_type
 
   validates_numericality_of :course, :amount
   # validates_numericality_of :course, :amount, :greater_than => 0

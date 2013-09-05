@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include SignInAs::Concerns::RememberAdmin
 
   CURRENTS = %w[company office]
+  UNSUBDOMAIN_CONTROLLERS = ["devise/sessions", "devise/passwords", "registrations"]
   protect_from_forgery
 
   CURRENTS.each do |elem|
@@ -23,6 +24,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
+  before_filter :set_session_options_domain
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -74,12 +76,29 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def set_session_options_domain
+    request.session_options[:domain] = request.domain
+  end
+
   def check_subdomain
-    domains = request.host.split('.')
-    if user_signed_in? && domains[0] != current_company.subdomain && params[:controller] != "devise/sessions"
-      path = request.port.blank? ? "" : ":" + request.port.to_s
-      path = request.protocol + current_company.subdomain + '.' + request.host + path
-      redirect_to path
+    base_host = request.host.split('.')
+    l = base_host.length
+    host = ""
+    if l >= 2 && (base_host[l-3] == "dev" || base_host[l-3] == "staging")
+      host = base_host[l-3] + "."
+    end
+    host = host + base_host[l-2] + "." + base_host[l-1]
+    port = request.port.blank? ? "" : ":" + request.port.to_s
+    protocol = request.protocol
+
+    if user_signed_in?
+      if base_host[0] != current_company.subdomain && !UNSUBDOMAIN_CONTROLLERS.any? {|u| u == params[:controller] }
+        redirect_to protocol + current_company.subdomain + "." + host + port
+      end
+    else
+      if request.host != host
+        redirect_to protocol + host + port + new_user_session_path
+      end
     end
   end
 

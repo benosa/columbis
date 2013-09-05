@@ -60,6 +60,7 @@ ru:
         ogrn: 'ОРГН'
         okpo: 'ОКПО'
         inn: 'ИНН'
+        subdomain: 'Поддомен компании'
         address:
           region: 'Регион'
           street: 'Улица'

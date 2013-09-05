@@ -32,6 +32,8 @@
         = f.text_field :inn, :class => 'bank'
         %p= f.label :time_zone
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
+        %p= f.label :subdomain
+        = f.text_field :subdomain, :class => 'bank'
 
 .form_column
   .form_block

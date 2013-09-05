@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
 
   before_filter :set_current_controller, :except => [:current_timestamp]
+  before_filter :check_subdomain
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -72,6 +73,15 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def check_subdomain
+    domains = request.host.split('.')
+    if user_signed_in? && domains[0] != current_company.subdomain && params[:controller] != "devise/sessions"
+      path = request.port.blank? ? "" : ":" + request.port.to_s
+      path = request.protocol + current_company.subdomain + '.' + request.host + path
+      redirect_to path
+    end
+  end
 
   def check_company_office
     if user_signed_in? and request.path != destroy_user_session_path

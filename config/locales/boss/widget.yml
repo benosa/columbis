@@ -6,6 +6,7 @@ ru:
           date_edit: 'Изменить дату на которую происходит подсчёт показателей'
         menu:
           settings: 'Настройки'
+          delete: 'Удалить'
         factor:
           claims: 'Брони'
           incomes: 'Доход'

@@ -1,3 +1,3 @@
 $(".widget-area.clearfix [position='<%= @widget.id %>']").replaceWith("<%= j(render partial: 'boss/widgets/widget', locals: { widget: @widget }) %>");
-Charts.init();
-bind_settings_dialog($('.widget-menu .settings-menu'));
+Charts.init('.chart[id="' + '<%= "chart_" + @widget.name + "_" + @widget.period %>' + '"]');
+bind_settings_dialog($(".widget-menu .settings-menu[id='" + "<%= 'settings-menu-' + @widget.id.to_s %>" + "']"));

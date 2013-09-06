@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   include SignInAs::Concerns::RememberAdmin
 
   CURRENTS = %w[company office]
-  UNSUBDOMAIN_CONTROLLERS = ["devise/sessions", "devise/passwords", "registrations"]
   protect_from_forgery
 
   CURRENTS.each do |elem|
@@ -81,28 +80,22 @@ class ApplicationController < ActionController::Base
   end
 
   def check_subdomain
-    base_host = request.host.split('.')
-    l = base_host.length
-    if base_host[l-2] == "test"
-      return
-    end
-    host = ""
-    if l >= 2 && (base_host[l-3] == "dev" || base_host[l-3] == "staging")
-      host = base_host[l-3] + "."
-    end
-    host = host + base_host[l-2] + "." + base_host[l-1]
-    port = request.port.blank? ? "" : ":" + request.port.to_s
-    protocol = request.protocol
+    # Check subdomain only for remote GET requests to proper domain
+    return unless request.get? && !request.local? && request.host.index(CONFIG[:domain])
 
+    subdomain = request.host.sub(/\.?#{CONFIG[:domain]}\Z/, '')
+    is_public_controller = CONFIG[:public_controllers].include?(params[:controller])
+    redirect_url = nil
+    
     if user_signed_in?
-      if base_host[0] != current_company.subdomain && !UNSUBDOMAIN_CONTROLLERS.any? {|u| u == params[:controller] }
-        redirect_to protocol + current_company.subdomain + "." + host + port
+      if !is_public_controller && subdomain != current_company.subdomain
+        redirect_url = url_for(domain: CONFIG[:domain], subdomain: current_company.subdomain)
       end
-    else
-      if request.host != host
-        redirect_to protocol + host + port + new_user_session_path
-      end
+    elsif subdomain.present?
+      redirect_url = url_for(host: CONFIG[:domain])
     end
+
+    redirect_to redirect_url if redirect_url && redirect_url != request.original_url
   end
 
   def check_company_office

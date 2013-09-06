@@ -83,6 +83,9 @@ class ApplicationController < ActionController::Base
   def check_subdomain
     base_host = request.host.split('.')
     l = base_host.length
+    if base_host[l-2] == "test"
+      return
+    end
     host = ""
     if l >= 2 && (base_host[l-3] == "dev" || base_host[l-3] == "staging")
       host = base_host[l-3] + "."

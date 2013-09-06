@@ -5,21 +5,15 @@ FactoryGirl.define do
     "email#{n}@factory.com"
   end
 
-  sequence :login do |n|
-    "login#{n}"
-  end
-
   factory :user do
     association :company
     association :office
 
     email { Faker::Internet.email }
-    login { Faker::Name.name }
     last_name { Faker::Name.name }
     first_name { Faker::Name.name }
     middle_name { Faker::Name.name }
-    password 'secret'
-    password_confirmation 'secret'
+    phone "+77777777"
     delta false
 
     factory (:admin)      { role 'admin' }

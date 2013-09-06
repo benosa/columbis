@@ -31,7 +31,7 @@
                   Вы можете зайти на сайт, после подтверждения, используя логин: #{@resource.login} и пароль: #{@resource.password}. Вы можете изменить их на сайте.
                 %p
                   Для того, чтобы подветрдить регистрацию, пожалуйста, перейдите по ссылке
-                  = link_to 'Подтвердить регистрацию', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), :style => "font: bold 13px Arial; color:#0076be;"
+                  = link_to confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), :style => "font: bold 13px Arial; color:#0076be;"
                 %p Спасибо, что выбрали Columbis!
       %tr{:align => "center", :width => "600"}
         %td

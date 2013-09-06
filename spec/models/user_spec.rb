@@ -33,4 +33,25 @@ describe User do
       it { should_not allow_value(nil).for(:password) }
     end
   end
+
+  describe ".registration" do
+    context "when registered" do
+      before do
+        @user = FactoryGirl.create :user
+      end
+      it { @user.login.should == Russian.transliterate(@user.first_name)[0] + Russian.transliterate(@user.last_name) }
+    end
+
+    context "when not registered" do
+      before do
+        @user = FactoryGirl.create(:user, email: 'test@test.ru', first_name: 'lol', last_name: 'ogin', phone: '77777777')
+        @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin')
+        @user2.generate_login
+      end
+      it { @user.login.should == 'login' }
+      it { @user2.should_not allow_value('test@test.ru').for(:email) }
+      it { @user2.login.should == 'login1' }
+      it { @user2.should_not allow_value('77777777').for(:phone) }
+    end
+  end
 end

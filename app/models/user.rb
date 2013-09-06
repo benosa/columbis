@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   attr_protected :company_id, :as => :admin
   attr_protected :role, :as => [:admin, :boss]
 
+  attr_accessor :phone_code
+
   belongs_to :company
   belongs_to :office
   has_many :tasks
@@ -20,11 +22,13 @@ class User < ActiveRecord::Base
   before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
   before_validation :generate_login
   before_validation :generate_password
+  before_validation :join_phone
 
-  validates_uniqueness_of :login
-  validates_presence_of :login, :role
+  validates_presence_of :role
   validates_presence_of :company_id, :office_id, :unless => Proc.new{ %w[admin boss].include? self.role }
-  validates_presence_of :last_name, :first_name, :if => Proc.new{ self.role == 'admin' }
+  validates_presence_of :last_name, :first_name
+  validates :phone, :length => { minimum: 8 }, uniqueness: true
+
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]
@@ -109,13 +113,19 @@ class User < ActiveRecord::Base
     self.save(params)
   end
 
+  def join_phone
+    self.phone = phone_code.to_s + phone.to_s
+  end
+
   def generate_login
-    login = Russian.transliterate(self.first_name)[0] + Russian.transliterate(self.last_name)
-    i = 0
-    while !User.where(:login => login + (i > 0 ? i.to_s : '')).empty?
-      i += 1
+    if first_name.to_s.length > 0 && last_name.to_s.length > 0
+      login_temp = Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)
+      i = 0
+      while !User.where(:login => login_temp + (i > 0 ? i.to_s : '')).empty?
+        i += 1
+      end
+      self.login = login_temp + (i > 0 ? i.to_s : '')
     end
-    self.login = login + (i > 0 ? i.to_s : '')
   end
 
   def generate_password

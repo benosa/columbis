@@ -29,10 +29,19 @@ body {
 
 .header {
   overflow: visible;
-  position: relative;
+  position: fixed;
+  top: 0;
+  z-index: 1030;
+  left:0;
+  width:100%;
+}
+
+.header .second_menu .rmenu {
+  min-height: 53px;
 }
 
 .wrapper {
+  margin-top: 118px;
   min-height: 301px;
   padding: 0 0 0 23px;
 }

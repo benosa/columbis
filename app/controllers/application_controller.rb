@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
     subdomain = request.host.sub(/\.?#{CONFIG[:domain]}\Z/, '')
     is_public_controller = CONFIG[:public_controllers].include?(params[:controller])
     redirect_url = nil
-    
+
     if user_signed_in?
       if !is_public_controller && subdomain != current_company.subdomain
         redirect_url = url_for(domain: CONFIG[:domain], subdomain: current_company.subdomain)

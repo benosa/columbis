@@ -4,7 +4,7 @@ require ::File.expand_path('../config/environment',  __FILE__)
 
 if Rails.env.production? or Rails.env.staging?
   DelayedJobWeb.use Rack::Auth::Basic do |username, password|
-    username == 'dj' && password == '41CGuTp3sInu'
+    username == CONFIG[:delayed_job_user] && password == CONFIG[:delayed_job_password]
   end
 end
 

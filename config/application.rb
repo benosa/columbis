@@ -10,6 +10,9 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+# Application configuration
+CONFIG = (YAML.load_file(File.expand_path('../application.yml', __FILE__))[Rails.env] || {}).with_indifferent_access
+
 module Tourism
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

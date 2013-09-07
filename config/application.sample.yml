@@ -1,0 +1,12 @@
+development: &defaults
+  domain: localhost
+  delayed_job_user: user
+  delayed_job_password: password
+  public_controllers:
+    - 'devise/sessions'
+    - 'devise/passwords'
+    - 'registrations'
+
+test:
+  <<: *defaults
+  domain: 127.0.0.1

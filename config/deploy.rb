@@ -58,6 +58,7 @@ namespace :deploy do
   end
 
   task :config do
+    run "cd #{release_path}/config && ln -sf #{shared_path}/config/application.yml application.yml"
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/database.yml database.yml"
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/sphinx.yml sphinx.yml"
     run "cd #{release_path}/config && ln -sf #{shared_path}/config/mailer.yml mailer.yml"

@@ -2,7 +2,7 @@
 class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
-                  :site, :inn, :time_zone,
+                  :site, :inn, :time_zone, :subdomain,
                   :sms_signature, :sms_birthday_send
 
   attr_accessor :company_id
@@ -30,6 +30,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
+  validates :subdomain, uniqueness: true, presence: true
 
   def company_id
     id

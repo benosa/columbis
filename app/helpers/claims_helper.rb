@@ -298,7 +298,16 @@ module ClaimsHelper
   end
 
   def claims_cache_key(claims)
-    claims.map(&:cache_key).hash
+    hash = claims.map(&:cache_key).hash
+    Rails.logger.debug "hash: #{hash}"
+    Rails.logger.debug "size: #{claims.size}"
+
+    ttclaims = claims.select{ |c| c.operator.try(:id) == 121 }
+    ttclaims.each do |c|
+      Rails.logger.debug "c: #{{id: c.id, updated_at: c.updated_at}}"
+      Rails.logger.debug "c.cache_key: #{c.cache_key}"
+    end
+    hash
   end
 
 end

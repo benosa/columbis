@@ -13,8 +13,6 @@ module Boss
         @widgets = Widget.create_default_widgets(current_user, current_company)
       end
 
-      #raise params.to_s
-
       if request.xhr?
         total_filter = params[:total_filter]
         if total_filter
@@ -53,6 +51,17 @@ module Boss
       if request.xhr?
         @widget = Widget.find(params["format"])
         @widget.update_attributes params["boss_widget"]
+        render 'boss/save_widget_settings'
+      else
+        render nothing: true
+      end
+    end
+
+    def delete_widget
+      if request.xhr?
+        @widget = Widget.find(params["format"])
+        @widget.visible = false
+        @widget.save
         render 'boss/save_widget_settings'
       else
         render nothing: true

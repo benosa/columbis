@@ -72,4 +72,35 @@ describe "Widgets:", js: true do
     find("ul#settings-menu li.settings-menu-buttons button[rel='close']").click
     page.should have_content( l(Date.new(2012, 1, 1), :format => "%A, %d %B %Y, #{t("date.week")} %V") )
   end
+
+  it 'should work the delete widget button' do
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
+      .order("position ASC").each do |widget|
+        find("div.widget[position='#{widget.id}']").click
+        find("a[href='#{boss_delete_widget_path(widget.id)}']").click
+        page.should_not have_selector("div.widget[position='#{widget.id}']")
+    end
+  end
+
+  it 'should be checked all widget on top menu' do
+    find('a#settings.settings').click
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
+      .order("position ASC").each do |widget|
+        page.should have_selector("label.checkbox.active[for='widget-#{widget.id}']")
+    end
+  end
+
+  it 'should be work uncheck widgets' do
+    find('a#settings.settings').click
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
+      .order("position ASC").first(5).each do |widget|
+        find("label.checkbox.active[for='widget-#{widget.id}']").click
+    end
+    find('button[rel="save"]').click
+    visit boss_index_path
+    widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
+      .order("position ASC").first(5).each do |widget|
+        widget.visible.should == false
+    end
+  end
 end

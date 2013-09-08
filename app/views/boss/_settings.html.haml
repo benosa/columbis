@@ -1,5 +1,5 @@
 %form.filter#widget_date_settings
-  = link_to '', '#', id: 'settings', class: 'settings', title: t('boss.active_record.widget.index.date_edit')
+  = link_to t('boss.active_record.widget.menu.settings'), '#', id: 'settings', class: 'settings', title: t('boss.active_record.widget.menu.settings'), :style => "padding-left: 20px; width: 70px;"
   %ul#settings-menu.settings-menu{ title: t('boss.active_record.widget.menu.settings') }
     - @widgets.each do |widget|
       %li

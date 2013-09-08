@@ -2,3 +2,5 @@ $(".widget-area.clearfix [position='<%= @widget.id %>']").replaceWith("<%= j(ren
 Charts.init('.chart[id="' + '<%= "chart_" + @widget.id.to_s %>' + '"]');
 bind_settings_dialog($(".widget-menu .settings-menu[id='" + "<%= 'settings-menu-' + @widget.id.to_s %>" + "']"));
 bind_widget_area_to_sortable();
+
+check_widget_visible('<%= @widget.id %>', '<%= @widget.visible %>');

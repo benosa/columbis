@@ -38,3 +38,22 @@ function bind_widget_area_to_sortable(){
     }
   });
 };
+
+function check_widget_visible(widget_id, visible) {
+  var has_visible = $("label[for='widget-" + widget_id + "']").hasClass('active');
+  if (has_visible != visible) {
+    change_widget_visible(widget_id, visible);
+  };
+};
+
+function change_widget_visible(widget_id, visible) {
+  if (visible == true) {
+    $("label[for='widget-" + widget_id + "']").removeClass('false');
+    $("label[for='widget-" + widget_id + "']").addClass('active');
+    $("input[id='widget-" + widget_id + "']").attr("checked", "checked");
+  } else {
+    $("label[for='widget-" + widget_id + "']").removeClass('active');
+    $("label[for='widget-" + widget_id + "']").addClass('false');
+    $("input[id='widget-" + widget_id + "']").removeAttr("checked");
+  };
+};

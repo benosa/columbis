@@ -2,4 +2,5 @@
   bind_settings_dialog($('#settings-menu'));
   bind_settings_dialog($('.widget-menu .settings-menu'));
   $(".current-date").html('<%= l @date, :format => "%A, %d %B %Y, #{t("date.week")} %V" %>');
+  bind_widget_area_to_sortable();
 </script>

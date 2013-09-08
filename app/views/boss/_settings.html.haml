@@ -9,5 +9,5 @@
       = text_field_tag :widget_date, l(@date, format: :long), class: 'datepicker start_date date', :disabled => true, data: { param: 'widget_date', filter: 1, default: @date }
 
     %li.settings-menu-buttons
-      -# %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
+      %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
       %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

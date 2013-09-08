@@ -13,7 +13,25 @@ module Boss
         @widgets = Widget.create_default_widgets(current_user, current_company)
       end
 
+      #raise params.to_s
+
       if request.xhr?
+        total_filter = params[:total_filter]
+        if total_filter
+          @widgets.each do |widget|
+            if total_filter.any? {|name| t(widget.title) == name}
+              unless widget.visible
+                widget.visible = true
+                widget.save
+              end
+            else
+              if widget.visible
+                widget.visible = false
+                widget.save
+              end
+            end
+          end
+        end
         render partial: 'boss/index'
       else
         render 'boss/index'

@@ -609,6 +609,9 @@ function bind_settings_dialog(elements) {
       });
       $('.ik_select select', this).ikSelect('redraw');
       $(this).find("input.datepicker").attr('disabled', false);
+    },
+    close: function() {
+      $(this).find("input.datepicker").attr('disabled', true);
     }
   });
 }

@@ -70,7 +70,7 @@ class Claim < ActiveRecord::Base
   accepts_nested_attributes_for :flights, :reject_if => :all_blank, :allow_destroy => true
 
   validates_presence_of :user_id, :office_id, :check_date, :arrival_date, :tourist_stat
-  validates_presence_of :operator, :if => Proc.new { |claim| claim.payments_out && claim.payments_out.count > 0 }
+  validates_presence_of :operator, :if => Proc.new { |claim| claim.payments_out && claim.payments_out.size > 0 }
   # validates_presence_of :user_id, :operator_id, :office_id, :country_id, :resort_id, :city_id
   # validates_presence_of :check_date, :tourist_stat, :arrival_date, :departure_date, :maturity,
   #                       :airport_back,
@@ -601,6 +601,7 @@ class Claim < ActiveRecord::Base
         payment[:currency] = operator_price_currency if !payment.approved? || payment.currency.blank?
         payment.save
       end
+      valid? # trigger self validation
     end
 
     def check_validation_messages

@@ -297,5 +297,8 @@ module ClaimsHelper
     data
   end
 
+  def claims_cache_key(claims)
+    claims.map(&:cache_key).hash
+  end
 
 end

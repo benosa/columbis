@@ -16,6 +16,9 @@ class Operator < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :company_id }, length: { maximum: 255 }
 
+  after_update :touch_claims
+  after_destroy :touch_claims
+
   default_scope :order => :name
 
   define_index do
@@ -43,4 +46,10 @@ class Operator < ActiveRecord::Base
     }
   end
 
+  private
+
+    def touch_claims
+      # Potentially long operation, handle it asynchronously
+      OperatorJobs.touch_claims(id) if (!new_record? and name_changed?) or destroyed?
+    end
 end

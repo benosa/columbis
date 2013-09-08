@@ -92,6 +92,7 @@ Tourism::Application.routes.draw do
     match '/' => 'base#index', :as => :index
     post '/sort_widget' => 'base#sort_widget', :as => :sort_widget
     post '/save_widget_settings' => 'base#save_widget_settings', :as => :save_widget_settings
+    post '/delete_widget' => 'base#delete_widget', :as => :delete_widget
   end
 
   scope 'dashboard' do

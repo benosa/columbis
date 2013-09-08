@@ -2,21 +2,7 @@
 jQuery(function($) {
 
   bind_settings_dialog($('.widget-menu .settings-menu'));
-
-  $('.dashboard .widget-area').sortable({
-    containment: '.widget-area',
-    cursor: 'move',
-    distance: 5,
-    handle: '.widget-btn-more',
-    update: function(event, ui) {
-      var widgets = $(event.target).children(".widget");
-      var positions = [];
-      widgets.each(function() {
-        positions.push($(this).attr("position"));
-      });
-      $.post("/boss/sort_widget", {"data": positions.toString()});
-    }
-  });
+  bind_widget_area_to_sortable();
 
   // Settings menu on widget open button
   $('.widget-menu a.settings').live('click', function(e) {
@@ -35,3 +21,39 @@ jQuery(function($) {
     $("#settings-menu-" + id).dialog('close');
   });
 });
+
+function bind_widget_area_to_sortable(){
+  $('.dashboard .widget-area').sortable({
+    containment: '.widget-area',
+    cursor: 'move',
+    distance: 5,
+    handle: '.widget-btn-more',
+    update: function(event, ui) {
+      var widgets = $(event.target).children(".widget");
+      var positions = [];
+      widgets.each(function() {
+        positions.push($(this).attr("position"));
+      });
+      $.post("/boss/sort_widget", {"data": positions.toString()});
+    }
+  });
+};
+
+function check_widget_visible(widget_id, visible) {
+  var has_visible = $("label[for='widget-" + widget_id + "']").hasClass('active');
+  if (has_visible != visible) {
+    change_widget_visible(widget_id, visible);
+  };
+};
+
+function change_widget_visible(widget_id, visible) {
+  if (visible == true) {
+    $("label[for='widget-" + widget_id + "']").removeClass('false');
+    $("label[for='widget-" + widget_id + "']").addClass('active');
+    $("input[id='widget-" + widget_id + "']").attr("checked", "checked");
+  } else {
+    $("label[for='widget-" + widget_id + "']").removeClass('active');
+    $("label[for='widget-" + widget_id + "']").addClass('false');
+    $("input[id='widget-" + widget_id + "']").removeAttr("checked");
+  };
+};

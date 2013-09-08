@@ -8,7 +8,7 @@ module Boss
     PERIODS = %w[month day week].freeze
 
     attr_accessible :company_id, :name, :position, :settings, :title, :user_id, :view, :widget_type
-    attr_accessible :period
+    attr_accessible :period, :visible
 
     attr_reader :date
 
@@ -39,39 +39,78 @@ module Boss
       self.settings.merge!({:period => @period})
     end
 
+    def visible
+      v = settings[:visible].nil? ? true : settings[:visible]
+      @visible ||= v
+    end
+
+    def visible=(value)
+      @visible = value
+      self.settings.merge!({:visible => @visible})
+    end
+
     def self.create_default_widgets(user, company)
       widgets = []
       widgets << create_widget(user, company, 1,
-        'boss.active_record.widget.factor.claims', 'small', 'factor', 'claim')
+        'boss.active_record.widget.factor.claims', 'small', 'factor', 'claim',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 2,
-        'boss.active_record.widget.factor.incomes', 'small', 'factor', 'income')
+        'boss.active_record.widget.factor.incomes', 'small', 'factor', 'income',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 3,
-        'boss.active_record.widget.factor.normalcheck', 'small', 'factor', 'normalcheck')
+        'boss.active_record.widget.factor.normalcheck', 'small', 'factor', 'normalcheck',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 4,
-        'boss.active_record.widget.factor.normalprice', 'small', 'factor', 'normalprice')
+        'boss.active_record.widget.factor.normalprice', 'small', 'factor', 'normalprice',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 5,
-        'boss.active_record.widget.factor.margin', 'small', 'factor', 'margin')
+        'boss.active_record.widget.factor.margin', 'small', 'factor', 'margin',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 6,
         'boss.active_record.widget.chart.income_title_day', 'medium', 'chart', 'income',
-        {:period => 'day', :yAxis_text => 'RUR'})
-      widgets << create_widget(user, company, 7,
+        {:period => 'day', :yAxis_text => 'RUR', :visible => true}
+      )
+      widgets << create_widget(
+        user, company, 7,
         'boss.active_record.widget.chart.margin_title_week', 'medium', 'chart', 'margin',
-        {:period => 'week', :yAxis_text => 'boss.active_record.widget.chart.percent'})
-      widgets << create_widget(user, company, 8,
+        {:period => 'week', :yAxis_text => 'boss.active_record.widget.chart.percent',
+          :visible => true}
+      )
+      widgets << create_widget(
+        user, company, 8,
         'boss.active_record.widget.chart.claim_title_month', 'medium', 'chart', 'claim',
-        {:period => 'month', :yAxis_text => 'boss.active_record.widget.chart.claim_number'})
+        {:period => 'month', :yAxis_text => 'boss.active_record.widget.chart.claim_number',
+          :visible => true}
+      )
       widgets << create_widget(user, company, 9,
-        'boss.active_record.widget.table.tourists', 'large', 'table', 'tourists')
+        'boss.active_record.widget.table.tourists', 'large', 'table', 'tourists',
+        {:visible => true}
+      )
       widgets << create_widget(user, company, 10,
-        'boss.active_record.widget.leader.promotion', 'small', 'leader', 'promotion', {:period => 'month'})
+        'boss.active_record.widget.leader.promotion', 'small', 'leader', 'promotion',
+        {:period => 'month', :visible => true}
+      )
       widgets << create_widget(user, company, 11,
-        'boss.active_record.widget.leader.direction', 'small', 'leader', 'direction', {:period => 'month'})
+        'boss.active_record.widget.leader.direction', 'small', 'leader', 'direction',
+        {:period => 'month', :visible => true}
+      )
       widgets << create_widget(user, company, 12,
-        'boss.active_record.widget.leader.hotelstars', 'small', 'leader', 'hotelstars', {:period => 'month'})
+        'boss.active_record.widget.leader.hotelstars', 'small', 'leader', 'hotelstars',
+        {:period => 'month', :visible => true}
+      )
       widgets << create_widget(user, company, 13,
-        'boss.active_record.widget.leader.officesincome', 'small', 'leader', 'officesincome', {:period => 'month'})
+        'boss.active_record.widget.leader.officesincome', 'small', 'leader', 'officesincome',
+        {:period => 'month', :visible => true}
+      )
       widgets << create_widget(user, company, 14,
-        'boss.active_record.widget.leader.managersincome', 'small', 'leader', 'managersincome', {:period => 'month'})
+        'boss.active_record.widget.leader.managersincome', 'small', 'leader', 'managersincome',
+        {:period => 'month', :visible => true}
+      )
     end
 
     def self.create_widget(user, company, position, title, view, widget_type, name, settings = {})

@@ -415,6 +415,7 @@ ActiveRecord::Schema.define(:version => 20130905081635) do
     t.integer  "user_id"
     t.text     "wishes"
     t.text     "actions"
+    t.text     "note"
     t.boolean  "special_offer",        :default => false
   end
 

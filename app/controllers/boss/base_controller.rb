@@ -14,6 +14,22 @@ module Boss
       end
 
       if request.xhr?
+        total_filter = params[:total_filter]
+        if total_filter
+          @widgets.each do |widget|
+            if total_filter.any? {|name| t(widget.title) == name}
+              unless widget.visible
+                widget.visible = true
+                widget.save
+              end
+            else
+              if widget.visible
+                widget.visible = false
+                widget.save
+              end
+            end
+          end
+        end
         render partial: 'boss/index'
       else
         render 'boss/index'
@@ -37,7 +53,17 @@ module Boss
         @widget.update_attributes params["boss_widget"]
         render 'boss/save_widget_settings'
       else
-        head :bad_request
+        render nothing: true
+      end
+    end
+
+    def delete_widget
+      if request.xhr?
+        @widget = Widget.find(params["format"])
+        @widget.visible = false
+        @widget.save
+        render 'boss/save_widget_settings'
+      else
         render nothing: true
       end
     end

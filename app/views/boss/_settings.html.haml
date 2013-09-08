@@ -1,0 +1,13 @@
+%form.filter#widget_date_settings
+  = link_to t('boss.active_record.widget.menu.settings'), '#', id: 'settings', class: 'settings', title: t('boss.active_record.widget.menu.settings'), :style => "padding-left: 20px; width: 70px;"
+  %ul#settings-menu.settings-menu{ title: t('boss.active_record.widget.menu.settings') }
+    - @widgets.each do |widget|
+      %li
+        = label_tag "widget-#{widget.id}", t(widget.title), class: ['checkbox left_checkbox', widget.visible && 'active']
+        = check_box_tag "widget-#{widget.id}", t(widget.title), widget.visible, data: { param: 'total_filter[]', filter: 1, default: true, event: false }
+    %li
+      = text_field_tag :widget_date, l(@date, format: :long), class: 'datepicker start_date date', :disabled => true, data: { param: 'widget_date', filter: 1, default: @date }
+
+    %li.settings-menu-buttons
+      %button.btn.btn-small.btn-primary{ type: 'button', role: 'button', rel: 'save' }= t('save')
+      %button.btn.btn-small{ type: 'button', role: 'button', rel: 'close' }= t('close')

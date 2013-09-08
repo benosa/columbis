@@ -229,7 +229,7 @@ function set_claims_sticky_header() {
   // Initialization
   if (!$claims_header.data('waypointsWaypointIds')) {
     set_waypoints('#claims .claims_header', {
-      offset: function() { return -$(this).height(); },
+      offset: function() { return -$(this).height() + $('.header').height(); },
       handler: function(direction) {
         var $thead = $(this).closest('thead');
         if (direction == 'down') {
@@ -242,7 +242,7 @@ function set_claims_sticky_header() {
 
     $(window).on('scroll.claims', function() {
       $('#claims .stuck').css({
-        top: $(this).scrollTop()
+        top: $(this).scrollTop() + $('.header').height()
       });
     });
   }

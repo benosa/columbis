@@ -1,19 +1,33 @@
-#flights.form_block.yellow_block{ :class => large_width? && 'departures' }
+#flights.flights_block.form_block.yellow_block{ :class => large_width? && 'departures' }
   .block_title
     %h2= t('.title')
   .form_block_content
     .fake_table
-      %span.from= t('.from')
-      %span.depart= t('.depart')
-      %span.flight= t('.flight')
-      %span.to= t('.to')
-      %span.arrive= t('.arrive')
+      .clearfix
+        .col-actions
+        .col-main
+          .fake_col.col1
+            .block-right
+              %span.depart= t('.depart')
+            .block-stretch
+              %span.from= t('.from')
+          .fake_col.col2
+            %span.flight= t('.flight')
+          .fake_col.col3
+            .block-right
+              %span.arrive= t('.arrive')
+            .block-stretch
+              %span.to= t('.to')
 
     - ind = 0
-    = f.fields_for :flights, @claim.flights do |ff|
+    = f.fields_for :flights, @claim.flights, :wrapper => true do |ff|
       .fake_row.flight.fields{ :id => "flight-#{ind}", :class => ff.object.try(:_destroy) && 'destroyed' }
-        = render :partial => 'flight', :locals => { :flight_form => ff, :ind => ind }
-        = link_to '', '#', :class => 'delete', :title => t('cancel'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"
+        .clearfix
+          .col-actions
+            .delete-wrap
+              = link_to '', '#', :class => 'delete', :title => t('cancel'), data: { check: t('are_you_sure') }, :id => "delete_flight_#{ind}"
+          .col-main.clearfix
+            = render :partial => 'flight', :locals => { :f => ff, :ind => ind }
 
         = ff.hidden_field :_destroy, :class => '_destroy'
         = ff.hidden_field :id, :class => 'hidden_id'

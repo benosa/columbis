@@ -1,74 +1,98 @@
-#tour_price.form_block.blue_block
+#tour_price.tour_price_block.form_block.blue_block
   .block_title
     %h2= t('.tour_price')
     .rates
       %p=f.label :course_eur
-      = f.text_field :course_eur, :class => 'countable amount expires_date'
+      = f.text_field :course_eur, :class => 'countable amount expires_date', wrapper: false
     .rates
       %p= f.label :course_usd
-      = f.text_field :course_usd, :class => 'countable amount expires_date'
+      = f.text_field :course_usd, :class => 'countable amount expires_date', wrapper: false
   .form_block_content
-    .fake_row
-      .two_line.small_margin
-        %p
-          %strong= f.label :tour_price
-        = f.text_field :tour_price, :class => 'phone important'
-        = f.select :tour_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
-      .two_line.small_margin
-        %p= f.label :visa_price
-        = f.text_field :visa_price, :class => 'number_visas'
-        = f.select :visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'price_select'
-      .two_line.number_visas_block
-        %p= f.label :visa_count
-        - if small_width?
-          = f.select :visa_count, (0..30).to_a, {}, :class => 'first_number_visas_select'
-        - else
-          = f.select :visa_count, (0..30).to_a, {}, :class => 'number_visas_select'
-      .two_line.small_margin
-        %p= f.label :children_visa_price
-        = f.text_field :children_visa_price, :class => 'children_visa'
-        = f.select :children_visa_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [t(o.upcase), o]}, {}, :class => 'price_select'
-      .two_line.number_visas_block
-        %p= f.label :visa_count
-        - if small_width?
-          = f.select :children_visa_count, (0..30).to_a, {}, :class => 'last_number_visas_select'
-        - else
-          = f.select :children_visa_count, (0..30).to_a, {}, :class => 'number_visas_select'
-    .fake_row
-      .two_line.small_margin
-        %p= f.label :insurance_price
-        = f.text_field :insurance_price, :class => 'insurance'
-        = f.select :insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ]}, {},:class => 'number_visas_select'
-        = f.select :insurance_count, (0..30).to_a, {}, :class => 'insurance_select'
-      .two_line.small_margin
-        %p= f.label :additional_insurance_price
-        = f.text_field :additional_insurance_price, :class => 'insurance'
-        = f.select :additional_insurance_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
-        = f.select :additional_insurance_count, (0..30).to_a, {}, :class => 'insurance_select'
-      .two_line.small_margin
-        %p= f.label :fuel_tax_price
-        = f.text_field :fuel_tax_price, :class => 'insurance'
-        = f.select :fuel_tax_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ]}, {}, :class => 'number_visas_select'
-        = f.select :fuel_tax_count, (0..30).to_a, {}, :class => 'insurance_select'
-      .two_line.small_margin
-        %p= f.label :additional_services_price
-        = f.text_field :additional_services_price, :class => 'insurance'
-        = f.select :additional_services_price_currency, (CurrencyCourse::CURRENCIES).collect {|o| [ t(o.upcase), o ] }, {}, :class => 'number_visas_select'
-    .fake_row
-      .two_line
-        %p= f.label :primary_currency_price
-        %p
-          = f.hidden_field :primary_currency_price
-          %em#claim_primary_currency_price_view.primary_currency_price_view
-            = claim.primary_currency_price
-          = t('rur')
-      .two_line.value_in_words
-        %p
-          %strong= f.label t('.price_as_string')
-        = text_field_tag :price_as_string,
-            claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY),
-            :class => 'notes grey_input important', :disabled => true
-    .fake_row
+    .fake_row.row1
+      .clearfix
+        .fake_col.col1
+          .two_line
+            %p
+              %strong= f.label :tour_price
+            = f.select :tour_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+            = f.text_field :tour_price, :class => 'tour_price important', wrapper: { class: 'amount-input-wrap' }
+        .fake_col.col2
+          .block-right
+            .two_line
+              %p= f.label :visa_count, t('.count')
+              = f.select :visa_count, (0..30).to_a
+          .block-stretch
+            .two_line
+              %p= f.label :visa_price
+              = f.select :visa_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :visa_price, :class => 'visa_price', wrapper: { class: 'amount-input-wrap' }
+        .fake_col.col3
+          .block-right
+            .two_line
+              %p= f.label :children_visa_count, t('.count')
+              = f.select :children_visa_count, (0..30).to_a
+          .block-stretch
+            .two_line
+              %p= f.label :children_visa_price
+              = f.select :children_visa_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :children_visa_price, :class => 'children_visa', wrapper: { class: 'amount-input-wrap' }
+
+
+    .fake_row.row2
+      .clearfix
+        .fake_col.col1
+          .block-right
+            .two_line
+              %p= f.label :insurance_count, t('.count')
+              = f.select :insurance_count, (0..30).to_a
+          .block-stretch
+            .two_line
+              %p= f.label :insurance_price
+              = f.select :insurance_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :insurance_price, :class => 'insurance_price', wrapper: { class: 'amount-input-wrap' }
+        .fake_col.col2
+          .block-right
+            .two_line
+              %p= f.label :additional_insurance_count, t('.count')
+              = f.select :additional_insurance_count, (0..30).to_a
+          .block-stretch
+            .two_line
+              %p= f.label :additional_insurance_price
+              = f.select :additional_insurance_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :additional_insurance_price, :class => 'additional_insurance_price', wrapper: { class: 'amount-input-wrap' }
+        .fake_col.col3
+          .block-right
+            .two_line
+              %p= f.label :fuel_tax_count, t('.count')
+              = f.select :fuel_tax_count, (0..30).to_a
+          .block-stretch
+            .two_line
+              %p= f.label :fuel_tax_price
+              = f.select :fuel_tax_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :fuel_tax_price, :class => 'fuel_tax_price', wrapper: { class: 'amount-input-wrap' }
+        .fake_col.col4
+          .two_line
+            %p= f.label :additional_services_price
+            = f.select :additional_services_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+            = f.text_field :additional_services_price, :class => 'additional_services_price', wrapper: { class: 'amount-input-wrap' }
+
+    .fake_row.row3
+      .clearfix
+        .fake_col.col1
+          .two_line
+            %p= f.label :primary_currency_price
+            %p
+              = f.hidden_field :primary_currency_price
+              %em#claim_primary_currency_price_view= claim.primary_currency_price
+              = t('rur')
+        .fake_col.col2
+          .two_line
+            %p
+              %strong= f.label t('.price_as_string')
+            .wrap-input.price_as_string-wrap
+              = text_field_tag :price_as_string, claim.primary_currency_price.try(:amount_in_word, CurrencyCourse::PRIMARY_CURRENCY), :class => 'notes grey_input important', :disabled => true
+
+    .fake_row.row4
       .two_line
         %p= f.label :calculation
         = f.text_area :calculation, :rows => 4, :readonly => true, :class => 'grey_input'

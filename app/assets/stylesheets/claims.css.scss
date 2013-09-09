@@ -263,6 +263,7 @@ option {
     .ik_select_list {
       width: 178px;
     }
+    margin-right: 10px;
   }
   .total_years {
     &.ik_select {
@@ -465,6 +466,12 @@ option {
     .special_offer { margin: 10px 0;
       .checkbox { margin-left: 0; }
     }
+  }
+
+  .paying.add_btn {
+    height: auto;
+    margin-right: 5px;
+    padding: 0px 19px 7px 0;
   }
 }
 

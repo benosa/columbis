@@ -36,6 +36,10 @@ body {
   width:100%;
 }
 
+@media only screen and (max-width: 1024px) {
+  .header { width: 1024px; }
+}
+
 .header .second_menu .rmenu {
   min-height: 53px;
 }
@@ -61,11 +65,13 @@ body {
     background-color: #F4F4F4;
     padding: 20px 23px 0;
   }
+  min-width: 1024px;
 }
 .all {
   height: auto;
   padding-bottom: 120px;
   min-height: 100%;
+  min-width: 1024px;
 }
 .content_for {
   height: 0;
@@ -149,9 +155,17 @@ body {
     li:first-child { height: 33px; padding: 15px 21px 0 10px; }
     li span { background: url(/assets/new_design/images/user_ico.png) left bottom no-repeat; }
   }
+  a.logout { margin-right: 0px }
 }
 
 /*.user_panel li:first-child span { height: 38px; padding-top: 10px; background-position: left center; vertical-align: middle; }*/
+
+.logo {
+  background: url(/assets/logo.png) no-repeat scroll 20px 12px rgba(0, 0, 0, 0);
+  float: right;
+  height: 50px;
+  width: 175px;
+}
 
 .red_back, .nothing_done, .hot, .not_ready {
   /*background: url(/assets/new_design/images/red_box.png) right repeat-x !important;*/

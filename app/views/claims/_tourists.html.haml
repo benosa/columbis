@@ -1,42 +1,59 @@
-#tourists.form_block
+#tourists.tourists_block.form_block
   .block_title
     %h2= t('.tourists')
   .form_block_content
     .fake_table
-      %span.fio= t('.full_name')
-      %span.dob= t('.date_of_birth')
-      %span.passport= t('.passport')
-      %span.expires= t('.passport_expire')
+      .clearfix
+        .col-actions
+        .col-main
+          .common_fields
+            .block-right
+              %span.dob= t('.date_of_birth')
+              %span.passport= t('.passport')
+              %span.expires= t('.passport_expire')
+            .block-stretch
+              %span.fio= t('.full_name')
+          .additional_fields
+            %span.tel= t('.phone')
+            %span.tourist_address= t('.address')
 
-    = f.fields_for :applicant_attributes, @claim.applicant do |af|
+    = f.fields_for :applicant_attributes, @claim.applicant, :wrapper => true do |af|
       .fake_row.applicant.fields
-        %p= t('.tourists_full_name_hint') + ':'
-        %span.common_fields
-          = render :partial => 'tourist', :locals => { :f => af }
-          = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
-
-        .additional_fields
-          .phone_number_col
-            %p= af.label :phone_number, t('.phone') + ':', :required => false
-            = af.text_field :phone_number, :class => 'phone_number phone'
-          .email_col
-            %p= af.label :email, t('.email') + ':', :required => false
-            = af.text_field :email, :class => 'email'
-          .address_col
-            %p= af.label :address, t('.address') + ':', :class => 'address_label'
-            = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
-
-        = af.hidden_field :id, :class => 'hidden_id'
+        .clearfix
+          .col-actions
+            .delete-wrap
+              %a.delete
+          .col-main.clearfix
+            .common_fields
+              = render :partial => 'tourist', :locals => { :f => af }
+            .additional_fields
+              .block-right
+                .wrap-input.address-wrap
+                  = af.label :address, t('.address') + ':'
+                  = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address', wrapper: false
+              .block-stretch
+                .col1
+                  .wrap-input.phone-wrap
+                    = af.label :phone_number, t('.phone') + ':'
+                    = af.text_field :phone_number, :class => 'phone_number phone', wrapper: false
+                .col2
+                  .wrap-input.email-wrap
+                    = af.label :email, t('.email') + ':', :required => false
+                    = af.text_field :email, :class => 'email', wrapper: false
 
     - ind = 0
-    = f.fields_for :dependents do |df|
+    = f.fields_for :dependents, :wrapper => true do |df|
       .fake_row.dependent.fields{ :id => "dependent-#{ind}", :class => df.object.try(:_destroy) && 'destroyed' }
-        = render :partial => 'tourist', :locals => { :f => df, :ind => ind }
-        = link_to '', '#', :class => 'delete', :title => t('delete'), data: { check: t('are_you_sure') }
+        .clearfix
+          .col-actions
+            .delete-wrap
+              %a.delete
+          .col-main.clearfix
+            .common_fields
+              = render :partial => 'tourist', :locals => { :f => df, :full_name_label => false }
 
         = df.hidden_field :_destroy, :class => '_destroy'
         = df.hidden_field :id, :class => 'hidden_id'
-        -# tourist_claim = @claim.tourist_claims.select{ |r| r.tourist_id == df.object.id }.first
         - tourist_claim = @claim.tourist_claims.select{ |r| r.tourist_id == df.object.id }.first
         - if tourist_claim
           = df.hidden_field :tourist_claim_id, :value => tourist_claim.id

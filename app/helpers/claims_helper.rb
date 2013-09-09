@@ -301,4 +301,12 @@ module ClaimsHelper
     claims.map(&:cache_key).hash
   end
 
+  def currency_courses_for_select
+    CurrencyCourse::CURRENCIES.map { |o| [ t(o.upcase), o ] }
+  end
+
+  def documents_statuses_for_select
+    Claim::DOCUMENTS_STATUSES.map { |o| [ t('claims.documents_statuses.' << o), o ] }
+  end
+
 end

@@ -1,103 +1,77 @@
 %fieldset.filter.clearfix
   .filter_row
-    = f.label :num
-    = f.text_field :num, :disabled => true, :value => claim.num, :class => 'number'
-    - if small_width?
-      = f.label :operator_confirmation, t('.operator_confirmation_two_line').html_safe, :class => 'two_row',
-          :title => t('.operator_confirmation'), :required => claim.operator_confirmation_flag,
-          :data => { :required_title => I18n.t('required_field') }
-    - else
-      = f.label :operator_confirmation, :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
-    = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back'),
-        :required => claim.operator_confirmation_flag, :data => { :errors_text => 'false' }
-    = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
-    = f.check_box :operator_confirmation_flag
+    .clearfix
+      .filter_group.group-number
+        .filter_group_inner
+          .filter_block.block-number
+            = f.label :num
+            = f.text_field :num, :disabled => true, :value => claim.num, :class => 'number'
+          .filter_block.block-confirmation
+            = f.label :operator_confirmation, :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
+            .wrap-flag.confirmation_flag-wrap
+              = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
+              = f.check_box :operator_confirmation_flag
+            = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back'),  :required => claim.operator_confirmation_flag, :data => { :errors_text => 'false' }, wrapper: {class: 'confirmation-wrap'}
 
-    .float_right
-      = f.label :visa_check
-      = f.hidden_field :visa_check, :value => '', :id => ''
-      = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long),
-          :disabled => !claim.visa_confirmation_flag
-      = f.hidden_field :visa
-      = select_tag '', visa_select_options(claim.visa), :id => 'claim_visa_status', :class => 'visa_status'
-      -# f.label :visa_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
-      = f.check_box :visa_confirmation_flag
-      - if small_width?
-        = f.label :check_date, t('.check_date_two_line').html_safe, :class => 'two_row',
-            :title => t('.check_date')
-      - else
-        = f.label :check_date
-      = f.text_field :check_date, :class => 'check_date visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long)
-      = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
-      = f.check_box :closed
-      - if medium_width? or large_width?
-        = f.label :reservation_date
-        = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
+      .filter_group.group-visas
+        .filter_group_inner
+          = f.label :visa_check
+          = f.check_box :visa_confirmation_flag
+          .block-main
+            = f.hidden_field :visa
+            .wrap-select.visa_status-wrap
+              = select_tag '', visa_select_options(claim.visa), :id => 'claim_visa_status', :class => 'visa_status'
+            = f.text_field :visa_check, :class => 'visa datepicker ' << color_for_visa(claim), :value => l(claim.visa_check, :format => :long), :disabled => !claim.visa_confirmation_flag, wrapper: {class: 'visa-wrap'}
+
+      .filter_group.group-check-date
+        .filter_group_inner
+          .filter_block.block-check_date
+            = f.label :check_date
+            .wrap-flag.closed-wrap
+              = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
+              = f.check_box :closed
+            = f.text_field :check_date, :class => 'visa datepicker ' << check_date_status(claim), :value => l(claim.check_date, :format => :long), wrapper: {class: 'check_date-wrap'}
+          .filter_block.block-reservation_date
+            = f.label :reservation_date
+            = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long), wrapper: {class: 'reservation_date-wrap'}
 
   .filter_row
-    - if small_width?
-      -# f.label :reservation_date, t('.reservation_date_two_line').html_safe, :class => 'two_row', :title => t('.reservation_date')
-      = f.label :reservation_date
-      = f.text_field :reservation_date, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
+    .clearfix
+      .filter_group.group-office
+        .filter_group_inner
+          .filter_block.block-office
+            = f.label :office_id, t('.office'), :required => false
+            - if is_admin? or is_boss?
+              = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => claim.office.nil?}, wrapper: {class: 'office_id-wrap'}
+            - else
+              = f.text_field :office_id, :value => claim.office.try(:name), :disabled => true
 
-    = f.label :office_id, t('.office'), :required => false
-    - if is_admin? or is_boss?
-      = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => claim.office.nil?},
-          :class => 'filter_select'
-    - else
-      = f.text_field :office_id, :value => claim.office.try(:name), :disabled => true
+          - users = current_company.users.reject{ |u| u.role == 'admin' }
+          .filter_block.block-user
+            = f.label :user_id, t('.user'), :required => false
+            - if is_admin? or is_boss?
+              = f.select :user_id, users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => claim.user.nil?}, wrapper: {class: 'user_id-wrap'}
+            - else
+              = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
+          .filter_block.block-assistant
+            = f.label :assistant_id, t('.assistant'), :required => false
+            - if is_admin? or is_boss? or current_user.id == @claim.user.id
+              = f.select :assistant_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, wrapper: {class: 'assistant_id-wrap'}
+            - else
+              = f.text_field :assistant_id, :value => claim.assistant.try(:first_last_name), :disabled => true
 
-    - if medium_width? or large_width?
-
-      - users = current_company.users.reject{ |u| u.role == 'admin' }
-
-      = f.label :user_id, t('.user'), :required => false
-      - if is_admin? or is_boss?
-        = f.select :user_id, users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => claim.user.nil?},
-            :class => 'filter_select'
-      - else
-        = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
-
-      = f.label :assistant_id, t('.assistant'), :required => false
-      - if is_admin? or is_boss? or current_user.id == @claim.user.id
-        = f.select :assistant_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => t('nope')}, :class => 'filter_select'
-      - else
-        = f.text_field :assistant_id, :value => claim.assistant.try(:first_last_name), :disabled => true
-
-    .float_right
-      -#
-        - if small_width?
-          = f.label :early_reservation, t('.early_reservation_two_line').html_safe, :class => 'checkbox right_checkbox two_row', :title => t('.early_reservation')
-        - else
-          = f.label :early_reservation, :class => 'checkbox right_checkbox'v
-      = f.label :early_reservation, :class => 'checkbox right_checkbox'
-      = f.check_box :early_reservation
-      = f.label :canceled, :class => 'checkbox right_checkbox'
-      = f.check_box :canceled
-
-      - if medium_width? or large_width?
-        - if is_admin? or is_boss? or is_accountant?
-          = f.label :excluded_from_profit, :class => 'checkbox right_checkbox'
-          = f.check_box :excluded_from_profit
-
-  - if small_width?
-    .filter_row
-      - users = current_company.users.reject{ |u| u.role == 'admin' }
-
-      = f.label :user_id, t('.user'), :required => false
-      - if is_admin? or is_boss?
-        = f.select :user_id, users.map {|o| [ o.name_for_list, o.id ]}, {:include_blank => claim.user.nil?},
-            :class => 'filter_select'
-      - else
-        = f.text_field :user_id, :value => claim.user.try(:first_last_name), :disabled => true
-
-      = f.label :assistant_id, t('.assistant'), :required => false
-      - if is_admin? or is_boss? or current_user.id == @claim.user.id
-        = f.select :assistant_id, users.delete_if{ |o| o.id == @claim.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, :class => 'filter_select'
-      - else
-        = f.text_field :assistant_id, :value => claim.assistant.try(:first_last_name), :disabled => true
-
-      - if is_admin? or is_boss? or is_accountant?
-        .float_right
-          = f.label :excluded_from_profit, :class => 'checkbox right_checkbox'
-          = f.check_box :excluded_from_profit
+      .filter_group.group-early_reservation
+        .filter_group_inner
+          .filter_block.block-early_reservation
+            .early_reservation-wrap
+              = f.label :early_reservation, :class => 'checkbox right_checkbox'
+              = f.check_box :early_reservation
+          .filter_block.block-canceled
+            .canceled-wrap
+              = f.label :canceled, :class => 'checkbox right_checkbox'
+              = f.check_box :canceled
+          .filter_block.block-excluded_from_profit
+            - if is_admin? or is_boss? or is_accountant?
+              .excluded_from_profit-wrap
+                = f.label :excluded_from_profit, :class => 'checkbox right_checkbox'
+                = f.check_box :excluded_from_profit

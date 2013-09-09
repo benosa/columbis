@@ -67,6 +67,9 @@ module Tourism
       g.template_engine :haml
     end
 
+    # Enabling HTTPS and HTTP in parallel
+    config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
+
     # Enable the asset pipeline
     config.assets.enabled = true
 

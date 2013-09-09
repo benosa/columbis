@@ -25,4 +25,11 @@ module LayoutHelper
     params[:controller] == 'claims' and params[:action] == 'index' and (is_admin? or is_boss? or is_accountant?)
   end
 
+  # Temporary solution
+  def body_class
+    return 'low_resolution' if small_width?
+    return 'high_resolution' if large_width?
+    'middle_resoluition'
+  end
+
 end

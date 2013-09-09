@@ -7,12 +7,15 @@
     - if javascript_local_data
       = javascript_tag(javascript_local_data)
     = stylesheet_link_tag 'application'
-    - if small_width?
-      = stylesheet_link_tag 'new_design/css/low'
-    - elsif medium_width?
-      = stylesheet_link_tag 'new_design/css/middle'
-    - elsif large_width?
-      = stylesheet_link_tag 'new_design/css/high'
+    -# Temporary solution
+    - is_claim_form = params[:controller] == 'claims' && %w[new edit].include?(params[:action])
+    - unless is_claim_form
+      - if small_width?
+        = stylesheet_link_tag 'new_design/css/low'
+      - elsif medium_width?
+        = stylesheet_link_tag 'new_design/css/middle'
+      - elsif large_width?
+        = stylesheet_link_tag 'new_design/css/high'
     = stylesheet_link_tag 'common'
     = javascript_include_tag 'application'
     / [if lt IE 9]
@@ -20,13 +23,14 @@
     - if params[:controller] =~ %r[^boss/]
       = stylesheet_link_tag 'boss'
       = javascript_include_tag 'boss'
-    - if params[:controller] == 'claims' and %w[new edit].include?(params[:action])
+    - if is_claim_form
       = stylesheet_link_tag 'claim-edit'
       = javascript_include_tag 'claim-edit'
+
     = csrf_meta_tag
     = yield(:head)
 
-  %body{ :class => yield(:body_class) }
+  %body{ :class => "#{(body_class unless is_claim_form)} #{yield(:body_class)}".strip }
     #container.all.clearfix
 
       .header

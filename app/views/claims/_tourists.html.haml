@@ -42,7 +42,6 @@
                     = af.text_field :email, :class => 'email', wrapper: false
 
     - ind = 0
-    - @claim.dependents << Tourist.new
     = f.fields_for :dependents, :wrapper => true do |df|
       .fake_row.dependent.fields{ :id => "dependent-#{ind}", :class => df.object.try(:_destroy) && 'destroyed' }
         .clearfix

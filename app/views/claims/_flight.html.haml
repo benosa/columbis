@@ -1,12 +1,14 @@
-- flight = flight_form.object
+- flight = f.object
 
-.two_line
-  = flight_form.text_field :airport_from, :class => 'autocomplete standart_select from', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
-.two_line
-  = flight_form.text_field :depart, :class => 'datetimepicker depart', :value => l(flight.depart, :format => :long)
-.two_line
-  = flight_form.text_field :flight_number, :class => 'flight'
-.two_line
-  = flight_form.text_field :airport_to, :class => 'autocomplete standart_select to', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
-.two_line
-  = flight_form.text_field :arrive, :class => 'datetimepicker arrive', :value => l(flight.arrive, :format => :long)
+.fake_col.col1
+  .block-right
+    = f.text_field :depart, :class => 'datetimepicker depart', :value => l(flight.depart, :format => :long)
+  .block-stretch
+    = f.text_field :airport_from, :class => 'autocomplete from', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))
+.fake_col.col2
+  = f.text_field :flight_number, :class => 'flight'
+.fake_col.col3
+  .block-right
+    = f.text_field :arrive, :class => 'datetimepicker arrive', :value => l(flight.arrive, :format => :long)
+  .block-stretch
+    = f.text_field :airport_to, :class => 'autocomplete to', data: ac_data(source: dropdown_autocomplete_claims_path('airport'))

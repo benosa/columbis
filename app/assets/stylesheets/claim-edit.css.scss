@@ -10,7 +10,7 @@
 .wrap-select {
   select { width: 100%; }
   .ik_select {
-    width: auto; display: block; position: relative; height: auto; //22px;
+    width: auto !important; display: block; position: relative; height: auto; //22px;
     margin: 0;
     .ik_select_link {
       width: auto;
@@ -102,9 +102,9 @@
   // Filter
   .filter_area { //max-width: 1220px;
     margin: 25px 0 0; }
-  .check_list { margin: 0 !important; height: 110px !important; }
+  .check_list { margin: 0 !important; height: 110px !important; width: 210; padding: 4px 19px 0 21px; }
   .filter {
-    float: none !important; width: auto !important; height: auto !important; margin: 0 170px 0 0 !important;
+    float: none !important; width: auto !important; height: auto !important; margin: 0 240px 0 0 !important;
     .filter_row {
       float: none !important; width: auto !important; padding: 9px 11px 10px 10px;
 
@@ -148,21 +148,21 @@
           label, .reservation_date-wrap { margin-left: 10px; }
         }
       }
-      .group-office { float: none; margin-right: 410px;
+      .group-office { float: none; margin-right: 450px;
         .block-office { float: left; width: 30%; margin-right: 5%; }
         .block-user { float: left; width: 30%; margin-right: 5%; }
         .block-assistant { float: left; width: 30%; }
         .office_id-wrap .ik_select, .user_id-wrap .ik_select, .assistant_id-wrap .ik_select { width: auto !important; }
       }
-      .group-early_reservation { float: right; width: 410px;
+      .group-early_reservation { float: right; width: 450px;
         label.checkbox { margin: 0 !important;
           // &.two_line { background-position: left 5px; }
           // &.two_line.right_checkbox { background-position: right 5px; }
         }
         .filter_group_inner { margin-top: 16px; }
-        .block-early_reservation { float: left; width: 137px; margin-right: 10px; }
-        .block-canceled { float: left; width: 98px; margin-right: 10px; }
-        .block-excluded_from_profit { float: left; width: 143px; }
+        .block-early_reservation { float: left; width: 155px; margin-right: 10px; }
+        .block-canceled { float: left; width: 110px; margin-right: 10px; }
+        .block-excluded_from_profit { float: left; width: 155px; }
       }
     }
   }
@@ -178,58 +178,60 @@
   }
 
   // Tour price
-  .tour_price_block .fake_row {
-    &.row1 {
-      .amount-input-wrap { margin-right: 80px; }
-      .currency-select-wrap { float: right; width: 70px; }
-      .col1 { float: left; width: 30%; }
-      .col2, .col3 {
-        float: left; width: 35%;
-        .block-right { float: right; width: 75px; }
-        .block-stretch {
-          margin-right: 75px;
-          .two_line { margin: 0 10px 0 30px; }
+  .tour_price_block {
+    .block_title .rates input { width: 70px; }
+    .fake_row {
+      &.row1 {
+        .amount-input-wrap { margin-right: 80px; }
+        .currency-select-wrap { float: right; width: 70px; }
+        .col1 { float: left; width: 30%; }
+        .col2, .col3 {
+          float: left; width: 35%;
+          .block-right { float: right; width: 75px; }
+          .block-stretch {
+            margin-right: 75px;
+            .two_line { margin: 0 10px 0 30px; }
+          }
         }
+        .col3 .block-right .two_line { margin-right: 0; }
       }
-      .col3 .block-right .two_line { margin-right: 0; }
-    }
 
-    &.row2 {
-      .fake_col {
-        float: left; width: 27%;
-        .block-right {
-          float: right; width: 75px;
+      &.row2 {
+        .fake_col {
+          float: left; width: 27%;
+          .block-right {
+            float: right; width: 75px;
+            .two_line { margin-right: 15px; }
+          }
+          .block-stretch {
+            margin-right: 75px;
+            .two_line { margin: 0 10px 0 15px; }
+          }
+          &:first-child {
+            .block-stretch .two_line { margin-left: 0; }
+          }
+          &:last-child {
+            width: 19%;
+            .amount-input-wrap { margin-right: 80px; }
+            .currency-select-wrap { float: right; width: 70px; margin: 0; }
+            .two_line { margin-right: 0; margin-left: 15px; }
+          }
+        }
+        .amount-input-wrap { margin-right: 80px; }
+        .currency-select-wrap { float: right; width: 70px; }
+      }
+
+      &.row3 {
+        .col1 {
+          float: left; width: 25%;
           .two_line { margin-right: 15px; }
         }
-        .block-stretch {
-          margin-right: 75px;
-          .two_line { margin: 0 10px 0 15px; }
+        .col2 {
+          float: left; width: 75%;
+          .two_line { margin-left: 15px; }
         }
-        &:first-child {
-          .block-stretch .two_line { margin-left: 0; }
-        }
-        &:last-child {
-          width: 19%;
-          .amount-input-wrap { margin-right: 80px; }
-          .currency-select-wrap { float: right; width: 70px; margin: 0; }
-          .two_line { margin-right: 0; margin-left: 15px; }
-        }
-      }
-      .amount-input-wrap { margin-right: 80px; }
-      .currency-select-wrap { float: right; width: 70px; }
-    }
-
-    &.row3 {
-      .col1 {
-        float: left; width: 25%;
-        .two_line { margin-right: 15px; }
-      }
-      .col2 {
-        float: left; width: 75%;
-        .two_line { margin-left: 15px; }
       }
     }
-
   }
 
   // Route
@@ -275,23 +277,24 @@
   }
 
   // Flights
-  .flights_block .fake_row {
-    &.row1 {
-      .col1 {
-        width: 40%;
-        .two_line { margin: 0 20px 0 0; }
+  .flights_block {
+    .fake_row, .fake_table {
+      .fake_col { float: left; }
+      .col1, .col3 {
+        width: 43%;
+        .block-right { float: right; width: 130px;
+          .wrap-input { margin: 0 10px; }
+        }
+        .block-stretch { margin-right: 130px;
+          span { width: auto !important; }
+          .wrap-input { margin: 0 10px; }
+        }
       }
-    }
-    &.row2, &.row3 {
-      .fake_col {
-        float: left;
-        .two_line { margin: 0 20px; }
+      .col2 { width: 14%;
+        .wrap-input { margin: 0 10px; }
       }
-      .col1 {  width: 40%; }
-      .col2, .col3 {  width: 21%; }
-      .col4 {  width: 18%; }
-      .col1 .two_line { margin-left: 0; }
-      .col4 .two_line { margin-right: 0; }
+      .col1 .block-stretch .wrap-input { margin-left: 0; }
+      .col3 .block-right .wrap-input { margin-right: 0; }
     }
   }
 
@@ -299,7 +302,8 @@
   .tourists_block {
     .fake_row, .fake_table {
       .common_fields {
-        float: left; width: 65%;
+        // float: left; width: 65%;
+        float: none; width: 100%;
         .block-stretch {
           margin: 0 430px 0 0;
           .name-wrap { margin: 0 10px 0 0; }
@@ -314,14 +318,29 @@
           }
           .passport_valid_until-wrap { width: 100px; margin-right: 0; }
         }
-        label { display: none; }
+        // label { display: none; }
+        label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
       }
       .additional_fields {
-        float: left; width: 35%;
-        .phone-wrap { float: left; width: 92px; margin-left: 10px; }
-        .address-wrap { margin: 0 0 0 130px; }
-        label { display: none; }
+        // float: left; width: 35%;
+        float: none; width: 100%;
+        .block-stretch {
+          margin: 0 430px 0 0;
+          .col1, .col2 { float: left; width: 50%; }
+          .phone-wrap { margin-right: 10px; }
+          .email-wrap { margin: 0 10px; }
+        }
+        .block-right {
+          float: right; width: 430px; margin-top: 0;
+          .address-wrap { margin: 0 0 0 10px; }
+        }
+        // label { display: none; }
+        label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
       }
+    }
+    .fake_row.applicant {
+      .common_fields { margin-bottom: 10px; }
+      .common_fields .block-right, .delete-wrap { margin-top: 24px; }
     }
     .fake_table {
       span { display: block; }
@@ -330,6 +349,7 @@
       .passport { width: 170px !important; }
       .expires { width: 93px !important; }
       .tourist_address { width: auto !important; }
+      .additional_fields { display: none; }
     }
   }
 
@@ -347,33 +367,40 @@
   }
 
   // Payments in
-  .payments_in_block .fake_row {
-    &.fields {
-      .col-actions .delete-wrap { margin-top: 24px; }
-      .fake_col {
-        float: left;
-        .two_line { margin: 0 10px; }
-      }
-      .col1 {
-        width: 35%;
-        .block-left { float: left; width: 110px; }
-        .block-stretch {
-          margin-left: 110px;
-          // .two_line { margin: 0 10px 0 30px; }
-          .amount-input-wrap { margin-right: 35px; }
-          label { float: right; margin: 4px 0 0; }
+  .payments_in_block {
+    .block_title {
+      overflow: hidden;
+      h2 { float: left; }
+      .rates input { width: 70px; }
+    }
+    .fake_row {
+      &.fields {
+        .col-actions .delete-wrap { margin-top: 24px; }
+        .fake_col {
+          float: left;
+          .two_line { margin: 0 10px; }
         }
-      }
-      .col2 { width: 45%; }
-      .col3 {
-        width: 20%;
-        .form-select-wrap { margin-right: 30px; }
-        .approved-wrap { float: right;
-          label { margin: 4px 0 0; padding: 0; }
+        .col1 {
+          width: 35%;
+          .block-left { float: left; width: 110px; }
+          .block-stretch {
+            margin-left: 110px;
+            // .two_line { margin: 0 10px 0 30px; }
+            .amount-input-wrap { margin-right: 35px; }
+            .amount_currency { float: right; margin: 4px 0 0; }
+          }
         }
+        .col2 { width: 45%; }
+        .col3 {
+          width: 20%;
+          .form-select-wrap { margin-right: 30px; }
+          .approved-wrap { float: right;
+            label { margin: 4px 0 0; padding: 0; }
+          }
+        }
+        .col1 .block-left .two_line { margin-left: 0; }
+        .col3 .two_line { margin-right: 0; }
       }
-      .col1 .block-left .two_line { margin-left: 0; }
-      .col3 .two_line { margin-right: 0; }
     }
   }
 
@@ -502,29 +529,29 @@
     }
 
     // Tourists
-    .tourists_block {
-      .fake_row {
-        .common_fields {
-          float: none; width: 100%; margin-bottom: 10px;
-          label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
-        }
-        .additional_fields {
-          float: none; width: 100%;
-          .phone-wrap { width: 112px; margin-left: 0px; }
-          .address-wrap { margin: 0 0 0 140px; }
-          label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
-          // .phone-wrap { float: left; width: 30%; margin-left: 0 }
-          // .address-wrap { float: left; width: 70%; }
-        }
-        &.applicant {
-          .block-right, .delete-wrap { margin-top: 24px; }
-        }
-      }
-      .fake_table {
-        .common_fields { float: none; width: 100%; }
-        .additional_fields { display: none; }
-      }
-    }
+    // .tourists_block {
+    //   .fake_row {
+    //     .common_fields {
+    //       float: none; width: 100%; margin-bottom: 10px;
+    //       label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
+    //     }
+    //     .additional_fields {
+    //       float: none; width: 100%;
+    //       .phone-wrap { width: 112px; margin-left: 0px; }
+    //       .address-wrap { margin: 0 0 0 140px; }
+    //       label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
+    //       // .phone-wrap { float: left; width: 30%; margin-left: 0 }
+    //       // .address-wrap { float: left; width: 70%; }
+    //     }
+    //     &.applicant {
+    //       .block-right, .delete-wrap { margin-top: 24px; }
+    //     }
+    //   }
+    //   .fake_table {
+    //     .common_fields { float: none; width: 100%; }
+    //     .additional_fields { display: none; }
+    //   }
+    // }
 
     // Information
     .information_block .fake_row {
@@ -565,24 +592,24 @@
 // @media only screen and (min-width: 1280px) {
 //   .form_block { float: left; width: 48% !important; }
 // }
- 
-//header
-.header{
-  width: auto;
-  min-width: 1024px;
-  a.logout { margin-right: 0px}
-}
- .user_panel {
-     li {padding: 15px 21px 0 15px;}
-     }
-  .logo{
-        background: url("/assets/logo.png") no-repeat scroll 20px 12px transparent;
-    float: right;
-    height: 50px;
-    width: 175px;
-    }
 
-.reservations { width: 100%; }
+//header
+// .header{
+//   width: auto;
+//   min-width: 1024px;
+//   a.logout { margin-right: 0px}
+// }
+//  .user_panel {
+//      li {padding: 15px 21px 0 15px;}
+//      }
+//   .logo{
+//         background: url("/assets/logo.png") no-repeat scroll 20px 12px transparent;
+//     float: right;
+//     height: 50px;
+//     width: 175px;
+//     }
+
+// .reservations { width: 100%; }
 
 //booking
 

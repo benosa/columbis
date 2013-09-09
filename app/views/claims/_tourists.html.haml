@@ -27,12 +27,19 @@
             .common_fields
               = render :partial => 'tourist', :locals => { :f => af }
             .additional_fields
-              .wrap-input.phone-wrap
-                = af.label :phone_number, t('.phone') + ':'
-                = af.text_field :phone_number, :class => 'phone_number phone'
-              .wrap-input.address-wrap
-                = af.label :address, t('.address') + ':'
-                = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address'
+              .block-right
+                .wrap-input.address-wrap
+                  = af.label :address, t('.address') + ':'
+                  = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address', wrapper: false
+              .block-stretch
+                .col1
+                  .wrap-input.phone-wrap
+                    = af.label :phone_number, t('.phone') + ':'
+                    = af.text_field :phone_number, :class => 'phone_number phone', wrapper: false
+                .col2
+                  .wrap-input.email-wrap
+                    = af.label :email, t('.email') + ':', :required => false
+                    = af.text_field :email, :class => 'email', wrapper: false
 
     - ind = 0
     - @claim.dependents << Tourist.new

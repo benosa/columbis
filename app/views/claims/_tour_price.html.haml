@@ -66,9 +66,10 @@
               %p= f.label :fuel_tax_count, t('.count')
               = f.select :fuel_tax_count, (0..30).to_a
           .block-stretch
-            %p= f.label :fuel_tax_price
-            = f.select :fuel_tax_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
-            = f.text_field :fuel_tax_price, :class => 'fuel_tax_price', wrapper: { class: 'amount-input-wrap' }
+            .two_line
+              %p= f.label :fuel_tax_price
+              = f.select :fuel_tax_price_currency, currency_courses_for_select, {}, wrapper: { class: 'currency-select-wrap' }
+              = f.text_field :fuel_tax_price, :class => 'fuel_tax_price', wrapper: { class: 'amount-input-wrap' }
         .fake_col.col4
           .two_line
             %p= f.label :additional_services_price

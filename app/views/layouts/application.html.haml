@@ -14,17 +14,19 @@
     - elsif large_width?
       = stylesheet_link_tag 'new_design/css/high'
     = stylesheet_link_tag 'common'
-    = stylesheet_link_tag 'claim-edit'
     = javascript_include_tag 'application'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
     - if params[:controller] =~ %r[^boss/]
       = stylesheet_link_tag 'boss'
       = javascript_include_tag 'boss'
+    - if params[:controller] == 'claims' and %w[new edit].include?(params[:action])
+      = stylesheet_link_tag 'claim-edit'
+      = javascript_include_tag 'claim-edit'
     = csrf_meta_tag
     = yield(:head)
 
-  %body{ :class => "#{body_class} #{yield(:body_class)}".strip }
+  %body{ :class => yield(:body_class) }
     #container.all.clearfix
 
       .header

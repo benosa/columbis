@@ -131,7 +131,7 @@ ru:
       phone: 'Телефон'
       address: 'Адрес'
       add_another_tourist: 'Добавить туриста'
-      email: 'Адрес эл. почты'
+      email: 'Эл. почта'
 
     tourist:
       tourists_full_name_hint: 'Договор оформлен на'

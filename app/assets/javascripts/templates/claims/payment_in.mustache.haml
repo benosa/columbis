@@ -2,29 +2,45 @@
 - name_prefix = 'claim[payments_in_attributes][{{num}}]'
 - i18n_prefix = 'claims.payments_in'
 .fake_row.fields{ :id => "payment_in_{{num}}", :class => 'new_record' }
-  .two_line
-    %p
-      %label{ :for => "#{id_prefix}_date_in", :class => 'required' }= I18n.t("#{i18n_prefix}.date")
-    = text_field_tag "#{name_prefix}[date_in]", '{{date_in}}', :id => "#{id_prefix}_date_in", :class => 'datepicker date_in date'
-  .two_line
-    %p
-      %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
-    = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount date'
-    %label= I18n.t('rur')
-  .two_line
-    %p
-      %label{ :for => "#{id_prefix}_description" }= I18n.t("#{i18n_prefix}.paid_in_word")
-    = text_field_tag "#{name_prefix}[description]", '{{description}}', :id => "#{id_prefix}_description", :class => 'description sum disabled', :disabled => true, :readonly => true
-  .two_line
-    %p
-      %label{ :for => "#{id_prefix}_form", :class => 'required' }= I18n.t("#{i18n_prefix}.paid_type")
-    %select{ :id => "#{id_prefix}_form", :name => "#{name_prefix}[form]", :class => 'payment_form payment_select' }
-      %option{ :value => '' }= I18n.t('nope')
-      {{#form_options}}
-      %option{ :value => '{{1}}' }= '{{0}}'
-      {{/form_options}}
-    %label{ :for => "#{id_prefix}_approved", :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved) } &nbsp;
-    = check_box_tag "#{name_prefix}[approved]", '1', false, :id => "#{id_prefix}_approved", :class => 'approved'
-    = link_to '', '#', :class => 'delete', :title => I18n.t('delete'), data: { check: I18n.t('are_you_sure') }
+  .clearfix
+    .col-actions
+      .delete-wrap
+        = link_to '', '#', :class => 'delete', :title => I18n.t('delete'), data: { check: I18n.t('are_you_sure') }
+    .col-main.clearfix
+      .fake_col.col1
+        .block-left
+          .two_line
+            %p
+              %label{ :for => "#{id_prefix}_date_in", :class => 'required' }= I18n.t("#{i18n_prefix}.date")
+            .wrap-input.date_in-wrap
+              = text_field_tag "#{name_prefix}[date_in]", '{{date_in}}', :id => "#{id_prefix}_date_in", :class => 'datepicker date_in date'
+        .block-stretch
+          .two_line
+            %p
+              %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
+            %label.amount_currency= I18n.t('rur')
+            .amount-input-wrap.wrap-input.amount-wrap
+              = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount'
+      .fake_col.col2
+        .two_line
+          %p
+            %label{ :for => "#{id_prefix}_description" }= I18n.t("#{i18n_prefix}.paid_in_word")
+          .wrap-input.description-wrap
+            = text_field_tag "#{name_prefix}[description]", '{{description}}', :id => "#{id_prefix}_description", :class => 'description grey_input', :disabled => true, :readonly => true
+      .fake_col.col3
+        .two_line
+          %p
+            %label{ :for => "#{id_prefix}_form", :class => 'required' }= I18n.t("#{i18n_prefix}.paid_type")
+          .approved-wrap
+            %label{ :for => "#{id_prefix}_approved", :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved) } &nbsp;
+            = hidden_field_tag "#{name_prefix}[approved]", '0'
+            = check_box_tag "#{name_prefix}[approved]", '1', false, :id => "#{id_prefix}_approved", :class => 'approved'
+          .form-select-wrap.wrap-select.form-wrap
+            %select{ :id => "#{id_prefix}_form", :name => "#{name_prefix}[form]", :class => 'form-select' }
+              %option{ :value => '' }= I18n.t('nope')
+              {{#form_options}}
+              %option{ :value => '{{1}}' }= '{{0}}'
+              {{/form_options}}
+  
   = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
   = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id", :class => '_destroy'

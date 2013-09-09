@@ -29,11 +29,15 @@ body {
 
 .header {
   overflow: visible;
-  position: fixed;
+  // position: fixed;
   top: 0;
   z-index: 1030;
   left:0;
   width:100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .header { width: 1024px; }
 }
 
 .header .second_menu .rmenu {
@@ -41,7 +45,7 @@ body {
 }
 
 .wrapper {
-  margin-top: 118px;
+  // margin-top: 118px;
   min-height: 301px;
   padding: 0 0 0 23px;
 }
@@ -149,6 +153,7 @@ body {
     li:first-child { height: 33px; padding: 15px 21px 0 10px; }
     li span { background: url(/assets/new_design/images/user_ico.png) left bottom no-repeat; }
   }
+  a.logout { margin-right: 0px }
 }
 
 /*.user_panel li:first-child span { height: 38px; padding-top: 10px; background-position: left center; vertical-align: middle; }*/

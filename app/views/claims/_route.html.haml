@@ -26,12 +26,12 @@
         .fake_col.col3
           .two_line
             %p= f.label :country, t('.direction')
-            = f.fields_for :country, @claim.country do |cf|
+            = f.fields_for :country, @claim.country, wrapper: true do |cf|
               = cf.text_field :name, :class => 'autocomplete country', :data => { :id => @claim.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
         .fake_col.col4
           .two_line
             %p= f.label :resort
-            = f.fields_for :resort, @claim.resort do |rf|
+            = f.fields_for :resort, @claim.resort, wrapper: true do |rf|
               = rf.text_field :name, :class => 'autocomplete resort', data: ac_data(source: resort_autocomplete_claims_path), :not_highlighted => true
 
     .fake_row.row3
@@ -85,5 +85,3 @@
           = f.label :memo_tasks_done, :class => 'checkbox right_checkbox'
           = f.check_box :memo_tasks_done
         = f.text_field :memo, :class => 'notes blue_input'
-        = f.label :memo_tasks_done, :class => 'checkbox right_checkbox'
-        = f.check_box :memo_tasks_done

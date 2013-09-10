@@ -15,6 +15,8 @@ CONFIG = (YAML.load_file(File.expand_path('../application.yml', __FILE__))[Rails
 
 module Tourism
   class Application < Rails::Application
+    config.force_ssl = CONFIG[:force_ssl]
+    config.ssl_options = CONFIG[:ssl_options]
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -66,9 +68,6 @@ module Tourism
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
       g.template_engine :haml
     end
-
-    # Enabling HTTPS and HTTP in parallel
-    config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
 
     # Enable the asset pipeline
     config.assets.enabled = true

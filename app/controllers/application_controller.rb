@@ -24,8 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
   # before_filter :set_session_options_domain
-  before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
-  before_filter :force_ssl
+  before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }  
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -101,14 +100,6 @@ class ApplicationController < ActionController::Base
       redirect_url = new_user_session_url
     end
     redirect_to redirect_url if redirect_url && redirect_url != request.original_url
-  end
-
-  def force_ssl
-    return unless request.get? && !request.local? && request.host.index(CONFIG[:domain])
-    is_public_controller = CONFIG[:public_controllers].include?(params[:controller])
-    if !request.ssl? && !is_public_controller
-      redirect_to :protocol => 'https'
-    end
   end
 
   def check_page_param

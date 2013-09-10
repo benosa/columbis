@@ -9,7 +9,6 @@ gem 'delayed_job_active_record', '0.4.4'
 gem 'delayed_job', '3.0.5'
 gem "delayed_job_web", '~> 1.2.0'
 gem "daemons", '1.1.9'
-gem "rack-ssl", "~> 1.3.3"
 
 gem 'haml', '~> 3.1.7'
 # Using haml-rails, because haml gem dosn't give generators for rails 3

@@ -36,10 +36,6 @@ body {
   width:100%;
 }
 
-@media only screen and (max-width: 1024px) {
-  .header { width: 1024px; }
-}
-
 .header .second_menu .rmenu {
   min-height: 53px;
 }
@@ -65,18 +61,19 @@ body {
     background-color: #F4F4F4;
     padding: 20px 23px 0;
   }
-  min-width: 1024px;
 }
 .all {
   height: auto;
   padding-bottom: 120px;
   min-height: 100%;
-  min-width: 1024px;
 }
 .content_for {
   height: 0;
   display: none;
 }
+
+/* Temporary limit min-width of site to 1060px instead of 1024px because of bugs in top menu */
+.header, .all, .footer { min-width: 1060px; }
 
 /* Redefinition styles of new design */
 

@@ -19,12 +19,12 @@ TABLE OF CONTENTS
 	width:960px;
 	margin: 0 auto;
 }
-@media only screen and (max-width: 960px){
+/*@media only screen and (max-width: 960px){
 	.page_content {
 		width:90%;
 		margin: 0 auto;
 	}
-}
+}*/
 
 
 
@@ -258,7 +258,7 @@ TABLE OF CONTENTS
 
 
 
-@media only screen and (max-width: 767px) {
+/*@media only screen and (max-width: 767px) {
 
 	.rmenu > li {
 		width: 100%;
@@ -291,6 +291,6 @@ TABLE OF CONTENTS
 		margin-bottom:18px;
 	}
 
-}
+}*/
 
 

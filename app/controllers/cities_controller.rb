@@ -13,9 +13,6 @@ class CitiesController < ApplicationController
           :page => params[:page],
           :per_page => per_page)
       end
-    if @cities.total_entries > CONFIG[:total_entries]
-      @cities.total_entries = CONFIG[:total_entries]
-    end
     render :partial => 'list' if request.xhr?
   end
 

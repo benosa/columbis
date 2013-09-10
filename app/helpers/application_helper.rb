@@ -145,6 +145,12 @@ module ApplicationHelper
     }).offset(0) # use it to skip offset provided by will_paginate, because thinking sphinx return 1 page
   end
 
+  def prepare_for_sphinx_paginate(collection)
+    if collection.total_entries > CONFIG[:total_entries]
+      collection.total_entries = CONFIG[:total_entries]
+    end
+  end
+
   def sort_col(default = :id)
     params[:sort] ? params[:sort].to_sym : default
   end

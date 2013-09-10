@@ -253,7 +253,8 @@ module ClaimsHelper
 
   def mistral_operator_list(term)
     specific_operators = specific_operators_for_mistral
-    specific_field = "(CASE WHEN btrim(operators.name) in (#{specific_operators.map{|o| ActiveRecord::Base.sanitize(o) }.join(',')}) THEN 0 ELSE 1 END)"
+    specific_field = "(CASE WHEN btrim(operators.name) in (#{specific_operators.map{|o| ActiveRecord::Base.sanitize(o) }.join(',')}) THEN 0 ELSE 1 END)" unless specific_operators.empty?
+    specific_field = '1' if specific_operators.empty?
 
     list = current_company.operators
       .select("min(operators.id) id, btrim(operators.name) as name, #{specific_field} as spec")
@@ -281,16 +282,16 @@ module ClaimsHelper
       title += ' ' + I18n.t('claims.messages.locked_by', user: claim.editor.try(:name_for_list))
     elsif claim.edited?
       title += ' ' + I18n.t('claims.messages.locked')
-    end      
+    end
     title
   end
 
   def claim_form_data(claim)
     data = {
-      data: { 
+      data: {
         lockpath: lock_claims_path,
         unlockpath: unlock_claims_path,
-        warning: I18n.t('claims.messages.warning_of_editing') 
+        warning: I18n.t('claims.messages.warning_of_editing')
       }
     }
     data[:data][:locked] = claim.locked_by if claim.locked?

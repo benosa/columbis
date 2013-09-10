@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
   before_filter :set_session_options_domain
+  before_filter :check_paginate_page, :only => [:index, :scroll]
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -96,6 +97,14 @@ class ApplicationController < ActionController::Base
     end
 
     redirect_to redirect_url if redirect_url && redirect_url != request.original_url
+  end
+
+  def check_paginate_page
+    entries = params["page"].to_i * per_page
+    if entries > CONFIG[:total_entries] && (entries - per_page) > CONFIG[:total_entries]
+      params.delete("page")
+      redirect_to current_path
+    end
   end
 
   def check_company_office

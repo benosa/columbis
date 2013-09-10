@@ -9,8 +9,13 @@ class CitiesController < ApplicationController
         set_filter_to(options)
         search_paginate(City.search_and_sort(options).with_country_columns, options)
       else
-        City.accessible_by(current_ability).order("name ASC").with_country_columns.paginate(:page => params[:page], :per_page => per_page)
+        City.accessible_by(current_ability).order("name ASC").with_country_columns.paginate(
+          :page => params[:page],
+          :per_page => per_page)
       end
+    if @cities.total_entries > CONFIG[:total_entries]
+      @cities.total_entries = CONFIG[:total_entries]
+    end
     render :partial => 'list' if request.xhr?
   end
 

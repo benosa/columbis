@@ -18,7 +18,7 @@ module ApplicationHelper
     end
   end
 
-  def per_page(default = 30)
+  def per_page(default = median_of_array(CONFIG[:per_page_list]))
     if user_signed_in?
       per_page_key = "#{current_user.login}-per_page".to_sym
       cookies[per_page_key] = params[:per_page] if params[:per_page].present?
@@ -289,6 +289,12 @@ module ApplicationHelper
       paths = []
       text.scan(/href="([^"]+)"/) { |path| paths << path }
       paths
+    end
+
+    def median_of_array(array)
+      median = (array.length / 2).to_i
+      median = (median - 1) if (array.length % 2).zero?
+      array[median]
     end
 
 end

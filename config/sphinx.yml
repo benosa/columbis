@@ -7,6 +7,7 @@ development: &my_settings
   sql_user: 'postgres'
   use_64_bit: true
   collation_server: utf8_ci
+  max_matches: 10000
 test:
   <<: *my_settings
   port: 9313

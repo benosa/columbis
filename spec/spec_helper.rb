@@ -53,6 +53,10 @@ end
 Time.zone = 'Moscow' # Default time zone
 Faker::Config.locale = :en
 
+def current_port
+  current_url.split(':')[2].split('/')[0]
+end
+
 def test_sign_in(user)
   sign_in(user)
 end

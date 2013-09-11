@@ -25,4 +25,5 @@ development: &defaults
 
 test:
   <<: *defaults
+  force_ssl: false
   domain: 127.0.0.1

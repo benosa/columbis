@@ -2,42 +2,5 @@
 # This command will automatically be run when you run "rails" with Rails 3 gems installed from the root of your application.
 
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
-
-# SSL config for Webrick (uncomment and run: "rails s")
-# generate ssl:
-# http://www.zunisoft.com/2008/12/kb-webrick-ssl-configuration.html
-# configurate Webrick:
-# https://www.altamiracorp.com/blog/employee-posts/configuring-webrick-to-use-ssl
-
-# require 'rubygems'
-# require 'rails/commands/server'
-# require 'rack'
-# require 'webrick'
-# require 'webrick/https'
-
-# module Rails
-#   class Server < ::Rack::Server
-#     def default_options
-#       super.merge({
-#         :Port => 3000,
-#         :environment => (ENV['RAILS_ENV'] || "development").dup,
-#         :daemonize => false,
-#         :debugger => false,
-#         :pid => File.expand_path("tmp/pids/server.pid"),
-#         :config => File.expand_path("config.ru"),
-#         :SSLEnable => true,
-#         :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
-#         :SSLPrivateKey => OpenSSL::PKey::RSA.new(
-#           File.open(File.expand_path("../../config/certs/server.key",  __FILE__)).read),
-#         :SSLCertificate => OpenSSL::X509::Certificate.new(
-#           File.open(File.expand_path("../../config/certs/server.crt",  __FILE__)).read),
-#         :SSLCertName => [["CN", WEBrick::Utils::getservername]]
-#       })
-#     end
-#   end
-# end
-
-# end SSL config for Webrick
-
 require File.expand_path('../../config/boot',  __FILE__)
 require 'rails/commands'

@@ -193,11 +193,11 @@ module Boss
     end
 
     def officesincome_leader_data
-      leader_data(OfficesIncomeReport, 'amount')
+      leader_data(OfficesIncomeWidgetReport, 'amount')
     end
 
     def managersincome_leader_data
-      leader_data(ManagersIncomeReport, 'amount')
+      leader_data(ManagersIncomeWidgetReport, 'amount')
     end
 
     def factor_data(report_class, method_name, total_title, total_data_prefix, total_text, is_f = false, round = 2)

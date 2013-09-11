@@ -27,12 +27,12 @@ describe "Claim:", js: true do
 
       it "should redirect to claim_path if page number too big" do
         visit claims_path(:page => 100000)
-        current_url.should == current_host + ":" + current_port + claims_path
+        current_url.should == current_host + ":" + current_port.to_s + claims_path
       end
 
       it "should redirect to true page" do
         visit claims_path(:page => 1)
-        current_url.should == current_host + ":" + current_port + claims_path(:page => 1)
+        current_url.should == current_host + ":" + current_port.to_s + claims_path(:page => 1)
       end
     end
 

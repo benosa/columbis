@@ -91,6 +91,7 @@ group :development, :test do
   gem 'guard-rails', '>= 0.1.1'
   gem 'guard-rspec', '~> 2.3.3'
   # gem 'guard-livereload', '~> 1.1.3'
+  gem 'mailcatcher'
 end
 
 group :test do

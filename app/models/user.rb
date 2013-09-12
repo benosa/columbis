@@ -19,16 +19,16 @@ class User < ActiveRecord::Base
   belongs_to :office
   has_many :tasks
 
-  before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
-  before_validation :generate_login
-  before_validation :generate_password
+  before_validation :set_role, :on => :create, :unless => proc{ ROLES.include? self.role  }
+  before_validation :generate_login, :on => :create, :if => proc{ self.login.blank?  }
+  before_validation :generate_password, :on => :create, :if => proc{ self.password.blank?  }
   before_validation :join_phone
 
+  validates :login, presence: true, uniqueness: true
   validates_presence_of :role
-  validates_presence_of :company_id, :office_id, :unless => Proc.new{ %w[admin boss].include? self.role }
+  validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
   validates_presence_of :last_name, :first_name
-  validates :phone, :length => { minimum: 8 }, uniqueness: true
-
+  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]
@@ -114,31 +114,34 @@ class User < ActiveRecord::Base
   end
 
   def join_phone
-    self.phone = phone_code.to_s + phone.to_s
-  end
-
-  def generate_login
-    if first_name.to_s.length > 0 && last_name.to_s.length > 0
-      login_temp = Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)
-      i = 0
-      while !User.where(:login => login_temp + (i > 0 ? i.to_s : '')).empty?
-        i += 1
-      end
-      self.login = login_temp + (i > 0 ? i.to_s : '')
-    end
-  end
-
-  def generate_password
-    self.password = Devise.friendly_token.first(8);
+    self.phone = phone_code.to_s + phone.to_s if phone_code
   end
 
   private
 
-  def set_role
-    if User.count == 0
-      self.role = 'admin'
-    else
-      self.role = 'boss'
+    def set_role
+      if User.count == 0
+        self.role = 'admin'
+      else
+        self.role = 'boss'
+      end
     end
-  end
+
+    def generate_login
+      if first_name.to_s.length > 0 && last_name.to_s.length > 0
+        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)).downcase
+        if User.where(login: login).count > 0
+          slogin = ActiveRecord::Base.sanitize(login).gsub("'", '')
+          nums = User.select("substring(login from '#{slogin}(\\d*)') as num").where("login ~ '#{slogin}\\d*'").map{|u| u.num.to_i}.sort
+          i = 1
+          i += 1 while nums.include?(i)
+          login = login + i.to_s
+        end
+        self.login = login
+      end
+    end
+
+    def generate_password
+      self.password = Devise.friendly_token.first(8);
+    end
 end

@@ -18,19 +18,20 @@ describe User do
 
   describe ".validations" do
     context "when valid" do
-      subject { FactoryGirl.create :admin }
+      subject { FactoryGirl.create :boss }
       it { should validate_presence_of :login }
       it { should validate_presence_of :role }
       it { should validate_presence_of :last_name }
       it { should validate_presence_of :first_name }
-      it { should validate_presence_of :password }
+      it { should validate_presence_of :phone }
     end
-    context "when invalid admin" do
-      subject { FactoryGirl.build(:admin) }
-      it { should_not allow_value(nil).for(:login) }
+    context "when invalid" do
+      subject { FactoryGirl.build(:boss) }
       it { should_not allow_value(nil).for(:last_name) }
       it { should_not allow_value(nil).for(:first_name) }
-      it { should_not allow_value(nil).for(:password) }
+      it { should_not allow_value(nil).for(:phone) }
+      it { should_not allow_value('123').for(:phone) }
+      it { should_not allow_value('123').for(:password) }
     end
   end
 
@@ -39,19 +40,21 @@ describe User do
       before do
         @user = FactoryGirl.create :user
       end
-      it { @user.login.should == Russian.transliterate(@user.first_name)[0] + Russian.transliterate(@user.last_name) }
+      it { @user.login.should == (Russian.transliterate(@user.first_name)[0] + Russian.transliterate(@user.last_name)).downcase }
     end
 
     context "when not registered" do
       before do
         @user = FactoryGirl.create(:user, email: 'test@test.ru', first_name: 'lol', last_name: 'ogin', phone: '77777777')
-        @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin')
-        @user2.generate_login
+        @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin', phone: '77777777')
       end
       it { @user.login.should == 'login' }
       it { @user2.should_not allow_value('test@test.ru').for(:email) }
-      it { @user2.login.should == 'login1' }
       it { @user2.should_not allow_value('77777777').for(:phone) }
+      it do
+        @user2.send(:generate_login)
+        @user2.login.should == 'login1'
+      end
     end
   end
 end

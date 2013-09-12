@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
@@ -13,16 +13,22 @@ class User < ActiveRecord::Base
   attr_protected :company_id, :as => :admin
   attr_protected :role, :as => [:admin, :boss]
 
+  attr_accessor :phone_code
+
   belongs_to :company
   belongs_to :office
   has_many :tasks
 
-  before_validation :set_role, :on => :create, :unless => Proc.new{ ROLES.include? self.role  }
+  before_validation :set_role, :on => :create, :unless => proc{ ROLES.include? self.role  }
+  before_validation :generate_login, :on => :create, :if => proc{ self.login.blank?  }
+  before_validation :generate_password, :on => :create, :if => proc{ self.password.blank?  }
+  before_validation :join_phone
 
-  validates_uniqueness_of :login
-  validates_presence_of :login, :role
-  validates_presence_of :company_id, :office_id, :unless => Proc.new{ %w[admin boss].include? self.role }
-  validates_presence_of :last_name, :first_name, :if => Proc.new{ self.role == 'admin' }
+  validates :login, presence: true, uniqueness: true
+  validates_presence_of :role
+  validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
+  validates_presence_of :last_name, :first_name
+  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]
@@ -107,13 +113,35 @@ class User < ActiveRecord::Base
     self.save(params)
   end
 
+  def join_phone
+    self.phone = phone_code.to_s + phone.to_s if phone_code
+  end
+
   private
 
-  def set_role
-    if User.count == 0
-      self.role = 'admin'
-    else
-      self.role = 'boss'
+    def set_role
+      if User.count == 0
+        self.role = 'admin'
+      else
+        self.role = 'boss'
+      end
     end
-  end
+
+    def generate_login
+      if first_name.to_s.length > 0 && last_name.to_s.length > 0
+        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)).downcase
+        if User.where(login: login).count > 0
+          slogin = ActiveRecord::Base.sanitize(login).gsub("'", '')
+          nums = User.select("substring(login from '#{slogin}(\\d*)') as num").where("login ~ '#{slogin}\\d*'").map{|u| u.num.to_i}.sort
+          i = 1
+          i += 1 while nums.include?(i)
+          login = login + i.to_s
+        end
+        self.login = login
+      end
+    end
+
+    def generate_password
+      self.password = Devise.friendly_token.first(8);
+    end
 end

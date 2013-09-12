@@ -1,25 +1,18 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
 
-  sequence :email do |n|
-    "email#{n}@factory.com"
-  end
-
-  sequence :login do |n|
-    "login#{n}"
-  end
+  sequence(:email) { |n| "email#{n}@factory.com" }
+  sequence(:phone) { |n| "+7777777#{n}" }
 
   factory :user do
     association :company
     association :office
 
-    email { Faker::Internet.email }
-    login { Faker::Name.name }
+    email #{ Faker::Internet.email }
     last_name { Faker::Name.name }
     first_name { Faker::Name.name }
     middle_name { Faker::Name.name }
-    password 'secret'
-    password_confirmation 'secret'
+    phone
     delta false
 
     factory (:admin)      { role 'admin' }

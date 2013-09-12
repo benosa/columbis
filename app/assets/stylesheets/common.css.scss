@@ -773,24 +773,6 @@ input.important {
   }
 }
 
-.form_column.sign_form {
-  margin-top: 0;
-  width: 320px;
-  .form_block {
-    width: 320px;
-  }
-  .block_title, .fake_row {
-    width: auto;
-  }
-  .links a {
-    display: inline-block;
-    margin-right: 8px;
-  }
-  input[type="text"], input[type="password"] {
-    width: 265px;;
-  }
-}
-
 .low_resolution.edit_tourists .form_block {
   clear: both;
   margin-top: 25px;

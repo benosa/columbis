@@ -8,6 +8,7 @@ ru:
         middle_name: "Отчество"
         role: 'Тип пользователя'
         email: 'Адрес электронной почты'
+        phone: 'Телефон'
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
         current_password: 'Текущий пароль'

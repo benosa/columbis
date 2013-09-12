@@ -12,7 +12,6 @@
       .form_block_content
         .fake_row
           = render :partial => 'users/user_attributes', :locals => { :f => f }
-          = render :partial => 'users/password', :locals => { :f => f }
           %p.submit_row= f.submit t('.submit'), :class => 'btn'
           %p.links
             = render :partial => "devise/shared/links"

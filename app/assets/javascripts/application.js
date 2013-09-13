@@ -23,7 +23,4 @@
 //= require dashboard
 //= require tourists
 //= require offline
-//= require boss
-//= require rmenu
-//= require jquery.jqEasyCharCounter
-//= require sms_sendings
+//= require sms

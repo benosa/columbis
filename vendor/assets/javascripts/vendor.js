@@ -13,3 +13,5 @@
 //= require globalize.culture.ru.js
 //= require waypoints
 //= require waypoints-sticky
+//= require rmenu
+//= require jquery.jqEasyCharCounter

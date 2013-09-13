@@ -12,7 +12,7 @@
       .form_block_content
         .fake_row
           %p= f.label :email
-          = f.email_field :email
+          = f.text_field :email
           %p.submit_row= f.submit t('.send_me_reset_password_instructions'), :class => 'btn'
           %p.links
             = render :partial => "devise/shared/links"

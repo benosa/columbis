@@ -140,6 +140,10 @@ class User < ActiveRecord::Base
     self.phone = phone_code.to_s + phone.to_s if phone_code
   end
 
+  def self.find_for_database_authentication(conditions)
+    self.where(:login => conditions[:login]).first || self.where(:email => conditions[:login]).first
+  end
+
   private
 
     def set_role

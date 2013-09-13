@@ -1,19 +1,21 @@
-- title t('.title')
+- content_for(:body_class) { 'edit_operator' }
 
-= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f|
-  = f.error_messages
-  = f.hidden_field :reset_password_token
-  %p
-    = f.label :password
-    %br
-    = f.password_field :password
+= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }, :builder => ActionView::Helpers::FormBuilder) do |f|
 
-  %p
-    = f.label :password_confirmation
-    %br
-    = f.password_field :password_confirmation
+  - content_for(:error_messages) do
+    = f.error_messages
 
-  %p
-    = f.submit t('.change_my_password')
-
-= render :partial => "devise/shared/links"
+  %fieldset.form_column.first.sign_form
+    .form_block
+      .block_title
+        %h2= t('.title')
+      .form_block_content
+        .fake_row
+          = f.hidden_field :reset_password_token
+          %p= f.label :password
+          = f.password_field :password
+          %p= f.label :password_confirmation
+          = f.password_field :password_confirmation
+          %p.submit_row= f.submit t('.change_my_password'), :class => 'btn'
+          %p.links
+            = render :partial => "devise/shared/links"

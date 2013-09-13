@@ -12,6 +12,7 @@ ru:
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
         current_password: 'Текущий пароль'
+        generate_password: 'Создать пароль автоматически'
         remember_me: 'Запомнить меня'
         office_id: 'Офис'
         color: 'Цвет (для списков)'

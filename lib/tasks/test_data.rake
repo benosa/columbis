@@ -71,7 +71,7 @@ namespace :test_data do
     end
 
     Claim.where(company_id: @res_comp_id,
-      created_at: (Time.now.midnight - 3.month)..(Time.now.midnight - 1.month)).
+      created_at: (Time.now - 3.month)..(Time.now - 1.month)).
       where('arrival_date is not NULL and departure_date is not NULL').each do |claim|
 
       if rand(2) == 0
@@ -79,7 +79,13 @@ namespace :test_data do
       else
         manager = @manager1
       end
+
       claim_new = Claim.new(claim.attributes)
+      claim_new.check_date += 1.month
+      claim_new.arrival_date += 1.month
+      claim_new.departure_date += 1.month
+      claim_new.reservation_date += 1.month
+      claim_new.visa_check += 1.month
       claim_new.company = @company
       claim_new.operator = Operator.where(company_id: @company.id).reorder('RANDOM()').first
       claim_new.user = manager
@@ -101,8 +107,25 @@ namespace :test_data do
         airport_from: claim_new.city.name, airport_to: claim_new.resort.name, airline: claim_new.airline)
       Flight.create(claim_id: claim_new.id, depart: depart_time, arrive: depart_time + (rand(4) + 2).hour,
         airport_from: claim_new.resort.name, airport_to: claim_new.city.name, airline: claim_new.airline)
-      puts claim_new.id
-      puts claim_new.errors.full_messages
+      Payment.where(claim_id: claim.id).each do |pay|
+        pay_new = Payment.new(pay.attributes)
+        pay_new.date_in += 1.month
+        pay_new.claim = claim_new
+        pay_new.company = @company
+        pay_new.recipient_id = switch_pay_type(pay_new.recipient_type, @company, claim_new.applicant, claim_new.operator)
+        pay_new.payer_id = switch_pay_type(pay_new.payer_type, @company, claim_new.applicant, claim_new.operator)
+        pay_new.save
+      end
+    end
+  end
+
+  def switch_pay_type(type, company, tourist, operator)
+    if type == 'Company'
+      company.id
+    elsif type == "Tourist"
+      tourist.id
+    elsif type == "Operator"
+      operator.id
     end
   end
 

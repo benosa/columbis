@@ -15,7 +15,6 @@ class Company < ActiveRecord::Base
   has_many :offices, :dependent => :destroy, :order => 'name ASC'
   has_many :claims, :dependent => :destroy
   has_many :tourists, :dependent => :destroy
-  #has_many :clients, :dependent => :destroy
   has_many :operators, :dependent => :destroy, :order => 'name ASC'
   has_many :dropdown_values, :dependent => :destroy
 

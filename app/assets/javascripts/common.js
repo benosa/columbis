@@ -615,3 +615,32 @@ function bind_settings_dialog(elements) {
     }
   });
 }
+
+
+// The user form
+function is_use_office_password_active() {
+  return $('#use_office_password_label').hasClass('active');
+};
+
+function disabled_password_block(check) {
+  if (check) {
+    $('#password_block *').attr('disabled', true);
+  } else {
+    $('#password_block *').removeAttr('disabled');
+  };
+};
+// end The user form
+
+// Bind data message to checkbox
+function bind_to_checkbox_data_message(element) {
+  element.bind('click', function() {
+    var classList = $(this).attr('class').split(/\s+/);
+    var data = $(this).attr("data");
+    if ($(this).hasClass('active')) {
+      if(!confirm(data)) {
+        $(this).toggleClass('active');
+        $('#' + $(this).attr('for')).attr('checked', $(this).hasClass('active')).trigger('change');
+      }
+    }
+  });
+};

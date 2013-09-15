@@ -71,7 +71,7 @@
       %h2= t('.create_password')
     .form_block_content
       .fake_row.single_row
-        %p= f.label :use_office_password, t('.use_office_password'), :class => 'checkbox left_checkbox', :id => "use_office_password_label", :if_uncheck => t('.if_uncheck')
+        %p= f.label :use_office_password, t('.use_office_password'), :class => 'checkbox left_checkbox', :id => "use_office_password_label", :data => t('.if_uncheck')
         = f.check_box :use_office_password
         #password_block
           %p= f.label pass_label

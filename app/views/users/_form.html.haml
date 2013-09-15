@@ -1,5 +1,11 @@
 - content_for(:error_messages) do
   = f.error_messages
+- if f.object.new_record?
+  - pass_label = :password
+  - pass_conf_label = :password_confirmation
+- else
+  - pass_label = t('.new_password')
+  - pass_conf_label = t('.new_password_confirmation')
 
 %fieldset.form_column.form_column-middle.first
   .form_block
@@ -7,23 +13,24 @@
       %h2= t('.credentials')
     .form_block_content
       .fake_row.single_row
-        %p= f.label :login
+        %p= f.label :email
+        = f.text_field :email, :class => 'type_user'
+        %p
+          - if f.object.new_record?
+            = f.label t('.login_in_create')
+          - else
+            = f.label :login
         = f.text_field :login, :class => 'type_user'
-        %p= f.label :role
-        - if is_admin? or is_boss?
-          = f.select :role, current_user.available_roles.map{|r| [t("user.roles.#{r}"), r]}
-        - else
-          = f.text_field :role, :value => t("user.roles.#{f.object.role}"), :disabled => true
         %p= f.label :office_id
         - if is_admin? or is_boss?
           = f.select :office_id, current_user.company.offices.map {|o| [ o.name, o.id ] }
         - else
           = f.text_field :office, :value => f.object.office.try(:name), :disabled => true
-        %p= f.label :company
-        - if is_admin?
-          = f.select :company_id, Company.all.map{ |c| [c.name, c.id] }
+        %p= f.label :role
+        - if is_admin? or is_boss?
+          = f.select :role, current_user.available_roles.map{|r| [t("user.roles.#{r}"), r]}
         - else
-          = f.text_field :company, :value => f.object.company.try(:name), :disabled => true
+          = f.text_field :role, :value => t("user.roles.#{f.object.role}"), :disabled => true
 
   .form_block.grey_block
     .block_title
@@ -41,49 +48,41 @@
             :class => 'color color_sample', :style => "background-color: #{f.object.color};"
         %p= t('.screen_width')
         = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, f.object.try(:screen_width)), include_blank: t('.auto')
-        
+
 
 %fieldset.form_column.form_column-middle.last
   .form_block
     .block_title
       %h2= t('.personal_data')
     .form_block_content
-      .fake_row.single_row
+      .fake_row.single_row.new_user
         %p= f.label :first_name
         = f.text_field :first_name, :class => 'type_user'
         %p= f.label :last_name
         = f.text_field :last_name, :class => 'type_user'
         %p= f.label :middle_name
         = f.text_field :middle_name, :class => 'type_user'
-        %p= f.label :email
-        = f.text_field :email, :class => 'type_user'
+        %p= f.label :phone, :required => true
+        = f.text_field :phone_code, :value => "+7"
+        = f.text_field :phone, :value => @user.phone.to_s.sub(/\A\+7/, '')
 
-  - if f.object == current_user and !f.object.new_record?
-    .form_block.grey_block
-      .block_title
-        %h2= t('.change_password')
-      .form_block_content
-        .fake_row.single_row
-          %p= f.label :password
+  .form_block.grey_block
+    .block_title
+      %h2= t('.create_password')
+    .form_block_content
+      .fake_row.single_row
+        %p= f.label :use_office_password, t('.use_office_password'), :class => 'checkbox left_checkbox', :id => "use_office_password_label", :if_uncheck => t('.if_uncheck')
+        = f.check_box :use_office_password
+        #password_block
+          %p= f.label pass_label
           = f.password_field :password, :class => 'type_user'
-          %p= f.label :password_confirmation
+          %p= f.label pass_conf_label
           = f.password_field :password_confirmation, :class => 'type_user'
+          - if f.object.new_record?
+            %p= t('.if_not_password')
+        - if f.object == current_user && !f.object.new_record?
           %p= f.label :current_password
           = f.password_field :current_password, :class => 'type_user'
-  - else
-    - if can? :create, User and f.object != current_user
-      .form_block.grey_block
-        .block_title
-          - if f.object.new_record?
-            %h2= t('.create_password')
-          - else
-            %h2= t('.change_password')
-        .form_block_content
-          .fake_row.single_row
-            %p= f.label :password
-            = f.password_field :password, :class => 'type_user'
-            - if f.object.new_record?
-              %p= t('.if_not_password')
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

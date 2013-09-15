@@ -15,7 +15,8 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def create
-    if @user.create_new(params[:user].merge(:company_id => current_user.company))
+    @user.company = current_company
+    if @user.create_new(params[:user])
       Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else

@@ -8,7 +8,7 @@
       = javascript_tag(javascript_local_data)
     = stylesheet_link_tag 'application'
     -# Temporary solution
-    - is_claim_form = params[:controller] == 'claims' && %w[new edit].include?(params[:action])
+    - is_claim_form = params[:controller] == 'claims' && %w[new create show edit update].include?(params[:action])
     - unless is_claim_form
       - if small_width?
         = stylesheet_link_tag 'new_design/css/low'

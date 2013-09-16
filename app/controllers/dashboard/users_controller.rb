@@ -17,7 +17,6 @@ class Dashboard::UsersController < ApplicationController
   def create
     @user.company = current_company
     if @user.create_new(params[:user])
-      Mailer.registrations_info(@user).deliver
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else
       render :action => 'new'

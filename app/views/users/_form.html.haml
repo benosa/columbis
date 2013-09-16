@@ -6,6 +6,10 @@
 - else
   - pass_label = t('.new_password')
   - pass_conf_label = t('.new_password_confirmation')
+- if current_user && current_company && current_company.offices
+  - available_offices = current_user.company.offices.select {|o| !o.default_password.blank? }.map{|o| o.id.to_s }.join(',')
+- else
+  - available_offices = nil
 
 %fieldset.form_column.form_column-middle.first
   .form_block
@@ -71,8 +75,9 @@
       %h2= t('.create_password')
     .form_block_content
       .fake_row.single_row
-        %p= f.label :use_office_password, t('.use_office_password'), :class => 'checkbox left_checkbox', :id => "use_office_password_label", :data => t('.if_uncheck')
-        = f.check_box :use_office_password
+        #use_office_block
+          %p= f.label :use_office_password, t('.use_office_password'), :class => 'checkbox left_checkbox', :id => "use_office_password_label", :data => t('.if_uncheck'), :checkable_offices => available_offices
+          = f.check_box :use_office_password
         #password_block
           %p= f.label pass_label
           = f.password_field :password, :class => 'type_user'

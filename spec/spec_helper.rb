@@ -49,6 +49,7 @@ RSpec.configure do |config|
 end
 
 Time.zone = 'Moscow' # Default time zone
+Faker::Config.locale = :en
 
 def test_sign_in(user)
   sign_in(user)

@@ -11,6 +11,11 @@ every 1.day, :at => '2:12 am', :roles => [:app] do
   rake_with_rvm 'dj:fetch_curses'
 end
 
+every 1.day, :at => '2:30 am', :roles => [:app] do
+  rake_with_rvm 'demo:seed'
+  rake_with_rvm 'thinking_sphinx:index'
+end
+
 # if @environment == 'staging'
 #   every '25 5-17/2,23 * * *' do
 #     command File.expand_path('../../script/transfer', __FILE__)

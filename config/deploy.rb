@@ -110,6 +110,13 @@ namespace :deploy do
       run "cd #{release_path} && bundle exec rake claims:expire_all_cache RAILS_ENV=#{rails_env}"
     end
   end
+
+  namespace :demo do
+    desc 'seed demo data'
+    task :seed, :roles => :app do
+      run "cd #{release_path} && bundle exec rake demo:seed RAILS_ENV=#{rails_env}"
+    end
+  end
 end
 
 namespace :update do

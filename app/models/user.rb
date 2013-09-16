@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def update_password(params)
+  def update_password(params, role)
     is_params_use_office_password = params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
     if is_params_use_office_password
       if params[:office_id] != self.office_id || is_params_use_office_password != self.use_office_password
@@ -94,6 +94,11 @@ class User < ActiveRecord::Base
         params.delete(:password)
         params.delete(:password_confirmation)
         params.delete(:current_password)
+        Mailer.registrations_info(self).deliver
+      end
+    else
+      if (role == "admin" || role == "boss") && params[:password].present?
+        self.update_attribute(:password, params[:password])
         Mailer.registrations_info(self).deliver
       end
     end

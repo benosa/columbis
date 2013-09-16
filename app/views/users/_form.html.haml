@@ -81,13 +81,14 @@
         #password_block
           %p= f.label pass_label
           = f.password_field :password, :class => 'type_user'
-          %p= f.label pass_conf_label
-          = f.password_field :password_confirmation, :class => 'type_user'
+          - if f.object == current_user
+            %p= f.label pass_conf_label
+            = f.password_field :password_confirmation, :class => 'type_user'
           - if f.object.new_record?
             %p= t('.if_not_password')
-        - if f.object == current_user && !f.object.new_record?
-          %p= f.label :current_password
-          = f.password_field :current_password, :class => 'type_user'
+          - if f.object == current_user && !f.object.new_record?
+            %p= f.label :current_password
+            = f.password_field :current_password, :class => 'type_user'
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

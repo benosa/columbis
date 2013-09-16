@@ -5,7 +5,7 @@
   %li
     %span
       = t('user.roles.' + current_user.role)
-      = link_to current_user.first_last_name, edit_user_registration_path
+      = link_to current_user.first_last_name, edit_dashboard_user_path(current_user)
       - unless small_width?
         = ", офис #{current_office.name}"
 - else

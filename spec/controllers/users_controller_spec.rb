@@ -63,6 +63,8 @@ describe Dashboard::UsersController do
     it 'should not change user count up by 1 with bad password' do
       expect { call_post create_user("a") }.to change{ User.count }.by(0)
     end
+    it 'should change password to office default password' do
+    end
   end
 
   describe 'GET new' do

@@ -44,7 +44,9 @@ describe Dashboard::UsersController do
       create_user_without_password.merge(:password => password)
     end
     def create_user_without_password
-      { :role => :admin, :company_id => @manager.company, :login => "login", :email => "test@test.com", :first_name => "Name1", :last_name => "Name2", :office_id => @office.id }
+      { :role => :admin, :company_id => @manager.company, :login => "login", :email => "test@test.com",
+        :first_name => "Name1", :last_name => "Name2", :office_id => @office.id, :phone => "+77777777",
+        :use_office_password => false }
     end
     def call_post(user_params)
       post :create, :user => user_params
@@ -62,8 +64,6 @@ describe Dashboard::UsersController do
     end
     it 'should not change user count up by 1 with bad password' do
       expect { call_post create_user("a") }.to change{ User.count }.by(0)
-    end
-    it 'should change password to office default password' do
     end
   end
 

@@ -1,0 +1,16 @@
+
+html {background: none;}
+
+body.public {
+  .logo {float: none; margin: 0 auto;}
+  .header {height:50px;}
+  background: url("/assets/new_design/images/header_top.png") repeat-x scroll center top #e7e7e7;
+  .wrapper {
+    width: 100%;
+    padding-left:0;
+     .content {
+      text-align: center;
+      form {display: inline-block;}
+     }
+  }
+}

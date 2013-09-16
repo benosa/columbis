@@ -48,6 +48,14 @@ module Tourism
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    config.to_prepare do
+      Devise::SessionsController.layout proc{ |controller| action_name == 'new' ? "public" : "application" }
+      Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "application" : "public" }
+      Devise::ConfirmationsController.layout "public"
+      Devise::UnlocksController.layout "public"
+      Devise::PasswordsController.layout "public"
+    end
+
     # Generators by default
     config.generators do |g|
       g.test_framework :rspec,

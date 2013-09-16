@@ -144,6 +144,18 @@ class User < ActiveRecord::Base
     self.where(:login => conditions[:login]).first || self.where(:email => conditions[:login]).first
   end
 
+  def self.generate_password_by_mail(attributes={})
+    user = User.where(email: attributes[:email]).first
+    user.generate_password
+    user.save
+    Mailer.new_password_instructions(user).deliver
+    user
+  end
+
+  def generate_password
+    self.password = Devise.friendly_token.first(8);
+  end
+
   private
 
     def set_role
@@ -166,9 +178,5 @@ class User < ActiveRecord::Base
         end
         self.login = login
       end
-    end
-
-    def generate_password
-      self.password = Devise.friendly_token.first(8);
     end
 end

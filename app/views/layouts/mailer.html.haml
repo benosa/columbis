@@ -1,0 +1,41 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    :css
+      h1 { color:#333; font: 20px Arial; }
+      p { color:#333; font: 13px Arial; }
+      a { font: bold 13px Arial; color:#0076be; }
+  %body
+    %table{:bgcolor => "#fffaf2", :cellpadding => "0", :cellspacing => "0", :height => "100%", :style => "padding-bottom: 100px;", :width => "100%"}
+      %tr{:height => "75", :width => "100%"}
+      %tr
+        %td{:align => "center", :valign => "top", :width => "100%"}
+          %table{:bgcolor => "#fff", :cellpadding => "0", :cellspacing => "0", :style => "border: solid 1px #f4f4f4; padding: 20px 30px;", :width => "600"}
+            %tr
+              %td{:align => "left", :style => "padding-top:10px; width: 100px"}
+                %p
+                  = image_tag attachments['logo.png'].url
+              %td{:align => "right"}
+                %p{:style => "color:#666; font: 13px Arial; margin: 0 0 15px 0; "} Центр обслуживания клиентов
+                %p{:align => "right", :style => "font: 20px Arial; color:#0076be; margin: 0; text-decoration: none;"} 8 800 775 76 76
+                %p{:align => "right", :style => "margin: 5px 0 0 0;"}
+                  %a{:href => "mailto:support@columbis.ru", :style => "color:#666; font: 13px Arial;"} support@columbis.ru
+            %tr{:style => "width:530px"}
+              %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
+                %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_name} #{@resource.last_name}
+                = yield
+                %p Спасибо, что выбрали Columbis!
+      %tr{:align => "center", :width => "600"}
+        %td
+          %table{:cellpadding => "0", :cellspacing => "0", :width => "600"}
+            %tr
+              %td{:align => "left"}
+                %p{:style => "font: 11px Arial; color:#999;"}
+                  %a{:href => "#", :style => "font: normal 11px Arial; color:#999; "} Отписаться от рассылки
+                  %br
+                  получили это сообщение, потому что Вы подписаны на получение информации Columbis.
+                  %br
+                  Если Вы считаете, что данное сообщение было послано Вам несанкционированно, пожалуйста, сообщите нам об этом на электронную почту
+                  %a{:href => "mailto:support@columbis.ru", :style => "font: normal 11px Arial; color:#999;"} support@columbis.ru
+                  %p{:style => "margin-top: 20px; font: 11px Arial; color:#999;"} © Columbis, 2011-2013

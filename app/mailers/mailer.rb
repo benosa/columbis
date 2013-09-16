@@ -1,8 +1,11 @@
 # -*- encoding : utf-8 -*-
 class Mailer < ActionMailer::Base
+  include AbstractController::Callbacks
   include Devise::Mailers::Helpers
-
+  layout 'mailer'
   default from: "testdevmen@gmail.com"
+  before_filter :set_attach
+
   def registrations_info(user)
     @user = user
     attachments.inline['logo.png'] = File.read(Rails.root.join('app/assets/images', 'logo_mail.png'))
@@ -23,8 +26,11 @@ class Mailer < ActionMailer::Base
     mail(to: 'testdevmen@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
   end
 
+  def new_password_instructions(record)
+    devise_mail(record, :new_password_instructions)
+  end
+
   def confirmation_instructions(record)
-    attachments.inline['logo.png'] = File.read(Rails.root.join('app/assets/images', 'logo_mail.png'))
     devise_mail(record, :confirmation_instructions)
   end
 
@@ -34,6 +40,10 @@ class Mailer < ActionMailer::Base
 
   def unlock_instructions(record)
     devise_mail(record, :unlock_instructions)
+  end
+
+  def set_attach
+    attachments.inline['logo.png'] = File.read(Rails.root.join('app/assets/images', 'logo_mail.png'))
   end
 
   # def receive(email)

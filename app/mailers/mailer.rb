@@ -5,6 +5,7 @@ class Mailer < ActionMailer::Base
   default from: "testdevmen@gmail.com"
   def registrations_info(user)
     @user = user
+    attachments.inline['logo.png'] = File.read(Rails.root.join('app/assets/images', 'logo_mail.png'))
     mail(to: user.email, subject: I18n.t('registration_data'), from: 'testdevmen@gmail.com')
   end
 

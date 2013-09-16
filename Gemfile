@@ -41,6 +41,7 @@ gem 'rabl'
 
 gem 'i18n-timezones'
 gem 'bust_rails_etags'
+gem 'faker', '1.2.0'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -83,7 +84,6 @@ group :development, :test do
   gem 'database_cleaner', '0.9.1'
   gem 'rails3-generators', '1.0.0'
   gem 'factory_girl_rails', '~> 4.1.0' #, :require => false
-  gem 'faker', '1.2.0'
   gem 'hirb', '0.7.0'
 
   gem 'guard', '~> 1.6.0'

@@ -114,7 +114,7 @@ namespace :deploy do
   namespace :demo do
     desc 'seed demo data'
     task :seed, :roles => :app do
-      run "cd #{release_path} && bundle exec rake demo:seed RAILS_ENV=#{rails_env}"
+      run "cd #{current_path} && bundle exec rake demo:seed RAILS_ENV=#{rails_env}"
     end
   end
 end

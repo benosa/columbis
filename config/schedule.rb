@@ -12,7 +12,8 @@ every 1.day, :at => '2:12 am', :roles => [:app] do
 end
 
 every 1.day, :at => '2:30 am', :roles => [:app] do
-  rake_with_rvm 'test_data:step1'
+  rake_with_rvm 'demo:seed'
+  rake_with_rvm 'thinking_sphinx:index'
 end
 
 # if @environment == 'staging'

@@ -85,12 +85,27 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_password(params)
+    is_params_use_office_password = params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
+    if is_params_use_office_password
+      if params[:office_id] != self.office_id || is_params_use_office_password != self.use_office_password
+        office = Office.where(:id => params[:office_id]).first
+        self.update_attribute(:password, office.default_password)
+        params.delete(:password)
+        params.delete(:password_confirmation)
+        params.delete(:current_password)
+        Mailer.registrations_info(self).deliver
+      end
+    end
+  end
+
   def update_by_params(params = {})
     self.role = params[:role] if available_roles.include?(params[:role])
     params[:role] = self.role
 
     if params[:password].present?
       update_with_password(params)
+      Mailer.registrations_info(self).deliver
     else
       params.delete(:current_password)
       update_without_password(params)
@@ -107,7 +122,7 @@ class User < ActiveRecord::Base
     self.role = params[:role] if available_roles.include?(params[:role])
     if params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
       office = Office.where(:id => params[:office_id]).first
-      self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
+      self.password = office.default_password
       self.password_confirmation = self.password
     end
     params.delete(:role)

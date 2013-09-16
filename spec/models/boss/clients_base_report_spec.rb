@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+#-*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe Boss::ClientsBaseReport do
@@ -63,5 +63,9 @@ describe Boss::ClientsBaseReport do
     (amount80 == payments_percent80 and
       amount15 == payments_percent15 and
       amount5 == payments_percent5).should == true
+  end
+
+  after(:all) do
+    DatabaseCleaner.clean_with(:truncation)
   end
 end

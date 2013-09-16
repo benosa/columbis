@@ -81,7 +81,7 @@ group :development, :test do
   gem 'capybara', '~> 2.1.0'
   gem 'poltergeist', '~> 1.3.0'
   gem 'launchy', '~> 2.1.2'
-  gem 'database_cleaner', '0.9.1'
+  gem 'database_cleaner', '~> 1.1.1'
   gem 'rails3-generators', '1.0.0'
   gem 'factory_girl_rails', '~> 4.1.0' #, :require => false
   gem 'hirb', '0.7.0'

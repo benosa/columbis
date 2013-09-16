@@ -13,9 +13,11 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'thinking_sphinx/test'
+require 'database_cleaner'
 require File.dirname(__FILE__) + '/activerecord_shared_connection'
 require File.dirname(__FILE__) + '/macros'
 require File.dirname(__FILE__) + '/matchers'
+require File.dirname(__FILE__) + '/database_cleaner_config'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -23,7 +25,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   config.include Macros
   config.include Matchers
@@ -45,7 +47,7 @@ RSpec.configure do |config|
 
   ThinkingSphinx::Test.init
 
-  #Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
+  Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
 
 Time.zone = 'Moscow' # Default time zone

@@ -105,11 +105,14 @@ class User < ActiveRecord::Base
 
   def create_new(params)
     self.role = params[:role] if available_roles.include?(params[:role])
-    office = Office.where(:id => params[:office_id]).first
-    self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
-    self.password_confirmation = self.password
+    if params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
+      office = Office.where(:id => params[:office_id]).first
+      self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
+      self.password_confirmation = self.password
+    end
     params.delete(:role)
     params.delete(:password)
+    params.delete(:password_confirmation)
     self.save(params)
   end
 

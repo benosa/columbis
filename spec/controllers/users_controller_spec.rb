@@ -73,3 +73,28 @@ describe Dashboard::UsersController do
     it { response.should be_success }
   end
 end
+
+describe RegistrationsController do
+  include Devise::TestHelpers
+
+  before { create_user }
+
+  def create_user
+    @user = FactoryGirl.create(:user)
+  end
+
+  describe 'PUT_update' do
+    before { put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1') }
+    it { should assign_to(:user).with(@user) }
+    it { should redirect_to(users_path) }
+
+    it "changes user last_name " do
+      expect {
+        put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1')
+        @user.reload
+      }.to change(@user, :last_name).to('Ivanov1')
+    end
+  end
+end
+
+

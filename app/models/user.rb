@@ -168,7 +168,7 @@ class User < ActiveRecord::Base
 
     def generate_login
       if first_name.to_s.length > 0 && last_name.to_s.length > 0
-        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)).downcase
+        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name).delete(' ')).downcase
         if User.where(login: login).count > 0
           slogin = ActiveRecord::Base.sanitize(login).gsub("'", '')
           nums = User.select("substring(login from '#{slogin}(\\d*)') as num").where("login ~ '#{slogin}\\d*'").map{|u| u.num.to_i}.sort

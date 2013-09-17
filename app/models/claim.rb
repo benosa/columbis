@@ -910,7 +910,8 @@ class Claim < ActiveRecord::Base
         'ИНН' => company.try(:inn),
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
-        'СайтКомпании' => company.try(:site)
+        'СайтКомпании' => company.try(:site),
+        'Логотип' => "<img alt='Print_logo' src='#{company.logo_url(:thumb)}'/>"
       }) if company
 
       fields.merge!({

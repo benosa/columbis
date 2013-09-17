@@ -2,8 +2,9 @@
 class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
-                  :site, :inn, :time_zone, :subdomain,
+                  :site, :inn, :time_zone, :subdomain, :logo,
                   :sms_signature, :sms_birthday_send
+  mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
 

@@ -63,6 +63,7 @@ describe "User:", js: true do
           page.fill_in "user[last_name]", with: "TESqwdqw3123T"
           page.fill_in "user[first_name]", with: "tecascascascst"
           page.fill_in "user[email]", with: "tes123123t@mail.ru"
+          page.fill_in "user[phone]", with: "+77777777"
           page.click_link I18n.t('save')
         }.to change(User, :count).by(1)
         page.current_path.should eq(dashboard_users_path)
@@ -76,9 +77,38 @@ describe "User:", js: true do
           page.fill_in "user[first_name]", with: "tecascascascst"
           page.fill_in "user[email]", with: "tes123123t@mail.ru"
           page.fill_in "user[password]", with: "password"
+          page.fill_in "user[phone]", with: "+77777777"
           page.click_link I18n.t('save')
         }.to change(User, :count).by(1)
         page.current_path.should eq(dashboard_users_path)
+      end
+
+      context "when valid attribute values" do
+        include EmailSpec::Helpers
+        include EmailSpec::Matchers
+
+        it "should create an order, show success message and confirmation link are work" do
+          expect {
+            page.fill_in "user[login]", with: "qweqwe123123"
+            page.fill_in "user[middle_name]", with: "ytrytrytry"
+            page.fill_in "user[last_name]", with: "TESqwdqw3123T"
+            page.fill_in "user[first_name]", with: "tecascascascst"
+            page.fill_in "user[email]", with: "tes123123t@mail.ru"
+            page.fill_in "user[phone]", with: "+77777777"
+            page.click_link I18n.t('save')
+          }.to change(User, :count).by(1)
+          within ".messages" do
+            should have_selector('.alert-success')
+          end
+          # Check email delivery with customer data, rest is checked in controller spec
+          user = User.last
+          open_last_email.should deliver_to user.email
+          open_last_email.should have_body_text(/#{user.first_name}/)
+          open_last_email.should have_body_text(/#{user.last_name}/)
+          open_last_email.should have_body_text(/#{user.login}/)
+          open_last_email.should have_body_text(/#{user.confirmation_token}/)
+        end
+
       end
     end
   end

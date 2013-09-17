@@ -13,6 +13,7 @@ FactoryGirl.define do
     first_name { Faker::Name.name }
     middle_name { Faker::Name.name }
     phone
+    confirmed_at { Time.zone.now }
     delta false
 
     factory (:admin)      { role 'admin' }

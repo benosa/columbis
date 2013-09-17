@@ -71,5 +71,8 @@
             = yield :float_panel
 
       .footer_content
-        %p.copy &copy; Devmen. All rights reserved, 2012
-        %p.right tourism.devmen.com
+        %p.copy
+          &copy; Columbis. All rights reserved,
+          = Date.current.year
+        %p.right
+          %a{href: '/'} columbis.ru

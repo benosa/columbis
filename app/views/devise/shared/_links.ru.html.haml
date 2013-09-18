@@ -1,0 +1,10 @@
+- exclude = local_assigns[:exclude] || []
+- exclude = [exclude] unless exclude.kind_of?(Array)
+- if controller_name != 'sessions' && !exclude.include?(:sign_in)
+  = link_to "Войти", new_session_path(resource_name), class: 'sign_in'
+- if devise_mapping.registerable? && controller_name != 'registrations' && !exclude.include?(:sign_up)
+  = link_to "Зарегистрироваться", new_registration_path(resource_name), class: 'sign_up'
+- if devise_mapping.recoverable? && controller_name != 'passwords' && !exclude.include?(:password)
+  = link_to "Забыли пароль?", new_password_path(resource_name), class: 'password'
+- if devise_mapping.confirmable? && controller_name != 'confirmations' && !exclude.include?(:confirmation)
+  = link_to "Не получили письмо с подтверждением?", new_confirmation_path(resource_name), class: 'confirmation'

@@ -32,10 +32,13 @@
             %tr
               %td{:align => "left"}
                 %p{:style => "font: 11px Arial; color:#999;"}
-                  %a{:href => "#", :style => "font: normal 11px Arial; color:#999; "} Отписаться от рассылки
-                  %br
-                  получили это сообщение, потому что Вы подписаны на получение информации Columbis.
-                  %br
+                  -#
+                    %a{:href => "#", :style => "font: normal 11px Arial; color:#999; "} Отписаться от рассылки
+                    %br
+                    получили это сообщение, потому что Вы подписаны на получение информации Columbis.
+                    %br
                   Если Вы считаете, что данное сообщение было послано Вам несанкционированно, пожалуйста, сообщите нам об этом на электронную почту
                   %a{:href => "mailto:support@columbis.ru", :style => "font: normal 11px Arial; color:#999;"} support@columbis.ru
-                  %p{:style => "margin-top: 20px; font: 11px Arial; color:#999;"} © Columbis, 2011-2013
+                  %p{:style => "margin-top: 20px; font: 11px Arial; color:#999;"}
+                    &copy; Columbis,
+                    = Date.current.year

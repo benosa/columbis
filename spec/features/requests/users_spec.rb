@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe "User_loged:", js: true do
+describe "Logged user:", js: true do
   include ActionView::Helpers
   include UsersHelper
 
@@ -292,7 +292,7 @@ describe "User_loged:", js: true do
   end
 end
 
-describe "User_is_not_loged", js: true do
+describe "Unlogged user", js: true do
   include ActionView::Helpers
   include UsersHelper
   include EmailSpec::Helpers

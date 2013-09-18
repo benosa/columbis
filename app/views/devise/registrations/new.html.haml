@@ -5,13 +5,15 @@
   - content_for(:error_messages) do
     = f.error_messages
 
-  %fieldset.form_column.form_column-middle.first.sign_form
+  %fieldset.form_column.first.sign_form
     .form_block
       .block_title
         %h2= t('.title')
       .form_block_content
         .fake_row
           = render :partial => 'users/user_attributes', :locals => { :f => f }
-          %p.submit_row= f.submit t('.submit'), :class => 'btn'
+          %p.submit_row
+            = f.submit t('.submit'), :class => 'btn'
+            = link_to "Войти", new_session_path(resource_name)
           %p.links
-            = render :partial => "devise/shared/links"
+            = render partial: "devise/shared/links", locals: { exclude: :sign_in }

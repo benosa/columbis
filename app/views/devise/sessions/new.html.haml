@@ -18,6 +18,8 @@
           - if devise_mapping.rememberable?
             %p= f.label :remember_me, :class => 'checkbox left_checkbox'
             = f.check_box :remember_me
-          %p.submit_row= f.submit 'Войти', :class => 'btn', :id => 'user_session_submit'
+          %p.submit_row
+            = f.submit 'Войти', :class => 'btn', :id => 'user_session_submit'
+            = link_to "Зарегистрироваться", new_registration_path(resource_name)
           %p.links
-            = render :partial => "devise/shared/links"
+            = render :partial => "devise/shared/links", locals: { exclude: :sign_up }

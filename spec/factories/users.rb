@@ -16,8 +16,6 @@ FactoryGirl.define do
     confirmed_at { Time.zone.now }
     delta false
 
-    after(:create) { |user| user.confirm! }
-
     factory (:admin)      { role 'admin' }
     factory (:boss)       { role 'boss' }
     factory (:manager)    { role 'manager' }

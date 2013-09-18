@@ -87,7 +87,7 @@ describe "User:", js: true do
         include EmailSpec::Helpers
         include EmailSpec::Matchers
 
-        it "should create an order, show success message and confirmation link are work" do
+        it "should create an user, show success message and confirmation link are work" do
           expect {
             page.fill_in "user[login]", with: "qweqwe123123"
             page.fill_in "user[middle_name]", with: "ytrytrytry"

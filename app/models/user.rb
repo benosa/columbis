@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def update_password(params, role)
-    is_params_use_office_password = params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
+    is_params_use_office_password = params[:use_office_password].to_boolean
     if is_params_use_office_password
       if params[:office_id] != self.office_id || is_params_use_office_password != self.use_office_password
         office = Office.where(:id => params[:office_id]).first

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe "User:", js: true do
+describe "Logged user:", js: true do
   include ActionView::Helpers
   include UsersHelper
 
@@ -290,4 +290,56 @@ describe "User:", js: true do
       end
     end
   end
+end
+
+describe "Unlogged user", js: true do
+  include ActionView::Helpers
+  include UsersHelper
+  include EmailSpec::Helpers
+  include EmailSpec::Matchers
+
+  subject { page }
+  describe "user_new_pass" do
+    before do
+      @user = FactoryGirl.create(:user, id: 1, email: 'test@mail.ru')
+    end
+
+    it 'should create email, with reset password instructions' do
+      visit new_user_password_path
+      fill_in 'user[email]', with: 'test@mail.ru'
+      find("input[name='commit']").click
+      wait_until { current_path == new_user_session_path }
+      current_path.should eq(new_user_session_path)
+      @user.reload
+      open_last_email.should deliver_to @user.email
+      open_last_email.should have_body_text(/#{@user.reset_password_token}/)
+      visit edit_user_password_path + '?reset_password_token=' + @user.reset_password_token.to_s
+      fill_in 'user[password]', with: '222222'
+      fill_in 'user[password_confirmation]', with: '222222'
+      find("input[name='commit']").click
+      wait_until { current_path == root_path }
+      current_path.should eq(root_path)
+    end
+
+    it 'should show error email not exist' do
+      visit new_user_password_path
+      fill_in 'user[email]', with: 'test2@mail.ru'
+      find("input[name='commit']").click
+      wait_until { current_path == user_password_path }
+      page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.not_found')}")
+    end
+
+    it 'should create email, with new password' do
+      visit new_user_password_path
+      fill_in 'user[email]', with: 'test@mail.ru'
+      find("label[for='user_generate_password']").click
+      find("input[name='commit']").click
+      wait_until { current_path == new_user_session_path }
+      current_path.should eq(new_user_session_path)
+
+      open_last_email.should deliver_to @user.email
+      open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
+    end
+  end
+
 end

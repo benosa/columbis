@@ -140,6 +140,22 @@ class User < ActiveRecord::Base
     self.phone = phone_code.to_s + phone.to_s if phone_code
   end
 
+  def self.find_for_database_authentication(conditions)
+    self.where(:login => conditions[:login]).first || self.where(:email => conditions[:login]).first
+  end
+
+  def self.generate_password_by_mail(attributes={})
+    user = User.where(email: attributes[:email]).first
+    user.generate_password
+    user.save
+    Mailer.new_password_instructions(user).deliver
+    user
+  end
+
+  def generate_password
+    self.password = Devise.friendly_token.first(8);
+  end
+
   private
 
     def set_role
@@ -152,7 +168,7 @@ class User < ActiveRecord::Base
 
     def generate_login
       if first_name.to_s.length > 0 && last_name.to_s.length > 0
-        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name)).downcase
+        login = (Russian.transliterate(first_name)[0] + Russian.transliterate(last_name).delete(' ')).downcase
         if User.where(login: login).count > 0
           slogin = ActiveRecord::Base.sanitize(login).gsub("'", '')
           nums = User.select("substring(login from '#{slogin}(\\d*)') as num").where("login ~ '#{slogin}\\d*'").map{|u| u.num.to_i}.sort
@@ -162,9 +178,5 @@ class User < ActiveRecord::Base
         end
         self.login = login
       end
-    end
-
-    def generate_password
-      self.password = Devise.friendly_token.first(8);
     end
 end

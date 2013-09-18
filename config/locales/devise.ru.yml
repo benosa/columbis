@@ -1,10 +1,10 @@
 ru:
   errors:
     messages:
-      expired: "устарела. Пожалуйста, запросите новую"
-      not_found: "не найдена"
-      already_confirmed: "уже подтверждена. Пожалуйста, попробуйте войти в систему"
-      not_locked: "не заблокирована"
+      expired: "устарел. Пожалуйста, запросите новую"
+      not_found: "не найден"
+      already_confirmed: "уже подтвержден. Пожалуйста, попробуйте войти в систему"
+      not_locked: "не заблокирован"
       not_saved:
         one: "%{resource}: сохранение не удалось из-за %{count} ошибки"
         few: "%{resource}: сохранение не удалось из-за %{count} ошибок"
@@ -38,6 +38,9 @@ ru:
         title: 'Установка пароля'
         change_my_password: 'Изменить мой пароль'
     confirmations:
+      new:
+        title: 'Восстановление пароля'
+        resend_me_reset_password_instructions: "Выслать инструкции по замене пароля"
       send_instructions: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       send_paranoid_instructions: "Если ваш адрес e-mail есть в нашей базе данных, то в течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       confirmed: "Ваша учётная запись подтверждена. Теперь вы вошли в систему."
@@ -67,6 +70,8 @@ ru:
     mailer:
       confirmation_instructions:
         subject: "Инструкции по подтверждению учётной записи"
+      new_password_instructions:
+        subject: "Новый пароль"
       reset_password_instructions:
         subject: "Инструкции по восстановлению пароля"
       unlock_instructions:

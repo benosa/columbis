@@ -23,7 +23,6 @@ class Ability
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
       can :users_sign_in_as, :user
-      can :claims_all, :user
       can :offline_version, User
       can :read, [Country, City], :common => true
       can :create, Task

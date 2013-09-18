@@ -22,6 +22,7 @@ ru:
     messages:
       successfully_created_company: 'Компания создана'
       successfully_updated_company: 'Данные компании обновлены'
+      company_already_created: 'Компания уже создана'
 
   activerecord:
     attributes:

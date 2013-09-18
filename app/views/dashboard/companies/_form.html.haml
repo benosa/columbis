@@ -35,6 +35,8 @@
         %p= f.label :subdomain
         = f.text_field :subdomain, :class => 'bank'
         %p= f.label :logo
+        -if f.object.logo_url
+          = image_tag f.object.logo_url
         = f.file_field :logo
 
 .form_column

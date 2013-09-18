@@ -2,7 +2,7 @@
   %p= t('rows_on_page') + ':'
   - path_helper_sym = local_assigns[:path_helper] ? path_helper.to_sym : :url_for
   %select#per_page{ :class => 'pagination_select', :data => { :param => 'per_page' } }
-    - (local_assigns[:per_page_list] || [10, 30, 50]).each do |count|
+    - (local_assigns[:per_page_list] || CONFIG[:per_page_list]).each do |count|
       %option{ :data => { :link => send(path_helper_sym,
         local_assigns[:pager_params] ? pager_params.merge({ :per_page => count }) : { :per_page => count }) },
         :selected => (count == per_page) && 'selected' }
@@ -12,4 +12,5 @@
   .pagination
     - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
     - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
+    - limit_collection_total_entries collection
     = will_paginate collection, will_paginate_params

@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
   before_filter :set_session_options_domain
+  before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -96,6 +97,20 @@ class ApplicationController < ActionController::Base
     end
 
     redirect_to redirect_url if redirect_url && redirect_url != request.original_url
+  end
+
+  def check_page_param
+    entries = params[:page].to_i * per_page
+    Rails.logger.debug "entries: #{entries}"
+    if CONFIG[:total_entries] && entries > CONFIG[:total_entries]
+      Rails.logger.debug "params: #{params.inspect}"
+      params.delete(:page)
+      unless request.xhr?
+        redirect_to current_path
+      else
+        render text: ''
+      end
+    end
   end
 
   def check_company_office

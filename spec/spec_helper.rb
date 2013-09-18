@@ -53,6 +53,10 @@ end
 Time.zone = 'Moscow' # Default time zone
 Faker::Config.locale = :en
 
+def current_port
+  Capybara.current_session.server.port
+end
+
 def test_sign_in(user)
   sign_in(user)
 end

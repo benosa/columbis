@@ -16,6 +16,26 @@ describe "Claim:", js: true do
 
     subject { page }
 
+    describe "Pagination" do
+      before(:all) do
+        create_claims_with_prerequisites(@company, :claim, 10)
+      end
+
+      before(:each) do
+        visit claims_path
+      end
+
+      it "should redirect to claim_path if page number too big" do
+        visit claims_path(:page => 100000)
+        current_url.should == current_host + ":" + current_port.to_s + claims_path
+      end
+
+      it "should redirect to true page" do
+        visit claims_path(:page => 1)
+        current_url.should == current_host + ":" + current_port.to_s + claims_path(:page => 1)
+      end
+    end
+
     describe "Flight Block" do
       before do
         @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)

@@ -18,7 +18,8 @@ module ApplicationHelper
     end
   end
 
-  def per_page(default = 30)
+  def per_page(default = nil)
+    default = CONFIG[:per_page_list][(CONFIG[:per_page_list].length / 2 + 1)] if CONFIG[:per_page_list] && !default
     if user_signed_in?
       per_page_key = "#{current_user.login}-per_page".to_sym
       cookies[per_page_key] = params[:per_page] if params[:per_page].present?
@@ -143,6 +144,12 @@ module ApplicationHelper
       :count => search_info[:total_pages],
       :total_entries => search_info[:total_entries]
     }).offset(0) # use it to skip offset provided by will_paginate, because thinking sphinx return 1 page
+  end
+
+  def limit_collection_total_entries(collection)
+    if collection.total_entries > CONFIG[:total_entries]
+      collection.total_entries = CONFIG[:total_entries]
+    end
   end
 
   def sort_col(default = :id)

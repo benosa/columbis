@@ -12,5 +12,5 @@
   .pagination
     - will_paginate_params = { :renderer => WillPaginateLinkRenderer, :class => nil }
     - will_paginate_params.merge!(:params => pager_params) if local_assigns[:pager_params]
-    - prepare_for_sphinx_paginate collection
+    - limit_collection_total_entries collection
     = will_paginate collection, will_paginate_params

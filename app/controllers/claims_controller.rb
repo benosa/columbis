@@ -31,7 +31,7 @@ class ClaimsController < ApplicationController
     end
     set_list_type
     @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
-    prepare_for_sphinx_paginate @claims_collection
+    limit_collection_total_entries @claims_collection
     render :partial => 'list' if request.xhr?
   end
 
@@ -42,7 +42,7 @@ class ClaimsController < ApplicationController
     @claims = Claim.sort_by_search_results(@claims_collection)
     set_list_type
     @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
-    prepare_for_sphinx_paginate @claims_collection
+    limit_collection_total_entries @claims_collection
     render 'scroll', :layout => false
   end
 

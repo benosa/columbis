@@ -80,19 +80,60 @@ describe RegistrationsController do
   before { create_user }
 
   def create_user
-    @user = FactoryGirl.create(:user)
+    @office = FactoryGirl.create(:office)
+    @company = FactoryGirl.create(:company)
+    @user = FactoryGirl.create(:admin, :office_id => @office.id, :company_id => @company.id, :confirmed_at => Time.now)
+    stub_current_company(@company)
+    stub_current_office(@office)
+    stub_current_user(@user)
+    test_sign_in(@user)
   end
 
   describe 'PUT_update' do
-    before { put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1') }
+    before {
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      put :update, id: @user.id, user: attributes_for(:user)
+    }
     it { should assign_to(:user).with(@user) }
-    it { should redirect_to(users_path) }
+    it { should redirect_to(edit_user_registration_path) }
 
     it "changes user last_name " do
       expect {
         put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1')
         @user.reload
       }.to change(@user, :last_name).to('Ivanov1')
+    end
+  end
+end
+
+describe PasswordsController do
+  include Devise::TestHelpers
+
+  before { create_user }
+
+  def create_user
+    @user = FactoryGirl.create(:admin, :email => 'test@mail.ru')
+  end
+
+  describe 'POST_create' do
+    before {
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+    }
+
+    it "changes user reset_password_token " do
+      expect {
+        post :create, user: {email: 'test@mail.ru', generate_password: '0'}
+        @user.reload
+      }.to change(@user, :reset_password_token)
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it "changes user password " do
+      expect {
+        post :create, user: {email: 'test@mail.ru', generate_password: '1'}
+        @user.reload
+      }.to change(@user, :encrypted_password)
+      response.should redirect_to(new_user_session_path)
     end
   end
 end

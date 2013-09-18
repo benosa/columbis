@@ -336,16 +336,9 @@ describe "User_is_not_loged", js: true do
       find("input[name='commit']").click
       wait_until { current_path == new_user_session_path }
       current_path.should eq(new_user_session_path)
-      #Rails.logger.debug "@user.errors: #{@user.errors.inspect}"
-      @user.reload
+
       open_last_email.should deliver_to @user.email
-      # encoding = open_last_email.html_part.body.detect_encoding[:encoding]
-      body = open_last_email.html_part.body.to_s
-      word = body.scan('/пароль/')
-      #@/\w+@[\w\.]+\w+/i
-      #Rails.logger.debug "@user.errors: #{body3}"
-      open_last_email.should have_body_text(/#{body}/)
-     # open_last_email.should_not have_body_text('111111')
+      open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
     end
   end
 

@@ -12,6 +12,8 @@
       width: 200px !important;
       border-color: #fff;
     }
+    input[disabled] { background-color: #DDD; }
+    p[disabled], label[disabled] { color: #999; }
   }
 }
 

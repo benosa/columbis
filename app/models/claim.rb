@@ -216,7 +216,7 @@ class Claim < ActiveRecord::Base
       next if empty_tourist_hash?(attributes)
 
       attributes.delete('tourist_claim_id') # special attribute for existing record
-      destroy = ActiveRecord::ConnectionAdapters::Column.value_to_boolean attributes.delete('_destroy')
+      destroy = attributes.delete('_destroy').to_boolean
       id = attributes.delete('id')
       if id.present?
         unless new_record?

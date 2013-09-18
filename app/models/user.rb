@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id,
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id, :use_office_password,
                   :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone
   attr_protected :company_id, :as => :admin
   attr_protected :role, :as => [:admin, :boss]
@@ -85,12 +85,32 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_password(params, role)
+    is_params_use_office_password = params[:use_office_password].to_boolean
+    if is_params_use_office_password
+      if params[:office_id] != self.office_id || is_params_use_office_password != self.use_office_password
+        office = Office.where(:id => params[:office_id]).first
+        self.update_attribute(:password, office.default_password)
+        params.delete(:password)
+        params.delete(:password_confirmation)
+        params.delete(:current_password)
+        Mailer.registrations_info(self).deliver
+      end
+    else
+      if (role == "admin" || role == "boss") && params[:password].present?
+        self.update_attribute(:password, params[:password])
+        Mailer.registrations_info(self).deliver
+      end
+    end
+  end
+
   def update_by_params(params = {})
     self.role = params[:role] if available_roles.include?(params[:role])
     params[:role] = self.role
 
     if params[:password].present?
       update_with_password(params)
+      Mailer.registrations_info(self).deliver
     else
       params.delete(:current_password)
       update_without_password(params)
@@ -105,11 +125,14 @@ class User < ActiveRecord::Base
 
   def create_new(params)
     self.role = params[:role] if available_roles.include?(params[:role])
-    office = Office.where(:id => params[:office_id]).first
-    self.password = Office.where(:id => params[:office_id]).first.try(:default_password) if params[:password].blank?
-    self.password_confirmation = self.password
+    if params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
+      office = Office.where(:id => params[:office_id]).first
+      self.password = office.default_password
+      self.password_confirmation = self.password
+    end
     params.delete(:role)
     params.delete(:password)
+    params.delete(:password_confirmation)
     self.save(params)
   end
 

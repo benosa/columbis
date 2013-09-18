@@ -24,3 +24,4 @@
 //= require tourists
 //= require offline
 //= require sms
+//= require users

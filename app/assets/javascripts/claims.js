@@ -291,6 +291,8 @@ function set_claims_tooltip(init) {
 }
 
 $(function(){
+  bind_to_checkbox_data_message( $('#special_offer_checkbox.active') );//Tourist special_offer
+
   var VISA_STATUSES = ['nothing_done', 'docs_got', 'docs_sent', 'visa_approved', 'all_done'];
 
   function trim(str) {
@@ -901,7 +903,7 @@ $(function(){
   var del_flight = function(fields){
     var $fields = $(fields),
         $block = $fields.closest('.form_block');
-        
+
     $fields.find('.datepicker').datepicker('destroy');
     // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
     $fields.find('._destroy').val('1');
@@ -910,7 +912,7 @@ $(function(){
     var count = $block.find('.fields:not(.destroyed)').length;
     if (count < 2) {
       add_flight($block);
-    }    
+    }
   };
   // click to delete flight
   $('#flights').on('click', 'a.delete', function(e) {
@@ -1112,18 +1114,4 @@ $(function() {
     }
   });
 
-});
-
-//Tourist special_offer
-$(function(){
-  $('#special_offer_checkbox.active').bind('click', function() {
-    var classList = $(this).attr('class').split(/\s+/);
-    var data = $(this).attr("data");
-    if ($(this).hasClass('active')) {
-      if(!confirm(data)) {
-        $(this).toggleClass('active');
-        $('#' + $(this).attr('for')).attr('checked', $(this).hasClass('active')).trigger('change');
-      }
-    }
-  });
 });

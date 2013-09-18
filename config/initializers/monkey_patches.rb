@@ -40,6 +40,12 @@ class String
   end
 end
 
+class Object
+  def to_boolean
+    ActiveRecord::ConnectionAdapters::Column.value_to_boolean self
+  end
+end
+
 module ActionView
   module Helpers
     module TranslationHelper

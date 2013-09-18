@@ -15,8 +15,8 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def create
-    if @user.create_new(params[:user].merge(:company_id => current_user.company))
-      Mailer.registrations_info(@user).deliver
+    @user.company = current_company
+    if @user.create_new(params[:user])
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else
       render :action => 'new'
@@ -50,13 +50,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def update
-    if params[:user][:password].present? && params[:user][:id] != current_user
-      if @user.update_attribute(:password, params[:user][:password])
-        Mailer.registrations_info(@user).deliver
-        params[:user].delete(:password)
-      end
-    end
-
+    @user.update_password(params[:user], current_user.role)
     if @user.update_by_params(params[:user])
       redirect_to dashboard_users_url, :notice => t('users.messages.updated')
     else

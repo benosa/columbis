@@ -44,7 +44,9 @@ describe Dashboard::UsersController do
       create_user_without_password.merge(:password => password)
     end
     def create_user_without_password
-      { :role => :admin, :company_id => @manager.company, :login => "login", :email => "test@test.com", :first_name => "Name1", :last_name => "Name2", :office_id => @office.id }
+      { :role => :admin, :company_id => @manager.company, :login => "login", :email => "test@test.com",
+        :first_name => "Name1", :last_name => "Name2", :office_id => @office.id, :phone => "+77777777",
+        :use_office_password => false }
     end
     def call_post(user_params)
       post :create, :user => user_params

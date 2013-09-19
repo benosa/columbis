@@ -3,11 +3,8 @@
     #clock.clock{ data: { datetime: current_zone_datetime, zone: Time.zone.to_s } }
       = current_zone_datetime(true)
   %li
-    %span
-      = t('user.roles.' + current_user.role)
-      = link_to current_user.first_last_name, edit_dashboard_user_path(current_user)
-      - unless small_width?
-        = ", офис #{current_office.name}"
+    %span.user_info{ title: t('user.roles.' + current_user.role) + ", офис #{current_office.name}"}
+      = link_to current_user.first_last_name, edit_user_registration_path
 - else
   %li.reglink
     = link_to(t('register'), new_user_registration_path)

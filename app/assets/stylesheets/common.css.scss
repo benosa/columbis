@@ -241,12 +241,13 @@ body {
 }
 
 #ajax-indicator {
-  float: left;
-  display: none;
-  background: url(/assets/ajax-loader.gif) no-repeat transparent;
+  background: url(/assets/ajax_ind2.png) no-repeat transparent;
   width: 24px;
   height: 24px;
-  margin: 3px 0 0 7px;
+  margin: -4px -2px 0 9px;
+  &.active {
+    background: url(/assets/ajax_ind2.gif) no-repeat transparent;
+  }
 }
 
 /*** Colors ***/

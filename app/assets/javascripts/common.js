@@ -145,6 +145,13 @@ $(function(){
   //       $t.attr('title', '');
   //   }
   // });
+  $('.user_info').tooltip({
+    template: '<div class="tooltip white clock_tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    placement: 'bottom',
+    container: 'body',
+    animation: false,
+    html: true
+  })
 
   $('.error_message.input_wrapper').tooltip({
     template: '<div class="tooltip error_message"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
@@ -547,14 +554,7 @@ var ajaxCounter = 0;
 function ajaxCounterInc(num) {
   ajaxCounter += num || 1;
   if (ajaxCounter > 0) {
-    // temporary place indicator after h1 in top in absolute position, to fix content jumping
-    var $h1 = $('.top h1');
-    $('#ajax-indicator').css({
-      position: 'absolute',
-      top: $h1.offset().top,
-      left: $h1.offset().left + $h1.width()
-    })
-    $('#ajax-indicator').show();
+    $('#ajax-indicator').addClass('active');
   }
   return ajaxCounter;
 }
@@ -564,7 +564,7 @@ function ajaxCounterDec(num) {
   if (ajaxCounter < 0)
     ajaxCounter = 0;
   if (ajaxCounter === 0)
-    $('#ajax-indicator').hide();
+    $('#ajax-indicator').removeClass('active');
   return ajaxCounter;
 }
 

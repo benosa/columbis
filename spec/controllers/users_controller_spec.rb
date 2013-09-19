@@ -77,7 +77,7 @@ end
 describe RegistrationsController do
   include Devise::TestHelpers
 
-  before { create_user }
+  before { @request.env["devise.mapping"] = Devise.mappings[:user] }
 
   def create_user
     @office = FactoryGirl.create(:office)
@@ -91,7 +91,7 @@ describe RegistrationsController do
 
   describe 'PUT_update' do
     before {
-      @request.env["devise.mapping"] = Devise.mappings[:user]
+      create_user
       put :update, id: @user.id, user: attributes_for(:user)
     }
     it { should assign_to(:user).with(@user) }
@@ -102,6 +102,61 @@ describe RegistrationsController do
         put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1')
         @user.reload
       }.to change(@user, :last_name).to('Ivanov1')
+    end
+  end
+
+  describe 'POST_create_json' do
+    before {
+      @user = FactoryGirl.create(:admin, :email => 'test@mail.ru')
+      #@request.env["devise.mapping"] = Devise.mappings[:user]
+      @attributes = {first_name: 'test', last_name: 'test',
+        phone_code: '+7', phone: '99999999'}
+    }
+
+    it 'should return success:true' do
+      @attributes['email'] = 'test2@mail.ru'
+      post :create, :user => @attributes, :format => :json
+      response.body.should == { :success => true }.to_json
+    end
+
+    it 'should return success:false because email exist' do
+      @attributes['email'] = 'test@mail.ru'
+      post :create, :user => @attributes, :format => :json
+      response.body.should have_text('"success":false')
+    end
+
+    it 'should redirect success:false because phone is short' do
+      @attributes['email'] = 'test3@mail.ru'
+      @attributes['phone'] = '444'
+      post :create, :user => @attributes, :format => :json
+      response.body.should have_text('"success":false')
+    end
+  end
+end
+
+describe SessionsController do
+  include Devise::TestHelpers
+
+  before {
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    create_user
+  }
+
+  def create_user
+    @user = FactoryGirl.create(:admin, :login => 'test', :password => '111111')
+  end
+
+  describe 'POST_create2_json' do
+    it 'should return success: email6 exist' do
+      post :create, :user => { login: 'test', password: '111112' }, :format => :json
+     # response.header['Content-Type'].should match /json/
+      response.body.should == 'dfsfd'
+    end
+
+    it 'should return success:false because email exist' do
+      post :create, :user => { login: 'test', password: '111111' }, :format => :json
+     # response.header['Content-Type'].should match /json/
+      response.body.should have_text('"success":true')
     end
   end
 end

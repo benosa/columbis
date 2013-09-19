@@ -76,12 +76,20 @@ Tourism::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords" }
 
   namespace :dashboard do
+<<<<<<< HEAD
     match 'sign_in_as/:user_id' => 'users#sign_in_as', :as => :sign_in_as, :via => [:get, :post]
     get 'edit_company/template/:template' => 'printers#download', :as => :template
     get 'edit_company' => 'companies#edit'
     put 'edit_company' => 'companies#update'
     get 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     get 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
+=======
+    match 'sign_in_as/:user_id' => 'users#sign_in_as', :as => :sign_in_as
+    match 'edit_company/template/:template' => 'printers#download', :as => :template, :via => :get
+    match 'edit_company' => 'companies#edit'
+    match 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
+    match 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
+>>>>>>> [#62] Delete claims_controller
 
     resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show

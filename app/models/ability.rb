@@ -34,7 +34,6 @@ class Ability
       can :read, :all, :company_id => user.company_id
       cannot :read, Company
       can :read, Company, :id => user.company_id
-      can :claims_all, :user
       can :offline_version, User
       can :read, [Country, City], :common => true
       can :create, Task
@@ -47,7 +46,6 @@ class Ability
       can [:update], User, :id => user.id
       can :read, [Country, Region, City], :company_id => user.company_id
       can :read, [Country, City], :common => true
-      can :claims_all, :user
       can :offline_version, User
       can :create, Task
       cannot :manage, TariffPlan

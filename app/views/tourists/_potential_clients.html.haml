@@ -1,9 +1,9 @@
 %table#tourists.tourists.reservations.tour_operators
   %tr
     %th.created_at
-      = sort_link(:created_at, Tourist.human_attribute_name(:created_at))
+      = sort_link(:created_at, Tourist.human_attribute_name(:created_at), :desc)
     %th.manager= sort_link(:user_id, t('.manager'))
-    %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
+    %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')))
     %th.phone_number= sort_link(:phone_number, Tourist.human_attribute_name(:phone_number))
     %th.email= sort_link(:email, t('.email'))
     %th.wishes

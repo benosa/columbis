@@ -34,9 +34,9 @@
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
         %p= f.label :subdomain
         = f.text_field :subdomain, :class => 'bank'
-        %p= f.label :logo
+        %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         -if f.object.logo_url
-          = image_tag f.object.logo_url
+          = image_tag f.object.logo.thumb.url
         = f.file_field :logo
 
 .form_column

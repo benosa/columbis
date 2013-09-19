@@ -32,6 +32,7 @@ ru:
         office:
           name: 'Название'
           default_password: 'Пароль по умолчанию'
+        logo_size: '(100x100)'
       printers:
         title: "Печатные формы"
         printers: "Список документов компании"

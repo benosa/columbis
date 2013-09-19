@@ -3,8 +3,8 @@
 class LogoUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
-  include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  # include CarrierWave::RMagick
+  include CarrierWave::MiniMagick
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   # include Sprockets::Helpers::RailsHelper
@@ -17,7 +17,7 @@ class LogoUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/printer/company_#{model.id}/"
+    "uploads/logo/company_#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -29,7 +29,7 @@ class LogoUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_fit => [150, 150]
+  # process :resize_to_fit => [150, 150]
   # process :scale => [200, 300]
   #
   # def scale(width, height)
@@ -37,9 +37,9 @@ class LogoUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process :resize_to_fit => [150, 150]
-  # end
+  version :thumb do
+    process :resize_to_fit => [100, 100]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

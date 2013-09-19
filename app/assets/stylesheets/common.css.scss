@@ -828,8 +828,8 @@ label.required:after {
 }
 
 .error_message {
-  display: inline-block !important;
-  float: none !important;
+  // display: inline-block !important;
+  // float: none !important;
   input {
     border-color: #cd6a6a !important;
   }

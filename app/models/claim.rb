@@ -47,7 +47,7 @@ class Claim < ActiveRecord::Base
   belongs_to :country
   belongs_to :city
   belongs_to :resort, :class_name => 'City'
-  
+
   belongs_to :editor, :class_name => 'User', :foreign_key => 'locked_by'
   attr_accessor :current_editor
 
@@ -88,7 +88,7 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
-  validates :hotel, :format => { :with => Regexp.union(/([\s][1-5]\*)\Z/,/\A(-)\Z/,/\A\Z/,/\A([1-5]\*)\Z/), :message => I18n.t('activerecord.errors.messages.hotel') }
+  validates :hotel, hotel: { message: I18n.t('activerecord.errors.messages.hotel_invalid') }
   validates :num, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }, :if => proc{ |claim| claim.num.present? }
   validates_presence_of :num, :unless => :new_record?
   validate :check_lock, :on => :update

@@ -858,22 +858,8 @@ class Claim < ActiveRecord::Base
     end
 
     def printable_fields
-      {
+      fields = {
         'Номер' => num,
-        'Туроператор' => operator.try(:name),
-        'ТуроператорНомер' => operator.try(:register_number),
-        'ТуроператорСерия' => operator.try(:register_series),
-        'ТуроператорИНН' => operator.try(:inn),
-        'ТуроператорОГРН' => operator.try(:ogrn),
-        'ТуроператорСайт' => operator.try(:site),
-        'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
-        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
-        'Страховщик' => operator.try(:insurer),
-        'СтраховщикАдрес' => operator.try(:insurer_address),
-        'ДоговорСтрахования' => operator.try(:insurer_contract),
-        'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
-        'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : '',
-        'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : '',
         'Город' => city.try(:name),
         'Страна' => country.try(:name),
         'Курорт' => resort.try(:name),
@@ -906,6 +892,14 @@ class Claim < ActiveRecord::Base
         'СуммаПрописью' => primary_currency_price_in_word,
         'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
         'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
+        'АэропортОбратно' => airport_back,
+        'ВылетТуда' => depart_to,
+        'ВылетОбратно' => depart_back,
+        'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
+        'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
+      }
+
+      fields.merge!({
         'Компания' => company.try(:name),
         'Банк' => company.try(:bank),
         'БИК' => company.try(:bik),
@@ -916,24 +910,44 @@ class Claim < ActiveRecord::Base
         'ИНН' => company.try(:inn),
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
-        'СайтКомпании' => company.try(:site),
+        'СайтКомпании' => company.try(:site)
+      }) if company
+
+      fields.merge!({
         'ФИО' => applicant.try(:full_name),
-        'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', '),
         'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
         'СерияПаспорта' => applicant.try(:passport_series),
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
-        'АэропортОбратно' => airport_back,
-        'ВылетТуда' => depart_to,
-        'ВылетОбратно' => depart_back,
-        'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
-        'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
+        'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', ')
+      }) if applicant
+
+      fields.merge!({
+        'Туроператор' => operator.try(:name),
+        'ТуроператорНомер' => operator.try(:register_number),
+        'ТуроператорСерия' => operator.try(:register_series),
+        'ТуроператорИНН' => operator.try(:inn),
+        'ТуроператорОГРН' => operator.try(:ogrn),
+        'ТуроператорСайт' => operator.try(:site),
+        'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
+        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
+        'Страховщик' => operator.try(:insurer),
+        'СтраховщикАдрес' => operator.try(:insurer_address),
+        'ДоговорСтрахования' => operator.try(:insurer_contract),
+        'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
+        'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : '',
+        'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : ''
+      }) if operator
+
+      fields.merge!({
         'АэропортТуда' => flights.first.try(:airport_from),
         'РейсТуда' => flights.first.try(:flight_number),
         'РейсОбратно' => flights.last.try(:flight_number)
-      }
+      }) if flights.length > 0
+
+      fields
     end
 
     def printable_collections

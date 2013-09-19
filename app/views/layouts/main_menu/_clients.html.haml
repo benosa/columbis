@@ -10,7 +10,7 @@
     - potentials_class = 'active'
 
 %li{ :class => li_class }
-  = link_to t('.clients'), tourists_path
+  = link_to t('.clients'), tourists_path(:potential => true)
   .rmenu_dropdown
     %ul
       %li.first_menu_stroke{ :class => tourists_class }= link_to t('.tourists'), tourists_path

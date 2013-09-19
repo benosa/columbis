@@ -65,7 +65,7 @@ Tourism::Application.configure do
   begin
     mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")[Rails.env]
 
-    config.action_mailer.default_url_options = { :host => mailer_config['smtp_settings']['domain'] }
+    config.action_mailer.default_url_options = { host: CONFIG[:domain] }
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.perform_deliveries = true
     config.action_mailer.raise_delivery_errors = false

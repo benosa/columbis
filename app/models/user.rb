@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   validates_presence_of :role
   validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
   validates_presence_of :last_name, :first_name
-  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true
+  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :unless => proc{ self.role == 'admin' }
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]

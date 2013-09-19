@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
 
   def check_subdomain
     # Check subdomain only for remote GET requests to proper domain
-    return unless request.get?# && !request.local? && request.host.index(CONFIG[:domain])
+    return unless request.get? && !request.local? && request.host.index(CONFIG[:domain])
 
     subdomain = request.host.sub(/\.?#{CONFIG[:domain]}\Z/, '')
     is_public_controller = CONFIG[:public_controllers].include?(params[:controller])

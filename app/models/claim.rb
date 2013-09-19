@@ -930,9 +930,9 @@ class Claim < ActiveRecord::Base
         'ВылетОбратно' => depart_back,
         'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
         'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back),
-        'АэропортТуда' => flights.first.airport_from,
-        'РейсТуда' => flights.first.flight_number,
-        'РейсОбратно' => flights.last.flight_number
+        'АэропортТуда' => flights.first.try(:airport_from),
+        'РейсТуда' => flights.first.try(:flight_number),
+        'РейсОбратно' => flights.last.try(:flight_number)
       }
     end
 

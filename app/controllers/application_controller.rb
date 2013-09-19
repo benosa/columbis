@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
     redirect_url = nil
 
     if user_signed_in?
-      if !is_public_controller && subdomain != current_company.subdomain
+      if current_company && !is_public_controller && subdomain != current_company.subdomain
         redirect_url = url_for_current_company
       end
     elsif subdomain.present?

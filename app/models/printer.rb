@@ -60,7 +60,10 @@ class Printer < ActiveRecord::Base
         (value.respond_to?(:strftime) ? value.strftime('%d/%m/%Y') : value.to_s)
       end
     end
-    @empty_fields.uniq!
+    @empty_fields = @empty_fields.compact.uniq
+    @empty_collection_fields.each do |ckey, rows|
+      rows = rows.compact!
+    end
     @text.gsub!(/\#\{ПУСТЫЕ_ПОЛЯ\}/, empty_fields_message)
 
     @text
@@ -147,7 +150,6 @@ class Printer < ActiveRecord::Base
     return '' if @empty_fields.length == 0 and @empty_collection_fields.length == 0
     message = "В документе присутствуют незаполненные поля.\n"
     message += "Список полей: #{@empty_fields.join(', ')}\n" if @empty_fields.length > 0
-    Rails.logger.debug "@empty_collection_fields: #{@empty_collection_fields.inspect}"
     @empty_collection_fields.each do |ckey, rows|
       message += "#{ckey}:\n"
       rows.each_with_index { |fields, index| message += "#{index} - #{fields.join(', ')}\n" }

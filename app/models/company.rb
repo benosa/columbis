@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
-                  :bank, :oficial_letter_signature, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
-                  :site, :inn, :time_zone, :subdomain, :logo,
+                  :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
+                  :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
                   :sms_signature, :sms_birthday_send
   mount_uploader :logo, LogoUploader
 
@@ -31,6 +31,8 @@ class Company < ActiveRecord::Base
 
   validates_presence_of :name
   validates :subdomain, uniqueness: true, presence: true
+  validates :director, presence: true
+  validates :director_genitive, presence: true
 
   def company_id
     id
@@ -41,7 +43,14 @@ class Company < ActiveRecord::Base
   end
 
   def memo_printer_for(country)
-    printers.where(:mode => 'memo', :country_id => country).last
+    memo = printers.where(:mode => 'memo', :country_id => country).last
+    unless memo
+      c = Country.where(:id => country).last
+      memo = Printer.create(:mode => 'memo')
+      memo.company = self
+      memo.country = c
+    end
+    memo
   end
 
   def permit_printer

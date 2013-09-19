@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
     t.string   "sms_signature"
     t.boolean  "sms_birthday_send",        :default => true
     t.string   "subdomain"
+    t.string   "logo"
   end
 
   create_table "countries", :force => true do |t|

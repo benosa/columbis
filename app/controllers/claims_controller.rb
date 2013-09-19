@@ -56,9 +56,9 @@ class ClaimsController < ApplicationController
     render :partial => 'totals'
   end
 
-  def show
-    if %w[contract memo permit warranty act].include? params[:print]
-      case params[:print]
+  def printer
+    if %w[contract memo permit warranty act].include? params[:form]
+      case params[:form]
       when 'contract'
         render :text => @claim.print_contract, :layout => false
       when 'memo'
@@ -71,7 +71,7 @@ class ClaimsController < ApplicationController
         render :text => @claim.print_act, :layout => false
       end
     else
-      redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:print]}'"
+      redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:form]}'"
     end
   end
 
@@ -98,6 +98,10 @@ class ClaimsController < ApplicationController
     @claim.applicant ||= Tourist.new
     check_payments
     check_flights
+  end
+
+  def show
+    render :action => 'edit'
   end
 
   def update

@@ -112,7 +112,8 @@ Tourism::Application.routes.draw do
 
   match 'dashboard' => "dashboard#index"
   match 'online' => "site#online"
-  match "/dj" => DelayedJobWeb, :anchor => false
 
   root :to => 'claims#index'
+
+  match "/dj" => DelayedJobWeb, :anchor => false
 end

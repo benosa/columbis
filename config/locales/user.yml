@@ -41,7 +41,7 @@ ru:
       selected_color: Выбранный цвет
       current_color: Текущий цвет
       personal_data: Личные данные
-      create_password: Задание пароля
+      create_password: Изменение пароля
       screen_width: Ширина экрана
       auto: Авто
       if_not_password: 'Если никакой пароль не задан, он будет создан автоматически'

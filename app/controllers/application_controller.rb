@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
-  before_filter :set_session_options_domain
+  # before_filter :set_session_options_domain
   before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -76,13 +76,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def set_session_options_domain
-    request.session_options[:domain] = request.domain
-  end
+  # def set_session_options_domain
+  #   request.session_options[:domain] = request.domain
+  # end
 
   def check_subdomain
     # Check subdomain only for remote GET requests to proper domain
-    return unless request.get? && !request.local? && request.host.index(CONFIG[:domain])
+    return unless request.get?# && !request.local? && request.host.index(CONFIG[:domain])
 
     subdomain = request.host.sub(/\.?#{CONFIG[:domain]}\Z/, '')
     is_public_controller = CONFIG[:public_controllers].include?(params[:controller])
@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
 
     if user_signed_in?
       if !is_public_controller && subdomain != current_company.subdomain
-        redirect_url = url_for(domain: CONFIG[:domain], subdomain: current_company.subdomain)
+        redirect_url = url_for_current_company
       end
     elsif subdomain.present?
       redirect_url = url_for(host: CONFIG[:domain])
@@ -101,9 +101,7 @@ class ApplicationController < ActionController::Base
 
   def check_page_param
     entries = params[:page].to_i * per_page
-    Rails.logger.debug "entries: #{entries}"
     if CONFIG[:total_entries] && entries > CONFIG[:total_entries]
-      Rails.logger.debug "params: #{params.inspect}"
       params.delete(:page)
       unless request.xhr?
         redirect_to current_path
@@ -142,6 +140,15 @@ class ApplicationController < ActionController::Base
 
   def logged_as_another_user?
     self.remember_admin_id?
+  end
+
+  # Overwriting the sign_out redirect path method
+  def after_sign_in_path_for(resource)
+    if is_admin? or is_boss?
+      boss_index_path
+    else
+      current_company_root_path
+    end
   end
 
   # Overwriting the sign_out redirect path method

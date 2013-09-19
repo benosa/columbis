@@ -44,6 +44,14 @@ module ApplicationHelper
     url_for(url_params)
   end
 
+  def url_for_current_company
+    url_for(domain: CONFIG[:domain], subdomain: current_company.subdomain)
+  end
+
+  def current_company_root_path
+    polymorphic_url(Claim, domain: CONFIG[:domain], subdomain: current_company.subdomain)
+  end
+
   def redirect_back(options = {})
     default = options.delete(:default) || root_path
     redirect_to (request.referer.present? && request.referer != request.original_url ? :back : default), options

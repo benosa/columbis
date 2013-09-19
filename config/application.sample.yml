@@ -5,9 +5,14 @@ development: &defaults
   delayed_job_user: user
   delayed_job_password: password
   public_controllers:
-    - 'devise/sessions'
-    - 'devise/passwords'
     - 'registrations'
+    - 'sessions'
+    - 'confirmations'
+    - 'passwords'
+    - 'devise/registrations'
+    - 'devise/sessions'
+    - 'devise/confirmations'
+    - 'devise/passwords'
   total_entries: 10000
   per_page_list: [10,30,50]
 

@@ -3,13 +3,13 @@ class Mailer < ActionMailer::Base
   include AbstractController::Callbacks
   include Devise::Mailers::Helpers
   layout 'mailer'
-  default from: "testdevmen@gmail.com"
+  default from: CONFIG[:support_email]
   before_filter :set_attach
 
-  def registrations_info(user)
-    @user = user
-    attachments.inline['logo.png'] = File.read(Rails.root.join('app/assets/images', 'logo_mail.png'))
-    mail(to: user.email, subject: I18n.t('registration_data'), from: 'testdevmen@gmail.com')
+  def registrations_info(user, password)
+    @resource = user
+    @password = password
+    mail(to: user.email, subject: I18n.t('registration_data'))
   end
 
   def task_info(task)
@@ -23,7 +23,7 @@ class Mailer < ActionMailer::Base
     else
       "#[#{@task.id}] Задача завершена"
     end
-    mail(to: 'testdevmen@gmail.com', subject: subject, from: 'testdevmen@gmail.com')
+    mail(to: 'testdevmen@gmail.com', subject: subject)
   end
 
   def new_password_instructions(record)

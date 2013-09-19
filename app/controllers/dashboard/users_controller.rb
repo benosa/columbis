@@ -50,8 +50,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def update
-    @user.update_password(params[:user], current_user.role)
-    if @user.update_by_params(params[:user])
+    if @user.update_by_params(params[:user], current_user)
       redirect_to dashboard_users_url, :notice => t('users.messages.updated')
     else
       render :action => 'edit'

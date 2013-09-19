@@ -85,47 +85,77 @@ class User < ActiveRecord::Base
     end
   end
 
-  def update_password(params, role)
-    is_params_use_office_password = params[:use_office_password].to_boolean
-    if is_params_use_office_password
-      if params[:office_id] != self.office_id || is_params_use_office_password != self.use_office_password
-        office = Office.where(:id => params[:office_id]).first
-        self.update_attribute(:password, office.default_password)
-        params.delete(:password)
-        params.delete(:password_confirmation)
-        params.delete(:current_password)
-        Mailer.registrations_info(self).deliver
-      end
-    else
-      if (role == "admin" || role == "boss") && params[:password].present?
-        self.update_attribute(:password, params[:password])
-        Mailer.registrations_info(self).deliver
-      end
-    end
-  end
-
-  def update_by_params(params = {})
+  def update_by_params(params = {}, current_user = nil)
+    current_user = self unless current_user
     self.role = params[:role] if available_roles.include?(params[:role])
     params[:role] = self.role
 
-    if params[:password].present?
+    # Send registration information in case only when user doesn't know his current password (generated or changed by someone else)
+    send_registration_info = false
+    need_update_with_password = false
+
+    # Currently set use_office_password attribute
+    if params[:use_office_password].to_boolean
+      if !self.use_office_password && self.office
+        self.password = self.office.default_password
+        self.use_office_password = true
+        send_registration_info = true unless self == current_user
+      elsif !self.office
+        params.delete(:use_office_password)
+      end
+
+    # Set new password
+    elsif params[:password].present?
+      # User changes password himself, need confirmation and current password
+      if self == current_user
+        need_update_with_password = true
+      # Password is changed by someone who can manage users
+      else
+        self.password = params[:password]
+        send_registration_info = true
+      end
+
+    # Currently unset use_office_password attribute and don't fill password, generate one
+    elsif self.use_office_password
+      generate_password
+      self.use_office_password = false
+      send_registration_info = true
+    end
+
+    # Need save current password to deliver email, because Devise call clean_up_passwords ufter user update
+    current_password = self.password || params[:password]
+
+    # Update user
+    update_result = if need_update_with_password
       update_with_password(params)
-      Mailer.registrations_info(self).deliver
     else
       params.delete(:current_password)
+      # update_without_password(params, _current_user: current_user)
       update_without_password(params)
     end
+
+    Mailer.registrations_info(self, current_password).deliver if update_result && send_registration_info
+    update_result
   end
 
   # Redefine Devise method for refining fields, that can't be deleted without asking for the current password
-  def update_without_password(params = {}, *options)
+  def update_without_password(params = {}, *args)
+    # options = args.extract_options!
+    # current_user = options.delete(:_current_user) if options.kind_of?(Hash)
+    # # User can not change his email and login without current password, but someone who can manage users can!
+    # if current_user.nil? || current_user == self
+    #   params.delete(:email)
+    #   params.delete(:login)
+    # end
+    # args << options
+
     params.delete(:email)
-    super(params)
+    super(params, *args)
   end
 
   def create_new(params)
     self.role = params[:role] if available_roles.include?(params[:role])
-    if params[:use_office_password].to_s.match(/(true|t|yes|y|1)$/i) != nil
+    if params[:use_office_password].to_boolean
       office = Office.where(:id => params[:office_id]).first
       self.password = office.default_password
       self.password_confirmation = self.password
@@ -152,8 +182,12 @@ class User < ActiveRecord::Base
     user
   end
 
+  def self.generate_password
+    Devise.friendly_token.first(8)
+  end
+
   def generate_password
-    self.password = Devise.friendly_token.first(8);
+    self.password = User.generate_password
   end
 
   private

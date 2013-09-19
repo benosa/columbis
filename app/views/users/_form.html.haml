@@ -1,6 +1,7 @@
+- user = f.object
 - content_for(:error_messages) do
   = f.error_messages
-- if f.object.new_record?
+- if user.new_record?
   - pass_label = :password
   - pass_conf_label = :password_confirmation
 - else
@@ -18,9 +19,9 @@
     .form_block_content
       .fake_row.single_row
         %p= f.label :email
-        = f.text_field :email, :class => 'type_user'
+        = f.text_field :email, :class => 'type_user', :disabled => user != current_user
         %p
-          - if f.object.new_record?
+          - if user.new_record?
             = f.label t('.login_in_create')
           - else
             = f.label :login
@@ -29,12 +30,12 @@
         - if is_admin? or is_boss?
           = f.select :office_id, current_user.company.offices.map {|o| [ o.name, o.id ] }
         - else
-          = f.text_field :office, :value => f.object.office.try(:name), :disabled => true
+          = f.text_field :office, :value => user.office.try(:name), :disabled => true
         %p= f.label :role
         - if is_admin? or is_boss?
           = f.select :role, current_user.available_roles.map{|r| [t("user.roles.#{r}"), r]}
         - else
-          = f.text_field :role, :value => t("user.roles.#{f.object.role}"), :disabled => true
+          = f.text_field :role, :value => t("user.roles.#{user.role}"), :disabled => true
 
   .form_block.grey_block
     .block_title
@@ -49,9 +50,9 @@
         .two_line
           %p= t('.selected_color')
           = text_field_tag nil, nil, :disabled => true,
-            :class => 'color color_sample', :style => "background-color: #{f.object.color};"
+            :class => 'color color_sample', :style => "background-color: #{user.color};"
         %p= t('.screen_width')
-        = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, f.object.try(:screen_width)), include_blank: t('.auto')
+        = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, user.try(:screen_width)), include_blank: t('.auto')
 
 
 %fieldset.form_column.form_column-middle.last
@@ -67,7 +68,7 @@
         %p= f.label :middle_name
         = f.text_field :middle_name, :class => 'type_user'
         %p= f.label :phone, :required => true
-        = f.text_field :phone_code, :value => "+7"
+        = f.text_field :phone_code, :value => "+7", disabled: true
         = f.text_field :phone, :value => @user.phone.to_s.sub(/\A\+7/, '')
 
   .form_block.grey_block
@@ -81,12 +82,12 @@
         #password_block
           %p= f.label pass_label
           = f.password_field :password, :class => 'type_user'
-          - if f.object == current_user
+          - if user == current_user
             %p= f.label pass_conf_label
             = f.password_field :password_confirmation, :class => 'type_user'
-          - if f.object.new_record?
+          - if user.new_record?
             %p= t('.if_not_password')
-          - if f.object == current_user && !f.object.new_record?
+          - if user == current_user && !user.new_record?
             %p= f.label :current_password
             = f.password_field :current_password, :class => 'type_user'
 

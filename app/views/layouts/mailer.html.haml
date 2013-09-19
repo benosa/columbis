@@ -20,12 +20,13 @@
                 %p{:style => "color:#666; font: 13px Arial; margin: 0 0 15px 0; "} Центр обслуживания клиентов
                 %p{:align => "right", :style => "font: 20px Arial; color:#0076be; margin: 0; text-decoration: none;"} 8 800 775 76 76
                 %p{:align => "right", :style => "margin: 5px 0 0 0;"}
-                  %a{:href => "mailto:support@columbis.ru", :style => "color:#666; font: 13px Arial;"} support@columbis.ru
-            %tr{:style => "width:530px"}
-              %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
-                %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_name} #{@resource.last_name}
-                = yield
-                %p Спасибо, что выбрали Columbis!
+                  %a{:href => "mailto:#{CONFIG[:support_email]}", :style => "color:#666; font: 13px Arial;"}= CONFIG[:support_email]
+            - if @resource && @resource.first_last_name
+              %tr{:style => "width:530px"}
+                %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
+                  %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_last_name}
+                  = yield
+                  %p Спасибо, что выбрали Columbis!
       %tr{:align => "center", :width => "600"}
         %td
           %table{:cellpadding => "0", :cellspacing => "0", :width => "600"}

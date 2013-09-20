@@ -11,7 +11,7 @@
         %h2= t('.title')
       .form_block_content
         .fake_row
-          %p= f.label :login
+          %p= f.label :login, t('.email_or_login')
           = f.text_field :login
           %p= f.label :password
           = f.password_field :password

@@ -17,11 +17,11 @@
   %td{ :title => claim.applicant.try(:phone_number) }
     = truncate(claim.applicant.try(:phone_number), :length => 10)
   %td{ :class => color_for_flight(claim) }
-    %span{ :title => l(claim.depart_to, :format => :long) }
-      = l( claim.depart_to, :format => :short_date )
+    %span{ :title => l(claim.arrival_date, :format => :long) }
+      = l( claim.arrival_date, :format => :short )
   %td
-    %span{ :title => l(claim.depart_back, :format => :long) }
-      = l( claim.depart_back, :format => :short_date )
+    %span{ :title => l(claim.departure_date, :format => :long) }
+      = l( claim.departure_date, :format => :short )
   %td{ :title => claim.country.try(:name) }
     = truncate(claim.country.try(:name), :length => 8)
   %td{ :title => claim.city.try(:name) }

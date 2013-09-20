@@ -137,12 +137,12 @@ module ClaimsHelper
   end
 
   def color_for_flight(claim)
-    return '' unless claim.depart_to
+    return '' unless claim.arrival_date
     return '' if claim.canceled?
 
-    if claim.depart_to.to_date > Date.current + 8.day
+    if claim.arrival_date > Date.current + 8.day
      'soon'
-    elsif claim.depart_to.to_date >= Date.current
+    elsif claim.arrival_date >= Date.current
       'hot'
     else
       'departed'

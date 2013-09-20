@@ -326,24 +326,23 @@ class Claim < ActiveRecord::Base
     Claim.last.try(:id).to_i + 1
   end
 
-  def print_contract
-    company.contract_printer.prepare_template(printable_fields, printable_collections)
+  def print_doc(mode)
+    printer = company.send(:"#{mode}_printer")
+    printer.prepare_template(printable_fields, printable_collections) if printer
+  end
+
+  # Define methods: print_contract, print_permit, print_warranty, print_act
+  %w[contract permit warranty act].each do |mode|
+    class_eval <<-EOS, __FILE__, __LINE__
+      def print_#{mode}
+        print_doc '#{mode}'
+      end
+    EOS
   end
 
   def print_memo
-    company.memo_printer_for(self.country_id).prepare_template(printable_fields, printable_collections)
-  end
-
-  def print_permit
-    company.permit_printer.prepare_template(printable_fields, printable_collections)
-  end
-
-  def print_warranty
-    company.warranty_printer.prepare_template(printable_fields, printable_collections)
-  end
-
-  def print_act
-    company.act_printer.prepare_template(printable_fields, printable_collections)
+    printer = company.memo_printer_for(self.country_id)
+    printer.prepare_template(printable_fields, printable_collections) if printer
   end
 
   def self.columns_info

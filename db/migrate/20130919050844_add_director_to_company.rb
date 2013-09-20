@@ -3,10 +3,6 @@ class AddDirectorToCompany < ActiveRecord::Migration
     add_column :companies, :director, :string
     add_column :companies, :director_genitive, :string
     remove_column :companies, :oficial_letter_signature
-    comp = Company.where(:name => "Мистраль").first
-    comp.director = "Голубева Татьяна Александровна"
-    comp.director_genitive = "Голубевой Татьяны Александровны"
-    comp.save
   end
 
   def down

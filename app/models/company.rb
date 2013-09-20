@@ -31,8 +31,6 @@ class Company < ActiveRecord::Base
 
   validates_presence_of :name
   validates :subdomain, uniqueness: true, presence: true
-  validates :director, presence: true
-  validates :director_genitive, presence: true
 
   def company_id
     id

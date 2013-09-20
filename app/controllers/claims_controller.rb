@@ -101,6 +101,9 @@ class ClaimsController < ApplicationController
   end
 
   def show
+    @claim.applicant ||= Tourist.new
+    check_payments
+    check_flights
     render :action => 'edit'
   end
 

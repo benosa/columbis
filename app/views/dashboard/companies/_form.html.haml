@@ -8,6 +8,8 @@
       %h2= t('.common')
     .form_block_content
       .fake_row
+        %p= f.label :subdomain
+        = f.text_field :subdomain, :class => 'bank'
         %p= f.label :name
         = f.text_field :name, :class => 'bank'
         %p= f.label :email
@@ -34,8 +36,6 @@
         = f.text_field :inn, :class => 'bank'
         %p= f.label :time_zone
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
-        %p= f.label :subdomain
-        = f.text_field :subdomain, :class => 'bank'
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         -if f.object.logo_url
           = image_tag f.object.logo.thumb.url

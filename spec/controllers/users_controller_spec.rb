@@ -122,6 +122,7 @@ describe RegistrationsController do
     it 'should return success:false because email exist' do
       @attributes['email'] = 'test@mail.ru'
       post :create, :user => @attributes, :format => :json
+       response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')
     end
 
@@ -129,6 +130,7 @@ describe RegistrationsController do
       @attributes['email'] = 'test3@mail.ru'
       @attributes['phone'] = '444'
       post :create, :user => @attributes, :format => :json
+      response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')
     end
   end
@@ -149,13 +151,13 @@ describe SessionsController do
   describe 'POST_create2_json' do
     it 'should return success: email6 exist' do
       post :create, :user => { login: 'test', password: '111112' }, :format => :json
-     # response.header['Content-Type'].should match /json/
-      response.body.should == 'dfsfd'
+      response.header['Content-Type'].should match /json/
+      response.body.should have_text('"success":false')
     end
 
     it 'should return success:false because email exist' do
       post :create, :user => { login: 'test', password: '111111' }, :format => :json
-     # response.header['Content-Type'].should match /json/
+      response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":true')
     end
   end

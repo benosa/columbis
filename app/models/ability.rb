@@ -42,7 +42,7 @@ class Ability
       cannot :manage, TariffPlan
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
-      can [:create, :update], Claim, :company_id => user.company_id
+      can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id
       can [:read, :scroll], Claim, :company_id => user.company_id
       can :update, Payment, :company_id => user.company_id, :approved => false
       can [:update], User, :id => user.id
@@ -54,8 +54,8 @@ class Ability
       cannot :manage, TariffPlan
     elsif user.role == 'manager'
       can :manage, Tourist, :company_id => user.company_id
-      can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
-      can [:create, :update], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
+      can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
+      can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
       can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id
       can :update, Payment, :claim => { :user_id => user.id }, :approved => false
       can :update, Payment, :claim => { :assistant_id => user.id }, :approved => false

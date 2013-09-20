@@ -3,7 +3,8 @@ class ClaimsController < ApplicationController
   include ClaimsHelper
   ADDITIONAL_ACTIONS = [:totals, :update_bonus].freeze
 
-  before_filter :set_claim, :only => [:new, :create, :edit, :update, :update_bonus, :lock, :unlock] # override loading resource by cancan
+  # Override loading resource by cancan
+  before_filter :set_claim, :only => [:new, :create, :edit, :update, :update_bonus, :lock, :unlock, :printer]
 
   load_and_authorize_resource :except => ADDITIONAL_ACTIONS
 
@@ -134,7 +135,7 @@ class ClaimsController < ApplicationController
   end
 
   def lock
-    authorize! :update, @claim
+    # authorize! :update, @claim
     unless @claim.locked?
       @claim.lock(current_user)
       render :json => {
@@ -148,7 +149,7 @@ class ClaimsController < ApplicationController
   end
 
   def unlock
-    authorize! :update, @claim
+    # authorize! :update, @claim
     if @claim.edited?
       unless @claim.locked?
         @claim.unlock

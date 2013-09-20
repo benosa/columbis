@@ -65,7 +65,3 @@
           %strong= f.label :operator_debt, t('.operator_debt_short')
           = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right important', wrapper: false
           %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)
-        .two_line.small_margin.pull-right
-          = f.label :operator_price
-          = f.text_field :operator_price, :class => 'number_visas', wrapper: false
-          = f.select :operator_price_currency, currency_courses_for_select, {}, :class => 'price_select', wrapper: false

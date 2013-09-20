@@ -413,10 +413,18 @@ body {
       width: 68px;
     }
   }
-  &.tour_operators th {
-    max-width: 350px;
-    background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
+  &.tour_operators {
+    td p, td span {
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 350px;
+    }
+    th {
+      max-width: 350px;
+      background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
+    }
   }
+
   td {
     height: auto;
     padding: 5px 5px;

@@ -228,8 +228,7 @@ function set_claims_sticky_header() {
 
   // Initialization
   if (!$claims_header.data('waypointsWaypointIds')) {
-    set_waypoints('#claims .claims_header', {
-      offset: function() { return -$(this).height() + $('.header').height(); },
+    options = {
       handler: function(direction) {
         var $thead = $(this).closest('thead');
         if (direction == 'down') {
@@ -238,12 +237,20 @@ function set_claims_sticky_header() {
           $thead.removeClass('stuck_active');
         }
       }
-    });
+    }
+
+    if (!$('.stuck.fixed').length) {
+       options['offset'] = function() { return -$(this).height() + $('.header').height(); }
+    }
+
+    set_waypoints('#claims .claims_header', options);
 
     $(window).on('scroll.claims', function() {
-      $('#claims .stuck').css({
-        top: $(this).scrollTop() + $('.header').height()
-      });
+      if (!$('.stuck.fixed').length) {
+        $('#claims .stuck').css({
+          top: $(this).scrollTop() + $('.header').height()
+        });
+      }
     });
   }
 }
@@ -1146,6 +1153,26 @@ $(function() {
         timeout: 10 * 1000 // 10 seconds
       });
     }
+  });
+
+  if($("#claims").length && $(window).width() > $('#claims').width()) {
+    $('.stuck').addClass('fixed');
+  }
+
+  $( window ).resize(function() {
+     if($("#claims").length) {
+       if($(window).width() > $('#claims').width()) {
+         $('.stuck').addClass('fixed');
+         $('#claims .stuck').css({
+           top: $('.header').height()
+         });
+       } else {
+         $('.stuck').removeClass('fixed');
+         $('#claims .stuck').css({
+           top: 500//$('#claims').scrollTop() + $('.header').height()
+         });
+       }
+     }
   });
 
 });

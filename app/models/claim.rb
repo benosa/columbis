@@ -970,7 +970,7 @@ class Claim < ActiveRecord::Base
 
     def initials(fio)
       init = ""
-      i = fio.split(' ').each_with_index do |elem, i|
+      i = fio.to_s.split(' ').each_with_index do |elem, i|
         if i == 0
           init += elem
         else

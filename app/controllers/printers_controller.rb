@@ -5,9 +5,13 @@ class PrintersController < ApplicationController
     @company = current_company
     if params[:template]
       @printer = @company.printers.find(params[:template])
-      send_file @printer.template.path, :filename => @printer.template.file.identifier
+      if @printer.template?
+        send_file @printer.template.path, :filename => @printer.template.file.identifier
+      else
+        redirect_to printers_path
+      end
     else
-      render :'404'
+      redirect_to printers_path
     end
     #send_file @printer.template.path, :filename => @printer.template.file.identifier
   end

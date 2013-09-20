@@ -36,31 +36,30 @@ class Company < ActiveRecord::Base
     id
   end
 
-  def contract_printer
-    printers.where(:mode => 'contract').last
+  def find_or_create_printer(mode)
+    printers.where(:mode => mode).reorder('id DESC').first_or_create
   end
 
-  def memo_printer_for(country)
-    memo = printers.where(:mode => 'memo', :country_id => country).last
-    unless memo
-      c = Country.where(:id => country).last
-      memo = Printer.create(:mode => 'memo')
-      memo.company = self
-      memo.country = c
+  # Define methods: contract_printer, permit_printer, warranty_printer, act_printer
+  %w[contract permit warranty act].each do |mode|
+    class_eval <<-EOS, __FILE__, __LINE__
+      def #{mode}_printer
+        find_or_create_printer('#{mode}')
+      end
+    EOS
+  end
+
+  def memo_printer_for(country_id)
+    printer = printers.where(:mode => 'memo', :country_id => country_id).last
+    unless printer
+      country = Country.where(:id => country_id).last
+      if country
+        printer = printers.build(:mode => 'memo')
+        printer.country = country
+        printer.save
+      end
     end
-    memo
-  end
-
-  def permit_printer
-    printers.where(:mode => 'permit').last
-  end
-
-  def warranty_printer
-    printers.where(:mode => 'warranty').last
-  end
-
-  def act_printer
-    printers.where(:mode => 'act').last
+    printer
   end
 
   def check_and_save_dropdown(list, value)

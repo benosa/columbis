@@ -4,7 +4,7 @@
 
 = form_for [:dashboard, @company], :builder => TourismFormBuilder do |form|
   - @form_id = form.options[:html][:id]
-  = render :partial => 'form', :locals => { :f => form }
+  = render :partial => 'form', :locals => { :f => form }, :html => { :multipart => true }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

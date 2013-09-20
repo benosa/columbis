@@ -331,7 +331,7 @@ class Claim < ActiveRecord::Base
   end
 
   def print_memo
-    company.memo_printer_for(country).prepare_template(printable_fields, printable_collections)
+    company.memo_printer_for(self.country_id).prepare_template(printable_fields, printable_collections)
   end
 
   def print_permit
@@ -910,7 +910,11 @@ class Claim < ActiveRecord::Base
         'ИНН' => company.try(:inn),
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
-        'СайтКомпании' => company.try(:site)
+        'СайтКомпании' => company.try(:site),
+        'Логотип' => company.logo.thumb.url,
+        'ФИОДериктораКомпании' => company.director,
+        'ФИОДериктораКомпанииРод' => company.director_genitive,
+        'ФИОДериктораКомпанииИниц' => initials(company.director)
       }) if company
 
       fields.merge!({
@@ -962,6 +966,18 @@ class Claim < ActiveRecord::Base
             'Турист.СрокПаспорта' => :passport_valid_until
           }
       }
+    end
+
+    def initials(fio)
+      init = ""
+      i = fio.split(' ').each_with_index do |elem, i|
+        if i == 0
+          init += elem
+        else
+          init += (" " + elem[0] + ".")
+        end
+      end
+      init
     end
 end
 

@@ -14,8 +14,10 @@
         = f.text_field :email, :class => 'bank'
         %p= f.label :site
         = f.text_field :site, :class => 'bank'
-        %p= f.label :oficial_letter_signature
-        = f.text_field :oficial_letter_signature, :class => 'bank'
+        %p= f.label :director
+        = f.text_field :director, :class => 'bank'
+        %p= f.label :director_genitive
+        = f.text_field :director_genitive, :class => 'bank'
         %p= f.label :bank
         = f.text_field :bank, :class => 'bank'
         %p= f.label :bik
@@ -34,6 +36,10 @@
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
         %p= f.label :subdomain
         = f.text_field :subdomain, :class => 'bank'
+        %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
+        -if f.object.logo_url
+          = image_tag f.object.logo.thumb.url
+        = f.file_field :logo
 
 .form_column
   .form_block

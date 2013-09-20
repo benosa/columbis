@@ -47,7 +47,19 @@ class Printer < ActiveRecord::Base
   end
 
   def prepare_template(fields, collections)
-    @text = File.read(template.path)
+    if template.path && File.exist?(template.path)
+      path = template.path
+    else
+      if self.mode == "memo"
+        path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo_#{self.country.name}.html"
+        unless File.exist?(path)
+          path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo.html"
+        end
+      else
+        path = Rails.root.to_s + "/app/views/printers/default_forms/ru/#{self.mode}.html"
+      end
+    end
+    @text = File.read(path)
     @empty_fields = []
 
     setup_collections(collections)

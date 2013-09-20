@@ -28,6 +28,7 @@ gem 'russian', '~> 0.6.0'
 
 gem 'thinking-sphinx', '2.0.14'
 gem 'carrierwave', '0.8.0'
+gem 'mini_magick'
 gem 'smt_rails', '~> 0.2.4'
 gem 'best_in_place', '~> 2.0.2'
 gem 'state_machine'

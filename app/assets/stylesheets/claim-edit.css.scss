@@ -371,7 +371,10 @@
     .block_title {
       overflow: hidden;
       h2 { float: left; }
-      .rates input { width: 70px; }
+      .rates {
+        input { width: 70px; }
+        .error_message { display: inline-block; }
+      }
     }
     .fake_row.fields {
       .col-actions .delete-wrap { margin-top: 24px; }
@@ -409,6 +412,7 @@
       h2 { float: left; }
       .rates {
         input, .operator_price_currency-wrap { width: 70px; }
+        .error_message { display: inline-block; }
       }
     }
     .fake_row.fields {

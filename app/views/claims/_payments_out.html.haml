@@ -5,7 +5,7 @@
     %h2= t('.payments_out')
     .rates
       %p= f.label :operator_maturity, t('activerecord.attributes.claim.maturity'), :required => claim.operator_confirmation_flag
-      = f.text_field :operator_maturity, :class => 'datepicker date expires_date', :value => l(claim.operator_maturity, :format => :long), :required => claim.operator_confirmation_flag, :wrapper => false
+      = f.text_field :operator_maturity, :class => 'datepicker date', :value => l(claim.operator_maturity, :format => :long), :required => claim.operator_confirmation_flag, :wrapper => false
     .rates
       %p= f.label :operator_price
       = f.text_field :operator_price, :class => 'number_visas', :wrapper => false

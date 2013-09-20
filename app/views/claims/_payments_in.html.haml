@@ -5,7 +5,7 @@
     %h2= t('.payments_in')
     .rates
       %p= f.label :maturity
-      = f.text_field :maturity, :class => 'datepicker date expires_date', :value => l(claim.maturity, :format => :long), wrapper: false
+      = f.text_field :maturity, :class => 'datepicker date', :value => l(claim.maturity, :format => :long), wrapper: false
     .rates
       %p
         = "#{t('.payable')}: "

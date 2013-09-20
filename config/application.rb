@@ -73,19 +73,6 @@ module Tourism
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # Use custom html wrapper for field with errors
-    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
-      errors = Array(instance.error_message).join(', ')
-      if html_tag =~ /^<label/
-        html_tag #TODO: temporary solution until the new liquid layouts
-        # %(<span class="error_message">#{html_tag}</span>).html_safe
-      else
-        cls = html_tag[/class="(.+?)"/, 1]
-        id = html_tag[/id="(.+?)"/, 1] + '_wrapper'
-        %(<div id="#{id}" class="error_message input_wrapper" title="#{errors}">#{html_tag}</div>).html_safe
-      end
-    end
-
     # For extending models with search_and_sort method
     require 'search_and_sort'
 

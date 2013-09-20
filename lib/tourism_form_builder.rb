@@ -48,6 +48,28 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
+  # Render error messages. The :message and :header_message options are allowed.
+  def error_messages(options = {})
+    header_message = options[:header_message] ||
+      I18n.t(:"activerecord.errors.header", :default => I18n.t('invalid_fields')) unless options[:header_message] === false
+    message = options[:message] ||
+      I18n.t(:"activerecord.errors.message", :default => I18n.t('correct_the_following_errors_and_try_again')) unless options[:message] === false
+
+    # messages = objects.compact.map { |o| o.errors.full_messages }.flatten
+    messages = @object.errors.full_messages
+    unless messages.empty?
+      @template.instance_exec do
+        content_tag(:div, :class => "error_messages") do
+          content = ''
+          content += content_tag(:h2, header_message) if header_message
+          content += content_tag(:p, message) if message
+          content += content_tag(:ul, messages.map { |msg| content_tag(:li, msg) }.join.html_safe)
+          content.html_safe
+        end
+      end
+    end
+  end
+
   private
 
     def required?(name)

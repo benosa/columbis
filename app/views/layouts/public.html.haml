@@ -57,14 +57,9 @@
           = yield
 
     #footer.footer
-      - if content_for? :fixed_pagination
-        #fixed_pagination.fixed_pagination.clearfix
-          = yield :fixed_pagination
-      - if content_for? :float_panel
-        .float_panel
-          .panel_content
-            = yield :float_panel
-
       .footer_content
-        %p.copy &copy; Devmen. All rights reserved, 2012
-        %p.right tourism.devmen.com
+        %p.copy
+          &copy; Columbis. All rights reserved,
+          = Date.current.year
+        %p.right
+          %a{href: '/'} columbis.ru

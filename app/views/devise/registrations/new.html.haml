@@ -3,7 +3,7 @@
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
 
   - content_for(:error_messages) do
-    = f.error_messages
+    = f.error_messages header_message: false
 
   %fieldset.form_column.first.sign_form
     .form_block

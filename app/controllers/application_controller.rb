@@ -144,12 +144,7 @@ class ApplicationController < ActionController::Base
 
   # Overwriting the sign_out redirect path method
   def after_sign_in_path_for(resource)
-    # if is_admin? or is_boss?
-    #   boss_index_path
-    # else
-    #   current_company_root_path
-    # end
-    current_company_root_path
+    current_company ? current_company_root_path : new_dashboard_company_path
   end
 
   # Overwriting the sign_out redirect path method

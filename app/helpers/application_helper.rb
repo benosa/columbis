@@ -45,11 +45,15 @@ module ApplicationHelper
   end
 
   def url_for_current_company
-    url_for(domain: CONFIG[:domain], subdomain: current_company.subdomain)
+    options = { domain: CONFIG[:domain] }
+    options[:subdomain] = current_company.subdomain if current_company
+    url_for options
   end
 
   def current_company_root_path
-    polymorphic_url(Claim, domain: CONFIG[:domain], subdomain: current_company.subdomain)
+    options = { domain: CONFIG[:domain] }
+    options[:subdomain] = current_company.subdomain if current_company
+    polymorphic_url Claim, options
   end
 
   def redirect_back(options = {})

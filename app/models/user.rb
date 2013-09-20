@@ -190,10 +190,6 @@ class User < ActiveRecord::Base
     self.password = User.generate_password
   end
 
-  def rememberable_options
-    { key: "#{CONFIG[:session_key]}_remember_token" }
-  end
-
   private
 
     def set_role

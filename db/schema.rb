@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130915085719) do
+ActiveRecord::Schema.define(:version => 20130919050844) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
 
   create_table "companies", :force => true do |t|
     t.string   "email"
-    t.string   "oficial_letter_signature"
     t.integer  "country_id"
     t.integer  "city_id"
     t.datetime "created_at"
@@ -168,9 +167,11 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
-    t.boolean  "sms_birthday_send",        :default => true
+    t.boolean  "sms_birthday_send", :default => true
     t.string   "subdomain"
     t.string   "logo"
+    t.string   "director"
+    t.string   "director_genitive"
   end
 
   create_table "countries", :force => true do |t|
@@ -432,8 +433,8 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",   :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",   :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -460,6 +461,7 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "phone"
+    t.boolean  "use_office_password",                   :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

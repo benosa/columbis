@@ -41,7 +41,6 @@
   }
   td {
     // padding: 3px 3px;
-    padding: 2px 2px; // temporary solution to reduce cell size
     white-space: nowrap;
     // &:first-child, &:last-child {
     //   border-left: none;
@@ -331,6 +330,7 @@ option {
       &.purple_box a { color: #000; }
     }
     td {
+      padding: 2px 2px;
       p, span { color: #000; }
       border: 1px #333 solid;
       &.buh_col { background: #BDE0FA !important; }

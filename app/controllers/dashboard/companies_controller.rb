@@ -26,6 +26,7 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def update
+    @company = current_company unless @company
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?

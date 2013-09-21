@@ -20,35 +20,12 @@
         = f.text_field :director, :class => 'bank'
         %p= f.label :director_genitive
         = f.text_field :director_genitive, :class => 'bank'
-        %p= f.label :bank
-        = f.text_field :bank, :class => 'bank'
-        %p= f.label :bik
-        = f.text_field :bik, :class => 'bank'
-        %p= f.label :curr_account
-        = f.text_field :curr_account, :class => 'bank'
-        %p= f.label :corr_account
-        = f.text_field :corr_account, :class => 'bank'
-        %p= f.label :ogrn
-        = f.text_field :ogrn, :class => 'bank'
-        %p= f.label :okpo
-        = f.text_field :okpo, :class => 'bank'
-        %p= f.label :inn
-        = f.text_field :inn, :class => 'bank'
         %p= f.label :time_zone
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         -if f.object.logo_url
           = image_tag f.object.logo.thumb.url
         = f.file_field :logo
-
-.form_column
-  .form_block
-    .block_title
-      %h2= t('.address')
-    .form_block_content
-      .fake_row
-        = f.fields_for :address do |address|
-          = render :partial => 'shared/address', :locals => { :f => address }
 
 #offices_block.form_column
   .form_block
@@ -65,3 +42,33 @@
           = of.hidden_field(:_destroy)
       #add_office_block.fake_row.white
         = link_to t('.add_office'), '#', :class => 'add add_city'
+
+.form_column
+  .form_block
+    .block_title
+      %h2= t('.juridical')
+    .form_block_content
+      .fake_row
+        %p= f.label :bank
+        = f.text_field :bank, :class => 'bank'
+        %p= f.label :bik
+        = f.text_field :bik, :class => 'bank'
+        %p= f.label :curr_account
+        = f.text_field :curr_account, :class => 'bank'
+        %p= f.label :corr_account
+        = f.text_field :corr_account, :class => 'bank'
+        %p= f.label :ogrn
+        = f.text_field :ogrn, :class => 'bank'
+        %p= f.label :okpo
+        = f.text_field :okpo, :class => 'bank'
+        %p= f.label :inn
+        = f.text_field :inn, :class => 'bank'
+
+.form_column
+  .form_block
+    .block_title
+      %h2= t('.address')
+    .form_block_content
+      .fake_row
+        = f.fields_for :address do |address|
+          = render :partial => 'shared/address', :locals => { :f => address }

@@ -20,6 +20,7 @@ ru:
         our_cities: 'Города'
       form:
         common: 'Общие данные'
+        juridical: 'Юридические данные'
         address: 'Адрес'
         cities: 'Города'
         country: 'Страна'

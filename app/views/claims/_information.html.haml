@@ -11,7 +11,9 @@
         .fake_col.col2
           .two_line
             %p= f.label :tourist_stat, t('.tourist_stat')
-            = f.text_field :tourist_stat, :class => 'autocomplete tourist_stat documentation_select', data: ac_data(source: dropdown_autocomplete_claims_path('tourist_stat')), wrapper: { class: 'autocomplete-wrap' }
+            - tourist_stat_class = 'tourist_stat documentation_select' + (' editable-select' if is_admin? || is_boss?).to_s
+            = f.select :tourist_stat, tourist_stat_options(claim), {include_blank: true}, :class => tourist_stat_class
+            -# f.text_field :tourist_stat, :class => 'autocomplete tourist_stat documentation_select', data: ac_data(source: dropdown_autocomplete_claims_path('tourist_stat')), wrapper: { class: 'autocomplete-wrap' }
     .fake_row.row2
       .two_line
         %p= f.label :docs_note

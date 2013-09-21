@@ -183,7 +183,8 @@ namespace :demo do
 
   def create_user(company, office, role, login = nil, password = '123456')
     user = User.new(first_name: Faker::Name.male_first_name, last_name: Faker::Name.male_last_name,
-      password: password, role: role, email: Faker::Internet.email, confirmed_at: Time.now, phone: Faker::PhoneNumber.phone_number)
+      password: password, role: role, email: Faker::Internet.email, confirmed_at: Time.now,
+      phone: Faker::PhoneNumber.phone_number, color: Faker::Name.color)
     user.login = login || (Russian::translit(user.first_name)[0].downcase + Russian::translit(user.last_name).downcase)
     user.company = company
     user.office = office

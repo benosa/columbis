@@ -59,7 +59,7 @@
     #footer.footer
       .footer_content
         %p.copy
-          &copy; Columbis. All rights reserved,
-          = Date.current.year
+          &copy; Columbis.
+          = "#{t('.all_rights_reserved')}, #{Date.current.year}"
         %p.right
-          %a{href: '/'} columbis.ru
+          %a{href: '/'}= CONFIG[:domain]

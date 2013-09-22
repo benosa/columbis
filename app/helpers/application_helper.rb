@@ -1,5 +1,35 @@
 # -*- encoding : utf-8 -*-
 module ApplicationHelper
+
+  def domain_root_url
+    root_url(subdomain: false) # "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"
+  end
+
+  def current_company_root_url
+    subdomain = current_company.subdomain if current_company
+    root_url(subdomain: subdomain || false)
+  end
+
+  def url_for_current_company
+    options = { domain: CONFIG[:domain] }
+    options[:subdomain] = current_company.subdomain if current_company
+    url_for options
+  end
+
+  def current_path(args = {})
+    url_params = args.dup
+    if args[:save_params]
+      url_params.delete(:save_params)
+      url_params.reverse_merge!(params)
+    end
+    url_for(url_params)
+  end
+
+  def redirect_back(options = {})
+    default = options.delete(:default) || root_path
+    redirect_to (request.referer.present? && request.referer != request.original_url ? :back : default), options
+  end
+
   def link_for_view_switcher
     label = params[:list_type] == 'manager_list' ? 'accountant_list' : 'manager_list'
     link_to t('claims.index.' << label), claims_path(:list_type => label), :class =>  'accountant_login', :list_type => params[:list_type]
@@ -33,36 +63,6 @@ module ApplicationHelper
     next_page = params[:page].to_i + 1
     next_page = 2 if next_page < 2
     next_page
-  end
-
-  def current_path(args = {})
-    url_params = args.dup
-    if args[:save_params]
-      url_params.delete(:save_params)
-      url_params.reverse_merge!(params)
-    end
-    url_for(url_params)
-  end
-
-  def url_for_current_company
-    options = { domain: CONFIG[:domain] }
-    options[:subdomain] = current_company.subdomain if current_company
-    url_for options
-  end
-
-  def current_company_root_path
-    options = { domain: CONFIG[:domain] }
-    options[:subdomain] = current_company.subdomain if current_company
-    polymorphic_url Claim, options
-  end
-
-  def domain_root_url
-    "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"
-  end
-
-  def redirect_back(options = {})
-    default = options.delete(:default) || root_path
-    redirect_to (request.referer.present? && request.referer != request.original_url ? :back : default), options
   end
 
   def write_manifest_file

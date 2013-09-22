@@ -30,8 +30,12 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       redirect_to root_path, :alert => exception.message
     else
-      redirect_to new_user_session_path, :alert => exception.message
+      redirect_to new_user_session_path
     end
+  end
+
+  def routing_error
+    user_signed_in? ? redirect_to(current_company_root_url) : redirect_to(new_user_session_path)
   end
 
   def get_catalog
@@ -127,33 +131,33 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def set_time_zone
-    old_time_zone = Time.zone
-    if user_signed_in? && current_company && current_company.time_zone
-      new_time_zone = ActiveSupport::TimeZone[current_company.time_zone]
+    def set_time_zone
+      old_time_zone = Time.zone
+      if user_signed_in? && current_company && current_company.time_zone
+        new_time_zone = ActiveSupport::TimeZone[current_company.time_zone]
+      end
+      Time.zone = new_time_zone || 'Moscow'
+      yield
+    ensure
+      Time.zone = old_time_zone
     end
-    Time.zone = new_time_zone || 'Moscow'
-    yield
-  ensure
-    Time.zone = old_time_zone
-  end
 
-  def logged_as_another_user?
-    self.remember_admin_id?
-  end
+    def logged_as_another_user?
+      self.remember_admin_id?
+    end
 
-  # Overwriting the sign_out redirect path method
-  def after_sign_in_path_for(resource)
-    current_company ? current_company_root_path : new_dashboard_company_path
-  end
+    # Overwriting the sign_out redirect path method
+    def after_sign_in_path_for(resource)
+      current_company ? current_company_root_url : new_dashboard_company_path
+    end
 
-  # Overwriting the sign_out redirect path method
-  def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path
-  end
+    # Overwriting the sign_out redirect path method
+    def after_sign_out_path_for(resource_or_scope)
+      new_user_session_path
+    end
 
-  def set_current_controller
-    ::ApplicationController.current = self
-  end
+    def set_current_controller
+      ::ApplicationController.current = self
+    end
 
 end

@@ -117,4 +117,6 @@ Tourism::Application.routes.draw do
   root :to => 'claims#index'
 
   match "/dj" => DelayedJobWeb, :anchor => false
+
+  match '*path' => 'application#routing_error'
 end

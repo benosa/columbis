@@ -79,3 +79,9 @@ ru:
         *support
       newclaim:
         new_claim: 'Новая заявка'
+
+    application: &application
+      all_rights_reserved: 'Все права защищены'
+
+    public:
+      <<: *application

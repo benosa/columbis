@@ -18,7 +18,7 @@
                   = image_tag attachments['logo.png'].url
               %td{:align => "right"}
                 %p{:style => "color:#666; font: 13px Arial; margin: 0 0 15px 0; "} Центр обслуживания клиентов
-                %p{:align => "right", :style => "font: 20px Arial; color:#0076be; margin: 0; text-decoration: none;"} 8 800 775 76 76
+                %p{:align => "right", :style => "font: 20px Arial; color:#0076be; margin: 0; text-decoration: none;"}= CONFIG[:support_phone]
                 %p{:align => "right", :style => "margin: 5px 0 0 0;"}
                   %a{:href => "mailto:#{CONFIG[:support_email]}", :style => "color:#666; font: 13px Arial;"}= CONFIG[:support_email]
             - if @resource && @resource.first_last_name

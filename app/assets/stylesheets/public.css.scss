@@ -13,9 +13,11 @@ body.public {
       form {display: inline-block;}
      }
   }
-  .submit_row { line-height: 30px; }
+  .submit_row { line-height: 30px;
+    a { color: #3f6db7; }
+  }
   .links {
-    a { display: block; }
+    a { display: block; color: #3f6db7; }
     .sign_in, .sign_up { float: left; margin-right: 10px; }
     .confirmation { width: auto; }
   }

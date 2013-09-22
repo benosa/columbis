@@ -2,12 +2,12 @@
 FactoryGirl.define do
   factory :office do
     association :company
-    name 'office'
+    name { Faker::Name.name }
     default_password '123456'
   end
 
   factory :alien_office, :class => Office do
     association :company
-    name 'alien_office'
+    name { Faker::Name.name }
   end
 end

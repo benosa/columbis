@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :client do
+    association :company
     first_name 'Sergey'
     last_name  'Smirnov'
     middle_name 'Ivanovich'

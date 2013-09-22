@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :country do
     name { Faker::Name.name }
     common false
+    association :company
 
     factory :open_country do
       common true

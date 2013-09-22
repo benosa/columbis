@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :catalog do
-    name 'catalog'
+    name Faker::Name.name
+    association :company
   end
 end

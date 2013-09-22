@@ -17,6 +17,7 @@ FactoryGirl.define do
     factory (:boss)       { role 'boss' }
     factory (:manager)    { role 'manager' }
     factory (:accountant) { role 'accountant' }
+    factory (:supervisor) { role 'supervisor' }
 
     factory :alien_boss do
       company

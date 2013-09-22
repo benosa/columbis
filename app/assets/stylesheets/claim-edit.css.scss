@@ -241,8 +241,9 @@
         padding: 7px 0 3px 0;
         input {
           margin: 0;
-          &:last-child { margin-right: 90px; }
+          // &:last-child { margin-right: 90px; }
         }
+        .error_message { display: inline-block; }
       }
     }
     &.row2, &.row4 {

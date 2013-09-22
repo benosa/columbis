@@ -46,12 +46,11 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
 
   ThinkingSphinx::Test.init
+  Time.zone = 'Moscow' # Default time zone
+  Faker::Config.locale = :en
 
-  Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
+  # Rails.logger.level = 4 # reducing the IO and increasing the speed, just comment to log
 end
-
-Time.zone = 'Moscow' # Default time zone
-Faker::Config.locale = :en
 
 def current_port
   Capybara.current_session.server.port

@@ -19,7 +19,7 @@
     .form_block_content
       .fake_row.single_row
         %p= f.label :email
-        = f.text_field :email, :class => 'type_user', :disabled => user != current_user
+        = f.text_field :email, :class => 'type_user', :disabled => !user.new_record? && user != current_user
         %p
           - if user.new_record?
             = f.label t('.login_in_create')
@@ -68,8 +68,8 @@
         %p= f.label :middle_name
         = f.text_field :middle_name, :class => 'type_user'
         %p= f.label :phone, :required => true
-        = f.text_field :phone_code, :value => "+7", disabled: true
-        = f.text_field :phone, :value => @user.phone.to_s.sub(/\A\+7/, '')
+        = f.text_field :phone_code, :value => "+7", disabled: true, wrapper: false
+        = f.text_field :phone, :value => @user.phone.to_s.sub(/\A\+7/, ''), wrapper: false
 
   .form_block.grey_block
     .block_title

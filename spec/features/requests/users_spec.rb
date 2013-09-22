@@ -4,221 +4,226 @@ require 'spec_helper'
 describe "Logged user:", js: true do
   include ActionView::Helpers
   include UsersHelper
+  include EmailSpec::Helpers
+  include EmailSpec::Matchers
 
-  subject { page }
-
-  before do
-    @admin = login_as_admin
-  end
-
-  let(:company) { @admin.company }
-  let(:office) { @admin.office }
-  let(:user) { @admin }
-
-
-  # describe "user sign_up" do
-  #   it "registration user" do
-  #     before do
-  # #     visit new_user_registration_path
-  # #   end
-  # #   it "registration user" do
-  # #     country = FactoryGirl.create(:country)
-  # #     expect {
-  # #       fill_in "user[email]", with: "test@mail.ru"
-  # #       fill_in "user[login]", with: "testlogin"
-  # #       fill_in "user[password]", with: "123456"
-  # #       fill_in "user[password_confirmation]", with: "123456"
-  # #       click_button "Зарегистрироваться"
-  # #     }.to change(User, :count).by(+1)
-  #   end
-  # end
-
-  describe "submit form" do
-    # let(:user) { create :admin, company: company, office: office }
-
-    before do
-      visit new_dashboard_user_path
+  clean_once do
+    before(:all) do
+      @boss = create_user_with_company_and_office :boss
+      @manager = FactoryGirl.create(:manager, company: @boss.company, office: @boss.office)
     end
 
-    describe "create user" do
+    before { login_as @boss }
+    subject { page }
 
-      let(:user_attrs) { attributes_for(:user) }
-      it{ current_path.should eq(new_dashboard_user_path) }
+    let(:company) { @boss.company }
+    let(:office) { @boss.office }
+    let(:user) { @manager }
 
-      it "should not create an user, should show error message" do
-        expect {
-          fill_in "user[login]", with: ""
-          fill_in "user[last_name]", with: ""
-          fill_in "user[first_name]", with: ""
-          page.click_link I18n.t('save')
-        }.to_not change(User, :count)
-        page.current_path.should eq(dashboard_users_path)
-        page.has_selector?('.error_messages')
+
+    # describe "user sign_up" do
+    #   it "registration user" do
+    #     before do
+    # #     visit new_user_registration_path
+    # #   end
+    # #   it "registration user" do
+    # #     country = FactoryGirl.create(:country)
+    # #     expect {
+    # #       fill_in "user[email]", with: "test@mail.ru"
+    # #       fill_in "user[login]", with: "testlogin"
+    # #       fill_in "user[password]", with: "123456"
+    # #       fill_in "user[password_confirmation]", with: "123456"
+    # #       click_button "Зарегистрироваться"
+    # #     }.to change(User, :count).by(+1)
+    #   end
+    # end
+
+    describe "submit form" do
+      # let(:user) { create :admin, company: company, office: office }
+
+      before do
+        visit new_dashboard_user_path
       end
 
-      it "should create an user" do
-        expect {
-          page.fill_in "user[login]", with: "qweqwe123123"
-          page.fill_in "user[middle_name]", with: "ytrytrytry"
-          page.fill_in "user[last_name]", with: "TESqwdqw3123T"
-          page.fill_in "user[first_name]", with: "tecascascascst"
-          page.fill_in "user[email]", with: "tes123123t@mail.ru"
-          page.fill_in "user[phone]", with: "+77777777"
-          page.click_link I18n.t('save')
-        }.to change(User, :count).by(1)
-        page.current_path.should eq(dashboard_users_path)
-      end
+      describe "create user" do
 
-      it "should create an user with password" do
-        expect {
-          page.fill_in "user[login]", with: "qweqwe123123"
-          page.fill_in "user[middle_name]", with: "ytrytrytry"
-          page.fill_in "user[last_name]", with: "TESqwdqw3123T"
-          page.fill_in "user[first_name]", with: "tecascascascst"
-          page.fill_in "user[email]", with: "tes123123t@mail.ru"
-          page.fill_in "user[password]", with: "password"
-          page.fill_in "user[phone]", with: "+77777777"
-          page.click_link I18n.t('save')
-        }.to change(User, :count).by(1)
-        page.current_path.should eq(dashboard_users_path)
-      end
+        let(:user_attrs) { attributes_for(:user) }
+        it{ current_path.should eq(new_dashboard_user_path) }
 
-      context "when valid attribute values" do
-        include EmailSpec::Helpers
-        include EmailSpec::Matchers
-
-        it "should create an user, show success message and confirmation link are work" do
+        it "should not create an user, should show error message" do
           expect {
-            page.fill_in "user[login]", with: "qweqwe123123"
-            page.fill_in "user[middle_name]", with: "ytrytrytry"
-            page.fill_in "user[last_name]", with: "TESqwdqw3123T"
-            page.fill_in "user[first_name]", with: "tecascascascst"
-            page.fill_in "user[email]", with: "tes123123t@mail.ru"
-            page.fill_in "user[phone]", with: "+77777777"
+            fill_in "user[login]", with: ""
+            fill_in "user[last_name]", with: ""
+            fill_in "user[first_name]", with: ""
+            page.click_link I18n.t('save')
+          }.to_not change(User, :count)
+          page.current_path.should eq(dashboard_users_path)
+          page.has_selector?('.error_messages')
+        end
+
+        it "should create an user" do
+          user_attrs = attributes_for(:user)
+          login = FactoryGirl.generate(:login)
+          expect {
+            user_attrs.each do |atr, value|
+              fill_in "user[#{atr}]", with: value if page.has_field?("user[#{atr}]")
+            end
+            fill_in "user[login]", with: login
             page.click_link I18n.t('save')
           }.to change(User, :count).by(1)
+          page.current_path.should eq(dashboard_users_path)
           within ".messages" do
             should have_selector('.alert-success')
           end
-          # Check email delivery with customer data, rest is checked in controller spec
-          user = User.last
-          open_last_email.should deliver_to user.email
-          open_last_email.should have_body_text(/#{user.first_name}/)
-          open_last_email.should have_body_text(/#{user.last_name}/)
-          open_last_email.should have_body_text(/#{user.login}/)
-          open_last_email.should have_body_text(/#{user.confirmation_token}/)
+          user = User.where(login: login).first
+          last_email = open_last_email
+          last_email.should deliver_to user.email
+          last_email.should have_body_text(/#{user.first_name}/)
+          last_email.should have_body_text(/#{user.last_name}/)
+          last_email.should have_body_text(/#{user.login}/)
+          last_email.should have_body_text(/#{user.confirmation_token}/)
         end
 
+        it "should create an user with password" do
+          user_attrs = attributes_for(:user)
+          login = FactoryGirl.generate(:login)
+          password = Faker::Lorem.word
+          expect {
+            user_attrs.each do |atr, value|
+              fill_in "user[#{atr}]", with: value if page.has_field?("user[#{atr}]")
+            end
+            fill_in "user[password]", with: password
+            fill_in "user[login]", with: login
+            page.click_link I18n.t('save')
+          }.to change(User, :count).by(1)
+          page.current_path.should eq(dashboard_users_path)
+          within ".messages" do
+            should have_selector('.alert-success')
+          end
+          user = User.where(login: login).first
+          last_email = open_last_email
+          last_email.should deliver_to user.email
+          last_email.should have_body_text(/#{user.login}/)
+          last_email.should have_body_text(/#{password}/)
+        end
       end
     end
+
+    describe "update user" do
+      # let(:user) { create :admin, company: company, office: office }
+
+      before do
+        user
+        visit dashboard_users_path
+      end
+
+      it 'should not create an tourist, should show error message' do
+        click_link "edit_user_#{user.id}"
+        current_path.should eq edit_dashboard_user_path(user.id)
+        expect {
+          fill_in "user[login]", with: ""
+          click_link I18n.t('save')
+        }.to_not change(user, :login).from(user.login).to('')
+        current_path.should eq dashboard_user_path(user.id)
+        page.should have_selector("div.error_messages")
+      end
+
+      it 'should update user' do
+        login = FactoryGirl.generate(:login)
+        click_link "edit_user_#{user.id}"
+        current_path.should eq edit_dashboard_user_path(user.id)
+        expect {
+          fill_in "user[login]", with: login
+          click_link I18n.t('save')
+          user.reload
+        }.to change(user, :login).from(user.login).to(login)
+      end
+
+      it 'update user password' do
+        password = Faker::Lorem.word
+        click_link "edit_user_#{user.id}"
+        current_path.should eq edit_dashboard_user_path(user.id)
+        expect {
+          fill_in "user[password]", with: password
+          click_link I18n.t('save')
+          user.reload
+        }.to change(user, :encrypted_password)
+        last_email = open_last_email
+        last_email.should deliver_to user.email
+        last_email.should have_body_text(/#{user.login}/)
+        last_email.should have_body_text(/#{password}/)
+      end
+
+      it 'destroy user, edit user' do
+        click_link "edit_user_#{user.id}"
+        current_path.should eq edit_dashboard_user_path(user.id)
+
+        expect{
+          click_link I18n.t('delete')
+        }.to change(User, :count).by(-1)
+      end
+    end
+
+    describe "delete user" do
+      # let(:user) { create(:admin) }
+
+      before do
+        user
+        visit dashboard_users_path
+      end
+
+      it 'delete user' do
+        expect{
+          click_link "destroy_user_#{user.id}"
+        }.to change(User, :count).by(-1)
+      end
+    end
+
+    # describe "edit password user" do
+    #   let(:user) { create(:admin) }
+    #   before do
+    #     user
+    #     visit dashboard_users_path
+    #   end
+
+    #   it 'edit password user' do
+    #     click_link "edit_password_user#{user.id}"
+    #     current_path.should eq edit_password_dashboard_user_path(user.id)
+    #     page.has_link?(I18n.t('save'))
+
+    #     expect{
+    #       page.fill_in "user[password]", with: "123456789"
+    #       #click_link I18n.t('save')
+    #       page.click_on(I18n.t('save'))
+
+    #       user.reload
+    #     }
+
+    #     #current_path.should eq dashboard_users_url
+
+
+    #     visit new_user_session_path
+
+    #     expect{
+    #       fill_in "user[login]", :with => user.login
+    #       fill_in "user[password]", :with => "123456qwsa"
+    #       page.click_button 'user_session_submit'
+    #     }
+    #     current_path.should eq root_path
+    #   end
+    # end
+    #  describe "edit user" do
+        # let(:user) { create(:admin) }
+
+    #    before do
+    #      user
+    #      visit dashboard_users_path
+    #    end
+
   end
 
-  describe "update user" do
-    # let(:user) { create :admin, company: company, office: office }
-
-    before do
-      user
-      visit dashboard_users_path
-    end
-
-    it 'should not create an tourist, should show error message' do
-      click_link "edit_user_#{user.id}"
-      current_path.should eq edit_dashboard_user_path(user.id)
-      expect {
-        fill_in "user[login]", with: ""
-        click_link I18n.t('save')
-      }.to_not change(user, :login).from(user.login).to('')
-      current_path.should eq dashboard_user_path(user.id)
-      page.should have_selector("div.error_messages")
-    end
-
-    it 'should edit an user, redirect to dashboard_users_path' do
-      click_link "edit_user_#{user.id}"
-      current_path.should eq edit_dashboard_user_path(user.id)
-      expect {
-        fill_in "user[login]", with: "test123456789"
-        click_link I18n.t('save')
-        user.reload
-      }.to change(user, :login).from(user.login).to('test123456789')
-    end
-
-    it 'update user password' do
-      click_link "edit_user_#{user.id}"
-      current_path.should eq edit_dashboard_user_path(user.id)
-      expect {
-        fill_in "user[password]", with: "password"
-        click_link I18n.t('save')
-        user.reload
-      }.to change(user, :encrypted_password)
-    end
-
-    it 'destroy user, edit user' do
-      click_link "edit_user_#{user.id}"
-      current_path.should eq edit_dashboard_user_path(user.id)
-
-      expect{
-        click_link I18n.t('delete')
-      }.to change(User, :count).by(-1)
-    end
-  end
-
-  describe "delete user" do
-    # let(:user) { create(:admin) }
-
-    before do
-      user
-      visit dashboard_users_path
-    end
-
-    it 'delete user' do
-      expect{
-        click_link "destroy_user_#{user.id}"
-      }.to change(User, :count).by(-1)
-    end
-  end
-
-  # describe "edit password user" do
-  #   let(:user) { create(:admin) }
-  #   before do
-  #     user
-  #     visit dashboard_users_path
-  #   end
-
-  #   it 'edit password user' do
-  #     click_link "edit_password_user#{user.id}"
-  #     current_path.should eq edit_password_dashboard_user_path(user.id)
-  #     page.has_link?(I18n.t('save'))
-
-  #     expect{
-  #       page.fill_in "user[password]", with: "123456789"
-  #       #click_link I18n.t('save')
-  #       page.click_on(I18n.t('save'))
-
-  #       user.reload
-  #     }
-
-  #     #current_path.should eq dashboard_users_url
-
-
-  #     visit new_user_session_path
-
-  #     expect{
-  #       fill_in "user[login]", :with => user.login
-  #       fill_in "user[password]", :with => "123456qwsa"
-  #       page.click_button 'user_session_submit'
-  #     }
-  #     current_path.should eq root_path
-  #   end
-  # end
-#  describe "edit user" do
-    # let(:user) { create(:admin) }
-
-#    before do
-#      user
-#      visit dashboard_users_path
-#    end
-  describe "users list" do
-    clean_once_with_sphinx do
+  clean_once_with_sphinx do
+    describe "users list" do
 
       def create_users
         @user = create_users_with_company_and_office(:user, 10).first
@@ -290,55 +295,61 @@ describe "Logged user:", js: true do
       end
     end
   end
+
 end
 
 describe "Unlogged user", js: true do
   include ActionView::Helpers
+  include ApplicationHelper
   include UsersHelper
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
-  subject { page }
-  describe "user_new_pass" do
-    before do
-      @user = FactoryGirl.create(:user, id: 1, email: 'test@mail.ru')
+  clean_once do
+    before(:all) do
+      @user = create_user_with_company_and_office
     end
 
-    it 'should create email, with reset password instructions' do
-      visit new_user_password_path
-      fill_in 'user[email]', with: 'test@mail.ru'
-      find("input[name='commit']").click
-      wait_until { current_path == new_user_session_path }
-      current_path.should eq(new_user_session_path)
-      @user.reload
-      open_last_email.should deliver_to @user.email
-      open_last_email.should have_body_text(/#{@user.reset_password_token}/)
-      visit edit_user_password_path + '?reset_password_token=' + @user.reset_password_token.to_s
-      fill_in 'user[password]', with: '222222'
-      fill_in 'user[password_confirmation]', with: '222222'
-      find("input[name='commit']").click
-      wait_until { current_path == root_path }
-      current_path.should eq(root_path)
-    end
+    subject { page }
 
-    it 'should show error email not exist' do
-      visit new_user_password_path
-      fill_in 'user[email]', with: 'test2@mail.ru'
-      find("input[name='commit']").click
-      wait_until { current_path == user_password_path }
-      page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.not_found')}")
-    end
+    describe "user_new_pass" do
 
-    it 'should create email, with new password' do
-      visit new_user_password_path
-      fill_in 'user[email]', with: 'test@mail.ru'
-      find("label[for='user_generate_password']").click
-      find("input[name='commit']").click
-      wait_until { current_path == new_user_session_path }
-      current_path.should eq(new_user_session_path)
+      it 'should create email, with reset password instructions' do
+        visit new_user_password_path
+        fill_in 'user[email]', with: @user.email
+        find("input[name='commit']").click
+        # wait_until { current_path == new_user_session_path }
+        current_path.should eq(new_user_session_path)
+        @user.reload
+        open_last_email.should deliver_to @user.email
+        open_last_email.should have_body_text(/#{@user.reset_password_token}/)
+        visit edit_user_password_path + '?reset_password_token=' + @user.reset_password_token.to_s
+        fill_in 'user[password]', with: '222222'
+        fill_in 'user[password_confirmation]', with: '222222'
+        find("input[name='commit']").click
+        # wait_until { current_path == root_path }
+        current_path.should eq(root_path)
+      end
 
-      open_last_email.should deliver_to @user.email
-      open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
+      it 'should show error email not exist' do
+        visit new_user_password_path
+        fill_in 'user[email]', with: FactoryGirl.generate(:email)
+        find("input[name='commit']").click
+        # wait_until { current_path == user_password_path }
+        page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.not_found')}")
+      end
+
+      it 'should create email, with new password' do
+        visit new_user_password_path
+        fill_in 'user[email]', with: @user.email
+        find("label[for='user_generate_password']").click
+        find("input[name='commit']").click
+        # wait_until { current_path == new_user_session_path }
+        current_path.should eq(new_user_session_path)
+
+        open_last_email.should deliver_to @user.email
+        open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
+      end
     end
   end
 

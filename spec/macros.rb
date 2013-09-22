@@ -75,9 +75,9 @@ module Macros
 
     def clean(options = {}, &block)
       obj = self
-      hook = options[:hook] or :each
+      hook = options[:hook] || :each
       tables = options[:tables]
-      strategy = options[:strategy] or :transaction
+      strategy = options[:strategy] || :truncation
       begin
         before(hook) do
           obj.use_transactional_fixtures = false unless strategy == :transaction

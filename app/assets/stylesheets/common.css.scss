@@ -158,6 +158,7 @@ body {
 /*.user_panel li:first-child span { height: 38px; padding-top: 10px; background-position: left center; vertical-align: middle; }*/
 
 .logo {
+  display: block;
   background: url(/assets/logo.png) no-repeat scroll 20px 12px rgba(0, 0, 0, 0);
   float: right;
   height: 50px;

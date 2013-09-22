@@ -1,26 +1,16 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
+  sequence(:subdomain) { |n| "subdomain#{n}" }
+
   factory :company do
     name Faker::Lorem.sentence
     email Faker::Internet.email
-    oficial_letter_signature 'bye'
-    subdomain do
-      name = Faker::Name.name
-      name.gsub!(/[^\w]/,"")
-      name.downcase!
-      name
-    end
-  end
-
-  factory :alien_company, :class => Company do
-    name Faker::Lorem.sentence
-    email Faker::Internet.email
-    oficial_letter_signature 'bye'
-    subdomain do
-      name = Faker::Name.name
-      name.gsub!(/[^\w]/,"")
-      name.downcase!
-      name
-    end
+    subdomain
+    # subdomain do
+    #   options = Company.validators_on(:subdomain).select{|v| v.instance_of? ActiveModel::Validations::LengthValidator }.first.try(:options) || {}
+    #   minmax = options[:minimun] || 3..options[:maximum] || 20
+    #   subdomain = Faker::Internet.domain_word until minmax.cover?(subdomain.to_s.length)
+    #   subdomain
+    # end
   end
 end

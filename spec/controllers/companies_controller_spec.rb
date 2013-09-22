@@ -14,15 +14,19 @@ describe Dashboard::CompaniesController do
   describe 'POST create' do
 
     def do_company
-      post :create, :company => {:name => 'company',
-                                  :email => 'fuck@gmail.com',
-                                  :oficial_letter_signature => 'best wishes',
-                                  :address_attributes => {:region => 'kyrovsky',
-                                  :zip_code => '234',
-                                  :house_number => '3',
-                                  :housing => '4', :office_number => '1',
-                                  :street => 'elm street',
-                                  :phone_number => '666'}}
+      post :create, :company => {
+        :subdomain => FactoryGirl.sequence_by_name(:subdomain).next,
+        :name => 'company',
+        :email => 'company@example.com',
+        :address_attributes => {
+          :region => 'kyrovsky',
+          :zip_code => '234',
+          :house_number => '3',
+          :housing => '4', :office_number => '1',
+          :street => 'elm street',
+          :phone_number => '666'
+        }
+      }
     end
 
     it 'should redirect to companies/show.html' do

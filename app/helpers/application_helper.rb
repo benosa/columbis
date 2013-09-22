@@ -56,6 +56,10 @@ module ApplicationHelper
     polymorphic_url Claim, options
   end
 
+  def domain_root_url
+    "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"
+  end
+
   def redirect_back(options = {})
     default = options.delete(:default) || root_path
     redirect_to (request.referer.present? && request.referer != request.original_url ? :back : default), options

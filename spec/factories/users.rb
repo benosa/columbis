@@ -1,9 +1,6 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
 
-  sequence(:email) { |n| "email#{n}@factory.com" }
-  sequence(:phone) { |n| "+7777777#{n}" }
-
   factory :user do
     association :company
     association :office

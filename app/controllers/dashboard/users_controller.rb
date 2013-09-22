@@ -16,9 +16,12 @@ class Dashboard::UsersController < ApplicationController
 
   def create
     @user.company = current_company
+    Rails.logger.debug "params: #{params}"
     if @user.create_new(params[:user])
+      Rails.logger.debug "errors1: #{@user.errors.inspect}"
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else
+      Rails.logger.debug "errors2: #{@user.errors.inspect}"
       render :action => 'new'
     end
   end

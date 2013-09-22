@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "TariffPlans", js: true do
   include ActionView::Helpers
   before(:all) do
+    FactoryGirl.create_list(:tariff_plan, 2)
     @admin = login_as_admin
   end
 
@@ -11,10 +12,6 @@ describe "TariffPlans", js: true do
   end
 
   describe 'index view' do
-    before(:all) do
-      FactoryGirl.create(:tariff_plan)
-    end
-
     before do
       visit tariff_plans_path
     end

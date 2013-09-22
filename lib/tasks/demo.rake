@@ -23,7 +23,7 @@ namespace :demo do
     puts 'All current demo data is removed'
 
     # Create demo company
-    @company = Company.new(name: 'demo', email: 'demo@columbis.ru', oficial_letter_signature: 'demo', subdomain: 'demo')
+    @company = Company.new(name: 'demo', email: 'demo@columbis.ru', subdomain: 'demo')
     @company.id = @demo_comp_id
     @company.save
     puts 'Demo company is created'

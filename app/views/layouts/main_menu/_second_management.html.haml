@@ -7,6 +7,7 @@
 %li.management{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path
 %li.management{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
 %li.management{:class => c == 'dashboard/dropdown_values' && 'active' }= link_to t('.dropdown_values'), dashboard_dropdown_values_path
-%li.management{:class => c == 'sms_sendings' && 'active' }= link_to t('.sms_sendings'), sms_sendings_path
+-#
+  %li.management{:class => c == 'sms_sendings' && 'active' }= link_to t('.sms_sendings'), sms_sendings_path
 %li.management{ :class => params[:controller] == 'tariff_plans' && 'active' }
   = link_to t('.tariff_plans'), tariff_plans_path if can? :manage, TariffPlan

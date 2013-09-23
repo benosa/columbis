@@ -2,17 +2,18 @@
 module ApplicationHelper
 
   def domain_root_url
-    root_url(subdomain: false) # "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"
+    root_url(domain: CONFIG[:domain], subdomain: false) # "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"
   end
 
   def current_company_root_url
-    subdomain = current_company.subdomain if current_company
-    root_url(subdomain: subdomain || false)
+    options = { domain: CONFIG[:domain] }
+    options[:subdomain] = (current_company.subdomain if current_company) || false
+    root_url(options)
   end
 
   def url_for_current_company
     options = { domain: CONFIG[:domain] }
-    options[:subdomain] = current_company.subdomain if current_company
+    options[:subdomain] = (current_company.subdomain if current_company) || false
     url_for options
   end
 

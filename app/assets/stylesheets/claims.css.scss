@@ -16,6 +16,7 @@
   }
 }
 
+/*
 .low_resoluition .claims .reservations_wrapper {
   width: 980px;
 }
@@ -26,6 +27,11 @@
 
 .height_resoluition .claims .reservations_wrapper {
   width: 1843px;
+}
+*/
+
+.claims .reservations_wrapper {
+  width: 100%;
 }
 
 .claims .reservations {
@@ -214,7 +220,7 @@
 
     .stuck.fixed {
       position: fixed;
-      top: 100px;
+      top: 99px;
     }
 
     &.stuck_active .stuck { display: block; }

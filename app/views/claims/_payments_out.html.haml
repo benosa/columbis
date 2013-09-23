@@ -55,13 +55,13 @@
         = pof.hidden_field :id, :class => 'payment_id'
       - ind += 1
 
-      .fake_row.add_row.add_paying
-        .add_btn.paying
-          - if claim.new_record?
-            %span{ :class => 'add_tourist', :title => t('.save_before_pay') }= t('.add_another_payment')
-          - else
-            = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
-        .two_line.pull-right
-          %strong= f.label :operator_debt, t('.operator_debt_short')
-          = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right important', wrapper: false
-          %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)
+    .fake_row.add_row.add_paying
+      .add_btn.paying
+        - if claim.new_record?
+          %span{ :class => 'add_tourist', :title => t('.save_before_pay') }= t('.add_another_payment')
+        - else
+          = link_to t('.add_another_payment'), '#', :class => 'add add_tourist'
+      .two_line.pull-right
+        %strong= f.label :operator_debt, t('.operator_debt_short')
+        = f.text_field :operator_debt, :disabled => true, :readonly => true, :class => 'credit text_right important', wrapper: false
+        %label.operator_currency.operator_debt_currency= t(claim.operator_price_currency.upcase)

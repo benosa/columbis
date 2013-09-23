@@ -31,9 +31,9 @@
                   = pof.text_field :date_in, :class => 'datepicker date_in date', :value => l(payment_out.date_in, :format => :long), :readonly => disabled
               .block-stretch
                 .two_line
-                  %p= pof.label :amount, t('.paid')
-                  %label.operator_currency= t('rur')
-                  = pof.text_field :amount, :class => "amount", :readonly => disabled, wrapper: { class: 'amount-input-wrap' }
+                  %p= pof.label :amount_prim, t('.paid_prim')
+                  %label.operator_currency= t(payment_out.currency.upcase)
+                  = pof.text_field :amount_prim, :class => 'amount_prim paid', :readonly => disabled, wrapper: { class: 'amount-input-wrap' }
             .fake_col.col2
               .block-left
                 .two_line
@@ -41,9 +41,9 @@
                   = pof.text_field :course, :class => 'course date', :readonly => disabled
               .block-stretch
                 .two_line
-                  %p= pof.label :amount_prim, t('.paid')
-                  %label.amount_prim_currency= t(claim.operator_price_currency.upcase)
-                  = pof.text_field :amount_prim, :class => 'amount_prim paid', :readonly => disabled, wrapper: { class: 'amount-input-wrap' }
+                  %p= pof.label :amount, t('.paid')
+                  %label.amount_currency= t('rur')
+                  = pof.text_field :amount, :class => "amount", :readonly => disabled, wrapper: { class: 'amount-input-wrap' }
             .fake_col.col3
               .two_line
                 %p= pof.label :form, t('.paid_type')

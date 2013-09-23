@@ -21,6 +21,8 @@ describe "Abilities for" do
   let(:another_office) { @another_office }
   let(:another_company) { @another_user.company }
   let(:another_user) { @another_user }
+  let(:user_claim) { FactoryGirl.create(:claim, :company => company, :user => user, :office => office) }
+  let(:assistant_claim) { FactoryGirl.create(:claim, :company => company, :assistant => user, :office => office) }
 
   describe "companies" do
     let(:resource) { company }
@@ -549,4 +551,138 @@ describe "Abilities for" do
   #     it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
   #   end
   # end
+
+  describe "payment" do
+    let(:resource) { FactoryGirl.create(:clientbase_payment, :company => company, :recipient => company, :date_in => Time.zone.now, :claim => user_claim) }
+    let(:unresource) { FactoryGirl.create(:clientbase_payment, :company => another_company, :recipient => another_company, :date_in => Time.zone.now) }
+    context "when user is admin" do
+      let(:user){ @admin }
+      it{ should      be_able_to(:manage, resource) }
+      it{ should      be_able_to(:manage, unresource) }
+    end
+
+    context "when user is boss" do
+      let(:user){ @boss }
+      it{ should      be_able_to(:manage, resource) }
+      it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
+    end
+
+    context "when user is accountant" do
+      let(:user){ @accountant }
+      it{ should      be_able_to(:manage, resource) }
+      it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
+    end
+
+    context "when user is supervisor" do
+      let(:user){ @supervisor }
+      context "and approved = true" do
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => resource)}
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
+      end
+      context "and approved = false" do
+        let(:resource) { FactoryGirl.create(:clientbase_payment, :company => company, :approved => false, :recipient => company, :date_in => Time.zone.now) }
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => true}, :for => resource)}
+      end
+    end
+
+    context "when user is manager" do
+      let(:user){ @manager }
+      context "and approved = true" do
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => resource)}
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
+      end
+      context "and approved = false and user who has enter" do
+        let(:resource) { FactoryGirl.create(:clientbase_payment, :company => company, :approved => false, :recipient => company, :date_in => Time.zone.now, :claim => user_claim) }
+        let(:resource2) { FactoryGirl.create(:clientbase_payment, :company => company, :approved => false, :recipient => company, :date_in => Time.zone.now, :claim => assistant_claim) }
+        let(:unresource) { FactoryGirl.create(:clientbase_payment, :company => company, :approved => false, :recipient => company, :date_in => Time.zone.now) }
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => true}, :for => resource)}
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => true}, :for => resource2)}
+        it{ user.should have_ability({:read => false, :edit => false, :destroy => false, :update => false}, :for => unresource)}
+      end
+    end
+  end
+
+  # describe "regions" do
+  #   let(:resource) { FactoryGirl.create(:region) }
+  #   context "when user is admin" do
+  #     let(:user){ @admin }
+  #     it{ should      be_able_to(:manage, resource) }
+  #   end
+
+  #   context "when user is boss" do
+  #     let(:user){ @boss }
+  #     it{ should      be_able_to(:read, resource) }
+  #     it{ should_not  be_able_to(:destroy, resource) }
+  #     it{ should_not  be_able_to(:edit, resource) }
+  #     it{ should_not  be_able_to(:update, resource) }
+  #     # it{ user.should have_ability({:read => true, :edit => false, :destroy => false, :update => false}, :for => resource)}
+  #   end
+
+  #   context "when user is accountant" do
+  #     let(:user){ @accountant }
+  #     it{ should      be_able_to(:read, resource) }
+  #     it{ should_not  be_able_to(:destroy, resource) }
+  #     it{ should_not  be_able_to(:edit, resource) }
+  #     it{ should_not  be_able_to(:update, resource) }
+  #     # it{ user.should have_ability({:read => true, :edit => false, :destroy => false, :update => false}, :for => resource)}
+  #   end
+
+  #   context "when user is supervisor" do
+  #     let(:user){ @supervisor }
+  #     it{ should      be_able_to(:read, resource) }
+  #     it{ should_not  be_able_to(:destroy, resource) }
+  #     it{ should_not  be_able_to(:edit, resource) }
+  #     it{ should_not  be_able_to(:update, resource) }
+  #     # it{ user.should have_ability({:read => true, :edit => false, :destroy => false, :update => false}, :for => resource)}
+  #   end
+
+  #   context "when user is manager" do
+  #     let(:user){ @manager }
+  #     it{ should      be_able_to(:read, resource) }
+  #     it{ should_not  be_able_to(:destroy, resource) }
+  #     it{ should_not  be_able_to(:edit, resource) }
+  #     it{ should_not  be_able_to(:update, resource) }
+  #     # it{ user.should have_ability({:read => true, :edit => false, :destroy => false, :update => false}, :for => resource)}
+  #   end
+  # end
+
+  describe "tariff plans" do
+    let(:resource) { FactoryGirl.create(:tariff_plan) }
+    context "when user is admin" do
+      let(:user){ @admin }
+      it{ should      be_able_to(:manage, resource) }
+    end
+
+    context "when user is boss" do
+      let(:user){ @boss }
+      it{ should_not  be_able_to(:read, resource) }
+      it{ should_not  be_able_to(:destroy, resource) }
+      it{ should_not  be_able_to(:edit, resource) }
+      it{ should_not  be_able_to(:update, resource) }
+    end
+
+    context "when user is accountant" do
+      let(:user){ @accountant }
+      it{ should_not  be_able_to(:read, resource) }
+      it{ should_not  be_able_to(:destroy, resource) }
+      it{ should_not  be_able_to(:edit, resource) }
+      it{ should_not  be_able_to(:update, resource) }
+    end
+
+    context "when user is supervisor" do
+      let(:user){ @supervisor }
+      it{ should_not  be_able_to(:read, resource) }
+      it{ should_not  be_able_to(:destroy, resource) }
+      it{ should_not  be_able_to(:edit, resource) }
+      it{ should_not  be_able_to(:update, resource) }
+    end
+
+    context "when user is manager" do
+      let(:user){ @manager }
+      it{ should_not  be_able_to(:read, resource) }
+      it{ should_not  be_able_to(:destroy, resource) }
+      it{ should_not  be_able_to(:edit, resource) }
+      it{ should_not  be_able_to(:update, resource) }
+    end
+  end
 end

@@ -10,7 +10,7 @@ describe "Abilities for" do
     @accountant = FactoryGirl.create(:accountant, :company => @admin.company, :office => @admin.office)
     @supervisor = FactoryGirl.create(:supervisor, :company => @admin.company, :office => @admin.office)
     @manager = FactoryGirl.create(:manager, :company => @admin.company, :office => @admin.office)
-    @another_office = FactoryGirl.create(:office, :company => @admin.company)
+    @another_office = FactoryGirl.create(:office, :company => @another_user.company)
   end
 
   subject(:ability){ Ability.new(user) }

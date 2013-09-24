@@ -22,12 +22,12 @@ module Matchers
       if @ability_hash == :manage
         @ability_hash = [:read, :edit, :update, :destroy, :create]
       end
-      @ability_hash.map!{|action| ability.can?(action, target)}
-      !@ability_hash.any?{|element| element == true}
+      @ability_hash.map!{|action| {action => ability.can?(action, target)}}
+      !@ability_hash.any?{|element| element.to_a[1] == true}
     end
 
     failure_message_for_should do |ability|
-      message = "expected ability:#{ability} to have ability:#{ability_array} for #{target}, but actual result is #{@ability_hash}"
+      message = "expected ability:#{ability} to have ability: for #{target}, but actual result is #{@ability_hash}"
     end
   end
 end

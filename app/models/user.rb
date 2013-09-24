@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id, :use_office_password,
-                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone
+                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone, :subdomain
   attr_protected :company_id, :as => :admin
   attr_protected :role, :as => [:admin, :boss]
 
@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
   validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
   validates_presence_of :last_name, :first_name
   validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :unless => proc{ self.role == 'admin' }
+  validates :subdomain, uniqueness: true,
+    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]

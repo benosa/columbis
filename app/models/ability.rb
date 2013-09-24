@@ -10,45 +10,49 @@ class Ability
       can :manage, :all #, :company_id => user.company_id
       cannot :manage, Company
       can :manage, Company, :id => user.company_id
-      can :manage, DropdownValue, :common=> true
-      can :offline_version, User
-      can :manage, Task
-      can :manage, TariffPlan
     elsif user.role == 'boss'
-      can :switch_view, User
-      can :manage, :all, :company_id => user.company_id
-      cannot :manage, Company
-      can :manage, Company, :id => user.company_id
+      can :manage, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
+        Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
+        Boss::Widget], :company_id => user.company_id
+      can :manage, Flight, :claim => { :company_id => user.company_id }
+      can :manage, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
+      can :manage, UserMailer, :task => { :user => user }
+      can :read, [Country, City], :common => true
       can :read, DropdownValue, :common=> true
+      can :read, Region
+      can :create, Task
       cannot :manage, User, :role => 'admin'
       can :dasboard_index, :user
       can :users_sign_in_as, :user
       can :offline_version, User
-      can :read, [Country, City], :common => true
-      can :create, Task
-      cannot :manage, TariffPlan
-    elsif user.role == 'accountant'
       can :switch_view, User
+    elsif user.role == 'accountant'
+      can :read, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
+        Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User],
+        :company_id => user.company_id
       can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
+      can :manage, UserMailer, :task => { :user => user }
+      can :read, Flight, :claim => { :company_id => user.company_id }
       can [:update, :destroy], User, :id => user.id
-      can :read, :all, :company_id => user.company_id
-      cannot :read, Company
-      can :read, Company, :id => user.company_id
+      can :read, [Country, City], :common => true
+      can :read, DropdownValue, :common=> true
+      can :read, Region
+      can :create, Task
+      cannot :read, User, :role => 'admin'
       can :offline_version, User
       can :read, [Country, City], :common => true
-      can :create, Task
-      cannot :manage, TariffPlan
+      can :switch_view, User
     elsif user.role == 'supervisor'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id
       can [:read, :scroll], Claim, :company_id => user.company_id
       can :update, Payment, :company_id => user.company_id, :approved => false
       can [:update], User, :id => user.id
-      can :read, [Country, Region, City], :company_id => user.company_id
+      can :read, [Country, City], :company_id => user.company_id
       can :read, [Country, City], :common => true
+      can :read, Region
       can :offline_version, User
       can :create, Task
-      cannot :manage, TariffPlan
     elsif user.role == 'manager'
       can :manage, Tourist, :company_id => user.company_id
       can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
@@ -57,11 +61,11 @@ class Ability
       can :update, Payment, :claim => { :user_id => user.id }, :approved => false
       can :update, Payment, :claim => { :assistant_id => user.id }, :approved => false
       can [:update], User, :id => user.id
-      can :read, [Country, City, Region], :company_id => user.company_id
+      can :read, [Country, City], :company_id => user.company_id
       can :read, [Country, City], :common => true
+      can :read, Region
       can :offline_version, User
       can :create, Task
-      cannot :manage, TariffPlan
     else
       can [:update, :destroy], User, :id => user.id
     end

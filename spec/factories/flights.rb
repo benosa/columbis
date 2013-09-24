@@ -8,5 +8,6 @@ FactoryGirl.define do
     flight_number ""
     depart "2013-07-26 17:40:23"
     arrive "2013-07-26 17:40:23"
+    association :claim
   end
 end

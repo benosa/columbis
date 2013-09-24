@@ -10,7 +10,7 @@ describe "Abilities for" do
     @accountant = FactoryGirl.create(:accountant, :company => @admin.company, :office => @admin.office)
     @supervisor = FactoryGirl.create(:supervisor, :company => @admin.company, :office => @admin.office)
     @manager = FactoryGirl.create(:manager, :company => @admin.company, :office => @admin.office)
-    @another_office = FactoryGirl.create(:office, :company => @another_user.company)
+    @another_office = FactoryGirl.create(:office, :company => @admin.company)
   end
 
   subject(:ability){ Ability.new(user) }
@@ -340,16 +340,19 @@ describe "Abilities for" do
 
   describe "offices" do
     let(:resource) { office }
-    let(:unresource) { another_office }
+    let(:resource2) { another_office }
+    let(:unresource) { another_user.office }
     context "when user is admin" do
       let(:user){ @admin }
       it{ should     be_able_to(:manage, resource) }
+      it{ should     be_able_to(:manage, resource2) }
       it{ should     be_able_to(:manage, unresource) }
     end
 
     context "when user is boss" do
       let(:user){ @boss }
       it{ should     be_able_to(:manage, resource) }
+      it{ should     be_able_to(:manage, resource2) }
       it{ should not_be_able_to(:manage, unresource)}
     end
 
@@ -357,6 +360,8 @@ describe "Abilities for" do
       let(:user){ @accountant }
       it{ should     be_able_to(:read, resource)}
       it{ should not_be_able_to([:edit, :destroy, :update], resource)}
+      it{ should     be_able_to(:read, resource2)}
+      it{ should not_be_able_to([:edit, :destroy, :update], resource2)}
       it{ should not_be_able_to(:manage, unresource)}
     end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130915085719) do
+ActiveRecord::Schema.define(:version => 20130919050844) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
 
   create_table "companies", :force => true do |t|
     t.string   "email"
-    t.string   "oficial_letter_signature"
     t.integer  "country_id"
     t.integer  "city_id"
     t.datetime "created_at"
@@ -168,8 +167,11 @@ ActiveRecord::Schema.define(:version => 20130915085719) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
-    t.boolean  "sms_birthday_send",        :default => true
+    t.boolean  "sms_birthday_send", :default => true
     t.string   "subdomain"
+    t.string   "logo"
+    t.string   "director"
+    t.string   "director_genitive"
   end
 
   create_table "countries", :force => true do |t|

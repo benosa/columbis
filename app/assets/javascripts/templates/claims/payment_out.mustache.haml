@@ -17,10 +17,10 @@
         .block-stretch
           .two_line
             %p
-              %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
+              %label{ :for => "#{id_prefix}_amount_prim", :class => 'required' }= I18n.t("#{i18n_prefix}.paid_prim")
             %label.operator_currency= '{{currency}}'
             .wrap-input.amount-input-wrap
-              = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount'
+              = text_field_tag "#{name_prefix}[amount_prim]", '{{amount_prim}}', :id => "#{id_prefix}_amount_prim", :class => 'amount_prim paid'
       .fake_col.col2
         .block-left
           .two_line
@@ -31,10 +31,10 @@
         .block-stretch
           .two_line
             %p
-              %label{ :for => "#{id_prefix}_amount_prim", :class => 'required' }= I18n.t("#{i18n_prefix}.paid_prim")
-            %label.amount_prim_currency= I18n.t('rur')
+              %label{ :for => "#{id_prefix}_amount", :class => 'required' }= I18n.t("#{i18n_prefix}.paid")
+            %label.amount_currency= I18n.t('rur')
             .wrap-input.amount-input-wrap
-              = text_field_tag "#{name_prefix}[amount_prim]", '{{amount_prim}}', :id => "#{id_prefix}_amount_prim", :class => 'amount_prim paid'
+              = text_field_tag "#{name_prefix}[amount]", '{{amount}}', :id => "#{id_prefix}_amount", :class => 'amount'
       .fake_col.col3
         .two_line
           %p

@@ -96,10 +96,9 @@ class ApplicationController < ActionController::Base
       if current_company && !is_public_controller && subdomain != current_company.subdomain
         redirect_url = url_for_current_company
       end
-    elsif subdomain.present?
-      redirect_url = url_for(host: CONFIG[:domain])
+    elsif subdomain.present? && !is_public_controller
+      redirect_url = new_user_session_url
     end
-
     redirect_to redirect_url if redirect_url && redirect_url != request.original_url
   end
 

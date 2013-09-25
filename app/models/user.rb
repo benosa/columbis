@@ -85,6 +85,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Define methods for check roles: is_admin?, is_boss?...
+  ROLES.each do |role|
+    define_method :"is_#{role}?" do
+      self.role == role
+    end
+  end
+
   def update_by_params(params = {}, current_user = nil)
     current_user = self unless current_user
     self.role = params[:role] if available_roles.include?(params[:role])

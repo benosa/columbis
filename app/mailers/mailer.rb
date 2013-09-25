@@ -12,6 +12,27 @@ class Mailer < ActionMailer::Base
     mail(to: user.email, subject: I18n.t('registration_data'))
   end
 
+  def office_was_created(office)
+    @resource = office
+    @not_hello = true
+    #mail(to: CONFIG[:support_email], subject: I18n.t('office_was_created'))
+    mail(to: 'totoiiie4ka@gmail.com', subject: I18n.t('office_was_created'))
+  end
+
+  def company_was_created(company)
+    @resource = company
+    @not_hello = true
+    #mail(to: CONFIG[:support_email], subject: I18n.t('company_was_created'))
+    mail(to: 'totoiiie4ka@gmail.com', subject: I18n.t('company_was_created'))
+  end
+
+  def user_was_created(user)
+    @resource = user
+    @not_hello = true
+    #mail(to: CONFIG[:support_email], subject: I18n.t('user_was_created'))
+    mail(to: 'totoiiie4ka@gmail.com', subject: I18n.t('user_was_created'))
+  end
+
   def task_info(task)
     @task = task
 

@@ -1,0 +1,11 @@
+%p
+  На сайте
+  %a{:href => "http://columbis.ru"} Columbis.ru
+%p
+  - if @resource.company
+    В компании
+    = @resource.company.try(:name)
+    был создан пользователь:
+  - else
+    Зарегестрирован новый пользователь:
+  = @resource.login

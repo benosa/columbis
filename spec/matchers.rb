@@ -20,7 +20,7 @@ module Matchers
     match do |ability|
       @ability_hash = ability_array
       if @ability_hash == :manage
-        @ability_hash = [:read, :edit, :update, :destroy, :create]
+        @ability_hash = [:read, :edit, :update, :destroy]
       end
       @ability_hash.map!{|action| {action => ability.can?(action, target)}}
       !@ability_hash.any?{|element| element.to_a[1] == true}

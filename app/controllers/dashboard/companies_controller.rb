@@ -3,8 +3,6 @@ class Dashboard::CompaniesController < ApplicationController
   load_and_authorize_resource
   include CountriesHelper
 
-  before_filter :if_company_exists, :only => [:new, :create]
-
   def new
     build_company_edition_prerequisites
   end
@@ -40,12 +38,6 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   private
-    def if_company_exists
-      unless current_company.nil?
-        redirect_to dashboard_edit_company_path, :notice => t('companies.messages.company_already_created')
-      end
-    end
-
     def build_empty_associations
       @company.offices.build(name: t('offices.default_name')) if @company.offices.empty?
       @company.build_address unless @company.address.present?

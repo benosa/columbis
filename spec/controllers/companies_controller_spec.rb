@@ -3,43 +3,27 @@ require 'spec_helper'
 
 describe Dashboard::CompaniesController do
 
-  def create_company
+  before(:all) do
     @company = FactoryGirl.create(:company)
-    @user = FactoryGirl.create(:admin, :company_id => @company.id)
-    test_sign_in(@user)
+    @admin = FactoryGirl.create(:admin, :company => @company)
   end
 
-  before { create_company }
+  let(:user) { @admin }
+
+  before do
+    test_sign_in(user)
+  end
 
   describe 'POST create' do
 
-    def do_company
-      post :create, :company => {
-        :subdomain => FactoryGirl.sequence_by_name(:subdomain).next,
-        :name => 'company',
-        :email => 'company@example.com',
-        :address_attributes => {
-          :region => 'kyrovsky',
-          :zip_code => '234',
-          :house_number => '3',
-          :housing => '4', :office_number => '1',
-          :street => 'elm street',
-          :phone_number => '666'
-        }
-      }
-    end
+    let(:user) { FactoryGirl.create(:boss_without_company) }
 
-    it 'should redirect to companies/show.html' do
-      do_company
-      response.should redirect_to(dashboard_edit_company_path)
+    def do_company
+      post :create, :company => FactoryGirl.create(:company).attributes
     end
 
     it 'should change companies count up by 1' do
       expect { do_company }.to change{ Company.count }.by(1)
-    end
-
-    it 'should change addresses count up by 1' do
-      expect { do_company }.to change{ Address.count }.by(1)
     end
   end
 

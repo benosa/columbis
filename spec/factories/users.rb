@@ -26,6 +26,12 @@ FactoryGirl.define do
       role 'boss'
     end
 
+    factory :boss_without_company do
+      company nil
+      office nil
+      role 'boss'
+    end
+
     factory :user_with_company_and_office do
       before(:create) do |user|
         user.company = FactoryGirl.create(:company)

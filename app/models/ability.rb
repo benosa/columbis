@@ -10,6 +10,9 @@ class Ability
       can :manage, :all #, :company_id => user.company_id
       cannot :manage, Company
       can :manage, Company, :id => user.company_id
+      if user.company
+        cannot [:new, :create], Company
+      end
     elsif user.role == 'boss'
       can :manage, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
         Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
@@ -26,6 +29,9 @@ class Ability
       can :users_sign_in_as, :user
       can :offline_version, User
       can :switch_view, User
+      if user.company
+        cannot [:new, :create], Company
+      end
     elsif user.role == 'accountant'
       can :read, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
         Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User],

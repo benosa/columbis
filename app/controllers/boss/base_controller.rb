@@ -41,8 +41,6 @@ module Boss
         positions = {}
         params["data"].split(/,/).each_with_index { |id, i| positions.merge!({id.to_i => {"position" => (i+1)}}) }
         Widget.update(positions.keys, positions.values)
-      else
-        head :bad_request
       end
       render nothing: true
     end

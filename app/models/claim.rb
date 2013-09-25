@@ -893,11 +893,8 @@ class Claim < ActiveRecord::Base
         'СуммаПрописью' => primary_currency_price_in_word,
         'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
         'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
-        'АэропортОбратно' => airport_back,
-        'ВылетТуда' => depart_to,
-        'ВылетОбратно' => depart_back,
-        'ВремяВылетаТуда' => (depart_to.strftime('%H:%M') if depart_to),
-        'ВремяВылетаОбратно' => (depart_back.strftime('%H:%M') if depart_back)
+        'Отправление' => arrival_date,
+        'Возврат' => departure_date
       }
 
       fields.merge!({
@@ -946,11 +943,32 @@ class Claim < ActiveRecord::Base
         'ДоговорСтрахованияДатаКон' => operator.insurer_contract_end.present? ? I18n.l(operator.insurer_contract_end, :format => :long) : ''
       }) if operator
 
-      fields.merge!({
-        'АэропортТуда' => flights.first.try(:airport_from),
-        'РейсТуда' => flights.first.try(:flight_number),
-        'РейсОбратно' => flights.last.try(:flight_number)
-      }) if flights.length > 0
+      first_flight = flights.first if flights.length > 0
+      last_flight = flights.last if flights.length > 1
+
+      first_flight.instance_exec(fields) do |fields|
+        fields.merge!({
+          'ОтправлениеАэропортВылета' => airport_from,
+          'ОтправлениеДатаВылета' => (depart.strftime('%d/%m/%Y') if depart),
+          'ОтправлениеВремяВылета' => (depart.strftime('%H:%M') if depart),
+          'ОтправлениеРейс' => flight_number,
+          'ОтправлениеАэропортПрилета' => airport_to,
+          'ОтправлениеДатаПрилета' => (arrive.strftime('%d/%m/%Y') if arrive),
+          'ОтправлениеВремяПрилета' => (arrive.strftime('%H:%M') if arrive)
+        })
+      end if first_flight
+
+      last_flight.instance_exec(fields) do |fields|
+        fields.merge!({
+          'ВозвратАэропортВылета' => airport_from,
+          'ВозвратДатаВылета' => (depart.strftime('%d/%m/%Y') if depart),
+          'ВозвратВремяВылета' => (depart.strftime('%H:%M') if depart),
+          'ВозвратРейс' => flight_number,
+          'ВозвратАэропортПрилета' => airport_to,
+          'ВозвратДатаПрилета' => (arrive.strftime('%d/%m/%Y') if arrive),
+          'ВозвратВремяПрилета' => (arrive.strftime('%H:%M') if arrive)
+        })
+      end if last_flight
 
       fields
     end

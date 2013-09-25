@@ -17,6 +17,7 @@ class Printer < ActiveRecord::Base
       .select(["printers.id", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
         "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END) AS template_name"] +
         country_columns)
+      .order('mode ASC, template_name ASC')
   end
 
   define_index do
@@ -33,9 +34,6 @@ class Printer < ActiveRecord::Base
 
     set_property :delta => true
   end
-
-  sphinx_scope(:by_mode) { { :order => :mode } }
-  default_sphinx_scope :by_mode
 
   mount_uploader :template, TemplateUploader
 

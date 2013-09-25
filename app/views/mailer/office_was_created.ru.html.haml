@@ -3,6 +3,6 @@
   %a{:href => "http://columbis.ru"} Columbis.ru
 %p
   В компании
-  = @office.company.try(:name)
+  = @resource.company.try(:name)
   был создан офис
-  = @office.name
+  = @resource.name

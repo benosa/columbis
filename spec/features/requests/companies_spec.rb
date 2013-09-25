@@ -64,3 +64,26 @@ describe "Companies:", js: true do
     end
   end
 end
+
+describe "Company create:", js: true do
+  include ActionView::Helpers
+  before {
+    @boss = FactoryGirl.create(:boss)#FactoryGirl.create(user, company: company, office: office, role: :boss)
+    login_as(@boss)
+  }
+
+  describe "create_company" do
+      before do
+        visit new_dashboard_company_path
+      end
+
+      it "sholud create company" do
+        #fill_in 'user[email]', with: @user.email
+        all("a.save").first.click
+        # wait_until { current_path == new_user_session_path }
+        current_path.should eq(new_dashboard_company_path)
+      end
+    end
+
+
+end

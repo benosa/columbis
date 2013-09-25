@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 module ClaimsHelper
+  include Mistral::ClaimsHelperExtention # special for Mistral
   # def sort_column
   #   params[:sort] ? params[:sort] : Claim::DEFAULT_SORT[:col]
   # end
@@ -220,60 +221,10 @@ module ClaimsHelper
 
   def tourist_stat_options(claim)
     options = nil
-    if current_company.id == 8 # Temporary solution for Mistral
-      specific_options = %w(Повтор Знакомые Рекомендации Интернет Медиа Соседи Инфотур Сами)
-      all_options = DropdownValue.values_for('tourist_stat', current_company.id, false)
-
-      # For manual set of specific options
-      special_value_index = all_options.index{ |val| val =~ /\A%{.+}/ }
-      if special_value_index
-        special_value = all_options.delete_at(special_value_index)
-        new_specific_options = special_value[2..-2].split(';')
-        specific_options = new_specific_options unless new_specific_options.empty?
-      end
-
-      if is_admin? or is_boss? # Bring specific options to top
-        options = specific_options + all_options.select{ |o| !specific_options.include?(o) }
-      else
-        options = specific_options
-      end
-
-      current_value = claim.tourist_stat.to_s
-      options << current_value if !specific_options.include?(current_value)
+    if is_mistral? # Temporary solution for Mistral
+      options = mistral_tourist_stat_options(current_user, claim)
     end
     options || current_company.dropdown_values_for('tourist_stat')
-  end
-
-  # Specific list of operator permitted for manager
-  def specific_operators_for_mistral
-    operators = Operator.where('name ILIKE \'\%{%}\'').pluck(:name)
-    operators = operators.map{ |value| value[2..-2].gsub(/\s*;\s*/, ';').split(';') }.flatten.uniq unless operators.empty?
-    operators
-  end
-
-  def mistral_operator_list(term)
-    specific_operators = specific_operators_for_mistral
-    specific_field = "(CASE WHEN btrim(operators.name) in (#{specific_operators.map{|o| ActiveRecord::Base.sanitize(o) }.join(',')}) THEN 0 ELSE 1 END)" unless specific_operators.empty?
-    specific_field = '1' if specific_operators.empty?
-
-    list = current_company.operators
-      .select("min(operators.id) id, btrim(operators.name) as name, #{specific_field} as spec")
-      .where(["operators.name ILIKE '%' || ? || '%'", term])
-      .where('operators.name NOT ILIKE \'\%{%}\'')
-      .group('btrim(operators.name)')
-      .reorder('spec, name')
-      # .limit(50)
-
-    if is_supervisor? or is_manager?
-      list = list.where(name: specific_operators) unless specific_operators.empty?
-    else
-      # Special operators must be on top
-      list = list.all
-      i = list.index{ |operator| !specific_operators.include?(operator.name) }
-      list.insert(i, Operator.new(id: '', name: '=' * 15)) if i && i > 0
-    end
-
-    list
   end
 
   def claim_title(claim)

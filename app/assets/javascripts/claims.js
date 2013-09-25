@@ -787,9 +787,41 @@ $(function(){
     $row.find('.hidden_id').val(data.id);
   };
 
+  var init_tourist = function(el) {
+    $(el).each(function() {
+      var $t = $(this),
+        $h = $t.closest('.fake_row').find('.hidden_id'),
+        ac_data = $t.data('ac_data'),
+        value = $t.val(),
+        id = $h.val();
+      if (!ac_data && value && id) {
+        ac_data = { id: id, value: value };
+        $t.data('ac_data', ac_data);
+      }
+    });
+  };
+
+  var change_tourist = function(el) {
+    var $t = $(el),
+        $h = $t.closest('.fake_row').find('.hidden_id'),
+        value = $t.val(),
+        ac_data = $t.data('ac_data');
+    if (!value.length) {
+      $h.val('');
+    } else if (ac_data) {
+      if (value == ac_data.value) {
+        $h.val(ac_data.id);
+      } else {
+        $h.val('');
+      }
+    }
+  };
+
   setAutocomplete('.full_name.autocomplete', false, {
-    select: function(event, ui) { select_tourist(this, ui.item); }
+    select: function(event, ui) { select_tourist(this, ui.item); },
+    change: function(event, ui) { change_tourist(this); }
   });
+  init_tourist('.full_name.autocomplete');
 
   var resort_source = function(el, country) {
     var data = $(el || '.resort.autocomplete').data('ac');
@@ -846,8 +878,10 @@ $(function(){
     var $fields = $block.find('.fields:last');
     setDatepicker($fields, true);
     setAutocomplete($fields.find('.full_name.autocomplete'), false, {
-      select: function(event, ui) { select_tourist(this, ui.item); }
+      select: function(event, ui) { select_tourist(this, ui.item); },
+      change: function(event, ui) { change_tourist(this); }
     });
+    init_tourist('.full_name.autocomplete');
   }
   $('#tourists').on('click', 'a.add', function(e) {
     e.preventDefault();

@@ -27,13 +27,13 @@ class ClaimsAutocompleteController < ApplicationController
   end
 
   def operator
-    unless current_company.id == 8
+    unless is_mistral?
       @list = current_company.operators.select('operators.id, operators.name')
         .where(["operators.name ILIKE '%' || ? || '%'", params[:term]])
         .limit(50)
     else
       # Special conditions for Mistral
-      @list = mistral_operator_list(params[:term])
+      @list = mistral_operator_list(current_user, params[:term])
     end
 
     render 'claims/autocompletes/list'

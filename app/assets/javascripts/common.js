@@ -292,11 +292,30 @@ function setAutocomplete(selector, is_container, options) {
     // if hidden element with id appropriate id exists, use it for save selected id
     var $h = $('#' + $t.attr('id') + '_id');
     if ($h.length) {
+      var ac_data = $t.data('ac_data'),
+          value = $t.val(),
+          id = $h.val();
+      if (!ac_data && value && id) {
+        ac_data = { id: id, value: value };
+        $t.data('ac_data', ac_data);
+      }
+
       $t.on('autocompleteselect', function(event, ui) {
-        $('#' + $(this).attr('id') + '_id').val(ui.item.id);
+        var ac_data = { id: ui.item.id, value: ui.item.value };
+            // $hid = $('#' + $(this).attr('id') + '_id');
+        $h.val(ac_data.id);
+        $(this).data('ac_data', ac_data);
       }).on('blur', function() {
-        if (!$(this).val().length) {
-          $('#' + $(this).attr('id') + '_id').val('');
+        var value = $(this).val(),
+            ac_data = $(this).data('ac_data');
+        if (!value.length) {
+          $h.val('');
+        } else if (ac_data) {
+          if (value == ac_data.value) {
+            $h.val(ac_data.id);
+          } else {
+            $h.val('');
+          }
         }
       });
     }

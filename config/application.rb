@@ -76,5 +76,8 @@ module Tourism
     # For extending models with search_and_sort method
     require 'search_and_sort'
 
+    # Special module for Mistral
+    require 'mistral'
+
   end
 end

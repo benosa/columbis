@@ -29,7 +29,8 @@ class User < ActiveRecord::Base
   validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
   validates_presence_of :last_name, :first_name
   validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :unless => proc{ self.role == 'admin' }
-  validates :subdomain, uniqueness: true,
+  validates_with SubdomainValidator
+  validates :subdomain, :on => :create, uniqueness: true, presence: true,
     format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
 
   before_save do |user|

@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
-  sequence(:subdomain) { |n| "subdomain#{n}" }
 
   factory :company do
     name Faker::Lorem.sentence

@@ -39,7 +39,15 @@
   #user_phone_code { width: 45px; }
   #user_phone { width: 188px; }
   #user_phone_wrapper { display: inline-block; width: 198px; }
-  #user_subdomain { width: 156px; }
+  #user_subdomain { width: 179px; margin-right: 2px;}
+  #user_subdomain_wrapper { width: 189px; margin-right: 2px; display: inline-block; }
+  span.for_domain {
+    font-size: 13px;
+    font-weight: bold;
+    color: #666666;
+    display: inline-block;
+    padding-top:3px;
+  }
 }
 
 /*.middle_resoluition {

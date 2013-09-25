@@ -51,14 +51,6 @@ class Tourist < ActiveRecord::Base
     set_property :delta => true
   end
 
-  sphinx_scope(:clients_by_full_name) do
-    {
-      :with => { :potential => false },
-      :order => :full_name
-    }
-  end
-  default_sphinx_scope :clients_by_full_name
-
   extend SearchAndSort
 
   local_data :full_name, :initials_name, :attributes => :all

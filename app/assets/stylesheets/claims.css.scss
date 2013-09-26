@@ -334,6 +334,7 @@ option {
       p, span { color: #000; }
       border: 1px #333 solid;
       &.buh_col { background: #BDE0FA !important; }
+      &.buh_col.red_back { background-color: #ed2222 !important; }
     }
     tr {
       &.even, &.odd {
@@ -345,6 +346,7 @@ option {
       &.row.highlight {
         td { background-color: #E5F5FE;
           &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #E5F5FE !important; }
+          &.buh_col.red_back { background-color: #ed2222 !important; }
         }
         &.gray_back td { background-color: #E5F5FE !important; }
       }

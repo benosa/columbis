@@ -67,23 +67,50 @@ end
 
 describe "Company create:", js: true do
   include ActionView::Helpers
-  before {
-    @boss = FactoryGirl.create(:boss)#FactoryGirl.create(user, company: company, office: office, role: :boss)
-    login_as(@boss)
-  }
+  clean_once do
+    before(:all) do
+      @company = FactoryGirl.create(:company, subdomain: 'domain')
+    end
 
-  describe "create_company" do
+    before {
+      @boss = FactoryGirl.create(:boss)
+      login_as(@boss)
+    }
+    subject { page }
+
+    describe "create_company" do
       before do
         visit new_dashboard_company_path
       end
 
-      it "sholud create company" do
-        #fill_in 'user[email]', with: @user.email
+      it "should create company" do
+        fill_in 'company[name]', with: 'company_new'
         all("a.save").first.click
-        # wait_until { current_path == new_user_session_path }
-        current_path.should eq(new_dashboard_company_path)
+        should have_text(I18n.t('companies.messages.successfully_created_company'))
+      end
+
+      it "should create company and change user" do
+        fill_in 'company[name]', with: 'company_new2'
+        fill_in 'company[subdomain]', with: 'domain3'
+        all("a.save").first.click
+        should have_text(I18n.t('companies.messages.successfully_created_company'))
+        @boss.reload
+        @boss.subdomain.should == 'domain3'
+      end
+
+      it "should not create company - duplicate domain" do
+        fill_in 'company[name]', with: 'company_new2'
+        fill_in 'company[subdomain]', with: 'domain'
+        all("a.save").first.click
+        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('activerecord.errors.messages.taken')}")
+      end
+
+      it "should not create company - reserved domain" do
+        fill_in 'company[name]', with: 'company_new2'
+        fill_in 'company[subdomain]', with: 'demo'
+        all("a.save").first.click
+        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('errors.messages.reserved')}")
       end
     end
-
-
+  end
 end

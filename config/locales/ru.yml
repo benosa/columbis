@@ -88,6 +88,9 @@ ru:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
+      wrong_size: "не верный размер (должен быть %{file_size})"
+      size_too_small: "слишком маленький (должен быть не меньше %{file_size})"
+      size_too_big: "слишком большой (должен быть не больше %{file_size})"
       inclusion: "имеет непредусмотренное значение"
       exclusion: "имеет зарезервированное значение"
       invalid: "имеет неверное значение"

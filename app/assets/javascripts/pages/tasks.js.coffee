@@ -110,3 +110,21 @@ jQuery ->
   # Close review
   $(document.body).on 'click', '.review_form .close_btn', (e)->
     review_close()
+
+  $('#form_image_upload').on 'change', -> check_image_uploader(this)
+
+check_image_uploader = (element) ->
+  if !window.FileReader then return
+
+  input = $(element)[0]
+  message = $(document.getElementById('form_image'))
+
+  if !input
+    message.text("")
+  else if !input.files
+    message.text("")
+  else if !input.files[0]
+    message.text("")
+  else
+    file = input.files[0]
+    message.text("Файл имеет размер " + (file.size/1000/1000).toFixed(1) + " МБ")

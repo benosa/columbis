@@ -46,7 +46,7 @@ ru:
         director: 'Директор'
         director_genitive: 'Директор (родительный падеж)'
       company/printers:
-          template: 'Шаблон'
+        template: 'Шаблон'
       company/offices:
         name: 'Название'
         default_password: 'Пароль по умолчанию'

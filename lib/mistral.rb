@@ -63,7 +63,7 @@ module Mistral
     end
 
     def check_specific_operator
-      unless current_editor.is_admin? or current_editor.is_boss?
+      if current_editor && !(current_editor.is_admin? or current_editor.is_boss?)
         errors.add(:operator, :is_selected_from_existing) if operator && !Mistral.mistral_specific_operators.include?(operator.name)
       end
     end

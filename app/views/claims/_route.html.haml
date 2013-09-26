@@ -21,8 +21,8 @@
         .fake_col.col2
           .two_line
             %p= f.label :operator_id, t('.operator')
-            = f.text_field :operator, :value => @claim.operator.try(:name), :class => 'autocomplete operator tour_operator_select', data: ac_data(source: operator_autocomplete_claims_path), :not_highlighted => true
-            = f.hidden_field :operator_id, :value => @claim.operator.try(:id)
+            = f.text_field :operator, :value => @claim.operator.try(:name) || (params[:claim] && params[:claim][:operator]), :class => 'autocomplete operator tour_operator_select', data: ac_data(source: operator_autocomplete_claims_path), :not_highlighted => true
+            = f.hidden_field :operator_id, :value => @claim.operator.try(:id) || (params[:claim] && params[:claim][:operator_id])
         .fake_col.col3
           .two_line
             %p= f.label :country, t('.direction')

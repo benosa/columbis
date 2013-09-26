@@ -41,6 +41,8 @@ class Claim < ActiveRecord::Base
   attr_accessible :applicant_attributes, :dependents_attributes,
                   :payments_in_attributes, :payments_out_attributes, :flights_attributes
 
+  attr_accessor :claim_params # received params from controller
+
   belongs_to :company
   belongs_to :user
   belongs_to :assistant, :class_name => 'User'
@@ -90,6 +92,7 @@ class Claim < ActiveRecord::Base
 
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
+  validate :check_operator_correctness
   validates :hotel, hotel: { message: I18n.t('activerecord.errors.messages.hotel_invalid') }
   validates :num, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }, :if => proc{ |claim| claim.num.present? }
   validates_presence_of :num, :unless => :new_record?
@@ -148,16 +151,19 @@ class Claim < ActiveRecord::Base
   extend SearchAndSort
 
   def assign_reflections_and_save(claim_params)
+    self.claim_params = claim_params # save claims params
     self.transaction do
-      check_dropdowns(claim_params)
+      check_dropdowns
+      check_operator
       check_payments
 
-      unless self.errors.any?
+      if self.valid? # trigger validations
+        is_valid = !self.errors.any?
         # remove_unused_payments
         check_not_null_fields
         self.save
-        check_validation_messages if invalid?
-        self.unlock if edited? && valid?
+        check_validation_messages unless is_valid
+        self.unlock if edited? && is_valid
       end
     end
   end
@@ -278,12 +284,15 @@ class Claim < ActiveRecord::Base
   def lock(user)
     self.editor, self.locked_at = user, Time.zone.now
     self.current_editor ||= user
-    self.save
+    # Save locked_by and locked_at columns without any validations and update
+    # self.save
+    self.connection.execute "UPDATE claims SET locked_by=#{editor.id}, locked_at='#{locked_at.utc}' WHERE id=#{claim.id}" rescue false
   end
 
   def unlock
     self.editor, self.locked_at = nil, nil
-    self.save
+    # self.save
+    self.connection.execute "UPDATE claims SET locked_by=NULL, locked_at=NULL WHERE id=#{claim.id}" rescue false
   end
 
   def is_active?
@@ -602,7 +611,6 @@ class Claim < ActiveRecord::Base
         payment[:currency] = operator_price_currency if !payment.approved? || payment.currency.blank?
         payment.save
       end
-      valid? # trigger self validation
     end
 
     def check_validation_messages
@@ -748,25 +756,13 @@ class Claim < ActiveRecord::Base
       ph[:date_in].blank? and ph[:amount].to_f == 0.0 and ph[:id].blank?
     end
 
-    def check_dropdowns(claim_params)
+    def check_dropdowns
       DropdownValue.available_lists.keys.each do |l|
         company.check_and_save_dropdown(l.to_s, claim_params[l]) unless claim_params[l].nil?
       end
-
       company.check_and_save_dropdown('airport', claim_params[:airport_back])
 
-      if claim_params[:operator_id].blank?
-        # Only boss can add operator and only from list
-        # company.operators.create({ :name => claim_params[:operator] }) unless
-        #   company.operators.find_by_name(claim_params[:operator])
-        self.operator = company.operators.find_by_name(claim_params[:operator])
-        check_operator_correctness(claim_params[:operator])
-      else
-        self.operator_id = claim_params[:operator_id]
-      end
-
       company_cities = []
-
       if claim_params[:city_id].blank?
         unless claim_params[:city].blank?
           City.create({ :name => claim_params[:city] }) unless City.find_by_name(claim_params[:city])
@@ -786,7 +782,6 @@ class Claim < ActiveRecord::Base
         }) unless Country.where(conds).count > 0
         self.country = Country.where(conds).first
         # self.country = Country.where(common: true, name: country_name).first
-        # check_country_correctness(country_name)
       end
 
       resort_name = claim_params[:resort][:name].strip rescue ''
@@ -805,6 +800,17 @@ class Claim < ActiveRecord::Base
         company_cities.each do |city|
           CityCompany.where(:company_id => company, :city_id => city).first_or_create
         end
+      end
+    end
+
+    def check_operator
+      if claim_params[:operator_id].blank?
+        # Only boss can add operator and only from list
+        # company.operators.create({ :name => claim_params[:operator] }) unless
+        #   company.operators.find_by_name(claim_params[:operator])
+        self.operator = company.operators.find_by_name(claim_params[:operator])
+      else
+        self.operator = company.operators.find(claim_params[:operator_id]) rescue nil
       end
     end
 
@@ -838,11 +844,12 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def check_operator_correctness(operator_param)
-      errors.add(:operator, :is_selected_from_existing) if operator.nil? && operator_param.present?
+    def check_operator_correctness
+      errors.add(:operator, :is_selected_from_existing) if operator.nil? && claim_params[:operator].present?
     end
 
-    def check_country_correctness(country_name)
+    def check_country_correctness
+      country_name = claim_params[:resort][:name].strip rescue ''
       errors.add(:country_id, :is_selected_from_existing) if country.nil? && country_name.present?
     end
 

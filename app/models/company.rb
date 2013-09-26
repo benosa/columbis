@@ -46,7 +46,9 @@ class Company < ActiveRecord::Base
   end
 
   def find_or_create_printer(mode)
-    printers.where(:mode => mode).reorder('id DESC').first_or_create
+    printer = printers.where(:mode => mode).reorder('id DESC').first_or_create
+    printer_file(printer)
+    printer
   end
 
   # Define methods: contract_printer, permit_printer, warranty_printer, act_printer
@@ -68,6 +70,7 @@ class Company < ActiveRecord::Base
         printer.save
       end
     end
+    printer_file(printer)
     printer
   end
 
@@ -92,6 +95,24 @@ class Company < ActiveRecord::Base
         false
       else
         attributes['template'].blank?
+      end
+    end
+
+    def printer_file(printer)
+      from = Rails.root.to_s + "/app/views/printers/default_forms/ru/"
+      if printer && printer.try(:template).blank?
+        file_name = printer.mode
+        if printer.mode == 'memo'
+          if File.exist?(from + "memo_#{printer.country.name}.html")
+            file_name += "_#{printer.country.name}"
+          end
+        end
+        file_name += ".html"
+        from += file_name
+        if File.exist?(from)
+          printer.template = File.open(from)
+          printer.save!
+        end
       end
     end
 end

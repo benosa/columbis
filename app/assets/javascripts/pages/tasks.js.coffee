@@ -77,12 +77,10 @@ jQuery ->
 
     if $(this).hasClass('save_btn') # save button is selected
       $form.closest('.popover').addClass('task_comment_popover') # task list will be replaced after update, mark popover with comment class
-      file = $form.find('input.image_upload')[0].files[0]
       task_update task_id,
         data:
           'task[status]' : action
           'task[comment]': $form.find('.task_comment').val()
-          'task[image]'  : file
       .done ->
         $('.task_comment_popover').remove()
     else
@@ -133,6 +131,7 @@ ImageUploaderCheck =
     if this.message_box == undefined then return
     this.checker(element)
     this.bind_checker(element)
+    #element.closest('form.review_form').ajaxForm()
 
   check_size: ->
     this.file_size = (this.file.size/1000/1000).toFixed(1)
@@ -153,7 +152,10 @@ ImageUploaderCheck =
         this.message_box.text(this.message_box.text() + "Слишком большой размер. ")
       if this.name_error
         this.message_box.text(this.message_box.text() + "Не верный формат файла. ")
-      element.wrap('<imageform>').closest('imageform').get(0).reset()
+      e = element
+      ee = $(element)
+      # Add form because reset function don't work without form tag )))
+      element.wrap('<form>').closest('form').get(0).reset()
       element.unwrap()
     else
       this.message_box.text(this.message_box.text() + "Файл имеет размер " + this.file_size + " МБ. ")

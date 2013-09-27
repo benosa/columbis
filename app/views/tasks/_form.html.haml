@@ -34,10 +34,9 @@
             %p= f.label :comment
             .task_comment
               = f.text_area :comment, class: 'wide'
-            %imageform
-              %p= f.label :image, "#{Task.human_attribute_name(:image)} #{t('.image_size')}"
-              = f.file_field :image, :class => 'image_upload', :max_size => CONFIG[:max_image_size], :style => "width: 250px"
-              %p.image_message
+            %p= f.label :image, "#{Task.human_attribute_name(:image)} #{t('.image_size')}"
+            = f.file_field :image, :class => 'image_upload', :max_size => CONFIG[:max_image_size], :style => "width: 250px"
+            %p.image_message
 
   %fieldset.form_submit{ style: 'display: none; height: 0;' }
     = f.submit

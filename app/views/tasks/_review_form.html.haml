@@ -1,9 +1,8 @@
-= form_tag create_review_path, class: 'review_form', data: { title: t('.review') } do
+= form_tag create_review_path, class: 'review_form', data: { title: t('.review') }, :multipart => true do
   = text_area_tag :review, nil, :class => 'review'
-  %imageform
-    %p= label_tag :image, "#{Task.human_attribute_name(:image)} #{t('.image_size')}"
-    = file_field_tag :image, :class => 'image_upload', :max_size => CONFIG[:max_image_size], :style => "width: 250px"
-    %p.image_message
+  %p= label_tag :image, "#{Task.human_attribute_name(:image)} #{t('.image_size')}"
+  = file_field_tag :image, :class => 'image_upload', :max_size => CONFIG[:max_image_size], :style => "width: 250px"
+  %p.image_message
   %p.actions
-    = button_tag t('send'), :class => 'save_btn btn btn-primary'
+    = submit_tag t('send'), :class => 'save_btn btn btn-primary'
     = button_tag t('close'), :class => 'close_btn btn', :type => 'button'

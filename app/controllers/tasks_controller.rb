@@ -58,7 +58,7 @@ class TasksController < ApplicationController
 
   def create_review
     redirect_back unless current_user
-    @task = Task.new(body: params[:review], status: 'new')
+    @task = Task.new(body: params[:review], status: 'new', image: params[:image])
     @task.user = current_user
     if @task.save
       redirect_back notice: t('tasks.messages.review_created')

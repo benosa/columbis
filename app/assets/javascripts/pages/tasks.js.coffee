@@ -25,7 +25,7 @@ jQuery ->
     opts = $.extend(true, {}, defaults, options)
     $ajax = $.ajax(opts)
 
-  ImageUploaderCheck.init($('#form_image_upload'))
+  $.each($('input.image_upload'), (i, e) -> ImageUploaderCheck.init($(e)))
 
   # after_task_update = ($task) ->
   #   $task.find('.popup_hover').popover('hide') # hide visible popover, otherwise it stays after replace
@@ -77,10 +77,12 @@ jQuery ->
 
     if $(this).hasClass('save_btn') # save button is selected
       $form.closest('.popover').addClass('task_comment_popover') # task list will be replaced after update, mark popover with comment class
+      file = $form.find('input.image_upload')[0].files[0]
       task_update task_id,
         data:
           'task[status]' : action
           'task[comment]': $form.find('.task_comment').val()
+          'task[image]'  : file
       .done ->
         $('.task_comment_popover').remove()
     else
@@ -89,6 +91,7 @@ jQuery ->
   review_show = (el)->
     $el = $(el)
     $form = $('#review_form_container .review_form').clone()
+    ImageUploaderCheck.init($form.find('input.image_upload'))
     $form.find('.close_btn').on 'click', review_close
     $el.popover
       html: true
@@ -102,7 +105,7 @@ jQuery ->
     $(".review-active").removeClass('review-active').popover('destroy')
 
   # Write review
-  $('#write_review').on "click", (e)->
+  $('a.write_review').on "click", (e)->
     e.preventDefault()
     unless $(this).hasClass('review-active')
       review_show(this)
@@ -126,6 +129,8 @@ ImageUploaderCheck =
   init: (element) ->
     if !window.FileReader then return
     this.max_size = parseFloat(element.attr('max_size'))
+    this.message_box = element.next()
+    if this.message_box == undefined then return
     this.checker(element)
     this.bind_checker(element)
 
@@ -148,21 +153,20 @@ ImageUploaderCheck =
         this.message_box.text(this.message_box.text() + "Слишком большой размер. ")
       if this.name_error
         this.message_box.text(this.message_box.text() + "Не верный формат файла. ")
-      element.wrap('<form>').closest('form').get(0).reset()
+      element.wrap('<imageform>').closest('imageform').get(0).reset()
       element.unwrap()
     else
       this.message_box.text(this.message_box.text() + "Файл имеет размер " + this.file_size + " МБ. ")
 
   clear_before_check: ->
-    if this.message_box then this.message_box.text("")
+    this.message_box.text("")
     this.name_error = false
     this.size_error = false
 
   checker: (element) ->
     this.input = element[0]
-    this.message_box = element.next()
     this.clear_before_check()
-    if (this.input != null) && (this.input.files != null) && (this.input.files.length != 0)
+    if (this.input != undefined) && (this.input.files != undefined) && (this.input.files.length != 0)
       this.file = this.input.files[0]
     else
       this.file = null

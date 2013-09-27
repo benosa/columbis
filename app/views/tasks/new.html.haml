@@ -5,4 +5,4 @@
 
 - title ( current_user.role == 'admin' ? t('.new_task') : t('.task') )
 
-= render 'form', task: task
+= render 'form', task: task, :html => { :multipart => true }

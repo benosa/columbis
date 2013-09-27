@@ -23,6 +23,7 @@ ru:
       edit_task: Редактирование задачи
     review_form:
       review: 'Ваш отзыв'
+      image_size: '(не больше 5МБ)'
     messages:
       review_created: 'Ваш отзыв сохранен, спасибо!'
       review_failed: 'Извините, Ваш отзыв сохранить не удалось!'

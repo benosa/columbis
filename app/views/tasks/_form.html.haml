@@ -35,12 +35,12 @@
             .task_comment
               = f.text_area :comment, class: 'wide'
             %p= f.label :image, "#{Task.human_attribute_name(:image)} #{t('uploaders.uploader_size', :file_size => CONFIG[:max_image_size])}"
-            %p.file{:style => "width:auto;"}
-              = f.file_field :image, :class => 'image_upload', :style => "width: 250px"
+            %p.file
+              = f.file_field :image, :class => 'image_upload'
               = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
               = label_tag t('uploaders.choose_file_label')
-            %p.image_message{ :data => { :size => CONFIG[:max_image_size], :extensions => CONFIG[:image_formats] } }
-            - if task.image != nil
+            %p.image_message{ :data => { :size => CONFIG[:max_image_size], :extensions => CONFIG[:image_formats] }, :style => "clear:left;" }
+            - if task.id != nil
               = label_tag t('uploaders.download')
               %br
               = link_to task.image.model[:image], image_path(task.id), :title => t('uploaders.download')

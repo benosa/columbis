@@ -2,10 +2,10 @@
   = text_area_tag :review, nil, :class => 'review'
   .fake_row{:style => "padding:0px;"}
     %p= label_tag :image, "#{Task.human_attribute_name(:image)} #{t('uploaders.uploader_size', :file_size => CONFIG[:max_image_size])}"
-    %p.file{:style => "width:250px;"}
-      = file_field_tag :image, :class => 'image_upload', :style => "width: 250px"
+    %p.file
+      = file_field_tag :image, :class => 'image_upload'
       = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
-    %p.image_message{ :data => { :size => CONFIG[:max_image_size], :extensions => CONFIG[:image_formats] } }
+    %p.image_message{ :data => { :size => CONFIG[:max_image_size], :extensions => CONFIG[:image_formats] }, :style => "clear:left;" }
   %p.actions
     = submit_tag t('send'), :class => 'save_btn btn btn-primary'
     = button_tag t('close'), :class => 'close_btn btn', :type => 'button'

@@ -28,7 +28,12 @@
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         - if company.logo.present?
           = image_tag company.logo_url(:thumb)
-        = f.file_field :logo
+        %div{style: "clear;"}
+          %br
+        %p.file{:style => "width:auto;"}
+          = f.file_field :logo, :class => 'image_upload', :style => "width: 250px"
+          = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
+        %p.image_message{ :data => { :size => CONFIG[:max_logo_size], :extensions => CONFIG[:image_formats] } }
 
 #offices_block.form_column
   .form_block

@@ -5,6 +5,20 @@ class TasksController < ApplicationController
 
   before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
+  def download
+    if params[:image]
+      @task = Task.find(params[:image])
+      if @task.image?
+        send_file @task.image.path, :filename => @task.image.file.identifier
+      else
+        redirect_to redirect_back
+      end
+    else
+      redirect_to redirect_back
+    end
+    #send_file @printer.template.path, :filename => @printer.template.file.identifier
+  end
+
   def index
     if search_or_sort?
       options = search_and_sort_options(

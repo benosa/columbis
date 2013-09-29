@@ -16,10 +16,12 @@
           = f.label :country, t('.country')
           = f.fields_for :country, @printer.country do |cf|
             = cf.text_field :name, :class => 'autocomplete country', :style => "width:250px;", :data => { :id => @printer.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
-        %p.file
-          = f.file_field :template
-          = link_to t(".choose_file"), '#', :class => 'select_file'
-          = label_tag t('.choose_file_label')
+        %p= f.label :template, "#{Printer.human_attribute_name(:template)} #{t('uploaders.uploader_size', :file_size => CONFIG[:max_template_size])}"
+        %p.file{:style => "width:auto;"}
+          = f.file_field :template, :class => 'image_upload', :style => "width: 250px"
+          = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
+          = label_tag t('uploaders.choose_file_label')
+        %p.image_message{ :data => { :size => CONFIG[:max_template_size], :extensions => CONFIG[:all_formats] } }
         - if @printer.id != nil
           = label_tag t('.download')
           %br

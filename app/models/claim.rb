@@ -285,14 +285,12 @@ class Claim < ActiveRecord::Base
     self.editor, self.locked_at = user, Time.zone.now
     self.current_editor ||= user
     # Save locked_by and locked_at columns without any validations and update
-    # self.save
-    self.connection.execute "UPDATE claims SET locked_by=#{editor.id}, locked_at='#{locked_at.utc}' WHERE id=#{claim.id}" rescue false
+    self.connection.execute "UPDATE claims SET locked_by=#{editor.id}, locked_at='#{locked_at.utc}' WHERE id=#{self.id}" rescue false
   end
 
   def unlock
     self.editor, self.locked_at = nil, nil
-    # self.save
-    self.connection.execute "UPDATE claims SET locked_by=NULL, locked_at=NULL WHERE id=#{claim.id}" rescue false
+    self.connection.execute "UPDATE claims SET locked_by=NULL, locked_at=NULL WHERE id=#{self.id}" rescue false
   end
 
   def is_active?
@@ -815,7 +813,10 @@ class Claim < ActiveRecord::Base
     end
 
     def presence_of_applicant
-      # errors.add(:applicant, I18n.t('activerecord.errors.messages.blank_or_wrong'))
+      unless applicant
+        errors.add(:applicant, "#{I18n.t('activerecord.errors.messages.blank_or_wrong')}")
+        return
+      end
 
       if applicant.invalid? && applicant.errors[:full_name]
         errors.add(:applicant, "#{applicant.errors[:full_name].join}")
@@ -845,11 +846,12 @@ class Claim < ActiveRecord::Base
     end
 
     def check_operator_correctness
-      errors.add(:operator, :is_selected_from_existing) if operator.nil? && claim_params[:operator].present?
+      operator_name = claim_params[:operator] rescue nil
+      errors.add(:operator, :is_selected_from_existing) if operator.nil? && operator_name.present?
     end
 
     def check_country_correctness
-      country_name = claim_params[:resort][:name].strip rescue ''
+      country_name = claim_params[:resort][:name].strip rescue nil
       errors.add(:country_id, :is_selected_from_existing) if country.nil? && country_name.present?
     end
 

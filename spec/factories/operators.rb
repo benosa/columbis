@@ -2,7 +2,8 @@
 FactoryGirl.define do
   factory :operator do
     company
-    address
+    address { factory_assoc :address, company: company }
+
     name { Faker::Lorem.sentence }
 
     factory :operator_with_claims do

@@ -18,8 +18,9 @@ describe "Claim:", js: true do
 
     describe "Pagination" do
       before(:all) do
-        create_claims_with_prerequisites(@company, :claim, 10)
+        @claims = create_list(:claim, 3, company: @company, office: @office)
       end
+      after(:all) { @claims.each{ |c| c.destroy } }
 
       before(:each) do
         visit claims_path
@@ -38,7 +39,7 @@ describe "Claim:", js: true do
 
     describe "Flight Block" do
       before do
-        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss)
       end
 
       def add_flights_to_page(count = 2)
@@ -111,7 +112,7 @@ describe "Claim:", js: true do
 
     describe "Information block" do
       before do
-        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss)
       end
 
       it "should be content special_offer label-checkbox" do
@@ -136,7 +137,7 @@ describe "Claim:", js: true do
 
     describe "num_column" do
       before do
-        @claim = FactoryGirl.build(:claim, company_id: @company.id)
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss)
         @claim.num = 321123
         @claim.save
       end
@@ -149,7 +150,7 @@ describe "Claim:", js: true do
 
     describe "Locking" do
       before do
-        @claim = FactoryGirl.create(:claim, user_id: @boss.id, office_id: @office.id, company_id: @company.id)
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss)
       end
 
       it "should be edited and locked" do

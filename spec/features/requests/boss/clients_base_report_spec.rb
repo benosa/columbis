@@ -7,7 +7,8 @@ describe "Clients base" do
   before(:all) do
     @boss = create_user_with_company_and_office(:admin)
     @company = @boss.company
-    @claims = create_claims_with_prerequisites(@company, :clientbase_claim, 10)
+    # @claims = create_claims_with_prerequisites(@company, :clientbase_claim, 10)
+    @claims = create_list(:claim, 10, company: @company, office: @boss.office)
   end
 
   subject { page }

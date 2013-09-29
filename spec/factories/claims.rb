@@ -1,11 +1,11 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :claim do
-    association :user, factory: :manager
-    association :office
     association :company
-    association :applicant, factory: :tourist
-    association :operator
+    office { factory_assoc :office, company: company }
+    user { factory_assoc :manager, company: company, office: office }
+    operator { factory_assoc :operator, company: company }
+    applicant { factory_assoc :tourist, company: company }
 
     reservation_date { Date.today }
     check_date { 5.days.since }

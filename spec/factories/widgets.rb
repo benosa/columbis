@@ -2,8 +2,9 @@
 
 FactoryGirl.define do
   factory :widget, :class => Boss::Widget do
-    association :company
-    association :user
+    company
+    user { factory_assoc :user, company: company }
+
     name "claim"
     title "MyString"
     position 1

@@ -2,13 +2,13 @@
 FactoryGirl.define do
 
   factory :user do
-    association :company
-    association :office
+    company
+    office { factory_assoc :office, company: company }
 
     email #{ Faker::Internet.email }
-    last_name { Faker::Name.name }
-    first_name { Faker::Name.name }
-    middle_name { Faker::Name.name }
+    last_name { Faker::Name.last_name }
+    first_name { Faker::Name.first_name }
+    middle_name { Faker::Name.first_name }
     phone
     confirmed_at { Time.zone.now }
     delta false
@@ -19,8 +19,8 @@ FactoryGirl.define do
     factory (:accountant) { role 'accountant' }
 
     factory :alien_boss do
-      # association :company
-      # association :office
+      company
+      office { factory_assoc :office, company: company }
 
       role 'boss'
     end

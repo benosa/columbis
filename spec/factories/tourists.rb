@@ -2,8 +2,9 @@
 FactoryGirl.define do
 
   factory :tourist do
-    association :company
-    association :address
+    company
+    address { factory_assoc :address, company: company }
+
     first_name Faker::Name.first_name
     last_name Faker::Name.last_name
     middle_name Faker::Name.first_name

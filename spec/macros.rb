@@ -20,8 +20,9 @@ module Macros
   end
 
   def create_claims_with_prerequisites(company, factory = :claim, count = 2)
+    office = FactoryGirl.create(:office, company: company)
     claims = []
-    count.times { claims << FactoryGirl.create(factory, company: company) }
+    count.times { claims << FactoryGirl.create(factory, company: company, office: office) }
     claims
   end
 
@@ -70,6 +71,12 @@ module Macros
       value
     end
   end
+
+  def save_screenshot
+    @screenshot_count ||= 0
+    page.save_screenshot Rails.root.join("tmp/capybara/screenshot#{@screenshot_count += 1}.png"), full: true
+  end
+
 
   module ClassMethods
 

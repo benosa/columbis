@@ -32,6 +32,8 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods
 
+  config.before(:suite) { FactoryGirl.reload }
+
   Capybara.default_wait_time = 5
   Capybara.ignore_hidden_elements = false
   Capybara.register_driver :poltergeist do |app|
@@ -70,4 +72,11 @@ end
 
 def stub_current_office(office)
   controller.stub!(:current_office).and_return(office)
+end
+
+def factory_assoc(factory, *traits_and_overrides, &block)
+  strategy = @build_strategy || :build
+  strategy_name = strategy.kind_of?(Symbol) ? srategy : strategy.class.to_s.underscore.split('/').last.downcase.to_sym
+  strategy_name = :build if strategy_name == :attributes_for
+  FactoryGirl::FactoryRunner.new(factory, strategy_name, traits_and_overrides).run(&block)
 end

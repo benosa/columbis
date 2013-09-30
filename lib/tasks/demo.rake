@@ -1,6 +1,7 @@
 namespace :demo do
   desc "seed data for demo company"
-  task :seed => :environment do
+  task :seed, [:thinking_sphinx] => :environment do |t, args|
+    args.with_defaults restart_sphinx: true
     # Suppress delta indexing of thinking sphinx
     ThinkingSphinx.deltas_enabled = false
 
@@ -169,6 +170,13 @@ namespace :demo do
     puts 'Claim with Flights and Payments are created'
     puts 'Stop seeding demo data'
     ThinkingSphinx.deltas_enabled = true
+
+    # Execute thinking_sphinx tasks
+    if args[:thinking_sphinx]
+      puts "Start thinking_sphinx:#{args[:thinking_sphinx]}"
+      Rake::Task["thinking_sphinx:#{args[:thinking_sphinx]}"].invoke
+      puts "Stop thinking_sphinx:#{args[:thinking_sphinx]}"
+    end
   end
 
   def switch_pay_type(type, company, tourist, operator)

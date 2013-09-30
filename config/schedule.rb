@@ -12,12 +12,5 @@ every 1.day, :at => '2:12 am', :roles => [:app] do
 end
 
 every 1.day, :at => '2:30 am', :roles => [:app] do
-  rake_with_rvm 'demo:seed'
-  rake_with_rvm 'thinking_sphinx:index'
+  rake_with_rvm 'demo:seed[index]'
 end
-
-# if @environment == 'staging'
-#   every '25 5-17/2,23 * * *' do
-#     command File.expand_path('../../script/transfer', __FILE__)
-#   end
-# end

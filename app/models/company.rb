@@ -34,6 +34,7 @@ class Company < ActiveRecord::Base
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
     uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
+  validates :logo, :file_size => { :maximum => CONFIG[:max_logo_size].megabytes.to_i }
 
   after_create do |user|
     Mailer.company_was_created(self).deliver

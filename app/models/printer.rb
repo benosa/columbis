@@ -8,6 +8,7 @@ class Printer < ActiveRecord::Base
   belongs_to :company, inverse_of: :printers
   belongs_to :country
   validates_presence_of :country_id, :if => Proc.new{ self.mode == 'memo' } # TODO: check company presence
+  validates :template, :file_size => { :maximum => CONFIG[:max_template_size].megabytes.to_i }
 
   accepts_nested_attributes_for :country
 

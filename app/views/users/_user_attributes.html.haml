@@ -3,6 +3,8 @@
 %span{:class => "for_domain"}= '.columbis.ru'
 %p= f.label :email, :required => true
 = f.text_field :email
+%p= f.label :email, :required => true
+%input{ :type => "text", :name => "user[check]" }
 %p= f.label :first_name, :required => true
 = f.text_field :first_name
 %p= f.label :last_name, :required => true

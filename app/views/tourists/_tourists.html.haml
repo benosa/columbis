@@ -24,7 +24,7 @@
         %p= l(tourist.date_of_birth, :format => :long)
       %td{ title: tourist.phone_number }
         %span= tourist.phone_number
-      %td
+      %td{ title: tourist.email }
         %span= tourist.email
       %td
         %p= tourist.passport_series

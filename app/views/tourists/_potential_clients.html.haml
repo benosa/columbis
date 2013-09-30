@@ -21,9 +21,9 @@
         %p= tourist.user.try(:login)
       %td.full_name{ title: tourist.name }
         %p= tourist.name
-      %td
+      %td{ title: tourist.phone_number }
         %span= tourist.phone_number
-      %td
+      %td{ title: tourist.email }
         %span= tourist.email
       %td.wishes{ title: tourist.wishes }
         %p= tourist.wishes

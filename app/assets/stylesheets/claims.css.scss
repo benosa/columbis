@@ -16,6 +16,7 @@
   }
 }
 
+/*
 .low_resoluition .claims .reservations_wrapper {
   width: 980px;
 }
@@ -26,6 +27,11 @@
 
 .height_resoluition .claims .reservations_wrapper {
   width: 1843px;
+}
+*/
+
+.claims .reservations_wrapper {
+  width: 100%;
 }
 
 .claims .reservations {
@@ -206,11 +212,17 @@
   }
   thead {
     .stuck {
-      position: absolute !important;
+      position: absolute;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       display: none;
       z-index: 100;
     }
+
+    .stuck.fixed {
+      position: fixed;
+      top: 99px;
+    }
+
     &.stuck_active .stuck { display: block; }
   }
   .waypoint {

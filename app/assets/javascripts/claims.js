@@ -209,6 +209,7 @@ function set_claims_sticky_header() {
       var w = $(this).outerWidth();
       full_width += w;
       $divs.eq(index).css('width', w - 1);
+      $divs.eq(index).find('a').css('width', w - 4);
     });
     $stuck.css('width', full_width + 1);
   }
@@ -222,14 +223,16 @@ function set_claims_sticky_header() {
     $stuck.css('width', $claims_header.outerWidth() + 1);
     fill_stuck($claims_header, $stuck);
     $stuck.appendTo($thead);
+    if($(window).width() > $('#claims').width()) {
+      $stuck.addClass('fixed');
+    }
   }
 
   adjust_stuck($claims_header, $stuck);
 
   // Initialization
   if (!$claims_header.data('waypointsWaypointIds')) {
-    set_waypoints('#claims .claims_header', {
-      offset: function() { return -$(this).height() + $('.header').height(); },
+    options = {
       handler: function(direction) {
         var $thead = $(this).closest('thead');
         if (direction == 'down') {
@@ -238,12 +241,20 @@ function set_claims_sticky_header() {
           $thead.removeClass('stuck_active');
         }
       }
-    });
+    }
+
+    if (!$('.stuck.fixed').length) {
+       options['offset'] = function() { return -$(this).height() + $('.header').height(); }
+    }
+
+    set_waypoints('#claims .claims_header', options);
 
     $(window).on('scroll.claims', function() {
-      $('#claims .stuck').css({
-        top: $(this).scrollTop() + $('.header').height()
-      });
+      if (!$('.stuck.fixed').length) {
+        $('#claims .stuck').css({
+          top: $(this).scrollTop() + $('.header').height()
+        });
+      }
     });
   }
 }
@@ -1146,6 +1157,28 @@ $(function() {
         timeout: 10 * 1000 // 10 seconds
       });
     }
+  });
+
+  $(window).resize(function() {
+     if($("#claims").length) {
+       if($(window).width() > $('#claims').width()) {
+         set_claims_sticky_header();
+         if (!$('.stuck').hasClass('fixed')) {
+           $('.stuck').addClass('fixed');
+           $('#claims .stuck').css({
+             top: $('.header').height() - 1
+           });
+         }
+       } else {
+         set_claims_sticky_header();
+         if ($('.stuck').hasClass('fixed')) {
+           $('.stuck').removeClass('fixed');
+           $('#claims .stuck').css({
+             top: $(this).scrollTop() + $('.header').height()
+           });
+         }
+       }
+     }
   });
 
 });

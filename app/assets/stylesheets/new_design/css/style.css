@@ -170,7 +170,8 @@ html, body {height: 100%;}
 	margin: 18px 0 20px 0;
 	overflow: hidden;
 	padding: 0 0 78px 23px;
-	width: 1537px;
+	min-width: 1024px;
+	width: 98%;
 }
 
 	.wrapper h1{

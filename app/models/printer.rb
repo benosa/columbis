@@ -32,6 +32,7 @@ class Printer < ActiveRecord::Base
     indexes "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END)",
       :as => :template_name, :sortable => true
 
+    has :company_id
     set_property :delta => true
   end
 

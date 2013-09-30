@@ -4,6 +4,7 @@ class Dashboard::CompaniesController < ApplicationController
   include CountriesHelper
 
   def new
+    @company.subdomain = current_user.subdomain
     build_company_edition_prerequisites
   end
 
@@ -12,6 +13,7 @@ class Dashboard::CompaniesController < ApplicationController
     if @company.save
       current_user.update_attribute(:company_id, @company.id)
       current_user.update_attribute(:office_id, @company.offices.first.id) unless @company.offices.empty?
+      current_user.update_attribute(:subdomain, @company.subdomain) if @company.previous_changes['subdomain'] != nil
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_created_company')
     else
@@ -29,6 +31,10 @@ class Dashboard::CompaniesController < ApplicationController
     @company = current_company unless @company
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
+      if @company.previous_changes['subdomain'] != nil
+        @boss = User.where(company_id: @company.id, role: :boss).first
+        @boss.update_attribute(:subdomain, @company.subdomain)
+      end
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')
     else

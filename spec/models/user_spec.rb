@@ -40,17 +40,23 @@ describe User do
       before do
         @user = FactoryGirl.create :user
       end
-      it { @user.login.should == (Russian.transliterate(@user.first_name)[0] + Russian.transliterate(@user.last_name)).downcase }
+      it {
+        @user.login.should == (Russian.transliterate(@user.first_name)[0] + Russian.transliterate(@user.last_name).delete(' ')).downcase
+      }
     end
 
     context "when not registered" do
       before do
-        @user = FactoryGirl.create(:user, email: 'test@test.ru', first_name: 'lol', last_name: 'ogin', phone: '77777777')
+        @user = FactoryGirl.create(:user, email: 'test@test.ru', first_name: 'lol',
+          last_name: 'ogin', phone: '77777777', subdomain: 'domain')
         @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin', phone: '77777777')
       end
       it { @user.login.should == 'login' }
       it { @user2.should_not allow_value('test@test.ru').for(:email) }
       it { @user2.should_not allow_value('77777777').for(:phone) }
+      it { @user2.should_not allow_value('domain').for(:subdomain) }
+      it { @user2.should_not allow_value('11').for(:subdomain) }
+      it { @user2.should_not allow_value('img').for(:subdomain) }
       it do
         @user2.send(:generate_login)
         @user2.login.should == 'login1'

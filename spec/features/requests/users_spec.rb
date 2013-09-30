@@ -351,6 +351,47 @@ describe "Unlogged user", js: true do
         open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
       end
     end
+
+    describe "registration" do
+      before(:all) do
+        @user2 = FactoryGirl.create(:boss, subdomain: 'newcomp', email: 'newuser@mail.ru', phone: '766678888')
+      end
+      it 'should create new user' do
+        visit new_user_registration_path
+        fill_in 'user[subdomain]', with: 'newcomp1'
+        fill_in 'user[email]', with: 'newuser1@mail.ru'
+        fill_in 'user[first_name]', with: 'test1'
+        fill_in 'user[last_name]', with: 'testing1'
+        fill_in 'user[phone]', with: '7666788881'
+        find("input[name='commit']").click
+        html.should include(I18n.t('devise.registrations.user.signed_up_but_unconfirmed'))
+      end
+
+      it 'should not create new user - duplicate fields' do
+        visit new_user_registration_path
+        fill_in 'user[subdomain]', with: 'newcomp'
+        fill_in 'user[email]', with: 'newuser@mail.ru'
+        fill_in 'user[first_name]', with: 'test'
+        fill_in 'user[last_name]', with: 'testing'
+        fill_in 'user[phone]', with: '766678888'
+        find("input[name='commit']").click
+        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('activerecord.errors.messages.taken')}")
+        should have_text("#{I18n.t('activerecord.attributes.user.email')} #{I18n.t('activerecord.errors.messages.taken')}")
+        should have_text("#{I18n.t('activerecord.attributes.user.phone')} #{I18n.t('activerecord.errors.messages.taken')}")
+      end
+
+      it 'should not create new user - reserved subdomain' do
+        visit new_user_registration_path
+        fill_in 'user[subdomain]', with: 'demo'
+        fill_in 'user[email]', with: 'newuser2@mail.ru'
+        fill_in 'user[first_name]', with: 'test2'
+        fill_in 'user[last_name]', with: 'testing2'
+        fill_in 'user[phone]', with: '7666788882'
+        find("input[name='commit']").click
+        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('errors.messages.reserved')}")
+      end
+    end
+
   end
 
 end

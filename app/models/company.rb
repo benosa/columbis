@@ -30,6 +30,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
+  validates_with SubdomainValidator
   validates :subdomain, uniqueness: true, presence: true,
     format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
 

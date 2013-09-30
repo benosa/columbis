@@ -17,6 +17,7 @@ development: &defaults
     - 'devise/passwords'
   total_entries: 10000
   per_page_list: [10,30,50]
+  reserved_subdomains: ['demo', 'test', 'promo', 'app', 'assets', 'img']
 
 test:
   <<: *defaults

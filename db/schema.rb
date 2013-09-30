@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919050844) do
+ActiveRecord::Schema.define(:version => 20130925134324) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -173,6 +173,8 @@ ActiveRecord::Schema.define(:version => 20130919050844) do
     t.string   "director"
     t.string   "director_genitive"
   end
+
+  add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
 
   create_table "countries", :force => true do |t|
     t.string  "name"
@@ -462,11 +464,13 @@ ActiveRecord::Schema.define(:version => 20130919050844) do
     t.string   "unconfirmed_email"
     t.string   "phone"
     t.boolean  "use_office_password",                   :default => false
+    t.string   "subdomain"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["subdomain"], :name => "index_users_on_subdomain"
 
   create_table "widgets", :force => true do |t|
     t.integer  "company_id"

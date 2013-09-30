@@ -76,6 +76,7 @@ describe "Tasks:", js: true do
             should have_link(I18n.t('status.actions.finish'))
             should have_link(I18n.t('status.actions.canсel'))
             should have_selector("a[href='#{edit_task_path(task)}']")
+            should have_selector("a[href='/tasks/#{task.id}/image']")
           end
         end
       end
@@ -252,7 +253,7 @@ describe "Tasks:", js: true do
           end
         end
 
-        context "when invalid attribute values" do
+        context "when valid attribute values" do
 
           it "should create an task, redirect to task_path" do
             expect {
@@ -260,6 +261,21 @@ describe "Tasks:", js: true do
               click_link I18n.t('save')
             }.to change(Task, :count).by(1)
             current_path.should eq(tasks_path)
+          end
+
+          it "should create an task, when bad image, without image" do
+            expect {
+              fill_in "task[body]", with: "TEST"
+              attach_file "task[image]", Rails.root.join('spec', 'factories', 'files', "big_file.mov")
+              click_link I18n.t('save')
+            }.to change(Task, :count).by(1)
+            Task.where(:body => "TEST").last.image?.should be_false
+          end
+
+          it "should show message when image is incorrect" do
+            attach_file "task[image]", Rails.root.join('spec', 'factories', 'files', "big_file.mov")
+            page.should have_content("Слишком большой размер.")
+            page.should have_content("Не верный формат файла.")
           end
         end
       end

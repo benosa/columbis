@@ -55,6 +55,11 @@ describe TasksController do
     it 'should change task count up by 1' do
       lambda { do_task }.should change{ Task.count }.by(1)
     end
+
+    it 'should not change task count up by 1 if image incorrect' do
+      bad_file = fixture_file_upload(Rails.root.join('spec', 'factories', 'files', 'big_file.mov'), "image/jpg")
+      lambda { post :create, task: { body: 'Test create task', status: 'new', image: bad_file } }.should_not change{ Task.count }.by(1)
+    end
   end
 
   describe 'PUT update status finish' do

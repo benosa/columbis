@@ -6,8 +6,8 @@ class TasksController < ApplicationController
   before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
   def download
-    if params[:image]
-      @task = Task.find(params[:image])
+    if params[:id]
+      @task = Task.find(params[:id])
       if @task.image?
         send_file @task.image.path, :filename => @task.image.file.identifier
       else

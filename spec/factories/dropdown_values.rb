@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :dropdown_value do
-  	association :company
-
+  	company
     common false
 
   	list { DropdownValue.available_lists.first.to_a[0] }

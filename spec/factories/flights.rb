@@ -2,12 +2,13 @@
 
 FactoryGirl.define do
   factory :flight do
+    claim
+
     airline ""
     airport_from ""
     airport_to ""
     flight_number ""
     depart "2013-07-26 17:40:23"
     arrive "2013-07-26 17:40:23"
-    association :claim
   end
 end

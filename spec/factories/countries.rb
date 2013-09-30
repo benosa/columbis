@@ -1,13 +1,13 @@
 # -*- encoding : utf-8 -*-
 FactoryGirl.define do
   factory :country do
-    name { Faker::Name.name }
+    company
+    name { Faker::Address.country }
     common false
-    association :company
 
     factory :open_country do
+      company nil
       common true
-      company_id nil
     end
   end
 end

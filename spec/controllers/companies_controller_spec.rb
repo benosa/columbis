@@ -19,7 +19,7 @@ describe Dashboard::CompaniesController do
     let(:user) { FactoryGirl.create(:boss_without_company) }
 
     def do_company
-      post :create, :company => FactoryGirl.create(:company).attributes
+      post :create, :company => FactoryGirl.attributes_for(:company)
     end
 
     it 'should change companies count up by 1' do

@@ -21,7 +21,7 @@ describe Boss::ReportsController do
   describe "client base report" do
     before(:all) do
       # create_claims_with_prerequisites(@company, :clientbase_claim, 20)
-      @claims = create_list(:claim, 20, company: @company, office: @user.office)
+      @claims = create_list(:claim, 20, company: @company, office: @admin.office)
     end
 
     it "should be exist count" do

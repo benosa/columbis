@@ -20,7 +20,7 @@ ru:
       companies: 'Список компаний'
 
     messages:
-      successfully_created_company: 'Компания создана'
+      successfully_created_company: 'Компания успешно создана'
       successfully_updated_company: 'Данные компании обновлены'
       company_already_created: 'Компания уже создана'
 

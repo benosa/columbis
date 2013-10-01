@@ -74,7 +74,8 @@ Tourism::Application.routes.draw do
   #   resources :items
   # end
 
-  devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords", :sessions => "sessions" }
+  devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords",
+    :sessions => "sessions", :confirmations => "confirmations" }
 
   namespace :dashboard do
     match 'sign_in_as/:user_id' => 'users#sign_in_as', :as => :sign_in_as, :via => [:get, :post]

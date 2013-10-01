@@ -25,34 +25,40 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    build_resource
-    if resource.save
-      if resource.active_for_authentication?
-        set_flash_message :notice, :signed_up if is_navigational_format?
-        sign_up(resource_name, resource)
-        respond_to do |format|
-          format.json { render :json => {:success => true} }
-          format.html { respond_with resource, :location => after_sign_up_path_for(resource) }
+    if params[:user][:email].to_s == ''
+      params[:user][:email] = params[:user][:check]
+      params[:user].delete('check')
+      build_resource
+      if resource.save
+        if resource.active_for_authentication?
+          set_flash_message :notice, :signed_up if is_navigational_format?
+          sign_up(resource_name, resource)
+          respond_to do |format|
+            format.json { render :json => {:success => true} }
+            format.html { respond_with resource, :location => after_sign_up_path_for(resource) }
+          end
+        else
+          set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
+          expire_session_data_after_sign_in!
+          respond_to do |format|
+            format.json { render :json => {:success => true} }
+            format.html { respond_with resource, :location => after_inactive_sign_up_path_for(resource) }
+          end
         end
       else
-        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
-        expire_session_data_after_sign_in!
+        clean_up_passwords resource
+        errors = {}
+        resource.errors.messages.each do |key, value|
+          errors[key] = resource.errors.full_message(key,value[0])
+        end
+
         respond_to do |format|
-          format.json { render :json => {:success => true} }
-          format.html { respond_with resource, :location => after_inactive_sign_up_path_for(resource) }
+          format.json { render :json => {:success => false, :errors => errors } }
+          format.html { respond_with resource }
         end
       end
     else
-      clean_up_passwords resource
-      errors = {}
-      resource.errors.messages.each do |key, value|
-        errors[key] = resource.errors.full_message(key,value[0])
-      end
-
-      respond_to do |format|
-        format.json { render :json => {:success => false, :errors => errors } }
-        format.html { respond_with resource }
-      end
+      redirect_to new_user_registration_path
     end
   end
 

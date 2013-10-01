@@ -11,8 +11,9 @@
         %h2= t('.title')
       .form_block_content
         .fake_row
+          = f.text_field :login, :class => 'main_email', :value => ""
           %p= f.label :login, t('.email_or_login')
-          = f.text_field :login
+          %input{ :id => "user_check", :type => "text", :name => "user[check]", :class => "required" }
           %p= f.label :password
           = f.password_field :password
           - if devise_mapping.rememberable?

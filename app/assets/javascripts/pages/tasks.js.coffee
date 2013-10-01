@@ -99,6 +99,8 @@ jQuery ->
       content: $form
       title: $form.data('title')
     $el.addClass('review-active').popover('show')
+    $('.popover.fade.bottom.in').attr("style", "top:100px; left:0px; display:block;")
+    $('.popover.fade.bottom.in').attr("class", $('.popover.fade.bottom.in').attr("class") + " review_popup")
 
   review_close = ->
     $(".review-active").removeClass('review-active').popover('destroy')
@@ -106,8 +108,8 @@ jQuery ->
   # Write review
   $('a.write_review').on "click", (e)->
     e.preventDefault()
-    unless $(this).hasClass('review-active')
-      review_show(this)
+    unless $(document.body).hasClass('review-active')
+      review_show(document.body)
     else
       review_close()
 

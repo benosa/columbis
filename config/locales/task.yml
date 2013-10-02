@@ -65,4 +65,6 @@ ru:
         status: 'Статус'
         comment: 'Комментарии'
         image: 'Добавить изображение'
-
+        created_at: 'Создан'
+        company: 'Компания'
+        email: 'Почта'

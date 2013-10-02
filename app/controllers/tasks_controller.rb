@@ -50,6 +50,9 @@ class TasksController < ApplicationController
   def create
     # raise params.inspect
     @task = Task.new(params[:task])
+    unless is_admin?
+      @task.company = current_company
+    end
     @task.user = current_user
     @task.status = 'new' if params[:task][:status].blank?
     @task.body = nil if @task.body.empty?

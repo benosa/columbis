@@ -41,6 +41,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  before_save :create_company
+
   after_create do |user|
     Mailer.user_was_created(self).deliver
   end
@@ -184,6 +186,14 @@ class User < ActiveRecord::Base
 
   def join_phone
     self.phone = phone_code.to_s + phone.to_s if phone_code
+  end
+
+  def create_company
+    if subdomain != nil && company_id == nil && changes['confirmed_at'] != nil && changes['confirmed_at'][0] == nil
+      company = Company.new( :subdomain => subdomain, :owner => id)
+      company.save(validate: false)
+      self.company = company
+    end
   end
 
   def self.find_for_database_authentication(conditions)

@@ -1,3 +1,7 @@
-%li= link_to t('.write_review'), '#', class: 'write_review'
+- if is_admin?
+  - name = t('.task_list')
+- else
+  - name = t('.reviews')
+%li= link_to t('.write_review'), '#', id: 'write_review'
 %li{:class => params[:controller] == 'tasks' && 'active' }
   = link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'

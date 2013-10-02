@@ -4,24 +4,25 @@
       = sort_link :id, t('tasks.num'), :default => :desc
     %th
       = sort_link :body, t('activerecord.attributes.task.body')
-    %th
-      = sort_link :comment, t('activerecord.attributes.task.comment')
-    %th
-      = sort_link :user, t('activerecord.attributes.task.user')
-    %th
-      = sort_link :executer_id, t('activerecord.attributes.task.executer')
+    - if is_admin?
+      %th
+        = sort_link :comment, t('activerecord.attributes.task.comment')
+      %th
+        = sort_link :user, t('activerecord.attributes.task.user')
+      %th
+        = sort_link :executer_id, t('activerecord.attributes.task.executer')
     %th
       = sort_link :status, t('activerecord.attributes.task.status')
     %th
       = sort_link :start_date, t('activerecord.attributes.task.start_date')
     %th
       = sort_link :end_date, t('activerecord.attributes.task.end_date')
-    %th
-      = sort_link :bug, t('activerecord.attributes.task.bug')
-    %th.actions
-      %span
-        = t('actions')
-    %th
-    %th
+    - if is_admin?
+      %th
+        = sort_link :bug, t('activerecord.attributes.task.bug')
+      %th.actions
+        %span
+          = t('actions')
+      %th.last_cols
     - @tasks.each do |t|
       = render :partial => 'task', :locals => { :task => t }

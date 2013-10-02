@@ -36,6 +36,14 @@ class Task < ActiveRecord::Base
     set_property :delta => true
   end
 
+  define_index 'to_no_admin' do
+    indexes body, status, sortable: true
+    has :id
+    has :user_id
+    has :start_date, :end_date, type: :datetime
+    has "CRC32(status)", :as => :status_crc32, type: :integer
+  end
+
   state_machine :status, initial: :new do
     event :new do
       transition all => :new

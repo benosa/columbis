@@ -41,6 +41,7 @@ class Ability
     can :read, DropdownValue, :common=> true
     can :read, Region
     can :create, Task
+    can :read, Task, :user_id => user.id
     cannot :manage, User, :role => 'admin'
     can :dasboard_index, :user
     can :users_sign_in_as, :user
@@ -63,6 +64,7 @@ class Ability
     can :read, DropdownValue, :common=> true
     can :read, Region
     can :create, Task
+    can :read, Task, :user_id => user.id
     cannot :read, User, :role => 'admin'
     can :offline_version, User
     can :read, [Country, City], :common => true
@@ -80,6 +82,7 @@ class Ability
     can :read, Region
     can :offline_version, User
     can :create, Task
+    can :read, Task, :user_id => user.id
   end
 
   def manager
@@ -95,6 +98,7 @@ class Ability
     can :read, Region
     can :offline_version, User
     can :create, Task
+    can :read, Task, :user_id => user.id
   end
 
 end

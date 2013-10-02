@@ -21,15 +21,20 @@ class TasksController < ApplicationController
 
   def index
     if search_or_sort?
-      options = search_and_sort_options(
+      options = {
         :defaults => { :order => :id, :sort_mode => :desc },
-        :sql_order => false
-      )
+        :sql_order => false,
+        :with => current_ability.attributes_for(:read, Task)
+      }
+      unless is_admin?
+        options.merge!(:index => 'to_no_admin')
+      end
+      options = search_and_sort_options(options)
       set_filters(options)
       @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
       @tasks = Task.sort_by_search_results(@tasks_collection)
     else
-      @tasks_collection = Task.active.includes(:user).paginate(:page => params[:page], :per_page => per_page)
+      @tasks_collection = Task.accessible_by(current_ability).active.includes(:user).paginate(:page => params[:page], :per_page => per_page)
       @tasks = @tasks_collection.all
     end
     render :partial => 'tasks' if request.xhr?

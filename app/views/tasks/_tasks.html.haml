@@ -6,15 +6,15 @@
       = sort_link :body, t('activerecord.attributes.task.body')
     - if is_admin?
       %th
-        %span= t('activerecord.attributes.task.company')
+        = sort_link :company_name, t('activerecord.attributes.task.company')
       %th
         = sort_link :comment, t('activerecord.attributes.task.comment')
       %th
-        = sort_link :user, t('activerecord.attributes.task.user')
+        = sort_link :user_name, t('activerecord.attributes.task.user')
       %th
-        = sort_link :user, t('activerecord.attributes.task.email')
+        = sort_link :user_email, t('activerecord.attributes.task.email')
       %th
-        = sort_link :executer_id, t('activerecord.attributes.task.executer')
+        = sort_link :executer_name, t('activerecord.attributes.task.executer')
       %th
         = sort_link :created_at, t('activerecord.attributes.task.created_at')
     %th
@@ -32,3 +32,5 @@
       %th.last_cols
     - @tasks.each do |t|
       = render :partial => 'task', :locals => { :task => t }
+
+  = render partial: 'shared/pagination', locals: { collection: @tasks }

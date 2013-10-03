@@ -4,7 +4,7 @@
   %td{ class: task.bug && 'red_back' }
     = task.id
   %td.body{:class => [task.status =='cancel' && 'del', (task.body.length > 80) && 'popup_hover'], :data => { :content => (task.body.length > 80) && task.body }}
-    %p{:class => "with_tooltip", :title => truncate(task.body) }
+    %p{:class => "with_tooltip", :title => task.body }
       = truncate task.body, length: 80, omission: '...', separator: ' '
   - if is_admin?
     %td

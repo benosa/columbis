@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   end
 
   before_save :create_company
+  before_save :check_owner_boss
 
   after_create do |user|
     Mailer.user_was_created(self).deliver
@@ -194,6 +195,14 @@ class User < ActiveRecord::Base
       company.save(validate: false)
       self.company = company
     end
+  end
+
+  def check_owner_boss
+     self.role = 'boss' if role_changed? && company_owner?
+  end
+
+  def company_owner?
+    self == company.owner
   end
 
   def self.find_for_database_authentication(conditions)

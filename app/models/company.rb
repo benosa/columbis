@@ -8,6 +8,7 @@ class Company < ActiveRecord::Base
 
   attr_accessor :company_id
 
+  has_one :owner, :class_name => 'User', :inverse_of => :company
   has_one :address, :as => :addressable, :dependent => :destroy
   has_many :payments_in, :as => :payer, :class_name => 'Payment', :dependent => :destroy
   has_many :payments_out, :as => :recipient, :class_name => 'Payment', :dependent => :destroy

@@ -32,7 +32,7 @@
         - else
           = f.text_field :office, :value => user.office.try(:name), :disabled => true
         %p= f.label :role
-        - if is_admin? or is_boss?
+        - if (is_admin? or is_boss?) and user != current_company.owner
           = f.select :role, current_user.available_roles.map{|r| [t("user.roles.#{r}"), r]}
         - else
           = f.text_field :role, :value => t("user.roles.#{user.role}"), :disabled => true

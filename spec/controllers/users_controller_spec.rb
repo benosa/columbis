@@ -104,6 +104,23 @@ describe RegistrationsController do
     end
   end
 
+  describe 'POST_create_html' do
+    before {
+      @user = create(:admin)
+    }
+    it 'should create user' do
+      expect {
+        post :create, :user => attributes_for(:user)
+      }.to change{ User.count }.by(+1)
+    end
+
+    it 'should not create user - duplicate email' do
+      expect {
+        post :create, :user => attributes_for(:user, email: @user.email)
+      }.not_to change{ User.count }
+    end
+  end
+
   describe 'POST_create_json' do
     before {
       @boss = create_user_with_company_and_office :boss
@@ -198,4 +215,21 @@ describe PasswordsController do
   end
 end
 
+describe ConfirmationsController do
+  include Devise::TestHelpers
+
+  before {
+    @user = create(:user, confirmed_at: nil, company_id: nil )#, confirmation_token: 'nyaxM93jhdGkLWcGXcG6')
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+  }
+
+  describe 'PUT_confirm' do
+    it "changes user reset_password_token " do
+      expect {
+        put :show, confirmation_token: @user.confirmation_token
+        @user.reload
+      }.to change(@user, :company_id)#{ Company.count }.by(+1)
+    end
+  end
+end
 

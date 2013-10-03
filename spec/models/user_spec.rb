@@ -49,7 +49,7 @@ describe User do
       before do
         @user = FactoryGirl.create(:user, email: 'test@test.ru', first_name: 'lol',
           last_name: 'ogin', phone: '77777777', subdomain: 'domain')
-        @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin', phone: '77777777')
+        @user2 = FactoryGirl.build(:user, first_name: 'lol', last_name: 'ogin', company_id: nil)
       end
       it { @user.login.should == 'login' }
       it { @user2.should_not allow_value('test@test.ru').for(:email) }
@@ -61,6 +61,16 @@ describe User do
         @user2.send(:generate_login)
         @user2.login.should == 'login1'
       end
+    end
+
+    context "when not confirmed" do
+      before do
+        @user = create(:boss, confirmed_at: nil, company_id: nil)
+      end
+       it { expect {
+         @user.confirmed_at = Time.now
+         @user.save
+       }.to change{ Company.count }.by(+1) }
     end
   end
 end

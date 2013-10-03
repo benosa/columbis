@@ -415,16 +415,23 @@ describe "Unlogged user", js: true do
     describe "registration" do
       before(:all) do
         @user2 = FactoryGirl.create(:boss, subdomain: 'newcomp', email: 'newuser@mail.ru', phone: '766678888')
+        @attr = attributes_for :user
       end
       it 'should create new user' do
         visit new_user_registration_path
-        fill_in 'user[subdomain]', with: 'newcomp1'
-        fill_in 'user[check]', with: 'newuser1@mail.ru'
-        fill_in 'user[first_name]', with: 'test1'
-        fill_in 'user[last_name]', with: 'testing1'
-        fill_in 'user[phone]', with: '7666788881'
+        fill_in 'user[subdomain]', with: @attr[:subdomain]
+        fill_in 'user[email]', with: @attr[:email]
+        fill_in 'user[first_name]', with: @attr[:first_name]
+        fill_in 'user[last_name]', with: @attr[:last_name]
+        fill_in 'user[phone]', with: @attr[:phone]
         find("input[name='commit']").click
+        @newuser = User.where(email: @attr[:email]).first
+        open_last_email.should deliver_to @attr[:email]
+        open_last_email.should have_body_text(/#{@newuser.confirmation_token}/)
         html.should include(I18n.t('devise.registrations.user.signed_up_but_unconfirmed'))
+        visit user_confirmation_path + '?confirmation_token=' + @newuser.confirmation_token.to_s
+        page.should have_text(I18n.t('you_must_add_office'))
+        #current_path.should eq(dashboard_edit_company_path)
       end
 
       it 'should not create new user - duplicate fields' do

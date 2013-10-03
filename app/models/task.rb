@@ -18,7 +18,7 @@ class Task < ActiveRecord::Base
   scope :by_status, ->(status) { where(status: status) }
   scope :active, where(status: %w(new work))
 
-  scope :with_columns, ->(apply_includes = false) do
+  scope :with_columns, ->(is_active = false) do
     scope = joins("LEFT JOIN companies ON companies.id = tasks.company_id")
       .joins("LEFT JOIN users ON users.id = tasks.user_id")
       .joins("LEFT JOIN users as executers ON executers.id = tasks.executer_id")
@@ -53,6 +53,7 @@ class Task < ActiveRecord::Base
     has :id
     has :user_id
     has :start_date, :end_date, type: :datetime
+    has :bug, type: :boolean
     has "CRC32(status)", :as => :status_crc32, type: :integer
   end
 

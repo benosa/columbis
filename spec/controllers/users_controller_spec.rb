@@ -219,16 +219,16 @@ describe ConfirmationsController do
   include Devise::TestHelpers
 
   before {
-    @user = create(:user, confirmed_at: nil, company_id: nil )#, confirmation_token: 'nyaxM93jhdGkLWcGXcG6')
+    @user = create(:user, confirmed_at: nil, company_id: nil )
     @request.env["devise.mapping"] = Devise.mappings[:user]
   }
 
   describe 'PUT_confirm' do
-    it "changes user reset_password_token " do
+    it "create company after user confirm" do
       expect {
         put :show, confirmation_token: @user.confirmation_token
         @user.reload
-      }.to change(@user, :company_id)#{ Company.count }.by(+1)
+      }.to change(@user, :company_id)
     end
   end
 end

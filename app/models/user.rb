@@ -190,8 +190,9 @@ class User < ActiveRecord::Base
   end
 
   def create_company
-    if subdomain != nil && company_id == nil && changes['confirmed_at'] != nil && changes['confirmed_at'][0] == nil
-      company = Company.new( :subdomain => subdomain, :owner => id)
+    if subdomain != nil && company_id == nil && confirmed_at_changed? && changes['confirmed_at'][0] == nil
+      company = Company.new(:subdomain => subdomain)
+      company.owner = self
       company.save(validate: false)
       self.company = company
     end
@@ -202,7 +203,7 @@ class User < ActiveRecord::Base
   end
 
   def company_owner?
-    self == company.owner
+    self == company.owner if company
   end
 
   def self.find_for_database_authentication(conditions)

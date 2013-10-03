@@ -417,7 +417,7 @@ describe "Unlogged user", js: true do
         @user2 = FactoryGirl.create(:boss, subdomain: 'newcomp', email: 'newuser@mail.ru', phone: '766678888')
         @attr = attributes_for :user
       end
-      it 'should create new user' do
+      it 'should create new user and company' do
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: @attr[:subdomain]
         fill_in 'user[email]', with: @attr[:email]

@@ -6,7 +6,7 @@ class FillOwnerInCompany < ActiveRecord::Migration
       else
         boss = User.where(company_id: company.id, role: :boss).first
       end
-      company.update_column(:owner, boss.id) if boss != nil
+      company.update_column(:owner_id, boss.id) if boss != nil
     end
   end
 end

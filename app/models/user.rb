@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :phone_code
 
-  belongs_to :company
+  belongs_to :company, :counter_cache => true
   belongs_to :office
   has_many :tasks
 

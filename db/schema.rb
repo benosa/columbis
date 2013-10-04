@@ -172,7 +172,7 @@ ActiveRecord::Schema.define(:version => 20131002114813) do
     t.string   "logo"
     t.string   "director"
     t.string   "director_genitive"
-    t.integer  "owner"
+    t.integer  "owner_id"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"

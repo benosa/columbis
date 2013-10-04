@@ -1,7 +1,18 @@
 # -*- encoding : utf-8 -*-
 class Dashboard::CompaniesController < ApplicationController
-  load_and_authorize_resource
   include CountriesHelper
+
+  load_and_authorize_resource
+  skip_authorize_resource only: :edit
+
+  rescue_from CanCan::AccessDenied do |exception|
+    if [:update, :destroy].include?(exception.action) && can?(:read, exception.subject)
+      message = t("companies.messages.company_cant_be_#{exception.action == :update ? 'updated' : 'destroyed'}")
+      redirect_to dashboard_edit_company_path, :alert => message
+    else
+      redirect_to root_path, :alert => exception.message
+    end
+  end
 
   def new
     @company.subdomain = current_user.subdomain
@@ -24,6 +35,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   def edit
     @company = current_company unless @company
+    authorize! :read, @company
     build_company_edition_prerequisites
   end
 
@@ -33,7 +45,7 @@ class Dashboard::CompaniesController < ApplicationController
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
       if @company.previous_changes['subdomain'] != nil
         @boss = User.where(company_id: @company.id, role: :boss).first
-        @boss.update_attribute(:subdomain, @company.subdomain)
+        @boss.update_attribute(:subdomain, @company.subdomain) if @boss
       end
       @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
       redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_updated_company')

@@ -1,6 +1,16 @@
 # -*- encoding : utf-8 -*-
 class Dashboard::UsersController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource only: :edit
+
+  rescue_from CanCan::AccessDenied do |exception|
+    if [:update, :destroy].include?(exception.action) && can?(:read, exception.subject)
+      flash.now[:alert] = t("users.messages.user_cant_be_#{exception.action == :update ? 'updated' : 'destroyed'}")
+      render :action => 'edit'
+    else
+      redirect_to root_path, :alert => exception.message
+    end
+  end
 
   def sign_in_as
     authorize! :users_sign_in_as, current_user
@@ -47,6 +57,7 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def edit
+    authorize! :read, @user
   end
 
   def update

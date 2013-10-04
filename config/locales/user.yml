@@ -52,6 +52,8 @@ ru:
       updated: 'Пользователь обновлен'
       destroyed: 'Пользователь удален'
       need_password: 'необходимо задать'
+      user_cant_be_updated: 'Вы не можете изменить этого пользователя'
+      user_cant_be_destroyed: 'Вы не можете удалить этого пользователя'
 
   user:
     roles:

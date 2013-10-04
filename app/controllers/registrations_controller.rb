@@ -1,5 +1,18 @@
 class RegistrationsController < Devise::RegistrationsController
 
+  before_filter only: [:update, :destroy] do
+    authorize! params[:action].to_sym, current_user
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    if [:update, :destroy].include?(exception.action) && can?(:read, exception.subject)
+      message = t("users.messages.user_cant_be_#{exception.action == :update ? 'updated' : 'destroyed'}")
+      redirect_to edit_user_registration_path, :alert => message
+    else
+      redirect_to root_path, :alert => exception.message
+    end
+  end
+
   def update
     @user = current_user
     @user.role = params[:user][:role] if current_user && current_user.available_roles.include?(params[:user][:role])

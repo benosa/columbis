@@ -23,6 +23,8 @@ ru:
       successfully_created_company: 'Компания успешно создана'
       successfully_updated_company: 'Данные компании обновлены'
       company_already_created: 'Компания уже создана'
+      company_cant_be_updated: 'Вы не можете изменить эту компанию'
+      company_cant_be_destroyed: 'Вы не можете удалить эту компанию'
 
   activerecord:
     attributes:

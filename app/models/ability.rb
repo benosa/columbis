@@ -13,6 +13,12 @@ class Ability
     else
       can [:update, :destroy], User, :id => @user.id
     end
+
+    # Restrict abilities for demo company and user
+    unless user.is_admin?
+      cannot([:update, :destroy], Company) { |company| company.subdomain == 'demo' }
+      cannot([:update, :destroy], User) { |user| user.login == 'demo' }
+    end
   end
 
   def admin

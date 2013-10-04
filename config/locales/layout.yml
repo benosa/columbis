@@ -56,6 +56,8 @@ ru:
           write_review: 'Оставить отзыв'
           task_list: 'Список задач'
           reviews: 'Отзывы'
+        - &admin
+          admin: 'Админка'
       second_menu:
         view: 'Вид'
       management:
@@ -80,6 +82,8 @@ ru:
         *support
       newclaim:
         new_claim: 'Новая заявка'
+      admin:
+        *admin
 
     application: &application
       all_rights_reserved: 'Все права защищены'

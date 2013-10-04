@@ -1,0 +1,4 @@
+- c = params[:controller]
+- a = params[:action]
+%li{:class => (c == 'admin/base') && 'active' }
+  = link_to t('.admin'), admin_index_path

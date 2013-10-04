@@ -1,0 +1,30 @@
+.current_container
+  %table.reservations.tour_operators
+    %th
+      = sort_link :created_at, t('tasks.num'), :default => :desc
+    %th
+      = sort_link :name, t('activerecord.attributes.task.body')
+    %th
+      = sort_link :owner, t('activerecord.attributes.task.comment')
+    %th
+      = sort_link :email, t('activerecord.attributes.task.user')
+    %th
+      = sort_link :phone, t('activerecord.attributes.task.executer')
+    %th
+      = sort_link :subdomain, t('activerecord.attributes.task.status')
+    %th
+      = sort_link :offices_count, t('activerecord.attributes.task.start_date')
+    %th
+      = sort_link :users_count, t('activerecord.attributes.task.start_date')
+    %th
+      = sort_link :claims_count, t('activerecord.attributes.task.start_date')
+    %th
+      = sort_link :tourists_count, t('activerecord.attributes.task.start_date')
+    %th
+      = sort_link :tasks_date, t('activerecord.attributes.task.end_date')
+    %th.actions
+      %span
+        = t('actions')
+    %th.last_cols
+    - @tasks.each do |t|
+      = render :partial => 'task', :locals => { :task => t }

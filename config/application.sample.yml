@@ -1,5 +1,6 @@
 development: &defaults
   domain: localhost
+  reserved_subdomains: ['/demo\d*/', '/test\d*/', 'promo', '/app\d*/', '/assets\d*/', '/img\d*/', 'example']
   support_email: 'support@columbis.ru'
   support_phone: '8 800 555 43 77'
   session_key: _tourism_session
@@ -17,7 +18,6 @@ development: &defaults
     - 'devise/passwords'
   total_entries: 10000
   per_page_list: [10,30,50]
-  reserved_subdomains: ['demo', 'test', 'promo', 'app', 'assets', 'img']
 
 test:
   <<: *defaults

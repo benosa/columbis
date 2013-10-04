@@ -32,7 +32,8 @@ class Company < ActiveRecord::Base
   validates_presence_of :name
   validates_with SubdomainValidator
   validates :subdomain, uniqueness: true, presence: true,
-    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
+    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
+    length: { minimum: 3, maximum: 20 }
 
   def company_id
     id

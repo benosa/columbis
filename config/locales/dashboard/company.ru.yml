@@ -89,6 +89,10 @@ ru:
         name: 'Название'
         default_password: 'Пароль по умолчанию'
 
+    errors:
+      messages:
+        subdomain_invalid: 'может содержать только прописные латинские символы (a-z), цифры (0-9) и знак -'
+
   helpers:
     label:
       # this help for has_one nested attributes in rails 3.1.0

@@ -29,9 +29,11 @@ class User < ActiveRecord::Base
   validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
   validates_presence_of :last_name, :first_name
   validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :unless => proc{ self.role == 'admin' }
-  validates_with SubdomainValidator
+  validates_with SubdomainValidator, :if => proc{ self.company.nil? }
   validates :subdomain, :on => :create, uniqueness: true, presence: true,
-    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
+    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
+    length: { minimum: 3, maximum: 20 },
+    :if => proc{ self.company.nil? }
 
   before_save do |user|
     for attribute in [:last_name, :first_name, :middle_name]

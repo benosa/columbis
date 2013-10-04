@@ -22,6 +22,11 @@
     .grey_block .block_title, .grey_block .fake_row{ width: 832px !important; }
   }
 
+  #company_subdomain_wrapper { display: inline-block; }
+  .subdomain { width: 110px; margin: 0; }
+  .domain { font-weight: bold; line-height: 22px; }
+  .domain_example { display: inline-block; color: #666; font-size: 85%; margin: 5px 0 11px 1px; font-style: italic; }
+
   .list_select {
     &.ik_select, .ik_select_link {
       width: 160px;

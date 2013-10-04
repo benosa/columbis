@@ -20,7 +20,7 @@ Tourism::Application.routes.draw do
   match 'get_currency_course' => 'application#get_currency_course'
   match 'current_timestamp' => "application#current_timestamp"
   match 'template/:template' => 'printers#download', :as => :template, :via => :get
-  match 'tasks/:id/image' => 'tasks#download', :as => :image, :via => :get
+  get "/uploads/logo_show/:id" => 'uploads#logo_show', :as => 'logo_show'
 
   resources :airlines
   resources :currency_courses

@@ -27,7 +27,7 @@
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         - if company.logo.present?
-          = image_tag company.logo_url(:thumb)
+          = image_tag logo_show_url(:only_path => true, :id => company.id)
         %div{style: "clear:left;"}
           %br
         %p.file

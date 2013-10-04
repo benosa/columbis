@@ -2,6 +2,8 @@
 class Claim < ActiveRecord::Base
   include Mistral::ClaimExtention # Special for Mistral company
 
+  delegate :url_helpers, to: 'Rails.application.routes'
+
   VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done].freeze
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
   DEFAULT_SORT = { :col => 'reservation_date', :dir => 'desc' }.freeze
@@ -918,7 +920,7 @@ class Claim < ActiveRecord::Base
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
         'СайтКомпании' => company.try(:site),
-        'Логотип' => company.logo.thumb.url,
+        'Логотип' => url_helpers.logo_show_url(:only_path => true, :id => company.id),
         'ФИОДериктораКомпании' => company.director,
         'ФИОДериктораКомпанииРод' => company.director_genitive,
         'ФИОДериктораКомпанииИниц' => initials(company.director)

@@ -1,11 +1,12 @@
 %ul.rmenu
-  = render 'layouts/main_menu/claims'
-  = render 'layouts/main_menu/newclaim'
-  = render 'layouts/main_menu/management'
-  = render 'layouts/main_menu/clients'
-  - if user_signed_in? && %w(admin boss).include?(current_user.role)
-    = render 'layouts/main_menu/reports'
-  = render 'layouts/main_menu/support'
+  - unless current_company.new_record?
+    = render 'layouts/main_menu/claims'
+    = render 'layouts/main_menu/newclaim'
+    = render 'layouts/main_menu/management'
+    = render 'layouts/main_menu/clients'
+    - if user_signed_in? && %w(admin boss).include?(current_user.role)
+      = render 'layouts/main_menu/reports'
+    = render 'layouts/main_menu/support'
 %ul.user_panel
   = render 'devise/menu/registration_items'
   = render 'devise/menu/login_items'

@@ -1,16 +1,17 @@
 .second_menu
   %ul.rmenu
-    - case params[:controller]
-      - when 'claims'
-        = render 'layouts/main_menu/second_claims'
-      - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans'
-        = render 'layouts/main_menu/second_management'
-      - when 'tourists'
-        = render 'layouts/main_menu/second_clients'
-      - when 'boss/reports', 'boss/base'
-        = render 'layouts/main_menu/second_reports'
-      - when 'tasks'
-        = render 'layouts/main_menu/second_support'
+    - unless current_company.new_record?
+      - case params[:controller]
+        - when 'claims'
+          = render 'layouts/main_menu/second_claims'
+        - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans'
+          = render 'layouts/main_menu/second_management'
+        - when 'tourists'
+          = render 'layouts/main_menu/second_clients'
+        - when 'boss/reports', 'boss/base'
+          = render 'layouts/main_menu/second_reports'
+        - when 'tasks'
+          = render 'layouts/main_menu/second_support'
     .logo
     - if view_switcher?
       .type

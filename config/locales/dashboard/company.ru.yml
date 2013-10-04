@@ -20,6 +20,7 @@ ru:
         our_cities: 'Города'
       form:
         common: 'Общие данные'
+        domain_example: 'Например: example.%{domain}'
         juridical: 'Юридические данные'
         address: 'Адрес'
         cities: 'Города'
@@ -91,7 +92,8 @@ ru:
 
     errors:
       messages:
-        subdomain_invalid: 'может содержать только прописные латинские символы (a-z), цифры (0-9) и знак -'
+        subdomain_invalid: 'может содержать только прописные латинские символы (a-z), знак - и цифры (0-9).'
+        subdomain_taken: 'уже занят, укажите другой.'
 
   helpers:
     label:

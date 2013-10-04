@@ -30,10 +30,10 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
-  validates_with SubdomainValidator
-  validates :subdomain, uniqueness: true, presence: true,
+  validates :subdomain, presence: true, subdomain: true,
+    length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
-    length: { minimum: 3, maximum: 20 }
+    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
 
   def company_id
     id

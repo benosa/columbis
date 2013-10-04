@@ -13,6 +13,10 @@ describe "Abilities for" do
     @another_office = FactoryGirl.create(:office, :company => @admin.company)
   end
 
+  after(:all) do
+    DatabaseCleaner.clean_with :truncation
+  end
+
   subject(:ability){ Ability.new(user) }
 
   let(:user) { nil }
@@ -1141,6 +1145,26 @@ describe "Abilities for" do
       it{ should not_be_able_to(:manage, resource) }
       it{ should not_be_able_to(:manage, resource2) }
       it{ should not_be_able_to(:manage, unresource) }
+    end
+  end
+
+  describe "demo company and user" do
+    def create_demo_resources
+      @demo_company = Company.new(subdomain: 'demo', name: 'demo')
+      @demo_company.save(validate: false)
+      @demo_office = create(:office, company: @demo_company)
+      @demo_user = create(:boss, company: @demo_company, office: @demo_office, login: 'demo')
+    end
+
+    clean_once do
+      before(:all) { create_demo_resources }
+
+      subject(:ability){ Ability.new(@demo_user) }
+
+      it{ should_not be_able_to(:update, @demo_company) }
+      it{ should_not be_able_to(:destroy, @demo_company) }
+      it{ should_not be_able_to(:update, @demo_user) }
+      it{ should_not be_able_to(:destroy, @demo_user) }
     end
   end
 end

@@ -920,7 +920,12 @@ class Claim < ActiveRecord::Base
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
         'СайтКомпании' => company.try(:site),
-        'Логотип' => url_helpers.logo_show_url(:only_path => true, :id => company.id),
+        'Логотип' => url_helpers.show_url(
+          :only_path => true,
+          :id => company.id,
+          :model => 'company',
+          :filename => [company.logo.thumb.version_name.to_s, company.logo.filename].compact.join('_')
+        ),
         'ФИОДериктораКомпании' => company.director,
         'ФИОДериктораКомпанииРод' => company.director_genitive,
         'ФИОДериктораКомпанииИниц' => initials(company.director)

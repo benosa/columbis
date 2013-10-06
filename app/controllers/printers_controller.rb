@@ -1,33 +1,6 @@
 class PrintersController < ApplicationController
   load_and_authorize_resource
 
-  def download
-    @company = current_company
-    if params[:template]
-      @printer = @company.printers.find(params[:template])
-      if @printer.template?
-        send_file @printer.template.path, :filename => @printer.template.file.identifier
-      else
-        if @printer.mode == "memo"
-          path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo_#{@printer.country.name}.html"
-          unless File.exist?(path)
-            path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo.html"
-          end
-        else
-          path = Rails.root.to_s + "/app/views/printers/default_forms/ru/#{@printer.mode}.html"
-        end
-        unless File.exist?(path)
-          redirect_to printers_path
-        else
-          send_file path, :filename => (I18n.t('.printers.default') + '.html')
-        end
-      end
-    else
-      redirect_to printers_path
-    end
-    #send_file @printer.template.path, :filename => @printer.template.file.identifier
-  end
-
   def index
     @printers =
       if search_or_sort?

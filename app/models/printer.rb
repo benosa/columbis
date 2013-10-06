@@ -15,7 +15,7 @@ class Printer < ActiveRecord::Base
   scope :with_template_name, -> do
     country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
     scope = joins("LEFT JOIN countries ON countries.id = printers.country_id")
-      .select(["printers.id", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
+      .select(["printers.id", "printers.template", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
         "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END) AS template_name"] +
         country_columns)
       .order('mode ASC, template_name ASC')

@@ -15,6 +15,8 @@ CONFIG = (YAML.load_file(File.expand_path('../application.yml', __FILE__))[Rails
 
 module Tourism
   class Application < Rails::Application
+    config.force_ssl = CONFIG[:force_ssl]
+    config.ssl_options = CONFIG[:ssl_options]
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

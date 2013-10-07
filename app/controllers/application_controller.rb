@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
   # before_filter :set_session_options_domain
-  before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
+  before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }  
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?

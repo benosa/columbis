@@ -18,7 +18,12 @@ development: &defaults
     - 'devise/passwords'
   total_entries: 10000
   per_page_list: [10,30,50]
+  force_ssl: false
+  ssl_options:
+    hsts:
+      subdomains: true
 
 test:
   <<: *defaults
+  force_ssl: false
   domain: 127.0.0.1

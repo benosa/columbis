@@ -42,7 +42,11 @@ class PrintersController < ApplicationController
 
   def destroy
     @printer = Printer.destroy(params[:id])
-    index
+    if request.xhr?
+      index
+    else
+      redirect_to printers_path, :notice => t('printers.messages.successfully_deleted_printer')
+    end
   end
 
   private

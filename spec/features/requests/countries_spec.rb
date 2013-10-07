@@ -1,9 +1,9 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
-  
+
 describe "Country:", js: true do
   include ActionView::Helpers
-  
+
   subject { page }
 
   before do
@@ -44,7 +44,7 @@ describe "Country:", js: true do
       end
 
       it "should sort by column name" do
-        # It's checking by first characters, becouse sorts in the test 
+        # It's checking by first characters, becouse sorts in the test
         # and sort on the page may a little different
         page.should have_selector("a.sort_active.asc[data-sort='name']")
         take_elements.should == sort_countries_asc_by(:name)

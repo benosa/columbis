@@ -57,7 +57,7 @@ class Ability
     can :read, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
       Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User],
       :company_id => user.company_id
-    can :get_file, Company, :company_id => user.company_id
+    can :get_file, [Company, Printer], :company_id => user.company_id
     can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
     can :manage, UserMailer, :task => { :user => user }
     can :read, Flight, :claim => { :company_id => user.company_id }

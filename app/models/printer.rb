@@ -42,8 +42,10 @@ class Printer < ActiveRecord::Base
   extend SearchAndSort
 
   after_destroy do
-    templ_dir = Pathname.new(self.template.path).dirname
-    FileUtils.remove_dir(templ_dir, true) if File.exist?(templ_dir)
+    if self.template.path
+      templ_dir = Pathname.new(self.template.path).dirname
+      FileUtils.remove_dir(templ_dir, true) if File.exist?(templ_dir)
+    end
   end
 
   def prepare_template(fields, collections)

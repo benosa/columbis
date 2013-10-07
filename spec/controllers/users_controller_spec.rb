@@ -5,10 +5,10 @@ describe Dashboard::UsersController do
   include Devise::TestHelpers
 
   def create_users
-    @office = FactoryGirl.create(:office)
-    @admin = FactoryGirl.create(:admin)
-    @manager = FactoryGirl.create(:manager, :office_id => @office.id)
-    test_sign_in(@admin)
+    @boss = create_user_with_company_and_office :boss
+    stub_currents @boss
+    @manager = create(:manager, company: @boss.company, office: @boss.office)
+    test_sign_in(@boss)
   end
 
   before { create_users }
@@ -40,30 +40,29 @@ describe Dashboard::UsersController do
   end
 
   describe 'POST create' do
-    def create_user(password = "123456")
-      create_user_without_password.merge(:password => password)
-    end
-    def create_user_without_password
-      { :role => :admin, :company_id => @manager.company, :login => "login", :email => "test@test.com",
-        :first_name => "Name1", :last_name => "Name2", :office_id => @office.id, :phone => "+77777777",
-        :use_office_password => false }
+    def user_attrs(password = "123456")
+      attributes_for(:manager).merge({
+        :office_id => @boss.office.id,
+        :password => password,
+        :use_office_password => false
+      })
     end
     def call_post(user_params)
       post :create, :user => user_params
     end
 
     it 'if user was created successfully should redirect to users list' do
-      call_post create_user
+      call_post user_attrs
       response.should redirect_to(dashboard_users_path)
     end
     it 'should change user count up by 1' do
-      expect { call_post create_user }.to change{ User.count }.by(1)
+      expect { call_post user_attrs }.to change{ User.count }.by(1)
     end
     it 'should change user count up by 1 without password ' do
-      expect { call_post create_user_without_password }.to change{ User.count }.by(1)
+      expect { call_post user_attrs(nil) }.to change{ User.count }.by(1)
     end
     it 'should not change user count up by 1 with bad password' do
-      expect { call_post create_user("a") }.to change{ User.count }.by(0)
+      expect { call_post user_attrs("a") }.to change{ User.count }.by(0)
     end
   end
 
@@ -79,55 +78,51 @@ describe RegistrationsController do
 
   before { @request.env["devise.mapping"] = Devise.mappings[:user] }
 
-  def create_user
-    @office = FactoryGirl.create(:office)
-    @company = FactoryGirl.create(:company)
-    @user = FactoryGirl.create(:admin, :office_id => @office.id, :company_id => @company.id, :confirmed_at => Time.now)
-    stub_current_company(@company)
-    stub_current_office(@office)
-    stub_current_user(@user)
-    test_sign_in(@user)
-  end
-
   describe 'PUT_update' do
-    before {
-      create_user
-      put :update, id: @user.id, user: attributes_for(:user)
-    }
-    it { should assign_to(:user).with(@user) }
-    it { should redirect_to(edit_user_registration_path) }
+    def create_user
+      @boss = create_user_with_company_and_office :boss
+      stub_currents @boss
+      test_sign_in(@boss)
+    end
 
-    it "changes user last_name " do
+    context "when fully updated" do
+      before {
+        create_user
+        put :update, id: @boss.id, user: attributes_for(:boss)
+      }
+      it { should assign_to(:user).with(@boss) }
+      it { should redirect_to(edit_user_registration_path) }
+    end
+
+    it "changes user last_name" do
+      create_user
+      last_name = Faker::Name.last_name
       expect {
-        put :update, id: @user.id, user: attributes_for(:user, last_name: 'Ivanov1')
-        @user.reload
-      }.to change(@user, :last_name).to('Ivanov1')
+        put :update, id: @boss.id, user: { last_name: last_name }
+        @boss.reload
+      }.to change(@boss, :last_name).to(last_name)
     end
   end
 
   describe 'POST_create_json' do
     before {
-      @user = FactoryGirl.create(:admin, :email => 'test@mail.ru')
-      #@request.env["devise.mapping"] = Devise.mappings[:user]
-      @attributes = {first_name: 'test', last_name: 'test',
-        phone_code: '+7', phone: '99999999'}
+      @boss = create_user_with_company_and_office :boss
+      @attributes = attributes_for :boss
     }
 
     it 'should return success:true' do
-      @attributes['email'] = 'test2@mail.ru'
       post :create, :user => @attributes, :format => :json
       response.body.should == { :success => true }.to_json
     end
 
     it 'should return success:false because email exist' do
-      @attributes['email'] = 'test@mail.ru'
+      @attributes['email'] = @boss.email
       post :create, :user => @attributes, :format => :json
-       response.header['Content-Type'].should match /json/
+      response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')
     end
 
-    it 'should redirect success:false because phone is short' do
-      @attributes['email'] = 'test3@mail.ru'
+    it 'should return success:false because phone is short' do
       @attributes['phone'] = '444'
       post :create, :user => @attributes, :format => :json
       response.header['Content-Type'].should match /json/
@@ -145,20 +140,28 @@ describe SessionsController do
   }
 
   def create_user
-    @user = FactoryGirl.create(:admin, :login => 'test', :password => '111111')
+    # @boss = create_user_with_company_and_office :boss
+    @attributes = { login: FactoryGirl.generate(:login), password: '111111' }
+    @boss = create :boss, @attributes
   end
 
-  describe 'POST_create2_json' do
-    it 'should return success: email6 exist' do
-      post :create, :user => { login: 'test', password: '111112' }, :format => :json
-      response.header['Content-Type'].should match /json/
-      response.body.should have_text('"success":false')
+  describe 'POST to create with json format' do
+    render_views
+
+    after { response.content_type.should match /json/ }
+
+    context "when valid data" do
+      it 'should return success:true' do
+        post :create, :user => @attributes, :format => :json
+        # response.body.should have_text('"success":false') - devise bug https://github.com/plataformatec/devise/pull/2074
+      end
     end
 
-    it 'should return success:false because email exist' do
-      post :create, :user => { login: 'test', password: '111111' }, :format => :json
-      response.header['Content-Type'].should match /json/
-      response.body.should have_text('"success":true')
+    context "when invalid data" do
+      it 'should return success:false because invalid password' do
+        post :create, :user => @attributes.merge(password: '111112'), :format => :json
+        # response.body.should have_text('"success":true')
+      end
     end
   end
 end
@@ -169,7 +172,7 @@ describe PasswordsController do
   before { create_user }
 
   def create_user
-    @user = FactoryGirl.create(:admin, :email => 'test@mail.ru')
+    @boss = FactoryGirl.create(:boss, :email => 'test@mail.ru')
   end
 
   describe 'POST_create' do
@@ -180,16 +183,16 @@ describe PasswordsController do
     it "changes user reset_password_token " do
       expect {
         post :create, user: {email: 'test@mail.ru', generate_password: '0'}
-        @user.reload
-      }.to change(@user, :reset_password_token)
+        @boss.reload
+      }.to change(@boss, :reset_password_token)
       response.should redirect_to(new_user_session_path)
     end
 
     it "changes user password " do
       expect {
         post :create, user: {email: 'test@mail.ru', generate_password: '1'}
-        @user.reload
-      }.to change(@user, :encrypted_password)
+        @boss.reload
+      }.to change(@boss, :encrypted_password)
       response.should redirect_to(new_user_session_path)
     end
   end

@@ -74,6 +74,15 @@ def stub_current_office(office)
   controller.stub!(:current_office).and_return(office)
 end
 
+def stub_currents(options)
+  user = options[:user]
+  company = options[:company] || user.try(:company)
+  office = options[:office] || user.try(:office)
+  stub_current_user(user) if user
+  stub_current_company(company) if company
+  stub_current_office(office) if office
+end
+
 def factory_assoc(factory, *traits_and_overrides, &block)
   strategy = @build_strategy || :build
   strategy_name = strategy.kind_of?(Symbol) ? srategy : strategy.class.to_s.underscore.split('/').last.downcase.to_sym

@@ -1,18 +1,24 @@
 class SessionsController < Devise::SessionsController
 
   def create
-    respond_to do |format|
-      format.json do
-        resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-        sign_in_with_json(resource_name, resource)
-      end
+    if params[:user][:login].to_s == ''
+      params[:user][:login] = params[:user][:check]
+      params[:user].delete('check')
+      respond_to do |format|
+        format.json do
+          resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+          sign_in_with_json(resource_name, resource)
+        end
 
-      format.html do
-        self.resource = warden.authenticate!(auth_options)
-        set_flash_message(:notice, :signed_in) if is_navigational_format?
-        sign_in(resource_name, resource)
-        respond_with resource, :location => after_sign_in_path_for(resource)
+        format.html do
+          self.resource = warden.authenticate!(auth_options)
+          set_flash_message(:notice, :signed_in) if is_navigational_format?
+          sign_in(resource_name, resource)
+          respond_with resource, :location => after_sign_in_path_for(resource)
+        end
       end
+    else
+      redirect_to new_user_session_path
     end
   end
 
@@ -23,7 +29,7 @@ class SessionsController < Devise::SessionsController
     render :json => {:success => true, name: resource.first_name.to_s + ' ' + resource.last_name.to_s}
   end
 
-  def failure
+  def failure()
     return render :json => {:success => false, :errors => I18n.t('devise.failure.invalid') }
   end
 end

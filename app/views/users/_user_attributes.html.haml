@@ -1,8 +1,9 @@
 %p= f.label :subdomain
 = f.text_field :subdomain
 %span{:class => "for_domain"}= '.columbis.ru'
+= f.text_field :email, :class => 'main_email', :value => ""
 %p= f.label :email, :required => true
-= f.text_field :email
+= check_field(@user)
 %p= f.label :first_name, :required => true
 = f.text_field :first_name
 %p= f.label :last_name, :required => true

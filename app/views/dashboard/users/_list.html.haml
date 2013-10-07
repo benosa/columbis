@@ -34,7 +34,7 @@
         %td
           - if can? :update, user
             = link_to '', edit_dashboard_user_path(user), class: 'edit_row', title: t('edit'), id: "edit_user_#{user.id}"
-          - if can? :destroy, user
+          - if user != current_company.owner and can? :destroy, user
             = link_to '',  dashboard_user_path(user), method: :delete, confirm: t('are_you_sure'), class: 'delete', title: t('delete'), id: "destroy_user_#{user.id}"
           - if user != current_user and can?(:manage, user)
             = link_to '', dashboard_sign_in_as_path(user), class: 'power', title: t('.sign_in_as')

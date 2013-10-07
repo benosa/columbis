@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe CountriesController do
-  def create_testing_data
+  before(:all) do
   	@company_one = FactoryGirl.create(:company)
   	@company_two = FactoryGirl.create(:company)
   	3.times { FactoryGirl.create(:country, :company_id => @company_one.id) }
@@ -13,8 +13,6 @@ describe CountriesController do
   	@manager    = FactoryGirl.create(:manager, :company_id => @company_one.id)
   	@accountant = FactoryGirl.create(:accountant, :company_id => @company_one.id)
   end
-
-  before { create_testing_data }
 
   describe "GET index" do
 
@@ -269,7 +267,7 @@ describe CountriesController do
       @country = Country.where(:company_id => @boss.company_id).first
       put :update, id: @country.id, :country => { :name => "Russia" }
     end
-    
+
     it { should assign_to(:country).with(@country) }
     it { should redirect_to(countries_path)  }
 

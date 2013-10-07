@@ -34,6 +34,7 @@ class Ability
     can :manage, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
       Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
       Boss::Widget], :company_id => user.company_id
+    can :get_file, [Company, Printer], :company_id => user.company_id
     can :manage, Flight, :claim => { :company_id => user.company_id }
     can :manage, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
     can :manage, UserMailer, :task => { :user => user }
@@ -56,6 +57,7 @@ class Ability
     can :read, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
       Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User],
       :company_id => user.company_id
+    can :get_file, [Company, Printer], :company_id => user.company_id
     can :manage, [CurrencyCourse, Claim, Tourist, Payment], :company_id => user.company_id
     can :manage, UserMailer, :task => { :user => user }
     can :read, Flight, :claim => { :company_id => user.company_id }
@@ -73,6 +75,7 @@ class Ability
 
   def supervisor
     can :manage, Tourist, :company_id => user.company_id
+    can :get_file, Company, :company_id => user.company_id
     can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id
     can [:read, :scroll], Claim, :company_id => user.company_id
     can :update, Payment, :company_id => user.company_id, :approved => false
@@ -87,6 +90,7 @@ class Ability
 
   def manager
     can :manage, Tourist, :company_id => user.company_id
+    can :get_file, Company, :company_id => user.company_id
     can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id, :office_id => user.office_id, :user_id => user.id
     can [:create, :update, :lock, :unlock, :printer], Claim, :company_id => user.company_id, :office_id => user.office_id, :assistant_id => user.id
     can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id

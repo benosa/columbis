@@ -15,7 +15,7 @@ class Printer < ActiveRecord::Base
   scope :with_template_name, -> do
     country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
     scope = joins("LEFT JOIN countries ON countries.id = printers.country_id")
-      .select(["printers.id", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
+      .select(["printers.id", "printers.template", "#{translate_mode} AS mode", "printers.company_id","printers.country_id",
         "(CASE mode WHEN 'memo' THEN concat(countries.name, ' - ', template) ELSE template END) AS template_name"] +
         country_columns)
       .order('mode ASC, template_name ASC')
@@ -42,8 +42,10 @@ class Printer < ActiveRecord::Base
   extend SearchAndSort
 
   after_destroy do
-    templ_dir = Pathname.new(self.template.path).dirname
-    FileUtils.remove_dir(templ_dir, true) if File.exist?(templ_dir)
+    if self.template.path
+      templ_dir = Pathname.new(self.template.path).dirname
+      FileUtils.remove_dir(templ_dir, true) if File.exist?(templ_dir)
+    end
   end
 
   def prepare_template(fields, collections)

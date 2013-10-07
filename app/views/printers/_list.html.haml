@@ -16,7 +16,8 @@
           - else
             %p= printer.template_name
         %td.activity
-          = link_to '', template_path(printer.id), :class => 'download', :title => t('download')
+          - if printer.template.model[:template]
+            = link_to '', show_url(:only_path => true, :id => printer.id, :model => 'printer', :filename => printer.template.model[:template], :download => true), :class => 'download', :title => t('download')
           = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :title => t('edit')
           = link_to '', printer_path(printer.id), :class => 'delete', :title => t('delete'), :remote => true, :method => :delete, :confirm => I18n.t('printers.messages.confirm')
 

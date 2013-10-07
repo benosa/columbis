@@ -25,6 +25,8 @@ jQuery ->
     opts = $.extend(true, {}, defaults, options)
     $ajax = $.ajax(opts)
 
+  $.each($('input.image_upload'), (i, e) -> UploaderCheck.init($(e)))
+
   # after_task_update = ($task) ->
   #   $task.find('.popup_hover').popover('hide') # hide visible popover, otherwise it stays after replace
   #   $task.replaceWith(data)
@@ -87,7 +89,9 @@ jQuery ->
   review_show = (el)->
     $el = $(el)
     $form = $('#review_form_container .review_form').clone()
+    UploaderCheck.init($form.find('input.image_upload'))
     $form.find('.close_btn').on 'click', review_close
+    $form.find('.file input[type=file]').bind('change focus click', SITE.fileInputs)
     $el.popover
       html: true
       trigger: 'manual'
@@ -95,18 +99,86 @@ jQuery ->
       content: $form
       title: $form.data('title')
     $el.addClass('review-active').popover('show')
+    $('.popover.fade.bottom.in').attr("style", "top:100px; left:0px; display:block;")
+    $('.popover.fade.bottom.in').attr("class", $('.popover.fade.bottom.in').attr("class") + " review_popup")
 
   review_close = ->
     $(".review-active").removeClass('review-active').popover('destroy')
 
   # Write review
-  $('#write_review').on "click", (e)->
+  $('a.write_review').on "click", (e)->
     e.preventDefault()
-    unless $(this).hasClass('review-active')
-      review_show(this)
+    unless $(document.body).hasClass('review-active')
+      review_show(document.body)
     else
       review_close()
 
   # Close review
   $(document.body).on 'click', '.review_form .close_btn', (e)->
     review_close()
+
+UploaderCheck =
+  input: null
+  max_size: 5
+  file_size: null
+  message_box: null
+  file: null
+  name_error: false
+  size_error: false
+  extensions: ['jpg', 'jpeg', 'gif', 'png']
+
+  init: (element) ->
+    if !window.FileReader then return
+    this.message_box = element.parent().next()
+    if this.message_box == undefined then return
+    extensions = this.message_box.attr('data-extensions')
+    size = this.message_box.attr('data-size')
+    if extensions != undefined
+      this.extensions = extensions.split(',')
+    if size != undefined
+      this.max_size = parseFloat(size)
+    this.checker(element)
+    this.bind_checker(element)
+
+  check_size: ->
+    this.file_size = (this.file.size/1000/1000).toFixed(1)
+    if this.file_size > this.max_size
+      this.size_error = true
+
+  check_name: ->
+    if this.extensions[0] != 'true'
+      file_name = this.file.name.split('.')
+      file_name = file_name[file_name.length-1].toLowerCase()
+      this.name_error = !this.extensions.some((x) -> x == file_name)
+
+  bind_checker: (element) ->
+    element.on 'change', -> UploaderCheck.checker($(this))
+
+  check_errors: (element) ->
+    if this.size_error || this.name_error
+      if this.size_error
+        this.message_box.text(this.message_box.text() + "Слишком большой размер. ")
+      if this.name_error
+        this.message_box.text(this.message_box.text() + "Не верный формат файла. ")
+      # Add form because reset function don't work without form tag )))
+      element.wrap('<form>').closest('form').get(0).reset()
+      element.unwrap()
+    else
+      this.message_box.text(this.message_box.text() + "Файл имеет размер " + this.file_size + " МБ. ")
+
+  clear_before_check: ->
+    this.message_box.text("")
+    this.name_error = false
+    this.size_error = false
+
+  checker: (element) ->
+    this.input = element[0]
+    this.clear_before_check()
+    if (this.input != undefined) && (this.input.files != undefined) && (this.input.files.length != 0)
+      this.file = this.input.files[0]
+    else
+      this.file = null
+    if this.file != null
+      this.check_name()
+      this.check_size()
+      this.check_errors(element)

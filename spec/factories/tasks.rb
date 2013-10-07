@@ -1,10 +1,13 @@
 # -*- encoding : utf-8 -*-
+include ActionDispatch::TestProcess
+
 FactoryGirl.define do
 
   factory :task do
     association :user, factory: :admin
     body { Faker::Lorem.sentence }
     bug true
+    image { fixture_file_upload(Rails.root.join('spec', 'factories', 'files', 'normal_image.jpg'), "image/jpg") }
 
     factory :new_task do
       status 'new'

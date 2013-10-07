@@ -21,6 +21,7 @@
     %th.actions
       %span
         = t('actions')
-    %th.last_cols
+    %th
+    %th
     - @tasks.each do |t|
       = render :partial => 'task', :locals => { :task => t }

@@ -1,0 +1,6 @@
+ru:
+  uploaders:
+    choose_file: 'Выбрать файл'
+    choose_file_label: 'Загрузить другой файл'
+    uploader_size: "(не больше %{file_size}МБ)"
+    download: "Скачать существующий файл"

@@ -5,6 +5,20 @@ class TasksController < ApplicationController
 
   before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
+  def download
+    if params[:id]
+      @task = Task.find(params[:id])
+      if @task.image?
+        send_file @task.image.path, :filename => @task.image.file.identifier
+      else
+        redirect_to redirect_back
+      end
+    else
+      redirect_to redirect_back
+    end
+    #send_file @printer.template.path, :filename => @printer.template.file.identifier
+  end
+
   def index
     if search_or_sort?
       options = search_and_sort_options(
@@ -58,7 +72,7 @@ class TasksController < ApplicationController
 
   def create_review
     redirect_back unless current_user
-    @task = Task.new(body: params[:review], status: 'new')
+    @task = Task.new(body: params[:review], status: 'new', image: params[:image])
     @task.user = current_user
     if @task.save
       redirect_back notice: t('tasks.messages.review_created')

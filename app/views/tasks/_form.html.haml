@@ -21,10 +21,10 @@
           - if current_user.role == 'admin'
             %p= f.label :executer_id
             = f.select :executer_id, options_for_select(User.admins.map{|u| [ u.login , u.id ] }, task.executer_id), include_blank: true, class: 'wide'
-            
+
             %p= f.label :status
             = f.select :status, options_for_select(Task::STATUS.map{|s| [ t("status.#{s}") , s.to_sym ]}, task.status), include_blank: true, class: 'wide'
-            
+
             / %p= f.label :status
             / = f.text_field :status, class: 'wide'
 
@@ -34,6 +34,16 @@
             %p= f.label :comment
             .task_comment
               = f.text_area :comment, class: 'wide'
+            %p= f.label :image, "#{Task.human_attribute_name(:image)} #{t('uploaders.uploader_size', :file_size => CONFIG[:max_image_size])}"
+            %p.file
+              = f.file_field :image, :class => 'image_upload'
+              = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
+              = label_tag t('uploaders.choose_file_label')
+            %p.image_message{ :data => { :size => CONFIG[:max_image_size], :extensions => CONFIG[:image_formats] }, :style => "clear:left;" }
+            - if task.image?
+              = label_tag t('uploaders.download')
+              %br
+              = link_to task.image.model[:image], image_path(task.id), :title => t('uploaders.download')
 
   %fieldset.form_submit{ style: 'display: none; height: 0;' }
     = f.submit

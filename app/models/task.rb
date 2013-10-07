@@ -1,13 +1,16 @@
 # -*- encoding : utf-8 -*-
 class Task < ActiveRecord::Base
   STATUS = [ 'new','work','cancel','finish' ].freeze
-  attr_accessible :user_id, :body, :start_date, :end_date, :executer_id, :executer, :status, :bug, :comment
+  attr_accessible :user_id, :body, :start_date, :end_date, :executer_id, :executer, :status, :bug, :comment, :image
+
+  mount_uploader :image, ImageUploader
 
   belongs_to :user
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
   has_many :emails, class_name: 'UserMailer'
   validates :body, :presence => true
   validates :executer, :presence => true, :if => proc { |task| task.status != 'new' }
+  validates :image, :file_size => { :maximum => CONFIG[:max_image_size].megabytes.to_i }
 
   scope :order_bug, order('bug DESC')
   scope :order_created, order('created_at DESC')

@@ -1,6 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'file_size_validator'
-
 class Task < ActiveRecord::Base
   STATUS = [ 'new','work','cancel','finish' ].freeze
   attr_accessible :user_id, :body, :start_date, :end_date, :executer_id, :executer, :status, :bug, :comment, :image

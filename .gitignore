@@ -33,3 +33,4 @@ public/assets
 config/initializers/better_errors.rb
 coverage/
 config/certs/
+uploads/

@@ -5,15 +5,15 @@ describe "Tasks:", js: true do
   include ActionView::Helpers
   include TasksHelper
 
+  before(:all) do
+    @admin = create_user_with_company_and_office(:admin)
+    @boss = FactoryGirl.create(:boss, :company => @admin.company, :office => @admin.office)
+  end
+
   clean_once_with_sphinx do # database cleaning will excute only once after this block
-    before(:all) do
-      @admin = create_user_with_company_and_office(:admin)
-    end
+    let(:user) { @admin }
     before do
-      visit new_user_session_path
-      fill_in "user[login]", :with => @admin.login
-      fill_in "user[password]", :with => @admin.password
-      page.click_button 'user_session_submit'
+      login_as user
     end
 
     subject { page }
@@ -65,9 +65,13 @@ describe "Tasks:", js: true do
           within "#task-#{task.id}" do
             should have_content(truncate task.body, length: 80)
             should have_content(truncate task.comment, length: 80)
-            should have_content(task.user.login) if task.user
+            should have_content(task.user.full_name) if task.user
+            should have_content(task.user.company.name) if task.user && task.user.role != 'admin'
+            should have_content(task.user.email) if task.user
             should have_content(task.executer.login) if task.executer
+            should have_content(task.executer.full_name) if task.executer
             should have_content(I18n.t("status.#{task.status}"))
+            should have_content(I18n.l(task.created_at, format: :long)) if task.created_at
             should have_content(I18n.l(task.start_date, format: :long)) if task.start_date
             should have_content(I18n.l(task.end_date, format: :long)) if task.end_date
             has_field?("bug_#{task.id}").should be_true
@@ -188,6 +192,41 @@ describe "Tasks:", js: true do
             if task.body.index(@filter) or task.comment.try(:index, @filter)
               page.has_selector?("#task-#{task.id}").should be_true
             else
+              page.has_no_selector?("#task-#{task.id}").should be_true
+            end
+          end
+        end
+
+        context "when user boss" do
+          let(:user) { @boss }
+          let(:new_tasks) { create_list(:new_task, 2, :user => user, :executer => @admin) }
+
+          it "should contain only tasks with the search word" do
+            filter = new_tasks.first.body.split(/[\s,.']/).first # get first word from first task
+            fill_in('filter', with: filter) # trigger search by word
+            new_tasks.each do |task|
+              if task.body.index(filter) or task.comment.try(:index, filter)
+                page.has_selector?("#task-#{task.id}").should be_true
+              else
+                page.has_no_selector?("#task-#{task.id}").should be_true
+              end
+            end
+          end
+
+          it "should not contain task with the search word in invisible columns" do
+            filter = @admin.login
+            fill_in('filter', with: filter)
+            new_tasks.each do |task|
+              page.has_no_selector?("#task-#{task.id}").should be_true
+            end
+            filter = user.email
+            fill_in('filter', with: filter)
+            new_tasks.each do |task|
+              page.has_no_selector?("#task-#{task.id}").should be_true
+            end
+            filter = user.login
+            fill_in('filter', with: filter)
+            new_tasks.each do |task|
               page.has_no_selector?("#task-#{task.id}").should be_true
             end
           end

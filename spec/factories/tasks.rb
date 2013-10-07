@@ -5,6 +5,7 @@ FactoryGirl.define do
 
   factory :task do
     association :user, factory: :admin
+    company nil
     body { Faker::Lorem.sentence }
     bug true
     image { fixture_file_upload(Rails.root.join('spec', 'factories', 'files', 'normal_image.jpg'), "image/jpg") }

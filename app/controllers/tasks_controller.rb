@@ -20,18 +20,18 @@ class TasksController < ApplicationController
   end
 
   def index
-    if search_or_sort?
-      options = search_and_sort_options(
-        :defaults => { :order => :id, :sort_mode => :desc },
-        :sql_order => false
-      )
-      set_filters(options)
-      @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
-      @tasks = Task.sort_by_search_results(@tasks_collection)
-    else
-      @tasks_collection = Task.active.includes(:user).paginate(:page => params[:page], :per_page => per_page)
-      @tasks = @tasks_collection.all
-    end
+    @tasks =
+      if search_or_sort?
+        options = { :with => current_ability.attributes_for(:read, Task) }
+        options[:index] = 'to_no_admin' unless is_admin?
+        options = search_and_sort_options(options)
+        set_filters(options)
+        search_paginate(Task.search_and_sort(options).with_columns, options)
+        # @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
+        # Task.sort_by_search_results(@tasks_collection)
+      else
+        Task.accessible_by(current_ability).order("id ASC").active.with_columns.paginate(:page => params[:page], :per_page => per_page)
+      end
     render :partial => 'tasks' if request.xhr?
   end
 
@@ -45,6 +45,9 @@ class TasksController < ApplicationController
   def create
     # raise params.inspect
     @task = Task.new(params[:task])
+    unless is_admin?
+      @task.company = current_company
+    end
     @task.user = current_user
     @task.status = 'new' if params[:task][:status].blank?
     @task.body = nil if @task.body.empty?

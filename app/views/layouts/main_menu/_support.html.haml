@@ -1,7 +1,11 @@
+- if is_admin?
+  - name = t('.task_list')
+- else
+  - name = t('.reviews')
 %li{:class => params[:controller] == 'tasks' && 'active' }
-  %a{:href => can?(:read, Task) ? tasks_path : '#'}= t('.support')
+  = link_to t('.support'), tasks_path
   .rmenu_dropdown
     %ul
       %li.first_menu_stroke= link_to t('.write_review'), '#', class: 'write_review'
       %li.first_menu_stroke{:class => params[:controller] == 'tasks' && 'active' }
-        = link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'
+        = link_to name, tasks_path

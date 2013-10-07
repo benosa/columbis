@@ -55,6 +55,7 @@ ru:
           support: 'Техподдержка'
           write_review: 'Оставить отзыв'
           task_list: 'Список задач'
+          reviews: 'Отзывы'
       second_menu:
         view: 'Вид'
       management:

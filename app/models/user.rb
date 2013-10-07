@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  after_create do |user|
+    Mailer.user_was_created(self).deliver
+  end
+
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :fio, :sortable => true
     indexes :login, :role, :email, :sortable => true

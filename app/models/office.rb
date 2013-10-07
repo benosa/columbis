@@ -12,6 +12,10 @@ class Office < ActiveRecord::Base
 
   before_destroy :check_assignments
 
+  after_create do |user|
+    Mailer.office_was_created(self).deliver
+  end
+
   private
 
   def check_assignments

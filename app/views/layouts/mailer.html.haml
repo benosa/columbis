@@ -24,12 +24,13 @@
             - if @resource
               %tr{:style => "width:530px"}
                 %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
-                  - unless @not_hello
+                  - unless message.to == CONFIG[:support_email] # mail for user
                     - if @resource.first_last_name
                       %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_last_name}
-                  = yield
-                  - unless @not_hello
+                    = yield
                     %p Спасибо, что выбрали Columbis!
+                  - else # message for support
+                    = yield
       %tr{:align => "center", :width => "600"}
         %td
           %table{:cellpadding => "0", :cellspacing => "0", :width => "600"}

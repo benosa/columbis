@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919050844) do
+ActiveRecord::Schema.define(:version => 20130926091325) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(:version => 20130919050844) do
     t.datetime "updated_at",                     :null => false
     t.boolean  "delta",       :default => true
     t.text     "comment"
+    t.string   "image"
   end
 
   create_table "tourist_claims", :force => true do |t|
@@ -419,7 +420,6 @@ ActiveRecord::Schema.define(:version => 20130919050844) do
     t.integer  "user_id"
     t.text     "wishes"
     t.text     "actions"
-    t.text     "note"
     t.boolean  "special_offer",        :default => false
   end
 

@@ -31,14 +31,26 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
-  validates :subdomain, presence: true, subdomain: true,
-    length: { minimum: 3, maximum: 20 },
-    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
-    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
-  validates :logo, :file_size => { :maximum => CONFIG[:max_logo_size].megabytes.to_i }
+  validates_with SubdomainValidator
+  validates :subdomain, uniqueness: true, presence: true,
+    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
 
-  after_create do |user|
-    Mailer.company_was_created(self).deliver
+  extend SearchAndSort
+
+  define_index do
+    indexes :name, sortable: true
+    #indexes user(:login), as: :user, sortable: true
+  #  indexes executer(:login), as: :executer, sortable: true
+   # indexes body, comment, status, sortable: true
+
+  #  has :claims_count
+   # has :user_id
+  #  has :executer_id
+   # has :bug, type: :boolean
+   # has :created_at, :start_date, :end_date, type: :datetime
+   # has "CRC32(status)", :as => :status_crc32, type: :integer
+
+   # set_property :delta => true
   end
 
   def company_id

@@ -8,10 +8,5 @@
   %form.filter
     = render :partial => 'shared/search_field', :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
 
-    = label_tag :status, t('.status')
-    = select_tag :status, options_for_select(status_filter_options, 'active'), class: 'filter_select', id: 'status_filter_options', data: { param: 'status', filter: true }
-    = label_tag :type, t('.type')
-    = select_tag :type, options_for_select(type_filter_options, 'all'), class: 'filter_select', id: 'type_filter_options', data: { param: 'type', filter: true }
-
 .admin_companies
   = render "admin/companies"

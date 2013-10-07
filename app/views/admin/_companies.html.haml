@@ -1,30 +1,30 @@
 .current_container
   %table.reservations.tour_operators
     %th
-      = sort_link :created_at, t('tasks.num'), :default => :desc
+      = sort_link :created_at, t('admin.companies_info.created_at'), :default => :desc
     %th
-      = sort_link :name, t('activerecord.attributes.task.body')
+      = sort_link :name, t('admin.companies_info.name')
     %th
-      = sort_link :owner, t('activerecord.attributes.task.comment')
+      = sort_link :owner, t('admin.companies_info.owner')
     %th
-      = sort_link :email, t('activerecord.attributes.task.user')
+      = sort_link :email, t('admin.companies_info.email')
     %th
-      = sort_link :phone, t('activerecord.attributes.task.executer')
+      = sort_link :phone, t('admin.companies_info.phone')
     %th
-      = sort_link :subdomain, t('activerecord.attributes.task.status')
+      = sort_link :subdomain, t('admin.companies_info.subdomain')
     %th
-      = sort_link :offices_count, t('activerecord.attributes.task.start_date')
+      = sort_link :offices_count, t('admin.companies_info.offices_count')
     %th
-      = sort_link :users_count, t('activerecord.attributes.task.start_date')
+      = sort_link :users_count, t('admin.companies_info.users_count')
     %th
-      = sort_link :claims_count, t('activerecord.attributes.task.start_date')
+      = sort_link :claims_count, t('admin.companies_info.claims_count')
     %th
-      = sort_link :tourists_count, t('activerecord.attributes.task.start_date')
+      = sort_link :tourists_count, t('admin.companies_info.tourists_count')
     %th
-      = sort_link :tasks_date, t('activerecord.attributes.task.end_date')
+      = sort_link :tasks_count, t('admin.companies_info.tasks_count')
     %th.actions
       %span
         = t('actions')
     %th.last_cols
-    - @tasks.each do |t|
-      = render :partial => 'task', :locals => { :task => t }
+    - @companies_info.each do |c|
+      = render :partial => 'admin/company', :locals => { :company => c }

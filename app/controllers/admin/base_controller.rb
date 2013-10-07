@@ -10,14 +10,32 @@ module Admin
           :sql_order => false
         )
         set_filters(options)
-        @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
-        @tasks = Task.sort_by_search_results(@tasks_collection)
+        @companies_collection = search_paginate(Company.search_and_sort(options), options)
+        @companies_info = Company.sort_by_search_results(@companies_collection) #.search params[:filter]
       else
-         @companies_collection = Company.paginate(:page => params[:page], :per_page => per_page)
-         @companies_info =  @companies_collection.all
+        @companies_collection = Company.paginate(:page => params[:page], :per_page => per_page)
+        @companies_info =  @companies_collection.all
       end
-      #render :partial => 'tasks' if request.xhr?
-      render 'admin/index'
+      if request.xhr?
+        render :partial => 'admin/companies'
+      else
+        render 'admin/index'
+      end
+    end
+
+    def set_filters(options)
+      filter = {}
+    #  filter[:user_id] = params[:user_id] if params[:user_id].present?
+    #  if params[:status].present? and params[:status] != 'all'
+      #  filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
+     # end
+
+    #  if params[:type].present? and params[:type] != 'all'
+     #   filter[:bug] = params[:type] == 'bug'
+     # end
+
+      options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
+      options
     end
   end
 end

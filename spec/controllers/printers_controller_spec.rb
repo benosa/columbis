@@ -3,11 +3,11 @@ require 'spec_helper'
 describe PrintersController do
   before(:all) do
     @admin = FactoryGirl.create(:admin)
-    @act = FactoryGirl.create(:act)
-    @warranty = FactoryGirl.create(:warranty)
-    @permit = FactoryGirl.create(:permit)
-    @memo = FactoryGirl.create(:memo)
-    @contract = FactoryGirl.create(:contract)
+    @act = FactoryGirl.create(:act, :company => @admin.company)
+    @warranty = FactoryGirl.create(:warranty, :company => @admin.company)
+    @permit = FactoryGirl.create(:permit, :company => @admin.company)
+    @memo = FactoryGirl.create(:memo, :company => @admin.company)
+    @contract = FactoryGirl.create(:contract, :company => @admin.company)
   end
 
   before { test_sign_in(@admin) }

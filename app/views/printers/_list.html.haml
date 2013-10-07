@@ -11,7 +11,10 @@
         %td{:style => "width: 100px"}
           %p= printer.mode
         %td
-          %p= printer.template_name
+          - if printer.template_name.blank?
+            %p= I18n.t('.printers.default')
+          - else
+            %p= printer.template_name
         %td.activity
           = link_to '', template_path(printer.id), :class => 'download', :title => t('download')
           = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :title => t('edit')

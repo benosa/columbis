@@ -8,7 +8,19 @@ class PrintersController < ApplicationController
       if @printer.template?
         send_file @printer.template.path, :filename => @printer.template.file.identifier
       else
-        redirect_to printers_path
+        if @printer.mode == "memo"
+          path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo_#{@printer.country.name}.html"
+          unless File.exist?(path)
+            path = Rails.root.to_s + "/app/views/printers/default_forms/ru/memo.html"
+          end
+        else
+          path = Rails.root.to_s + "/app/views/printers/default_forms/ru/#{@printer.mode}.html"
+        end
+        unless File.exist?(path)
+          redirect_to printers_path
+        else
+          send_file path, :filename => (I18n.t('.printers.default') + '.html')
+        end
       end
     else
       redirect_to printers_path

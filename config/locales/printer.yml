@@ -11,6 +11,7 @@ ru:
         template: 'Шаблон'
         country_id: 'Страна'
   printers:
+    default: 'По умолчанию'
     index:
       title: 'Печатные формы'
       mode_filter: 'По типу документа'

@@ -25,6 +25,8 @@
         - if @printer.id != nil
           = label_tag t('.download')
           %br
-          = link_to @printer.template.model[:template], template_path(@printer.id), :title => t('.download')
-        %div{style: "clear:left;"}
-          %br
+          - if @printer.template.blank?
+            - name = I18n.t('.printers.default')
+          - else
+            - name = @printer.template.model[:template]
+          = link_to name, template_path(@printer.id), :title => t('.download')

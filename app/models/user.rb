@@ -190,7 +190,7 @@ class User < ActiveRecord::Base
   end
 
   def create_company
-    if subdomain != nil && company_id == nil && confirmed_at_changed? && changes['confirmed_at'][0] == nil
+    if !subdomain.nil? &&  !id.nil? && company.nil? && confirmed_at_changed? && changes['confirmed_at'][0].nil?
       company = Company.new(:subdomain => subdomain)
       company.owner = self
       company.save(validate: false)

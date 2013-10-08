@@ -20,6 +20,7 @@ Tourism::Application.routes.draw do
   match 'get_currency_course' => 'application#get_currency_course'
   match 'current_timestamp' => "application#current_timestamp"
   get "/uploads/:model/:id/:filename" => 'uploads#get_file', :as => 'show'
+  get "/uploads/:company_id/*file" => 'uploads#show', :as => 'file'
 
   resources :airlines
   resources :currency_courses

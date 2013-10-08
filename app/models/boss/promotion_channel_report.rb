@@ -6,14 +6,15 @@ module Boss
     def initialize(attributes = nil, options = {})
       super
 
-      @intervals = [ I18n.t('intervals.channels.default'),
-                  I18n.t('intervals.channels.internet'),
-                  I18n.t('intervals.channels.recommendations'),
-                  I18n.t('intervals.channels.client'),
-                  I18n.t('intervals.channels.tv'),
-                  I18n.t('intervals.channels.magazines'),
-                  I18n.t('intervals.channels.signboard')
-                  ]
+      @intervals = [
+        I18n.t('intervals.channels.default'),
+        I18n.t('intervals.channels.internet'),
+        I18n.t('intervals.channels.recommendations'),
+        I18n.t('intervals.channels.client'),
+        I18n.t('intervals.channels.tv'),
+        I18n.t('intervals.channels.magazines'),
+        I18n.t('intervals.channels.signboard')
+      ]
     end
 
     def interval_field(column)
@@ -98,6 +99,7 @@ module Boss
           )
         .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
         .where(claims[:canceled].eq(false))
+        .where(claims[:company_id].eq(company.id))
         .where(claims[:excluded_from_profit].eq(false))
 
       end

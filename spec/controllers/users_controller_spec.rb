@@ -73,6 +73,11 @@ describe Dashboard::UsersController do
   end
 end
 
+def email_to_check(attrs)
+  attrs[:check] = attrs.delete(:email)
+  attrs
+end
+
 describe RegistrationsController do
   include Devise::TestHelpers
 
@@ -110,13 +115,13 @@ describe RegistrationsController do
     }
     it 'should create user' do
       expect {
-        post :create, :user => attributes_for(:user)
+        post :create, :user => email_to_check(attributes_for(:user))
       }.to change{ User.count }.by(+1)
     end
 
     it 'should not create user - duplicate email' do
       expect {
-        post :create, :user => attributes_for(:user, email: @user.email)
+        post :create, :user => email_to_check(attributes_for(:user, email: @user.email))
       }.not_to change{ User.count }
     end
   end
@@ -128,20 +133,20 @@ describe RegistrationsController do
     }
 
     it 'should return success:true' do
-      post :create, :user => @attributes, :format => :json
+      post :create, :user => email_to_check(@attributes), :format => :json
       response.body.should == { :success => true }.to_json
     end
 
     it 'should return success:false because email exist' do
       @attributes['email'] = @boss.email
-      post :create, :user => @attributes, :format => :json
+      post :create, :user => email_to_check(@attributes), :format => :json
       response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')
     end
 
     it 'should return success:false because phone is short' do
       @attributes['phone'] = '444'
-      post :create, :user => @attributes, :format => :json
+      post :create, :user => email_to_check(@attributes), :format => :json
       response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')
     end
@@ -158,8 +163,9 @@ describe SessionsController do
 
   def create_user
     # @boss = create_user_with_company_and_office :boss
-    @attributes = { login: FactoryGirl.generate(:login), password: '111111' }
-    @boss = create :boss, @attributes
+    login, password = FactoryGirl.generate(:login), '111111'
+    @attributes = { check: login, password: password }
+    @boss = create :boss, login: login, password: password
   end
 
   describe 'POST to create with json format' do
@@ -199,7 +205,7 @@ describe PasswordsController do
 
     it "changes user reset_password_token " do
       expect {
-        post :create, user: {email: 'test@mail.ru', generate_password: '0'}
+        post :create, user: email_to_check({email: 'test@mail.ru', generate_password: '0'})
         @boss.reload
       }.to change(@boss, :reset_password_token)
       response.should redirect_to(new_user_session_path)
@@ -207,7 +213,7 @@ describe PasswordsController do
 
     it "changes user password " do
       expect {
-        post :create, user: {email: 'test@mail.ru', generate_password: '1'}
+        post :create, user: email_to_check({email: 'test@mail.ru', generate_password: '1'})
         @boss.reload
       }.to change(@boss, :encrypted_password)
       response.should redirect_to(new_user_session_path)

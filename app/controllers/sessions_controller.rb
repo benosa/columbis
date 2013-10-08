@@ -1,7 +1,7 @@
 class SessionsController < Devise::SessionsController
 
   def create
-    if params[:user][:login].to_s == ''
+    if params[:user] && params[:user][:login].to_s == ''
       params[:user][:login] = params[:user][:check]
       params[:user].delete('check')
       respond_to do |format|

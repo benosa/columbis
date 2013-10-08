@@ -77,7 +77,6 @@ module Macros
     page.save_screenshot Rails.root.join("tmp/capybara/screenshot#{@screenshot_count += 1}.png"), full: true
   end
 
-
   module ClassMethods
 
     def clean(options = {}, &block)

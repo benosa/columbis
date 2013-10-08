@@ -25,7 +25,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    if params[:user][:email].to_s == ''
+    if params[:user] && params[:user][:email].to_s == ''
       params[:user][:email] = params[:user][:check]
       params[:user].delete('check')
       build_resource

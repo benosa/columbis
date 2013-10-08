@@ -37,5 +37,5 @@
       = link_to 'Переписка', emails_task_path(task)
       %p
         = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"
-      - if task.image?
-        = link_to '', image_path(task.id), :class => "uploader", :title => t('uploaders.download')
+        - if task.image?
+          = link_to '', "#{task.image.url}?download=1", :class => "uploader", :title => t('uploaders.download')

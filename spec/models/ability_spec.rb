@@ -36,8 +36,6 @@ describe "Abilities for" do
       let(:user){ @admin }
       it{ should not_be_able_to([:create, :new, :index], Company) }
       it{ should     be_able_to(:manage, resource) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, unresource)}
     end
 
@@ -45,8 +43,6 @@ describe "Abilities for" do
       let(:user){ @boss }
       it{ should not_be_able_to([:create, :new, :index], Company) }
       it{ should     be_able_to(:manage, resource) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, unresource)}
     end
 
@@ -54,8 +50,6 @@ describe "Abilities for" do
       let(:user){ @accountant }
       it{ should not_be_able_to([:create, :new, :index], Company) }
       it{ should     be_able_to(:read, resource)}
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to([:edit, :destroy, :update], resource)}
       it{ should not_be_able_to(:manage, unresource)}
     end
@@ -63,8 +57,6 @@ describe "Abilities for" do
     context "when user is supervisor" do
       let(:user){ @supervisor }
       it{ should not_be_able_to([:create, :new, :index], Company) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, resource)}
       it{ should not_be_able_to(:manage, unresource)}
     end
@@ -72,8 +64,6 @@ describe "Abilities for" do
     context "when user is manager" do
       let(:user){ @manager }
       it{ should not_be_able_to([:create, :new, :index], Company) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, resource)}
       it{ should not_be_able_to(:manage, unresource)}
     end
@@ -399,8 +389,6 @@ describe "Abilities for" do
       it{ should     be_able_to(:create, Printer) }
       it{ should     be_able_to(:new, Printer) }
       it{ should     be_able_to(:download, Printer) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should     be_able_to(:get_file, unresource) }
       it{ should     be_able_to(:manage, resource) }
       it{ should     be_able_to(:manage, unresource) }
     end
@@ -412,8 +400,6 @@ describe "Abilities for" do
       it{ should     be_able_to(:new, Printer) }
       it{ should     be_able_to(:download, Printer) }
       it{ should     be_able_to(:manage, resource) }
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, unresource)}
     end
 
@@ -422,16 +408,12 @@ describe "Abilities for" do
       it{ should not_be_able_to([:create, :new, :index, :download], Printer) }
       it{ should     be_able_to(:read, resource)}
       it{ should not_be_able_to([:edit, :destroy, :update], resource)}
-      it{ should     be_able_to(:get_file, resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, unresource)}
     end
 
     context "when user is supervisor" do
       let(:user){ @supervisor }
       it{ should not_be_able_to([:create, :new, :index, :download], Printer) }
-      it{ should not_be_able_to([:get_file], resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, resource)}
       it{ should not_be_able_to(:manage, unresource)}
     end
@@ -439,8 +421,6 @@ describe "Abilities for" do
     context "when user is manager" do
       let(:user){ @manager }
       it{ should not_be_able_to([:create, :new, :index, :download], Printer) }
-      it{ should not_be_able_to([:get_file], resource) }
-      it{ should not_be_able_to([:get_file], unresource) }
       it{ should not_be_able_to(:manage, resource)}
       it{ should not_be_able_to(:manage, unresource)}
     end

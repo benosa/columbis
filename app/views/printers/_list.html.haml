@@ -11,14 +11,15 @@
         %td{:style => "width: 100px"}
           %p= printer.mode
         %td
-          - if printer.template_name.blank?
-            %p= I18n.t('.printers.default')
-          - else
-            %p= printer.template_name
-        %td.activity
+          - name = ""
           - if printer.template.model[:template]
-            -# link_to '', show_url(:only_path => true, :id => printer.id, :model => 'printer', :filename => printer.template.model[:template], :download => true), :class => 'download', :title => t('download')
-            = link_to '', "#{printer.template.url}?download=1", :class => 'download', :title => t('download')
+            - name = printer.template_name
+          - else
+            - name = printer.country.name + ' - ' if printer.country
+            - name += printer.mode + "_" + I18n.t('.printers.default')
+          %p= name
+        %td.activity
+          = link_to '', create_printer_url(printer, printer.mode_type), :class => 'download', :title => t('download')
           = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :title => t('edit')
           = link_to '', printer_path(printer.id), :class => 'delete', :title => t('delete'), :remote => true, :method => :delete, :confirm => I18n.t('printers.messages.confirm')
 

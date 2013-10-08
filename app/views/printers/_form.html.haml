@@ -29,4 +29,4 @@
             - name = I18n.t('.printers.default')
           - else
             - name = @printer.template.model[:template]
-          = link_to name, show_url(:only_path => true, :id => @printer.id, :model => 'printer', :filename => @printer.template.model[:template], :download => true), :title => t('.download')
+          = link_to name, create_printer_url(@printer, @printer.mode), :title => t('.download')

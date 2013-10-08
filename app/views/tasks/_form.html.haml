@@ -43,7 +43,7 @@
             - if task.image?
               = label_tag t('uploaders.download')
               %br
-              = link_to task.image.model[:image], image_path(task.id), :title => t('uploaders.download')
+              = link_to task.image.model[:image], "#{task.image.url}?download=1", :title => t('uploaders.download')
 
   %fieldset.form_submit{ style: 'display: none; height: 0;' }
     = f.submit

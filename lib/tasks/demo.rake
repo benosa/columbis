@@ -26,7 +26,7 @@ namespace :demo do
     # Create demo company
     @company = Company.new(name: 'demo', email: 'demo@columbis.ru', subdomain: 'demo')
     @company.id = @demo_comp_id
-    @company.save
+    @company.save(validate: false)
     puts 'Demo company is created'
 
     # Offices

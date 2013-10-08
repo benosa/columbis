@@ -65,7 +65,7 @@ namespace :deploy do
   end
 
   task :uploads do
-    run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
+    run "ln -nfs #{shared_path}/uploads #{release_path}/uploads"
   end
 
   desc "Link up Sphinx's indexes"

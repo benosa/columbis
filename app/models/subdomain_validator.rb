@@ -4,7 +4,7 @@ class SubdomainValidator < ActiveModel::EachValidator
       reserved = false
       CONFIG[:reserved_subdomains].each do |str|
         if str.first == '/' && str.last == '/'
-          reserved = Regexp.new(str[1..-2], Regexp::IGNORECASE) =~ value
+          reserved = Regexp.new("^#{str[1..-2]}$", Regexp::IGNORECASE) =~ value
         else
           reserved = str == value
         end

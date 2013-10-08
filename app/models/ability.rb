@@ -2,12 +2,13 @@
 class Ability
   include CanCan::Ability
 
-  attr_reader :user
+  attr_reader :user, :company
 
   def initialize(user)
     @user = user || User.new
-    role = @user.role.to_s
+    @company = user.company || Company.new
 
+    role = @user.role.to_s
     if self.respond_to?(role)
       self.send(role)
     else
@@ -15,9 +16,9 @@ class Ability
     end
 
     # Restrict abilities for demo company and user
-    if user && !user.is_admin?
-      cannot([:update, :destroy], Company) { |company| company.subdomain == 'demo' }
-      cannot([:update, :destroy], User) { |user| user.login == 'demo' }
+    if user && !user.is_admin? && company.subdomain == 'demo'
+      cannot [:update, :destroy], Company
+      cannot([:update, :destroy], User) { |u| u.login == 'demo' }
     end
   end
 
@@ -25,13 +26,13 @@ class Ability
     can :manage, :all
     cannot :manage, Company
     can :manage, Company, :id => user.company_id
-    if user.company
-      cannot [:new, :create], Company
-    end
+    cannot [:new, :create], Company if company
   end
 
   def boss
-    can :manage, [Company, Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
+    can :manage, Company, :id => user.company_id
+    cannot [:new, :create], Company if company
+    can :manage, [Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
       Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
       Boss::Widget], :company_id => user.company_id
     can :get_file, [Company, Printer], :company_id => user.company_id
@@ -48,9 +49,6 @@ class Ability
     can :users_sign_in_as, :user
     can :offline_version, User
     can :switch_view, User
-    if user.company
-      cannot [:new, :create], Company
-    end
   end
 
   def accountant

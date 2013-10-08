@@ -31,11 +31,7 @@ describe "Abilities for" do
   describe "companies" do
     let(:resource) { company }
     let(:unresource) { another_company }
-    context "should create when user without company" do
-      let(:user){ FactoryGirl.create(:boss_without_company) }
-      it{ should     be_able_to(:create, Company) }
-      it{ should     be_able_to(:new, Company) }
-    end
+
     context "when user is admin" do
       let(:user){ @admin }
       it{ should not_be_able_to([:create, :new, :index], Company) }

@@ -108,4 +108,5 @@ end
 
 group :production do
   gem 'exception_notification', '~> 3.0.0', :group => %w(staging production)
+  gem 'newrelic_rpm'
 end

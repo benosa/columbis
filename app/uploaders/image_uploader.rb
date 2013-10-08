@@ -17,7 +17,8 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.company.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    company_dir = model.company ? model.company.id : 'default'
+    "uploads/#{company_dir}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
   def cache_dir
     "tmp/cache/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"

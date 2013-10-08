@@ -6,7 +6,7 @@ class Ability
 
   def initialize(user)
     @user = user || User.new
-    @company = user.company || Company.new
+    @company = @user.company || Company.new
 
     role = @user.role.to_s
     if self.respond_to?(role)
@@ -15,11 +15,7 @@ class Ability
       can [:update, :destroy], User, :id => @user.id
     end
 
-    # Restrict abilities for demo company and user
-    if user && !user.is_admin? && company.subdomain == 'demo'
-      cannot [:update, :destroy], Company
-      cannot([:update, :destroy], User) { |u| u.login == 'demo' }
-    end
+    demo_restriction
   end
 
   def admin
@@ -97,6 +93,14 @@ class Ability
     can :offline_version, User
     can :create, Task
     can :read, Task, :user_id => user.id
+  end
+
+  def demo_restriction
+    # Restrict abilities for demo company and user
+    if user && !user.is_admin? && company.subdomain == 'demo'
+      cannot [:update, :destroy], Company
+      cannot([:update, :destroy], User) { |u| u.login == 'demo' }
+    end
   end
 
 end

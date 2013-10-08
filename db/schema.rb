@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131002114813) do
+ActiveRecord::Schema.define(:version => 20131004065850) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -173,6 +173,11 @@ ActiveRecord::Schema.define(:version => 20131002114813) do
     t.string   "director"
     t.string   "director_genitive"
     t.integer  "owner_id"
+    t.integer  "offices_count"
+    t.integer  "users_count"
+    t.integer  "claims_count"
+    t.integer  "tourists_count"
+    t.integer  "tasks_count"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -392,6 +397,8 @@ ActiveRecord::Schema.define(:version => 20131002114813) do
     t.datetime "updated_at",                     :null => false
     t.boolean  "delta",       :default => true
     t.text     "comment"
+    t.string   "image"
+    t.integer  "company_id"
   end
 
   create_table "tourist_claims", :force => true do |t|

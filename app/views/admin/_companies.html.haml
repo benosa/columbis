@@ -22,9 +22,5 @@
       = sort_link :tourists_count, t('admin.companies_info.tourists_count')
     %th
       = sort_link :tasks_count, t('admin.companies_info.tasks_count')
-    %th.actions
-      %span
-        = t('actions')
-    %th.last_cols
     - @companies_info.each do |c|
       = render :partial => 'admin/company', :locals => { :company => c }

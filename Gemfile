@@ -71,7 +71,7 @@ group :development do
   # gem 'rack-mini-profiler', '~> 0.1.23'
   gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing for state_machine
   gem 'pry'
-  gem 'pry-debugger'
+ # gem 'pry-debugger'
 
   # use thin for ssl support in development
   # example: thin start -p 3001 --ssl --ssl-verify --ssl-key-file ~/.ssl/server.key --ssl-cert-file ~/.ssl/server.crt

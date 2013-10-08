@@ -65,6 +65,45 @@ describe "Companies:", js: true do
   end
 end
 
+describe "company_list", js: true do
+  include ActionView::Helpers
+  clean_once do
+    before(:all) do
+      @company = create(:company, subdomain: 'domain')
+      @company2 = create(:company, subdomain: 'domain2')
+      @office = create(:office, company: @company)
+      @office2 = create(:office, company: @company2)
+      @admin = create(:admin, company: @company, office: @office)
+      @manager = create(:manager, company: @company, office: @office)
+      @manager2 = create(:manager, company: @company2, office: @office2)
+      @tourist = create(:tourist, company: @company)
+      @tourist2 = create(:tourist, company: @company2)
+      @claim = create_list(:claim, 2, company: @company, user: @manager, office: @office, applicant: @tourist)
+      @claim2 = create_list(:claim, 3, company: @company2, user: @manager2, office: @office2, applicant: @tourist2)
+      @task = create(:task, company: @company, user: @manager)
+      @task2 = create(:task, company: @company2, user: @manager2)
+      login_as(@admin)
+    end
+
+    before {
+      login_as(@admin)
+    }
+    subject { page }
+
+    describe "create_company" do
+      before do
+        visit admin_index_path
+      end
+
+      it "should contain add button, filter by status and bug, links and data for each task" do
+        save_screenshot
+      end
+
+
+    end
+  end
+end
+
 describe "Company create:", js: true do
   include ActionView::Helpers
   clean_once do

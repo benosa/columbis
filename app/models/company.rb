@@ -31,26 +31,20 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
-  validates_with SubdomainValidator
-  validates :subdomain, uniqueness: true, presence: true,
+
+  validates :subdomain, uniqueness: true, presence: true, subdomain: true,
     format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
 
   extend SearchAndSort
 
   define_index do
-    indexes :name, sortable: true
-    #indexes user(:login), as: :user, sortable: true
-  #  indexes executer(:login), as: :executer, sortable: true
-   # indexes body, comment, status, sortable: true
+    indexes subdomain, :name, sortable: true
+    indexes owner(:phone), as: :phone, sortable: true
+    indexes owner(:email), as: :email, sortable: true
+    indexes [owner.last_name, owner.first_name, owner.middle_name], :as => :owner, :sortable => true
 
-  #  has :claims_count
-   # has :user_id
-  #  has :executer_id
-   # has :bug, type: :boolean
-   # has :created_at, :start_date, :end_date, type: :datetime
-   # has "CRC32(status)", :as => :status_crc32, type: :integer
-
-   # set_property :delta => true
+    has :offices_count, :users_count, :claims_count, :tourists_count, :tasks_count
+    has :created_at, type: :datetime
   end
 
   def company_id

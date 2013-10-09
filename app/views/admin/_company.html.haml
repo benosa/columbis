@@ -1,10 +1,11 @@
 %tr{id: "company-#{company.id}", class: "company", data: {id: company.id}}
   %td
-    = company.created_at
+    = l(company.created_at, format: :long)
   %td
     = company.name
   %td
-    = company.owner.first_name if company.owner
+    - if company.owner
+      #{company.owner.last_name} #{company.owner.first_name} #{company.owner.middle_name}
   %td
     - if company.owner
       = company.owner.email

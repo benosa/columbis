@@ -67,39 +67,66 @@ end
 
 describe "company_list", js: true do
   include ActionView::Helpers
-  clean_once do
+  clean_once_with_sphinx do
     before(:all) do
-      @company = create(:company, subdomain: 'domain')
-      @company2 = create(:company, subdomain: 'domain2')
+      @company = create(:company)
+      @company2 = create(:company)
+      @company.owner = create(:boss, company: @company)
+      @company2.owner = create(:boss, company: @company2)
+      @company.save
+      @company2.save
       @office = create(:office, company: @company)
-      @office2 = create(:office, company: @company2)
       @admin = create(:admin, company: @company, office: @office)
       @manager = create(:manager, company: @company, office: @office)
-      @manager2 = create(:manager, company: @company2, office: @office2)
-      @tourist = create(:tourist, company: @company)
-      @tourist2 = create(:tourist, company: @company2)
-      @claim = create_list(:claim, 2, company: @company, user: @manager, office: @office, applicant: @tourist)
-      @claim2 = create_list(:claim, 3, company: @company2, user: @manager2, office: @office2, applicant: @tourist2)
-      @task = create(:task, company: @company, user: @manager)
-      @task2 = create(:task, company: @company2, user: @manager2)
-      login_as(@admin)
+      @tourists = create_list(:tourist, 6, company: @company)
+      @claims = create_list(:claim, 5, company: @company, user: @manager, office: @office, applicant: @tourists[0])
+      @tasks = create_list(:task, 4, company: @company, user: @manager)
+      ThinkingSphinx::Test.index
     end
 
-    before {
-      login_as(@admin)
-    }
     subject { page }
 
-    describe "create_company" do
+    describe "companies list show" do
       before do
+        login_as(@admin)
         visit admin_index_path
       end
 
-      it "should contain add button, filter by status and bug, links and data for each task" do
-        save_screenshot
+      it "should contain filter and company field values" do
+        should have_field("filter")
+        should have_selector('td', :text => l(@company.created_at, format: :long))
+        should have_selector('td', :text => @company.name)
+        should have_selector('td', :text => "#{@company.owner.last_name} #{@company.owner.first_name} #{@company.owner.middle_name}")
+        should have_selector('td', :text => @company.owner.email)
+        should have_selector('td', :text => @company.owner.phone)
+        should have_selector('td', :text => @company.subdomain)
+        should have_selector('td', :text => @company.offices_count)
+        should have_selector('td', :text => @company.users_count)
+        should have_selector('td', :text => @company.claims_count)
+        should have_selector('td', :text => @company.tourists_count)
+        should have_selector('td', :text => @company.tasks_count)
+
+        should have_selector('td', :text => @company2.subdomain)
       end
 
+      it "should find @company" do
+        should have_field("filter")
+        fill_in('filter', with: @company.subdomain)
+        should have_selector('td', :text => @company.subdomain)
 
+        should_not have_selector('td', :text => @company2.subdomain)
+      end
+    end
+
+    describe "no_access_to_company_list" do
+      before do
+        login_as(@manager)
+        visit admin_index_path
+      end
+
+      it "should contain filter and company field values" do
+        should have_text(I18n.t('unauthorized.default'))
+      end
     end
   end
 end

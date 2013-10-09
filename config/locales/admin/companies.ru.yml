@@ -1,6 +1,7 @@
 ru:
   admin:
     companies_info:
+      title: 'Информация о компаниях'
       created_at: 'Дата регистрации'
       name: 'Компания'
       owner: 'Пользователь'

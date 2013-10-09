@@ -1,7 +1,7 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel' }
 
-- title t('.tasks')
+- title t('admin.companies_info.title')
 
 - content_for :top do
   %form.filter
@@ -26,3 +26,4 @@
         Заявок
       %td
         #{@claims_count}
+= render partial: 'shared/pagination', locals: { collection: @companies_collection }

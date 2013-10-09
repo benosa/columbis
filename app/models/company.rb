@@ -31,9 +31,15 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
+  validates :subdomain, presence: true, subdomain: true,
+    length: { minimum: 3, maximum: 20 },
+    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
+    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
+  validates :logo, :file_size => { :maximum => CONFIG[:max_logo_size].megabytes.to_i }
 
-  validates :subdomain, uniqueness: true, presence: true, subdomain: true,
-    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
+  after_create do |company|
+    Mailer.company_was_created(self).deliver
+  end
 
   extend SearchAndSort
 

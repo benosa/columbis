@@ -4,17 +4,14 @@ class Mailer < ActionMailer::Base
   include Devise::Mailers::Helpers
   layout 'mailer'
   default from: CONFIG[:support_email]
+
   before_filter :set_attach
+  after_filter :control_delivery
 
   def registrations_info(user, password)
     @resource = user
     @password = password
     mail(to: user.email, subject: I18n.t('registration_data'))
-  end
-
-  def office_was_created(office)
-    @resource = office
-    mail(to: CONFIG[:support_email], subject: I18n.t('office_was_created'))
   end
 
   def company_was_created(company)
@@ -77,5 +74,12 @@ class Mailer < ActionMailer::Base
   #     end
   #   end
   # end
+
+  private
+
+    def control_delivery
+      mail.perform_deliveries = false if mail.to.first == CONFIG[:support_email] && !CONFIG[:support_delivery]
+      true
+    end
 
 end

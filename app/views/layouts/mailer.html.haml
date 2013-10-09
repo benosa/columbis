@@ -24,8 +24,7 @@
             - if @resource
               %tr{:style => "width:530px"}
                 %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
-                  - Rails.logger.debug "message: #{message.inspect}"
-                  - unless message.to == CONFIG[:support_email] # mail for user
+                  - unless message.to.first == CONFIG[:support_email] # mail for user
                     - if @resource.kind_of?(User) && @resource.first_last_name
                       %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_last_name}
                     = yield

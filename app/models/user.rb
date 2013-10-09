@@ -35,18 +35,10 @@ class User < ActiveRecord::Base
     uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') },
     :if => proc{ self.company.nil? }
 
-  before_save do |user|
-    for attribute in [:last_name, :first_name, :middle_name]
-      user.send "#{attribute}=", user.send(attribute).try(:strip)
-    end
-  end
-
-  before_save :create_company
+  before_save :check_name_attributes
   before_save :check_owner_boss
-
-  after_create do |user|
-    Mailer.user_was_created(self).deliver
-  end
+  after_save :send_registration_info_to_support, :if => :just_confirmed?
+  after_save :create_company, :if => :just_confirmed?
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :fio, :sortable => true
@@ -189,21 +181,12 @@ class User < ActiveRecord::Base
     self.phone = phone_code.to_s + phone.to_s if phone_code
   end
 
-  def create_company
-    if !subdomain.nil? &&  !id.nil? && company.nil? && confirmed_at_changed? && changes['confirmed_at'][0].nil?
-      company = Company.new(:subdomain => subdomain)
-      company.owner = self
-      company.save(validate: false)
-      self.company = company
-    end
-  end
-
-  def check_owner_boss
-     self.role = 'boss' if role_changed? && company_owner?
-  end
-
   def company_owner?
     self == company.owner if company
+  end
+
+  def just_confirmed?
+    confirmed_at_changed? && confirmed_at_was.nil?
   end
 
   def self.find_for_database_authentication(conditions)
@@ -248,5 +231,30 @@ class User < ActiveRecord::Base
         end
         self.login = login
       end
+    end
+
+    def check_name_attributes
+      for attribute in [:last_name, :first_name, :middle_name]
+        self.send "#{attribute}=", self.send(attribute).try(:strip)
+      end
+    end
+
+    def send_registration_info_to_support
+      Mailer.user_was_created(self).deliver
+    end
+
+    def create_company
+      self.transaction do
+        company = Company.new(:subdomain => subdomain)
+        company.owner = self
+        company.save(validate: false)
+        self.company = company
+        self.save(validate: false)
+        self.company.reload
+      end if self.company.nil? && subdomain.present?
+    end
+
+    def check_owner_boss
+      self.role = 'boss' if role_changed? && company_owner?
     end
 end

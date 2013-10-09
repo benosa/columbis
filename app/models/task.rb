@@ -6,7 +6,7 @@ class Task < ActiveRecord::Base
   mount_uploader :image, ImageUploader
 
   belongs_to :user
-  belongs_to :company
+  belongs_to :company, :counter_cache => true
   belongs_to :executer, :foreign_key => 'executer_id', :class_name => 'User'
   has_many :emails, class_name: 'UserMailer'
   validates :body, :presence => true

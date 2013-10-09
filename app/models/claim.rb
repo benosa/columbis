@@ -45,7 +45,7 @@ class Claim < ActiveRecord::Base
 
   attr_accessor :claim_params # received params from controller
 
-  belongs_to :company
+  belongs_to :company, :counter_cache => true
   belongs_to :user
   belongs_to :assistant, :class_name => 'User'
   belongs_to :office

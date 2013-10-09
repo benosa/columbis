@@ -9,7 +9,7 @@ class Tourist < ActiveRecord::Base
 
   attr_accessor :validate_secondary_attributes
 
-  belongs_to :company
+  belongs_to :company, :counter_cache => true
   belongs_to :user
   has_many :payments, :as => :payer
 

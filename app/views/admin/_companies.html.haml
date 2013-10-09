@@ -1,0 +1,26 @@
+.current_container
+  %table.reservations.tour_operators
+    %th
+      = sort_link :created_at, t('admin.companies_info.created_at'), :default => :desc
+    %th
+      = sort_link :name, t('admin.companies_info.name')
+    %th
+      = sort_link :owner, t('admin.companies_info.owner')
+    %th
+      = sort_link :email, t('admin.companies_info.email')
+    %th
+      = sort_link :phone, t('admin.companies_info.phone')
+    %th
+      = sort_link :subdomain, t('admin.companies_info.subdomain')
+    %th
+      = sort_link :offices_count, t('admin.companies_info.offices_count')
+    %th
+      = sort_link :users_count, t('admin.companies_info.users_count')
+    %th
+      = sort_link :claims_count, t('admin.companies_info.claims_count')
+    %th
+      = sort_link :tourists_count, t('admin.companies_info.tourists_count')
+    %th
+      = sort_link :tasks_count, t('admin.companies_info.tasks_count')
+    - @companies_info.each do |c|
+      = render :partial => 'admin/company', :locals => { :company => c }

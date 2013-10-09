@@ -3,7 +3,7 @@ class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
-                  :sms_signature, :sms_birthday_send
+                  :sms_signature, :sms_birthday_send, :owner
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
@@ -31,14 +31,20 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   validates_presence_of :name
-  validates :subdomain, presence: true, subdomain: true,
-    length: { minimum: 3, maximum: 20 },
-    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
-    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
-  validates :logo, :file_size => { :maximum => CONFIG[:max_logo_size].megabytes.to_i }
 
-  after_create do |user|
-    Mailer.company_was_created(self).deliver
+  validates :subdomain, uniqueness: true, presence: true, subdomain: true,
+    format: { with: /\A[\d\w\-]{3,20}\Z/ }, length: { minimum: 3, maximum: 20 }
+
+  extend SearchAndSort
+
+  define_index do
+    indexes subdomain, :name, sortable: true
+    indexes owner(:phone), as: :phone, sortable: true
+    indexes owner(:email), as: :email, sortable: true
+    indexes [owner.last_name, owner.first_name, owner.middle_name], :as => :owner, :sortable => true
+
+    has :offices_count, :users_count, :claims_count, :tourists_count, :tasks_count
+    has :created_at, type: :datetime
   end
 
   def company_id

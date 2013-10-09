@@ -236,6 +236,13 @@ describe ConfirmationsController do
         @user.reload
       }.to change(@user, :company_id)
     end
+
+    it "changes user reset_password_token " do
+      expect {
+        put :show, confirmation_token: @user.confirmation_token
+        @user.reload
+      }.to change(@user, :company_id)#{ Company.count }.by(+1)
+    end
   end
 end
 

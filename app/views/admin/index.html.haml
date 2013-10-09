@@ -1,0 +1,29 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('admin.companies_info.title')
+
+- content_for :top do
+  %form.filter
+    = render :partial => 'shared/search_field', :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
+
+.admin_companies
+  = render "admin/companies"
+.admin.check_list
+  %table
+    %tr
+      %td
+        Компаний
+      %td
+        #{@companies_count}
+    %tr
+      %td
+        Пользователей
+      %td
+        #{@users_count}
+    %tr
+      %td
+        Заявок
+      %td
+        #{@claims_count}
+= render partial: 'shared/pagination', locals: { collection: @companies_collection }

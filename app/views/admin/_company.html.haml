@@ -1,0 +1,27 @@
+%tr{id: "company-#{company.id}", class: "company", data: {id: company.id}}
+  %td
+    = l(company.created_at, format: :long)
+  %td
+    = company.name
+  %td
+    - if company.owner
+      #{company.owner.last_name} #{company.owner.first_name} #{company.owner.middle_name}
+  %td
+    - if company.owner
+      = company.owner.email
+    - else
+      = company.email
+  %td
+    = company.owner.phone if company.owner
+  %td
+    = company.subdomain
+  %td
+    = company.offices_count
+  %td
+    = company.users_count
+  %td
+    = company.claims_count
+  %td
+    = company.tourists_count
+  %td
+    = company.tasks_count

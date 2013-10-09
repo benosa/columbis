@@ -2,8 +2,8 @@
 FactoryGirl.define do
 
   factory :company do
-    name Faker::Lorem.sentence
-    email Faker::Internet.email
+    name { Faker::Name.name }
+    email
     subdomain
   end
 end

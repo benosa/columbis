@@ -98,6 +98,10 @@ Tourism::Application.routes.draw do
     post '/delete_widget' => 'base#delete_widget', :as => :delete_widget
   end
 
+  namespace :admin do
+    match '/' => 'base#index', :as => :index
+  end
+
   scope 'dashboard' do
     match 'local_tables' => 'dashboard#local_tables'
     match 'local_data' => 'dashboard#local_data'

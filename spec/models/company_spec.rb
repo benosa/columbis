@@ -31,4 +31,36 @@ describe Company do
       it { should_not allow_value(nil).for(:name) }
     end
   end
+
+  describe ".counters" do
+    before do
+      @company = create(:company)
+    end
+     context "when locked" do
+      it do
+        @office = create(:office, company: @company)
+        @user = create(:manager, company: @company, office: @office)
+        @tourist = create(:tourist, company: @company)
+        @task = create(:task, company: @company)
+        @claim = create(:claim, company: @company, user: @user, office: @office, applicant: @tourist)
+        @company.reload
+        @company.users_count.should == 1
+        @company.tourists_count.should == 1
+        @company.tasks_count.should == 1
+        @company.offices_count.should == 1
+        @company.claims_count.should == 1
+        @claim.destroy
+        @task.destroy
+        @tourist.destroy
+        @user.destroy
+        @office.destroy
+        @company.reload
+        @company.claims_count.should == 0
+        @company.users_count.should == 0
+        @company.tourists_count.should == 0
+        @company.tasks_count.should == 0
+        @company.offices_count.should == 0
+      end
+    end
+  end
 end

@@ -12,14 +12,14 @@
           %p= printer.mode
         %td
           - name = ""
-          - if printer.template.model[:template]
+          - if printer.template?
             - name = printer.template_name
           - else
-            - name = printer.country.name + ' - ' if printer.country
-            - name += printer.mode + "_" + I18n.t('.printers.default')
+            - name = printer.country_name + ' - ' if printer.mode_type == 'memo' && printer.country_name
+            - name += printer.mode + " (#{I18n.t('.printers.default')})"
           %p= name
         %td.activity
-          = link_to '', create_printer_url(printer, printer.mode_type), :class => 'download', :title => t('download')
+          = link_to '', download_template_path(printer.id), :class => 'download', :title => t('download')
           = link_to '', edit_printer_path(printer.id), :class => 'edit_row', :title => t('edit')
           = link_to '', printer_path(printer.id), :class => 'delete', :title => t('delete'), :remote => true, :method => :delete, :confirm => I18n.t('printers.messages.confirm')
 

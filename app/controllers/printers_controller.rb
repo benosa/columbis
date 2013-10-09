@@ -49,11 +49,42 @@ class PrintersController < ApplicationController
     end
   end
 
+  def download
+    printer = current_company.printers.find(params[:template]) if params[:template]
+    file, filename = template_file(printer) if printer
+
+    if file
+      send_file file, filename: filename, x_sendfile: true
+    else
+      redirect_to printers_path
+    end
+  end
+
   private
 
     def set_filter_to(options)
       unless params[:mode_filter].nil? || params[:mode_filter] == 'all'
         options.merge! ( {:conditions => {:mode => t(".activerecord.attributes.printer.#{params[:mode_filter]}") }})
       end
+    end
+
+    def template_file(printer)
+      if printer.template?
+        file = printer.template.path
+        filename = printer.template.file.identifier
+      else
+        default_forms_path = Rails.root.join "app/views/printers/default_forms/#{I18n.locale}"
+        if printer.mode == "memo"
+          path = default_forms_path.join "memo_#{printer.country.name}.html"
+          path = default_forms_path.join "memo.html" unless File.exist?(path)
+        else
+          path = default_forms_path.join "#{printer.mode}.html"
+        end
+        if File.exist?(path)
+          file = path
+          filename = "#{I18n.t('activerecord.attributes.printer.' + printer.mode.to_s)} - #{I18n.t('.printers.default')}.html"
+        end
+      end
+      [file, filename]
     end
 end

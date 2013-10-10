@@ -15,3 +15,4 @@
 //= require waypoints-sticky
 //= require rmenu
 //= require jquery.jqEasyCharCounter
+//= require jquery.autosize

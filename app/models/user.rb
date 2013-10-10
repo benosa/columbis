@@ -9,9 +9,9 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id, :use_office_password,
-                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone, :subdomain
-  attr_protected :company_id, :as => :admin
-  attr_protected :role, :as => [:admin, :boss]
+                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone, :subdomain, :phone
+  attr_accessible :company_id, :as => :admin
+  attr_accessible :role, :as => [:admin, :boss]
 
   attr_accessor :phone_code
 
@@ -25,10 +25,11 @@ class User < ActiveRecord::Base
   before_validation :join_phone
 
   validates :login, presence: true, uniqueness: true
-  validates_presence_of :role
-  validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? self.role }
+  validates :role, presence: true, role: true
+  validates_presence_of :company_id, :unless => :is_admin?
+  validates_presence_of :office_id, :unless => proc{ %w[admin boss].include? role }
   validates_presence_of :last_name, :first_name
-  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :unless => proc{ self.role == 'admin' }
+  validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :if => proc{ company.nil? || company_owner? }
   validates :subdomain, :on => :create, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
@@ -97,9 +98,8 @@ class User < ActiveRecord::Base
   end
 
   def update_by_params(params = {}, current_user = nil)
-    current_user = self unless current_user
-    self.role = params[:role] if available_roles.include?(params[:role])
-    params[:role] = self.role
+    current_user ||= self
+    # self.role = params[:role] if available_roles.include? params.delete(:role)
 
     # Send registration information in case only when user doesn't know his current password (generated or changed by someone else)
     send_registration_info = false
@@ -138,11 +138,11 @@ class User < ActiveRecord::Base
 
     # Update user
     update_result = if need_update_with_password
-      update_with_password(params)
+      update_with_password(params, as: current_user.role.try(:to_sym))
     else
       params.delete(:current_password)
       # update_without_password(params, _current_user: current_user)
-      update_without_password(params)
+      update_without_password(params, as: current_user.role.try(:to_sym))
     end
 
     Mailer.registrations_info(self, current_password).deliver if update_result && send_registration_info
@@ -164,17 +164,17 @@ class User < ActiveRecord::Base
     super(params, *args)
   end
 
-  def create_new(params)
-    self.role = params[:role] if available_roles.include?(params[:role])
+  def create_new(params, current_user = nil)
+    current_user ||= self
     if params[:use_office_password].to_boolean
-      office = Office.where(:id => params[:office_id]).first
+      office = company.offices.where(:id => params[:office_id]).first
       self.password = office.default_password
       self.password_confirmation = self.password
     end
-    params.delete(:role)
     params.delete(:password)
     params.delete(:password_confirmation)
-    self.save(params)
+    self.assign_attributes params, as: current_user.role.try(:to_sym)
+    self.save
   end
 
   def join_phone
@@ -214,8 +214,10 @@ class User < ActiveRecord::Base
     def set_role
       if User.count == 0
         self.role = 'admin'
-      else
+      elsif company.nil?
         self.role = 'boss'
+      else
+        self.role = 'manager'
       end
     end
 

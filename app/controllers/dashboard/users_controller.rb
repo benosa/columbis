@@ -22,11 +22,12 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def new
+    @user.role = 'manager'
   end
 
   def create
     @user.company = current_company
-    if @user.create_new(params[:user])
+    if @user.create_new(params[:user], current_user)
       redirect_to dashboard_users_url, :notice => t('users.messages.created')
     else
       render :action => 'new'

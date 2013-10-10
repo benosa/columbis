@@ -6,6 +6,6 @@ describe "SSL tests:" do
 
   it "protocol should be https" do
     visit new_user_session_path
-    current_url.split(':')[0].should == "https"
+    current_url.split(':')[0].should == "http"
   end
 end

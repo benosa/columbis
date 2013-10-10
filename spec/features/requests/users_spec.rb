@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe "Logged user:", js: true do
+describe "Logged_user:", js: true do
   include ActionView::Helpers
   include UsersHelper
   include EmailSpec::Helpers
@@ -20,7 +20,6 @@ describe "Logged user:", js: true do
     let(:office) { @boss.office }
     let(:user) { @manager }
 
-
     # describe "user sign_up" do
     #   it "registration user" do
     #     before do
@@ -38,7 +37,7 @@ describe "Logged user:", js: true do
     #   end
     # end
 
-    describe "submit form" do
+    describe "submit_form" do
       # let(:user) { create :admin, company: company, office: office }
 
       before do
@@ -76,24 +75,25 @@ describe "Logged user:", js: true do
             should have_selector('.alert-success')
           end
           user = User.where(login: login).first
-          last_email = open_last_email
-          last_email.should deliver_to user.email
-          last_email.should have_body_text(/#{user.first_name}/)
-          last_email.should have_body_text(/#{user.last_name}/)
-          last_email.should have_body_text(/#{user.login}/)
-          last_email.should have_body_text(/#{user.confirmation_token}/)
+          last_user_email = open_last_email_for(user.email)
+          last_user_email.should deliver_to user.email
+          last_user_email.should have_body_text(/#{user.first_name}/)
+          last_user_email.should have_body_text(/#{user.last_name}/)
+          last_user_email.should have_body_text(/#{user.login}/)
+          last_user_email.should have_body_text(/#{user.confirmation_token}/)
         end
 
         it "should create an user with password" do
           user_attrs = attributes_for(:user)
           login = FactoryGirl.generate(:login)
-          password = Faker::Lorem.word
+          password = ('a'..'z').to_a.shuffle.first(8).join
           expect {
             user_attrs.each do |atr, value|
               fill_in "user[#{atr}]", with: value if page.has_field?("user[#{atr}]")
             end
             fill_in "user[password]", with: password
             fill_in "user[login]", with: login
+            save_screenshot
             page.click_link I18n.t('save')
           }.to change(User, :count).by(1)
           page.current_path.should eq(dashboard_users_path)
@@ -101,15 +101,15 @@ describe "Logged user:", js: true do
             should have_selector('.alert-success')
           end
           user = User.where(login: login).first
-          last_email = open_last_email
-          last_email.should deliver_to user.email
-          last_email.should have_body_text(/#{user.login}/)
-          last_email.should have_body_text(/#{password}/)
+          last_user_email = open_last_email_for(user.email)
+          last_user_email.should deliver_to user.email
+          last_user_email.should have_body_text(/#{user.login}/)
+          last_user_email.should have_body_text(/#{password}/)
         end
       end
     end
 
-    describe "update user" do
+    describe "update_user" do
       # let(:user) { create :admin, company: company, office: office }
 
       before do
@@ -140,7 +140,7 @@ describe "Logged user:", js: true do
       end
 
       it 'update user password' do
-        password = Faker::Lorem.word
+        password = ('a'..'z').to_a.shuffle.first(8).join
         click_link "edit_user_#{user.id}"
         current_path.should eq edit_dashboard_user_path(user.id)
         expect {
@@ -164,17 +164,17 @@ describe "Logged user:", js: true do
       end
     end
 
-    describe "delete user" do
+    describe "delete_user" do
       # let(:user) { create(:admin) }
 
       before do
-        user
+        @manager2 = FactoryGirl.create(:manager, company: @boss.company, office: @boss.office)
         visit dashboard_users_path
       end
 
       it 'delete user' do
         expect{
-          click_link "destroy_user_#{user.id}"
+          click_link "destroy_user_#{@manager2.id}"
         }.to change(User, :count).by(-1)
       end
     end
@@ -420,14 +420,17 @@ describe "Unlogged user", js: true do
       it 'should create new user and company' do
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: @attr[:subdomain]
-        fill_in 'user[email]', with: @attr[:email]
+        fill_in 'user[check]', with: @attr[:email]
         fill_in 'user[first_name]', with: @attr[:first_name]
         fill_in 'user[last_name]', with: @attr[:last_name]
         fill_in 'user[phone]', with: @attr[:phone]
+        save_screenshot
         find("input[name='commit']").click
+        save_screenshot
         @newuser = User.where(email: @attr[:email]).first
-        open_last_email.should deliver_to @attr[:email]
-        open_last_email.should have_body_text(/#{@newuser.confirmation_token}/)
+        last_user_email = open_last_email_for(@attr[:email])
+        last_user_email.should deliver_to @attr[:email]
+        last_user_email.should have_body_text(/#{@newuser.confirmation_token}/)
         html.should include(I18n.t('devise.registrations.user.signed_up_but_unconfirmed'))
         visit user_confirmation_path + '?confirmation_token=' + @newuser.confirmation_token.to_s
         page.should have_text(I18n.t('you_must_add_office'))
@@ -435,6 +438,7 @@ describe "Unlogged user", js: true do
       end
 
       it 'should not create new user - duplicate fields' do
+
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: 'newcomp'
         fill_in 'user[check]', with: 'newuser@mail.ru'
@@ -442,7 +446,8 @@ describe "Unlogged user", js: true do
         fill_in 'user[last_name]', with: 'testing'
         fill_in 'user[phone]', with: '766678888'
         find("input[name='commit']").click
-        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('activerecord.errors.messages.taken')}")
+        save_screenshot
+        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('activerecord.errors.messages.subdomain_taken')}")
         should have_text("#{I18n.t('activerecord.attributes.user.email')} #{I18n.t('activerecord.errors.messages.taken')}")
         should have_text("#{I18n.t('activerecord.attributes.user.phone')} #{I18n.t('activerecord.errors.messages.taken')}")
       end
@@ -455,7 +460,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[last_name]', with: 'testing2'
         fill_in 'user[phone]', with: '7666788882'
         find("input[name='commit']").click
-        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('errors.messages.reserved')}")
+        should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('activerecord.errors.messages.subdomain_taken')}")
       end
 
       it 'should not show error, because of filling hiden field' do

@@ -40,6 +40,7 @@ Tourism::Application.configure do
 #  # Generate digests for assets URLs
 #  config.assets.digest = true
 
+  config.action_mailer.logger = nil
   config.action_mailer.default_url_options = { host: CONFIG[:domain] }
   # config.action_mailer.delivery_method = :letter
   config.action_mailer.perform_deliveries = true

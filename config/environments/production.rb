@@ -32,7 +32,7 @@ Tourism::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
@@ -65,6 +65,7 @@ Tourism::Application.configure do
   begin
     mailer_config = YAML::load_file(Rails.root.join "config/mailer.yml")[Rails.env]
 
+    config.action_mailer.logger = nil
     config.action_mailer.default_url_options = { host: CONFIG[:domain] }
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.perform_deliveries = true

@@ -2,12 +2,12 @@ require 'nokogiri'
 require 'open-uri'
 
 namespace :operators do
-  task :load [:threads_number] => :environment do |t, args|
-    threads_number = args[:threads_number].nil? 10 : args[:threads_number]
+  task :load, [:threads_number] => :environment do |t, args|
+    threads_number = args[:threads_number].nil? ? 10 : args[:threads_number].to_i
     ThinkingSphinx.deltas_enabled = false
     start = Time.zone.now
     puts start.to_s
-    peach threads_number, get_operator_pages, lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
+    peach threads_number, get_operator_pages.first(50), lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
     puts (Time.zone.now - start).to_s
     puts Time.zone.now.to_s
   end
@@ -24,7 +24,6 @@ namespace :operators do
   def peach(threads_number, collection, method)
     thrs = []
     threads_number.times { thrs << nil }
-    puts thrs.length
     thrs.each_with_index do |thr, i|
       length = (collection.length / threads_number).to_i
       if i != (threads_number-1)
@@ -86,31 +85,72 @@ namespace :operators do
       :register_series => operator_info[:register_series],
       :company_id => nil)
     if operators.blank?
-      address = operator_info.delete(:joint_address)
       a = Address.create( parse_address(operator_info.delete(:joint_address)) )
       o = Operator.new(operator_info)
       o.address = a
       o.save
+      puts "Save operator: #{operator_info[:name]}"
     else
       o = operators.first
       a = o.address
       Address.update(a.id, parse_address(operator_info.delete(:joint_address)) )
       Operator.update(o.id, operator_info)
+      puts "Update operator: #{operator_info[:name]}"
     end
   end
 
   def parse_address(address_string)
-    address = {
-      "region" => nil,
-      "street" => nil,
-      "house_number" => nil,
-      "housing" => nil,
-      "office_number" => nil
-    }
-    address_array = address_string.split(',')
+    address = {}
+    address_array = address_string.gsub(/\,\s/, ',').split(',')
+    # zip_code
     address["zip_code"] = address_array[0]
+    address_array.delete_at(0)
+    # street
+    address_array.each do |elem|
+      if elem.include?("ул.") || elem.include?("пр-кт") || elem.include?("пл.") || elem.include?("пр.")
+        address["street"] = elem
+        break
+      end
+    end
+    # region
+    region = []
+    address_array.each do |elem|
+      if elem.include?('Республик') ||
+        elem.include?('г.') ||
+        (elem.include?('д.') && (/[0-9]/=~ elem).nil?) ||
+        elem.include?('край') ||
+        elem.include?('г.') ||
+        elem.include?('наб.') ||
+        elem.include?('Санкт-Петербург') ||
+        elem.include?('Москва')
+        region << elem
+      end
+    end
+    unless region == []
+      address["region"] = region.join(',')
+    end
+    # office
+    address_array.each do |elem|
+      if elem.include?("оф.") || elem.include?("офис") || elem.include?("кв.") || elem.include?("пом.")
+        address["office_number"] = elem
+        break
+      end
+    end
+    # housing
+    address_array.each do |elem|
+      if elem.include?("лит.") || elem.include?("корп.") || elem.include?("корпус") || elem.include?("стр.")
+        address["housing"] = elem
+        break
+      end
+    end
+    # housing
+    address_array.each do |elem|
+      if (elem.include?("д.") && !(/[0-9]/=~ elem).nil? ) || (/^\d+$|\d+\/\d+$|\d+.$|\d+\/\d+.$/=~ elem) == 0
+        address["house_number"] = elem
+        break
+      end
+    end
+    puts "Get address #{address.to_s} from address_string: #{address_string}"
     address
   end
-
-
 end

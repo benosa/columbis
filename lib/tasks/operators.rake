@@ -7,7 +7,7 @@ namespace :operators do
     ThinkingSphinx.deltas_enabled = false
     start = Time.zone.now
     puts start.to_s
-    peach threads_number, get_operator_pages.first(50), lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
+    peach threads_number, get_operator_pages, lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
     puts (Time.zone.now - start).to_s
     puts Time.zone.now.to_s
   end

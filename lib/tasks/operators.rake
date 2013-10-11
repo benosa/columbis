@@ -31,24 +31,13 @@ namespace :operators do
       else
         coll = collection[ i*length .. (collection.length-1) ]
       end
-      thr = Thread.start(call_method(coll, method, i+1))
+      thrs[i] = Thread.new{coll.each { |item| method.call(item) }}
     end
+    puts threads_number.to_s + " threads was started"
     thrs.each do |thr|
       thr.join
     end
   end
-
-  def call_method(collection, method, thread_number)
-    collection.each do |item|
-      puts thread_number
-      method.call(item)
-    end
-  end
-
-  def load_operator(path)
-    load_operator_info_to_base(create_operator_info(path))
-  end
-
 
   def create_operator_info(path)
     info = {}

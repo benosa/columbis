@@ -1,4 +1,4 @@
-%table#tourists.tourists.reservations.tour_operators
+%table#tourists.tourists.reservations.tour_operators.lower_rows
   %tr
     %th.created_at
       = sort_link(:created_at, Tourist.human_attribute_name(:created_at), :desc)
@@ -14,7 +14,7 @@
       %span= t('actions')
 
   - for tourist in tourists
-    %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
+    %tr{ :class => [cycle('odd', 'even'), tourist.state], id: "tourist-#{tourist.id}"}
       %td
         %p= l(tourist.created_at.to_date, :format => :long)
       %td{ title: tourist.user.try(:full_name), style: tourist.user.try(:color) && "background: none #{tourist.user.try(:color)} !important;" }

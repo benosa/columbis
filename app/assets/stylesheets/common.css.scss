@@ -430,6 +430,13 @@ body {
     padding: 5px 5px;
     background: none;
   }
+
+  &.lower_rows {
+    td { padding-top: 2px; padding-bottom: 2px;
+      p, span, a { margin-top: 0; margin-bottom: 0; }
+      a.delete { margin-top: 1px; }
+    }
+  }
 }
 
 .middle_resoluition {

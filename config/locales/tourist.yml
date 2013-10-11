@@ -18,6 +18,12 @@ ru:
         wishes: 'Куда хочет поехать'
         actions: 'Что сделать'
         created_at: 'Создан'
+        state: 'Статус'
+
+  potential_states:
+    important: 'Срочно!'
+    reserved: 'Забронирован'
+    refused: 'Отказался'
 
   tourists:
     index:
@@ -64,6 +70,7 @@ ru:
       tourist_to_potential_warning: 'Турист %{tourist} после сохранения будет переведен в потенциальные клиенты. Вы уверены?'
     form_potential:
       common: 'Общие данные'
+      status: 'Статус'
       potential_to_tourist_warning: 'Клиент %{client} после сохранения будет переведен в туристы. Вы уверены?'
 
     messages:

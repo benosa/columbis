@@ -1058,6 +1058,8 @@ $(function(){
     }
   });
 
+  $('#claim_docs_note').autosize();
+
   setTitles();
   set_editable_bonus_percent();
   set_claims_sticky_header();

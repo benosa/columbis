@@ -2,11 +2,12 @@ require 'nokogiri'
 require 'open-uri'
 
 namespace :operators do
-  task :load => :environment do
+  task :load [:threads_number] => :environment do |t, args|
+    threads_number = args[:threads_number].nil? 10 : args[:threads_number]
     ThinkingSphinx.deltas_enabled = false
     start = Time.zone.now
     puts start.to_s
-    peach 10, get_operator_pages, lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
+    peach threads_number, get_operator_pages, lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
     puts (Time.zone.now - start).to_s
     puts Time.zone.now.to_s
   end
@@ -73,21 +74,43 @@ namespace :operators do
         info[:insurer_contract_start] = [date[2], date[1], date[0]].join('.')
         date = content.last(10).split('/').map { |e| e.to_i }
         info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
-      when tag.content.include?("Адрес (место нахождения)")
+      when tag.content.include?("Адрес (место нахождения):")
         info[:joint_address] = tag.next_element.content
       end
     end
-    puts "Get info: #{info.to_s}"
     info
   end
 
   def load_operator_info_to_base(operator_info)
-    address = operator_info.delete(:joint_address)
-    a = Address.new
-    a.joint_address = address
-    o = Operator.new(operator_info)
-    o.address = a
-    puts "Save info"
-    o.save
+    operators = Operator.where(:register_number => operator_info[:register_number],
+      :register_series => operator_info[:register_series],
+      :company_id => nil)
+    if operators.blank?
+      address = operator_info.delete(:joint_address)
+      a = Address.create( parse_address(operator_info.delete(:joint_address)) )
+      o = Operator.new(operator_info)
+      o.address = a
+      o.save
+    else
+      o = operators.first
+      a = o.address
+      Address.update(a.id, parse_address(operator_info.delete(:joint_address)) )
+      Operator.update(o.id, operator_info)
+    end
   end
+
+  def parse_address(address_string)
+    address = {
+      "region" => nil,
+      "street" => nil,
+      "house_number" => nil,
+      "housing" => nil,
+      "office_number" => nil
+    }
+    address_array = address_string.split(',')
+    address["zip_code"] = address_array[0]
+    address
+  end
+
+
 end

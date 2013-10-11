@@ -26,8 +26,7 @@ class User < ActiveRecord::Base
 
   validates :login, presence: true, uniqueness: true
   validates :role, presence: true, role: true
-  validates_presence_of :company_id, :unless => :is_admin?
-  validates_presence_of :office_id, :unless => proc{ %w[admin boss].include? role }
+  validates_presence_of :company_id, :office_id, :unless => proc{ %w[admin boss].include? role }
   validates_presence_of :last_name, :first_name
   validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :if => proc{ company.nil? || company_owner? }
   validates :subdomain, :on => :create, presence: true, subdomain: true,

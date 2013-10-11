@@ -24,3 +24,10 @@ jQuery ->
     set_tourists_tooltip(true)
     $('body').on 'refreshed', '.current_container', (e)->
       set_tourists_tooltip()
+
+  # Form
+  $('.tourist.edit_operator textarea').autosize()
+  $('.tourist.edit_operator .state input[type=checkbox]').on 'change', (e)->
+    $states = $('.tourist.edit_operator .state').not $(this).closest('.state')
+    $states.find('label.checkbox').removeClass('active')
+    $states.find('input[type=checkbox]').attr('checked', false)

@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Tourist < ActiveRecord::Base
+  POTENTIAL_STATES = %w[important reserved refused].freeze
+
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,

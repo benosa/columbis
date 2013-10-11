@@ -18,6 +18,10 @@ ru:
         office_id: 'Офис'
         color: 'Цвет (для списков)'
         company: 'Компания'
+    errors:
+      messages:
+        subdomain_invalid: 'может содержать только прописные латинские символы (a-z), знак - и цифры (0-9).'
+        subdomain_taken: 'уже занят, укажите другой.'
   users:
     index:
       login: 'Логин'

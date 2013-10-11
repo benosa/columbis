@@ -14,19 +14,6 @@ describe Dashboard::CompaniesController do
     test_sign_in(user)
   end
 
-  describe 'POST create' do
-
-    let(:user) { FactoryGirl.create(:boss_without_company) }
-
-    def do_company
-      post :create, :company => FactoryGirl.attributes_for(:company)
-    end
-
-    it 'should change companies count up by 1' do
-      expect { do_company }.to change{ Company.count }.by(1)
-    end
-  end
-
   describe 'PUT update' do
     before { put :update, id: @company.id, company: attributes_for(:company, name: 'new_company') }
     it { should assign_to(:company).with(@company) }

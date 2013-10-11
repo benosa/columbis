@@ -6,6 +6,6 @@ describe "SSL tests:" do
 
   it "protocol should be https" do
     visit new_user_session_path
-    current_url.split(':')[0].should == "http"
+    current_url.split(':')[0].should == (CONFIG[:force_ssl] ? "https" : "http")
   end
 end

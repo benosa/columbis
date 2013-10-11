@@ -14,25 +14,6 @@ class Dashboard::CompaniesController < ApplicationController
     end
   end
 
-  def new
-    @company.subdomain = current_user.subdomain
-    build_company_edition_prerequisites
-  end
-
-  def create
-    @company = Company.new(params[:company])
-    if @company.save
-      current_user.update_attribute(:company_id, @company.id)
-      current_user.update_attribute(:office_id, @company.offices.first.id) unless @company.offices.empty?
-      current_user.update_attribute(:subdomain, @company.subdomain) if @company.previous_changes['subdomain'] != nil
-      @company.address.update_attribute(:company_id, @company.id) if @company.address.present?
-      redirect_to dashboard_edit_company_path, :notice => t('companies.messages.successfully_created_company')
-    else
-      build_company_edition_prerequisites
-      render :action => "new"
-    end
-  end
-
   def edit
     @company = current_company unless @company
     authorize! :read, @company

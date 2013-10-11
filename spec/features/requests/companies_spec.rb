@@ -139,12 +139,12 @@ describe "Company create:", js: true do
     end
 
     before {
-      @boss = FactoryGirl.create(:boss)
+      @boss = FactoryGirl.create(:boss_without_company)
       login_as(@boss)
     }
     subject { page }
 
-    describe "create_company" do
+    describe "create company" do
       before do
         visit new_dashboard_company_path
       end
@@ -152,14 +152,14 @@ describe "Company create:", js: true do
       it "should create company" do
         fill_in 'company[name]', with: 'company_new'
         all("a.save").first.click
-        should have_text(I18n.t('companies.messages.successfully_created_company'))
+        should have_text(I18n.t('companies.messages.successfully_updated_company'))
       end
 
       it "should create company and change user" do
         fill_in 'company[name]', with: 'company_new2'
         fill_in 'company[subdomain]', with: 'domain3'
         all("a.save").first.click
-        should have_text(I18n.t('companies.messages.successfully_created_company'))
+        should have_text(I18n.t('companies.messages.successfully_updated_company'))
         @boss.reload
         @boss.subdomain.should == 'domain3'
       end
@@ -168,14 +168,14 @@ describe "Company create:", js: true do
         fill_in 'company[name]', with: 'company_new2'
         fill_in 'company[subdomain]', with: 'domain'
         all("a.save").first.click
-        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('activerecord.errors.messages.taken')}")
+        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('activerecord.errors.messages.subdomain_taken')}")
       end
 
       it "should not create company - reserved domain" do
         fill_in 'company[name]', with: 'company_new2'
         fill_in 'company[subdomain]', with: 'demo'
         all("a.save").first.click
-        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('errors.messages.reserved')}")
+        should have_text("#{I18n.t('activerecord.attributes.company.subdomain')} #{I18n.t('activerecord.errors.messages.subdomain_taken')}")
       end
     end
   end

@@ -37,7 +37,7 @@ describe "Logged_user:", js: true do
     #   end
     # end
 
-    describe "submit_form" do
+    describe "submit form" do
       # let(:user) { create :admin, company: company, office: office }
 
       before do
@@ -93,7 +93,6 @@ describe "Logged_user:", js: true do
             end
             fill_in "user[password]", with: password
             fill_in "user[login]", with: login
-            save_screenshot
             page.click_link I18n.t('save')
           }.to change(User, :count).by(1)
           page.current_path.should eq(dashboard_users_path)
@@ -109,7 +108,7 @@ describe "Logged_user:", js: true do
       end
     end
 
-    describe "update_user" do
+    describe "update user" do
       # let(:user) { create :admin, company: company, office: office }
 
       before do
@@ -164,7 +163,7 @@ describe "Logged_user:", js: true do
       end
     end
 
-    describe "delete_user" do
+    describe "delete user" do
       # let(:user) { create(:admin) }
 
       before do
@@ -363,7 +362,7 @@ describe "Unlogged user", js: true do
 
     end
 
-    describe "user_new_pass" do
+    describe "user new pass" do
 
       it 'should create email, with reset password instructions' do
         visit new_user_password_path
@@ -424,9 +423,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[first_name]', with: @attr[:first_name]
         fill_in 'user[last_name]', with: @attr[:last_name]
         fill_in 'user[phone]', with: @attr[:phone]
-        save_screenshot
         find("input[name='commit']").click
-        save_screenshot
         @newuser = User.where(email: @attr[:email]).first
         last_user_email = open_last_email_for(@attr[:email])
         last_user_email.should deliver_to @attr[:email]
@@ -446,7 +443,6 @@ describe "Unlogged user", js: true do
         fill_in 'user[last_name]', with: 'testing'
         fill_in 'user[phone]', with: '766678888'
         find("input[name='commit']").click
-        save_screenshot
         should have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('activerecord.errors.messages.subdomain_taken')}")
         should have_text("#{I18n.t('activerecord.attributes.user.email')} #{I18n.t('activerecord.errors.messages.taken')}")
         should have_text("#{I18n.t('activerecord.attributes.user.phone')} #{I18n.t('activerecord.errors.messages.taken')}")

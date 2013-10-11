@@ -9,7 +9,7 @@ class Tourist < ActiveRecord::Base
 
   attr_protected :company_id, :user_id
 
-  attr_accessor :validate_secondary_attributes
+  attr_accessor :validate_secondary_attributes, :full_name
 
   belongs_to :company, :counter_cache => true
   belongs_to :user
@@ -90,7 +90,7 @@ class Tourist < ActiveRecord::Base
         atr = :full_name if full_name.blank?
       end
       # errors.add(:full_name, "#{Tourist.human_attribute_name(atr)} #{I18n.t('activerecord.errors.messages.blank')}") if atr
-      errors.add(atr, I18n.t('activerecord.errors.messages.blank')) if atr
+      self.errors.add(atr, I18n.t('activerecord.errors.messages.blank')) if atr
     end
 
     # TODO: It is temporary solution to avoid errors for old records

@@ -122,7 +122,11 @@ namespace :operators do
         elem.include?('г.') ||
         elem.include?('наб.') ||
         elem.include?('Санкт-Петербург') ||
-        elem.include?('Москва')
+        elem.include?('Москва') ||
+        elem.include?('область') ||
+        elem.include?('обл.') ||
+        elem.include?('окр.') ||
+        elem.include?('округ')
         region << elem
       end
     end

@@ -2,8 +2,14 @@ namespace :demo do
   desc "seed data for demo company"
   task :seed, [:thinking_sphinx] => :environment do |t, args|
     args.with_defaults restart_sphinx: true
-    # Suppress delta indexing of thinking sphinx
-    ThinkingSphinx.deltas_enabled = false
+
+    # Original values of configuration parameters
+    origin_config_values = {
+      deltas_enabled: ThinkingSphinx.deltas_enabled?,
+      support_delivery: CONFIG[:support_delivery]
+    }
+    ThinkingSphinx.deltas_enabled = false # Suppress delta indexing of thinking sphinx
+    CONFIG[:support_delivery] = false # Turn off email sendings
 
     @res_comp_id = 8 # Mistral company
     @demo_comp_id = 2 # Permanent Demo company id
@@ -169,7 +175,9 @@ namespace :demo do
     end
     puts 'Claim with Flights and Payments are created'
     puts 'Stop seeding demo data'
-    ThinkingSphinx.deltas_enabled = true
+
+    ThinkingSphinx.deltas_enabled = origin_config_values[:deltas_enabled]
+    CONFIG[:support_delivery] = origin_config_values[:support_delivery]
 
     # Execute thinking_sphinx tasks
     if args[:thinking_sphinx]
@@ -191,13 +199,14 @@ namespace :demo do
 
   def create_user(company, office, role, login = nil, password = '123456')
     user = User.new(first_name: Faker::Name.male_first_name, last_name: Faker::Name.male_last_name,
-      password: password, role: role, email: Faker::Internet.email, confirmed_at: Time.now,
-      phone: Faker::PhoneNumber.phone_number, color: Faker::Name.color)
+      password: password, email: Faker::Internet.email, phone: Faker::PhoneNumber.phone_number, color: Faker::Name.color)
     user.login = login || (Russian::translit(user.first_name)[0].downcase + Russian::translit(user.last_name).downcase)
     user.company = company
     user.office = office
+    user.role = role
     user.screen_width = 1600
-    user.save
+    user.confirmed_at = Time.zone.now
+    user.save(validate: false)
     user
   end
 

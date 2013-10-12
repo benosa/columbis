@@ -31,6 +31,7 @@ class Ability
     can :manage, [Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
       Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
       Boss::Widget], :company_id => user.company_id
+    cannot(:destroy, User) { |u| u.company_owner? }
     can :manage, Flight, :claim => { :company_id => user.company_id }
     can :manage, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
     can :manage, UserMailer, :task => { :user => user }

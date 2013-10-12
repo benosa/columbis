@@ -8,7 +8,8 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  -# if can? :delete, @company
+  -# if can? :destroy, @company
     = link_to t('delete'), claims_path, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete
-  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  - if can? :update, @company
+    = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
   = link_to t('.companies'), dashboard_companies_path, :class => 'list_operator'

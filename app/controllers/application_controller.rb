@@ -121,7 +121,8 @@ class ApplicationController < ActionController::Base
           (request.path == new_dashboard_company_path or (request.path == dashboard_companies_path and request.method == 'POST'))
       else
         unless current_office
-          redirect_to(dashboard_edit_company_path, :alert => t('you_must_add_office')) unless
+          message = current_company.name ? t('you_must_add_office') : t('you_must_add_company_name_and_office')
+          redirect_to(dashboard_edit_company_path, :alert => message) unless
             (request.path == dashboard_edit_company_path or (request.path == dashboard_company_path(current_company) and request.method == 'POST'))
         end
       end

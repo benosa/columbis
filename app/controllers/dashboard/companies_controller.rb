@@ -57,7 +57,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   private
     def build_empty_associations
-      @company.offices.build(name: t('offices.default_name')) if @company.offices.empty?
+      @company.offices.build if @company.offices.empty?
       @company.build_address unless @company.address.present?
     end
 

@@ -5,9 +5,7 @@
   %p
     %label{ :for => "#{id_prefix}_name" }
       {{label}}
-  .highlighted
-    = text_field_tag "#{name_prefix}[name]", '{{value}}', :id => "#{id_prefix}_name",
-        :class => 'office_input'
+  = text_field_tag "#{name_prefix}[name]", '{{value}}', :id => "#{id_prefix}_name", :class => 'office_input'
   {{/name}}
   = link_to '', '#', :class => 'del delete', :title => I18n.t('delete')
   {{#default_password}}

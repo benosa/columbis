@@ -63,19 +63,13 @@ ru:
         ogrn: 'ОРГН'
         okpo: 'ОКПО'
         inn: 'ИНН'
-        subdomain: 'Домен'
+        time_zone: 'Часовой пояс'
+        sms_signature: 'Подпись'
+        sms_birthday_send: 'Отправлять смс с днем рождения?'
+        director: 'Директор'
+        director_genitive: 'Директор (родительный падеж)'
+        subdomain: 'Адрес в системе'
         logo: 'Логотип'
-        address:
-          region: 'Регион'
-          street: 'Улица'
-          house_number: 'Номер дома'
-          housing: 'Корпус'
-          office_number: 'Номер офиса'
-          phone_number: 'Номер телефона'
-          zip_code: 'Индекс'
-        office:
-          name: 'Название'
-          default_password: 'Пароль по умолчанию'
 
       # it's useful only for rails >= 3.2.0
       company/address:
@@ -86,14 +80,22 @@ ru:
         office_number: 'Номер офиса'
         phone_number: 'Номер телефона'
         zip_code: 'Индекс'
-      company/office:
-        name: 'Название'
+      company/offices:
+        name: 'Название офиса'
         default_password: 'Пароль по умолчанию'
 
     errors:
       messages:
         subdomain_invalid: 'может содержать только прописные латинские символы (a-z), знак - и цифры (0-9).'
         subdomain_taken: 'уже занят, укажите другой.'
+
+  companies:
+    messages:
+      successfully_created_company: 'Компания успешно создана'
+      successfully_updated_company: 'Данные компании обновлены'
+      company_already_created: 'Компания уже создана'
+      company_cant_be_updated: 'Вы не можете изменить эту компанию'
+      company_cant_be_destroyed: 'Вы не можете удалить эту компанию'
 
   helpers:
     label:
@@ -110,5 +112,5 @@ ru:
       # <<: *address_attributes
       # this can't help
       company/offices_attributes:
-        name: 'Название'
+        name: 'Название офиса'
         default_password: 'Пароль по умолчанию'

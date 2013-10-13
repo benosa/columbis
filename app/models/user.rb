@@ -242,7 +242,7 @@ class User < ActiveRecord::Base
     end
 
     def send_registration_info_to_support
-      Mailer.user_was_created(self).deliver
+      Mailer.user_was_created(self).deliver unless company_owner?
     end
 
     def create_company

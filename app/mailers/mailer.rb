@@ -11,17 +11,20 @@ class Mailer < ActionMailer::Base
   def registrations_info(user, password)
     @resource = user
     @password = password
-    mail(to: user.email, subject: I18n.t('registration_data'))
+    mail to: user.email, subject: I18n.t('mailer.registration_data_subject')
   end
 
   def company_was_created(company)
     @resource = company
-    mail(to: CONFIG[:support_email], subject: I18n.t('company_was_created'))
+    # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
+    subject = I18n.t('mailer.company_was_created_subject', company: company.name || company.subdomain, locale: :ru)
+    mail to: CONFIG[:support_email], subject: subject
   end
 
   def user_was_created(user)
     @resource = user
-    mail(to: CONFIG[:support_email], subject: I18n.t('user_was_created'))
+    subject = I18n.t('mailer.user_was_created_subject', user: user.full_name || user.login)
+    mail to: CONFIG[:support_email], subject: subject
   end
 
   def task_info(task)

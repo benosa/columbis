@@ -2,5 +2,7 @@
   На сайте
   %a{:href => "http://columbis.ru"} Columbis.ru
 %p
-  Была создана компания
-  = @resource.name
+  Пользователем
+  = @resource.owner.try(:full_name) || @resource.owner.try(:login)
+  создана новая компания
+  = @resource.name || @resource.subdomain

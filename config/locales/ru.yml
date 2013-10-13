@@ -49,10 +49,6 @@ ru:
   unauthorized:
     default: 'Вы не имеете доступа к этой странице.'
   current_password_for_changes: '(действующий пароль для подтверждения изменений)'
-  registration_data: 'Регистрационные данные'
-  office_was_created: 'Был создан новый офис'
-  company_was_created: 'Была зарегистрирована компания'
-  user_was_created: 'Был зарегистрирован пользователь'
   record_successfuly_saved: 'Запись успешно сохранена'
 
   invalid_fields: 'Ошибка при заполнении полей!'

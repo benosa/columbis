@@ -1,0 +1,9 @@
+ru:
+  mailer:
+    registration_data_subject: 'Регистрационные данные'
+    company_was_created_subject: 'Создана компания %{company}'
+    company_was_created:
+      subject: 'Создана компания'
+    user_was_created_subject: 'Зарегистрирован пользователь %{user}'
+    user_was_created:
+      subject: 'Зарегистрирован пользователь'

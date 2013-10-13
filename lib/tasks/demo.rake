@@ -46,6 +46,8 @@ namespace :demo do
 
     # Users
     @boss = create_user(@company, @office1, 'boss', 'demo', '123456')
+    @boss.update_column :subdomain, 'demo'
+    @company.update_column :owner_id, @boss.id
     @manager1 = create_user(@company, @office1, 'manager')
     @manager2 = create_user(@company, @office2, 'manager')
     @accountant = create_user(@company, @office1, 'accountant')

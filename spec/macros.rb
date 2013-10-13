@@ -73,8 +73,9 @@ module Macros
   end
 
   def save_screenshot
-    @screenshot_count ||= 0
-    page.save_screenshot Rails.root.join("tmp/capybara/screenshot#{@screenshot_count += 1}.png"), full: true
+    @@screenshot_count ||= 0
+    @@screenshot_count += 1
+    page.save_screenshot Rails.root.join("tmp/capybara/screenshot#{@@screenshot_count}.png"), full: true
   end
 
   module ClassMethods

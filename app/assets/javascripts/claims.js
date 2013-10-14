@@ -1094,6 +1094,11 @@ function set_deys() {
 
 // On ready
 $(function() {
+  if (localStorage.getItem('claim_unlock') == window.location) {
+    var claim_h1 = $('#content .top h1').text();
+    $('#content .top h1').text(claim_h1.replace(localStorage.getItem('edit_message'), ''));
+    localStorage.setItem('claim_unlock', '');
+  }
   // Row highlight
   $('body').on('click', '#claims td', function(e) {
     var $row = $(this).closest('.row'),
@@ -1125,6 +1130,7 @@ $(function() {
             }, 1800 * 1000); // 30 minutes
             if ($('#content .top h1').text().indexOf(data.message) == -1) {
               $('#content .top h1').append(' ' + data.message);
+              localStorage.setItem('edit_message', data.message);
             }
             $('.edit_claim').data('changed', true);
           } else if(data.locked) {
@@ -1156,7 +1162,10 @@ $(function() {
         type: 'post',
         data: { _method: 'put' },
         async: false, // use sync request, else it may not be sent
-        timeout: 10 * 1000 // 10 seconds
+        timeout: 10 * 1000, // 10 seconds
+        success: function(data) {
+          localStorage.setItem('claim_unlock', window.location);
+        }
       });
     }
   });

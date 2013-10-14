@@ -319,7 +319,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[check]', with: @user.login
         fill_in 'user[password]', with: @user.password
         find("input[name='commit']").click
-        current_path.should eq(new_user_session_path)
+        page.current_path.should eq(new_user_session_path)
       end
 
       it 'should sign in' do
@@ -327,7 +327,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[check]', with: @user.login
         fill_in 'user[password]', with: @user.password
         find("input[name='commit']").click
-        current_path.should eq(root_path)
+        page.current_path.should eq(root_path)
       end
     end
 
@@ -340,14 +340,14 @@ describe "Unlogged user", js: true do
         fill_in 'user[email]', with: @user_confirm.email
         fill_in 'user[check]', with: @user_confirm.email
         find("input[name='commit']").click
-        current_path.should eq(new_user_confirmation_path)
+        page.current_path.should eq(new_user_confirmation_path)
       end
 
       it 'should show email exist error' do
         visit new_user_confirmation_path
         fill_in 'user[check]', with: @user_confirm.email.to_s + '1'
         find("input[name='commit']").click
-        current_path.should eq(user_confirmation_path)
+        page.current_path.should eq(user_confirmation_path)
         page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.maybe_not_found')}")
       end
 
@@ -356,7 +356,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[check]', with: @user_confirm.email
         find("input[name='commit']").click
         open_last_email.should deliver_to @user_confirm.email
-        current_path.should eq(new_user_session_path)
+        page.current_path.should eq(new_user_session_path)
       end
 
 
@@ -368,8 +368,7 @@ describe "Unlogged user", js: true do
         visit new_user_password_path
         fill_in 'user[check]', with: @user.email
         find("input[name='commit']").click
-       # wait_until { current_path == new_user_session_path }
-        current_path.should eq(new_user_session_path)
+        page.current_path.should eq(new_user_session_path)
         @user.reload
         open_last_email.should deliver_to @user.email
         open_last_email.should have_body_text(/#{@user.reset_password_token}/)
@@ -377,8 +376,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[password]', with: '222222'
         fill_in 'user[password_confirmation]', with: '222222'
         find("input[name='commit']").click
-       # wait_until { current_path == root_path }
-        current_path.should eq(root_path)
+        page.current_path.should eq(root_path)
       end
 
       it 'should show error email not exist' do
@@ -395,7 +393,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[check]', with: FactoryGirl.generate(:email)
         find("input[name='commit']").click
         # wait_until { current_path == user_password_path }
-        current_path.should eq(new_user_password_path)
+        page.current_path.should eq(new_user_password_path)
         page.should_not have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.maybe_not_found')}")
       end
 
@@ -405,7 +403,7 @@ describe "Unlogged user", js: true do
         find("label[for='user_generate_password']").click
         find("input[name='commit']").click
         # wait_until { current_path == new_user_session_path }
-        current_path.should eq(new_user_session_path)
+        page.current_path.should eq(new_user_session_path)
         open_last_email.should deliver_to @user.email
         open_last_email.subject.should == I18n.t('devise.mailer.new_password_instructions.subject')
       end
@@ -465,7 +463,7 @@ describe "Unlogged user", js: true do
         fill_in 'user[subdomain]', with: 'demo'
         find("input[name='commit']").click
         should_not have_text("#{I18n.t('activerecord.attributes.user.subdomain')} #{I18n.t('errors.messages.reserved')}")
-        current_path.should eq(new_user_registration_path)
+        page.current_path.should eq(new_user_registration_path)
       end
     end
 

@@ -1,7 +1,10 @@
 class SessionsController < Devise::SessionsController
+  #skip_before_filter :verify_authenticity_token, :only => :create
+  #skip_before_filter :allow_params_authentication!, :only => :create
 
   def create
     if params[:user] && params[:user][:login].to_s == ''
+      allow_params_authentication!
       params[:user][:login] = params[:user][:check]
       params[:user].delete('check')
       respond_to do |format|

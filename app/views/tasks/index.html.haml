@@ -1,8 +1,6 @@
-
-- set_current_width(:small)
 - content_for(:body_class) { 'panel' }
 
-- title t('.tasks')
+- title is_admin? ? t('.tasks') : t('.your_reviews')
 
 - content_for :top do
   %form.filter

@@ -9,6 +9,7 @@ ru:
       all: 'Все'
       status: 'Статус'
       type: Тип
+      your_reviews: Ваши отзывы
     form:
       common: 'Общие данные'
     new:

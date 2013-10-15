@@ -38,7 +38,7 @@ class Mailer < ActionMailer::Base
     else
       "#[#{@task.id}] Задача завершена"
     end
-    mail(to: 'testdevmen@gmail.com', subject: subject)
+    mail(to: CONFIG[:support_email], subject: subject)
   end
 
   def new_password_instructions(record)

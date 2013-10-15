@@ -14,7 +14,7 @@
     %td
       = task.user.full_name rescue nil
     %td
-      = task.user.email
+      = task.user.email rescue nil
     %td
       = "#{task.executer.login} (#{task.executer.full_name})"  rescue nil
     %td
@@ -33,9 +33,8 @@
       = link_to t('status.actions.accept'), task_path(task, task: { status: 'work' }), remote: true, method: :put, id: "accept_task_#{task.id}"
       = link_to t('status.actions.finish'), '#', class: 'finish_task', id: "finish_task_#{task.id}"
       = link_to t('status.actions.canсel'), '#', class: 'cancel_task', id: "cancel_task_#{task.id}"
-    %td
       = link_to 'Переписка', emails_task_path(task)
-      %p
-        = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"
-        - if task.image?
-          = link_to '', "#{task.image.url}?download=1", :class => "uploader", :title => t('uploaders.download')
+      - if task.image?
+        = link_to '', "#{task.image.url}?download=1", :class => "uploader", :title => t('uploaders.download')
+    %td
+      = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"

@@ -3,10 +3,10 @@ class SessionsController < Devise::SessionsController
   #skip_before_filter :allow_params_authentication!, :only => :create
 
   def create
-    if params[:user] && params[:user][:login].to_s == ''
-      allow_params_authentication!
-      params[:user][:login] = params[:user][:check]
-      params[:user].delete('check')
+   # if params[:user] && params[:user][:login].to_s == ''
+    #  allow_params_authentication!
+    #  params[:user][:login] = params[:user][:check]
+    #  params[:user].delete('check')
       respond_to do |format|
         format.json do
           resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
@@ -20,9 +20,9 @@ class SessionsController < Devise::SessionsController
           respond_with resource, :location => after_sign_in_path_for(resource)
         end
       end
-    else
-      redirect_to new_user_session_path
-    end
+  #  else
+  #    redirect_to new_user_session_path
+  #  end
   end
 
   def sign_in_with_json(resource_or_scope, resource=nil)

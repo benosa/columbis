@@ -8,12 +8,13 @@ class UploadsController < ApplicationController
   end
 
   def show
-    mime_type = Rack::Mime::MIME_TYPES['.' + params[:format]] if params[:format]
-    file = company_file_path(params[:file], params[:format]) if params[:file]
+    file = company_file_path(params[:company_id], params[:file]) if params[:file]
     if file && File.exist?(file)
-      options = { x_sendfile: true }
+      ext = File.extname(file).downcase.tr('.','')
+      mime_type = Mime::Type.lookup_by_extension ext
+      options = {}
       options[:type] = mime_type if mime_type
-      options[:disposition] = 'inline' if !params[:download] && inline_format?(params[:format])
+      options[:disposition] = 'inline' if !params[:download] && inline_format?(ext)
       send_file file, options
     else
       render nothing: true
@@ -22,9 +23,8 @@ class UploadsController < ApplicationController
 
   protected
 
-    def company_file_path(file, format = nil)
-      company_dir = current_company ? current_company.id : 'default'
-      Rails.root.join "uploads/#{company_dir}/#{file}#{'.' + format.to_s if format}"
+    def company_file_path(company_dir, file)
+      Rails.root.join "uploads/#{company_dir}/#{file}"
     end
 
     def inline_format?(format)

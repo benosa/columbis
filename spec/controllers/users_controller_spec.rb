@@ -74,7 +74,7 @@ describe Dashboard::UsersController do
 end
 
 def email_to_check(attrs)
-  attrs[:check] = attrs.delete(:email)
+  attrs[:_check] = attrs.delete(:email)
   attrs
 end
 
@@ -164,7 +164,7 @@ describe SessionsController do
   def create_user
     # @boss = create_user_with_company_and_office :boss
     login, password = FactoryGirl.generate(:login), '111111'
-    @attributes = { check: login, password: password }
+    @attributes = { _check: login, password: password }
     @boss = create :boss, login: login, password: password
   end
 

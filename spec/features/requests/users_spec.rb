@@ -316,7 +316,7 @@ describe "Unlogged user", js: true do
       it 'should not sign in, because of filling hiden field' do
         visit new_user_session_path
         fill_in 'user[login]', with: @user.login
-        fill_in 'user[check]', with: @user.login
+        fill_in 'user[_check]', with: @user.login
         fill_in 'user[password]', with: @user.password
         find("input[name='commit']").click
         page.current_path.should eq(new_user_session_path)
@@ -324,7 +324,7 @@ describe "Unlogged user", js: true do
 
       it 'should sign in' do
         visit new_user_session_path
-        fill_in 'user[check]', with: @user.login
+        fill_in 'user[_check]', with: @user.login
         fill_in 'user[password]', with: @user.password
         find("input[name='commit']").click
         page.current_path.should eq(root_path)
@@ -338,14 +338,14 @@ describe "Unlogged user", js: true do
       it 'should not send confirm, because of filling hiden field' do
         visit new_user_confirmation_path
         fill_in 'user[email]', with: @user_confirm.email
-        fill_in 'user[check]', with: @user_confirm.email
+        fill_in 'user[_check]', with: @user_confirm.email
         find("input[name='commit']").click
         page.current_path.should eq(new_user_confirmation_path)
       end
 
       it 'should show email exist error' do
         visit new_user_confirmation_path
-        fill_in 'user[check]', with: @user_confirm.email.to_s + '1'
+        fill_in 'user[_check]', with: @user_confirm.email.to_s + '1'
         find("input[name='commit']").click
         page.current_path.should eq(user_confirmation_path)
         page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.maybe_not_found')}")
@@ -353,7 +353,7 @@ describe "Unlogged user", js: true do
 
       it 'should send confirm' do
         visit new_user_confirmation_path
-        fill_in 'user[check]', with: @user_confirm.email
+        fill_in 'user[_check]', with: @user_confirm.email
         find("input[name='commit']").click
         open_last_email.should deliver_to @user_confirm.email
         page.current_path.should eq(new_user_session_path)
@@ -366,7 +366,7 @@ describe "Unlogged user", js: true do
 
       it 'should create email, with reset password instructions' do
         visit new_user_password_path
-        fill_in 'user[check]', with: @user.email
+        fill_in 'user[_check]', with: @user.email
         find("input[name='commit']").click
         page.current_path.should eq(new_user_session_path)
         @user.reload
@@ -381,7 +381,7 @@ describe "Unlogged user", js: true do
 
       it 'should show error email not exist' do
         visit new_user_password_path
-        fill_in 'user[check]', with: FactoryGirl.generate(:email)
+        fill_in 'user[_check]', with: FactoryGirl.generate(:email)
         find("input[name='commit']").click
         # wait_until { current_path == user_password_path }
         page.should have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.maybe_not_found')}")
@@ -390,16 +390,17 @@ describe "Unlogged user", js: true do
       it 'should not show error email not exist, because of filling hiden field' do
         visit new_user_password_path
         fill_in 'user[email]', with: FactoryGirl.generate(:email)
-        fill_in 'user[check]', with: FactoryGirl.generate(:email)
+        fill_in 'user[_check]', with: FactoryGirl.generate(:email)
         find("input[name='commit']").click
         # wait_until { current_path == user_password_path }
+        save_screenshot
         page.current_path.should eq(new_user_password_path)
         page.should_not have_text("#{I18n.t('users.index.email')} #{I18n.t('errors.messages.maybe_not_found')}")
       end
 
       it 'should create email, with new password' do
         visit new_user_password_path
-        fill_in 'user[check]', with: @user.email
+        fill_in 'user[_check]', with: @user.email
         find("label[for='user_generate_password']").click
         find("input[name='commit']").click
         # wait_until { current_path == new_user_session_path }
@@ -417,7 +418,7 @@ describe "Unlogged user", js: true do
       it 'should create new user and company' do
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: @attr[:subdomain]
-        fill_in 'user[check]', with: @attr[:email]
+        fill_in 'user[_check]', with: @attr[:email]
         fill_in 'user[first_name]', with: @attr[:first_name]
         fill_in 'user[last_name]', with: @attr[:last_name]
         fill_in 'user[phone]', with: @attr[:phone]
@@ -428,15 +429,15 @@ describe "Unlogged user", js: true do
         last_user_email.should have_body_text(/#{@newuser.confirmation_token}/)
         html.should include(I18n.t('devise.registrations.user.signed_up_but_unconfirmed'))
         visit user_confirmation_path + '?confirmation_token=' + @newuser.confirmation_token.to_s
-        page.should have_text(I18n.t('you_must_add_office'))
-        #current_path.should eq(dashboard_edit_company_path)
+        page.should have_text(I18n.t('you_must_add_company_name_and_office'))
+        page.current_path.should eq(dashboard_edit_company_path)
       end
 
       it 'should not create new user - duplicate fields' do
 
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: 'newcomp'
-        fill_in 'user[check]', with: 'newuser@mail.ru'
+        fill_in 'user[_check]', with: 'newuser@mail.ru'
         fill_in 'user[first_name]', with: 'test'
         fill_in 'user[last_name]', with: 'testing'
         fill_in 'user[phone]', with: '766678888'
@@ -449,7 +450,7 @@ describe "Unlogged user", js: true do
       it 'should not create new user - reserved subdomain' do
         visit new_user_registration_path
         fill_in 'user[subdomain]', with: 'demo'
-        fill_in 'user[check]', with: 'newuser2@mail.ru'
+        fill_in 'user[_check]', with: 'newuser2@mail.ru'
         fill_in 'user[first_name]', with: 'test2'
         fill_in 'user[last_name]', with: 'testing2'
         fill_in 'user[phone]', with: '7666788882'

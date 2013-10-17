@@ -1,0 +1,38 @@
+- task = @task unless local_assigns[:task]
+- comment_length = task.comment && task.comment.length > 80
+%tr{id: "task-#{task.id}", class: "task #{'bug' if task.bug}", data: {id: task.id}}
+  %td{ class: task.bug && 'red_back' }
+    = task.id
+  %td
+    = l(task.created_at, format: :long)
+  %td
+    = t("status.#{task.status}")
+  %td.body{:class => [task.status =='cancel' && 'del', (task.body.length > 80) && 'popup_hover'], :data => { :content => (task.body.length > 80) && task.body }}
+    %p{:class => "with_tooltip", :title => task.body }
+      = truncate task.body, length: 80, omission: '...', separator: ' '
+  %td.comment{ :title => "\##{task.id} #{t('.comment')}", :class => (comment_length) && 'popup_hover', :data => { :content => (comment_length) && task.comment }}
+    = truncate task.comment, length: 80, omission: '...', separator: ' '
+  %td
+    = task.company.name rescue nil
+  %td
+    = task.user.full_name rescue nil
+  %td
+    = task.user.email rescue nil
+  %td
+    = "#{task.executer.login} (#{task.executer.full_name})" rescue nil
+  %td
+    = l(task.start_date, format: :long)
+  %td
+    = l(task.end_date, format: :long)
+  %td
+    = label_tag :"bug_#{task.id}", '&nbsp;'.html_safe, class: "checkbox #{'active' if task.bug}"
+    = check_box_tag :"bug_#{task.id}", task.id, task.bug, class: 'bug_checkbox'
+  %td.take
+    = link_to t('status.actions.accept'), task_path(task, task: { status: 'work' }), remote: true, method: :put, id: "accept_task_#{task.id}"
+    = link_to t('status.actions.finish'), '#', class: 'finish_task', id: "finish_task_#{task.id}"
+    = link_to t('status.actions.canсel'), '#', class: 'cancel_task', id: "cancel_task_#{task.id}"
+    = link_to 'Переписка', emails_task_path(task)
+    - if task.image?
+      = link_to '', "#{task.image.url}", :class => "attachment", :title => t('.attachment'), :target => '_blank'
+  %td
+    = link_to '', edit_task_path(task), class: 'edit_row', title: t('edit'), id: "edit_task_#{task.id}"

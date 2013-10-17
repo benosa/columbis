@@ -30,6 +30,17 @@ class Task < ActiveRecord::Base
   extend SearchAndSort
 
   define_index do
+    indexes body, status, sortable: true
+    has :id
+    has :user_id
+    has :created_at, :start_date, :end_date, type: :datetime
+    has :bug, type: :boolean
+    has "CRC32(status)", :as => :status_crc32, type: :integer
+
+    set_property :delta => true
+  end
+
+  define_index 'admin_index' do
     indexes [user(:last_name), user(:first_name), user(:middle_name)], as: :user_name, sortable: true
     indexes user(:email), as: :user_email, sortable: true
     indexes executer(:login), as: :executer, sortable: true
@@ -46,15 +57,6 @@ class Task < ActiveRecord::Base
     has "CRC32(status)", :as => :status_crc32, type: :integer
 
     set_property :delta => true
-  end
-
-  define_index 'to_no_admin' do
-    indexes body, status, sortable: true
-    has :id
-    has :user_id
-    has :start_date, :end_date, type: :datetime
-    has :bug, type: :boolean
-    has "CRC32(status)", :as => :status_crc32, type: :integer
   end
 
   state_machine :status, initial: :new do

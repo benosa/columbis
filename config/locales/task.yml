@@ -18,7 +18,10 @@ ru:
     comment_form:
       comment: 'Комментарий'
     task:
+      attachment: Файл
+    task_admin:
       comment: 'Комментарий'
+      attachment: Файл
     edit:
       edit_task: Редактирование задачи
     review_form:

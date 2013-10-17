@@ -13,10 +13,10 @@
     }
   }
 
-  .body { width: 450px; }
+  .body { min-width: 350px; }
 
   td.take{
-    width: 300px;
+    min-width: 250px;
   }
 
   .del{
@@ -74,7 +74,7 @@
   }
 }
 
-.uploader {
+.attachment {
   background: url("/assets/new_design/images/gm.png") no-repeat scroll 0% 0% transparent;
   display: inline-block;
   height: 14px;

@@ -5,34 +5,19 @@ class TasksController < ApplicationController
 
   before_filter :get_task, :only => [ :edit, :bug, :update, :edit, :emails ]
 
-  def download
-    if params[:id]
-      @task = Task.find(params[:id])
-      if @task.image?
-        send_file @task.image.path, :filename => @task.image.file.identifier
-      else
-        redirect_to redirect_back
-      end
-    else
-      redirect_to redirect_back
-    end
-    #send_file @printer.template.path, :filename => @printer.template.file.identifier
-  end
-
   def index
     @tasks =
       if search_or_sort?
         options = { :with => current_ability.attributes_for(:read, Task) }
-        options[:index] = 'to_no_admin' unless is_admin?
+        options[:index] = 'admin_index' if is_admin?
         options = search_and_sort_options(options)
         set_filters(options)
         search_paginate(Task.search_and_sort(options).with_columns, options)
-        # @tasks_collection = search_paginate(Task.search_and_sort(options).includes(:user), options)
-        # Task.sort_by_search_results(@tasks_collection)
       else
-        Task.accessible_by(current_ability).order("id ASC").active.with_columns.paginate(:page => params[:page], :per_page => per_page)
+        order = is_admin? ? 'id DESC' : 'created_at DESC'
+        Task.accessible_by(current_ability).order(order).active.with_columns.paginate(:page => params[:page], :per_page => per_page)
       end
-    render :partial => 'tasks' if request.xhr?
+    render :partial => tasks_partial if request.xhr?
   end
 
   def new
@@ -43,11 +28,8 @@ class TasksController < ApplicationController
   end
 
   def create
-    # raise params.inspect
     @task = Task.new(params[:task])
-    unless is_admin?
-      @task.company = current_company
-    end
+    @task.company = current_company unless is_admin?
     @task.user = current_user
     @task.status = 'new' if params[:task][:status].blank?
     @task.body = nil if @task.body.empty?
@@ -76,6 +58,7 @@ class TasksController < ApplicationController
   def create_review
     redirect_back unless current_user
     @task = Task.new(body: params[:review], status: 'new', image: params[:image])
+    @task.company = current_company unless is_admin?
     @task.user = current_user
     if @task.save
       redirect_back notice: t('tasks.messages.review_created')
@@ -136,45 +119,51 @@ class TasksController < ApplicationController
     end
   end
 
+  helper_method :tasks_partial
+  def tasks_partial
+    is_admin? ? 'tasks_admin' : 'tasks'
+  end
+
   private
 
-  def get_task
-    @task = Task.find(params[:id])
-  end
-
-  def set_filters(options)
-    filter = {}
-    filter[:user_id] = params[:user_id] if params[:user_id].present?
-    if params[:status].present? and params[:status] != 'all'
-      filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
+    def get_task
+      @task = Task.find(params[:id])
     end
 
-    if params[:type].present? and params[:type] != 'all'
-      filter[:bug] = params[:type] == 'bug'
+    def set_filters(options)
+      filter = {}
+      filter[:user_id] = params[:user_id] if params[:user_id].present?
+      if params[:status].present? and params[:status] != 'all'
+        filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
+      end
+
+      if params[:type].present? and params[:type] != 'all'
+        filter[:bug] = params[:type] == 'bug'
+      end
+
+      options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
+      options
     end
 
-    options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
-    options
-  end
-
-  def task_params
-    return {} unless params[:task]
-    prms = params[:task].dup
-    # case
-    # when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.zone.now, :end_date => nil })
-    # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.zone.now })
-    # end
-    prms.delete(:comment) if prms[:comment].blank?
-    prms
-  end
-
-  def task_in_search?(task)
-    in_search = true
-    if params[:status].present? and params[:status] != 'all'
-      in_search = false if params[:status] == 'active' and !%w(new work).include?(task.status)
-      in_search = false if params[:status] != 'active' and task.status != params[:status]
+    def task_params
+      return {} unless params[:task]
+      prms = params[:task].dup
+      # case
+      # when prms[:status] == 'work' then prms.merge!({ :executer => current_user, :start_date => Time.zone.now, :end_date => nil })
+      # when %w(finish cancel).include?(prms[:status]) then prms.merge!({ :executer => current_user, :end_date => Time.zone.now })
+      # end
+      prms.delete(:comment) if prms[:comment].blank?
+      prms
     end
-    in_search = false if !params[:bug].nil? and task.status != params[:bug]
-    in_search
-  end
+
+    def task_in_search?(task)
+      in_search = true
+      if params[:status].present? and params[:status] != 'all'
+        in_search = false if params[:status] == 'active' and !%w(new work).include?(task.status)
+        in_search = false if params[:status] != 'active' and task.status != params[:status]
+      end
+      in_search = false if !params[:bug].nil? and task.status != params[:bug]
+      in_search
+    end
+
 end

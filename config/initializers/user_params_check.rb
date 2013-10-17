@@ -16,7 +16,7 @@ class UserParamsCheck
             env['rack.request.form_hash'] = params
             return @app.call(env)
           else
-            return [301, {"Location" => env['REQUEST_PATH'] }, [] ]
+            return [301, {"Location" => env['HTTP_REFERER'] }, [] ]
           end
         end
       end

@@ -17,6 +17,17 @@ GEM
     active_attr (0.7.0)
       activemodel (>= 3.0.2, < 4.1)
       activesupport (>= 3.0.2, < 4.1)
+    active_utils (2.0.1)
+      activesupport (>= 2.3.11)
+      i18n
+    activemerchant (1.39.2)
+      active_utils (~> 2.0, >= 2.0.1)
+      activesupport (>= 2.3.14, < 5.0.0)
+      builder (>= 2.1.2, < 4.0.0)
+      i18n (~> 0.5)
+      json (~> 1.7)
+      money (< 6.0.0)
+      nokogiri (~> 1.4)
     activemodel (3.2.14)
       activesupport (= 3.2.14)
       builder (~> 3.0.0)
@@ -205,6 +216,8 @@ GEM
       subexec (~> 0.2.1)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
+    money (5.1.1)
+      i18n (~> 0.6.0)
     multi_json (1.7.8)
     mustache (0.99.4)
     net-scp (1.1.2)
@@ -388,6 +401,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_attr (~> 0.7.0)
+  activemerchant (~> 1.39.2)
   annotate (~> 2.5.0)
   best_in_place (~> 2.0.2)
   better_errors

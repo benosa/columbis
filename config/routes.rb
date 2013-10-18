@@ -15,6 +15,11 @@ Tourism::Application.routes.draw do
 
   resources :sms_sendings
 
+  scope 'robokassa' do # Robokassa routes
+    match 'paid'    => 'robokassa#paid',    :as => :robokassa_paid # to handle Robokassa push request
+    match 'success' => 'robokassa#success', :as => :robokassa_success # to handle Robokassa success redirect
+    match 'fail'    => 'robokassa#fail',    :as => :robokassa_fail # to handle Robokassa fail redirect
+  end
 
   match 'amount_in_word' => 'application#amount_in_word'
   match 'get_currency_course' => 'application#get_currency_course'

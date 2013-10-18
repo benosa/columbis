@@ -9,22 +9,18 @@ class RobokassaController < ApplicationController
   def paid # Robokassa call this action after transaction
     if @notification.acknowledge # check if it’s genuine Robokassa request
       # @payment.approve! # project-specific code
-      render :text => I18n.t("notice.robokassa.thanks_for_paid")
+      render :text => "Выполнено действие"
     else
-      head :bad_request
+      render :text => "Не верный вызов"
     end
   end
 
   def success # Robokassa redirect user to this action if it’s all ok
-    if @notification.acknowledge
-      # @payment.approve!
-    end
-
-    redirect_to edit_dashboard_company_path(current_company), :notice => I18n.t("notice.robokassa.success")
+    redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата произведена успешно"
   end
 
   def fail # Robokassa redirect user to this action if it’s not
-    redirect_to edit_dashboard_company_path(current_company), :notice => I18n.t("notice.robokassa.fail")
+    redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата не произведена"
   end
 
   private

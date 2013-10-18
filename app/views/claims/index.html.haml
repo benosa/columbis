@@ -1,5 +1,5 @@
 -# set_current_width(:small)# if small_width? # TODO: small_width in claims and claim form
-- content_for(:html_class) { 'main_page' + (current_company.id == 8 ? ' mistral-company' : '') } # If it's Mistral company, use special class
+- content_for(:html_class) { 'main_page' + (is_mistral? ? ' mistral-company' : '') } # If it's Mistral company, use special class
 
 - title t('.claims')
 

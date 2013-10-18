@@ -1,22 +1,9 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'tourist_list panel' }
 
-- title t('.tourists')
-
--# content_for :top do
-  .switch_type
-    %a.client.potential-switcher{:id => 'clients', :href => "#", :class => !show_potential_clients && 'active', :data => { :param=> 'potential', :filter => 1 }}
-      %span= t('.clients')
-    %a.client.potential-switcher{:id => 'clients_potential', :href => "#", :class => show_potential_clients && 'active', :data => { :param=> 'potential', :filter => 1, :value => 1 }}
-      %span= t('.potential_clients')
+- title !show_potential_clients ? t('.tourists') : t('.potential_clients')
 
 - content_for :top do
-  .switch_type
-    %a.client.potential-switcher{ :href => tourists_url, :class => !show_potential_clients && 'active', id: 'clients' }
-      %span= t('.clients')
-    %a.client.potential-switcher{ :href => tourists_url(potential: 1), :class => show_potential_clients && 'active', id: 'clients_potential'}
-      %span= t('.potential_clients')
-
   %form.filter
     - unless show_potential_clients
       = render partial: 'shared/search_field'

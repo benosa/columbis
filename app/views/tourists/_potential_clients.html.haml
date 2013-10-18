@@ -1,4 +1,4 @@
-%table#tourists.tourists.reservations.tour_operators.lower_rows
+%table#tourists.tourists.reservations.tour_operators{ class: is_mistral? && 'lower_rows' }
   %tr
     %th.created_at
       = sort_link(:created_at, Tourist.human_attribute_name(:created_at), :desc)

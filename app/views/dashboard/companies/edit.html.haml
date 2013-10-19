@@ -6,15 +6,15 @@
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }, :html => { :multipart => true }
 
-.form_column
-  .form_block
-    .block_title
-      %h2= 'Оплата'
-    .form_block_content
-      .fake_row
-        - @payment = { :id => 0, :amount => 10000 }
-        = payment_service_for @payment[:id], CONFIG[:robokassa_login], :amount =>  @payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
-          = submit_tag "Подтвердить"
+/ .form_column
+/   .form_block
+/     .block_title
+/       %h2= 'Оплата'
+/     .form_block_content
+/       .fake_row
+/         - @payment = { :id => 0, :amount => 10000 }
+/         = payment_service_for @payment[:id], CONFIG[:robokassa_login], :amount =>  @payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
+/           = submit_tag "Подтвердить"
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

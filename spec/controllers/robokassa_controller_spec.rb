@@ -28,7 +28,7 @@ describe RobokassaController do
   context "GET paid with valid params" do
     let(:method) { get :paid, :OutSum => 10000, :InvId => 0,
       :SignatureValue => Digest::MD5.hexdigest(
-        "10000:0:" + CONFIG[:robokassa_password2].to_s
+        "10000:0:" + CONFIG[:robokassa_secret].to_s
       )
     }
 

@@ -7,6 +7,9 @@ class RobokassaController < ApplicationController
   before_filter :find_payment
 
   def paid # Robokassa call this action after transaction
+    # p = @notification.security_key
+    # pp = @notification.generate_signature
+    # raise "ASd"
     if @notification.acknowledge # check if it’s genuine Robokassa request
       # @payment.approve! # project-specific code
       render :text => "Выполнено действие"
@@ -26,7 +29,7 @@ class RobokassaController < ApplicationController
   private
 
     def create_notification
-      @notification = Robokassa::Notification.new(request.raw_post, :secret => CONFIG[:robokassa_secret])
+      @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_secret])
     end
 
     def find_payment

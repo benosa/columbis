@@ -6,21 +6,20 @@ class UserParamsCheck
 
   def call(env)
     params = env['rack.request.form_hash']
-    if env['REQUEST_METHOD'] == 'POST' && params && params['user'] && params['user']['_check']
+    if env['REQUEST_METHOD'] == 'POST' && params && params['user'].kind_of?(Hash) && !params['user']['_check'].nil?
+      user_params = params['user']
       @check_params.each do |param|
-        if params['user'].key?(param)
-          if params['user'][param].blank?
-            params['user'][param] = params['user']['_check']
-            params['user'].delete('_check')
-            env['rack.request.form_hash'] = params
-            return @app.call(env)
-          else
-            return [301, {"Location" => env['HTTP_REFERER'] }, [] ]
-          end
+        next unless user_params.key?(param)
+        if user_params[param].blank?
+          user_params[param] = user_params['_check']
+          user_params.delete('_check')
+          break
+        else
+          return [301, {"Location" => env['HTTP_REFERER'] }, [] ]
         end
       end
-    else
-      @app.call(env)
     end
+
+    @app.call(env)
   end
 end

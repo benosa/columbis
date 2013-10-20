@@ -17,7 +17,6 @@ module Tourism
   class Application < Rails::Application
     config.force_ssl = CONFIG[:force_ssl]
     config.ssl_options = CONFIG[:ssl_options]
-    config.middleware.insert_before Warden::Manager, 'UserParamsCheck'
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -81,6 +80,10 @@ module Tourism
 
     # Special module for Mistral
     require 'mistral'
+
+    # Use middleware to protect public forms
+    require 'user_params_check'
+    config.middleware.insert_before Warden::Manager, UserParamsCheck
 
   end
 end

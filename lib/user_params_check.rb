@@ -1,4 +1,3 @@
-
 class UserParamsCheck
   def initialize(app)
     @app = app
@@ -7,7 +6,7 @@ class UserParamsCheck
 
   def call(env)
     params = env['rack.request.form_hash']
-    if params && params['user'] && params['user']['_check'] && env['REQUEST_METHOD'] == 'POST'
+    if env['REQUEST_METHOD'] == 'POST' && params && params['user'] && params['user']['_check']
       @check_params.each do |param|
         if params['user'].key?(param)
           if params['user'][param].blank?

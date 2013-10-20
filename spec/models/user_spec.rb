@@ -26,7 +26,11 @@ describe User do
       it { should validate_presence_of :phone }
     end
     context "when invalid" do
-      subject { FactoryGirl.build(:boss) }
+      subject do
+        @boss = FactoryGirl.build(:boss)
+        @boss.company = nil # company is created after boss has registered
+        @boss
+      end
       it { should_not allow_value(nil).for(:last_name) }
       it { should_not allow_value(nil).for(:first_name) }
       it { should_not allow_value(nil).for(:phone) }

@@ -15,10 +15,20 @@ FactoryGirl.define do
     delta false
 
     factory (:admin)      { role 'admin' }
-    factory (:boss)       { role 'boss' }
     factory (:manager)    { role 'manager' }
     factory (:accountant) { role 'accountant' }
     factory (:supervisor) { role 'supervisor' }
+
+    factory :boss do
+      role 'boss'
+      after(:create) do |user|
+        company = user.company
+        if company && company.owner.nil?
+          company.owner = user
+          company.save(validate: false)
+        end
+      end
+    end
 
     factory :alien_boss do
       company

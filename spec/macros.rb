@@ -36,7 +36,8 @@ module Macros
 
   def login_as(user)
     visit new_user_session_path
-    fill_in "user[login]", :with => user.login
+    # fill special _check field unless login field
+    fill_in "user[_check]", :with => user.login
     fill_in "user[password]", :with => user.password
     page.click_button 'user_session_submit'
     user

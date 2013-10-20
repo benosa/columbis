@@ -23,7 +23,12 @@ describe Tourist do
       subject { FactoryGirl.create :tourist }
       # it { should validate_presence_of(:first_name).with_message(message_for :first_name) }
       # it { should validate_presence_of(:last_name).with_message(message_for :last_name) }
-      it { should validate_presence_of(:full_name).with_message(message_for :full_name) }
+      it "should validate the presence of full_name" do
+        subject.full_name = nil
+        subject.valid?
+        subject.errors.full_messages.include?(message_for :full_name).should be_true
+      end
+      #it { should validate_presence_of(:full_name).with_full_message(message_for :full_name) }
       it { should validate_presence_of :company_id }
     end
 

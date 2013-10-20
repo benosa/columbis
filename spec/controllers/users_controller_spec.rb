@@ -138,7 +138,7 @@ describe RegistrationsController do
     end
 
     it 'should return success:false because email exist' do
-      @attributes['email'] = @boss.email
+      @attributes[:email] = @boss.email
       post :create, :user => email_to_check(@attributes), :format => :json
       response.header['Content-Type'].should match /json/
       response.body.should have_text('"success":false')

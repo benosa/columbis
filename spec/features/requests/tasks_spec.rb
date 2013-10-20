@@ -36,51 +36,54 @@ describe "Tasks:", js: true do
         visit tasks_path
       end
 
-      it "should contain add button, filter by status and bug, links and data for each task" do
-        # Add button
-        should have_selector("a[href='#{new_task_path}']")
+      describe "check_button_links" do
+        it "should contain add button, filter by status and bug, links and data for each task" do
+          # Add button
+          should have_selector("a[href='#{new_task_path}']")
 
-        # Filters
-        within "form.filter" do
-          should have_field("filter")
-          within "select[name='status']" do
-            status_filter_options.each do |option|
-              should have_selector("option[value='#{option[1]}']", text: option[0])
+          # Filters
+          within "form.filter" do
+            should have_field("filter")
+            within "select[name='status']" do
+              status_filter_options.each do |option|
+                should have_selector("option[value='#{option[1]}']", text: option[0])
+              end
+            end
+            within "select[name='type']" do
+              type_filter_options.each do |option|
+                should have_selector("option[value='#{option[1]}']", text: option[0])
+              end
             end
           end
-          within "select[name='type']" do
-            type_filter_options.each do |option|
-              should have_selector("option[value='#{option[1]}']", text: option[0])
-            end
+
+          # Default list should not contain inactive tasks
+          inactive_tasks.each do |task|
+            should_not have_selector("#task-#{task.id}")
           end
-        end
 
-        # Default list should not contain inactive tasks
-        inactive_tasks.each do |task|
-          should_not have_selector("#task-#{task.id}")
-        end
+          # Active tasks data
+          active_tasks.each do |task|
+            within "#task-#{task.id}" do
+              should have_content(truncate task.body, length: 80)
+              should have_content(truncate task.comment, length: 80)
+              should have_content(task.user.full_name) if task.user
+              should have_content(task.user.company.name) if task.user && task.user.role != 'admin'
+              should have_content(task.user.email) if task.user
+              should have_content(task.executer.login) if task.executer
+              should have_content(task.executer.full_name) if task.executer
+              should have_content(I18n.t("status.#{task.status}"))
+              should have_content(I18n.l(task.created_at, format: :long)) if task.created_at
+              should have_content(I18n.l(task.start_date, format: :long)) if task.start_date
+              should have_content(I18n.l(task.end_date, format: :long)) if task.end_date
+              has_field?("bug_#{task.id}").should be_true
 
-        # Active tasks data
-        active_tasks.each do |task|
-          within "#task-#{task.id}" do
-            should have_content(truncate task.body, length: 80)
-            should have_content(truncate task.comment, length: 80)
-            should have_content(task.user.full_name) if task.user
-            should have_content(task.user.company.name) if task.user && task.user.role != 'admin'
-            should have_content(task.user.email) if task.user
-            should have_content(task.executer.login) if task.executer
-            should have_content(task.executer.full_name) if task.executer
-            should have_content(I18n.t("status.#{task.status}"))
-            should have_content(I18n.l(task.created_at, format: :long)) if task.created_at
-            should have_content(I18n.l(task.start_date, format: :long)) if task.start_date
-            should have_content(I18n.l(task.end_date, format: :long)) if task.end_date
-            has_field?("bug_#{task.id}").should be_true
-
-            should have_link(I18n.t('status.actions.accept'))
-            should have_link(I18n.t('status.actions.finish'))
-            should have_link(I18n.t('status.actions.canсel'))
-            should have_selector("a[href='#{edit_task_path(task)}']")
-            should have_selector("a[href='/tasks/#{task.id}/image']")
+              should have_link(I18n.t('status.actions.accept'))
+              should have_link(I18n.t('status.actions.finish'))
+              should have_link(I18n.t('status.actions.canсel'))
+              should have_selector("a[href='#{edit_task_path(task)}']")
+              should have_selector("a[href='#{emails_task_path(task)}']")
+              #should have_selector("a[href='/tasks/#{task.id}/image']")
+            end
           end
         end
       end
@@ -320,7 +323,7 @@ describe "Tasks:", js: true do
       end
     end
 
-    describe "update task" do
+    describe "update_task" do
 
       let(:task) { create(:new_task) }
 
@@ -343,7 +346,7 @@ describe "Tasks:", js: true do
       end
 
       it 'should edit an task, redirect to task_path' do
-        click_link "edit_task_#{task.id}"
+        find("#edit_task_#{task.id}").click
         current_path.should eq("/tasks/#{task.id}/edit")
 
         expect {

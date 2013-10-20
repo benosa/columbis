@@ -33,7 +33,7 @@ FactoryGirl.define do
   factory :clientbase_claim, parent: :claim do
     after(:create) do |claim|
       date_in = Time.zone.now
-      date_in = "#{date_in.year}.#{rand(1..date_in.month)}.#{rand(1..date_in.day)}".to_datetime
+     # date_in = "#{date_in.year}.#{rand(1..date_in.month)}.#{rand(1..date_in.day)}".to_datetime
       FactoryGirl.create(:clientbase_payment, :claim => claim, :company => claim.company,
         :recipient_id => claim.company.id, :date_in => date_in)
     end

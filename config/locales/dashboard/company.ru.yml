@@ -65,7 +65,7 @@ ru:
         inn: 'ИНН'
         subdomain: 'Адрес в системе'
         logo: 'Логотип'
-      
+
       # it's useful only for rails >= 3.2.0
       company/address:
         region: 'Регион'

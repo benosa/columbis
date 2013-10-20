@@ -39,7 +39,7 @@ class Company < ActiveRecord::Base
 
   after_create do |company|
     Mailer.company_was_created(self).deliver
-  end
+  end if CONFIG[:support_delivery]
 
   extend SearchAndSort
 

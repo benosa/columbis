@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 
   before_save :check_name_attributes
   before_save :check_owner_boss
-  after_save :send_registration_info_to_support, :if => :just_confirmed?
+  after_save :send_registration_info_to_support, :if => :just_confirmed? if CONFIG[:support_delivery]
   after_save :create_company, :if => :just_confirmed?
 
   define_index do

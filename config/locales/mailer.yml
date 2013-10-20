@@ -7,3 +7,13 @@ ru:
     user_was_created_subject: 'Зарегистрирован пользователь %{user}'
     user_was_created:
       subject: 'Зарегистрирован пользователь'
+
+    # Devise methods
+    confirmation_instructions:
+      subject: "Инструкции по подтверждению учётной записи"
+    new_password_instructions:
+      subject: "Новый пароль"
+    reset_password_instructions:
+      subject: "Инструкции по восстановлению пароля"
+    unlock_instructions:
+      subject: "Инструкции по разблокировке учётной записи"

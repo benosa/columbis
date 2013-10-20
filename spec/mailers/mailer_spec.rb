@@ -20,22 +20,24 @@ describe 'Mailer' do
       it { should have_body_text(/#{@user.confirmation_token}/) }
     end
 
-    context "should create mail to support about user" do
-      subject { Mailer.user_was_created(@user) }
-      it { should deliver_to CONFIG[:support_email] }
-      it { should have_body_text(/#{@user.login}/) }
-    end
+    describe "when mail to support" do
+      before(:all) do
+        @config_support_delivery = CONFIG[:support_delivery]
+        CONFIG[:support_delivery] = true
+      end
+      after(:all) { CONFIG[:support_delivery] = @config_support_delivery }
 
-    context "should create mail to support about office" do
-      subject { Mailer.office_was_created(@user.office) }
-      it { should deliver_to CONFIG[:support_email] }
-      it { should have_body_text(/#{@user.office.try(:name)}/) }
-    end
+      context "should create mail to support about user" do
+        subject { Mailer.user_was_created(@user) }
+        it { should deliver_to CONFIG[:support_email] }
+        it { should have_body_text(/#{@user.full_name || @user.login}/) }
+      end
 
-    context "should create mail to support about compay" do
-      subject { Mailer.company_was_created(@user.company) }
-      it { should deliver_to CONFIG[:support_email] }
-      it { should have_body_text(/#{@user.company.try(:name)}/) }
+      context "should create mail to support about compay" do
+        subject { Mailer.company_was_created(@user.company) }
+        it { should deliver_to CONFIG[:support_email] }
+        it { should have_body_text(/#{@user.company.try(:name)}/) }
+      end
     end
   end
 end

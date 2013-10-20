@@ -1,0 +1,35 @@
+%h1 Listing user_payments
+
+%table
+  %tr
+    %th Amount
+    %th Currency
+    %th Invoice
+    %th Period
+    %th Description
+    %th Approved
+    %th Company
+    %th User
+    %th Tariff
+    %th
+    %th
+    %th
+
+  - @user_payments.each do |user_payment|
+    %tr
+      %td= user_payment.amount
+      %td= user_payment.currency
+      %td= user_payment.invoice
+      %td= user_payment.period
+      %td= user_payment.description
+      %td= user_payment.approved
+      %td= user_payment.company_id
+      %td= user_payment.user_id
+      %td= user_payment.tariff_id
+      %td= link_to 'Show', user_payment
+      %td= link_to 'Edit', edit_user_payment_path(user_payment)
+      %td= link_to 'Destroy', user_payment, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New User payment', new_user_payment_path

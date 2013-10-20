@@ -12,6 +12,8 @@
           = render 'layouts/main_menu/second_reports'
         - when 'tasks'
           = render 'layouts/main_menu/second_support'
+        - when 'registrations', 'user_payments'
+          = render 'layouts/main_menu/second_users'
     .logo
     - if view_switcher?
       .type

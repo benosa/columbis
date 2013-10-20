@@ -80,6 +80,9 @@ ru:
         *support
       second_support:
         *support
+      second_users:
+        profile: 'Профайл'
+        user_payments: 'Оплаты'
       newclaim:
         new_claim: 'Новая заявка'
       admin:

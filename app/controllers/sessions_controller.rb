@@ -1,24 +1,18 @@
 class SessionsController < Devise::SessionsController
 
   def create
-    if params[:user] && params[:user][:login].to_s == ''
-      params[:user][:login] = params[:user][:check]
-      params[:user].delete('check')
-      respond_to do |format|
-        format.json do
-          resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-          sign_in_with_json(resource_name, resource)
-        end
-
-        format.html do
-          self.resource = warden.authenticate!(auth_options)
-          set_flash_message(:notice, :signed_in) if is_navigational_format?
-          sign_in(resource_name, resource)
-          respond_with resource, :location => after_sign_in_path_for(resource)
-        end
+    respond_to do |format|
+      format.json do
+        resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+        sign_in_with_json(resource_name, resource)
       end
-    else
-      redirect_to new_user_session_path
+
+      format.html do
+        self.resource = warden.authenticate!(auth_options)
+        set_flash_message(:notice, :signed_in) if is_navigational_format?
+        sign_in(resource_name, resource)
+        respond_with resource, :location => after_sign_in_path_for(resource)
+      end
     end
   end
 

@@ -65,7 +65,7 @@ ru:
         inn: 'ИНН'
         subdomain: 'Адрес в системе'
         logo: 'Логотип'
-
+      
       # it's useful only for rails >= 3.2.0
       company/address:
         region: 'Регион'
@@ -78,11 +78,6 @@ ru:
       company/offices:
         name: 'Название офиса'
         default_password: 'Пароль по умолчанию'
-
-    errors:
-      messages:
-        subdomain_invalid: 'может содержать только прописные латинские символы (a-z), знак - и цифры (0-9).'
-        subdomain_taken: 'уже занят, укажите другой.'
 
   companies:
     messages:

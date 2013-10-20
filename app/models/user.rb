@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
   validates :phone, presence: true, length: { minimum: 8 }, uniqueness: true, :if => proc{ company.nil? || company_owner? }
   validates :subdomain, :on => :create, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
-    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
-    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') },
+    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: proc{ I18n.t('activerecord.errors.messages.subdomain_invalid') } },
+    uniqueness: { message: proc{ I18n.t('activerecord.errors.messages.subdomain_taken') } },
     :if => proc{ self.company.nil? }
 
   before_save :check_name_attributes

@@ -95,7 +95,7 @@ class Claim < ActiveRecord::Base
   validate :presence_of_applicant
   validate :arrival_date_cant_be_greater_departure_date
   validate :check_operator_correctness
-  validates :hotel, hotel: { message: I18n.t('activerecord.errors.messages.hotel_invalid') }
+  validates :hotel, hotel: { message: proc{ I18n.t('activerecord.errors.messages.hotel_invalid') } }
   validates :num, :numericality => { :greater_than => 0 }, :uniqueness => { :scope => :company_id }, :if => proc{ |claim| claim.num.present? }
   validates_presence_of :num, :unless => :new_record?
   validate :check_lock, :on => :update

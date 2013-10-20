@@ -29,8 +29,8 @@ class Company < ActiveRecord::Base
   validates_presence_of :name
   validates :subdomain, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
-    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
-    uniqueness: { message: I18n.t('activerecord.errors.messages.subdomain_taken') }
+    format: { with: /\A[-a-z0-9]{3,20}\Z/, message: proc{ I18n.t('activerecord.errors.messages.subdomain_invalid') } },
+    uniqueness: { message: proc{ I18n.t('activerecord.errors.messages.subdomain_taken') } }
   validates :logo, :file_size => { :maximum => CONFIG[:max_logo_size].megabytes.to_i }
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank

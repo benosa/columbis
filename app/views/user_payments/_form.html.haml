@@ -11,12 +11,11 @@
         = f.text_field :description
         %p= f.label :tariff
         = f.text_field :tariff_id
-        %p= f.label :currency
-        = f.text_field :currency
         %p= f.label :period
         = f.text_field :period
         %p= f.label :amount
-        = f.text_field :amount
+        = f.number_field :amount
+        = f.select :currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

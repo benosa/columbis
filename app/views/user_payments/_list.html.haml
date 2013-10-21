@@ -6,8 +6,6 @@
         %span= t('.description')
       %th
         %span= t('.amount')
-      %th
-        %span= t('.currency')
       %th= sort_link(:updated_at, t('.updated_at'), :default)
       %th
         %span= t('.approved')
@@ -21,16 +19,17 @@
         %td
           %p= user_payment.description
         %td
-          %p= user_payment.amount
+          %p= user_payment.amount.to_s + " " + t(user_payment.currency)
         %td
-          %p= user_payment.currency
-        %td
-          %p= user_payment.updated_at
-        %td
-          %p= user_payment.approved
-        %td
-          = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
-            = submit_tag t('.confirm')
-          = link_to '', user_payment, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{user_payment.id}"
+          %p= l(user_payment.updated_at, :format => "%d.%m.%Y %H:%M")
+        %td{ :width => "100px" }
+          - if user_payment.approved
+            %p= t('.have_approved')
+          - else
+            = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
+              = submit_tag t('.confirm')
+        %td{ :width => "50px" }
+          - if can? :destroy, user_payment
+            = link_to '', user_payment, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{user_payment.id}", :style => "margin-left:10px"
 
   = render :partial => 'shared/pagination', :locals => { :collection => @user_payments }

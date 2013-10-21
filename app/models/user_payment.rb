@@ -9,6 +9,7 @@ class UserPayment < ActiveRecord::Base
 
   validates_presence_of :amount, :currency, :period
   validates_uniqueness_of :invoice
+  validates :currency, :inclusion => CurrencyCourse::CURRENCIES
 
   after_create :set_invoice
 
@@ -19,12 +20,16 @@ class UserPayment < ActiveRecord::Base
 
     has :invoice
     has :updated_at
+    has :approved
+    has :company_id
 
     set_property :delta => true
   end
 
   sphinx_scope(:by_updated_at) { { :order => :updated_at } }
   default_sphinx_scope :by_updated_at
+
+  extend SearchAndSort
 
   def set_invoice
     UserPayment.update(id, :invoice => company_id * 10000 + id)

@@ -4,7 +4,7 @@ ru:
       user_payment:
         description: 'Пояснение'
         tariff: 'Тарифный план'
-        period: 'Период оплаты'
+        period: 'Период оплаты (месяц)'
         amount: 'Сумма'
   user_payments:
     index:
@@ -12,6 +12,7 @@ ru:
       new_user_payment: 'Добавить счёт'
       approvedable: 'Вид счета'
       not_approved: 'Не подтверждённые'
+      has_approved: 'Оплаченные'
       all: 'Все'
     form:
       common: 'Данные счёта'
@@ -19,10 +20,10 @@ ru:
       invoice: '№ счёта'
       description: 'Пояснения'
       amount: 'Сумма'
-      currency: 'Валюта'
       updated_at: 'Последнее обновление'
       approved: 'Статус'
       confirm: 'Оплатить'
+      have_approved: 'Оплачено'
     new:
       new_user_payment: 'Создание счёта'
 

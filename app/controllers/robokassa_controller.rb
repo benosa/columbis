@@ -7,11 +7,7 @@ class RobokassaController < ApplicationController
   before_filter :find_payment
 
   def paid # Robokassa call this action after transaction
-    # p = @notification.security_key
-    # pp = @notification.generate_signature
-    # raise "ASd"
     if @notification.acknowledge # check if it’s genuine Robokassa request
-      # @payment.approve! # project-specific code
       render :text => "Выполнено действие"
     else
       render :text => "Не верный вызов"
@@ -19,11 +15,19 @@ class RobokassaController < ApplicationController
   end
 
   def success # Robokassa redirect user to this action if it’s all ok
-    redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата произведена успешно"
+    if @notification.acknowledge # check if it’s genuine Robokassa request
+      redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата произведена успешно"
+    else
+      render :text => "Не верный вызов"
+    end
   end
 
   def fail # Robokassa redirect user to this action if it’s not
-    redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата не произведена"
+    if @notification.acknowledge # check if it’s genuine Robokassa request
+      redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата не произведена"
+    else
+      render :text => "Не верный вызов"
+    end
   end
 
   private

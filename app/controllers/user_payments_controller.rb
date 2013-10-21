@@ -37,6 +37,8 @@ class UserPaymentsController < ApplicationController
       case params[:approvedable]
         when 'not_approved'
           options[:with][:approved] = false
+        when 'approved'
+          options[:with][:approved] = true
         when 'all'
           options[:with].delete(:approved)
       end

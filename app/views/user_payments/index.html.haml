@@ -7,7 +7,7 @@
   %form.filter
     = render 'shared/search_field'
     = label_tag :approvedable, t('.approvedable')
-    = select_tag :approvedable, options_for_select([[t('.not_approved'), 'not_approved'], [t('.all'),'all']], 'not_approved'), class: 'filter_select', id: 'approvedable_filter_options', data: { param: 'approvedable', filter: true }
+    = select_tag :approvedable, options_for_select([[t('.not_approved'), 'not_approved'], [t('.has_approved'), 'approved'], [t('.all'),'all']], 'not_approved'), class: 'filter_select', id: 'approvedable_filter_options', data: { param: 'approvedable', filter: true }
 
 = render 'list'
 

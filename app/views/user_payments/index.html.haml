@@ -1,35 +1,16 @@
-%h1 Listing user_payments
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
 
-%table
-  %tr
-    %th Amount
-    %th Currency
-    %th Invoice
-    %th Period
-    %th Description
-    %th Approved
-    %th Company
-    %th User
-    %th Tariff
-    %th
-    %th
-    %th
+- title t('.title')
 
-  - @user_payments.each do |user_payment|
-    %tr
-      %td= user_payment.amount
-      %td= user_payment.currency
-      %td= user_payment.invoice
-      %td= user_payment.period
-      %td= user_payment.description
-      %td= user_payment.approved
-      %td= user_payment.company_id
-      %td= user_payment.user_id
-      %td= user_payment.tariff_id
-      %td= link_to 'Show', user_payment
-      %td= link_to 'Edit', edit_user_payment_path(user_payment)
-      %td= link_to 'Destroy', user_payment, method: :delete, data: { confirm: 'Are you sure?' }
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+    = label_tag :approvedable, t('.approvedable')
+    = select_tag :approvedable, options_for_select([[t('.not_approved'), 'not_approved'], [t('.all'),'all']], 'not_approved'), class: 'filter_select', id: 'approvedable_filter_options', data: { param: 'approvedable', filter: true }
 
-%br
+= render 'list'
 
-= link_to 'New User payment', new_user_payment_path
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('.new_user_payment'), new_user_payment_path, :class => 'add_operator'

@@ -1,65 +1,44 @@
 class UserPaymentsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:create]
 
   def index
-    @user_payments = UserPayment.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @user_payments }
-    end
-  end
-
-  def show
-    @user_payment = UserPayment.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user_payment }
-    end
+    @user_payments =
+      if search_or_sort?
+        options = search_and_sort_options(:with => current_ability.attributes_for(:read, UserPayment))
+        set_filter_to(options)
+        search_paginate(UserPayment.search_and_sort(options), options)
+      else
+        UserPayment.where(:approved => false).accessible_by(current_ability).order("updated_at ASC").paginate(:page => params[:page], :per_page => per_page)
+      end
+    render :partial => 'list' if request.xhr?
   end
 
   def new
   end
 
-  def edit
-  end
-
   def create
     @user_payment = UserPayment.new(params[:user_payment])
-
-    respond_to do |format|
-      if @user_payment.save
-        format.html { redirect_to @user_payment, notice: 'User payment was successfully created.' }
-        format.json { render json: @user_payment, status: :created, location: @user_payment }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user_payment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def update
-    @user_payment = UserPayment.find(params[:id])
-
-    respond_to do |format|
-      if @user_payment.update_attributes(params[:user_payment])
-        format.html { redirect_to @user_payment, notice: 'User payment was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @user_payment.errors, status: :unprocessable_entity }
-      end
+    @user_payment.user = current_user
+    @user_payment.company = current_company
+    if @user_payment.save
+      redirect_to user_payments_path, :notice => t('.messages.created')
+    else
+      render :action => 'new'
     end
   end
 
   def destroy
-    @user_payment = UserPayment.find(params[:id])
     @user_payment.destroy
-
-    respond_to do |format|
-      format.html { redirect_to user_payments_url }
-      format.json { head :no_content }
-    end
+    redirect_to user_payments_path, :notice => t('.messages.destroyed')
   end
+
+  private
+    def set_filter_to(options)
+      case params[:approvedable]
+        when 'not_approved'
+          options[:with][:approved] = false
+        when 'all'
+          options[:with].delete(:approved)
+      end
+    end
 end

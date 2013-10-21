@@ -1,0 +1,36 @@
+.current_container
+  %table.reservations.tour_operators
+    %tr
+      %th= sort_link :invoice, t('.invoice')
+      %th
+        %span= t('.description')
+      %th
+        %span= t('.amount')
+      %th
+        %span= t('.currency')
+      %th= sort_link(:updated_at, t('.updated_at'), :default)
+      %th
+        %span= t('.approved')
+      %th.actions
+        %span= t('actions')
+
+    - for user_payment in @user_payments
+      %tr{ :class => cycle('odd', 'even'), id: "user_payment_#{user_payment.id}" }
+        %td
+          %p= user_payment.invoice
+        %td
+          %p= user_payment.description
+        %td
+          %p= user_payment.amount
+        %td
+          %p= user_payment.currency
+        %td
+          %p= user_payment.updated_at
+        %td
+          %p= user_payment.approved
+        %td
+          = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
+            = submit_tag t('.confirm')
+          = link_to '', user_payment, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{user_payment.id}"
+
+  = render :partial => 'shared/pagination', :locals => { :collection => @user_payments }

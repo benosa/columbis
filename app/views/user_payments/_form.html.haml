@@ -1,37 +1,22 @@
-= form_for @user_payment do |f|
-  - if @user_payment.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@user_payment.errors.count, "error")} prohibited this user_payment from being saved:"
-      %ul
-        - @user_payment.errors.full_messages.each do |msg|
-          %li= msg
+- content_for(:error_messages) do
+  = f.error_messages
 
-  .field
-    = f.label :amount
-    = f.text_field :amount
-  .field
-    = f.label :currency
-    = f.text_field :currency
-  .field
-    = f.label :invoice
-    = f.number_field :invoice
-  .field
-    = f.label :period
-    = f.text_field :period
-  .field
-    = f.label :description
-    = f.text_field :description
-  .field
-    = f.label :approved
-    = f.check_box :approved
-  .field
-    = f.label :company_id
-    = f.number_field :company_id
-  .field
-    = f.label :user_id
-    = f.number_field :user_id
-  .field
-    = f.label :tariff_id
-    = f.number_field :tariff_id
-  .actions
-    = f.submit 'Save'
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p= f.label :description
+        = f.text_field :description
+        %p= f.label :tariff
+        = f.text_field :tariff_id
+        %p= f.label :currency
+        = f.text_field :currency
+        %p= f.label :period
+        = f.text_field :period
+        %p= f.label :amount
+        = f.text_field :amount
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

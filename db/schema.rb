@@ -447,14 +447,15 @@ ActiveRecord::Schema.define(:version => 20131020141936) do
     t.decimal  "amount"
     t.string   "currency"
     t.integer  "invoice"
-    t.string   "period"
+    t.integer  "period"
     t.string   "description"
-    t.boolean  "approved"
+    t.boolean  "approved",    :default => false, :null => false
     t.integer  "company_id"
     t.integer  "user_id"
     t.integer  "tariff_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.boolean  "delta",       :default => true,  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "users", :force => true do |t|

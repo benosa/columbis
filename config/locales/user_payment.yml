@@ -1,0 +1,31 @@
+ru:
+  activerecord:
+    attributes:
+      user_payment:
+        description: 'Пояснение'
+        tariff: 'Тарифный план'
+        period: 'Период оплаты'
+        amount: 'Сумма'
+  user_payments:
+    index:
+      title: 'Счета'
+      new_user_payment: 'Добавить счёт'
+      approvedable: 'Вид счета'
+      not_approved: 'Не подтверждённые'
+      all: 'Все'
+    form:
+      common: 'Данные счёта'
+    list:
+      invoice: '№ счёта'
+      description: 'Пояснения'
+      amount: 'Сумма'
+      currency: 'Валюта'
+      updated_at: 'Последнее обновление'
+      approved: 'Статус'
+      confirm: 'Оплатить'
+    new:
+      new_user_payment: 'Создание счёта'
+
+    messages:
+      destroyed: 'Счёт удалён'
+      created: 'Счёт создан'

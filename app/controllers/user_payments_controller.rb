@@ -34,9 +34,9 @@ class UserPaymentsController < ApplicationController
   private
     def set_filter_to(options)
       if params[:approvedable] == "all" || params[:approvedable].blank?
-        options[:with].delete(:status)
+        options[:with].delete(:status_crc32)
       else
-        options[:with][:status] = params[:approvedable]
+        options[:with][:status_crc32] = params[:approvedable].to_crc32
       end
     end
 end

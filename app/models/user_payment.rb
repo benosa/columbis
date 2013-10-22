@@ -26,7 +26,7 @@ class UserPayment < ActiveRecord::Base
 
     has :invoice
     has :updated_at
-    has :status
+    has "CRC32(status)", :as => :status_crc32, type: :integer
     has :company_id
 
     set_property :delta => true

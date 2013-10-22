@@ -25,3 +25,4 @@
 //= require offline
 //= require sms
 //= require users
+//= require user_payments

@@ -17,7 +17,7 @@
         %td
           %p= user_payment.invoice
         %td
-          %p= user_payment.description
+          %p= truncate user_payment.description, length: 30, omission: '...', separator: ' '
         %td
           %p= user_payment.amount.to_s + " " + t(user_payment.currency)
         %td

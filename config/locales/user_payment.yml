@@ -15,7 +15,8 @@ ru:
       has_approved: 'Оплаченные'
       all: 'Все'
     form:
-      common: 'Данные счёта'
+      common: 'Параметры'
+      not_choise: 'Не выбран'
     list:
       invoice: '№ счёта'
       description: 'Пояснения'

@@ -8,9 +8,9 @@
     .form_block_content
       .fake_row
         %p= f.label :description
-        = f.text_field :description
+        = f.text_area :description, :style => "max-width: 240px; height: 80px"
         %p= f.label :tariff
-        = f.text_field :tariff_id
+        = f.select :tariff_id, tariff_plan_ids, :not_highlighted => true
         %p= f.label :period
         = f.text_field :period
         %p= f.label :amount
@@ -19,3 +19,6 @@
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit
+
+= javascript_tag do
+  = render :partial => "form_js.js.haml"

@@ -1,5 +1,5 @@
 class UserPaymentsController < ApplicationController
-  load_and_authorize_resource :except => [:create]
+  load_and_authorize_resource
 
   def index
     @user_payments =
@@ -17,11 +17,10 @@ class UserPaymentsController < ApplicationController
   end
 
   def create
-    @user_payment = UserPayment.new(params[:user_payment])
     @user_payment.user = current_user
     @user_payment.company = current_company
     if @user_payment.save
-      redirect_to user_payments_path, :notice => t('.messages.created')
+      redirect_to user_payments_path, :notice => t('.user_payments.messages.created')
     else
       render :action => 'new'
     end
@@ -29,7 +28,7 @@ class UserPaymentsController < ApplicationController
 
   def destroy
     @user_payment.destroy
-    redirect_to user_payments_path, :notice => t('.messages.destroyed')
+    redirect_to user_payments_path, :notice => t('.user_payments.messages.destroyed')
   end
 
   private

@@ -7,13 +7,20 @@ ru:
         period: 'Период оплаты (месяц)'
         amount: 'Сумма'
   user_payments:
+    aliases:
+      - &states
+        new: 'Новый'
+        fail: 'Отозванный'
+        success: 'Завершённый'
+        not_approved: 'Не подтверждённый'
+        all: 'Все'
+    statuses:
+      *states
     index:
       title: 'Счета'
       new_user_payment: 'Добавить счёт'
       approvedable: 'Вид счета'
-      not_approved: 'Не подтверждённые'
       has_approved: 'Оплаченные'
-      all: 'Все'
     form:
       common: 'Параметры'
       not_choise: 'Не выбран'
@@ -22,9 +29,11 @@ ru:
       description: 'Пояснения'
       amount: 'Сумма'
       updated_at: 'Последнее обновление'
-      approved: 'Статус'
+      status: 'Статус'
       confirm: 'Оплатить'
       have_approved: 'Оплачено'
+      statuses:
+        *states
     new:
       new_user_payment: 'Создание счёта'
 

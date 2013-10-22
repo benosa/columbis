@@ -8,7 +8,7 @@
         %span= t('.amount')
       %th= sort_link(:updated_at, t('.updated_at'), :default)
       %th
-        %span= t('.approved')
+        %span= t('.status')
       %th.actions
         %span= t('actions')
 
@@ -23,8 +23,8 @@
         %td
           %p= l(user_payment.updated_at, :format => "%d.%m.%Y %H:%M")
         %td{ :width => "100px" }
-          - if user_payment.approved
-            %p= t('.have_approved')
+          - unless user_payment.status == 'new'
+            %p= t(".statuses.#{user_payment.status}")
           - else
             = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
               = submit_tag t('.confirm')

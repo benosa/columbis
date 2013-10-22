@@ -8,7 +8,7 @@ class UserPaymentsController < ApplicationController
         set_filter_to(options)
         search_paginate(UserPayment.search_and_sort(options), options)
       else
-        UserPayment.where(:approved => false).accessible_by(current_ability).order("updated_at ASC").paginate(:page => params[:page], :per_page => per_page)
+        UserPayment.where(:status => 'new').accessible_by(current_ability).order("updated_at ASC").paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -33,13 +33,10 @@ class UserPaymentsController < ApplicationController
 
   private
     def set_filter_to(options)
-      case params[:approvedable]
-        when 'not_approved'
-          options[:with][:approved] = false
-        when 'approved'
-          options[:with][:approved] = true
-        when 'all'
-          options[:with].delete(:approved)
+      if params[:approvedable] == "all" || params[:approvedable].blank?
+        options[:with].delete(:status)
+      else
+        options[:with][:status] = params[:approvedable]
       end
     end
 end

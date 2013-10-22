@@ -449,13 +449,13 @@ ActiveRecord::Schema.define(:version => 20131020141936) do
     t.integer  "invoice"
     t.integer  "period"
     t.string   "description"
-    t.boolean  "approved",    :default => false, :null => false
+    t.string   "status"
     t.integer  "company_id"
     t.integer  "user_id"
     t.integer  "tariff_id"
-    t.boolean  "delta",       :default => true,  :null => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.boolean  "delta",       :default => true, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "users", :force => true do |t|

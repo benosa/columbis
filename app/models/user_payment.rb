@@ -1,5 +1,7 @@
 class UserPayment < ActiveRecord::Base
-  attr_accessible :amount, :approved, :company_id, :currency, :description, :invoice, :period, :tariff_id, :user_id
+  STATUSES = %w[new fail success not_approved all].freeze
+
+  attr_accessible :amount, :status, :company_id, :currency, :description, :invoice, :period, :tariff_id, :user_id
 
   attr_protected :user_id, :company_id
 
@@ -11,7 +13,9 @@ class UserPayment < ActiveRecord::Base
   validates_presence_of :period, :unless => proc{ self.tariff_id.blank?  }
   validates_uniqueness_of :invoice
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
+  validates :status, :inclusion => STATUSES
 
+  before_validation :set_status
   before_validation :check_tariff
   after_create :set_invoice
 
@@ -22,7 +26,7 @@ class UserPayment < ActiveRecord::Base
 
     has :invoice
     has :updated_at
-    has :approved
+    has :status
     has :company_id
 
     set_property :delta => true
@@ -33,15 +37,20 @@ class UserPayment < ActiveRecord::Base
 
   extend SearchAndSort
 
-  def set_invoice
-    UserPayment.update(id, :invoice => company_id * 10000 + id)
-  end
-
-  def check_tariff
-    if tariff_id
-      tariff = TariffPlan.find(tariff_id)
-      self.currency = tariff.try(:currency)
-      self.amount = tariff.try(:price) * self.period
+  private
+    def set_invoice
+      UserPayment.update(id, :invoice => company_id * 10000 + id)
     end
-  end
+
+    def check_tariff
+      if self.tariff_id
+        tariff = TariffPlan.find(tariff_id)
+        self.currency = tariff.try(:currency)
+        self.amount = tariff.try(:price) * self.period
+      end
+    end
+
+    def set_status
+      self.status = 'new' unless self.status
+    end
 end

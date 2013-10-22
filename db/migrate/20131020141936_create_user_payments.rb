@@ -6,7 +6,7 @@ class CreateUserPayments < ActiveRecord::Migration
       t.integer :invoice
       t.integer :period
       t.string :description
-      t.boolean :approved, :default => false, :null => false
+      t.string :status
       t.integer :company_id
       t.integer :user_id
       t.integer :tariff_id

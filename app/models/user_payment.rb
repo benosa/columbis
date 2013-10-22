@@ -24,6 +24,7 @@ class UserPayment < ActiveRecord::Base
   define_index do
     indexes :description, :sortable => true
 
+    has :amount
     has :invoice
     has :updated_at
     has "CRC32(status)", :as => :status_crc32, type: :integer
@@ -39,7 +40,7 @@ class UserPayment < ActiveRecord::Base
 
   private
     def set_invoice
-      UserPayment.update(id, :invoice => company_id * 10000 + id)
+      UserPayment.update(id, :invoice => company_id * 10000 + id) if id
     end
 
     def check_tariff

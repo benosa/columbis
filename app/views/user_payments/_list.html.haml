@@ -2,10 +2,8 @@
   %table.reservations.tour_operators
     %tr
       %th= sort_link :invoice, t('.invoice')
-      %th
-        %span= t('.description')
-      %th
-        %span= t('.amount')
+      %th= sort_link :description, t('.description')
+      %th= sort_link :amount, t('.amount')
       %th= sort_link(:updated_at, t('.updated_at'), :default)
       %th
         %span= t('.status')

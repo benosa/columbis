@@ -1,0 +1,7 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('admin.companies_info.title')
+
+= form_for 'ins', :url => admin_instructions_path, :html => { :method => :put } do |f|
+  = render :partial => 'admin/form', :locals => { :f => f }

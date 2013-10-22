@@ -25,5 +25,9 @@ module Admin
         render 'admin/index'
       end
     end
+
+    def instructions
+      render 'admin/instructions'
+    end
   end
 end

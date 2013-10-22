@@ -58,6 +58,8 @@ ru:
           reviews: 'Отзывы'
         - &admin
           admin: 'Админка'
+          companies: 'Компании'
+          instructions: 'Инструкции'
       second_menu:
         view: 'Вид'
       management:

@@ -100,6 +100,7 @@ Tourism::Application.routes.draw do
 
   namespace :admin do
     match '/' => 'base#index', :as => :index
+    match '/instructions' => 'base#instructions', :as => :instructions
   end
 
   scope 'dashboard' do

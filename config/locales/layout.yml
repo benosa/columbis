@@ -56,6 +56,7 @@ ru:
           write_review: 'Оставить отзыв'
           task_list: 'Список задач'
           reviews: 'Отзывы'
+          download_instructions: 'Скачать инструкцию'
         - &admin
           admin: 'Админка'
           companies: 'Компании'

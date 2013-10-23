@@ -9,3 +9,5 @@
       %li.first_menu_stroke= link_to t('.write_review'), '#', class: 'write_review'
       %li.first_menu_stroke{:class => params[:controller] == 'tasks' && 'active' }
         = link_to name, tasks_path
+      %li.first_menu_stroke= link_to t('.download_instructions'), domain_root_url + 'instructions.pdf'
+

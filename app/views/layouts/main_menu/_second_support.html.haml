@@ -5,3 +5,4 @@
 %li= link_to t('.write_review'), '#', class: 'write_review'
 %li{:class => params[:controller] == 'tasks' && 'active' }
   = link_to t('.task_list'), tasks_path if user_signed_in? && current_user.role == 'admin'
+%li= link_to t('.download_instructions'), domain_root_url + 'instructions.pdf'

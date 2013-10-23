@@ -11,10 +11,10 @@ describe "SSL tests:" do
 end
 
 describe "download tests:" do
-  #include ActionView::Helpers
+  include ActionView::Helpers
 
-  it "protocol should be https" do
-    visit root_url + '/instructions.pdf'
+  it "should download instructions" do
+    visit root_url + 'uploads/instructions.pdf'
     page.response_headers['Content-Type'].should eq "application/pdf"
   end
 end

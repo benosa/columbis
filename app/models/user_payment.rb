@@ -1,5 +1,5 @@
 class UserPayment < ActiveRecord::Base
-  STATUSES = %w[new fail success not_approved all].freeze
+  STATUSES = %w[new fail success approved all].freeze
 
   attr_accessible :amount, :status, :company_id, :currency, :description, :invoice, :period, :tariff_id, :user_id
 
@@ -9,7 +9,7 @@ class UserPayment < ActiveRecord::Base
   belongs_to :user
   belongs_to :tariff, class_name: 'TariffPlan'
 
-  validates_presence_of :amount, :currency, :description
+  validates_presence_of :amount, :currency, :description, :company_id, :user_id
   validates_presence_of :period, :unless => proc{ self.tariff_id.blank?  }
   validates_uniqueness_of :invoice
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
@@ -38,6 +38,17 @@ class UserPayment < ActiveRecord::Base
 
   extend SearchAndSort
 
+  def standart_currency
+    case currency
+    when 'rur'
+      return 'RU'
+    when 'eur'
+      return 'EU'
+    when 'usd'
+      return 'US'
+    end
+  end
+
   private
     def set_invoice
       UserPayment.update(id, :invoice => company_id * 10000 + id) if id
@@ -52,6 +63,6 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_status
-      self.status = 'new' unless self.status
+      self.status = 'new' if status.blank?
     end
 end

@@ -21,11 +21,13 @@
         %td
           %p= l(user_payment.updated_at, :format => "%d.%m.%Y %H:%M")
         %td{ :width => "100px" }
-          - unless user_payment.status == 'new'
+          - unless ['new', 'fail'].include? user_payment.status
             %p= t(".statuses.#{user_payment.status}")
           - else
+            - confirm_text = t('.confirm')
+            - confirm_text = t('.confirm_again') if user_payment.status == 'fail'
             = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
-              = submit_tag t('.confirm')
+              = submit_tag confirm_text
         %td{ :width => "50px" }
           - if can? :destroy, user_payment
             = link_to '', user_payment, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{user_payment.id}", :style => "margin-left:10px"

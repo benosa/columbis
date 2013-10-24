@@ -18,6 +18,7 @@ describe Company do
     it { should have_many :cities }
     it { should have_many :countries }
     it { should have_many :printers }
+    it { should have_many :user_payments }
     it { should have_one :address }
   end
 

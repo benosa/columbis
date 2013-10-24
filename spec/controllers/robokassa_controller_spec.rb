@@ -6,52 +6,120 @@ describe RobokassaController do
   include ActiveMerchant::Billing::Integrations
 
   before(:all) do
-    @admin = FactoryGirl.create(:admin)
-    @company = @admin.company
+    @boss = FactoryGirl.create(:boss)
+    @company = @boss.company
+    @payment = FactoryGirl.create(:user_payment, :company => @company, :user => @boss)
+    @payment = UserPayment.find(@payment.id)
   end
 
   before do
-    test_sign_in(@admin)
-    method
+    test_sign_in(@boss)
   end
 
-  let(:method) { nil }
+  describe "paid action" do
 
-  context "GET paid with invalid params" do
-    let(:method) { get :paid }
+    context "POST paid without secret key" do
+      before { post :paid }
+      it "should render bad message" do
+        UserPayment.find(@payment.id).status.should_not == "approved"
+        response.body.should == I18n.t('.user_payments.messages.robokassa_bad_key')
+      end
+    end
 
-    it "should render bad message" do
-      response.body.should == "Не верный вызов"
+    context "POST paid with valid params" do
+      before do
+        post(:paid, :OutSum => @payment.amount, :InvId => @payment.invoice,
+          :SignatureValue => Digest::MD5.hexdigest("#{@payment.amount}:#{@payment.invoice}:" +
+          CONFIG[:robokassa_password2]).to_s)
+      end
+      it "should render ok message" do
+        UserPayment.find(@payment.id).status.should == "approved"
+        response.body.should == "OK#{@payment.invoice}"
+      end
+    end
+
+    context "POST paid with invalid invoice" do
+      before do
+        post :paid, :OutSum => @payment.amount, :InvId => 123,
+          :SignatureValue => Digest::MD5.hexdigest("#{@payment.amount}:#{123}:" +
+          CONFIG[:robokassa_password2]).to_s
+      end
+      it "should render fail message" do
+        UserPayment.find(@payment.id).status.should_not == "approved"
+        response.body.should == I18n.t('.user_payments.messages.robokassa_bad_paid')
+      end
+    end
+
+  end
+
+  describe "success action" do
+    context "POST success with invalid params" do
+      before { get :success }
+      it "should not be success message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should_not == "success"
+        response.should redirect_to user_payments_path
+        flash[:alert].should eql(I18n.t('.user_payments.messages.robokassa_success_bad_key'))
+      end
+    end
+
+    context "POST success with valid params" do
+      before do
+        get :success, :OutSum => @payment.amount, :InvId => @payment.invoice,
+          :SignatureValue => Digest::MD5.hexdigest("#{@payment.amount}:#{@payment.invoice}:" +
+          CONFIG[:robokassa_password1]).to_s
+      end
+      it "should be success message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should == "success"
+        response.should redirect_to user_payments_path
+        flash[:notice].should eql(I18n.t('.user_payments.messages.robokassa_success'))
+      end
+    end
+
+    context "POST success with invalid invoice" do
+      before do
+        get :success, :OutSum => @payment.amount, :InvId => 123,
+          :SignatureValue => Digest::MD5.hexdigest("#{@payment.amount}:#{123}:" +
+          CONFIG[:robokassa_password1]).to_s
+      end
+      it "should be success message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should_not == "success"
+        response.should redirect_to user_payments_path
+        flash[:alert].should eql(I18n.t('.user_payments.messages.robokassa_bad_success'))
+      end
     end
   end
 
-  context "GET paid with valid params" do
-    let(:method) { get :paid, :OutSum => 10000, :InvId => 0,
-      :SignatureValue => Digest::MD5.hexdigest(
-        "10000:0:" + CONFIG[:robokassa_secret].to_s
-      )
-    }
-
-    it "should render ok message" do
-      response.body.should == "Выполнено действие"
+  describe "fail action" do
+    context "POST with invalid params" do
+      before { get :fail }
+      it "should not be fail message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should_not == "fail"
+        response.should redirect_to user_payments_path
+        flash[:alert].should eql(I18n.t('.user_payments.messages.robokassa_fail_bad_id'))
+      end
     end
-  end
 
-  context "GET success" do
-    let(:method) { get :success }
-
-    it "should be success message and redirect to edit company" do
-      response.should redirect_to edit_dashboard_company_path(@company)
-      flash[:notice].should eql("Оплата произведена успешно")
+    context "POST with valid params" do
+      before do
+        get :fail, :OutSum => @payment.amount, :InvId => @payment.invoice
+      end
+      it "should be success message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should == "fail"
+        response.should redirect_to user_payments_path
+        flash[:notice].should eql(I18n.t('.user_payments.messages.robokassa_fail'))
+      end
     end
-  end
 
-  context "GET fail" do
-    let(:method) { get :fail }
+    context "POST with invalid invoice" do
+      before do
+        get :fail, :OutSum => @payment.amount, :InvId => 123
+      end
 
-    it "should be fail message and redirect to edit company" do
-      response.should redirect_to edit_dashboard_company_path(@company)
-      flash[:notice].should eql("Оплата не произведена")
+      it "should not be success message and redirect to edit company" do
+        UserPayment.find(@payment.id).status.should_not == "fail"
+        response.should redirect_to user_payments_path
+        flash[:alert].should eql(I18n.t('.user_payments.messages.robokassa_bad_fail'))
+      end
     end
   end
 end

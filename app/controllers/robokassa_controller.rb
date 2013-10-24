@@ -1,42 +1,61 @@
 class RobokassaController < ApplicationController
   include ActiveMerchant::Billing::Integrations
 
-  # skip_before_filter :verify_authenticity_token # skip before filter if you chosen POST request for callbacks
-
-  before_filter :create_notification
-  before_filter :find_payment
+  before_filter :check_ability, :except => :paid
 
   def paid # Robokassa call this action after transaction
+    @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_password2])
     if @notification.acknowledge # check if it’s genuine Robokassa request
-      render :text => "Выполнено действие"
+      @user_payment = UserPayment.where(:invoice => @notification.item_id).first
+      if @user_payment && @user_payment.update_attributes(:status => 'approved')
+        render :text => @notification.success_response
+      else
+        render :text => t('.user_payments.messages.robokassa_bad_paid')
+      end
     else
-      render :text => "Не верный вызов"
+      render :text => t('.user_payments.messages.robokassa_bad_key')
     end
   end
 
   def success # Robokassa redirect user to this action if it’s all ok
+    @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_password1])
     if @notification.acknowledge # check if it’s genuine Robokassa request
-      redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата произведена успешно"
+      @user_payment = UserPayment.where(:invoice => @notification.item_id).first
+      if @user_payment && (@user_payment.status == 'approved' ||
+          @user_payment.update_attributes(:status => 'success'))
+        redirect_to user_payments_path,
+          :notice => t('.user_payments.messages.robokassa_success')
+      else
+        redirect_to user_payments_path,
+          :alert => t('.user_payments.messages.robokassa_bad_success')
+      end
     else
-      render :text => "Не верный вызов"
+      redirect_to user_payments_path,
+          :alert => t('.user_payments.messages.robokassa_success_bad_key')
     end
   end
 
   def fail # Robokassa redirect user to this action if it’s not
-    if @notification.acknowledge # check if it’s genuine Robokassa request
-      redirect_to edit_dashboard_company_path(current_company), :notice => "Оплата не произведена"
+    if params['InvId']
+      @user_payment = UserPayment.where(:invoice => params['InvId']).first
+      if @user_payment &&
+          !['approved', 'success'].include?(@user_payment.status) &&
+          @user_payment.update_attributes(:status => 'fail')
+        redirect_to user_payments_path,
+          :notice => t('.user_payments.messages.robokassa_fail')
+      else
+        redirect_to user_payments_path,
+          :alert => t('.user_payments.messages.robokassa_bad_fail')
+      end
     else
-      render :text => "Не верный вызов"
+      redirect_to user_payments_path,
+        :alert => t('.user_payments.messages.robokassa_fail_bad_id')
     end
   end
 
   private
 
-    def create_notification
-      @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_secret])
-    end
-
-    def find_payment
-      @payment = { :id => 0, :amount => 10000 }
-    end
+  def check_ability
+    unauthorized! if cannot? :read, :robokassa_pay
+  end
 end

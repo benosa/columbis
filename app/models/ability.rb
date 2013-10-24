@@ -34,6 +34,7 @@ class Ability
     cannot(:destroy, User) { |u| u.company_owner? }
     cannot :destroy, UserPayment
     can :destroy, UserPayment, :status => 'new', :user => user
+    can :read, :robokassa_pay
     can :manage, Flight, :claim => { :company_id => user.company_id }
     can :manage, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
     can :manage, UserMailer, :task => { :user => user }

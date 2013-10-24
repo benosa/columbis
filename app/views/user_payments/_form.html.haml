@@ -15,7 +15,7 @@
         = f.text_field :period
         %p= f.label :amount
         = f.number_field :amount
-        = f.select :currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
+        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

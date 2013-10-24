@@ -11,8 +11,8 @@ ru:
       - &states
         new: 'Новый'
         fail: 'Отозванный'
-        success: 'Завершённый'
-        not_approved: 'Не подтверждённый'
+        success: 'Успешный'
+        approved: 'Подтверждённый'
         all: 'Все'
     statuses:
       *states
@@ -31,6 +31,7 @@ ru:
       updated_at: 'Последнее обновление'
       status: 'Статус'
       confirm: 'Оплатить'
+      confirm_again: 'Восстановить и оплатить'
       have_approved: 'Оплачено'
       statuses:
         *states
@@ -38,5 +39,11 @@ ru:
       new_user_payment: 'Создание счёта'
 
     messages:
-      destroyed: 'Счёт удалён'
-      created: 'Счёт создан'
+      robokassa_bad_paid: 'Не удалось обновить данные счёта. Счёт не найден.'
+      robokassa_bad_key: 'Не удалось обработать данные.'
+      robokassa_success: 'Счёт успешно оплачен.'
+      robokassa_bad_success: 'Не удалось отметить успешный платёж по счёту. Счёт не найден.'
+      robokassa_success_bad_key: 'Не удалось обработать данные.'
+      robokassa_fail: 'Оплата по счёту отменена.'
+      robokassa_bad_fail: 'Не удалось отменить оплату по счёту. Счёт не найден.'
+      robokassa_fail_bad_id: 'Не верные данные запроса.'

@@ -38,17 +38,6 @@ class UserPayment < ActiveRecord::Base
 
   extend SearchAndSort
 
-  def standart_currency
-    case currency
-    when 'rur'
-      return 'RU'
-    when 'eur'
-      return 'EU'
-    when 'usd'
-      return 'US'
-    end
-  end
-
   private
     def set_invoice
       UserPayment.update(id, :invoice => company_id * 10000 + id) if id

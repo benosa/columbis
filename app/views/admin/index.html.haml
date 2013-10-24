@@ -9,21 +9,15 @@
 
 .admin_companies
   = render "admin/companies"
+
 .admin.check_list
   %table
     %tr
-      %td
-        Компаний
-      %td
-        #{@companies_count}
+      %td= t('.companies')
+      %td= @companies_count
     %tr
-      %td
-        Пользователей
-      %td
-        #{@users_count}
+      %td= t('.users')
+      %td= @users_count
     %tr
-      %td
-        Заявок
-      %td
-        #{@claims_count}
-= render partial: 'shared/pagination', locals: { collection: @companies_collection }
+      %td= t('.claims')
+      %td= @claims_count

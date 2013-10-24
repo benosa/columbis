@@ -51,6 +51,8 @@ class Company < ActiveRecord::Base
 
     has :offices_count, :users_count, :claims_count, :tourists_count, :tasks_count
     has :created_at, type: :datetime
+
+    set_property :delta => true
   end
 
   def company_id

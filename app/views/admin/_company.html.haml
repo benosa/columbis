@@ -4,15 +4,11 @@
   %td
     = company.name
   %td
-    - if company.owner
-      #{company.owner.last_name} #{company.owner.first_name} #{company.owner.middle_name}
+    = company.owner.try(:full_name)
   %td
-    - if company.owner
-      = company.owner.email
-    - else
-      = company.email
+    = company.owner.try(:email) || company.email
   %td
-    = company.owner.phone if company.owner
+    = company.owner.try(:phone)
   %td
     = company.subdomain
   %td

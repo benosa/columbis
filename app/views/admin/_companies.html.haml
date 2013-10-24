@@ -1,7 +1,7 @@
 .current_container
   %table.reservations.tour_operators
     %th
-      = sort_link :created_at, t('admin.companies_info.created_at'), :default => :desc
+      = sort_link :created_at, t('admin.companies_info.created_at'), :desc
     %th
       = sort_link :name, t('admin.companies_info.name')
     %th
@@ -22,5 +22,8 @@
       = sort_link :tourists_count, t('admin.companies_info.tourists_count')
     %th
       = sort_link :tasks_count, t('admin.companies_info.tasks_count')
+
     - @companies_info.each do |c|
       = render :partial => 'admin/company', :locals => { :company => c }
+
+  = render partial: 'shared/pagination', locals: { collection: @companies_collection }

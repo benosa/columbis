@@ -1,6 +1,6 @@
 development: &defaults
   domain: localhost
-  reserved_subdomains: ['/demo\d*/', '/test\d*/', 'promo', '/app\d*/', '/assets\d*/', '/img\d*/', 'example']
+  reserved_subdomains: ['/demo\d*/', '/test\d*/', 'promo', '/app\d*/', '/assets\d*/', '/img\d*/', 'example', 'default']
   support_email: 'support@columbis.ru'
   support_phone: '8 800 555 43 77'
   support_delivery: false

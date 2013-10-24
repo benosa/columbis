@@ -13,3 +13,8 @@ ru:
       claims_count: 'Заявки'
       tourists_count: 'Туристы'
       tasks_count: 'Отзывы'
+
+    index:
+      companies: Компаний
+      users: Пользователей
+      claims: Заявок

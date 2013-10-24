@@ -7,7 +7,7 @@ module Admin
       if search_or_sort?
         options = search_and_sort_options(
           :filter => params[:filter],
-          :defaults => { :order => :name, :sort_mode => :desc },
+          :defaults => { :order => :created_at, :sort_mode => :desc },
           :sql_order => false
         )
         @companies_collection = search_paginate(Company.search_and_sort(options))#Company.search_and_sort(options), options)
@@ -16,9 +16,10 @@ module Admin
         @companies_count = Company.count
         @users_count = User.count
         @claims_count = Claim.count
-        @companies_collection = Company.paginate(:page => params[:page], :per_page => per_page)
+        @companies_collection = Company.order('created_at DESC').paginate(:page => params[:page], :per_page => per_page)
         @companies_info =  @companies_collection.all
       end
+
       if request.xhr?
         render :partial => 'admin/companies'
       else

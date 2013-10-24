@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+  skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
 
   def create
     respond_to do |format|

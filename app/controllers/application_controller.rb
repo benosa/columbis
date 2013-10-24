@@ -129,6 +129,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def skip_verify_authenticity_token?
+    request.format == 'application/json'
+  end
+
   private
 
     def set_time_zone

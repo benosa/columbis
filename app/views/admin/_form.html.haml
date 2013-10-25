@@ -1,0 +1,9 @@
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        %p.file
+          = f.file_field :template, :class => 'image_upload'
+          = link_to t("uploaders.choose_file"), '#', :class => 'select_file'

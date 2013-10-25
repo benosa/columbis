@@ -2,3 +2,7 @@
 - a = params[:action]
 %li{:class => (c == 'admin/base') && 'active' }
   = link_to t('.admin'), admin_index_path
+  .rmenu_dropdown
+    %ul
+      %li.first_menu_stroke= link_to t('.companies'), admin_index_path
+      %li.first_menu_stroke= link_to t('.instructions'), admin_instructions_path

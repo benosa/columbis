@@ -3,7 +3,7 @@
 %p
   Дата: #{l(task.created_at, format: :long)}
 %p
-  Компания: #{task.company.try(:name)}
+  Компания: #{task.company.try(:name) || task.company.try(:subdomain)}
   %br
   Пользователь: #{task.user.try(:full_name)}
   - from_first = message.from.first

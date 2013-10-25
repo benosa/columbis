@@ -7,6 +7,16 @@ ru:
     user_was_created_subject: 'Зарегистрирован пользователь %{user}'
     user_was_created:
       subject: 'Зарегистрирован пользователь'
+    task_was_created_subject: '[#%{task}] Задача создана'
+    task_was_created:
+      subject: 'Задача создана'
+    task_info:
+      subject: 'Задача'
+      task: 'Задача'
+      new: создана
+      cancel: отменена
+      work: принята в работу
+      finish: завершена
 
     # Devise methods
     confirmation_instructions:

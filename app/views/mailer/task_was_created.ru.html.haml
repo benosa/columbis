@@ -1,0 +1,18 @@
+- task = @resource
+%h1= message.subject
+%p
+  Дата: #{l(task.created_at, format: :long)}
+%p
+  Компания: #{task.company.try(:name)}
+  %br
+  Пользователь: #{task.user.try(:full_name)}
+  - from_first = message.from.first
+  - if from_first != CONFIG[:support_email]
+    %br
+    Email: #{from_first}
+%p
+  Содержание:
+  %br
+    = task.body
+%p
+  = link_to 'Подробнее', tasks_url

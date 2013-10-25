@@ -39,7 +39,6 @@ class TasksController < ApplicationController
       format.html {
         if @task.save
           redirect_to ( current_user.role == 'admin' ? tasks_path : root_path )
-          Mailer.task_info(@task).deliver
         else
           render :action => :new
         end

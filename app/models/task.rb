@@ -27,6 +27,8 @@ class Task < ActiveRecord::Base
         "regexp_replace((executers.last_name || ' ' || executers.first_name || ' ' || executers.middle_name), E'\\s+', ' ', 'g') as executer_name"])
   end
 
+  after_create { Mailer.task_was_created(self).deliver } if CONFIG[:support_delivery]
+
   extend SearchAndSort
 
   define_index do
@@ -86,8 +88,9 @@ class Task < ActiveRecord::Base
       task.valid?
     end
 
-    after_transition any => any do |task, transition|
-      Mailer.task_info(task).deliver
-    end
+    # Notifications are temporarily removed
+    # after_transition any => any do |task, transition|
+    #   Mailer.task_info(task).deliver if CONFIG[:support_delivery]
+    # end
   end
 end

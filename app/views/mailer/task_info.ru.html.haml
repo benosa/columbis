@@ -1,0 +1,11 @@
+- task = @resource
+%h1= "[##{task.id}] #{Task.model_name.human} #{t("mailer.task_info.#{task.status}")}"
+%p
+  - date_method = task.status == 'new' ? :created_at : (task.status == 'work' ? :start_date : :end_date)
+  Дата: #{l(task.send(date_method), format: :long)}
+%p
+  Содержание:
+  %br
+    = task.body
+%p
+  = link_to 'Подробнее', tasks_url

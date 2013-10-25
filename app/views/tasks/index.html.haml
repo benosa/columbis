@@ -20,4 +20,5 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, class: 'back'
-  = link_to t('tasks.add_task'), new_task_path, class: 'add_operator'
+  - if is_admin?
+    = link_to t('tasks.add_task'), new_task_path, class: 'add_operator'

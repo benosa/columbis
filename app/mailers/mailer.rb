@@ -27,17 +27,16 @@ class Mailer < ActionMailer::Base
     mail to: CONFIG[:support_email], subject: subject
   end
 
-  def task_info(task)
-    @task = task
+  def task_was_created(task)
+    @resource = task
+    subject = I18n.t('mailer.task_was_created_subject', task: task.id)
+    from = task.user.try(:email) || CONFIG[:support_email]
+    mail(from: from, to: CONFIG[:support_email], subject: subject)
+  end
 
-    subject = case
-    when task.status == 'new'
-      "#[#{@task.id}] Задача создана"
-    when task.status == 'work'
-      "#[#{@task.id}] Задача в работе"
-    else
-      "#[#{@task.id}] Задача завершена"
-    end
+  def task_info(task)
+    @resource = task
+    subject = ["[##{task.id}]", Task.model_name.human, I18n.t("mailer.task_info.#{task.status}")].join(' ')
     mail(to: CONFIG[:support_email], subject: subject)
   end
 

@@ -57,6 +57,8 @@ ru:
     bug: 'Баги'
     offer: 'Предложения'
   activerecord:
+    models:
+      task: 'Задача'
     attributes:
       task:
         body: 'Описание'

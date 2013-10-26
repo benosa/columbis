@@ -391,6 +391,8 @@ body {
   th {
     text-align: center !important;
     border-top: 1px #fff solid;
+    // Double background with white line in the right
+    background: url("/assets/th_blue.png") no-repeat scroll right -100px, url("/assets/th_blue.png") repeat-x scroll left top;
     a {
       padding: 21px 5px 0;
       text-align: center !important;
@@ -423,6 +425,8 @@ body {
     th {
       max-width: 350px;
       background: url("/assets/new_design/images/tour_operators.png") repeat-x scroll right top transparent;
+      // Double background with white line in the right
+      background: url("/assets/th_blue.png") no-repeat scroll right -100px, url("/assets/th_blue.png") repeat-x scroll left top;
     }
   }
 

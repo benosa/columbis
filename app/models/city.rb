@@ -10,7 +10,6 @@ class City < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => [:region_id, :company_id]
 
-  default_scope :order => :name
   scope :with_country_columns, ->(apply_includes = false) do
     country_columns = Country.columns.map{ |col| "countries.#{col.name} as country_#{col.name}" }
     scope = joins("LEFT JOIN countries ON countries.id = cities.country_id")
@@ -23,14 +22,11 @@ class City < ActiveRecord::Base
 
     has :common
     has :company_id
-    
+
     set_property :delta => true
   end
 
   local_data :id, :name, :attributes => false, :scope => :local_data_scope
-
-  sphinx_scope(:by_name) { { :order => :name } }
-  default_sphinx_scope :by_name
 
   extend SearchAndSort
 

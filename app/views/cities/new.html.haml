@@ -3,10 +3,11 @@
 
 - title t('.new_city')
 
-= form_for @city do |form|
+= form_for @city, html: {class: 'city_form'} do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('list_of_cities'), cities_path, :class => 'list_operator'

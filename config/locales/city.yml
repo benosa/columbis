@@ -1,22 +1,35 @@
 ru:
   cities:
     index:
-      title: 'Города'
-      new_city: 'Добавить город'
+      title: 'Курорты'
+      new_city: 'Добавить курорт'
       availability: 'Вид'
+    new:
+      new_city: 'Добавить курорт'
+    edit:
+      edit_city: 'Редактировать курорт'
     form:
       common: 'Общие данные'
-      country: 'Страна'
+      country: 'Направление'
     list:
-      name: 'Название города'
-      country: 'Страна'
+      name: 'Название'
+      country: 'Направление'
+      action_title_for_common: 'Курорт доступен по умолчанию'
 
     messages:
-      destroyed: 'Город удалён'
-      updated: 'Город обновлён'
-      created: 'Город создан'
+      destroyed: 'Курорт удалён'
+      updated: 'Курорт обновлён'
+      created: 'Курорт создан'
+
+  list_of_cities: 'Список курорт'
 
   city_availabilities:
     all: 'Все'
     own: 'Собственные'
     open: 'Общие'
+
+  activerecord:
+    attributes:
+      city:
+        country_id: 'Страна'
+        name: 'Название'

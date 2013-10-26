@@ -9,8 +9,8 @@ ru:
           printers: 'Печатные формы'
           dropdown_values: 'Списки значений'
           sms_sendings: 'SMS-рассылки'
-          cities: 'Города'
-          countries: 'Страны'
+          cities: 'Курорты'
+          countries: 'Направления'
           operators: 'Туроператоры'
           tariff_plans: 'Тарифные планы'
         - &claims

@@ -4,11 +4,13 @@ class CountriesController < ApplicationController
   def index
     @countries =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Country))
+        options = { with_current_abilities: true }
+        options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
+        options = search_and_sort_options options
         set_filter_to options
-        search_paginate( Country.search_and_sort(options), options)
+        search_paginate Country.search_and_sort(options), options
       else
-        Country.accessible_by(current_ability).order("name ASC").paginate(:page => params[:page], :per_page => per_page)
+        Country.accessible_by(current_ability).order("common ASC, name ASC").paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -46,6 +48,7 @@ class CountriesController < ApplicationController
 
   private
     def set_filter_to(options)
+      options[:with] ||= {}
       case params[:availability]
         when 'own'
           options[:with][:common] = false

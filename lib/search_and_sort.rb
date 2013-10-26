@@ -21,6 +21,8 @@ module SearchAndSort
     elsif options[:order].present?
       if options[:order] == :joint_address
         scoped = scoped.joins(Address.left_join(self)).reorder(Address.order_text(:joint_address, options[:sort_mode]))
+      elsif options[:sort_mode] == :extended
+        scoped = scoped.reorder options[:order]
       else
         scoped = scoped.reorder("#{options[:order]} #{options[:sort_mode]}")
       end

@@ -1,6 +1,6 @@
 - title @country.name
-    
+
 - content_for(:float_panel) do
-  = link_to t('view_all'), countries_path, :class => 'list_operator'
   = link_to t('edit'), edit_country_path(@country), :class => 'add_operator'
   = link_to t('destroy'), @country, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete_operator'
+  = link_to t('list_of_countries'), countries_path, :class => 'list_operator'

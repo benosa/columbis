@@ -5,11 +5,13 @@ class CitiesController < ApplicationController
   def index
     @cities =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, City))
-        set_filter_to(options)
-        search_paginate(City.search_and_sort(options).with_country_columns, options)
+        options = { with_current_abilities: true }
+        options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
+        options = search_and_sort_options options
+        set_filter_to options
+        search_paginate City.search_and_sort(options).with_country_columns, options
       else
-        City.accessible_by(current_ability).order("name ASC").with_country_columns.paginate(:page => params[:page], :per_page => per_page)
+        City.accessible_by(current_ability).order("common ASC, name ASC").with_country_columns.paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -47,6 +49,7 @@ class CitiesController < ApplicationController
 
   private
     def set_filter_to(options)
+      options[:with] ||= {}
       case params[:availability]
         when 'own'
           options[:with][:common] = false

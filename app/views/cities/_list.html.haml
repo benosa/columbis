@@ -13,7 +13,13 @@
         %td{:style => "width:250px"}
           %p= city.country_name
         %td
-          = link_to '', edit_city_path(city), :class => 'edit_row', :title => t('edit'), id: "edit_city_#{city.id}"
-          = link_to '', city, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{city.id}"
+          - if city.common? && !is_admin?
+            %div{ :title => t('.action_title_for_common') }
+              = t('nope')
+          - else
+            - if can? :update, city
+              = link_to '', edit_city_path(city), :class => 'edit_row', :title => t('edit'), id: "edit_city_#{city.id}"
+            - if can? :destroy, city
+              = link_to '', city, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', :title => t('delete'), id: "delete__#{city.id}"
 
   = render :partial => 'shared/pagination', :locals => { :collection => @cities }

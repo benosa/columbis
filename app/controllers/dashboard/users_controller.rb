@@ -51,6 +51,7 @@ class Dashboard::UsersController < ApplicationController
             includes(:office).reorder(['offices.name', :last_name, :first_name, :middle_name]).
             paginate(:page => params[:page], :per_page => per_page)
       end
+    Rails.logger.debug "@users.class: #{@users.class}"
     render :partial => 'list' if request.xhr?
   end
 

@@ -19,8 +19,5 @@ class Country < ActiveRecord::Base
     set_property :delta => true
   end
 
-  sphinx_scope(:by_name) { { :order => :name } }
-  default_sphinx_scope :by_name
-
   extend SearchAndSort
 end

@@ -1,27 +1,32 @@
 ru:
   countries:
     index:
-      title: 'Страны'
-      new_country: 'Добавить страну'
+      title: 'Направления'
+      new_country: 'Добавить направление'
       availability: 'Вид'
     new:
-      new_country: 'Добавить страну'
+      new_country: 'Добавить направление'
     edit:
-      edit_country: 'Редактировать страну'
-    show:
-      name: 'Название'
-      country: 'Страна'
+      edit_country: 'Редактировать направление'
     form:
       common: 'Общие данные'
     list:
-      name:  'Название страны'
+      name:  'Название'
+      action_title_for_common: 'Направление доступное по умолчанию'
 
     messages:
-      destroyed: 'Страна удалена'
-      updated: 'Страна обновлена'
-      created: 'Страна создана'
+      destroyed: 'Направление удалено'
+      updated: 'Направление обновлено'
+      created: 'Направление создано'
+
+  list_of_countries: 'Список направлений'
 
   country_availabilities:
     all: 'Все'
     own: 'Собственные'
     open: 'Общие'
+
+  activerecord:
+    attributes:
+      country:
+        name: 'Название'

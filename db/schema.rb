@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131020141936) do
+ActiveRecord::Schema.define(:version => 20131025114106) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -178,6 +178,9 @@ ActiveRecord::Schema.define(:version => 20131020141936) do
     t.integer  "claims_count"
     t.integer  "tourists_count"
     t.integer  "tasks_count"
+    t.integer  "tariff_id"
+    t.integer  "user_payment_id"
+    t.datetime "tariff_end"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"

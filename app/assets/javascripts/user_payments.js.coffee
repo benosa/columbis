@@ -13,32 +13,8 @@ $(document).ready ->
 
     init: ->
       this.data = tariffs
-      this.tariff.change () -> TariffPlanCheck.tariff_change()
-      this.period.change () -> TariffPlanCheck.period_change()
-      this.tariff_change()
-
-    tariff_change: ->
-      if this.tariff.val() == ""
-        this.not_tariff_check()
-      else
-        this.tariff_check()
-
-    not_tariff_check: ->
-      this.amount.removeClass('disabled')
-      this.amount.removeAttr('readonly')
-      this.currency.ikSelect('enable')
-      this.period.addClass('disabled')
-      this.period.attr('readonly', 'true')
-      this.period.val("")
-      this.period_change()
-
-    tariff_check: ->
-      this.amount.addClass('disabled')
-      this.amount.attr('readonly', 'true')
-      this.currency.ikSelect('disable')
-      this.period.removeClass('disabled')
-      this.period.removeAttr('readonly')
-      this.period.val("1")
+      this.tariff.bind 'input', () -> TariffPlanCheck.period_change()
+      this.period.bind 'input', () -> TariffPlanCheck.period_change()
       this.period_change()
 
     period_change: ->

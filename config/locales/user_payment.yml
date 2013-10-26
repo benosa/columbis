@@ -39,6 +39,8 @@ ru:
       new_user_payment: 'Создание счёта'
 
     messages:
+      created: 'Счет создан'
+      destroyed: 'Счет удален'
       robokassa_bad_paid: 'Не удалось обновить данные счёта. Счёт не найден.'
       robokassa_bad_key: 'Не удалось обработать данные.'
       robokassa_success: 'Счёт успешно оплачен.'

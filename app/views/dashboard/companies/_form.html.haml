@@ -81,3 +81,21 @@
       .fake_row
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
+
+- unless active_tariff_plans.blank?
+  .form_column
+    .form_block
+      .block_title
+        %h2= t('.tariff_plan')
+      .form_block_content
+        .fake_row
+          %p= f.label :tariff
+          = company.tariff.name
+          %p= f.label :tariff_end
+          = l(company.tariff_end)
+          - if company.user_payments.select{|payment| payment.status == 'new' }.size != 0
+            %p= t('.already_pay_or_extend')
+            = link_to t('.link_to_payments'), user_payments_path, :class => 'add_city'
+          -else
+            %p= t('.pay_or_extend')
+            = link_to t('.pay_or_extend_link'), new_user_payment_path, :class => 'add_city'

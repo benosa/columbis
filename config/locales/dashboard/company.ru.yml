@@ -35,6 +35,11 @@ ru:
           name: 'Название'
           default_password: 'Пароль по умолчанию'
         logo_size: '(100x100)'
+        tariff_plan: 'Тарифный план'
+        pay_or_extend: 'Вы можете оплатить продление либо переход на другой тарифный план'
+        pay_or_extend_link: 'Оплатить'
+        already_pay_or_extend: 'Вы ещё не завершили предыдущую операцию по оплате'
+        link_to_payments: 'Все операции'
       printers:
         title: "Печатные формы"
         printers: "Список документов компании"
@@ -70,6 +75,8 @@ ru:
         director_genitive: 'Директор (родительный падеж)'
         subdomain: 'Адрес в системе'
         logo: 'Логотип'
+        tariff: 'Текущий тарифный план'
+        tariff_end: 'Дата окончания тарифного плана'
 
       # it's useful only for rails >= 3.2.0
       company/address:

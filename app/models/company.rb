@@ -3,12 +3,15 @@ class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
-                  :sms_signature, :sms_birthday_send, :owner
+                  :sms_signature, :sms_birthday_send, :owner, :user_payment_id, :tariff_end,
+                  :tariff_id
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
 
   belongs_to :owner, :class_name => 'User', :inverse_of => :company
+  belongs_to :tariff, :class_name => 'TariffPlan'
+  belongs_to :user_payment
   has_one :address, :as => :addressable, :dependent => :destroy
   has_many :payments_in, :as => :payer, :class_name => 'Payment', :dependent => :destroy
   has_many :payments_out, :as => :recipient, :class_name => 'Payment', :dependent => :destroy

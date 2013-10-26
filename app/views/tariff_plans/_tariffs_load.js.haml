@@ -1,0 +1,5 @@
+- tpd = tariff_plans_data
+var tariffs = [], temp;
+- tpd.each do |tariff|
+  temp = [ parseInt("#{tariff[0]}"), "#{tariff[1]}", parseInt("#{tariff[2]}") ];
+  tariffs.push(temp);

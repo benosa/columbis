@@ -4,10 +4,21 @@ class TariffPlan < ActiveRecord::Base
                   :users_count, :currency
 
   has_many :user_payments
+  has_many :companies, :dependent => :nullify
 
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES, :presence => true
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   validates :place_size, :numericality => true, :presence => true
   validates :price, :numericality => true, :presence => true
   validates :users_count, :numericality => true, :presence => true
+
+  def self.create_default
+    tps = TariffPlan.where(:name => "По умолчанию")
+    if tps.length == 0
+      TariffPlan.create(:active => true, :name => "По умолчанию", :place_size => 10,
+        :price => 0, :sms_sending => false, :currency => "rur", :users_count => 5)
+    else
+      tps.first
+    end
+  end
 end

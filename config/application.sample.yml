@@ -10,6 +10,7 @@ development: &defaults
   robokassa_secret: 5906b45335a4d6f8b2197d6c2c49b40
   robokassa_password1: aJSDH892h182hdh18HSADjh
   robokassa_password2: 83hajhdPDh83h32hdahHDSahd
+  days_for_default_tariff: 15
   delayed_job_user: user
   delayed_job_password: password
   public_controllers:

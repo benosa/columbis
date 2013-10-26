@@ -9,6 +9,8 @@ class UserPayment < ActiveRecord::Base
   belongs_to :user
   belongs_to :tariff, class_name: 'TariffPlan'
 
+  has_one :payment_company, class_name: 'Company', :dependent => :nullify
+
   validates_presence_of :amount, :currency, :description, :company_id, :user_id
   validates_presence_of :period, :unless => proc{ self.tariff_id.blank?  }
   validates_uniqueness_of :invoice

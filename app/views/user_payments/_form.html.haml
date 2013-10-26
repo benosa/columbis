@@ -7,18 +7,18 @@
       %h2= t('.common')
     .form_block_content
       .fake_row
-        %p= f.label :description
-        = f.text_area :description, :style => "max-width: 240px; height: 80px"
+        / %p= f.label :description
+        / = f.text_area :description, :style => "max-width: 240px; height: 80px", :readonly => true
         %p= f.label :tariff
         = f.select :tariff_id, tariff_plan_ids, :not_highlighted => true
         %p= f.label :period
         = f.text_field :period
         %p= f.label :amount
-        = f.number_field :amount
+        = f.number_field :amount, :readonly => true
         = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit
 
 = javascript_tag do
-  = render :partial => "form_js.js.haml"
+  = render :partial => "tariff_plans/tariffs_load.js.haml"

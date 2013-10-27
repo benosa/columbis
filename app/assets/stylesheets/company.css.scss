@@ -27,6 +27,10 @@
   .domain { font-weight: bold; line-height: 22px; }
   .domain_example { display: inline-block; color: #666; font-size: 85%; margin: 5px 0 11px 1px; font-style: italic; }
 
+  input.highlighted {
+    border: solid 2px rgb(113, 163, 226); //#729EEC
+  }
+
   .list_select {
     &.ik_select, .ik_select_link {
       width: 160px;

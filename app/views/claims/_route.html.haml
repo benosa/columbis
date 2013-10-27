@@ -51,7 +51,7 @@
         .fake_col.col4
           .two_line
             %p= f.label :medical_insurance
-            = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {}, :class => 'editable-select', :not_highlighted => true
+            = f.select :medical_insurance, current_company.dropdown_values_for('medical_insurance'), {include_blank: true}, :class => 'editable-select', :not_highlighted => true
         .fake_col.col5
           .two_line
             %p= f.label :nights
@@ -62,17 +62,16 @@
         .fake_col.col1
           .two_line
             %p= f.label :transfer
-            = f.select :transfer, current_company.dropdown_values_for('transfer'), {}, :class => 'editable-select',
+            = f.select :transfer, current_company.dropdown_values_for('transfer'), {include_blank: true}, :class => 'editable-select',
               :not_highlighted => true
         .fake_col.col2
           .two_line
-            %p= f.label :service_class
-            = f.select :service_class, current_company.dropdown_values_for('service_class'), {}, :class => 'editable-select'
+            %p= f.label :relocation
+            = f.select :relocation, current_company.dropdown_values_for('relocation'), {include_blank: true}, :class => 'editable-select'
         .fake_col.col3
           .two_line
-            %p= f.label :relocation
-            = f.select :relocation, current_company.dropdown_values_for('relocation'), {}, :class => 'editable-select',
-              :not_highlighted => true
+            %p= f.label :service_class
+            = f.select :service_class, current_company.dropdown_values_for('service_class'), {include_blank: true}, :class => 'editable-select'
         .fake_col.col4
           .two_line
             %p= f.label :additional_services

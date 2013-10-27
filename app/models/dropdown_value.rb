@@ -27,6 +27,9 @@ class DropdownValue < ActiveRecord::Base
   def self.check_and_save(list, value, company_id, common = false)
     # Clean value from trailing spaces
     value.strip! if value.is_a? String
+    # Don't store blank values
+    return if value.blank?
+    # Check current value
     unless where(:list => list, :value => value, :company_id => company_id).first
       # we don't store common values
       return if where(:list => list, :value => value, :common => true).first

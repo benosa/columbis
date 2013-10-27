@@ -29,15 +29,6 @@ class SessionsController < Devise::SessionsController
     render :json => {:success => true, name: resource.first_name.to_s + ' ' + resource.last_name.to_s}
   end
 
-  def encipher(data_to_encode)
-    cipher = OpenSSL::Cipher::Cipher.new("des-ede3-cbc")
-    key = "123,ewq"
-    cipher.encrypt(key)
-    encoded_data = cipher.update(data_to_encode)
-    encoded_data << cipher.final
-    return Base64.encode64(encoded_data)
-  end
-
   def destroy
     redirect_path = after_sign_out_path_for(resource_name)
     signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
@@ -51,15 +42,26 @@ class SessionsController < Devise::SessionsController
     end
   end
 
-  def session_name_cookie(action, resource=nil)
-    if action == 'set'
-      cookies.permanent[:_columbis_username] = encipher(resource.full_name)
-    else
-      cookies.delete(:_columbis_username)
-    end
-  end
-
   def failure()
     return render :json => {:success => false, :errors => I18n.t('devise.failure.invalid') }
   end
+
+  private
+
+    def encipher(data_to_encode)
+      cipher = OpenSSL::Cipher::Cipher.new("des-ede3-cbc")
+      key = "123,ewq"
+      cipher.encrypt(key)
+      encoded_data = cipher.update(data_to_encode)
+      encoded_data << cipher.final
+      return Base64.encode64(encoded_data)
+    end
+
+    def session_name_cookie(action, resource=nil)
+      if action == 'set'
+        cookies.permanent[:_columbis_username] = encipher(resource.full_name)
+      else
+        cookies.delete(:_columbis_username)
+      end
+    end
 end

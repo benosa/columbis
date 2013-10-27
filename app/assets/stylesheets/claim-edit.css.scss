@@ -13,17 +13,26 @@
     width: auto !important; display: block; position: relative; height: auto; //22px;
     margin: 0;
     .ik_select_link {
-      width: auto;
+      width: auto !important;
       padding: 0 25px 0 0;
       background: url(/assets/new_design/images/select.png) right center no-repeat #FFF;
       border: 1px #D5D5D5 solid; border-radius: 3px; cursor: default; height: 20px;
       overflow: hidden; position: relative; white-space: nowrap;
     }
-
+    .ik_select_link_inner { margin: 0 9px 0 0; }
     .ik_select_link_text {
       display: block;
       width: auto;
       padding: 1px 5px 0 5px;
+    }
+    input.ik_select_link_text {
+      width: 100% !important;
+    }
+  }
+  .error_message {
+    .ik_select_link {
+      background: url(/assets/new_design/images/select.png) right center no-repeat #FCE8E9;
+      border-color: #cd6a6a !important;
     }
   }
 }
@@ -42,6 +51,21 @@
 .wrap-textarea {
   padding: 0 10px;
   textarea { width: 100%; padding: 10px 10px; margin: 0 -12px; }
+}
+
+// Highlighted fields mixin
+@mixin highlighted {
+  margin: -1px -6px !important;
+  border: solid 2px rgb(113, 163, 226); //#729EEC
+}
+// Highlighted fields in new claim form
+.new_claim {
+  .applicant {
+    .full_name, .date_of_birth, .passport_series, .passport_number, .passport_valid_until,
+    .address, .phone_number, .email { @include highlighted; }
+  }
+  .check_date, .tourist_stat .ik_select_link { @include highlighted; }
+  .arrival_date { @include highlighted; margin: -1px 0 !important; }
 }
 
 // Claim page

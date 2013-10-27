@@ -706,24 +706,24 @@ div.left {
 
 /*** highlighted ***/
 
-.highlighted {
-  margin-right: 0;
-  margin-bottom: 6px;
-  .ik_select {
-    margin-right: 0;
-  }
-  + label {
-    margin-left: 0 !important;
-  }
-}
+// .highlighted {
+//   margin-right: 0;
+//   margin-bottom: 6px;
+//   .ik_select {
+//     margin-right: 0;
+//   }
+//   + label {
+//     margin-left: 0 !important;
+//   }
+// }
 
-.form_column .highlighted, .filter .highlighted.select, .two_line .highlighted.select {
-  margin-right: 17px;
-}
+// .form_column .highlighted, .filter .highlighted.select, .two_line .highlighted.select {
+//   margin-right: 17px;
+// }
 
-.highlighted.last {
-  margin-right: 0 !important;
-}
+// .highlighted.last {
+//   margin-right: 0 !important;
+// }
 
 /*** END highlighted ***/
 

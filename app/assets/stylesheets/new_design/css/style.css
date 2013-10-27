@@ -876,7 +876,7 @@ input[type="checkbox"]{display: none;}
 		.form_column.small .form_block{width: 783px;}
 		.form_column.small .block_title{width: 763px;}
 		.form_column.small .fake_row{width: 762px;}
-.highlighted{
+/*.highlighted{
 	background: url(/assets/new_design/images/highlighted.png) repeat-x;
 	border-radius: 3px;
 	display: inline-block;
@@ -884,7 +884,7 @@ input[type="checkbox"]{display: none;}
 	margin: -4px 17px 0 0;
 	padding: 4px 4px 0 4px;
 }
-	.highlighted input,.highlighted.last{margin-right: 0px;}
+	.highlighted input,.highlighted.last{margin-right: 0px;}*/
 .dates{
 	padding: 15px 10px 11px 10px;
 	text-align: center;

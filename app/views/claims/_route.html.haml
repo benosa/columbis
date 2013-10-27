@@ -6,7 +6,7 @@
       .dates
         %p= t('.arrival_date')
         %label= t('.from')
-        = f.text_field :arrival_date, :class => 'datepicker date important', :value => l(claim.arrival_date, :format => :long), wrapper: false
+        = f.text_field :arrival_date, :class => 'datepicker date important arrival_date', :value => l(claim.arrival_date, :format => :long), wrapper: false
         %label= t('.till')
         = f.text_field :departure_date, :class => 'datepicker date important', :value => l(claim.departure_date, :format => :long), wrapper: false
 

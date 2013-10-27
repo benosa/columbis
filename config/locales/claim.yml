@@ -171,7 +171,7 @@ ru:
     information:
       additional_information: 'Дополнительная информация'
       trip_documents: 'Документы в дорогу'
-      tourist_stat: 'Статистика'
+      tourist_stat: 'Откуда турист'
       special_offer: 'Турист дает согласие на получения спецпредложения на телефон и электронную почту'
       special_offer_warning: 'Вы уверены? %{value} не будет получать спецпредложения на телефон и электронную почту.'
 
@@ -278,7 +278,7 @@ ru:
         medical_insurance: 'Медстраховка'
         canceled: 'Аннулирована'
         memo_tasks_done: 'Примечания учтены'
-        tourist_stat: 'Статистика'
+        tourist_stat: 'Откуда турист'
         excluded_from_profit: 'Не включать в наценку'
 
       claim/applicant:

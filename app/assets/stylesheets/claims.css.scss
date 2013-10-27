@@ -447,6 +447,7 @@ option {
     }
   }
   .docs_note { height: auto !important; min-height: 150px; }
+  .documentation_select .ik_select_list { width: auto; }
 
   // Replace blue color with white for highlighted fields
   .visa.all_done, .confirmation.blue_back, .check_date.departed {

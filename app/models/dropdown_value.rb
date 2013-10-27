@@ -21,25 +21,7 @@ class DropdownValue < ActiveRecord::Base
   default_sphinx_scope :by_list
 
   def self.available_lists
-    return @available_lists unless @available_lists.nil?
-    @available_lists =
-    {
-      :airline => 'Авиакомпания',
-      :relocation => 'Переезд',
-      :hotel => 'Отель',
-      :form => 'Форма оплаты',
-      :airport => 'Аэропорт',
-      :transfer => 'Трансфер',
-      :meals => 'Питание',
-      :service_class => 'Класс',
-      :tourist_stat => 'Откуда турист',
-      :placement => 'Размещение',
-	    :medical_insurance => 'Медстраховка',
-	    :transfer => 'Трансфер',
-      :nights => 'Кол-во ночей',
-			:service_class => 'Класс',
-			:relocation => 'Переезд'
-    }
+    I18n.t('dropdown_values.available_lists')
   end
 
   def self.check_and_save(list, value, company_id, common = false)

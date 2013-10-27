@@ -3,7 +3,7 @@
 
 - title t('.title', :value => "#{DropdownValue.available_lists[@dropdown_value.list.to_sym]}: #{@dropdown_value.value}")
 
-= form_for [:dashboard, @dropdown_value] do |form|
+= form_for [:dashboard, @dropdown_value], html: {class: 'dropdown_value_form'} do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 

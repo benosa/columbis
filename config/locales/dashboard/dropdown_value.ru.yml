@@ -20,8 +20,32 @@ ru:
       form:
         common: 'Общий'
 
-    activerecord:
-      attributes:
-        dropdown_value:
-          list: 'Список'
-          value: 'Значение'
+  dropdown_values:
+    messages:
+      successfully_updated_dropdown_value: 'Список значений изменен'
+      successfully_created_dropdown_value: 'Список значений создан'
+      successfully_destroyed_dropdown_value: 'Список значений удален'
+
+    available_lists:
+      airline: 'Авиакомпания'
+      relocation: 'Переезд'
+      hotel: 'Отель'
+      form: 'Форма оплаты'
+      airport: 'Аэропорт'
+      transfer: 'Трансфер'
+      meals: 'Питание'
+      service_class: 'Класс'
+      tourist_stat: 'Откуда турист'
+      placement: 'Размещение'
+      medical_insurance: 'Медстраховка'
+      transfer: 'Трансфер'
+      nights: 'Кол-во ночей'
+      service_class: 'Класс'
+      relocation: 'Переезд'
+
+  activerecord:
+    attributes:
+      dropdown_value:
+        list: 'Список'
+        value: 'Значение'
+        common: 'Общее'

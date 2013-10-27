@@ -17,6 +17,9 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
       required = required?(name) if required.nil?
       options[:class] = add_required_class(options[:class]) if required
 
+      highlighted = options.delete(:highlighted)
+      options[:class] = add_highlighted_class(options[:class]) if highlighted
+
       wrapper_options = options.delete(:wrapper)
 
       args << options
@@ -80,6 +83,12 @@ class TourismFormBuilder < ActionView::Helpers::FormBuilder
     def add_required_class(str)
       r = str ? str : ''
       r << ' required'
+      r.strip
+    end
+
+    def add_highlighted_class(str)
+      r = str ? str : ''
+      r << ' highlighted'
       r.strip
     end
 

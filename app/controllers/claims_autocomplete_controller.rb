@@ -65,6 +65,7 @@ class ClaimsAutocompleteController < ApplicationController
     @list = current_company.dropdown_for(params[:list]).select(:value)
       .where(["value ILIKE '%' || ? || '%'", params[:term]])
       .reorder('value ASC')
+      .group(:value)
       .limit(50)
     render 'claims/autocompletes/dropdown_list'
   end

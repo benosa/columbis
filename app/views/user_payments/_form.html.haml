@@ -11,6 +11,8 @@
         / = f.text_area :description, :style => "max-width: 240px; height: 80px", :readonly => true
         %p= f.label :tariff
         = f.select :tariff_id, tariff_plan_ids, :not_highlighted => true
+        %p
+          %label#tariff_label
         %p= f.label :period
         = f.text_field :period
         %p= f.label :amount

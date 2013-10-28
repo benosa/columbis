@@ -16,8 +16,11 @@ class UserPayment < ActiveRecord::Base
   validates_uniqueness_of :invoice
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
   validates :status, :inclusion => STATUSES
+  validates :period, :numericality => true
+  validate :check_other_user_payments
 
   before_validation :set_status
+  before_validation :set_description
   before_validation :check_tariff
   after_create :set_invoice
 
@@ -54,6 +57,22 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_status
-      self.status = 'new' if status.blank?
+      self.status = 'new' unless self.status
+    end
+
+    def check_other_user_payments
+      if self.status == 'new' &&
+          self.company.user_payments.select{|payment| payment.status == "new" &&
+            payment.id != self.id}.size != 0
+        errors.add(:status, "#{I18n.t('.user_payments.activerecord.errors.new_has_exist')}")
+      end
+    end
+
+    def set_description
+      plan = I18n.t('activerecord.attributes.user_payment.new_tariff')
+      plan = I18n.t('activerecord.attributes.user_payment.old_tariff') if
+        self.company.tariff_id == self.tariff.id
+      self.description = I18n.t('.activerecord.attributes.user_payment.description_text',
+        :tariff_plan_name => self.tariff.name, :tariff_period => self.period, :is_new_plan => plan)
     end
 end

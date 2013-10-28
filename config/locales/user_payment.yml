@@ -2,6 +2,9 @@ ru:
   activerecord:
     attributes:
       user_payment:
+        description_text: "%{is_new_plan}: %{tariff_plan_name}. Период: %{tariff_period} мес."
+        new_tariff: 'Новый тарифный план'
+        old_tariff: 'Продление тарифного плана'
         description: 'Пояснение'
         tariff: 'Тарифный план'
         period: 'Период оплаты (месяц)'

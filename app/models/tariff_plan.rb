@@ -4,15 +4,17 @@ class TariffPlan < ActiveRecord::Base
                   :users_count, :currency
 
   has_many :user_payments
-  has_many :companies, :dependent => :nullify
+  has_many :companies, :foreign_key => :tariff_id
 
-  validates :currency, :inclusion => CurrencyCourse::CURRENCIES, :presence => true
-  validates :name, :presence => true, :uniqueness => true
-  validates :place_size, :numericality => true, :presence => true
-  validates :price, :numericality => true, :presence => true
+  validates :currency,    :inclusion => CurrencyCourse::CURRENCIES, :presence => true
+  validates :name,        :uniqueness   => true, :presence => true
+  validates :place_size,  :numericality => true, :presence => true
+  validates :price,       :numericality => true, :presence => true
   validates :users_count, :numericality => true, :presence => true
 
-  def self.create_default
+  after_destroy :set_deafault_plan_to_companies
+
+  def self.default
     tps = TariffPlan.where(:name => "По умолчанию")
     if tps.length == 0
       TariffPlan.create(:active => true, :name => "По умолчанию", :place_size => 10,
@@ -21,4 +23,10 @@ class TariffPlan < ActiveRecord::Base
       tps.first
     end
   end
+
+  private
+
+    def set_deafault_plan_to_companies      
+      Company.update_by_default_tariff(companies)
+    end
 end

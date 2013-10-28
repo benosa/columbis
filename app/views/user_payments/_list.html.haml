@@ -14,8 +14,9 @@
       %tr{ :class => cycle('odd', 'even'), id: "user_payment_#{user_payment.id}" }
         %td
           %p= user_payment.invoice
-        %td
-          %p= truncate user_payment.description, length: 30, omission: '...', separator: ' '
+        %td.body{:class => [(user_payment.description.length > 80) && 'popup_hover'], :data => { :content => (user_payment.description.length > 80) && user_payment.description }}
+          %p{:class => "with_tooltip", :title => user_payment.description }
+            = truncate user_payment.description, length: 30, omission: '...', separator: ' '
         %td
           %p= user_payment.amount.to_s + " " + t(user_payment.currency)
         %td

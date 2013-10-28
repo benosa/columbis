@@ -64,7 +64,7 @@ class UserPayment < ActiveRecord::Base
       if self.status == 'new' &&
           self.company.user_payments.select{|payment| payment.status == "new" &&
             payment.id != self.id}.size != 0
-        errors.add(:status, "#{I18n.t('.user_payments.activerecord.errors.new_has_exist')}")
+        errors.add(:status, "#{I18n.t('activerecord.attributes.user_payment.errors.new_has_exist')}")
       end
     end
 

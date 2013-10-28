@@ -12,6 +12,7 @@ class Company < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :inverse_of => :company
   belongs_to :tariff, :class_name => 'TariffPlan'
   belongs_to :user_payment
+
   has_one :address, :as => :addressable, :dependent => :destroy
   has_many :payments_in, :as => :payer, :class_name => 'Payment', :dependent => :destroy
   has_many :payments_out, :as => :recipient, :class_name => 'Payment', :dependent => :destroy
@@ -30,7 +31,7 @@ class Company < ActiveRecord::Base
 
   has_many :printers, :order => :id, :dependent => :destroy, inverse_of: :company
 
-  validates_presence_of :name
+  validates_presence_of :name, :tariff_id, :tariff_end
   validates :subdomain, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: I18n.t('activerecord.errors.messages.subdomain_invalid') },
@@ -41,6 +42,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :offices, :reject_if => :check_offices_attributes, :allow_destroy => true
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
+  before_create :set_tariff_plan
   after_create do |company|
     Mailer.company_was_created(self).deliver
   end
@@ -102,7 +104,20 @@ class Company < ActiveRecord::Base
     DropdownValue.values_for(list, id)
   end
 
+  def self.update_by_default_tariff(companies)
+    default_id = TariffPlan.default.id
+    companies.each do |company|
+      company.update_column(:tariff_id, default_id)
+      company.update_column(:tariff_end, Time.zone.now + CONFIG[:days_for_default_tariff].days)      
+    end
+  end
+
   private
+
+    def set_tariff_plan
+      self.tariff_id = TariffPlan.default.id
+      self.tariff_end = Time.zone.now + CONFIG[:days_for_default_tariff].days
+    end
 
     def check_offices_attributes(attributes)
       offices.count < offices.length && attributes['id'].blank? && attributes['name'].blank?

@@ -78,4 +78,10 @@ class ClaimsAutocompleteController < ApplicationController
       end
     end
 
+    def render(*args)
+      options = args.extract_options!
+      options.merge! formats: :json
+      super *(args << options)
+    end
+
 end

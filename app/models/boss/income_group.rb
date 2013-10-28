@@ -47,7 +47,7 @@ module Boss
 
       def months_serialize_data_with_extra(data, categories)
         seria = []
-        group_id = !extra.blank? ? extra : data.first['id']
+        group_id = !extra.blank? ? extra : (data.first['id'] if data.first)
         this_year = categories.map do |c|
           check_elements(
             data.find_all { |d| d['month'].to_i == c && d['year'].to_i == @end_date.year && d['id'] == group_id },

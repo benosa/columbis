@@ -41,7 +41,7 @@ module Boss
 
       def months_serialize_data_with_extra(data, categories)
         seria = []
-        group_id = !extra.blank? ? extra : data.first['id']
+        group_id = !extra.blank? ? extra : (data.first['id'] if data.first)
         this_year = categories.map do |c|
           check_elements(
             data.select{|e| !e["percent"] }

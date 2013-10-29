@@ -11,16 +11,15 @@ class UserPayment < ActiveRecord::Base
 
   has_one :payment_company, class_name: 'Company', :dependent => :nullify
 
-  validates_presence_of :amount, :currency, :description, :company_id, :user_id
-  validates_presence_of :period, :unless => proc{ self.tariff_id.blank?  }
+  validates_presence_of :amount, :currency, :description, :company_id, :user_id, :period, :tariff_id
   validates_uniqueness_of :invoice
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
   validates :status, :inclusion => STATUSES
   validates :period, :numericality => true
 
   before_validation :set_status
-  before_validation :set_description
   before_validation :check_tariff
+  before_validation :set_description
 
   before_create :check_other_user_payments
   after_create :set_invoice
@@ -98,11 +97,10 @@ class UserPayment < ActiveRecord::Base
     end
 
     def check_tariff
-      if self.tariff_id
-        tariff = TariffPlan.find(tariff_id)
-        self.currency = tariff.try(:currency)
-        self.amount = tariff.try(:price) * self.period
-      end
+      self.tariff = TariffPlan.default unless self.tariff
+      self.period = 1 unless self.period
+      self.currency = self.tariff.currency
+      self.amount = self.tariff.price * self.period
     end
 
     def set_status
@@ -121,8 +119,8 @@ class UserPayment < ActiveRecord::Base
     def set_description
       plan = I18n.t('activerecord.attributes.user_payment.new_tariff')
       plan = I18n.t('activerecord.attributes.user_payment.old_tariff') if
-        self.company.tariff_id == self.tariff.id
+        self.company && self.company.tariff == self.tariff
       self.description = I18n.t('.activerecord.attributes.user_payment.description_text',
-        :tariff_plan_name => self.tariff.name, :tariff_period => self.period, :is_new_plan => plan)
+        :tariff_plan_name => self.tariff.name, :tariff_period => self.period, :is_new_plan => plan) if self.tariff
     end
 end

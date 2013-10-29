@@ -7,7 +7,6 @@ describe UserPayment do
     FactoryGirl.create(:fail_user_payment).should be_valid
     FactoryGirl.create(:success_user_payment).should be_valid
     FactoryGirl.create(:approved_user_payment).should be_valid
-    FactoryGirl.create(:user_payment_with_tariff).should be_valid
   end
 
   describe ".associtiations" do
@@ -21,9 +20,6 @@ describe UserPayment do
     subject { payment }
 
     context "when valid" do
-      it { should validate_presence_of :amount }
-      it { should validate_presence_of :currency }
-      it { should validate_presence_of :description }
       it { should validate_presence_of :company_id }
       it { should validate_presence_of :user_id }
       it { should validate_uniqueness_of :invoice }
@@ -40,13 +36,26 @@ describe UserPayment do
     end
 
     context "when invalid" do
-      it { should_not allow_value(nil).for :amount }
-      it { should_not allow_value(nil).for :currency }
-      it { should_not allow_value(nil).for :description }
       it { should_not allow_value(nil).for :company_id }
       it { should_not allow_value(nil).for :user_id }
-      it { should_not allow_value('nil').for :currency }
-      it { should_not allow_value('nil').for :status }
+    end
+
+    context "when callbacks sets valid params" do
+      let(:payment) { FactoryGirl.create :default_user_payment }
+      subject { payment }
+
+      it { payment.amount.should == 0 }
+      it { payment.currency.should == "rur" }
+      it { payment.description.should_not be_nil }
+      it { payment.tariff.should_not be_nil }
+      it { payment.period.should_not be_nil }
+    end
+  end
+
+  describe "methods" do
+    it "should not create new user payment if new already exist" do
+      payment = FactoryGirl.create(:user_payment)
+      payment.class.can_create_new?(payment.company).should be_false
     end
   end
 end

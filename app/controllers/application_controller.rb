@@ -131,8 +131,8 @@ class ApplicationController < ActionController::Base
   end
 
   def check_company_is_active
-    unless current_company.is_active?
-      flash[:alert] = 'Оплата за использование ресурса не произведена.'
+    if current_company && !current_company.is_active?
+      flash[:alert] = I18n.t('errors.messages.company_not_paid_tariff')
     end
   end
 

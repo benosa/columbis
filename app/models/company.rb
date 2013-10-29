@@ -108,11 +108,11 @@ class Company < ActiveRecord::Base
     default_id = TariffPlan.default.id
     companies.each do |company|
       company.update_column(:tariff_id, default_id)
-      company.update_column(:tariff_end, Time.zone.now + CONFIG[:days_for_default_tariff].days)      
+      company.update_column(:tariff_end, Time.zone.now + CONFIG[:days_for_default_tariff].days)
     end
   end
 
-  def tariff_payd(payment)
+  def tariff_paid(payment)
     self.user_payment = payment
     if self.tariff == payment.tariff
       self.tariff_end = self.tariff_end + payment.period.months
@@ -124,7 +124,11 @@ class Company < ActiveRecord::Base
   end
 
   def is_active?
-    (self.tariff_end + 1.days) > Time.zone.now
+    if self.tariff_end && (self.tariff_end + 1.days) > Time.zone.now
+      true
+    else
+      false
+    end
   end
 
   private

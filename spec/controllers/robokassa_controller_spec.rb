@@ -71,7 +71,7 @@ describe RobokassaController do
       it "should be success message and redirect to edit company" do
         UserPayment.find(@payment.id).status.should == "success"
         response.should redirect_to user_payments_path
-        flash[:notice].should eql(I18n.t('.user_payments.messages.robokassa_success'))
+        flash[:notice].should eql(I18n.t('.user_payments.messages.success_complete'))
       end
     end
 
@@ -106,7 +106,7 @@ describe RobokassaController do
       it "should be success message and redirect to edit company" do
         UserPayment.find(@payment.id).status.should == "fail"
         response.should redirect_to user_payments_path
-        flash[:notice].should eql(I18n.t('.user_payments.messages.robokassa_fail'))
+        flash[:notice].should eql(I18n.t('.user_payments.messages.fail_complete'))
       end
     end
 

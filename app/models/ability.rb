@@ -9,6 +9,7 @@ class Ability
     @company = @user.company || Company.new
 
     role = @user.role.to_s
+    role = "unpayment_" + role unless @company.is_active?
     if self.respond_to?(role)
       self.send(role)
     else
@@ -105,6 +106,41 @@ class Ability
       cannot [:update, :destroy], Company
       cannot([:update, :destroy], User) { |u| u.login == 'demo' }
     end
+  end
+
+  def unpayment_boss
+    can :read, Company, :id => user.company_id
+    cannot [:new, :create], Company if company
+    can :read, [Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
+      Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Tourist, User,
+      Boss::Widget, UserPayment], :company_id => user.company_id
+    can :manage, UserPayment, :company_id => user.company_id
+    cannot(:destroy, User) { |u| u.company_owner? }
+    cannot :destroy, UserPayment
+    can :destroy, UserPayment, :status => 'new', :user => user
+    can :read, :robokassa_pay
+    can :read, Flight, :claim => { :company_id => user.company_id }
+    can :read, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
+    can :read, UserMailer, :task => { :user => user }
+    can :read, [Country, City], :common => true
+    can :read, DropdownValue, :common=> true
+    can :read, Region
+    can :read, Task, :user_id => user.id
+    cannot :manage, User, :role => 'admin'
+  end
+
+  def unpayment_accountant
+    can [:read, :scroll], Claim, :company_id => user.company_id
+  end
+
+
+  def unpayment_supervisor
+    can [:read, :scroll], Claim, :company_id => user.company_id
+  end
+
+
+  def unpayment_manager
+    can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id
   end
 
 end

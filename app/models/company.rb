@@ -123,6 +123,10 @@ class Company < ActiveRecord::Base
     self.save
   end
 
+  def is_active?
+    (self.tariff_end + 1.days) > Time.zone.now
+  end
+
   private
 
     def set_tariff_plan

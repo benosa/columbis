@@ -3,7 +3,9 @@ require 'open-uri'
 
 namespace :operators do
   task :load, [:threads_number] => :environment do |t, args|
-    threads_number = args[:threads_number].nil? ? 10 : args[:threads_number].to_i
+    db_pool = ActiveRecord::Base.configurations[Rails.env]['pool'].to_i
+    default_threads_number = db_pool > 2 ? db_pool - 1 : 5
+    threads_number = args[:threads_number].nil? ? default_threads_number : args[:threads_number].to_i
     ThinkingSphinx.deltas_enabled = false
     start = Time.zone.now
     puts start.to_s
@@ -13,10 +15,18 @@ namespace :operators do
   end
 
   def get_operator_pages
-    doc = Nokogiri::HTML(open('http://reestr.russiatourism.ru/?ac=search&mode=1&ext=1&number=&name=&id_region=0&address=&fo_name='))
+    # 'http://reestr.russiatourism.ru/?ac=search&mode=1&ext=1&number=&name=&id_region=0&address=&fo_name='
+    # Load only operators with insurer provision over 60 million rubles
+    urls = [
+      'http://reestr.russiatourism.ru/?fo_sum=100000000&ac=search_sum&mode=1',
+      'http://reestr.russiatourism.ru/?fo_sum=60000000&ac=search_sum&mode=1'
+    ]
     paths = []
-    doc.xpath('//table[@class="mra-l"]/tr/td/nobr/a').each do |tag|
-      paths << "http://reestr.russiatourism.ru/?ac=view&id_reestr=#{tag[:href].split('=').last}"
+    urls.each do |url|
+      doc = Nokogiri::HTML(open url)
+      doc.xpath('//table[@class="mra-l"]/tr/td/nobr/a').each do |tag|
+        paths << "http://reestr.russiatourism.ru/?ac=view&id_reestr=#{tag[:href].split('=').last}"
+      end
     end
     paths
   end

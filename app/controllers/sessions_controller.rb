@@ -58,10 +58,15 @@ class SessionsController < Devise::SessionsController
     end
 
     def session_name_cookie(action, resource=nil)
+      cookie_key = (CONFIG[:session_key] + '_username').to_sym
+      cookie_domain = '.' + CONFIG[:domain] # usefull for subdomain
       if action == 'set'
-        cookies.permanent[:_columbis_username] = encipher(resource.full_name)
+        cookies[cookie_key] = {
+          value: encipher(resource.full_name),
+          domain: cookie_domain
+        }
       else
-        cookies.delete(:_columbis_username)
+        cookies.delete cookie_key, domain: cookie_domain
       end
     end
 end

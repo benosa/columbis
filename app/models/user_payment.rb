@@ -43,7 +43,50 @@ class UserPayment < ActiveRecord::Base
 
   extend SearchAndSort
 
+  def pay(status)
+    rezult_of_check = is_bad_status(status)
+    return rezult_of_check if rezult_of_check && rezult_of_check.has_key?(:alert)
+    send(:"#{status}")
+  end
+
   private
+
+    def is_bad_status(status)
+      unless status || [:paid, :success, :fail].include?(status)
+        return {:alert => I18n.t('.user_payments.messages.uncertain_status')}
+      else
+        false
+      end
+    end
+
+    def paid
+      if self.update_attributes(:status => 'approved')
+        return self.company.tariff_paid(self)
+      else
+        false
+      end
+    end
+
+    def success
+      if self.status == 'approved'
+        return {:notice => I18n.t('.user_payments.messages.paid_already_complete')}
+      elsif self.update_attributes(:status => 'success')
+        return {:notice => I18n.t('.user_payments.messages.success_complete')}
+      else
+        return {:alert => I18n.t('.user_payments.messages.success_incomplete')}
+      end
+    end
+
+    def fail
+      if self.status == 'approved' || self.status == 'success'
+        return {:notice => I18n.t('.user_payments.messages.fail_not_complete')}
+      elsif self.update_attributes(:status => 'fail')
+        return {:notice => I18n.t('.user_payments.messages.fail_complete')}
+      else
+        return {:alert => I18n.t('.user_payments.messages.fail_incomplete')}
+      end
+    end
+
     def set_invoice
       UserPayment.update(id, :invoice => company_id * 10000 + id) if id
     end

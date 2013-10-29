@@ -7,7 +7,7 @@ class RobokassaController < ApplicationController
     @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_password2])
     if @notification.acknowledge # check if it’s genuine Robokassa request
       @user_payment = UserPayment.where(:invoice => @notification.item_id).first
-      if @user_payment && @user_payment.update_attributes(:status => 'approved')
+      if @user_payment && @user_payment.pay(:paid)
         render :text => @notification.success_response
       else
         render :text => t('.user_payments.messages.robokassa_bad_paid')
@@ -21,10 +21,8 @@ class RobokassaController < ApplicationController
     @notification = Robokassa::Notification.new(URI(request.url).query, :secret => CONFIG[:robokassa_password1])
     if @notification.acknowledge # check if it’s genuine Robokassa request
       @user_payment = UserPayment.where(:invoice => @notification.item_id).first
-      if @user_payment && (@user_payment.status == 'approved' ||
-          @user_payment.update_attributes(:status => 'success'))
-        redirect_to user_payments_path,
-          :notice => t('.user_payments.messages.robokassa_success')
+      if @user_payment
+        redirect_to user_payments_path, @user_payment.pay(:success)
       else
         redirect_to user_payments_path,
           :alert => t('.user_payments.messages.robokassa_bad_success')
@@ -38,11 +36,8 @@ class RobokassaController < ApplicationController
   def fail # Robokassa redirect user to this action if it’s not
     if params['InvId']
       @user_payment = UserPayment.where(:invoice => params['InvId']).first
-      if @user_payment &&
-          !['approved', 'success'].include?(@user_payment.status) &&
-          @user_payment.update_attributes(:status => 'fail')
-        redirect_to user_payments_path,
-          :notice => t('.user_payments.messages.robokassa_fail')
+      if @user_payment
+        redirect_to user_payments_path, @user_payment.pay(:fail)
       else
         redirect_to user_payments_path,
           :alert => t('.user_payments.messages.robokassa_bad_fail')

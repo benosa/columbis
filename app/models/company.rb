@@ -112,6 +112,17 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def tariff_payd(payment)
+    self.user_payment = payment
+    if self.tariff == payment.tariff
+      self.tariff_end = self.tariff_end + payment.period.months
+    else
+      self.tariff = payment.tariff
+      self.tariff_end = Time.zone.now + payment.period.months
+    end
+    self.save
+  end
+
   private
 
     def set_tariff_plan

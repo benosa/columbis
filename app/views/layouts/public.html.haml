@@ -52,7 +52,7 @@
     #container.all.clearfix
 
       .header
-        %a.logo{ href: domain_root_url }
+        %a.logo{ href: root_url(domain: CONFIG[:domain], subdomain: false, protocol: 'http') }
       .clear
 
       - if content_for? :navigation

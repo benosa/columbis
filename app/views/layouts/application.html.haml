@@ -76,20 +76,3 @@
         %p.right
           %a{href: domain_root_url}= CONFIG[:domain]
 
-    - if CONFIG[:domain] == 'columbis.ru' and is_admin?
-      :plain
-        <script type="text/javascript">
-          var myTipsSetup = {
-            api_key: '1f039216aea5656b3aa18267b5a2a6c7c6201214'
-          };
-
-          (function()
-          {
-              var s = document.createElement('script');
-              s.type = 'text/javascript';
-              s.src = 'https://mytips.co/webclient/loader.js';
-
-              document.head.appendChild(s);
-          }());
-        </script>
-

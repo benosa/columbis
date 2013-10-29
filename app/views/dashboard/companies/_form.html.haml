@@ -92,10 +92,10 @@
           %p= f.label :tariff
           = company.tariff.name
           %p= f.label :tariff_end
-          = l(company.tariff_end)
-          - if company.user_payments.select{|payment| payment.status == 'new' }.size != 0
-            %p= t('.already_pay_or_extend')
-            = link_to t('.link_to_payments'), user_payments_path, :class => 'add_city'
-          -else
+          = l(company.tariff_end, :format => "%d.%m.%Y")
+          - if UserPayment.can_create_new?(company)
             %p= t('.pay_or_extend')
             = link_to t('.pay_or_extend_link'), new_user_payment_path, :class => 'add_city'
+          -else
+            %p= t('.already_pay_or_extend')
+            = link_to t('.link_to_payments'), user_payments_path, :class => 'add_city'

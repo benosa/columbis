@@ -17,11 +17,12 @@ class UserPayment < ActiveRecord::Base
   validates :currency, :inclusion => CurrencyCourse::CURRENCIES
   validates :status, :inclusion => STATUSES
   validates :period, :numericality => true
-  validate :check_other_user_payments
 
   before_validation :set_status
   before_validation :set_description
   before_validation :check_tariff
+
+  before_create :check_other_user_payments
   after_create :set_invoice
 
   default_scope :order => :updated_at
@@ -47,6 +48,11 @@ class UserPayment < ActiveRecord::Base
     rezult_of_check = is_bad_status(status)
     return rezult_of_check if rezult_of_check && rezult_of_check.has_key?(:alert)
     send(:"#{status}")
+  end
+
+  def self.can_create_new?(company)
+    UserPayment.where(:company_id => company.id)
+      .where("\"user_payments\".\"status\" = 'new' OR \"user_payments\".\"status\" = 'success'").blank?
   end
 
   private
@@ -88,7 +94,7 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_invoice
-      UserPayment.update(id, :invoice => company_id * 10000 + id) if id
+      UserPayment.update(self.id, :invoice => self.company_id * 10000 + self.id) if self.id
     end
 
     def check_tariff
@@ -104,10 +110,11 @@ class UserPayment < ActiveRecord::Base
     end
 
     def check_other_user_payments
-      if self.status == 'new' &&
-          self.company.user_payments.select{|payment| payment.status == "new" &&
-            payment.id != self.id}.size != 0
+      if UserPayment.can_create_new?(self.company)
+        true
+      else
         errors.add(:status, "#{I18n.t('activerecord.attributes.user_payment.errors.new_has_exist')}")
+        false
       end
     end
 

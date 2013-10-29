@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   before_filter :check_subdomain
   # before_filter :set_session_options_domain
   before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
+  before_filter :check_company_is_active
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
@@ -126,6 +127,12 @@ class ApplicationController < ActionController::Base
             (request.path == dashboard_edit_company_path or (request.path == dashboard_company_path(current_company) and request.method == 'POST'))
         end
       end
+    end
+  end
+
+  def check_company_is_active
+    unless current_company.is_active?
+      flash[:alert] = 'Оплата за использование ресурса не произведена.'
     end
   end
 

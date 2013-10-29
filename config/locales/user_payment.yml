@@ -38,6 +38,7 @@ ru:
       status: 'Статус'
       confirm: 'Оплатить'
       confirm_again: 'Восстановить и оплатить'
+      confirm_after_paid: 'Вы сможете снова попробовать оплатить этот счёт после оплаты активного счёта'
       have_approved: 'Оплачено'
       statuses:
         *states

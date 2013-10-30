@@ -65,7 +65,9 @@ class UserPayment < ActiveRecord::Base
     end
 
     def paid
-      if self.update_attributes(:status => 'approved')
+      if self.status == 'approved'
+        true
+      elsif self.update_attributes(:status => 'approved')
         return self.company.tariff_paid(self)
       else
         false
@@ -97,10 +99,12 @@ class UserPayment < ActiveRecord::Base
     end
 
     def check_tariff
+      balance = ClaimsController.helpers.company_tariff_balance(self.company)
       self.tariff = TariffPlan.default unless self.tariff
       self.period = 1 unless self.period
       self.currency = self.tariff.currency
-      self.amount = self.tariff.price * self.period
+      self.amount = self.tariff.price * self.period - balance
+      self.amount = 0 if self.amount < 0
     end
 
     def set_status
@@ -117,10 +121,7 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_description
-      plan = I18n.t('activerecord.attributes.user_payment.new_tariff')
-      plan = I18n.t('activerecord.attributes.user_payment.old_tariff') if
-        self.company && self.company.tariff == self.tariff
       self.description = I18n.t('.activerecord.attributes.user_payment.description_text',
-        :tariff_plan_name => self.tariff.name, :tariff_period => self.period, :is_new_plan => plan) if self.tariff
+        :tariff_plan_name => self.tariff.name, :tariff_period => self.period) if self.tariff
     end
 end

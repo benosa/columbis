@@ -2,9 +2,8 @@ ru:
   activerecord:
     attributes:
       user_payment:
-        description_text: "%{is_new_plan}: %{tariff_plan_name}. Период: %{tariff_period} мес."
-        new_tariff: 'Оплата за переход на новый тарифный план'
-        old_tariff: 'Оплата продления тарифного плана'
+        description_text: "Оплата по тарифному плану: %{tariff_plan_name}. Период: %{tariff_period} мес."
+        balance: 'При оплате этого счёта остатком неизрасходованных средств вы потеряете (руб): '
         description: 'Пояснение'
         tariff: 'Тарифный план'
         period: 'Период оплаты (месяц)'

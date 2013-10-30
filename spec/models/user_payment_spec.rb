@@ -55,7 +55,7 @@ describe UserPayment do
   describe "methods" do
     it "should not create new user payment if new already exist" do
       payment = FactoryGirl.create(:user_payment)
-      payment.class.can_create_new?(payment.company).should be_false
+      UserPayment.can_create_new?(payment.company).should be_false
     end
   end
 end

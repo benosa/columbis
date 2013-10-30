@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025114106) do
+ActiveRecord::Schema.define(:version => 20131030190717) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20131025114106) do
     t.integer  "tariff_id"
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
+    t.float    "paid"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -370,7 +371,7 @@ ActiveRecord::Schema.define(:version => 20131025114106) do
   end
 
   create_table "tariff_plans", :force => true do |t|
-    t.integer  "price",             :default => 0,     :null => false
+    t.float    "price",             :default => 0.0,   :null => false
     t.string   "currency",          :default => "rur", :null => false
     t.string   "name",                                 :null => false
     t.boolean  "active",            :default => true,  :null => false

@@ -1,6 +1,6 @@
 class AddDefaultTariffToAllCompany < ActiveRecord::Migration
   def up
-    default = TariffPlan.create_default
+    default = TariffPlan.default
 
     Company.select([:id, :tariff_id, :user_payment_id, :tariff_end])
         .find_each(:batch_size => 500) do |company|

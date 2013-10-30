@@ -93,7 +93,7 @@ namespace :operators do
   def load_operator_info_to_base(operator_info)
     operators = Operator.where(:register_number => operator_info[:register_number],
       :register_series => operator_info[:register_series],
-      :company_id => nil)
+      :company_id => nil, :common => true)
     if operators.blank?
       a = Address.create( parse_address(operator_info.delete(:joint_address)) )
       o = Operator.new(operator_info)

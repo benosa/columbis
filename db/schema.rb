@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131024213859) do
+ActiveRecord::Schema.define(:version => 20131030114654) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -295,7 +295,11 @@ ActiveRecord::Schema.define(:version => 20131024213859) do
     t.date     "insurer_contract_end"
     t.string   "insurer_provision"
     t.boolean  "delta",                  :default => true
+    t.boolean  "common",                 :default => false
   end
+
+  add_index "operators", ["common"], :name => "index_operators_on_common"
+  add_index "operators", ["company_id"], :name => "index_operators_on_company_id"
 
   create_table "payments", :force => true do |t|
     t.integer  "claim_id"

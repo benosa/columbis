@@ -197,6 +197,29 @@ module ApplicationHelper
     link_to title.to_s, '#', { :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 
+  def availability_filter_options
+    I18n.t('availability_filter_options').invert.to_a
+  end
+
+  def availability_filter(options)
+    options[:with] ||= {}
+    case params[:availability]
+    when 'own'
+      options[:with][:common] = false
+      options[:with][:company_id] = current_company.id
+    when 'common'
+      options[:with][:common] = true
+      options[:with][:company_id] = 0
+    else
+      unless is_admin?
+        options[:sphinx_select] = "*, IF(common = 1 OR company_id = #{current_company.id}, 1, 0) AS company"
+        options[:with]['company'] = 1
+        options[:with].delete(:company_id)
+        options[:with].delete(:common)
+      end
+    end
+  end
+
   # Client resolution parameters base on cookie
   def client_resolution
     return @client_resolution if @client_resolution.present?

@@ -7,7 +7,7 @@ class CountriesController < ApplicationController
         options = { with_current_abilities: true }
         options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
-        set_filter_to options
+        availability_filter options
         search_paginate Country.search_and_sort(options), options
       else
         Country.accessible_by(current_ability).order("common ASC, name ASC").paginate(:page => params[:page], :per_page => per_page)

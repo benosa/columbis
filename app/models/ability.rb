@@ -35,6 +35,7 @@ class Ability
     can :manage, Flight, :claim => { :company_id => user.company_id }
     can :manage, SmsTouristgroup, :sms_group => { :company_id => user.company_id }
     can :manage, UserMailer, :task => { :user => user }
+    can :read, Operator, :common => true
     can :read, [Country, City], :common => true
     can :read, DropdownValue, :common=> true
     can :read, Region

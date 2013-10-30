@@ -3,7 +3,7 @@ class Operator < ActiveRecord::Base
   attr_accessible :name, :register_number, :register_series, :inn, :ogrn, :site,
   				  :insurer, :insurer_address, :insurer_provision, :insurer_contract,
   				  :insurer_contract_date, :insurer_contract_start, :insurer_contract_end,
-  				  :address_attributes
+  				  :address_attributes, :common
 
   attr_protected :company_id
 
@@ -19,17 +19,13 @@ class Operator < ActiveRecord::Base
   after_update :touch_claims
   after_destroy :touch_claims
 
-  default_scope :order => :name
-
   define_index do
     indexes :name, :register_number, :register_series, :inn, :ogrn, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :company_id
+    has :common, :type => :boolean
     set_property :delta => true
   end
-
-  sphinx_scope(:by_name) { { :order => :name } }
-  default_sphinx_scope :by_name
 
   local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data
 

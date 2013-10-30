@@ -4,6 +4,7 @@ ru:
       operators: 'Туроператоры'
       new_operator: 'Добавить оператора'
       name: 'Название'
+      availability: 'Вид'
     new:
       new_operator: 'Новый оператор'
       list_of_operator: 'Список операторов'
@@ -26,6 +27,7 @@ ru:
       common: 'Общие данные'
     list:
       address: 'Адрес'
+      action_title_for_common: 'Оператор доступный по умолчанию'
 
     messages:
       created: 'Оператор создан'

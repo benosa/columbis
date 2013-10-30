@@ -1,16 +1,20 @@
 # -*- encoding : utf-8 -*-
 class OperatorsController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource only: :edit
 
   before_filter :set_last_search, :only => :index
 
   def index
     @operators =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Operator))
-        search_paginate(Operator.search_and_sort(options).includes(:address), options)
+        options = { with_current_abilities: true }
+        options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
+        options = search_and_sort_options options
+        availability_filter options
+        search_paginate Operator.search_and_sort(options).includes(:address), options
       else
-        Operator.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -36,6 +40,7 @@ class OperatorsController < ApplicationController
   end
 
   def edit
+    authorize! :read, @operator
     if !@operator.address.present?
       @operator.build_address
     end

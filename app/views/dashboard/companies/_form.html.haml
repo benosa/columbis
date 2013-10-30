@@ -82,7 +82,7 @@
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
 
-- unless active_tariff_plans.blank?
+- if TariffPlan.where(:active => true).length != 0
   .form_column
     .form_block
       .block_title

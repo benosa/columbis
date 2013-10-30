@@ -113,7 +113,7 @@ class Company < ActiveRecord::Base
   end
 
   def tariff_paid(payment)
-    self.paid = payment.tariff.price
+    self.paid = payment.tariff.price * payment.period
     self.user_payment = payment
     self.tariff = payment.tariff
     self.tariff_end = Time.zone.now + payment.period.months

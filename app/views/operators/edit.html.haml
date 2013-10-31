@@ -1,14 +1,31 @@
 - set_current_width(:small)
 - content_for(:body_class) { 'panel edit_operator' }
 
-- title t('.edit_operator', :operator => @operator.name)
+- title t(!@operator.common? ? '.edit_operator' : '.common_operator', :operator => @operator.name)
+- content_for :top do
+  - if @operator.common?
+    .top_info
+      = t('.common_operator_info')
+  - elsif @sync_proposition && can?(:update, @operator)
+    .top_info
+      - unless params[:sync]
+        = t('.sync_proposition', common_operator: @common_operator.try(:name), operator: @operator.name)
+      - else
+        = t('.synced_suggestion', common_operator: @common_operator.try(:name), operator: @operator.name)
 
-= form_for @operator do |form|
+- form_options = @create_own_condition ? { url: operators_path, method: :post } : {}
+= form_for @operator, form_options do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => 'form', :locals => { :f => form }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('delete'), @operator, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete, id: "delete_operator#{@operator.id}"
-  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  - if can? :destroy, @operator
+    = link_to t('delete'), @operator, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete, id: "delete_operator#{@operator.id}"
+  - if can? :update, @operator
+    = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+    - if @sync_proposition
+      = link_to t('.sync'), edit_operator_path(@operator, sync: 1), :class => 'add_operator'
+  - elsif @create_own_condition
+    = link_to t('.create_own'), '#', :class => 'add_operator', :data => { :submit => @form_id }
   = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'

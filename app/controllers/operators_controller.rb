@@ -1,7 +1,8 @@
 # -*- encoding : utf-8 -*-
 class OperatorsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: :edit
+  skip_authorize_resource only: [:show, :create, :edit]
+  skip_load_resource only: :create
 
   before_filter :set_last_search, :only => :index
 
@@ -20,6 +21,8 @@ class OperatorsController < ApplicationController
   end
 
   def show
+    edit
+    render :action => 'edit'
   end
 
   def new
@@ -27,22 +30,33 @@ class OperatorsController < ApplicationController
   end
 
   def create
+    params[:operator][:address_attributes].delete(:id)
+    @operator = Operator.new(params[:operator])
     @operator.company = current_company
+    authorize! :create, @operator
     if @operator.save
       if @operator.address.present? and @operator.address.company.nil?
         @operator.address.company = current_company
         @operator.address.save
       end
-      redirect_to operators_path, :notice => t('operators.messages.created')
+      redirect_path = params[:create_own] ? edit_operator_path(@operator) : operators_path
+      redirect_to redirect_path, :notice => t('operators.messages.created')
     else
       render :action => 'new'
     end
   end
 
   def edit
+    @operator.build_address unless @operator.address.present?
     authorize! :read, @operator
-    if !@operator.address.present?
-      @operator.build_address
+    unless @operator.common?
+      # If it's a twin of common operator, check for updates
+      @operator.check_and_load_common_operator
+      @common_operator = @operator.common_operator
+      @sync_proposition = !@operator.synced_with_common_operator? && @operator.updated_at < @common_operator.updated_at
+      @operator.sync_with_common_operator! if params[:sync]
+    else
+      @create_own_condition = cannot?(:update, @operator) && can?(:create, Operator)
     end
   end
 

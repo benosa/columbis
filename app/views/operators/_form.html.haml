@@ -57,3 +57,5 @@
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit
+  - if @create_own_condition
+    = hidden_field_tag :create_own, 1

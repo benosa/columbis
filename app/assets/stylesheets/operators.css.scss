@@ -1,4 +1,8 @@
-.edit_operator .form_column{
-  margin-top: 25px;
-  margin-left: 0;
+.edit_operator {
+  .form_column{
+    margin-top: 25px;
+    margin-left: 0;
+  }
+  .top_info { clear: both; padding: 10px 0 0; }
 }
+

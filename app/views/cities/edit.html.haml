@@ -9,6 +9,8 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('delete'), @city, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete, id: "delete_city#{@city.id}"
-  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  - if can? :destroy, @city
+    = link_to t('delete'), @city, :class => 'delete_operator', :confirm => t('are_you_sure'), :method => :delete, id: "delete_city#{@city.id}"
+  - if can? :update, @city
+    = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
   = link_to t('list_of_cities'), cities_path, :class => 'list_operator'

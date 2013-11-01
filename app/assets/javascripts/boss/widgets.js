@@ -23,19 +23,30 @@ jQuery(function($) {
 });
 
 function bind_widget_area_to_sortable(){
-  $('.dashboard .widget-area').sortable({
-    containment: '.widget-area',
-    cursor: 'move',
-    distance: 5,
-    handle: '.widget-btn-more',
-    update: function(event, ui) {
-      var widgets = $(event.target).children(".widget");
-      var positions = [];
-      widgets.each(function() {
-        positions.push($(this).attr("position"));
-      });
-      $.post("/boss/sort_widget", {"data": positions.toString()});
-    }
+  // $('.dashboard .widget-area').sortable({
+  //   containment: '.widget-area',
+  //   cursor: 'move',
+  //   distance: 5,
+  //   handle: '.widget-btn-more',
+  //   update: function(event, ui) {
+  //     var widgets = $(event.target).children(".widget");
+  //     var positions = [];
+  //     widgets.each(function() {
+  //       positions.push($(this).attr("position"));
+  //     });
+  //     $.post("/boss/sort_widget", {"data": positions.toString()});
+  //   }
+  // });
+  $('.dashboard .widget-area').shapeshift({
+    align: 'left'
+  });
+  $('.dashboard .widget-area').on("ss-rearranged", function(e, selected) {
+    var widgets = $(this).children(".widget");
+    var positions = [];
+    widgets.each(function() {
+      positions.push($(this).attr("position"));
+    });
+    $.post("/boss/sort_widget", {"data": positions.toString()});
   });
 };
 

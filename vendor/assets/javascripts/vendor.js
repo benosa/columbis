@@ -16,3 +16,5 @@
 //= require rmenu
 //= require jquery.jqEasyCharCounter
 //= require jquery.autosize
+//= require jquery.touch-punch.min
+//= require jquery.shapeshift

@@ -1,16 +1,24 @@
 - if widget.visible
   - widget.date = @date
   - widget_data = widget.widget_data
-  - widget_class = "widget-#{widget.widget_type}"
-  - if widget.view == "small2"
-    - widget_class += " widget-small widget-double-small"
+  - case widget.view
+  - when 'small2'
+    - height = '200px'
+    - widget_columns = "2"
+  - when 'medium'
+    - height = '250px'
+    - widget_columns = "2"
+  - when 'large'
+    - height = '500px'
+    - widget_columns = "3"
   - else
-    - widget_class += " widget-#{widget.view}"
-  .widget{:class => widget_class, :position => widget.id}
+    - height = '200px'
+    - widget_columns = "1"
+  .widget{:position => widget.id, 'data-ss-colspan' => widget_columns, :style => "height: #{height};"}
     = render partial: "boss/widgets/menu", locals: { widget: widget }
     .widget-title
       %h2= I18n.t(widget.title)
-    .widget-content
+    %div{:class => "widget-content-#{widget.view}"}
       - case widget.widget_type
         - when 'factor'
           = render partial: 'boss/widgets/factor', locals: { data: widget_data[:data], total: widget_data[:total] }

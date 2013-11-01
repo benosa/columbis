@@ -1,6 +1,4 @@
 .widget-menu
-  -#.widget-btn.widget-btn-type
-    -#%a{ href: "#"} Тип
   .widget-btn.widget-btn-settings.btn-group
     = link_to t('boss.active_record.widget.menu.settings'), '#', id: "settings_#{widget.id}", class: "settings", "data-toggle" => "dropdown"
     - case widget.widget_type
@@ -12,5 +10,3 @@
       = render partial: 'boss/widgets/leaders_menu', locals: { widget: widget }
   .widget-btn.widget-btn-delete
     = link_to t('boss.active_record.widget.menu.delete'), boss_delete_widget_path(widget), :remote => true, :method => :post
-  .widget-btn.widget-btn-more
-    %a{ href: "#"}

@@ -4,31 +4,4 @@
   .widget-area {
     width: 1855px;
   }
-  .widget-small {
-    width: 255px;
-  }
-  .widget-small {
-    .widget-content {
-      height: 155px;
-      font-size: 11px;
-    }
-    .widget-stats {
-      height: 56px;
-      padding: 11px 10px;
-    }
-  }
-  .widget-small.widget-leader {
-    .widget-stats {
-      height: 80px;
-    }
-    .widget-total {
-      height: 32px;
-    }
-  }
-  .widget-medium, .widget-double-small {
-    width: 520px;
-  }
-  .widget-table, .widget-large {
-    width: 1050px;
-  }
 }

@@ -11,13 +11,17 @@
   }
   .widget-area {
     width: 100%;
+    position: relative;
     margin: 25px 0 25px 0;
   }
   .widget {
-    float: left;
-    position: relative;
-    margin-bottom: 10px;
-    margin-left: 10px;
+    position: absolute;
+    width: 250px;
+    height: 200px;
+    &[data-ss-colspan="1"] { width: 250px; }
+    &[data-ss-colspan="2"] { width: 510px; }
+    &[data-ss-colspan="3"] { width: 770px; }
+
     .widget-menu {
       display: none;
       float: right;
@@ -78,50 +82,37 @@
         text-shadow: none;
       }
     }
-  }
-  .widget-small {
-    width: 247px;
-  }
-  .widget-double-small {
-    width: 504px;
-  }
-  .widget-title {
-    height: 45px;
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: url("/assets/boss/widget-title.png") repeat-x scroll 0 0 transparent;
-    border-color: #f9fbfd #bed1e9 #bed1e9;
-    border-image: none;
-    border-radius: 3px 3px 0 0;
-    border-right: 1px solid #bed1e9;
-    border-style: solid;
-    border-width: 1px;
-    h2 {
-      font-size: 18px;
-      line-height: 19px;
-      padding: 11px 9px;
-      text-shadow: 0 -1px 0 white;
-    }
-  }
-  .widget-content {
-    border-color: #d5d5d5 #d5d5d5;
-    border-image: none;
-    border-radius: 0 0 4px 4px;
-    border-right: 1px solid #d5d5d5;
-    border-style: none solid solid;
-    border-width: medium 1px 1px;
-    background: #fff;
-
-    .chart { width: 100%; height: 100%; }
-  }
-  .widget-small {
-    .widget-content {
+    .widget-content, .widget-content-small {
       height: 155px;
+    }
+    .widget-content-small2 {
+      height: 155px;
+    }
+    .widget-content-medium {
+      height: 205px;
+    }
+    .widget-content-large {
+      height: 455px;
+    }
+    .widget-content, .widget-content-small, .widget-content-small2, .widget-content-medium, .widget-content-large {
       color: #666666;
       font-size: 11px;
+      border-color: #d5d5d5 #d5d5d5;
+      border-image: none;
+      border-radius: 0 0 4px 4px;
+      border-right: 1px solid #d5d5d5;
+      border-style: none solid solid;
+      border-width: medium 1px 1px;
+      background: #fff;
+
+      .chart { width: 100%; height: 100%; }
+      .current_container table {
+        width: 100%;
+        margin: 0px;
+      }
     }
+    .leader .widget-stats { height: 75px; }
+    .leader .widget-total { height: 37px; }
     .widget-stats {
       height: 56px;
       padding: 11px 10px;
@@ -193,71 +184,25 @@
       }
     }
   }
-  .widget-small.widget-leader {
-    .widget-stats {
-      height: 80px;
-    }
-    .widget-total {
-      height: 32px;
-    }
-  }
-  .widget-medium {
-    width: 504px;
-    .widget-content {
-      padding: 10px;
-      height: 246px;
-    }
-  }
-  .widget-table {
-    width: 1018px;
-  }
-  .widget-large.widget-table .widget-content {
-    overflow-y: auto;
-    // height: 440px;
-    height: auto;
-    padding: 0;
-  }
-  .widget-table .widget-content .reservations {
-    margin: 0;
-    overflow-y: auto;
-    width: 100%;
-    th {
-      background: url("/assets/boss/thead_bg.png") repeat-x;
-    }
-  }
-  .widget-large {
-    width: 1018px;
-    .widget-content {
-      padding: 10px;
-      height: 310px;
-      .widget-chart {
-        height: 270px;
-      }
-      .widget-foot {
-        font-size: 13px;
-        color: #666;
-        span {
-          font-size: 18px;
-          font-weight: bold;
-        }
-        .left-block {
-          width: 318px;
-          float: left;
-          text-align: left;
-        }
-        .center-block {
-          width: 318px;
-          float: left;
-          text-align: center;
-          vertical-align: middle;
-          margin-top: 20px;
-        }
-        .right-block {
-          width: 318px;
-          float: left;
-          text-align: right;
-        }
-      }
+
+  .widget-title {
+    height: 45px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/assets/boss/widget-title.png") repeat-x scroll 0 0 transparent;
+    border-color: #f9fbfd #bed1e9 #bed1e9;
+    border-image: none;
+    border-radius: 3px 3px 0 0;
+    border-right: 1px solid #bed1e9;
+    border-style: solid;
+    border-width: 1px;
+    h2 {
+      font-size: 18px;
+      line-height: 19px;
+      padding: 11px 9px;
+      text-shadow: 0 -1px 0 white;
     }
   }
 }

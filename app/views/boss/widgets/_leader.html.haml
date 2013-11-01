@@ -1,16 +1,17 @@
-.widget-stats
-  - if data == [[],[],[],[]]
-    %p= t('boss.active_record.widget.leader.no_data')
-  - else
-    - data.count.downto(1) do |i|
-      - col = data[i-1]
-      %div{ class: "widget-col-#{i}" }
-        - col.each do |value|
-          - if value.kind_of?(Hash)
-            %p{ class: value[:class] }
-              = value[:data] if value[:data]
-          - else
-            %p= value
+.leader
+  .widget-stats
+    - if data == [[],[],[],[]]
+      %p= t('boss.active_record.widget.leader.no_data')
+    - else
+      - data.count.downto(1) do |i|
+        - col = data[i-1]
+        %div{ class: "widget-col-#{i}" }
+          - col.each do |value|
+            - if value.kind_of?(Hash)
+              %p{ class: value[:class] }
+                = value[:data] if value[:data]
+            - else
+              %p= value
 
-.widget-total
-  .widget-text= text
+  .widget-total
+    .widget-text= text

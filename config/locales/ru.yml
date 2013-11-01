@@ -142,3 +142,8 @@ ru:
     thousand: "тыс. шт."
     million: "млн. шт."
     billion: "млрд. шт."
+
+  availability_filter_options:
+    all: Все
+    own: Собственный
+    common: Общие

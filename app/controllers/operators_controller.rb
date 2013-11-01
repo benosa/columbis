@@ -1,21 +1,28 @@
 # -*- encoding : utf-8 -*-
 class OperatorsController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource only: [:show, :create, :edit]
+  skip_load_resource only: :create
 
   before_filter :set_last_search, :only => :index
 
   def index
     @operators =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Operator))
-        search_paginate(Operator.search_and_sort(options).includes(:address), options)
+        options = { with_current_abilities: true }
+        options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
+        options = search_and_sort_options options
+        availability_filter options
+        search_paginate Operator.search_and_sort(options).includes(:address), options
       else
-        Operator.accessible_by(current_ability).includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
 
   def show
+    edit
+    render :action => 'edit'
   end
 
   def new
@@ -23,21 +30,35 @@ class OperatorsController < ApplicationController
   end
 
   def create
+    params[:operator][:address_attributes].delete(:id) if params[:operator][:address_attributes].kind_of?(Hash)
+    @operator = Operator.new(params[:operator])
     @operator.company = current_company
+    authorize! :create, @operator
     if @operator.save
       if @operator.address.present? and @operator.address.company.nil?
         @operator.address.company = current_company
         @operator.address.save
       end
-      redirect_to operators_path, :notice => t('operators.messages.created')
+      redirect_path = params[:create_own] ? edit_operator_path(@operator) : operators_path
+      redirect_to redirect_path, :notice => t('operators.messages.created')
     else
       render :action => 'new'
     end
   end
 
   def edit
-    if !@operator.address.present?
-      @operator.build_address
+    @operator.build_address unless @operator.address.present?
+    authorize! :read, @operator
+    unless @operator.common?
+      # If it's a twin of common operator, check for updates
+      @operator.check_and_load_common_operator!
+      @common_operator = @operator.common_operator
+      unless @operator.synced_with_common_operator?
+        @sync_proposition = @common_operator && @operator.updated_at < @common_operator.updated_at
+        @operator.sync_with_common_operator! if params[:sync]
+      end
+    else
+      @create_own_condition = cannot?(:update, @operator) && can?(:create, Operator)
     end
   end
 

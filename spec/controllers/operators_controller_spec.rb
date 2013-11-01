@@ -85,8 +85,8 @@ describe OperatorsController do
       assigns[:operator].id.should == @operator.id
     end
 
-    it 'should render operators/show.html' do
-      response.should render_template('show')
+    it 'should render operators/edit.html' do
+      response.should render_template('edit')
     end
   end
 
@@ -139,7 +139,7 @@ describe OperatorsController do
       response.should redirect_to operators_path
     end
 
-    it 'should change catalog count up by 1' do
+    it 'should change operators count up by 1' do
       lambda { do_operator }.should change{ Operator.count }.by(1)
     end
   end

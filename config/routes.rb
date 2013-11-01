@@ -61,9 +61,7 @@ Tourism::Application.routes.draw do
   resources :countries
   resources :cities
   resources :payments
-  resources :operators do
-    match ':id' => :edit, :constraints => {:id => /\d+/}, :on => :collection, :via => :get
-  end
+  resources :operators
   resources :tourists
 
   # Disable catalogs and addresses

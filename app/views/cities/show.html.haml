@@ -5,6 +5,8 @@
     = @city.country.name
 
 - content_for(:float_panel) do
-  = link_to t('edit'), edit_city_path(@city), :class => 'add_operator'
-  = link_to t('destroy'), @city, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete_operator'
+  - if can? :update, @city
+    = link_to t('edit'), edit_city_path(@city), :class => 'add_operator'
+  - if can? :destroy, @city
+    = link_to t('destroy'), @city, :confirm => t('are_you_sure'), :method => :delete, :class => 'delete_operator'
   = link_to t('list_of_cities'), cities_path, :class => 'list_operator'

@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
 class Country < ActiveRecord::Base
-  AVAILABILITIES = [ 'all', 'own', 'open' ].freeze
 
   attr_accessible :name, :company_id, :common
 

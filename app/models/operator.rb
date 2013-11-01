@@ -52,7 +52,7 @@ class Operator < ActiveRecord::Base
     where(options.merge company_id: nil, common: true).first
   end
 
-  def check_and_load_common_operator
+  def check_and_load_common_operator!
     @common_operator = Operator.common_operator(register_number, register_series)
   end
 

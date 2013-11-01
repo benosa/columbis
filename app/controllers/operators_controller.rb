@@ -30,7 +30,7 @@ class OperatorsController < ApplicationController
   end
 
   def create
-    params[:operator][:address_attributes].delete(:id)
+    params[:operator][:address_attributes].delete(:id) if params[:operator][:address_attributes].kind_of?(Hash)
     @operator = Operator.new(params[:operator])
     @operator.company = current_company
     authorize! :create, @operator
@@ -51,10 +51,12 @@ class OperatorsController < ApplicationController
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates
-      @operator.check_and_load_common_operator
+      @operator.check_and_load_common_operator!
       @common_operator = @operator.common_operator
-      @sync_proposition = !@operator.synced_with_common_operator? && @operator.updated_at < @common_operator.updated_at
-      @operator.sync_with_common_operator! if params[:sync]
+      unless @operator.synced_with_common_operator?
+        @sync_proposition = @common_operator && @operator.updated_at < @common_operator.updated_at
+        @operator.sync_with_common_operator! if params[:sync]
+      end
     else
       @create_own_condition = cannot?(:update, @operator) && can?(:create, Operator)
     end

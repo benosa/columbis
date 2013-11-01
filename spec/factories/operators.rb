@@ -5,6 +5,15 @@ FactoryGirl.define do
     address { factory_assoc :address, company: company }
 
     name { Faker::Lorem.sentence }
+    common false
+    register_number { Faker::Number.number(6) }
+    register_series { Faker::Lorem.characters(3) }
+    inn { Faker::Number.number(10) }
+
+    factory :common_operator do
+      company nil
+      common true
+    end
 
     factory :operator_with_claims do
       ignore { claim_count 2 }

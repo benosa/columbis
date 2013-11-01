@@ -44,10 +44,9 @@ describe "Widgets:", js: true do
       all('.widget').map{|widget| widget['position'].to_i}.should == widgets
     end
 
-    it 'should have buttons for editing widgets position and settings' do
+    it 'should have settings button' do
       widgets = Boss::Widget.where(:company_id => @company.id).where(:user_id => @boss.id)
       widgets.each do |widget|
-        page.should have_selector("div.widget[position='#{widget.id}'] div.widget-menu div.widget-btn-more")
         page.should have_selector("div.widget[position='#{widget.id}'] div.widget-menu a.settings\#settings_#{widget.id}")
       end
     end

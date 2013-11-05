@@ -200,7 +200,9 @@ namespace :demo do
   end
 
   def create_user(company, office, role, login = nil, password = '123456')
-    user = User.new(first_name: Faker::Name.male_first_name, last_name: Faker::Name.male_last_name,
+    first_name, last_name = 'Демо', 'Пользователь' if login == 'demo'
+    first_name, last_name = Faker::Name.male_first_name, Faker::Name.male_last_name if login != 'demo'
+    user = User.new(first_name: first_name, last_name: last_name,
       password: password, email: Faker::Internet.email, phone: Faker::PhoneNumber.phone_number, color: Faker::Name.color)
     user.login = login || (Russian::translit(user.first_name)[0].downcase + Russian::translit(user.last_name).downcase)
     user.company = company

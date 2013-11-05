@@ -262,7 +262,7 @@ module ClaimsHelper
   end
 
   def excel_date(date)
-    if date && date.year > 1900 && date.year < 2000
+    if date && date.year > 1900 && date.year < 2100
       "<Data ss:Type=\"DateTime\">#{date.to_s + "T00:00:00.000"}</Data>".html_safe
     else
       ""

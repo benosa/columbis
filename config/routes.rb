@@ -1,6 +1,10 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  post "visitors/create"
+
+  get "visitors/confirm"
+
   resources :tariff_plans
   get 'sms_settings' => 'sms_settings#index', as: 'sms_settings'
   put 'sms_settings' => 'sms_settings#update', as: 'sms_settings'

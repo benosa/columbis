@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131030114654) do
+ActiveRecord::Schema.define(:version => 20131105112817) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -485,6 +485,18 @@ ActiveRecord::Schema.define(:version => 20131030114654) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["subdomain"], :name => "index_users_on_subdomain"
+
+  create_table "visitors", :force => true do |t|
+    t.string   "email",              :default => "", :null => false
+    t.string   "name"
+    t.string   "phone"
+    t.integer  "user_id"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.boolean  "confirmed"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
 
   create_table "widgets", :force => true do |t|
     t.integer  "company_id"

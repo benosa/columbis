@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+    <Author>columbis.ru</Author>
+    <LastAuthor>columbis.ru</LastAuthor>
+    <Version>12.00</Version>
+  </DocumentProperties>
+  <Styles>
+    <Style ss:ID="Default" ss:Name="Normal">
+      <Alignment ss:Vertical="Bottom"/>
+      <Borders/>
+      <Font ss:FontName="Calibri" x:CharSet="204" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+      <Interior/>
+      <NumberFormat/>
+      <Protection/>
+    </Style>
+    <Style ss:ID="s62">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+  </Styles>
+  <Worksheet ss:Name="Заявки">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= t('claims.index.num') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.reservation_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.tourist_stat') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.office') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.manager') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.full_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.phone_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.arrival_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.departure_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.to') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.from') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.visa') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.term') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_confirmation') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.price') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.calculation') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.advance') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.debt') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_price') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_payment_term') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_paid') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_debt') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.advance') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_paid') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.operator_paid_prim') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= 'Нац-ка' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= '%' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= 'Нац-ка упр.' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= '%' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= '% премии' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= 'Премия' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.docs') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.memo') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.check_date') %></Data></Cell>
+      </Row>
+    <% @totals.each do |claim| %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= claim.num %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.reservation_date %></Cell>
+        <Cell><Data ss:Type="String"><%= claim.tourist_stat %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.office.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.user.try(:login) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.applicant.try(:initials_name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.applicant.try(:phone_number) %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.arrival_date %></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.departure_date %></Cell>
+        <Cell><Data ss:Type="String"><%= claim.country.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.city.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= text_for_visa(claim) %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.visa_check %></Cell>
+        <Cell><Data ss:Type="String"><%= claim.operator.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.operator_confirmation %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.primary_currency_price.to_money %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.calculation %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.tourist_advance.to_money %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.tourist_debt.to_money %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator_price(claim) %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.operator_maturity %></Cell>
+        <Cell><Data ss:Type="String"><%= operator_advance(claim) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator_debt(claim) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= approved_advance(claim, :tourist) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= approved_advance(claim, :operator_prim) %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= approved_advance(claim, :operator) %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.profit_acc.to_money %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.profit_in_percent_acc.to_percent unless claim.excluded_from_profit %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.profit.to_money %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.profit_in_percent.to_percent unless claim.excluded_from_profit %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.bonus_percent.to_percent %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= claim.bonus.to_money %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.documents_statuses.' << claim.documents_status) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.memo %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date claim.check_date %></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Туристы">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(t('tourists.tourists.full_name')) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:date_of_birth) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:phone_number) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.email') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.passport_series') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.passport_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:passport_valid_until) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
+      </Row>
+    <% @tourists.each do |tourist| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= tourist.name %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date tourist.date_of_birth %></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.phone_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.email %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.passport_series %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.passport_number %></Data></Cell>
+        <Cell ss:StyleID="s62"><%= excel_date tourist.passport_valid_until %></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.address.try(:joint_address) %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Клиенты">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:created_at) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.manager') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(t('tourists.tourists.full_name')) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:phone_number) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.email') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.wishes') %></Data></Cell>
+      </Row>
+    <% @clients.each do |client| %>
+      <Row>
+        <Cell ss:StyleID="s62"><%= excel_date client.created_at.to_date %></Cell>
+        <Cell><Data ss:Type="String"><%= client.user.try(:full_name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.phone_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.email %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.wishes %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+</Workbook>
+

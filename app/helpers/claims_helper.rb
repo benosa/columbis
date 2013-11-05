@@ -261,4 +261,11 @@ module ClaimsHelper
     Claim::DOCUMENTS_STATUSES.map { |o| [ t('claims.documents_statuses.' << o), o ] }
   end
 
+  def excel_date(date)
+    if date && date.year > 1900 && date.year < 2000
+      "<Data ss:Type=\"DateTime\">#{date.to_s + "T00:00:00.000"}</Data>".html_safe
+    else
+      ""
+    end
+  end
 end

@@ -60,6 +60,7 @@ Tourism::Application.routes.draw do
         get 'resort(/:country_id)' => 'claims_autocomplete#resort', as: 'resort'
         get 'dropdown/:list' => 'claims_autocomplete#dropdown', as: 'dropdown'
       end
+      get 'export_to' => 'claims#export_to', as: :export_to
       get 'scroll' => 'claims#scroll', as: :scroll
       get 'totals' => 'claims#totals', as: :totals
       put 'update_bonus/:id' => 'claims#update_bonus', :as => 'update_bonus'

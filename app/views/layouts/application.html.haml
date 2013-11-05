@@ -29,6 +29,7 @@
 
     - if CONFIG[:domain] == 'columbis.ru'
       = render 'layouts/google_analytics'
+      = render 'layouts/hintarea' if is_admin?
 
     = csrf_meta_tag
     = yield(:head)

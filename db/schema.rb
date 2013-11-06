@@ -487,15 +487,15 @@ ActiveRecord::Schema.define(:version => 20131105112817) do
   add_index "users", ["subdomain"], :name => "index_users_on_subdomain"
 
   create_table "visitors", :force => true do |t|
-    t.string   "email",              :default => "", :null => false
+    t.string   "email",              :default => "",    :null => false
     t.string   "name"
     t.string   "phone"
     t.integer  "user_id"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
-    t.boolean  "confirmed"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.boolean  "confirmed",          :default => false, :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
   create_table "widgets", :force => true do |t|

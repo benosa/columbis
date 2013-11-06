@@ -7,11 +7,29 @@ class Visitor < ActiveRecord::Base
   validates :phone, presence: true, length: { minimum: 8 }, :uniqueness => { :scope => self.confirmed1 }#{:conditions => {:confirmed => true}}#{ :scope => (:confirmed == true) }
   validates :email, email: true, presence: true, :uniqueness => true
 
+  before_save :generate_confirmation_token
+
   after_create do |company|
     Mailer.visitor_was_created(self).deliver
   end if CONFIG[:support_delivery]
 
-  def self.friendly_token
-    SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
+  def generate_confirmation_token
+    if !confirmation_token
+      loop do
+        @token = SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
+        break @token unless Visitor.where(confirmation_token: @token).first
+      end
+    	self.confirmation_token = @token
+    end
+  end
+
+  def confirm
+    self.confirmed = true
+    self.confirmed_at = Time.zone.now
+    self.save
+  end
+
+  def confirmed?
+    self.confirmed
   end
 end

@@ -5,18 +5,24 @@ class SessionsController < Devise::SessionsController
   skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
 
   def create
-    respond_to do |format|
-      format.json do
-        resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-        sign_in_with_json(resource_name, resource)
-      end
+    if (params[:user][:login] == 'demo' && cookies['_columbis_session_visitor'].blank?) ||
+     !Visitor.find(cookies['_columbis_session_visitor']).confirmed?
+      set_flash_message :notice, 'ololol'
+      redirect_to new_user_session_path
+    else
+      respond_to do |format|
+        format.json do
+          resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+          sign_in_with_json(resource_name, resource)
+        end
 
-      format.html do
-        self.resource = warden.authenticate!(auth_options)
-        set_flash_message(:notice, :signed_in) if is_navigational_format?
-        sign_in(resource_name, resource)
-        session_name_cookie('set', resource)
-        respond_with resource, :location => after_sign_in_path_for(resource)
+        format.html do
+          self.resource = warden.authenticate!(auth_options)
+          set_flash_message(:notice, :signed_in) if is_navigational_format?
+          sign_in(resource_name, resource)
+          session_name_cookie('set', resource)
+          respond_with resource, :location => after_sign_in_path_for(resource)
+        end
       end
     end
   end

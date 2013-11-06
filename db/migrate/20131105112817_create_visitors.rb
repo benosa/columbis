@@ -7,7 +7,7 @@ class CreateVisitors < ActiveRecord::Migration
       t.integer :user_id
       t.string   :confirmation_token
       t.datetime :confirmed_at
-      t.boolean :confirmed
+      t.boolean :confirmed, :null => false, :default => false
 
       t.timestamps
     end

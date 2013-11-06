@@ -804,14 +804,13 @@ class Claim < ActiveRecord::Base
     end
 
     def check_operator
+      scoped = Operator.by_company_or_common(company)
       if claim_params[:operator_id].blank?
-        # Only boss can add operator and only from list
-        # company.operators.create({ :name => claim_params[:operator] }) unless
-        #   company.operators.find_by_name(claim_params[:operator])
-        self.operator = company.operators.find_by_name(claim_params[:operator])
+        scoped = scoped.where(name: claim_params[:operator])
       else
-        self.operator = company.operators.find(claim_params[:operator_id]) rescue nil
+        scoped = scoped.where(id: claim_params[:operator_id])
       end
+      self.operator = scoped.first
     end
 
     def presence_of_applicant

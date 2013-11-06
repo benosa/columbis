@@ -3,7 +3,7 @@ module Mistral
   module ClaimsHelperExtention
 
     def is_mistral?
-      current_company.id == 8
+      Mistral.is_mistral? current_company
     end
 
     def mistral_tourist_stat_options(user, claim)
@@ -59,7 +59,7 @@ module Mistral
     extend ActiveSupport::Concern
 
     included do
-      validate :check_specific_operator
+      validate :check_specific_operator, :if => proc{ Mistral.is_mistral? company }
     end
 
     def check_specific_operator
@@ -69,6 +69,9 @@ module Mistral
     end
   end
 
+  def self.is_mistral?(company)
+    company.id == 8
+  end
 
   # Specific list of permitted operator for managers
   def self.mistral_specific_operators

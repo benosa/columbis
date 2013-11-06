@@ -18,6 +18,8 @@ class Operator < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :company_id }, length: { maximum: 255 }
 
+  scope :by_company_or_common, ->(company) { where("common = ? OR company_id = ?", true, company.id) }
+
   after_update :touch_claims
   after_destroy :touch_claims
 

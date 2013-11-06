@@ -56,6 +56,7 @@ class Ability
     can :manage, UserMailer, :task => { :user => user }
     can :read, Flight, :claim => { :company_id => user.company_id }
     can [:update, :destroy], User, :id => user.id
+    can :read, Operator, :common => true
     can :read, [Country, City], :common => true
     can :read, DropdownValue, :common=> true
     can :read, Region
@@ -73,6 +74,8 @@ class Ability
     can [:read, :scroll], Claim, :company_id => user.company_id
     can :update, Payment, :company_id => user.company_id, :approved => false
     can [:update], User, :id => user.id
+    can :read, Operator, :company_id => user.company_id
+    can :read, Operator, :common => true
     can :read, [Country, City], :company_id => user.company_id
     can :read, [Country, City], :common => true
     can :read, Region
@@ -89,6 +92,8 @@ class Ability
     can :update, Payment, :claim => { :user_id => user.id }, :approved => false
     can :update, Payment, :claim => { :assistant_id => user.id }, :approved => false
     can [:update], User, :id => user.id
+    can :read, Operator, :company_id => user.company_id
+    can :read, Operator, :common => true
     can :read, [Country, City], :company_id => user.company_id
     can :read, [Country, City], :common => true
     can :read, Region

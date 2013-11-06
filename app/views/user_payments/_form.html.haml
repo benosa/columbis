@@ -10,12 +10,12 @@
         / %p= f.label :description
         / = f.text_area :description, :style => "max-width: 240px; height: 80px", :readonly => true
         %p= f.label :tariff
-        = f.select :tariff_id, tariff_plan_ids, :not_highlighted => true
+        = f.select :tariff_id, tariff_plan_ids, { include_blank: false }, :class => 'tariff'
         %p= f.label :period
-        = f.text_field :period
+        = f.select :period, user_payment_periods, { include_blank: false }, :class => 'period'
         %p= f.label :amount
-        = f.number_field :amount, :readonly => true
-        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
+        = f.text_field :amount, :readonly => true, :class => 'amount'
+        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :readonly => true
         %p
           %label{:id => "if_balance"}
 

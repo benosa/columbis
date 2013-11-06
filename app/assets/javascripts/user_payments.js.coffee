@@ -1,6 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
 
   # The page must init some params:
@@ -19,8 +16,8 @@ $(document).ready ->
     init: ->
       this.data = tariffs if tariffs?
       this.period.val("1")
-      this.tariff.bind 'change', () -> TariffPlanCheck.period_change()
-      this.period.bind 'input', () -> TariffPlanCheck.period_change()
+      this.tariff.on 'change', () -> TariffPlanCheck.period_change()
+      this.period.on 'change', () -> TariffPlanCheck.period_change()
       this.period_change()
 
     period_change: ->
@@ -48,4 +45,4 @@ $(document).ready ->
       this.amount.val(amount)
       this.currency.ikSelect('select', currency)
 
-  TariffPlanCheck.init()
+  TariffPlanCheck.init() if $('#new_user_payment').length # if there is the payment form

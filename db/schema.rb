@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131030190717) do
+ActiveRecord::Schema.define(:version => 20131030114654) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -178,10 +178,11 @@ ActiveRecord::Schema.define(:version => 20131030190717) do
     t.integer  "claims_count"
     t.integer  "tourists_count"
     t.integer  "tasks_count"
+    t.boolean  "delta",             :default => true, :null => false
     t.integer  "tariff_id"
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
-    t.float    "paid"
+    t.decimal  "paid"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -298,7 +299,11 @@ ActiveRecord::Schema.define(:version => 20131030190717) do
     t.date     "insurer_contract_end"
     t.string   "insurer_provision"
     t.boolean  "delta",                  :default => true
+    t.boolean  "common",                 :default => false
   end
+
+  add_index "operators", ["common"], :name => "index_operators_on_common"
+  add_index "operators", ["company_id"], :name => "index_operators_on_company_id"
 
   create_table "payments", :force => true do |t|
     t.integer  "claim_id"
@@ -371,7 +376,7 @@ ActiveRecord::Schema.define(:version => 20131030190717) do
   end
 
   create_table "tariff_plans", :force => true do |t|
-    t.float    "price",             :default => 0.0,   :null => false
+    t.decimal  "price",             :default => 0.0,   :null => false
     t.string   "currency",          :default => "rur", :null => false
     t.string   "name",                                 :null => false
     t.boolean  "active",            :default => true,  :null => false
@@ -387,6 +392,7 @@ ActiveRecord::Schema.define(:version => 20131030190717) do
     t.boolean  "sms_sending",       :default => false, :null => false
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+    t.boolean  "default",           :default => false, :null => false
   end
 
   create_table "tasks", :force => true do |t|

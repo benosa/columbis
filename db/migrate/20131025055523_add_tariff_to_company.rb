@@ -3,6 +3,6 @@ class AddTariffToCompany < ActiveRecord::Migration
     add_column :companies, :tariff_id, :integer
     add_column :companies, :user_payment_id, :integer
     add_column :companies, :tariff_end, :datetime
-    add_column :companies, :paid, :float
+    add_column :companies, :paid, :decimal
   end
 end

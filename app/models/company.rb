@@ -42,7 +42,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :offices, :reject_if => :check_offices_attributes, :allow_destroy => true
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
-  before_create :set_tariff_plan
+  before_create :check_tariff_plan
   after_create do |company|
     Mailer.company_was_created(self).deliver
   end
@@ -104,14 +104,6 @@ class Company < ActiveRecord::Base
     DropdownValue.values_for(list, id)
   end
 
-  def self.update_by_default_tariff(companies)
-    default_id = TariffPlan.default.id
-    companies.each do |company|
-      company.update_column(:tariff_id, default_id)
-      company.update_column(:tariff_end, Time.zone.now + CONFIG[:days_for_default_tariff].days)
-    end
-  end
-
   def tariff_paid(payment)
     self.paid = payment.tariff.price * payment.period
     self.user_payment = payment
@@ -130,9 +122,9 @@ class Company < ActiveRecord::Base
 
   private
 
-    def set_tariff_plan
-      self.tariff_id = TariffPlan.default.id
-      self.tariff_end = Time.zone.now + CONFIG[:days_for_default_tariff].days
+    def check_tariff_plan
+      self.tariff ||= TariffPlan.default
+      self.tariff_end ||= Time.zone.now + CONFIG[:days_for_default_tariff].days
     end
 
     def check_offices_attributes(attributes)

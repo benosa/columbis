@@ -755,7 +755,7 @@ input.important {
   input.wide { width: 675px; }
   textarea.wide {
     margin: 0 17px 11px 0;
-    padding: 2px 0 2px 10px;
+    padding: 5px 0 5px 5px;
     width: 675px;
   }
   .ik_select.wide {
@@ -828,7 +828,7 @@ input.important {
     margin-bottom: 11px;
   }
   textarea {
-    height: 41px;
+    height: 41px; padding: 5px 0 5px 5px;
   }
   strong label {
     color: #3F6DB8;

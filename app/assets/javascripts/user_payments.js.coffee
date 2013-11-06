@@ -17,7 +17,7 @@ $(document).ready ->
     default_currency: "rur"
 
     init: ->
-      this.data = tariffs
+      this.data = tariffs if tariffs?
       this.period.val("1")
       this.tariff.bind 'change', () -> TariffPlanCheck.period_change()
       this.period.bind 'input', () -> TariffPlanCheck.period_change()

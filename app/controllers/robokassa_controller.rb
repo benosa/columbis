@@ -51,6 +51,6 @@ class RobokassaController < ApplicationController
   private
 
   def check_ability
-    unauthorized! if cannot? :read, :robokassa_pay
+    authorize! :read, :robokassa_pay
   end
 end

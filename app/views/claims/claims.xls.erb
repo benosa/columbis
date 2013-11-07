@@ -10,18 +10,97 @@
     <LastAuthor>columbis.ru</LastAuthor>
     <Version>12.00</Version>
   </DocumentProperties>
+  <% styles = excel_styles(@managers) %>
   <Styles>
     <Style ss:ID="Default" ss:Name="Normal">
       <Alignment ss:Vertical="Bottom"/>
-      <Borders/>
-      <Font ss:FontName="Calibri" x:CharSet="204" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
-      <Interior/>
+      <Borders>
+        <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+        <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+        <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+        <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+      </Borders>
+      <Font ss:FontName="Arial" x:CharSet="204" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+      <Interior ss:Color="#BDE0FA" ss:Pattern="Solid"/>
       <NumberFormat/>
       <Protection/>
     </Style>
-    <Style ss:ID="s62">
+    <Style ss:ID="date">
       <NumberFormat ss:Format="Short Date"/>
     </Style>
+    <Style ss:ID="companies-gray_back">
+      <Interior ss:Color="#CCCCCC" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-departed">
+      <Interior ss:Color="#E5F5FE" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-hot">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-soon">
+      <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-nothing_done">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-all_done">
+      <Interior ss:Color="#F5F5F5" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-docs_got">
+      <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-docs_sent">
+      <Interior ss:Color="#21D00C" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-visa_approved">
+      <Interior ss:Color="#96B1F0" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-red_back">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-blue_back">
+      <Interior ss:Color="#F5F5F5" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-green_back">
+      <Interior ss:Color="#21D00C" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-orange_back">
+      <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="companies-dates-gray_back" ss:Parent="companies-gray_back">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-departed" ss:Parent="companies-departed">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-hot" ss:Parent="companies-hot">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-soon" ss:Parent="companies-soon">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-nothing_done" ss:Parent="companies-nothing_done">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-all_done" ss:Parent="companies-all_done">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-docs_got" ss:Parent="companies-docs_got">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-docs_sent" ss:Parent="companies-docs_sent">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <Style ss:ID="companies-dates-visa_approved" ss:Parent="companies-visa_approved">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
+    <% @managers.each do |user| %>
+      <% if user.try(:color) %>
+    <Style ss:ID="users-<%= user.id.to_s %>">
+      <Interior ss:Color="<%= user.color %>" ss:Pattern="Solid"/>
+    </Style>
+      <% end %>
+    <% end %>
   </Styles>
   <Worksheet ss:Name="Заявки">
     <Table>
@@ -63,42 +142,69 @@
         <Cell><Data ss:Type="String"><%= t('claims.index.check_date') %></Data></Cell>
       </Row>
     <% @totals.each do |claim| %>
-      <Row>
+      <%= excel_element "Row", "companies-gray_back", styles, claim.canceled? %>
+      <% row_date_style = claim.canceled? ? "companies-dates-gray_back" : "date" %>
         <Cell><Data ss:Type="Number"><%= claim.num %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.reservation_date %></Cell>
+        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.reservation_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.tourist_stat %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.office.name %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= claim.user.try(:login) %></Data></Cell>
+        <%= excel_element "Cell", "users-#{claim.user.id}", styles %>
+          <Data ss:Type="String"><%= claim.user.login %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.applicant.try(:initials_name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.applicant.try(:phone_number) %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.arrival_date %></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.departure_date %></Cell>
+        <% if claim.canceled? %>
+        <Cell ss:StyleID="companies-dates-gray_back">
+        <% else %>
+        <%= excel_element "Cell", "companies-dates-#{color_for_flight(claim)}", styles %>
+        <% end %>
+          <%= excel_date claim.arrival_date %></Cell>
+        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.departure_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.country.try(:name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.city.try(:name) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= text_for_visa(claim) %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.visa_check %></Cell>
+        <%= excel_element "Cell", "companies-#{color_for_visa(claim)}", styles %>
+          <Data ss:Type="String"><%= text_for_visa(claim) %></Data></Cell>
+        <% if claim.canceled? %>
+        <Cell ss:StyleID="companies-dates-gray_back">
+        <% else %>
+        <%= excel_element "Cell", "companies-dates-#{color_for_visa(claim)}", styles %>
+        <% end %>
+          <%= excel_date claim.visa_check %></Cell>
         <Cell><Data ss:Type="String"><%= claim.operator.try(:name) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= claim.operator_confirmation %></Data></Cell>
+        <%= excel_element "Cell", "companies-red_back", styles, (!claim.canceled? && !claim.operator_confirmation_flag) %>
+          <Data ss:Type="String"><%= claim.operator_confirmation %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.primary_currency_price.to_money %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.calculation %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= claim.tourist_advance.to_money %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= claim.tourist_debt.to_money %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= operator_price(claim) %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.operator_maturity %></Cell>
+        <%= excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
+          <Data ss:Type="Number"><%= claim.tourist_advance.to_money %></Data></Cell>
+        <%= excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
+          <Data ss:Type="Number"><%= claim.tourist_debt.to_money %></Data></Cell>
+        <%= excel_element "Cell", "companies-#{color_for_operator_price(claim)}", styles %>
+          <Data ss:Type="String"><%= operator_price(claim) %></Data></Cell>
+        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.operator_maturity %></Cell>
         <Cell><Data ss:Type="String"><%= operator_advance(claim) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= operator_debt(claim) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= approved_advance(claim, :tourist) %></Data></Cell>
+        <%= excel_element "Cell", "companies-#{color_for_operator_debt(claim)}", styles %>
+          <Data ss:Type="String"><%= operator_debt(claim) %></Data></Cell>
+        <%= excel_element "Cell", "companies-red_back", styles, (claim.approved_tourist_advance < claim.primary_currency_price) %>
+          <Data ss:Type="String"><%= approved_advance(claim, :tourist) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= approved_advance(claim, :operator_prim) %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= approved_advance(claim, :operator) %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= claim.profit_acc.to_money %></Data></Cell>
+        <%= excel_element "Cell", "companies-red_back", styles, (claim.profit_acc < 0 && !claim.excluded_from_profit) %>
+          <Data ss:Type="Number"><%= claim.profit_acc.to_money %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.profit_in_percent_acc.to_percent unless claim.excluded_from_profit %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= claim.profit.to_money %></Data></Cell>
+        <%= excel_element "Cell", "companies-red_back", styles, (claim.profit < 0 && !claim.excluded_from_profit) %>
+          <Data ss:Type="Number"><%= claim.profit.to_money %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.profit_in_percent.to_percent unless claim.excluded_from_profit %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.bonus_percent.to_percent %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.bonus.to_money %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.documents_statuses.' << claim.documents_status) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= claim.memo %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date claim.check_date %></Cell>
+        <%= excel_element "Cell", "companies-red_back", styles, (!claim.memo_tasks_done and claim.memo != '') %>
+          <Data ss:Type="String"><%= claim.memo %></Data></Cell>
+        <% if claim.canceled? %>
+        <Cell ss:StyleID="companies-dates-gray_back">
+        <% else %>
+        <%= excel_element "Cell", "companies-dates-#{check_date_status(claim)}", styles %>
+        <% end %>
+          <%= excel_date claim.check_date %></Cell>
       </Row>
     <% end %>
     </Table>
@@ -133,14 +239,14 @@
         <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
       </Row>
     <% @tourists.each do |tourist| %>
-      <Row>
+      <%= excel_element "Row", "users-#{tourist.try(:user).try(:id)}", styles %>
         <Cell><Data ss:Type="String"><%= tourist.name %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date tourist.date_of_birth %></Cell>
+        <Cell ss:StyleID="date"><%= excel_date tourist.date_of_birth %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.email %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_series %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_number %></Data></Cell>
-        <Cell ss:StyleID="s62"><%= excel_date tourist.passport_valid_until %></Cell>
+        <Cell ss:StyleID="date"><%= excel_date tourist.passport_valid_until %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.address.try(:joint_address) %></Data></Cell>
       </Row>
     <% end %>
@@ -174,8 +280,8 @@
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.wishes') %></Data></Cell>
       </Row>
     <% @clients.each do |client| %>
-      <Row>
-        <Cell ss:StyleID="s62"><%= excel_date client.created_at.to_date %></Cell>
+      <%= excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
+        <Cell ss:StyleID="date"><%= excel_date client.created_at.to_date %></Cell>
         <Cell><Data ss:Type="String"><%= client.user.try(:full_name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.phone_number %></Data></Cell>

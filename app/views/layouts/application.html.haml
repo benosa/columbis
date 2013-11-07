@@ -29,7 +29,7 @@
 
     - if CONFIG[:domain] == 'columbis.ru'
       = render 'layouts/google_analytics'
-      = render 'layouts/hintarea' if is_admin?
+      = render 'layouts/hintarea' if is_admin? || current_company.try(:subdomain) == 'demo'
 
     = csrf_meta_tag
     = yield(:head)

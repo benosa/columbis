@@ -13,9 +13,9 @@
         .fake_row
           = f.text_field :login, :class => 'main_email', :value => ""
           %p= f.label :login, t('.email_or_login')
-          %input{ :id => "user_check", :type => "text", :name => "user[_check]", :class => "required" }
+          %input{ :id => "user_check", :type => "text", :name => "user[_check]", :class => "required", :value => ('demo' if request.subdomain == 'demo') }
           %p= f.label :password
-          = f.password_field :password
+          = f.password_field :password, value: ('123456' if request.subdomain == 'demo')
           - if devise_mapping.rememberable?
             %p= f.label :remember_me, :class => 'checkbox left_checkbox'
             = f.check_box :remember_me

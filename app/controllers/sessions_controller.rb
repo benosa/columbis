@@ -3,6 +3,7 @@ require 'base64'
 
 class SessionsController < Devise::SessionsController
   skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
+  before_filter :set_demo_message, :if => proc{ request.subdomain == 'demo' }
 
   def create
     respond_to do |format|
@@ -68,5 +69,9 @@ class SessionsController < Devise::SessionsController
       else
         cookies.delete cookie_key, domain: cookie_domain
       end
+    end
+
+    def set_demo_message
+      flash.now[:notice] = I18n.t('devise.sessions.new.demo_message')
     end
 end

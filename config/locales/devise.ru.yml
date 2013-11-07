@@ -28,6 +28,13 @@ ru:
       new:
         title: 'Вход'
         email_or_login: 'Логин или e-mail адрес'
+        demo_message: |
+          <h2>Вход в демо-режим:</h2>
+          <table><tr>
+          <td>Логин:</td><td>&nbsp;demo</td>
+          </tr><tr>
+          <td>Пароль:</td><td>&nbsp;123456</td>
+          </tr></table>
     passwords:
       send_instructions: "В течение нескольких минут вы получите письмо с инструкциями по восстановлению вашего пароля."
       updated: "Ваш пароль изменён. Теперь вы вошли в систему."

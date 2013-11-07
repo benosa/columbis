@@ -18,20 +18,20 @@ class VisitorsController < ApplicationController
   end
 
   def confirm
-    if params[:confirmation_token]
-      @visitor = Visitor.where(confirmation_token: params[:confirmation_token]).first
-      if @visitor
-        if !@visitor.confirmed?
-          @visitor.confirm
-        end
-        sign_in :user, User.where(login: 'demo').first
-        cookies['_columbis_session_visitor'] = {
-          value: @visitor.id,
-          domain: '.' + CONFIG[:domain]
-        }
-      else
+    @visitor = Visitor.where(confirmation_token: params[:confirmation_token]).first
+    if @visitor
+      if !@visitor.confirmed?
+        @visitor.confirm
       end
+      sign_in :user, User.where(login: 'demo').first
+      cookies['_columbis_session_visitor'] = {
+        value: @visitor.id,
+        domain: '.' + CONFIG[:domain]
+      }
+      redirect_to root_path
+    else
+      flash[:notice] = I18n.t('devise.sessions.user.demo_reg', :href => CONFIG[:domain] + '/#visitor')
+      redirect_to new_user_session_path
     end
-    redirect_to root_path
   end
 end

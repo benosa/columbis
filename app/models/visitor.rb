@@ -3,10 +3,11 @@ class Visitor < ActiveRecord::Base
   attr_accessible :email, :name, :phone, :confirmation_token, :confirmed_at, :confirmed
 
   belongs_to :user
-  scope :confirmed1, :conditions => {:confirmed => true}
-  validates :phone, presence: true, length: { minimum: 8 }, :uniqueness => { :scope => self.confirmed1 }#{:conditions => {:confirmed => true}}#{ :scope => (:confirmed == true) }
-  validates :email, email: true, presence: true, :uniqueness => true
 
+  validates :name, presence: true
+  validates :phone, presence: true, length: { minimum: 8 }
+  validates :email, email: true, presence: true, :uniqueness => true
+  validates_with VisitorPhoneValidator
   before_save :generate_confirmation_token
 
   after_create do |company|

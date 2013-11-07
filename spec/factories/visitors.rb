@@ -2,5 +2,8 @@
 
 FactoryGirl.define do
   factory :visitor do
+  	email
+  	name { Faker::Name.first_name }
+   	phone
   end
 end

@@ -468,6 +468,20 @@ describe "Unlogged user", js: true do
       end
     end
 
+    describe "user demo login" do
+      before do
+        @demo = FactoryGirl.create(:boss, login: 'demo')
+      end
+      it 'should not show error, because of filling hiden field' do
+        visit new_user_session_path
+        save_screenshot
+        fill_in 'user[_check]', with: @demo.login
+        fill_in 'user[password]', with: @demo.password
+        find("input[name='commit']").click
+        page.current_path.should eq(new_user_session_path)
+      end
+    end
+
   end
 
 end

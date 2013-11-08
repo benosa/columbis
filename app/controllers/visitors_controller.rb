@@ -30,7 +30,7 @@ class VisitorsController < ApplicationController
       }
       redirect_to root_path
     else
-      flash[:notice] = I18n.t('devise.sessions.user.demo_reg', :href => CONFIG[:domain] + '/#visitor')
+      flash[:alert] = I18n.t('devise.sessions.user.demo_reg', :href => CONFIG[:domain] + '/#visitor')
       redirect_to new_user_session_path
     end
   end

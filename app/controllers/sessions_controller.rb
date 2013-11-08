@@ -8,7 +8,7 @@ class SessionsController < Devise::SessionsController
     if (params[:user][:login] == 'demo' && cookies['_columbis_session_visitor'].blank?) ||
      (!cookies['_columbis_session_visitor'].blank? && !Visitor.find(cookies['_columbis_session_visitor']).confirmed?)
       sign_out
-      set_flash_message :notice, 'demo_reg', :href => CONFIG[:domain] + '/#visitor'
+      set_flash_message :alert, 'demo_reg', :href => CONFIG[:domain] + '/#visitor'
       redirect_to new_user_session_path
     else
       respond_to do |format|

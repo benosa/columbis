@@ -1,7 +1,7 @@
 module TariffPlansHelper
-  def tariff_plan_ids
+  def tariff_plan_select_options
     tariff_plans = active_tariff_plans
-    tariff_plans.collect { |tp| [tp.name, tp.id] } if tariff_plans
+    tariff_plans.collect { |tp| ["#{tp.name} (#{number_to_currency tp.price, precision: 0}/#{t('month').mb_chars.downcase})", tp.id] } if tariff_plans
   end
 
   def tariff_plans_data
@@ -10,7 +10,7 @@ module TariffPlansHelper
   end
 
   def active_tariff_plans
-    TariffPlan.where(:active => true).where("name <> 'По умолчанию'")
+    TariffPlan.where(:active => true)
   end
 
   def company_tariff_balance(company)

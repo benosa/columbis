@@ -27,7 +27,7 @@ ru:
       approvedable: 'Вид счета'
       has_approved: 'Оплаченные'
     form:
-      common: 'Оплата'
+      common: 'Оплата за тариф'
       not_choise: 'Не выбран'
     list:
       invoice: '№ счёта'
@@ -47,6 +47,7 @@ ru:
     messages:
       created: 'Счет создан'
       destroyed: 'Счет удален'
+      already_exists: 'Счет на оплату уже создан, оплатите его.'
       uncertain_status: 'Не верный статус операции.'
       paid_already_complete: 'Счёт уже оплачен и подтверждён.'
       success_complete: 'Операция по счёту прошла успешно. Дождитесь подтверждения.'

@@ -67,6 +67,9 @@ ru:
   EUR: 'EUR'
   USD: 'USD'
 
+  month: 'Месяц'
+  year: 'Год'
+
   helpers:
     submit:
       create: 'Сохранить'

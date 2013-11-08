@@ -1,6 +1,9 @@
 class UserPaymentsController < ApplicationController
-  skip_before_filter :check_company_is_active
   load_and_authorize_resource
+
+  before_filter :deny_new_payment, only: [:new, :create], :unless => :can_create_new_payment?
+
+  helper_method :can_create_new_payment?
 
   def index
     @user_payments =
@@ -34,6 +37,15 @@ class UserPaymentsController < ApplicationController
   end
 
   private
+
+    def can_create_new_payment?
+      current_company.ready_for_payment? && UserPayment.can_create_new?(current_company)
+    end
+
+    def deny_new_payment
+      redirect_to user_payments_path, :alert => t('.user_payments.messages.already_exists')
+    end
+
     def set_filter_to(options)
       if params[:approvedable] == "all" || params[:approvedable].blank?
         options[:with].delete(:status_crc32)

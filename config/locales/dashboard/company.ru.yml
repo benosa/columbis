@@ -42,9 +42,6 @@ ru:
         tariff_unpaid: 'Не оплачен'
         tariff_end: 'Дата окончания:'
         tariff_end_days: 'Осталось:'
-        pay_or_extend: 'Вы можете оплатить продление либо переход на другой тарифный план'
-        already_pay_or_extend: 'Счет на оплату уже создан'
-        link_to_payments: 'Посмотреть счета'
       printers:
         title: "Печатные формы"
         printers: "Список документов компании"
@@ -108,7 +105,7 @@ ru:
       company_already_created: 'Компания уже создана'
       company_cant_be_updated: 'Вы не можете изменить эту компанию'
       company_cant_be_destroyed: 'Вы не можете удалить эту компанию'
-      company_must_pay: 'Доступ ограничен! Вам необходимо произвести оплату согласно тарифному плану.'
+      company_inactive: 'Доступ ограничен! Вам необходимо произвести оплату согласно тарифному плану.'
 
   helpers:
     label:

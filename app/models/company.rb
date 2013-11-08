@@ -133,8 +133,7 @@ class Company < ActiveRecord::Base
   end
 
   def ready_for_payment?
-    can_create_new_payment = UserPayment.can_create_new?(self)
-    can_create_new_payment && (soon_tariff_end? || !tariff_paid?)
+    soon_tariff_end? || !tariff_paid?
   end
 
   private

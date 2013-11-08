@@ -103,9 +103,3 @@
             %span.value= distance_of_time_in_words(Time.zone.now, company.tariff_end)
         - if company.ready_for_payment?
           = link_to t('pay'), new_user_payment_path, :class => 'pay_button'
-        - else
-          - unless company.soon_tariff_end?
-            %p
-              = t('.already_pay_or_extend')
-              %br
-              = link_to t('.link_to_payments'), user_payments_path

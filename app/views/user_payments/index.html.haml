@@ -13,4 +13,5 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  =# link_to t('.new_user_payment'), new_user_payment_path, :class => 'add_operator'
+  - if can_create_new_payment?
+    = link_to t('.new_user_payment'), new_user_payment_path, :class => 'add_operator'

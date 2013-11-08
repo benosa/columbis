@@ -1,0 +1,17 @@
+- set_current_width(:small)
+- content_for(:body_class) { 'panel' }
+
+- title t('.title')
+
+- content_for :top do
+  %form.filter
+    = render 'shared/search_field'
+    = label_tag :approvedable, t('.approvedable')
+    = select_tag :approvedable, options_for_select(user_payments_statuses, 'new'), class: 'filter_select', id: 'approvedable_filter_options', data: { param: 'approvedable', filter: true }
+
+= render 'list'
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  - if can_create_new_payment?
+    = link_to t('.new_user_payment'), new_user_payment_path, :class => 'add_operator'

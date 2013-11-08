@@ -35,6 +35,13 @@ ru:
           name: 'Название'
           default_password: 'Пароль по умолчанию'
         logo_size: '(100x100)'
+        tariff_plan: 'Тарифный план'
+        tariff_plan_current: 'Текущий:'
+        tariff_state: 'Состояние:'
+        tariff_paid: 'Оплачен'
+        tariff_unpaid: 'Не оплачен'
+        tariff_end: 'Дата окончания:'
+        tariff_end_days: 'Осталось:'
       printers:
         title: "Печатные формы"
         printers: "Список документов компании"
@@ -65,6 +72,8 @@ ru:
         inn: 'ИНН'
         subdomain: 'Адрес в системе'
         logo: 'Логотип'
+        tariff: 'Текущий тарифный план'
+        tariff_end: 'Дата окончания тарифного плана'
 
       # it's useful only for rails >= 3.2.0
       company/address:
@@ -86,6 +95,7 @@ ru:
       company_already_created: 'Компания уже создана'
       company_cant_be_updated: 'Вы не можете изменить эту компанию'
       company_cant_be_destroyed: 'Вы не можете удалить эту компанию'
+      company_inactive: 'Доступ ограничен! Вам необходимо произвести оплату согласно тарифному плану.'
 
   helpers:
     label:

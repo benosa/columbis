@@ -13,6 +13,32 @@ describe "Companies:", js: true do
     before { login_as(@boss) }
     subject { page }
 
+    describe "edit company" do
+      it "should have tariff plan block" do
+        visit edit_dashboard_company_path(@company)
+        page.should have_content(I18n.t('dashboard.companies.form.tariff_plan'))
+        page.should have_content(@company.tariff.name)
+        page.should have_content(I18n.l(@company.tariff_end, :format => "%d.%m.%Y"))
+        page.should have_content(I18n.t('dashboard.companies.form.pay_or_extend_link'))
+        page.should have_selector("a[href='#{new_user_payment_path}']")
+        page.should_not have_selector("a[href='#{user_payments_path}']")
+      end
+
+      it "should not have tariff plan block if all plans inactive" do
+        TariffPlan.update_all(:active => false)
+        visit edit_dashboard_company_path(@company)
+        page.should_not have_content(I18n.t('dashboard.companies.form.tariff_plan'))
+      end
+
+      it "should link to tariff plan index if payment in this moment imposible" do
+        FactoryGirl.create(:user_payment, :company => @company, :user => @boss)
+        visit edit_dashboard_company_path(@company)
+        page.should have_content(I18n.t('dashboard.companies.form.link_to_payments'))
+        page.should have_selector("a[href='#{user_payments_path}']")
+        page.should_not have_selector("a[href='#{new_user_payment_path}']")
+      end
+    end
+
     describe "update company" do
       before do
         visit dashboard_edit_company_path

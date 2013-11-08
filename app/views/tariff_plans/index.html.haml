@@ -3,7 +3,7 @@
 
 - title t('.title')
 
-%table.reservations.tour_operators
+%table.reservations.tour_operators.tariff_plans
   %tr
     %th
       %span=t('.name')
@@ -11,21 +11,21 @@
       %span=t('.price')
     %th
       %span=t('.active')
-    %th
+    %th.tariff_settings
       %span=t('.settings')
     %th.actions
       %span= t('actions')
 
   - @tariff_plans.each do |tariff_plan|
     %tr
-      %td= tariff_plan.name
+      %td= "#{tariff_plan.name}#{" (#{TariffPlan.human_attribute_name :default})" if tariff_plan.default}"
       %td= tariff_plan.price.to_s + " " + t(tariff_plan.currency)
       %td
         - if tariff_plan.active
           %i.icon-ok
         - else
           %i.icon-minus
-      %td{:style => "width: 500px;"}
+      %td.tariff_settings
         %div
           =t('.users_count') + ": "
           = tariff_plan.users_count

@@ -1,0 +1,8 @@
+- tpd = tariff_plans_data
+var tariffs = [], temp, now_tariff;
+- tpd.each do |tariff|
+  temp = [ parseInt("#{tariff[0]}"), "#{tariff[1]}", parseInt("#{tariff[2]}") ];
+  tariffs.push(temp);
+now_tariff = "#{current_company.tariff_id}"
+balance = parseInt("#{company_tariff_balance(current_company)}")
+t_balance = "#{I18n.t('activerecord.attributes.user_payment.balance')}"

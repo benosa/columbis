@@ -41,6 +41,7 @@ ru:
   close: 'Закрыть'
   send: 'Отправить'
   accept: 'Применить'
+  pay: 'Оплатить'
 
   logout: 'Выйти'
   login: 'Войти'
@@ -65,6 +66,9 @@ ru:
   RUR: 'руб.'
   EUR: 'EUR'
   USD: 'USD'
+
+  month: 'Месяц'
+  year: 'Год'
 
   helpers:
     submit:

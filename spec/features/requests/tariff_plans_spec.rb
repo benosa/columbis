@@ -4,6 +4,7 @@ describe "TariffPlans", js: true do
   include ActionView::Helpers
   before(:all) do
     FactoryGirl.create_list(:tariff_plan, 2)
+    FactoryGirl.create(:company)
     @admin = login_as_admin
   end
 
@@ -37,6 +38,26 @@ describe "TariffPlans", js: true do
     it 'should content new button and click on it have been redirect to new page' do
       find('a.add_operator').click
       current_path.should == new_tariff_plan_path
+    end
+
+    it 'after delete company plan, it should set to default plan' do
+      company = Company.first
+      find("a[href='/tariff_plans/#{company.tariff_id.to_s}']").trigger('click')
+      companynew = Company.find(company.id)
+      companynew.tariff.name.should == "По умолчанию"
+    end
+
+    it 'after delete default plan, it should recreate' do
+      plan = TariffPlan.default
+      Company.update_all(:tariff_id => plan.id)
+      expect {
+        find("a[href='/tariff_plans/#{plan.id.to_s}']").trigger('click')
+      }.to change(TariffPlan, :count).by(0)
+
+      Company.all.each do |company|
+        visit edit_dashboard_company_path(company)
+        page.should have_content("По умолчанию")
+      end
     end
   end
 

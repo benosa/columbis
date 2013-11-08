@@ -27,4 +27,23 @@ describe TariffPlan do
       it { should_not allow_value(nil).for(:users_count) }
     end
   end
+
+  describe "callbacks and self methods" do
+    it "not delete all tariff plan" do
+      FactoryGirl.create_list(:tariff_plan, 5)
+      TariffPlan.all.each { |plan| plan.destroy }
+      TariffPlan.all.length.should == 1
+    end
+
+    it "should set default tariff to company, if tariff plan delete" do
+      FactoryGirl.create_list(:tariff_plan, 5).each do |plan|
+        FactoryGirl.create(:company, :tariff => plan)
+      end
+      TariffPlan.all.each { |plan| plan.destroy }
+      tariff = TariffPlan.first
+      Company.all.each do |company|
+        company.tariff.should == tariff
+      end
+    end
+  end
 end

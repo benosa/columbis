@@ -18,17 +18,23 @@ class ApplicationController < ActionController::Base
 
   around_filter :set_time_zone
 
-  before_filter :check_company_office, :except => [:current_timestamp]
-  skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
+  before_filter :check_company_office
+  skip_before_filter :check_company_office, :only => :sign_out # it's doesn't work :(
 
-  before_filter :set_current_controller, :except => [:current_timestamp]
+  before_filter :check_company_access, :if => :current_company_inactive?
   before_filter :check_subdomain
-  # before_filter :set_session_options_domain
+
+  before_filter :set_current_controller
   before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
+
+  skip_filter :check_company_office, :check_company_access, :check_subdomain, :only => :current_timestamp
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
-      redirect_to root_path, :alert => exception.message
+      if exception.action == :inactive && exception.subject == Company
+        redirect_path = dashboard_edit_company_path
+      end
+      redirect_to redirect_path || root_path, :alert => exception.message
     else
       redirect_to new_user_session_path
     end
@@ -129,6 +135,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def check_company_access
+    accessible_controllers = %w[companies user_payments]
+    unless accessible_controllers.include?(controller_name) || is_admin? || devise_controller?
+      raise CanCan::AccessDenied.new(I18n.t('companies.messages.company_inactive'), :inactive, Company)
+    end
+  end
+
   def skip_verify_authenticity_token?
     request.format == 'application/json'
   end
@@ -162,6 +175,10 @@ class ApplicationController < ActionController::Base
 
     def set_current_controller
       ::ApplicationController.current = self
+    end
+
+    def current_company_inactive?
+      !current_company.is_active? if current_company
     end
 
 end

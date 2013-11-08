@@ -16,6 +16,7 @@ ru:
       analytics: 'Система аналитики'
       boss_desktop: 'Рабочий стол руководителя'
       sms_sending: 'Модуль SMS-рассылки'
+      default: 'По умолчанию'
       new_tariff_plan: 'Добавить план'
       index_tariff_plan: 'Показать все планы'
       edit: "Изменение тарифного плана %{tariff_plan}"

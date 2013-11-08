@@ -6,6 +6,12 @@ development: &defaults
   support_delivery: false
   session_key: _tourism_session
   secret_token: 7b50ff123f9a4d6f737cc6b079c4a886083a6d9bdef3137dbcf776e8fac7d1c406ce2842cff42ce045b2be05daa4fd3c1fc492fcc2de9388bf4b834dff642912
+  robokassa_login: columbis_test
+  robokassa_secret: 5906b45335a4d6f8b2197d6c2c49b40
+  robokassa_password1: aJSDH892h182hdh18HSADjh
+  robokassa_password2: 83hajhdPDh83h32hdahHDSahd
+  days_for_default_tariff: 14
+  days_before_tariff_end: 3
   delayed_job_user: user
   delayed_job_password: password
   public_controllers:

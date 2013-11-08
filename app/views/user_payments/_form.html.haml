@@ -1,0 +1,26 @@
+- content_for(:error_messages) do
+  = f.error_messages
+
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= t('.common')
+    .form_block_content
+      .fake_row
+        / %p= f.label :description
+        / = f.text_area :description, :style => "max-width: 240px; height: 80px", :readonly => true
+        %p= f.label :tariff, required: false
+        = f.select :tariff_id, tariff_plan_select_options, { include_blank: false }, :class => 'tariff'
+        %p= f.label :period, required: false
+        = f.select :period, user_payment_periods, { include_blank: false }, :class => 'period'
+        %p= f.label :amount, required: false
+        = f.text_field :amount, :readonly => true, :class => 'amount'
+        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :readonly => true
+        %p
+          %label{:id => "if_balance"}
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit
+
+= javascript_tag do
+  = render :partial => "tariff_plans/tariffs_load.js.haml"

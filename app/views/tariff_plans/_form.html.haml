@@ -11,7 +11,7 @@
         = f.text_field :name
         %p= f.label :price
         = f.number_field :price
-        = f.select :currency, (CurrencyCourse::CURRENCIES).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
+        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
         %p= f.label :users_count
         = f.number_field :users_count
         %p= f.label :place_size
@@ -43,5 +43,8 @@
         %p
           = f.check_box :active
           = f.label :active, :class => 'checkbox left_checkbox'
+        %p
+          = f.check_box :default
+          = f.label :default, :class => 'checkbox left_checkbox'
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

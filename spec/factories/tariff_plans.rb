@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :tariff_plan do
     price 1
     name { Faker::Name.name }
-    active false
+    active true
     users_count 1
     place_size 1
     back_office false

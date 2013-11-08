@@ -162,4 +162,19 @@
   }
 
   #offices_block .error_message { display: inline-block; }
+
+  .tariff_plan_block {
+    .fake_row { width: 193px !important; padding-right: 20px; }
+    .label { display: inline-block; width: 100px; }
+    .value { display: inline-block; color: black; }
+    .pay_button { display: inline-block; font-size: 13px; font-weight: bold;
+      width: 90px; height: 25px; line-height: 14px; padding: 9px 0 0 45px; margin-top: 10px;
+      background: url(/assets/new_design/images/save.png) no-repeat;
+      color: #FFF; text-shadow: #345a80 0px -1px 0px;
+      &:hover {
+        background: url(/assets/new_design/images/save_hover.png) no-repeat;
+        text-shadow: #406326 0px -1px 0px;
+      }
+    }
+  }
 }

@@ -3,12 +3,16 @@ class Company < ActiveRecord::Base
   attr_accessible :email, :country_id, :name, :offices_attributes, :printers_attributes, :address_attributes,
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
-                  :sms_signature, :sms_birthday_send, :owner
+                  :sms_signature, :sms_birthday_send, :owner, :user_payment_id, :tariff_end,
+                  :tariff_id, :paid
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
 
   belongs_to :owner, :class_name => 'User', :inverse_of => :company
+  belongs_to :tariff, :class_name => 'TariffPlan'
+  belongs_to :user_payment
+
   has_one :address, :as => :addressable, :dependent => :destroy
   has_many :payments_in, :as => :payer, :class_name => 'Payment', :dependent => :destroy
   has_many :payments_out, :as => :recipient, :class_name => 'Payment', :dependent => :destroy
@@ -16,6 +20,7 @@ class Company < ActiveRecord::Base
   has_many :users, :dependent => :destroy, :order => 'Last_name ASC'
   has_many :offices, :dependent => :destroy, :order => 'name ASC'
   has_many :claims, :dependent => :destroy
+  has_many :user_payments, :dependent => :destroy
   has_many :tourists, :dependent => :destroy
   has_many :operators, :dependent => :destroy, :order => 'name ASC'
   has_many :dropdown_values, :dependent => :destroy
@@ -26,7 +31,7 @@ class Company < ActiveRecord::Base
 
   has_many :printers, :order => :id, :dependent => :destroy, inverse_of: :company
 
-  validates_presence_of :name
+  validates_presence_of :name, :tariff_id, :tariff_end
   validates :subdomain, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: proc{ I18n.t('activerecord.errors.messages.subdomain_invalid') } },
@@ -37,6 +42,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :offices, :reject_if => :check_offices_attributes, :allow_destroy => true
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
+  before_create :check_tariff_plan
   after_create do |company|
     Mailer.company_was_created(self).deliver
   end if CONFIG[:support_delivery]
@@ -100,7 +106,44 @@ class Company < ActiveRecord::Base
     DropdownValue.values_for(list, id)
   end
 
+  def tariff_paid(payment)
+    self.paid = payment.tariff.price * payment.period
+    self.user_payment = payment
+    self.tariff = payment.tariff
+    self.tariff_end = Time.zone.now + payment.period.months
+    self.save
+  end
+
+  def tariff_end_day
+    tariff_end ? tariff_end.end_of_day : DateTime.new(1970,1,1)
+  end
+
+  def is_active?
+    !tariff_end? || Time.zone.now < tariff_end_day + 1.day
+  end
+
+  def tariff_end?
+    tariff_end_day < Time.zone.now
+  end
+
+  def soon_tariff_end?
+    !tariff_end? && tariff_end_day < Time.zone.now + CONFIG[:days_before_tariff_end].days
+  end
+
+  def tariff_paid?
+    user_payment.present? && !tariff_end?
+  end
+
+  def ready_for_payment?
+    soon_tariff_end? || !tariff_paid?
+  end
+
   private
+
+    def check_tariff_plan
+      self.tariff ||= TariffPlan.default
+      self.tariff_end ||= Time.zone.now + CONFIG[:days_for_default_tariff].days
+    end
 
     def check_offices_attributes(attributes)
       offices.count < offices.length && attributes['id'].blank? && attributes['name'].blank?

@@ -14,6 +14,7 @@ describe User do
     it { should belong_to :company }
     it { should belong_to :office }
     it { should have_many :tasks }
+    it { should have_many :user_payments }
   end
 
   describe ".validations" do

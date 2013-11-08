@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  resources :user_payments, :except => [:show, :edit, :update]
+
   resources :tariff_plans
   get 'sms_settings' => 'sms_settings#index', as: 'sms_settings'
   put 'sms_settings' => 'sms_settings#update', as: 'sms_settings'
@@ -15,6 +17,11 @@ Tourism::Application.routes.draw do
 
   resources :sms_sendings
 
+  scope 'robokassa' do # Robokassa routes
+    post 'paid'    => 'robokassa#paid',    :as => :robokassa_paid # to handle Robokassa push request
+    get 'success' => 'robokassa#success', :as => :robokassa_success # to handle Robokassa success redirect
+    get 'fail'    => 'robokassa#fail',    :as => :robokassa_fail # to handle Robokassa fail redirect
+  end
 
   match 'amount_in_word' => 'application#amount_in_word'
   match 'get_currency_course' => 'application#get_currency_course'

@@ -14,6 +14,17 @@ class Visitor < ActiveRecord::Base
     Mailer.visitor_was_created(self).deliver
   end if CONFIG[:support_delivery]
 
+  extend SearchAndSort
+
+  define_index do
+    indexes :name, :email, :phone, sortable: true
+
+    has :created_at, :confirmed_at, type: :datetime
+    has :confirmed, type: :boolean
+
+    set_property :delta => true
+  end
+
   def generate_confirmation_token
     if !confirmation_token
       loop do

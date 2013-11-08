@@ -61,6 +61,8 @@ ru:
           admin: 'Админка'
           companies: 'Компании'
           instructions: 'Инструкции'
+          visitors: 'Посетители'
+
       second_menu:
         view: 'Вид'
       management:

@@ -30,5 +30,26 @@ module Admin
     def instructions
       render 'admin/instructions'
     end
+
+    def visitors
+      if search_or_sort?
+        options = search_and_sort_options(
+          :filter => params[:filter],
+          :defaults => { :order => :created_at, :sort_mode => :desc },
+          :sql_order => false
+        )
+        @visitors_collection = search_paginate(Visitor.search_and_sort(options))#Company.search_and_sort(options), options)
+        @visitors_info = Visitor.sort_by_search_results(@visitors_collection) #.search params[:filter]
+      else
+        @visitors_collection = Visitor.order('created_at DESC').paginate(:page => params[:page], :per_page => per_page)
+        @visitors_info =  @visitors_collection.all
+      end
+
+      if request.xhr?
+        render :partial => 'admin/visitors'
+      else
+        render 'admin/visitors'
+      end
+    end
   end
 end

@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'import'
+
 class Dashboard::CompaniesController < ApplicationController
   include CountriesHelper
 
@@ -22,7 +24,7 @@ class Dashboard::CompaniesController < ApplicationController
 
   def update
     import = params[:company].delete(:import)
-    importing = Import::FromXLS.new(import.template)
+    importing = Import::Formats::XLS.new(import.tempfile)
     @company = current_company unless @company
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?

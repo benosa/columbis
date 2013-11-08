@@ -1,7 +1,5 @@
 module Import
-  class FromXLS
-    def initialize(file)
-      raise "ASD"
-    end
-  end
+  require 'import/importer'
+  require 'import/tables'
+  require 'import/formats'
 end

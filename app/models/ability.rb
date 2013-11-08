@@ -9,7 +9,7 @@ class Ability
     @company = @user.company || Company.new
 
     role = @user.role.to_s
-    role = "unpayment_" + role unless @company.is_active?
+    role = "unpaid_" + role unless @company.is_active?
     if self.respond_to?(role)
       self.send(role)
     else
@@ -108,7 +108,7 @@ class Ability
     end
   end
 
-  def unpayment_boss
+  def unpaid_boss
     can :read, Company, :id => user.company_id
     cannot [:new, :create], Company if company
     can :read, [Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue,
@@ -129,17 +129,17 @@ class Ability
     cannot :manage, User, :role => 'admin'
   end
 
-  def unpayment_accountant
+  def unpaid_accountant
     can [:read, :scroll], Claim, :company_id => user.company_id
   end
 
 
-  def unpayment_supervisor
+  def unpaid_supervisor
     can [:read, :scroll], Claim, :company_id => user.company_id
   end
 
 
-  def unpayment_manager
+  def unpaid_manager
     can [:read, :scroll], Claim, :company_id => user.company_id, :office_id => user.office_id
   end
 

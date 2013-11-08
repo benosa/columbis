@@ -112,12 +112,29 @@ class Company < ActiveRecord::Base
     self.save
   end
 
+  def tariff_end_day
+    tariff_end ? tariff_end.end_of_day : DateTime.new(1970,1,1)
+  end
+
   def is_active?
-    if self.tariff_end && (self.tariff_end + 1.days) > Time.zone.now
-      true
-    else
-      false
-    end
+    !tariff_end? || Time.zone.now < tariff_end_day + 1.day
+  end
+
+  def tariff_end?
+    tariff_end_day < Time.zone.now
+  end
+
+  def soon_tariff_end?
+    !tariff_end? && tariff_end_day < Time.zone.now + CONFIG[:days_before_tariff_end].days
+  end
+
+  def tariff_paid?
+    user_payment.present? && !tariff_end?
+  end
+
+  def ready_for_payment?
+    can_create_new_payment = UserPayment.can_create_new?(self)
+    can_create_new_payment && (soon_tariff_end? || !tariff_paid?)
   end
 
   private

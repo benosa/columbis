@@ -1,4 +1,5 @@
 class UserPaymentsController < ApplicationController
+  skip_before_filter :check_company_is_active
   load_and_authorize_resource
 
   def index
@@ -14,6 +15,7 @@ class UserPaymentsController < ApplicationController
   end
 
   def new
+    @user_payment.tariff = current_company.tariff
   end
 
   def create

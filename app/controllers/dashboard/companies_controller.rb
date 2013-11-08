@@ -2,6 +2,8 @@
 class Dashboard::CompaniesController < ApplicationController
   include CountriesHelper
 
+  skip_before_filter :check_company_is_active
+
   load_and_authorize_resource
   skip_authorize_resource only: :edit
 

@@ -82,20 +82,30 @@
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
 
-- if TariffPlan.where(:active => true).length != 0
-  .form_column
-    .form_block
-      .block_title
-        %h2= t('.tariff_plan')
-      .form_block_content
-        .fake_row
-          %p= f.label :tariff
-          = company.tariff.name
-          %p= f.label :tariff_end
-          = l(company.tariff_end, :format => "%d.%m.%Y")
-          - if UserPayment.can_create_new?(company)
-            %p= t('.pay_or_extend')
-            = link_to t('.pay_or_extend_link'), new_user_payment_path, :class => 'add_city'
-          -else
-            %p= t('.already_pay_or_extend')
-            = link_to t('.link_to_payments'), user_payments_path, :class => 'add_city'
+.form_column.tariff_plan_block
+  .form_block
+    .block_title
+      %h2= t('.tariff_plan')
+    .form_block_content
+      .fake_row
+        %p
+          %span.label= t('.tariff_plan_current')
+          %span.value= company.tariff.name
+        %p
+          %span.label= t('.tariff_state')
+          %span.value= company.tariff_paid? ? t('.tariff_paid') : t('.tariff_unpaid')
+        %p
+          %span.label= t('.tariff_end')
+          %span.value= l(company.tariff_end, :format => "%d.%m.%Y")
+        - if company.soon_tariff_end?
+          %p
+            %span.label= t('.tariff_end_days')
+            %span.value= distance_of_time_in_words(Time.zone.now, company.tariff_end)
+        - if company.ready_for_payment?
+          = link_to t('pay'), new_user_payment_path, :class => 'pay_button'
+        - else
+          - unless company.soon_tariff_end?
+            %p
+              = t('.already_pay_or_extend')
+              %br
+              = link_to t('.link_to_payments'), user_payments_path

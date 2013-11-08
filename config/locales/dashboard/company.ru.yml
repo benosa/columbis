@@ -36,10 +36,15 @@ ru:
           default_password: 'Пароль по умолчанию'
         logo_size: '(100x100)'
         tariff_plan: 'Тарифный план'
+        tariff_plan_current: 'Текущий:'
+        tariff_state: 'Состояние:'
+        tariff_paid: 'Оплачен'
+        tariff_unpaid: 'Не оплачен'
+        tariff_end: 'Дата окончания:'
+        tariff_end_days: 'Осталось:'
         pay_or_extend: 'Вы можете оплатить продление либо переход на другой тарифный план'
-        pay_or_extend_link: 'Оплатить'
-        already_pay_or_extend: 'Вы ещё не завершили предыдущую операцию по оплате'
-        link_to_payments: 'Все операции'
+        already_pay_or_extend: 'Счет на оплату уже создан'
+        link_to_payments: 'Посмотреть счета'
       printers:
         title: "Печатные формы"
         printers: "Список документов компании"
@@ -103,6 +108,7 @@ ru:
       company_already_created: 'Компания уже создана'
       company_cant_be_updated: 'Вы не можете изменить эту компанию'
       company_cant_be_destroyed: 'Вы не можете удалить эту компанию'
+      company_must_pay: 'Доступ ограничен! Вам необходимо произвести оплату согласно тарифному плану.'
 
   helpers:
     label:

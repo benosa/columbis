@@ -6,7 +6,7 @@ ru:
         balance: 'При оплате этого счёта остатком неизрасходованных средств вы потеряете (руб): '
         description: 'Пояснение'
         tariff: 'Тарифный план'
-        period: 'Период оплаты (месяц)'
+        period: 'Период оплаты'
         amount: 'Сумма'
         status: 'Статус платежа.'
         errors:
@@ -27,13 +27,13 @@ ru:
       approvedable: 'Вид счета'
       has_approved: 'Оплаченные'
     form:
-      common: 'Параметры'
+      common: 'Оплата'
       not_choise: 'Не выбран'
     list:
       invoice: '№ счёта'
-      description: 'Пояснения'
+      description: 'Описание'
       amount: 'Сумма'
-      updated_at: 'Последнее обновление'
+      created_at: 'Создан'
       status: 'Статус'
       confirm: 'Оплатить'
       confirm_again: 'Восстановить и оплатить'
@@ -42,7 +42,7 @@ ru:
       statuses:
         *states
     new:
-      new_user_payment: 'Создание счёта'
+      new_user_payment: 'Новый счёт'
 
     messages:
       created: 'Счет создан'

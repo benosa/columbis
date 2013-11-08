@@ -31,7 +31,7 @@ class UserPayment < ActiveRecord::Base
 
     has :amount
     has :invoice
-    has :updated_at
+    has :created_at
     has "CRC32(status)", :as => :status_crc32, type: :integer
     has :company_id
 
@@ -112,9 +112,7 @@ class UserPayment < ActiveRecord::Base
     end
 
     def check_other_user_payments
-      if UserPayment.can_create_new?(self.company)
-        true
-      else
+      unless UserPayment.can_create_new?(self.company)
         errors.add(:status, "#{I18n.t('activerecord.attributes.user_payment.errors.new_has_exist')}")
         false
       end

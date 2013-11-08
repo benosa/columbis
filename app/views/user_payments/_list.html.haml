@@ -2,10 +2,10 @@
 .current_container
   %table.reservations.tour_operators
     %tr
+      %th= sort_link :created_at, t('.created_at'), :default
       %th= sort_link :invoice, t('.invoice')
       %th= sort_link :description, t('.description')
       %th= sort_link :amount, t('.amount')
-      %th= sort_link(:updated_at, t('.updated_at'), :default)
       %th
         %span= t('.status')
       %th.actions
@@ -14,14 +14,14 @@
     - for user_payment in @user_payments
       %tr{ :class => cycle('odd', 'even'), id: "user_payment_#{user_payment.id}" }
         %td
+          %p= l(user_payment.created_at, format: :long)
+        %td
           %p= user_payment.invoice
         %td.body{:class => [(user_payment.description.length > 80) && 'popup_hover'], :data => { :content => (user_payment.description.length > 80) && user_payment.description }}
           %p{:class => "with_tooltip", :title => user_payment.description }
             = truncate user_payment.description, length: 80, omission: '...', separator: ' '
         %td
           %p= user_payment.amount.to_s + " " + t(user_payment.currency)
-        %td
-          %p= l(user_payment.updated_at, :format => "%d.%m.%Y %H:%M")
 
         - case user_payment.status
         - when 'new'

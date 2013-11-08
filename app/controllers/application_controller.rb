@@ -20,16 +20,20 @@ class ApplicationController < ActionController::Base
 
   before_filter :check_company_office, :except => [:current_timestamp]
   skip_before_filter :check_company_office, :only => [:sign_out] # it's doesn't work :(
+  before_filter :check_company_is_active, :except => [:current_timestamp],
+    :unless => proc{ is_admin? || devise_controller? }
 
   before_filter :set_current_controller, :except => [:current_timestamp]
   before_filter :check_subdomain
   # before_filter :set_session_options_domain
   before_filter :check_page_param, :only => [:index, :scroll], :if => proc{ params[:page].present? }
-  before_filter :check_company_is_active
 
   rescue_from CanCan::AccessDenied do |exception|
     if user_signed_in?
-      redirect_to root_path, :alert => exception.message
+      if exception.action == :active && exception.subject == Company
+        redirect_path = dashboard_edit_company_path
+      end
+      redirect_to redirect_path || root_path, :alert => exception.message
     else
       redirect_to new_user_session_path
     end
@@ -132,7 +136,9 @@ class ApplicationController < ActionController::Base
 
   def check_company_is_active
     if current_company && !current_company.is_active?
-      flash[:alert] = I18n.t('errors.messages.company_not_paid_tariff')
+      message = "#{I18n.t('companies.messages.company_must_pay')} <a href=\"#{new_user_payment_path}\">#{I18n.t('pay')}.</a>".html_safe
+      # flash[:alert] = message
+      raise CanCan::AccessDenied.new(message, :active, Company)
     end
   end
 

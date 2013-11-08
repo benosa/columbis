@@ -9,6 +9,7 @@
     = render 'layouts/main_menu/support'
     - if user_signed_in? && is_admin?
       = render 'layouts/main_menu/admin'
+    = render 'layouts/main_menu/demo'
 %ul.user_panel
   = render 'devise/menu/registration_items'
   = render 'devise/menu/login_items'

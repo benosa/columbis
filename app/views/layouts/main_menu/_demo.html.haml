@@ -1,0 +1,3 @@
+%li{:class => 'demo_enter'}
+  = link_to t('.demo_enter'), admin_index_path if (Claim.count > 10) && (current_user != User.where(login: 'demo').first)
+  = link_to t('.demo_exit'), admin_index_path if (current_user == User.where(login: 'demo').first)

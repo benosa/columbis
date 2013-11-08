@@ -62,6 +62,9 @@ ru:
           companies: 'Компании'
           instructions: 'Инструкции'
           visitors: 'Посетители'
+        - &demo
+          demo_enter: 'Демо-режим'
+          demo_exit: 'Выйти из демо-режима'
 
       second_menu:
         view: 'Вид'
@@ -89,6 +92,8 @@ ru:
         new_claim: 'Новая заявка'
       admin:
         *admin
+      demo:
+        *demo
 
     application: &application
       all_rights_reserved: 'Все права защищены'

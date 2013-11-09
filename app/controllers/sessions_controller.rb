@@ -3,7 +3,7 @@ require 'base64'
 
 class SessionsController < Devise::SessionsController
   skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
-  before_filter :check_demo_access, :only => :create, :if => :demo_sign_in?
+  before_filter :check_demo_access, :only => [:new, :create], :if => :demo_sign_in?
   before_filter :set_demo_message, :if => proc{ request.subdomain == 'demo' }
 
   def create
@@ -81,25 +81,25 @@ class SessionsController < Devise::SessionsController
     end
 
     def demo_sign_in?
-      params[:user][:login] == 'demo' if params[:user]
+      request.subdomain == 'demo' || (params[:user][:login] == 'demo' if params[:user])
     end
 
     def check_demo_access
       cookie_key = (CONFIG[:session_key] + '_visitor').to_sym
-      access_allowed = if cookies[cookie_key].present?
+      @demo_access_allowed = if cookies[cookie_key].present?
         Visitor.find(cookies[cookie_key]).confirmed? rescue false
       else
         false
       end
 
-      unless access_allowed
-        sign_out
+      unless @demo_access_allowed
+        sign_out if user_signed_in?
         set_flash_message :alert, 'demo_reg', :href => CONFIG[:domain] + '/#visitor'
-        redirect_to new_user_session_path
+        redirect_to new_user_session_path unless request.path == new_user_session_path
       end
     end
 
     def set_demo_message
-      flash.now[:notice] = I18n.t('devise.sessions.new.demo_message')
+      flash.now[:notice] = I18n.t('devise.sessions.new.demo_message') unless @demo_access_allowed === false
     end
 end

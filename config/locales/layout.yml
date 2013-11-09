@@ -89,6 +89,8 @@ ru:
         new_claim: 'Новая заявка'
       admin:
         *admin
+      second_admin:
+        *admin
 
     application: &application
       all_rights_reserved: 'Все права защищены'

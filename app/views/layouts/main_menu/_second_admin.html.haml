@@ -1,0 +1,5 @@
+- a = params[:action]
+%li{:class => a == 'index' && 'active' }= link_to t('.companies'), admin_index_path
+%li{:class => a == 'visitors' && 'active' }= link_to t('.visitors'), admin_visitors_path
+-# Temporary removed
+  %li.first_menu_stroke= link_to t('.instructions'), admin_instructions_path

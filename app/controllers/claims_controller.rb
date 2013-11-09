@@ -169,7 +169,7 @@ class ClaimsController < ApplicationController
   private
 
     def set_list_type
-      if can? :switch_view, current_user
+      if can?(:switch_view, current_user) && current_user.login != 'demo'
         params[:list_type] ||= 'accountant_list'
       else
         params[:list_type] = 'manager_list'

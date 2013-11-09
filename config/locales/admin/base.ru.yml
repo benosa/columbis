@@ -14,6 +14,14 @@ ru:
       tourists_count: 'Туристы'
       tasks_count: 'Отзывы'
 
+    visitors_info:
+      title: 'Информация о посетителях'
+      created_at: 'Дата регистрации'
+      name: 'ФИО'
+      email: 'Email'
+      phone: 'Телефон'
+      confirmed: 'Подтвержденный'
+
     index:
       companies: Компаний
       users: Пользователей

@@ -21,6 +21,20 @@ class Mailer < ActionMailer::Base
     mail to: CONFIG[:support_email], subject: subject
   end
 
+  def visitor_was_created(visitor)
+    @resource = visitor
+    # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
+    subject = I18n.t('mailer.visitor_was_created_subject', visitor: visitor.name, locale: :ru)
+    mail to: CONFIG[:support_email], subject: subject
+  end
+
+  def visitor_confirmation(visitor)
+    @resource = visitor
+    # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
+    subject = I18n.t('mailer.visitor_was_created_subject', visitor: visitor.name, locale: :ru)
+    mail to: visitor.email, subject: subject
+  end
+
   def user_was_created(user)
     @resource = user
     subject = I18n.t('mailer.user_was_created_subject', user: user.full_name || user.login)

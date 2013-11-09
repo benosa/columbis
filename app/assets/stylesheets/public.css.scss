@@ -21,5 +21,9 @@ body.public {
     .sign_in, .sign_up { float: left; margin-right: 10px; }
     .confirmation { width: auto; }
   }
-  .messages { width: 320px; display: inline-block; }
+  .messages {
+     width: 320px; display: inline-block;
+     a { color: #3f6db7;}
+  }
+
 }

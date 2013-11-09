@@ -1,6 +1,9 @@
 # -*- encoding : utf-8 -*-
 Tourism::Application.routes.draw do
 
+  post "visitors/create"
+  get "visitors/confirm"
+
   resources :user_payments, :except => [:show, :edit, :update]
 
   resources :tariff_plans
@@ -106,6 +109,7 @@ Tourism::Application.routes.draw do
   namespace :admin do
     match '/' => 'base#index', :as => :index
     match '/instructions' => 'base#instructions', :as => :instructions
+    match '/visitors' => 'base#visitors', :as => :visitors
   end
 
   scope 'dashboard' do

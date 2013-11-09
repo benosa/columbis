@@ -1,0 +1,16 @@
+.current_container
+  %table.reservations.tour_operators
+    %th
+      = sort_link :created_at, t('admin.visitors_info.created_at'), :desc
+    %th
+      = sort_link :name, t('admin.visitors_info.name')
+    %th
+      = sort_link :email, t('admin.visitors_info.email')
+    %th
+      = sort_link :phone, t('admin.visitors_info.phone')
+    %th
+      = sort_link :confirmed, t('admin.visitors_info.confirmed')
+    - @visitors_info.each do |v|
+      = render :partial => 'admin/visitor', :locals => { :visitor => v }
+
+  = render partial: 'shared/pagination', locals: { collection: @visitors_collection }

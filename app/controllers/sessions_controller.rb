@@ -3,6 +3,7 @@ require 'base64'
 
 class SessionsController < Devise::SessionsController
   skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
+  before_filter :check_demo_access, :only => :create, :if => :demo_sign_in?
   before_filter :set_demo_message, :if => proc{ request.subdomain == 'demo' }
 
   def create
@@ -49,6 +50,14 @@ class SessionsController < Devise::SessionsController
 
   private
 
+    def sign_in_with_json(resource_or_scope, resource=nil)
+      scope = Devise::Mapping.find_scope!(resource_or_scope)
+      resource ||= resource_or_scope
+      sign_in(scope, resource) unless warden.user(scope) == resource
+      session_name_cookie('set', resource)
+      render :json => {:success => true, name: resource.first_name.to_s + ' ' + resource.last_name.to_s}
+    end
+
     def encipher(data_to_encode)
       cipher = OpenSSL::Cipher::Cipher.new("des-ede3-cbc")
       key = "123,ewq"
@@ -68,6 +77,25 @@ class SessionsController < Devise::SessionsController
         }
       else
         cookies.delete cookie_key, domain: cookie_domain
+      end
+    end
+
+    def demo_sign_in?
+      params[:user][:login] == 'demo' if params[:user]
+    end
+
+    def check_demo_access
+      cookie_key = (CONFIG[:session_key] + '_visitor').to_sym
+      access_allowed = if cookies[cookie_key].present?
+        Visitor.find(cookies[cookie_key]).confirmed? rescue false
+      else
+        false
+      end
+
+      unless access_allowed
+        sign_out
+        set_flash_message :alert, 'demo_reg', :href => CONFIG[:domain] + '/#visitor'
+        redirect_to new_user_session_path
       end
     end
 

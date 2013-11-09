@@ -1,0 +1,6 @@
+%p
+  С вашего почтового ящика была запрошена регистрация для демо-режима на сайте
+  %a{:href => "http://columbis.ru"} Columbis.ru
+%p
+  Для того, чтобы подтвердить регистрацию, пожалуйста, перейдите по ссылке. Переход по ссылке, также, всегда позволит вам зайти на сайт в демо-режим
+  = link_to visitors_confirm_url(:confirmation_token => @resource.confirmation_token), visitors_confirm_url(:confirmation_token => @resource.confirmation_token), :style => "font: bold 13px Arial; color:#0076be;"

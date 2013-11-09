@@ -1,0 +1,12 @@
+%tr{id: "company-#{visitor.id}", class: "company", data: {id: visitor.id}}
+  %td
+    = l(visitor.created_at, format: :long)
+  %td
+    = visitor.name
+  %td
+    = visitor.email
+  %td
+    = visitor.phone
+  %td
+    = 'Да' if visitor.confirmed
+    = 'Нет' if !visitor.confirmed

@@ -24,9 +24,11 @@ class VisitorsController < ApplicationController
         @visitor.confirm
       end
       sign_in :user, User.where(login: 'demo').first
-      cookies['_columbis_session_visitor'] = {
+      cookie_key = (CONFIG[:session_key] + '_visitor').to_sym
+      cookies[cookie_key] = {
         value: @visitor.id,
-        domain: '.' + CONFIG[:domain]
+        domain: '.' + CONFIG[:domain],
+        expires: 1.year.from_now # infinite cookie
       }
       redirect_to root_path
     else

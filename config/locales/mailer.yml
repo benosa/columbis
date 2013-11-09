@@ -17,6 +17,10 @@ ru:
       cancel: отменена
       work: принята в работу
       finish: завершена
+    visitor_was_created:
+      subject: 'Посетитель зарегистрирован'
+    visitor_confirmation:
+      subject: 'Регистрация для демо-режима'
 
     # Devise methods
     confirmation_instructions:

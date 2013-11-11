@@ -97,7 +97,7 @@ ru:
         *admin
       demo:
         *demo
- 
+
     application: &application
       all_rights_reserved: 'Все права защищены'
 

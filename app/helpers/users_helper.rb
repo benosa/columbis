@@ -9,4 +9,12 @@ module UsersHelper
       end
     end
   end
+
+  def get_demo_user
+  	User.where(login: 'demo').first
+  end
+
+  def is_demo_user?
+  	current_user == get_demo_user
+  end
 end

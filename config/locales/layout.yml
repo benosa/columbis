@@ -65,6 +65,7 @@ ru:
         - &demo
           demo_enter: 'Демо-режим'
           demo_exit: 'Выйти из демо-режима'
+          demo_tooltip: 'Отображается, пока у компании менее десяти заявок'
 
       second_menu:
         view: 'Вид'

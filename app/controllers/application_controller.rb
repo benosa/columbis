@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :"logged_as_another_user?"
+  helper_method :"logged_another_user_id"
 
   around_filter :set_time_zone
 
@@ -148,6 +149,10 @@ class ApplicationController < ActionController::Base
 
     def logged_as_another_user?
       self.remember_admin_id?
+    end
+
+    def logged_another_user_id
+      self.remember_admin_id
     end
 
     # Overwriting the sign_out redirect path method

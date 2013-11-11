@@ -5,7 +5,7 @@ module TourismManifest
 
     def write_manifest_file(view_context)
       js_assets = %w[application css3-mediaqueries]
-      css_assets = %w[application new_design/css/low new_design/css/middle new_design/css/high common]
+      css_assets = %w[application common]
       assets = {
         :js => parse_js_paths_from_tags(js_assets.map{ |js| view_context.javascript_include_tag(js) }.join),
         :css => parse_css_paths_from_tags(css_assets.map{ |css| view_context.stylesheet_link_tag(css) }.join),

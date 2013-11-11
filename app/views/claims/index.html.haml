@@ -30,12 +30,8 @@
     = label_tag :only_active, t('.only_active'), class: 'checkbox left_checkbox'
 
     %fieldset
-      - if small_width?
-        = link_to '', '#', :id => 'unset_filters', :class => 'unset_filters', :title => t('.unset_filters')
-        %a.settings{ :href => "#", :title => t('.column_settings') }
-      - else
-        = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
-        %a.settings{ :href => "#" }= t('.column_settings')
+      = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
+      %a.settings{ :href => "#" }= t('.column_settings')
 
 = render :partial => 'list'
 

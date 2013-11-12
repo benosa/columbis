@@ -12,7 +12,7 @@ class UserPaymentsController < ApplicationController
         set_filter_to(options)
         search_paginate(UserPayment.search_and_sort(options), options)
       else
-        UserPayment.where(:status => 'new').accessible_by(current_ability).order("updated_at ASC").paginate(:page => params[:page], :per_page => per_page)
+        UserPayment.accessible_by(current_ability).order("updated_at ASC").paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end

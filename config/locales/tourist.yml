@@ -21,7 +21,7 @@ ru:
         state: 'Статус'
 
   potential_states:
-    important: 'Срочно!'
+    important: 'Активно звонить!'
     reserved: 'Забронирован'
     refused: 'Отказался'
 

@@ -105,7 +105,10 @@ class ApplicationController < ActionController::Base
     elsif subdomain.present? && !is_public_controller
       redirect_url = new_user_session_url
     end
-    redirect_to redirect_url if redirect_url && redirect_url != request.original_url
+    if redirect_url && redirect_url != request.original_url
+      flash.keep
+      redirect_to redirect_url
+    end
   end
 
   def check_page_param
@@ -136,7 +139,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_company_access
-    accessible_controllers = %w[companies user_payments]
+    accessible_controllers = %w[companies user_payments robokassa]
     unless accessible_controllers.include?(controller_name) || is_admin? || devise_controller?
       raise CanCan::AccessDenied.new(I18n.t('companies.messages.company_inactive'), :inactive, Company)
     end

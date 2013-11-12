@@ -54,9 +54,6 @@
           %p= t('.selected_color')
           = text_field_tag nil, nil, :disabled => true,
             :class => 'color color_sample', :style => "background-color: #{user.color};"
-        %p= t('.screen_width')
-        = f.select :screen_width, options_for_select(%w(1024 1600 1920).map{|w| [w, w]}, user.try(:screen_width)), include_blank: t('.auto')
-
 
 %fieldset.form_column.form_column-middle.last
   .form_block

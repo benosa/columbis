@@ -1,4 +1,4 @@
-#flights.flights_block.form_block.yellow_block{ :class => large_width? && 'departures' }
+#flights.flights_block.form_block.yellow_block
   .block_title
     %h2= t('.title')
   .form_block_content
@@ -39,4 +39,4 @@
 
       .two_line.pull-right
         %p= f.label :airline, t('.airline')
-        = f.text_field :airline, :class => ['autocomplete airline', !large_width? ? 'airline_select' : 'big_airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline')), :style => "width:170px;"
+        = f.text_field :airline, :class => ['autocomplete airline', 'airline_select'], data: ac_data(source: dropdown_autocomplete_claims_path('airline')), :style => "width:170px;"

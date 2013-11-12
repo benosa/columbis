@@ -1,6 +1,5 @@
 - task = @task
 - task ||= Task.new
-- set_current_width(:small)
 - content_for(:body_class) { 'panel task edit_operator' }
 
 - title ( current_user.role == 'admin' ? t('.new_task') : t('.task') )

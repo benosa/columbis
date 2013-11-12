@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131108094042) do
+ActiveRecord::Schema.define(:version => 20131112094735) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -470,7 +470,6 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
     t.string   "color"
     t.integer  "company_id"
     t.boolean  "delta",                                 :default => true
-    t.string   "screen_width"
     t.string   "time_zone"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"

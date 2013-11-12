@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id, :use_office_password,
-                  :login, :first_name, :last_name, :middle_name, :color, :screen_width, :time_zone, :subdomain, :phone, :phone_code,
+                  :login, :first_name, :last_name, :middle_name, :color, :time_zone, :subdomain, :phone, :phone_code,
                   :as => [:default] + ROLES.map(&:to_sym)
   attr_accessible :company_id, :as => :admin
   attr_accessible :role, :as => [:admin, :boss]

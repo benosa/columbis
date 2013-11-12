@@ -1,5 +1,5 @@
 - c = params[:controller]
 
 %li{:class => c == 'registrations' && 'active' }= link_to t('.profile'), edit_user_registration_path
-- if can? :index, UserPayment
+- if can?(:index, UserPayment) && is_admin?
   %li{:class => c == 'user_payments' && 'active' }= link_to t('.user_payments'), user_payments_path

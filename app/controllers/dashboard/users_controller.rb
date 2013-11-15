@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Dashboard::UsersController < ApplicationController
+  include UsersHelper
+
   load_and_authorize_resource
   skip_authorize_resource only: :edit
 
@@ -15,10 +17,13 @@ class Dashboard::UsersController < ApplicationController
   def sign_in_as
     authorize! :users_sign_in_as, current_user
 
-    sign_in :user, User.find(params[:user_id])
-    self.remember_admin_id = current_user.id
-
-    redirect_to root_path
+    begin
+      user = User.find(params[:user_id])
+      sign_in :user, user
+      self.original_user, @current_user = current_user, user
+    ensure
+      redirect_to root_path
+    end
   end
 
   def new

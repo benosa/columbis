@@ -10,11 +10,19 @@ module UsersHelper
     end
   end
 
-  def get_demo_user
-  	User.where(login: 'demo').first
+  def demo_user
+  	@demo_user ||= User.where(login: 'demo').first
   end
 
-  def is_demo_user?
-  	current_user == get_demo_user
+  def demo_user?
+  	current_user == demo_user
+  end
+
+  def show_demo_enter
+    !demo_user? && current_company.claims.try(:count).to_i < CONFIG[:claim_count_for_demo]
+  end
+
+  def show_demo_exit
+    demo_user? && logged_as_another_user?
   end
 end

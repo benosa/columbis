@@ -1,3 +1,5 @@
 %li{:class => 'demo_enter'}
-  = link_to t('.demo_enter'), dashboard_sign_in_as_path(get_demo_user), { :class=>"demo_tooltip", title: t('.demo_tooltip') } if (Claim.where(company_id: current_company.id).count < 10) && !is_demo_user?
-  = link_to t('.demo_exit'), dashboard_sign_in_as_path(User.find(logged_another_user_id)) if is_demo_user? && logged_as_another_user?
+  - if show_demo_enter
+    = link_to t('.demo_enter'), dashboard_sign_in_as_path(demo_user), { :class=>"demo_tooltip", title: t('.demo_tooltip', claim_count_for_demo: CONFIG[:claim_count_for_demo]) }
+  - if show_demo_exit
+    = link_to t('.demo_exit'), dashboard_sign_in_as_path(original_user)

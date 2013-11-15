@@ -36,6 +36,7 @@ development: &defaults
   image_formats: "jpg,jpeg,gif,png"
   template_formats: "html,htm"
   all_formats: "true"
+  claim_count_for_demo: 10
 
 test:
   <<: *defaults

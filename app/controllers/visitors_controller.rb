@@ -5,7 +5,7 @@ class VisitorsController < ApplicationController
         @visitor = Visitor.new(params['visitor'])
         if @visitor.save
           Mailer.visitor_confirmation(@visitor).deliver
-          render :json => {:success => true, :message => I18n.t('devise.registrations.user.signed_up_but_unconfirmed')}
+          render :json => {:success => true, :sign_link => visitors_confirm_url(:confirmation_token =>  @visitor.confirmation_token, :noemail => 1), :message => I18n.t('devise.registrations.visitor.reg_but_unconfirmed')}
         else
           errors = {}
           @visitor.errors.messages.each do |key, value|
@@ -20,7 +20,7 @@ class VisitorsController < ApplicationController
   def confirm
     @visitor = Visitor.where(confirmation_token: params[:confirmation_token]).first
     if @visitor
-      if !@visitor.confirmed?
+      if !@visitor.confirmed? && !params[:noemail]
         @visitor.confirm
       end
       sign_in :user, User.where(login: 'demo').first

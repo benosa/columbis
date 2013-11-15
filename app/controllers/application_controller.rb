@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     helper_method :"is_#{role}?"
   end
 
-  helper_method :"logged_as_another_user?"
+  helper_method :original_user=, :original_user, :logged_as_another_user?
 
   around_filter :set_time_zone
 
@@ -162,10 +162,6 @@ class ApplicationController < ActionController::Base
       Time.zone = old_time_zone
     end
 
-    def logged_as_another_user?
-      self.remember_admin_id?
-    end
-
     # Overwriting the sign_out redirect path method
     def after_sign_in_path_for(resource)
       current_company ? current_company_root_url : new_dashboard_company_path
@@ -182,6 +178,18 @@ class ApplicationController < ActionController::Base
 
     def current_company_inactive?
       !current_company.is_active? if current_company && is_admin?
+    end
+
+    def original_user=(user)
+      self.remember_admin_id = user.id rescue nil
+    end
+
+    def original_user
+      @original_user ||= (User.find remember_admin_id rescue nil)
+    end
+
+    def logged_as_another_user?
+      original_user.present?
     end
 
 end

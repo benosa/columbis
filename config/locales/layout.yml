@@ -62,6 +62,10 @@ ru:
           companies: 'Компании'
           instructions: 'Инструкции'
           visitors: 'Посетители'
+        - &demo
+          demo_enter: 'Демо-режим'
+          demo_exit: 'Выйти из демо'
+          demo_tooltip: 'Вход в демо-режим.<br/>Вы легко сможете вернуться назад в ваш аккаунт. Ссылка будет доступна пока у Вас менее %{claim_count_for_demo} заявок.'
 
       second_menu:
         view: 'Вид'
@@ -94,6 +98,8 @@ ru:
         *admin
       second_admin:
         *admin
+      demo:
+        *demo
 
     application: &application
       all_rights_reserved: 'Все права защищены'

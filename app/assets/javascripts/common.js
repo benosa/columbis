@@ -145,7 +145,7 @@ $(function(){
   //       $t.attr('title', '');
   //   }
   // });
-  $('.user_info').tooltip({
+  $('.user_info, .demo_tooltip').tooltip({
     template: '<div class="tooltip white clock_tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     placement: 'bottom',
     container: 'body',

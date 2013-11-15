@@ -482,6 +482,30 @@ describe "Unlogged user", js: true do
       end
     end
 
+    describe "demo sign_in_as button" do
+
+      before do
+        @demo = create :boss, login: 'demo'
+        @boss = create_user_with_company_and_office :boss
+        login_as @boss
+        visit root_path
+      end
+
+      it 'should sign in as demo, save current user and sign in as it' do
+        page.should have_link(I18n.t('layouts.main_menu.demo.demo_enter'))
+        page.should_not have_link(I18n.t('layouts.main_menu.demo.demo_exit'))
+        click_link I18n.t('layouts.main_menu.demo.demo_enter')
+
+        page.should have_link(I18n.t('layouts.main_menu.demo.demo_exit'))
+        page.should_not have_link(I18n.t('layouts.main_menu.demo.demo_enter'))
+        click_link I18n.t('layouts.main_menu.demo.demo_exit')
+
+        page.should have_link(I18n.t('layouts.main_menu.demo.demo_enter'))
+        page.should_not have_link(I18n.t('layouts.main_menu.demo.demo_exit'))
+
+      end
+  end
+
   end
 
 end

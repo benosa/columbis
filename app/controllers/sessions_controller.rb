@@ -87,7 +87,7 @@ class SessionsController < Devise::SessionsController
     def check_demo_access
       cookie_key = (CONFIG[:session_key] + '_visitor').to_sym
       @demo_access_allowed = if cookies[cookie_key].present?
-        Visitor.find(cookies[cookie_key]).confirmed? rescue false
+        Visitor.find(cookies[cookie_key]).present? rescue false
       else
         false
       end

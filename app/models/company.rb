@@ -138,6 +138,20 @@ class Company < ActiveRecord::Base
     soon_tariff_end? || !tariff_paid?
   end
 
+  def self.just_soon_become_inactive
+    where(["date_trunc('day', tariff_end) - ? = '? days'", Time.zone.now.utc.beggining_of_day, CONFIG[:days_before_tariff_end])
+  end
+
+  def self.just_become_inactive
+    where(["date_trunc('day', tariff_end) = ?", Time.zone.now.utc.beggining_of_day])
+  end
+
+  def self.mail_tariff_end_soon
+    find_each do |company|
+      Mailer.company_was_created(self).deliver
+    end
+  end
+
   private
 
     def check_tariff_plan

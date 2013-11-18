@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131108094042) do
+ActiveRecord::Schema.define(:version => 20131118203435) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
-    t.boolean  "sms_birthday_send", :default => true
+    t.boolean  "sms_birthday_send",                                :default => true
     t.string   "subdomain"
     t.string   "logo"
     t.string   "director"
@@ -178,11 +178,11 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
     t.integer  "claims_count"
     t.integer  "tourists_count"
     t.integer  "tasks_count"
-    t.boolean  "delta",             :default => true, :null => false
+    t.boolean  "delta",                                            :default => true, :null => false
     t.integer  "tariff_id"
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
-    t.decimal  "paid"
+    t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -376,23 +376,23 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
   end
 
   create_table "tariff_plans", :force => true do |t|
-    t.decimal  "price",             :default => 0.0,   :null => false
-    t.string   "currency",          :default => "rur", :null => false
-    t.string   "name",                                 :null => false
-    t.boolean  "active",            :default => true,  :null => false
-    t.integer  "users_count",                          :null => false
-    t.string   "place_size",                           :null => false
-    t.boolean  "back_office",       :default => false, :null => false
-    t.boolean  "documents_flow",    :default => false, :null => false
-    t.boolean  "claims_base",       :default => false, :null => false
-    t.boolean  "crm_system",        :default => false, :null => false
-    t.boolean  "managers_reminder", :default => false, :null => false
-    t.boolean  "analytics",         :default => false, :null => false
-    t.boolean  "boss_desktop",      :default => false, :null => false
-    t.boolean  "sms_sending",       :default => false, :null => false
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.boolean  "default",           :default => false, :null => false
+    t.decimal  "price",             :precision => 15, :scale => 2, :default => 0.0,   :null => false
+    t.string   "currency",                                         :default => "rur", :null => false
+    t.string   "name",                                                                :null => false
+    t.boolean  "active",                                           :default => true,  :null => false
+    t.integer  "users_count",                                                         :null => false
+    t.string   "place_size",                                                          :null => false
+    t.boolean  "back_office",                                      :default => false, :null => false
+    t.boolean  "documents_flow",                                   :default => false, :null => false
+    t.boolean  "claims_base",                                      :default => false, :null => false
+    t.boolean  "crm_system",                                       :default => false, :null => false
+    t.boolean  "managers_reminder",                                :default => false, :null => false
+    t.boolean  "analytics",                                        :default => false, :null => false
+    t.boolean  "boss_desktop",                                     :default => false, :null => false
+    t.boolean  "sms_sending",                                      :default => false, :null => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "default",                                          :default => false, :null => false
   end
 
   create_table "tasks", :force => true do |t|
@@ -454,7 +454,7 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
   end
 
   create_table "user_payments", :force => true do |t|
-    t.decimal  "amount"
+    t.decimal  "amount",      :precision => 15, :scale => 2, :default => 0.0,  :null => false
     t.string   "currency"
     t.integer  "invoice"
     t.integer  "period"
@@ -463,9 +463,9 @@ ActiveRecord::Schema.define(:version => 20131108094042) do
     t.integer  "company_id"
     t.integer  "user_id"
     t.integer  "tariff_id"
-    t.boolean  "delta",       :default => true, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "delta",                                      :default => true, :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
   end
 
   create_table "users", :force => true do |t|

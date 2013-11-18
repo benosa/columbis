@@ -95,11 +95,11 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_invoice
-      UserPayment.update(self.id, :invoice => self.company_id * 10000 + self.id) if self.id
+      update_attribute :invoice, company_id * 10000 + id if company_id && id
     end
 
     def check_tariff
-      balance = ClaimsController.helpers.company_tariff_balance(self.company)
+      balance = company.tariff_balance
       self.tariff = TariffPlan.default unless self.tariff
       self.period = 1 unless self.period
       self.currency = self.tariff.currency
@@ -120,6 +120,6 @@ class UserPayment < ActiveRecord::Base
 
     def set_description
       self.description = I18n.t('.activerecord.attributes.user_payment.description_text',
-        :tariff_plan_name => self.tariff.name, :tariff_period => self.period) if self.tariff
+        :tariff_plan_name => self.tariff.name, :tariff_period => self.period) if tariff && description.blank?
     end
 end

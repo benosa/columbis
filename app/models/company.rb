@@ -138,6 +138,16 @@ class Company < ActiveRecord::Base
     soon_tariff_end? || !tariff_paid?
   end
 
+  def tariff_balance
+    return 0 if user_payment.nil?
+
+    tariff_start = user_payment.updated_at
+    days = ((tariff_end - tariff_start)/86400).to_i
+    day_amount = paid.to_i / days
+    day_balance = ((tariff_end - Time.zone.now)/86400).to_i
+    (day_amount*day_balance).to_f.round(2)
+  end
+
   private
 
     def check_tariff_plan

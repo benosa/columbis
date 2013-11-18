@@ -1,0 +1,6 @@
+%p
+  Здравствуйте, #{@resource.owner.try(:full_name)}
+  %br
+  Срок действия тарифа компании
+  #{@resource.name} (#{@resource.subdomain})
+  истекает через #{CONFIG[:days_before_tariff_end]} дня

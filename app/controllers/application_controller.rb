@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_company_inactive?
-      !current_company.is_active? if current_company && is_admin?
+      !current_company.is_active? if current_company
     end
 
     def original_user=(user)

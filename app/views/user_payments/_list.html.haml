@@ -17,7 +17,8 @@
           %p= l(user_payment.created_at, format: :long)
         %td
           %p= user_payment.invoice
-        %td.body{:class => [(user_payment.description.length > 80) && 'popup_hover'], :data => { :content => (user_payment.description.length > 80) && user_payment.description }}
+        - is_long_desc = user_payment.description.try(:length).to_i > 80
+        %td.body{:class => [is_long_desc && 'popup_hover'], :data => { :content => is_long_desc && user_payment.description }}
           %p{:class => "with_tooltip", :title => user_payment.description }
             = truncate user_payment.description, length: 80, omission: '...', separator: ' '
         %td
@@ -26,7 +27,9 @@
         - case user_payment.status
         - when 'new'
           %td
-            = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
+            = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |service|
+              - service.add_field 'Culture', 'ru'
+              - service.add_field 'Desc', t('.robokassa_invdesc', company: "#{current_company.name} (#{current_company.subdomain})", tariff_plan_name: user_payment.tariff.try(:name), tariff_period: user_payment.period)
               = submit_tag t('.confirm')
         - when 'success', 'approved'
           %td
@@ -34,7 +37,9 @@
         - when 'fail'
           - if can_create_new
             %td
-              = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |s|
+              = payment_service_for user_payment[:invoice], CONFIG[:robokassa_login], :amount =>  user_payment[:amount], :service => :robokassa, :secret => CONFIG[:robokassa_password1] do |service|
+                - service.add_field('Culture', 'ru')
+                - service.add_field 'Desc', t('.robokassa_invdesc', company: "#{current_company.name} (#{current_company.subdomain})", tariff_plan_name: user_payment.tariff.try(:name), tariff_period: user_payment.period)
                 = submit_tag t('.confirm_again')
           - else
             - message = t('.confirm_after_paid')

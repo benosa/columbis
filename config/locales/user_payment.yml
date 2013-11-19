@@ -41,6 +41,7 @@ ru:
       have_approved: 'Оплачено'
       statuses:
         *states
+      robokassa_invdesc: "%{company}, %{tariff_plan_name}, %{tariff_period}мес."
     new:
       new_user_payment: 'Новый счёт'
 

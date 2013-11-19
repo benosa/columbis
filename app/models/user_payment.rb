@@ -95,7 +95,7 @@ class UserPayment < ActiveRecord::Base
     end
 
     def set_invoice
-      update_attribute :invoice, company_id * 10000 + id if company_id && id
+      update_column :invoice, company_id * 10000 + id if company_id && id
     end
 
     def check_tariff

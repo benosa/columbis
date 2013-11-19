@@ -1,6 +1,6 @@
 class SubdomainValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    if record.subdomain != ''
+    if record.subdomain != '' && record.subdomain_changed?
       reserved = false
       CONFIG[:reserved_subdomains].each do |str|
         if str.first == '/' && str.last == '/'

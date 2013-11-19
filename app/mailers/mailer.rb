@@ -24,29 +24,29 @@ class Mailer < ActionMailer::Base
   def company_just_soon_become_inactive_sup(company)
     @resource = company
     # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
-    subject = I18n.t('mailer.company_just_soon_become_inactive_sup', company: company.name || company.subdomain, locale: :ru)
+    subject = I18n.t('mailer.company_just_soon_become_inactive_sup_subject', company: company.name || company.subdomain, locale: :ru)
     mail to: CONFIG[:support_email], subject: subject
   end
 
   def company_just_soon_become_inactive(company)
     @resource = company
     # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
-    subject = I18n.t('mailer.company_just_soon_become_inactive', company: company.name || company.subdomain, locale: :ru)
-    mail to: company.owner.try(:email), subject: subject
+    subject = I18n.t('mailer.company_just_soon_become_inactive_subject', company: company.name || company.subdomain, locale: :ru)
+    mail to: company.owner.try(:email) || company.email, subject: subject
   end
 
   def company_just_become_inactive_sup(company)
     @resource = company
     # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
-    subject = I18n.t('mailer.company_just_become_inactive_sup', company: company.name || company.subdomain, locale: :ru)
+    subject = I18n.t('mailer.company_just_become_inactive_sup_subject', company: company.name || company.subdomain, locale: :ru)
     mail to: CONFIG[:support_email], subject: subject
   end
 
   def company_just_become_inactive(company)
     @resource = company
     # Doesn't set subject properly, now default subject translation is used, may be it's ActionMailer bug
-    subject = I18n.t('mailer.company_just_become_inactive', company: company.name || company.subdomain, locale: :ru)
-    mail to: company.owner.try(:email), subject: subject
+    subject = I18n.t('mailer.company_just_become_inactive_subject', company: company.name || company.subdomain, locale: :ru)
+    mail to: company.owner.try(:email) || company.email, subject: subject
   end
 
   def visitor_was_created(visitor)

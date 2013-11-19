@@ -56,7 +56,9 @@ class Company < ActiveRecord::Base
     indexes [owner.last_name, owner.first_name, owner.middle_name], :as => :owner, :sortable => true
 
     has :offices_count, :users_count, :claims_count, :tourists_count, :tasks_count
-    has :created_at, type: :datetime
+    has :created_at, :tariff_end, type: :datetime
+    has tariff(:name), as: :tariff_name
+    has "date_trunc('day', tariff_end) >= date_trunc('day', now())", :as => :active, :type => :boolean
 
     set_property :delta => true
   end

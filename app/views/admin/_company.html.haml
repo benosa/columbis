@@ -12,6 +12,13 @@
   %td
     = company.subdomain
   %td
+    = company.tariff.try(:name)
+  %td
+    = l(company.tariff_end, format: :long)
+  %td
+    = 'Да' if company.is_active?
+    = 'Нет' if !company.is_active?
+  %td
     = company.offices_count
   %td
     = company.users_count

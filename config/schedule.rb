@@ -14,3 +14,8 @@ end
 every 1.day, :at => '2:30 am', :roles => [:app] do
   rake_with_rvm 'demo:seed[index]'
 end
+
+every 1.day, :at => '2:40 am', :roles => [:app] do
+  Company.just_soon_become_inactive.mail_tariff_end_soon
+  Company.just_become_inactive.mail_tariff_end
+end

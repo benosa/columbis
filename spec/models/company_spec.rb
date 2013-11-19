@@ -64,4 +64,33 @@ describe Company do
       end
     end
   end
+
+  describe "tariff end mails" do
+    include EmailSpec::Helpers
+    include EmailSpec::Matchers
+    before do
+      @company = create(:company, tariff_end: Time.zone.now)
+      @company.owner = create(:user)
+      @company.save
+      @company2 = create(:company, tariff_end: Time.zone.now + CONFIG[:days_before_tariff_end].days)
+      @company2.owner = create(:user)
+      @company2.save
+    end
+    context "when tariff end" do
+       it do
+        Company.just_become_inactive.mail_tariff_end
+        last_user_email = open_last_email_for(@company.owner.email)
+        last_user_email.should have_body_text(/#{@company.name}/)
+      end
+    end
+
+    context "when tariff end soon" do
+       it do
+        Company.just_soon_become_inactive.mail_tariff_end_soon
+        last_user_email = open_last_email_for(@company2.owner.email)
+        last_user_email.should have_body_text(/#{@company2.name}/)
+      end
+    end
+  end
+
 end

@@ -91,7 +91,7 @@
       .fake_row
         %p
           %span.label= t('.tariff_plan_current')
-          %span.value= company.tariff.name
+          %span.value= company.tariff.try(:name)
         %p
           %span.label= t('.tariff_state')
           %span.value= company.tariff_paid? ? t('.tariff_paid') : t('.tariff_unpaid')

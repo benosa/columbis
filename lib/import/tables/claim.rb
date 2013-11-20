@@ -46,19 +46,21 @@ module Import
         end
 
         def import(row, company)
-          # logger need
+          puts "Start import"
           data_row = check(row, company)
           if data_row
             claim = create_claim(data_row, company)
             if claim.save
               # need add flights
               # need add operator
-              # logger need
+              puts "Claim was importing"
+              true
             else
-              # logger need
+              puts "Claim not save"
+              false
             end
           else
-            # logger need
+            puts "Row can't check"
             false
           end
         end
@@ -68,11 +70,14 @@ module Import
         def check(row, company)
           data_row = type_check(row)
           if data_row
-            # logger need
+            puts "Type check complete."
             fields_check(data_row, company)
+            puts "Fields check complete."
             check_for_nil(data_row)
+            puts "Check for nil complete."
+            data_row
           else
-            # logger need
+            puts "Type check not complete"
             false
           end
         end
@@ -81,11 +86,16 @@ module Import
           data_row = FORMAT.dup
           row.each_with_index do |field, i|
             key = data_row.keys[i]
-            if field.nil? || field.class.to_s == data_row[key][:type]
-              data_row[key][:value] = field unless field.nil?
+            # This ifelse needs to get round the roo bug
+            if data_row[key][:type] == "String" && field.class.to_s == "Float"
+              data_row[key][:value] = field.to_i.to_s unless field.nil?
             else
-              # logger need
-              return false
+              if field.nil? || field.class.to_s == data_row[key][:type]
+                data_row[key][:value] = field unless field.nil?
+              else
+                puts "Type check error in key '#{key}' in row: #{row.to_s}."
+                return false
+              end
             end
           end
           data_row
@@ -201,19 +211,17 @@ module Import
         # end
 
         def create_claim(row, company)
-          claim = Claim.new do |c|
-            # relations
+          puts "Create this row before create claim: #{row.to_s}"
+          claim = Rails::Application::Claim.new do |c|
             c.company_id = company
             c.user_id = row[:user][:value]
             c.office_id = row["office"][:value]
-            # common
             c.reservation_date = row[:date][:value]
             c.check_date = row[:check_date][:value]
             c.tourist_stat = row[:promotion][:value]
             c.arrival_date = row[:arrival_date][:value]
             c.departure_date = row[:departure_date][:value]
             c.country = row[:country][:value]
-            # tourist
             c.applicant_attributes = row[:tourist][:value]
             c.visa = row[:visa][:value]
             c.visa_check = row[:visa_check][:value]

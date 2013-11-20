@@ -1,11 +1,13 @@
 module Import
   class Importer
-    attr_reader :file, :tables
+    attr_reader :file, :tables, :company
 
-    def initialize(tables, file)
+    def initialize(tables, file, company)
       @tables = tables
-      @file = Rails.root + "uploads/#{current_company.id.to_s}/import.xls"
-      FileUtils.copy(file.path, @file)
+      @file = (Rails.root + "uploads/#{company.to_s}/import.xls").to_s
+      @company = Company.find company
+      FileUtils.mkdir_p(File.dirname(@file))
+      FileUtils.cp(file, @file)
     end
 
     def start
@@ -18,7 +20,7 @@ module Import
 
     def columns_count(table)
       begin
-        "import/tables/#{table.to_s}".camelize.constantize.columns_count
+        "import/tables/#{table.to_s}".camelize.constantize.try(:columns_count).to_i
       rescue
         Rails.logger.info "Import operation warning. Importing [#{table.to_s}]. Columns count was null"
         0
@@ -27,7 +29,7 @@ module Import
 
     def sheet_number(table)
       begin
-        "import/tables/#{table.to_s}".camelize.constantize.sheet_number
+        "import/tables/#{table.to_s}".camelize.constantize.try(:sheet_number).to_i
       rescue
         Rails.logger.info "Import operation warning. Importing [#{table.to_s}]. Sheet number was null"
         0
@@ -39,12 +41,12 @@ module Import
     end
 
     def import(table, row)
-      begin
-        "tables/#{table.to_s}".camelize.constantize.import(row)
-      rescue
-        Rails.logger.info "Import operation error. Importing #{row.to_s} to [#{table.to_s}] fail. Check params"
-        false
-      end
+      #begin
+        "import/tables/#{table.to_s}".camelize.constantize.import(row, @company)
+      #rescue
+      #  Rails.logger.info "Import operation error. Importing #{row.to_s} to [#{table.to_s}] fail. Check params"
+      #  false
+      #end
     end
   end
 end

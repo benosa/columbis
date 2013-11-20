@@ -84,6 +84,9 @@ GEM
       actionpack (>= 3.0)
       railties (>= 3.0)
     chronic (0.9.1)
+    ckeditor (4.0.6)
+      mime-types
+      orm_adapter
     code_analyzer (0.3.2)
       sexp_processor
     coderay (1.0.9)
@@ -414,6 +417,7 @@ DEPENDENCIES
   capybara (~> 2.1.0)
   carrierwave (= 0.8.0)
   cells
+  ckeditor
   coffee-rails
   daemons (= 1.1.9)
   database_cleaner (~> 1.1.1)

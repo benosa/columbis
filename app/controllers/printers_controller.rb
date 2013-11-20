@@ -30,10 +30,15 @@ class PrintersController < ApplicationController
 
   def edit
     @printer = Printer.where(:id => params[:id]).first
+    @doc_body = get_doc_part(@printer, 'body')
+    @doc_style = get_doc_part(@printer, 'style')
   end
 
   def update
+   # Rails.logger.debug "ololo: #{params[:doc_body]}"
     if @printer.update_attributes(params[:printer])
+      set_doc_part(@printer, 'body', params[:doc_body])
+      set_doc_part(@printer, 'style', params[:doc_style])
       redirect_to printers_path, :notice => t('printers.messages.successfully_updated_printer')
     else
       render :action => :edit
@@ -61,6 +66,18 @@ class PrintersController < ApplicationController
   end
 
   private
+
+    def get_doc_part(printer, part)
+      page = Nokogiri::HTML(open(printer.template.path))
+      page.at_css(part).inner_html
+    end
+
+    def set_doc_part(printer, part, value)
+      page = Nokogiri::HTML(open(printer.template.path))
+      page_part = page.at_css(part)
+      page_part.inner_html = value
+      IO.write(printer.template.path, page.to_html)
+    end
 
     def set_filter_to(options)
       unless params[:mode_filter].nil? || params[:mode_filter] == 'all'

@@ -21,15 +21,15 @@ $(document).ready ->
       this.period_change()
 
     period_change: ->
-      id = this.tariff.val()
-      period = this.period.val()
-      if id != "" && period != ""
-        i = parseInt(id)
+      id = parseInt this.tariff.val()
+      period = parseInt this.period.val()
+      if !isNaN(id) && !isNaN(period)
+        period = period - 2 if period >= 12 # 2 month free
         N = this.data.length
         for _i in [0...N]
           t = this.data[_i]
-          if t[0] == i
-            amount = t[2]*parseInt(period)
+          if t[0] == id
+            amount = t[2] * period
             currency = t[1]
       else
         currency = this.default_currency

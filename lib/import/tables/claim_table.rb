@@ -215,7 +215,55 @@ module Import
             "documents_status" => row[:documents_status],
             "country" => { "name" => row[:country] },
             "operator" => row[:operator].nil? ? nil : row[:operator]['name'],
-            "operator_id" => row[:operator].nil? ? nil : row[:operator]['id']
+            "operator_id" => row[:operator].nil? ? nil : row[:operator]['id'],
+            "payments_in_attributes" => {
+              "0"=>{
+                "date_in"=>"",
+                "amount"=>row[:tourist_advance],
+                "approved"=>"0",
+                "form"=>"",
+                "_destroy"=>"false",
+                "id"=>""
+              }
+            },
+            "operator_price_currency"=>"rur",
+            "payments_out_attributes" => {
+              "0"=>{
+                "date_in"=>row[:operator_maturity],
+                "amount_prim"=>"0.0",
+                "course"=>"",
+                "amount"=>row[:operator_paid],
+                "approved"=>"1",
+                "form"=>"",
+                "_destroy"=>"false",
+                "id"=>""
+              }
+            },
+            "assistant_id"=>"",
+            "early_reservation"=>"0",
+            "canceled"=>"0",
+            "excluded_from_profit"=>"0",
+            "course_eur"=>"0",
+            "course_usd"=>"0",
+            "tour_price_currency"=>"rur",
+            "tour_price"=>row[:primary_currency_price],
+            "visa_count"=>"0",
+            "visa_price_currency"=>"rur",
+            "visa_price"=>"0",
+            "children_visa_count"=>"0",
+            "children_visa_price_currency"=>"rur",
+            "children_visa_price"=>"0",
+            "insurance_count"=>"0",
+            "insurance_price_currency"=>"rur",
+            "insurance_price"=>"0",
+            "additional_insurance_count"=>"0",
+            "additional_insurance_price_currency"=>"rur",
+            "additional_insurance_price"=>"0",
+            "fuel_tax_count"=>"0",
+            "fuel_tax_price_currency"=>"rur",
+            "fuel_tax_price"=>"0",
+            "additional_services_price_currency"=>"rur",
+            "additional_services_price"=>"0"
           }
         end
       end

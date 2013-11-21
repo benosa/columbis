@@ -46,58 +46,45 @@ module Import
         end
 
         def import(row, company)
-          puts "!!!!!Start import row: #{row.to_s}"
-          data_row = check(row, company)
+          puts "    Start import row: #{row.to_s}"
+          data_row = prepare_data(row, company)
           if data_row
-            claim = create_claim(data_row, company)
-            if claim.save
-              # need add flights
-              # need add operator
-              # need add country
-              puts "!!!!!Claim was importing"
+            claim = Claim.new
+            claim.company = company
+            if claim.assign_reflections_and_save(create_claim_params(data_row, company))
+              puts "    Claim was importing"
               true
             else
-              puts "!!!!!Claim not save"
+              puts "    Claim not save"
               false
             end
           else
-            puts "!!!!!Row can't check"
+            puts "    Row invalid"
             false
           end
         end
 
         private
 
-        def check(row, company)
+        def prepare_data(row, company)
           data_row = type_check(row)
-          if data_row
-            puts "!!!!!Type check complete."
-            fields_check(data_row, company)
-            puts "!!!!!Fields check complete. Row: #{data_row.to_s}"
-            data_row = check_for_nil(data_row)
-            puts "!!!!!Check for nil complete. Row: #{data_row.to_s}"
-            data_row
-          else
-            puts "!!!!!Type check not complete"
-            false
-          end
+          fields_check(data_row, company)
+          puts "    Fields check complete."
+          data_row = check_for_nil(data_row)
+          puts "    Check for nil complete."
+          data_row
         end
 
         def type_check(row)
           data_row = FORMAT.dup
           row.each_with_index do |field, i|
             key = data_row.keys[i]
-            # This ifelse needs to get round the roo bug
             if data_row[key][:type] == "String" && field.class.to_s == "Float"
-              data_row[key][:value] = field.to_i.to_s unless field.nil?
+              field = field.to_i.to_s
             else
-              if field.nil? || field.class.to_s == data_row[key][:type]
-                data_row[key][:value] = field unless field.nil?
-              else
-                puts "!!!!!Type check error in key '#{key}' in row: #{row.to_s}."
-                return false
-              end
+              field = field.to_s
             end
+            data_row[key][:value] = field.blank? ? nil : field
           end
           data_row
         end
@@ -184,7 +171,6 @@ module Import
           Claim::VISA_STATUSES.each do |status|
             visa_statuses.merge!({ I18n.t(".claims.visa_statuses.#{status}") => status })
           end
-          puts "---------" + visa_statuses.to_s
           if visa_statuses.keys.include?(row[:visa][:value])
             row[:visa][:value] = visa_statuses[row[:visa][:value]]
           else
@@ -204,37 +190,30 @@ module Import
           end
         end
 
-        # def check_field(field, value)
-        #   if value.nil?
-        #     false || field[:may_nil]
-        #   else
-        #     field[:value] = value
-        #   end
-        # end
-
-        def create_claim(row, company)
-          puts "!!!!!Create this row before create claim: #{row.to_s}"
-          claim = Claim.new do |c|
-            c.company_id = company
-            c.user_id = row[:user][:value]
-            c.office_id = row[:office][:value]
-            c.reservation_date = row[:date][:value]
-            c.check_date = row[:check_date][:value]
-            c.tourist_stat = row[:promotion][:value]
-            c.arrival_date = row[:arrival_date][:value]
-            c.departure_date = row[:departure_date][:value]
-            c.applicant_attributes = row[:tourist][:value]
-            c.visa = row[:visa][:value]
-            c.visa_check = row[:visa_check][:value]
-            c.applicant_attributes = row[:tourist][:value]
-            c.primary_currency_price = row[:primary_currency_price][:value]
-            c.operator_confirmation = row[:operator_confirmation][:value]
-            c.operator_price = row[:operator_price][:value]
-            c.operator_maturity = row[:operator_maturity][:value]
-            c.operator_paid = row[:operator_paid][:value]
-            c.docs_note = row[:docs_note][:value]
-            c.tourist_advance = row[:tourist_advance][:value]
-          end
+        def create_claim_params(row, company)
+          {
+            "user_id" => row[:user][:value],
+            "office_id" => row[:office][:value],
+            "reservation_date" => row[:date][:value],
+            "check_date" => row[:check_date][:value],
+            "tourist_stat" => row[:promotion][:value],
+            "arrival_date" => row[:arrival_date][:value],
+            "departure_date" => row[:departure_date][:value],
+            "applicant_attributes" => row[:tourist][:value],
+            "visa" => row[:visa][:value],
+            "visa_check" => row[:visa_check][:value],
+            "primary_currency_price" => row[:primary_currency_price][:value],
+            "operator_confirmation_flag"=>"0",
+            "closed"=>"0",
+            "operator_confirmation" => row[:operator_confirmation][:value],
+            "operator_price" => row[:operator_price][:value],
+            "operator_maturity" => row[:operator_maturity][:value],
+            "operator_paid" => row[:operator_paid][:value],
+            "docs_note" => row[:docs_note][:value],
+            "tourist_advance" => row[:tourist_advance][:value],
+            "documents_status" => row[:documents_status][:value],
+            "country" => { "name" => row[:country][:value] }
+          }
         end
       end
     end

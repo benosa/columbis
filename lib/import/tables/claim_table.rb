@@ -19,7 +19,6 @@ module Import
           :arrival_date           => {:type => 'Date',   :may_nil => false, :value => nil},
           :departure_date         => {:type => 'Date',   :may_nil => false, :value => nil},
           :country                => {:type => 'String', :may_nil => false, :value => nil},
-          :airport_back           => {:type => 'String', :may_nil => false, :value => nil},
           :visa                   => {:type => 'String', :may_nil => true,  :value => 'Виза не нужна'},
           :visa_check             => {:type => 'Date',   :may_nil => true,  :value => nil},
           :operator               => {:type => 'String', :may_nil => false, :value => nil},
@@ -31,14 +30,14 @@ module Import
           :operator_maturity      => {:type => 'Date',   :may_nil => true,  :value => nil},
           :operator_paid          => {:type => 'Float',  :may_nil => true,  :value => nil},
           :tourist_advance        => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :documents_status       => {:type => 'String', :may_nil => true, :value => 'Не готовы'},
+          :documents_status       => {:type => 'String', :may_nil => true,  :value => 'Не готовы'},
           :docs_note              => {:type => 'String', :may_nil => true,  :value => ''},
           :check_date             => {:type => 'Date',   :may_nil => false, :value => Time.zone.now}
         }
 
       class << self
         def columns_count
-          29
+          28
         end
 
         def sheet_number
@@ -84,6 +83,7 @@ module Import
             else
               field = field.to_s
             end
+            data_row[key].delete(:type)
             data_row[key][:value] = field.blank? ? nil : field
           end
           data_row
@@ -100,6 +100,7 @@ module Import
         def check_for_nil(row)
           row.each do |field|
             return false if row[field[0]][:value].nil? && !row[field[0]][:may_nil]
+            row[field[0]] = row[field[0]][:value]
           end
           row
         end
@@ -192,27 +193,29 @@ module Import
 
         def create_claim_params(row, company)
           {
-            "user_id" => row[:user][:value],
-            "office_id" => row[:office][:value],
-            "reservation_date" => row[:date][:value],
-            "check_date" => row[:check_date][:value],
-            "tourist_stat" => row[:promotion][:value],
-            "arrival_date" => row[:arrival_date][:value],
-            "departure_date" => row[:departure_date][:value],
-            "applicant_attributes" => row[:tourist][:value],
-            "visa" => row[:visa][:value],
-            "visa_check" => row[:visa_check][:value],
-            "primary_currency_price" => row[:primary_currency_price][:value],
+            "user_id" => row[:user],
+            "office_id" => row[:office],
+            "reservation_date" => row[:date],
+            "check_date" => row[:check_date],
+            "tourist_stat" => row[:promotion],
+            "arrival_date" => row[:arrival_date],
+            "departure_date" => row[:departure_date],
+            "applicant_attributes" => row[:tourist],
+            "visa" => row[:visa],
+            "visa_check" => row[:visa_check],
+            "primary_currency_price" => row[:primary_currency_price],
             "operator_confirmation_flag"=>"0",
             "closed"=>"0",
-            "operator_confirmation" => row[:operator_confirmation][:value],
-            "operator_price" => row[:operator_price][:value],
-            "operator_maturity" => row[:operator_maturity][:value],
-            "operator_paid" => row[:operator_paid][:value],
-            "docs_note" => row[:docs_note][:value],
-            "tourist_advance" => row[:tourist_advance][:value],
-            "documents_status" => row[:documents_status][:value],
-            "country" => { "name" => row[:country][:value] }
+            "operator_confirmation" => row[:operator_confirmation],
+            "operator_price" => row[:operator_price],
+            "operator_maturity" => row[:operator_maturity],
+            "operator_paid" => row[:operator_paid],
+            "docs_note" => row[:docs_note],
+            "tourist_advance" => row[:tourist_advance],
+            "documents_status" => row[:documents_status],
+            "country" => { "name" => row[:country] },
+            "operator" => row[:operator].nil? ? nil : row[:operator]['name'],
+            "operator_id" => row[:operator].nil? ? nil : row[:operator]['id']
           }
         end
       end

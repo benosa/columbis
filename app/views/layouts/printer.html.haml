@@ -1,0 +1,25 @@
+!!!
+%html{ :manifest => params[:offline] && '/tourism.manifest', :class => yield(:html_class) }
+  %head
+    %title
+      = yield(:title) || 'Untitled'
+    %meta{'http-equiv'=>'Content-Type', :content=>'text/html; charset=utf-8'}/
+    - if javascript_local_data
+      = javascript_tag(javascript_local_data)
+
+    = javascript_include_tag 'application'
+    / [if lt IE 9]
+      = javascript_include_tag 'css3-mediaqueries'
+
+    - if CONFIG[:domain] == 'columbis.ru'
+      = render 'layouts/google_analytics'
+      = render 'layouts/yandex_metrika'
+
+    = csrf_meta_tag
+    = raw @head
+
+  %body
+    .edit_menu
+      %p test
+    #edit_content
+      = raw @body

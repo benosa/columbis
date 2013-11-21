@@ -4,6 +4,8 @@ Tourism::Application.routes.draw do
   post "visitors/create"
   get "visitors/confirm"
 
+  get '/claim_print/:claim_id/:printer' => 'claim_printers#edit', as: 'edit_claim_printers'
+
   resources :user_payments, :except => [:show, :edit, :update]
 
   resources :tariff_plans

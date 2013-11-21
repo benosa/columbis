@@ -14,3 +14,11 @@ table.reservations.tour_operators .activity{
     margin: 1px 0 0 15px;
   }
 }
+
+p.for_editor {
+  padding-right: 20px;
+  textarea {
+    width: 99%;
+    height: 300px;
+  }
+}

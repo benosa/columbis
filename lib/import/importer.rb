@@ -20,7 +20,7 @@ module Import
 
     def columns_count(table)
       begin
-        "import/tables/#{table.to_s}".camelize.constantize.try(:columns_count).to_i
+        "import/tables/#{table.to_s}_table".camelize.constantize.try(:columns_count).to_i
       rescue
         Rails.logger.info "Import operation warning. Importing [#{table.to_s}]. Columns count was null"
         0
@@ -29,7 +29,7 @@ module Import
 
     def sheet_number(table)
       begin
-        "import/tables/#{table.to_s}".camelize.constantize.try(:sheet_number).to_i
+        "import/tables/#{table.to_s}_table".camelize.constantize.try(:sheet_number).to_i
       rescue
         Rails.logger.info "Import operation warning. Importing [#{table.to_s}]. Sheet number was null"
         0
@@ -42,7 +42,7 @@ module Import
 
     def import(table, row)
       #begin
-        "import/tables/#{table.to_s}".camelize.constantize.import(row, @company)
+        "import/tables/#{table.to_s}_table".camelize.constantize.import(row, @company)
       #rescue
       #  Rails.logger.info "Import operation error. Importing #{row.to_s} to [#{table.to_s}] fail. Check params"
       #  false

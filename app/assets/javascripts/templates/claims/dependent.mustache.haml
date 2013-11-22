@@ -18,6 +18,7 @@
               = text_field_tag "#{name_prefix}[passport_number]", '{{passport_number}}', :id => "#{id_prefix}_passport_number", :class => 'passport_number date'
           .wrap-input.passport_valid_until-wrap
             = text_field_tag "#{name_prefix}[passport_valid_until]", '{{passport_valid_until}}', :id => "#{id_prefix}_passport_valid_until", :class => 'datepicker passport_valid_until expires_date'
+            = select_tag "#{name_prefix}[sex]", Tourist::SEX_STATES.collect { |o| [I18n.t('sex_states_short.'+o), o] }, :id => "#{id_prefix}_sex", :class => 'wide', :not_highlighted => true
         .block-stretch
           .wrap-input.autocomplete-wrap.name-wrap
             = text_field_tag "#{name_prefix}[full_name]", '{{full_name}}', :id => "#{id_prefix}_full_name", :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }

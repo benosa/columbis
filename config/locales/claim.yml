@@ -128,6 +128,7 @@ ru:
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
       passport_expire: 'Действит. до'
+      sex: 'Пол'
       phone: 'Телефон'
       address: 'Адрес'
       add_another_tourist: 'Добавить туриста'
@@ -174,6 +175,7 @@ ru:
       tourist_stat: 'Откуда турист'
       special_offer: 'Турист дает согласие на получения спецпредложения на телефон и электронную почту'
       special_offer_warning: 'Вы уверены? %{value} не будет получать спецпредложения на телефон и электронную почту.'
+      contract_name: 'Номер договора'
 
     route:
       route: 'Маршрут'
@@ -280,6 +282,7 @@ ru:
         memo_tasks_done: 'Примечания учтены'
         tourist_stat: 'Откуда турист'
         excluded_from_profit: 'Не включать в наценку'
+        contract_name: 'Номер договора'
 
       claim/applicant:
         full_name: 'Основной турист:'

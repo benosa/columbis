@@ -330,18 +330,19 @@
         // float: left; width: 65%;
         float: none; width: 100%;
         .block-stretch {
-          margin: 0 430px 0 0;
+          margin: 0 460px 0 0;
           .name-wrap { margin: 0 10px 0 0; }
         }
         .block-right {
-          float: right; width: 430px;
+          float: right; width: 460px;
           > div { float: left; margin: 0 10px; }
-          .date_of_birth-wrap { width: 90px; }
+          .date_of_birth-wrap { width: 80px; }
           .passport-wrap { width: 170px;
             .passport_series-wrap { float: left; width: 50px; margin-right: 10px; }
             .passport_number-wrap { float: left; width: 90px; }
           }
-          .passport_valid_until-wrap { width: 100px; margin-right: 0; }
+          .passport_valid_until-wrap { width: 80px; margin-right: 0; margin-left: 0; }
+          .sex-wrap { width: 44px; margin-left: 10px; }
         }
         // label { display: none; }
         label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
@@ -371,8 +372,9 @@
       span { display: block; }
       .fio { float: none; width: auto !important; }
       .dob { width: 96px !important; }
-      .passport { width: 170px !important; }
-      .expires { width: 93px !important; }
+      .passport { width: 155px !important; }
+      .expires { width: 78px !important; }
+      .sex { width: 15px !important; }
       .tourist_address { width: auto !important; }
       .additional_fields { display: none; }
     }

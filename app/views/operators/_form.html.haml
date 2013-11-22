@@ -9,6 +9,8 @@
       .fake_row
         %p= f.label :name
         = f.text_field :name, :class => 'website'
+        %p= f.label :full_name
+        = f.text_field :full_name, :class => 'website'
         %p= f.label :register_number
         = f.text_field :register_number, :class => 'website'
         %p= f.label :register_series
@@ -21,6 +23,10 @@
         = f.text_field :ogrn, :class => 'website'
         %p= f.label :site
         = f.text_field :site, :class => 'website'
+        %p= f.label :banking_details
+        = f.text_field :banking_details, :class => 'website'
+        %p= f.label :actual_address
+        = f.text_field :actual_address, :class => 'website'
 
 %fieldset.form_column.form_column-small
   .form_block
@@ -39,8 +45,12 @@
       .fake_row
         %p= f.label :insurer, t('.name')
         = f.text_field :insurer, :class => 'website'
+        %p= f.label :insurer_full_name
+        = f.text_field :insurer_full_name, :class => 'website'
         %p= f.label :insurer_address, t('.address')
         = f.text_field :insurer_address, :class => 'website'
+        %p= f.label :actual_insurer_address
+        = f.text_field :actual_insurer_address, :class => 'website'
         %p= f.label :insurer_provision, t('.provision')
         = f.text_field :insurer_provision, :class => 'website'
         %p= f.label :insurer_contract, t('.contract')

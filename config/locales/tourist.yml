@@ -19,11 +19,22 @@ ru:
         actions: 'Что сделать'
         created_at: 'Создан'
         state: 'Статус'
+        sex: 'Пол'
 
   potential_states:
     important: 'Активно звонить!'
     reserved: 'Забронирован'
     refused: 'Отказался'
+
+  sex_states_short:
+    male: 'М'
+    female: 'Ж'
+    not_selected: ''
+
+  sex_states:
+    male: 'Мужской'
+    female: 'Женский'
+    not_selected: 'Не выбран'
 
   tourists:
     index:

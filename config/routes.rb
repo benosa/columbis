@@ -5,6 +5,8 @@ Tourism::Application.routes.draw do
   get "visitors/confirm"
 
   get '/claim_print/:claim_id/:printer' => 'claim_printers#edit', as: 'edit_claim_printers'
+  put '/claim_print/:claim_id/:printer' => 'claim_printers#update', as: 'update_claim_printers'
+  get '/claim_print/:claim_id/:printer/print' => 'claim_printers#print', as: 'print_claim_printers'
 
   resources :user_payments, :except => [:show, :edit, :update]
 
@@ -33,6 +35,7 @@ Tourism::Application.routes.draw do
   match 'current_timestamp' => "application#current_timestamp"
   get "/uploads/:company_id/*file" => 'uploads#show', :as => 'file', :format => false
   get 'download_template/:template' => 'printers#download', :as => :download_template
+  get 'add_default/:template' => 'printers#add_default', :as => :add_default
 
   resources :airlines
   resources :currency_courses

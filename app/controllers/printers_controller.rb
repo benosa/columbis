@@ -64,6 +64,19 @@ class PrintersController < ApplicationController
     end
   end
 
+  def add_default
+    printer = current_company.printers.find(params[:template]) if params[:template]
+    file, filename = template_file(printer) if printer
+
+    if file
+      dir_path = "uploads/printer/#{params[:template]}"
+      FileUtils.mkdir_p(dir_path) if !File.directory?(dir_path)
+      File.copy(file, dir_path)
+    end
+
+    redirect_to printers_path
+  end
+
   private
 
     def get_doc_part(printer, part)

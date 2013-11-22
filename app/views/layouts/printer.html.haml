@@ -6,8 +6,9 @@
     %meta{'http-equiv'=>'Content-Type', :content=>'text/html; charset=utf-8'}/
     - if javascript_local_data
       = javascript_tag(javascript_local_data)
-
     = javascript_include_tag 'application'
+    = javascript_include_tag 'claim_printers'
+    = stylesheet_link_tag 'claim_printers'
     / [if lt IE 9]
       = javascript_include_tag 'css3-mediaqueries'
 
@@ -16,10 +17,16 @@
       = render 'layouts/yandex_metrika'
 
     = csrf_meta_tag
-    = raw @head
+    = raw @html_parts[:head]
 
-  %body
+  %body{ :data => { :update_path => update_claim_printers_path } }
     .edit_menu
-      %p test
+      %div
+        %div#base_acts
+          = link_to 'Редактировать', '#', :id => 'create_editor', :class => 'unet_filters'
+          = link_to 'Печать', print_claim_printers_path, :id => 'cree_editor', :class => 'unet_filters'
+        %div#edit_acts
+          = link_to 'Сохранить', '#', :id => 'save_editor', :class => 'uset_filters'
+          = link_to 'Отменить', '#', :id => 'close_editor', :class => 'uset_filters'
     #edit_content
-      = raw @body
+      = raw @html_parts[:body]

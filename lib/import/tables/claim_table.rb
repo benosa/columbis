@@ -14,6 +14,7 @@ module Import
           :passport_number        => {:type => 'String', :may_nil => false, :value => nil},
           :passport_series        => {:type => 'String', :may_nil => false, :value => nil},
           :email                  => {:type => 'String', :may_nil => true,  :value => nil},
+          :address                => {:type => 'String', :may_nil => false, :value => nil},
           :date_of_birth          => {:type => 'Date',   :may_nil => false, :value => nil},
           :passport_valid_until   => {:type => 'Date',   :may_nil => false, :value => nil},
           :arrival_date           => {:type => 'Date',   :may_nil => false, :value => nil},
@@ -45,15 +46,24 @@ module Import
         end
 
         def import(row, company)
-          puts "    Start import row: #{row.to_s}"
+          puts "    Start import row."
           data_row = prepare_data(row, company)
           if data_row
-            claim = Claim.new
+            params = create_claim_params(data_row, company)
+            claim = Claim.new(params)
             claim.company = company
-            if claim.assign_reflections_and_save(create_claim_params(data_row, company))
+            claim.user_id = data_row[:user]
+            claim.office_id = data_row[:office]
+            temp_tourist = Tourist.where(data_row[:tourist]).first_or_create
+            if temp_tourist.address.nil?
+              temp_tourist.address = Address.create(:company_id => company.id, :joint_address => data_row[:address])
+            end
+            claim.applicant = temp_tourist
+            if claim.assign_reflections_and_save(params)
               puts "    Claim was importing"
               true
             else
+              puts claim.errors.inspect
               puts "    Claim not save"
               false
             end
@@ -84,8 +94,9 @@ module Import
               field = field.to_s
             end
             data_row[key].delete(:type)
-            data_row[key][:value] = field.blank? ? nil : field
+            data_row[key][:value] = field unless field.blank?
           end
+          puts data_row.to_s
           data_row
         end
 
@@ -124,19 +135,18 @@ module Import
                 .where("passport_number = '#{row[:passport_number][:value]}'")
                 .first
             end
-          tourist =
-            unless tourist
-              Tourist.new do |t|
-                t.full_name = row[:tourist][:value]
-                t.company_id = company.id
-                t.passport_series = row[:passport_series][:value]
-                t.passport_number = row[:passport_number][:value]
-                t.passport_valid_until = row[:passport_valid_until][:value]
-                t.date_of_birth = row[:date_of_birth][:value]
-                t.email = row[:email][:value]
-                t.phone_number = row[:telephone][:value]
-              end
+          unless tourist
+            tourist = Tourist.new do |t|
+              t.full_name = row[:tourist][:value]
+              t.passport_series = row[:passport_series][:value]
+              t.passport_number = row[:passport_number][:value]
+              t.passport_valid_until = row[:passport_valid_until][:value]
+              t.date_of_birth = row[:date_of_birth][:value]
+              t.email = row[:email][:value]
+              t.phone_number = row[:telephone][:value]
             end
+            tourist.company_id = company.id
+          end
           if tourist.id || tourist.valid?
             row[:tourist] = {:value => tourist.attributes, :may_nil => false}
           else
@@ -185,7 +195,7 @@ module Import
             documents_statuses.merge!({ I18n.t(".claims.documents_statuses.#{status}") => status })
           end
           if documents_statuses.keys.include?(row[:documents_status][:value])
-            row[:documents_status][:value] = documents_statuses[row[:visa][:value]]
+            row[:documents_status][:value] = documents_statuses[row[:documents_status][:value]]
           else
             row[:documents_status][:value] = nil
           end
@@ -193,14 +203,11 @@ module Import
 
         def create_claim_params(row, company)
           {
-            "user_id" => row[:user],
-            "office_id" => row[:office],
             "reservation_date" => row[:date],
             "check_date" => row[:check_date],
             "tourist_stat" => row[:promotion],
             "arrival_date" => row[:arrival_date],
             "departure_date" => row[:departure_date],
-            "applicant_attributes" => row[:tourist],
             "visa" => row[:visa],
             "visa_check" => row[:visa_check],
             "primary_currency_price" => row[:primary_currency_price],
@@ -216,54 +223,56 @@ module Import
             "country" => { "name" => row[:country] },
             "operator" => row[:operator].nil? ? nil : row[:operator]['name'],
             "operator_id" => row[:operator].nil? ? nil : row[:operator]['id'],
-            "payments_in_attributes" => {
-              "0"=>{
-                "date_in"=>"",
-                "amount"=>row[:tourist_advance],
-                "approved"=>"0",
-                "form"=>"",
-                "_destroy"=>"false",
-                "id"=>""
-              }
-            },
-            "operator_price_currency"=>"rur",
-            "payments_out_attributes" => {
-              "0"=>{
-                "date_in"=>row[:operator_maturity],
-                "amount_prim"=>"0.0",
-                "course"=>"",
-                "amount"=>row[:operator_paid],
-                "approved"=>"1",
-                "form"=>"",
-                "_destroy"=>"false",
-                "id"=>""
-              }
-            },
-            "assistant_id"=>"",
-            "early_reservation"=>"0",
-            "canceled"=>"0",
-            "excluded_from_profit"=>"0",
-            "course_eur"=>"0",
-            "course_usd"=>"0",
             "tour_price_currency"=>"rur",
-            "tour_price"=>row[:primary_currency_price],
-            "visa_count"=>"0",
-            "visa_price_currency"=>"rur",
-            "visa_price"=>"0",
-            "children_visa_count"=>"0",
-            "children_visa_price_currency"=>"rur",
-            "children_visa_price"=>"0",
-            "insurance_count"=>"0",
-            "insurance_price_currency"=>"rur",
-            "insurance_price"=>"0",
-            "additional_insurance_count"=>"0",
-            "additional_insurance_price_currency"=>"rur",
-            "additional_insurance_price"=>"0",
-            "fuel_tax_count"=>"0",
-            "fuel_tax_price_currency"=>"rur",
-            "fuel_tax_price"=>"0",
-            "additional_services_price_currency"=>"rur",
-            "additional_services_price"=>"0"
+            "operator_price_currency"=>"rur"
+            # "payments_in_attributes" => {
+            #   "0"=>{
+            #     "date_in"=>"",
+            #     "amount"=>row[:tourist_advance],
+            #     "approved"=>"0",
+            #     "form"=>"",
+            #     "_destroy"=>"false",
+            #     "id"=>""
+            #   }
+            # },
+            # "operator_price_currency"=>"rur",
+            # "payments_out_attributes" => {
+            #   "0"=>{
+            #     "date_in"=>row[:operator_maturity],
+            #     "amount_prim"=>"0.0",
+            #     "course"=>"",
+            #     "amount"=>row[:operator_paid],
+            #     "approved"=>"1",
+            #     "form"=>"",
+            #     "_destroy"=>"false",
+            #     "id"=>""
+            #   }
+            # },
+            # "assistant_id"=>"",
+            # "early_reservation"=>"0",
+            # "canceled"=>"0",
+            # "excluded_from_profit"=>"0",
+            # "course_eur"=>"0",
+            # "course_usd"=>"0",
+            # "tour_price_currency"=>"rur",
+            # "tour_price"=>row[:primary_currency_price],
+            # "visa_count"=>"0",
+            # "visa_price_currency"=>"rur",
+            # "visa_price"=>"0",
+            # "children_visa_count"=>"0",
+            # "children_visa_price_currency"=>"rur",
+            # "children_visa_price"=>"0",
+            # "insurance_count"=>"0",
+            # "insurance_price_currency"=>"rur",
+            # "insurance_price"=>"0",
+            # "additional_insurance_count"=>"0",
+            # "additional_insurance_price_currency"=>"rur",
+            # "additional_insurance_price"=>"0",
+            # "fuel_tax_count"=>"0",
+            # "fuel_tax_price_currency"=>"rur",
+            # "fuel_tax_price"=>"0",
+            # "additional_services_price_currency"=>"rur",
+            # "additional_services_price"=>"0"
           }
         end
       end

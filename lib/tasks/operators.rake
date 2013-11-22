@@ -72,6 +72,7 @@ namespace :operators do
         info[:insurer_address] = tag.next_element.content
       when tag.content.include?("Размер финансового обеспечения")
         info[:insurer_provision] = tag.next_element.content
+        info[:insurer_provision].gsub!(/[^0-9]/,'')
       when tag.content.include?("Документ:")
         content = tag.next_element.content
         date = content.last(10).split('/')
@@ -117,7 +118,13 @@ namespace :operators do
     address_array.delete_at(0)
     # street
     address_array.each do |elem|
-      if elem.include?("ул.") || elem.include?("пр-кт") || elem.include?("пл.") || elem.include?("пр.")
+      if elem.include?("ул.") ||
+        elem.include?("пр-кт") ||
+        elem.include?("пл.") ||
+        elem.include?("пр.") ||
+        elem.include?(" пер") ||
+        elem.include?("пер.") ||
+        elem.include?("б-р")
         address["street"] = elem
         break
       end
@@ -135,6 +142,8 @@ namespace :operators do
         elem.include?('Москва') ||
         elem.include?('область') ||
         elem.include?('обл.') ||
+        elem.include?('обл ') ||
+        elem.include?(' обл') ||
         elem.include?('окр.') ||
         elem.include?('округ')
         region << elem

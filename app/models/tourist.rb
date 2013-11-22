@@ -5,7 +5,7 @@ class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
-                  :address_attributes, :special_offer
+                  :address_attributes, :special_offer, :sex, :reference
 
   attr_protected :company_id, :user_id
 

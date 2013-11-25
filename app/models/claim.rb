@@ -872,6 +872,8 @@ class Claim < ActiveRecord::Base
     def printable_fields
       fields = {
         'Номер' => num,
+        'ДатаЗаездаС' => (arrival_date.strftime('%d/%m/%Y') if arrival_date),
+        'ДатаЗаездаПо' => (departure_date.strftime('%d/%m/%Y') if departure_date),
         'Город' => city.try(:name),
         'Страна' => country.try(:name),
         'Курорт' => resort.try(:name),
@@ -879,6 +881,7 @@ class Claim < ActiveRecord::Base
         'Размещение' => placement,
         'КоличествоТуристов' => (dependents.count + 1),
         'КоличествоНочей' => nights,
+        'КоличествоДней' => nights.to_i > 1 ? nights - 1 : nil ,
         'Переезд' => relocation,
         'Класс' => service_class,
         'Питание' => meals,
@@ -900,12 +903,25 @@ class Claim < ActiveRecord::Base
         'ДополнительныеУслугиСум' => additional_services_price > 0 ?
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
-        'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
-        'СуммаПрописью' => primary_currency_price_in_word,
-        'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
-        'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
+        'Сумма' => ,
+        'СуммаПрописью' => ,
+        'СуммаВал' => ,
+        'СуммаПрописьюВал' => ,
+        'СтоимостьТура' => ,
+        'СтоимостьТураПрописью' => ,
+        'СтоимостьТураСВал' => ,
+        'СтоимостьТураПрописьюСВал' => ,
+        'СтоимостьТураВал' => ,
+        'СтоимостьТураВалПрописью' => ,
+        'СтоимостьТураВалСВал' => ,
+        'СтоимостьТураВалПрописьюСВал' => ,
+        'ВалютаПолная' => ,
+        'ВалютаСокращенная' => ,
+        'КурсВалюты' => ,
+        'СрокОплатыТуристом' => (maturity.strftime('%d/%m/%Y') if maturity),
         'Отправление' => arrival_date,
-        'Возврат' => departure_date
+        'Возврат' => departure_date,
+        'ФИОМенеджераИнициалы' => user.try(:initials_name)
       }
 
       fields.merge!({
@@ -917,6 +933,7 @@ class Claim < ActiveRecord::Base
         'ОГРН' => company.try(:ogrn),
         'ОКПО' => company.try(:okpo),
         'ИНН' => company.try(:inn),
+        'КПП' => company.try(:kpp),
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
         'СайтКомпании' => company.try(:site),
@@ -928,12 +945,14 @@ class Claim < ActiveRecord::Base
 
       fields.merge!({
         'ФИО' => applicant.try(:full_name),
+        'ФИОИнициалы' => applicant.try(:initials_name),
         'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
         'СерияПаспорта' => applicant.try(:passport_series),
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
+        'Обращение' => applicant.try(:sex) ? I18n.t("appeal_by_sex.#{applicant.sex}") : '',
         'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', ')
       }) if applicant
 
@@ -943,9 +962,11 @@ class Claim < ActiveRecord::Base
         'ТуроператорСерия' => operator.try(:register_series),
         'ТуроператорИНН' => operator.try(:inn),
         'ТуроператорОГРН' => operator.try(:ogrn),
+        'ТуроператорКПП' => operator.try(:code_of_reason),
         'ТуроператорСайт' => operator.try(:site),
+        'ТуроператорТелефоны' => operator.try(:phone_numbers),
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
-        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
+        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
         'Страховщик' => operator.try(:insurer),
         'СтраховщикАдрес' => operator.try(:insurer_address),
         'ДоговорСтрахования' => operator.try(:insurer_contract),

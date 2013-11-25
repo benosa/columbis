@@ -36,6 +36,11 @@ ru:
     female: 'Женский'
     not_selected: 'Не выбран'
 
+  appeal_by_sex:
+    male: 'Господин'
+    female: 'Госпожа'
+    not_selected: ''
+
   tourists:
     index:
       tourists: 'Туристы'

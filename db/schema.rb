@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131122122014) do
+ActiveRecord::Schema.define(:version => 20131125114128) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -184,6 +184,7 @@ ActiveRecord::Schema.define(:version => 20131122122014) do
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
     t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
+    t.integer  "kpp"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -302,11 +303,12 @@ ActiveRecord::Schema.define(:version => 20131122122014) do
     t.boolean  "delta",                  :default => true
     t.boolean  "common",                 :default => false
     t.integer  "code_of_reason"
-    t.string   "full_name",              :default => ""
-    t.string   "insurer_full_name",      :default => ""
-    t.string   "banking_details",        :default => ""
-    t.string   "actual_address",         :default => ""
-    t.string   "actual_insurer_address", :default => ""
+    t.string   "full_name"
+    t.string   "insurer_full_name"
+    t.string   "banking_details"
+    t.string   "actual_address"
+    t.string   "actual_insurer_address"
+    t.string   "phone_numbers"
   end
 
   add_index "operators", ["common"], :name => "index_operators_on_common"
@@ -439,14 +441,14 @@ ActiveRecord::Schema.define(:version => 20131122122014) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "delta",                :default => true
-    t.boolean  "potential",            :default => false, :null => false
+    t.boolean  "potential",            :default => false,          :null => false
     t.string   "email"
     t.integer  "user_id"
     t.text     "wishes"
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
-    t.string   "sex"
+    t.string   "sex",                  :default => "not_selected"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

@@ -18,12 +18,13 @@ class AddFieldsToOperator < ActiveRecord::Migration
     end
 
     execute 'ALTER TABLE operators ALTER COLUMN insurer_provision TYPE double precision USING (insurer_provision::double precision)'
-    add_column :operators, :code_of_reason, :integer, :default => nil, :null => true
-    add_column :operators, :full_name, :string, :default => '', :null => true
-    add_column :operators, :insurer_full_name, :string, :default => '', :null => true
-    add_column :operators, :banking_details, :string, :default => '', :null => true
-    add_column :operators, :actual_address, :string, :default => '', :null => true
-    add_column :operators, :actual_insurer_address, :string, :default => '', :null => true
+    add_column :operators, :code_of_reason, :integer, :null => true
+    add_column :operators, :full_name, :string, :null => true
+    add_column :operators, :insurer_full_name, :string, :null => true
+    add_column :operators, :banking_details, :string, :null => true
+    add_column :operators, :actual_address, :string, :null => true
+    add_column :operators, :actual_insurer_address, :string, :null => true
+    add_column :operators, :phone_numbers, :string, :null => true
   end
 
   def down
@@ -34,5 +35,6 @@ class AddFieldsToOperator < ActiveRecord::Migration
     remove_column :operators, :banking_details
     remove_column :operators, :actual_address
     remove_column :operators, :actual_insurer_address
+    remove_column :operators, :phone_numbers
   end
 end

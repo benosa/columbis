@@ -4,7 +4,7 @@ class Operator < ActiveRecord::Base
   				  :insurer, :insurer_address, :insurer_provision, :insurer_contract,
   				  :insurer_contract_date, :insurer_contract_start, :insurer_contract_end,
   				  :address_attributes, :code_of_reason, :full_name, :banking_details,
-            :actual_address, :insurer_full_name, :actual_insurer_address
+            :actual_address, :insurer_full_name, :actual_insurer_address, :phone_numbers
 
   attr_protected :company_id
 

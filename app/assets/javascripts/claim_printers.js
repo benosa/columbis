@@ -1,5 +1,7 @@
 var editor, html = '';
 
+
+
 function createEditor() {
 	if ( editor )
 		return;
@@ -17,11 +19,12 @@ function removeEditor(save) {
 		return;
 //	Destroy the editor.
   edit_html = editor.getData();
-  editor.destroy();
-	editor = null;
+//  ;
   $('#base_acts').show();
   $('#edit_acts').hide();
   if (!save) {
+    editor.destroy();
+    editor = null
     $('#edit_content').html(html);
   } else {
     $.ajax({
@@ -29,11 +32,34 @@ function removeEditor(save) {
       type: 'post',
       data: { _method: 'put', body: edit_html },
       success: function(data) {
-        alert('olo');
+        editor.destroy();
+        editor = null
       }
     });
   }
 }
+
+
+  function showEmptyFields() {
+    var el = document.getElementById('empty_fields');
+    if (el && !el.innerHTML.match('#{ПУСТЫЕ_ПОЛЯ}')) {
+      el.style.height = 'auto';
+      el.style.display = 'block';
+    }
+  };
+  function hideEmptyFields() {
+    var el = document.getElementById('empty_fields');
+    if (el) {
+      el.style.height = '0px';
+      el.style.display = 'none';
+    }
+  }
+
+  if (window.addEventListener)
+    window.addEventListener('load', showEmptyFields, false);
+  else if (window.attachEvent)
+    window.attachEvent('onload', showEmptyFields );
+
 
 $(function(){
   $('#edit_acts').hide();
@@ -47,4 +73,5 @@ $(function(){
     removeEditor(1);
   });
 });
+
 

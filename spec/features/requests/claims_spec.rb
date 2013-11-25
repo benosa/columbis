@@ -6,6 +6,7 @@ describe "Claim:", js: true do
 
   clean_once_with_sphinx do # database cleaning will excute only once after this block
     before(:all) do
+      create(:user, login: 'demo')
       @boss = create_user_with_company_and_office(:boss)
       @company = @boss.company
       @office = @boss.office
@@ -188,6 +189,33 @@ describe "Claim:", js: true do
         page.should have_content(I18n.t('claims.messages.is_editing'))
       end
     end
+
+    describe "ololo" do
+      before do
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss, visa_count: 1,
+         children_visa_count: 1, fuel_tax_count: 1, fuel_tax_price: 1, insurance_price: 1, additional_insurance_price:1)
+      end
+
+      it "should check label-checkbox and save to tourist special_offer" do
+        visit(edit_claim_printers_path(claim_id: @claim.id, printer: 'act'))
+        click_link I18n.t('claim_printers.edit.edit_doc')
+       # page.should have_selector("div#cke_edit_content")
+        page.should have_selector("div#content")
+        click_link I18n.t('save')
+
+
+        save_screenshot
+      #  I18n.t('claim_printers.edit.edit_doc')
+      #  @link = all('a').select {|elt| elt.text == I18n.t('layouts.main_menu.claims.act') }.last
+     #   Rails.logger.debug "url_for_current_company: #{@link['href']}"
+      #  expect {
+     #     @link.click
+      #  }.to change{current_path}.from(edit_claim_path(@claim)).to('/claim_print/1/act')
+      #  current_path.should == @link['href']
+
+      end
+    end
+
   end
 
 end

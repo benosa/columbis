@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ClaimPrintersController < ApplicationController
+
   def edit
     if %w[contract memo permit warranty act].include? params[:printer]
       @claim = Claim.find(params[:claim_id])
@@ -21,9 +22,6 @@ class ClaimPrintersController < ApplicationController
     page_part = page.at_css('body')
     page_part.inner_html = params[:body]
     IO.write(path, page.to_html)
-    # out_file = File.new(path, "w")
-    #  out_file.puts("write your stuff here")
-    # out_file.close
     render text: nil, layout: false
   end
 

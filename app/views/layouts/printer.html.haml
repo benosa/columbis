@@ -23,10 +23,10 @@
     .edit_menu
       %div
         %div#base_acts
-          = link_to 'Редактировать', '#', :id => 'create_editor', :class => 'unet_filters'
-          = link_to 'Печать', print_claim_printers_path, :id => 'cree_editor', :class => 'unet_filters'
+          = link_to I18n.t('claim_printers.edit.edit_doc'), '#', :id => 'create_editor'
+          = link_to I18n.t('claim_printers.edit.print_doc'), print_claim_printers_path
         %div#edit_acts
-          = link_to 'Сохранить', '#', :id => 'save_editor', :class => 'uset_filters'
-          = link_to 'Отменить', '#', :id => 'close_editor', :class => 'uset_filters'
+          = link_to I18n.t('save'), '#', :id => 'save_editor', :class => 'uset_filters'
+          = link_to I18n.t('cancel'), '#', :id => 'close_editor', :class => 'uset_filters'
     #edit_content
       = raw @html_parts[:body]

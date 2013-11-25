@@ -57,25 +57,6 @@ class ClaimsController < ApplicationController
     render :partial => 'totals'
   end
 
-  def printer
-    if %w[contract memo permit warranty act].include? params[:form]
-      case params[:form]
-      when 'contract'
-        render :text => @claim.print_contract, :layout => false
-      when 'memo'
-        render :text => @claim.print_memo, :layout => false
-      when 'permit'
-        render :text => @claim.print_permit, :layout => false
-      when 'warranty'
-        render :text => @claim.print_warranty, :layout => false
-      when 'act'
-        render :text => @claim.print_act, :layout => false
-      end
-    else
-      redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:form]}'"
-    end
-  end
-
   def new
     @claim.fill_new
     check_flights

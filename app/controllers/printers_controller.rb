@@ -30,6 +30,12 @@ class PrintersController < ApplicationController
 
   def edit
     @printer = Printer.where(:id => params[:id]).first
+
+    if !@printer.template?
+      file, filename = template_file(@printer)
+      @printer.template = File.open(file)
+      @printer.save
+    end
     @doc_body = get_doc_part(@printer, 'body') if @printer.template?
     @doc_style = get_doc_part(@printer, 'style') if @printer.template? && is_admin?
   end
@@ -62,19 +68,6 @@ class PrintersController < ApplicationController
     else
       redirect_to printers_path
     end
-  end
-
-  def add_default
-    printer = current_company.printers.find(params[:template]) if params[:template]
-    file, filename = template_file(printer) if printer
-
-    if file
-      dir_path = "uploads/printer/#{params[:template]}"
-      FileUtils.mkdir_p(dir_path) if !File.directory?(dir_path)
-      File.copy(file, dir_path)
-    end
-
-    redirect_to printers_path
   end
 
   private

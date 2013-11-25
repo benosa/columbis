@@ -1,0 +1,5 @@
+ru:
+  claim_printers:
+    edit:
+      edit_doc: 'Редактирование'
+      print_doc: 'Печать'

@@ -190,21 +190,26 @@ describe "Claim:", js: true do
       end
     end
 
-    describe "ololo" do
+    describe "Claim docs save" do
       before do
         @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss, visa_count: 1,
          children_visa_count: 1, fuel_tax_count: 1, fuel_tax_price: 1, insurance_price: 1, additional_insurance_price:1)
       end
 
-      it "should check label-checkbox and save to tourist special_offer" do
+      it "should edit and save on disk claim act" do
+        @path = "uploads/#{@claim.company.id}/claims/#{@claim.id}/act.html"
+        if File.exist?(@path)
+          FileUtils.rm(@path)
+        end
         visit(edit_claim_printers_path(claim_id: @claim.id, printer: 'act'))
         click_link I18n.t('claim_printers.edit.edit_doc')
-       # page.should have_selector("div#cke_edit_content")
-        page.should have_selector("div#content")
+        File.exist?(@path).should == false
         click_link I18n.t('save')
+        wait_until { File.exist?(@path) == true }
+        File.exist?(@path).should == true
 
-
-        save_screenshot
+        # page.should have_selector("div#cke_edit_content")
+       # page.should have_selector("div#content")
       #  I18n.t('claim_printers.edit.edit_doc')
       #  @link = all('a').select {|elt| elt.text == I18n.t('layouts.main_menu.claims.act') }.last
      #   Rails.logger.debug "url_for_current_company: #{@link['href']}"

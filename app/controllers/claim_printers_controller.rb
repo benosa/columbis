@@ -13,16 +13,20 @@ class ClaimPrintersController < ApplicationController
   end
 
   def update
-    @claim = Claim.find(params[:claim_id])
-    html = get_claim_html
-    check_claim_dir
-    path = form_path
+    if %w[contract memo permit warranty act].include? params[:printer]
+      @claim = Claim.find(params[:claim_id])
+      html = get_claim_html
+      check_claim_dir
+      path = form_path
 
-    page = Nokogiri::HTML(html)
-    page_part = page.at_css('body')
-    page_part.inner_html = params[:body]
-    IO.write(path, page.to_html)
-    render text: nil, layout: false
+      page = Nokogiri::HTML(html)
+      page_part = page.at_css('body')
+      page_part.inner_html = params[:body]
+      IO.write(path, page.to_html)
+      render :json => { :success => true }
+    else
+      render :json => { :success => false }
+    end
   end
 
   def print

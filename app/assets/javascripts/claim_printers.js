@@ -1,7 +1,5 @@
 var editor, html = '';
 
-
-
 function createEditor() {
 	if ( editor )
 		return;
@@ -17,9 +15,9 @@ function createEditor() {
 function removeEditor(save) {
 	if ( !editor )
 		return;
-//	Destroy the editor.
+
   edit_html = editor.getData();
-//  ;
+
   $('#base_acts').show();
   $('#edit_acts').hide();
   if (!save) {
@@ -32,33 +30,36 @@ function removeEditor(save) {
       type: 'post',
       data: { _method: 'put', body: edit_html },
       success: function(data) {
-        editor.destroy();
-        editor = null
+        if (data.success == true) {
+          editor.destroy();
+          editor = null;
+        }
       }
     });
   }
 }
 
 
-  function showEmptyFields() {
-    var el = document.getElementById('empty_fields');
-    if (el && !el.innerHTML.match('#{ПУСТЫЕ_ПОЛЯ}')) {
-      el.style.height = 'auto';
-      el.style.display = 'block';
-    }
-  };
-  function hideEmptyFields() {
-    var el = document.getElementById('empty_fields');
-    if (el) {
-      el.style.height = '0px';
-      el.style.display = 'none';
-    }
+function showEmptyFields() {
+  var el = document.getElementById('empty_fields');
+  if (el && !el.innerHTML.match('#{ПУСТЫЕ_ПОЛЯ}')) {
+    el.style.height = 'auto';
+    el.style.display = 'block';
   }
+};
 
-  if (window.addEventListener)
-    window.addEventListener('load', showEmptyFields, false);
-  else if (window.attachEvent)
-    window.attachEvent('onload', showEmptyFields );
+function hideEmptyFields() {
+  var el = document.getElementById('empty_fields');
+  if (el) {
+    el.style.height = '0px';
+    el.style.display = 'none';
+  }
+}
+
+if (window.addEventListener)
+  window.addEventListener('load', showEmptyFields, false);
+else if (window.attachEvent)
+  window.attachEvent('onload', showEmptyFields );
 
 
 $(function(){

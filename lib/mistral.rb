@@ -1,10 +1,7 @@
 # Mistral module for special Mistral company functionality
 module Mistral
-  module ClaimsHelperExtention
 
-    def is_mistral?
-      Mistral.is_mistral? current_company
-    end
+  module ClaimsHelperExtention
 
     def mistral_tourist_stat_options(user, claim)
       specific_options = %w(Повтор Знакомые Рекомендации Интернет Медиа Соседи Инфотур Сами)
@@ -67,6 +64,31 @@ module Mistral
         errors.add(:operator, :is_selected_from_existing) if operator && !Mistral.mistral_specific_operators.include?(operator.name)
       end
     end
+  end
+
+  module ApplicationHelperExtention
+
+    def is_mistral?
+      Mistral.is_mistral? current_company
+    end
+
+    def top_managers
+      @report = Boss::ManagersMarginReport.new({
+        period: 'month',
+        company: current_company,
+        user: current_user,
+        margin_type: "profit_acc"
+      }).prepare
+
+      @percent_data = @report.data
+      arr = []
+      @percent_data.each do |data|
+        arr << data if data['year'] == '2013' && data['month'] == '8' && data['percent'] == false
+      end
+      @sorted = (arr.sort_by{|k| k['amount']}).reverse
+      return false
+    end
+
   end
 
   def self.is_mistral?(company)

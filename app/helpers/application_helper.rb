@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 module ApplicationHelper
+  include Mistral::ApplicationHelperExtention
 
   def domain_root_url
     root_url(domain: CONFIG[:domain], subdomain: false) # "#{request.protocol}#{CONFIG[:domain]}#{request.port_string}"

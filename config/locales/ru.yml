@@ -66,6 +66,10 @@ ru:
   RUR: 'руб.'
   EUR: 'EUR'
   USD: 'USD'
+  cut_currency:
+    rur: 'руб.'
+    eur: 'евро'
+    usd: 'дол.'
 
   month: 'Месяц'
   year: 'Год'

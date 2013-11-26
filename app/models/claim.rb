@@ -865,8 +865,24 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def primary_currency_price_in_word
-      primary_currency_price.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
+    def price_in_word(price, currency = CurrencyCourse::PRIMARY_CURRENCY)
+      price.to_i.amount_in_words(currency).split(' ')[0...-1].join(' ')
+    end
+
+    def currency_in_word(price, currency = CurrencyCourse::PRIMARY_CURRENCY)
+      price.to_i.amount_in_words(currency).split(' ')[-1]
+    end
+
+    def price_in_word_with_currency(price, currency)
+      price.to_i.amount_in_words(currency)
+    end
+
+    def cut_price_currency(currency)
+      I18n.t("cut_currency.#{currency}")
+    end
+
+    def tour_price_in_primary_currency
+      (tour_price.to_f * course(tour_price_currency)).to_i
     end
 
     def printable_fields
@@ -903,21 +919,21 @@ class Claim < ActiveRecord::Base
         'ДополнительныеУслугиСум' => additional_services_price > 0 ?
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
-        'Сумма' => ,
-        'СуммаПрописью' => ,
-        'СуммаВал' => ,
-        'СуммаПрописьюВал' => ,
-        'СтоимостьТура' => ,
-        'СтоимостьТураПрописью' => ,
-        'СтоимостьТураСВал' => ,
-        'СтоимостьТураПрописьюСВал' => ,
-        'СтоимостьТураВал' => ,
-        'СтоимостьТураВалПрописью' => ,
-        'СтоимостьТураВалСВал' => ,
-        'СтоимостьТураВалПрописьюСВал' => ,
-        'ВалютаПолная' => ,
-        'ВалютаСокращенная' => ,
-        'КурсВалюты' => ,
+        'Сумма' => primary_currency_price.to_money.to_s,
+        'СуммаПрописью' => price_in_word(primary_currency_price),
+        'СуммаВал' => total_tour_price_in_curr.to_s,
+        'СуммаПрописьюВал' => price_in_word(total_tour_price_in_curr),
+        'СтоимостьТура' => tour_price_in_primary_currency.to_s,
+        'СтоимостьТураПрописью' => price_in_word(tour_price_in_primary_currency),
+        'СтоимостьТураСВал' => tour_price_in_primary_currency.to_s + ' ' + cut_price_currency(CurrencyCourse::PRIMARY_CURRENCY),
+        'СтоимостьТураПрописьюСВал' => price_in_word_with_currency(tour_price_in_primary_currency, CurrencyCourse::PRIMARY_CURRENCY),
+        'СтоимостьТураВал' => tour_price.round.to_s,
+        'СтоимостьТураВалПрописью' => price_in_word(tour_price.round),
+        'СтоимостьТураВалСВал' => tour_price.round.to_s + ' ' + cut_price_currency(tour_price_currency),
+        'СтоимостьТураВалПрописьюСВал' => price_in_word_with_currency(tour_price.round, tour_price_currency),
+        'ВалютаПолная' => currency_in_word(tour_price, tour_price_currency),
+        'ВалютаСокращенная' => cut_price_currency(tour_price_currency),
+        'КурсВалюты' => course(tour_price_currency),
         'СрокОплатыТуристом' => (maturity.strftime('%d/%m/%Y') if maturity),
         'Отправление' => arrival_date,
         'Возврат' => departure_date,

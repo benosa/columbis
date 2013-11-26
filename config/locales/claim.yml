@@ -189,6 +189,7 @@ ru:
       tour_price: 'Стоимость тура'
       price_as_string: 'Стоимость прописью'
       count: 'Кол-во'
+      tour_price_with_discount: 'Цена со скидкой'
 
     new:
       title: 'Новая бронь'
@@ -280,6 +281,7 @@ ru:
         memo_tasks_done: 'Примечания учтены'
         tourist_stat: 'Откуда турист'
         excluded_from_profit: 'Не включать в наценку'
+        discount: 'Скидка'
 
       claim/applicant:
         full_name: 'Основной турист:'

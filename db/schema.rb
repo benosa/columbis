@@ -490,6 +490,7 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.string   "color"
     t.integer  "company_id"
     t.boolean  "delta",                                 :default => true
+    t.string   "screen_width"
     t.string   "time_zone"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
@@ -498,7 +499,6 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.string   "phone"
     t.boolean  "use_office_password",                   :default => false
     t.string   "subdomain"
-    t.text     "screen_width"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

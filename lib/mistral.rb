@@ -83,10 +83,21 @@ module Mistral
       @percent_data = @report.data
       arr = []
       @percent_data.each do |data|
-        arr << data if data['year'] == '2013' && data['month'] == '8' && data['percent'] == false
+        arr << data if data['year'] == Time.now.year.to_s && data['month'] == Time.now.month.to_s && data['percent'] == false
       end
-      @sorted = (arr.sort_by{|k| k['amount']}).reverse
-      return false
+      @top_managers = (arr.sort_by{|k| k['amount']}).reverse
+      return nil
+    end
+
+    def manager_pos(id)
+      if  @top_managers[0] && @top_managers[0]['id'] == id.to_s
+        return 'first'
+      elsif @top_managers[1] && @top_managers[1]['id'] == id.to_s
+        return 'second'
+      elsif @top_managers[2] && @top_managers[2]['id'] == id.to_s
+        return 'third'
+      end
+      false
     end
 
   end

@@ -25,3 +25,9 @@
             = t('claims.index.manager_list')
           %option{ :value => 'accountant_list', :selected => params[:list_type] == 'accountant_list' && 'selected' }
             = t('claims.index.accountant_list')
+    - cache('top_manager_' + current_user.id.to_s, :expires_in => 1.hour) do
+      - if is_mistral?
+        - if !@top_managers
+          = top_managers
+        - if manager_pos(current_user.id)
+          = render 'layouts/main_menu/sale_lider'

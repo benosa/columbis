@@ -33,9 +33,6 @@
       = render 'layouts/hintarea' if is_admin? || current_company.try(:subdomain) == 'demo'
 
     = csrf_meta_tag
-    = top_managers
-
-    = "#{@sorted}"
 
     = yield(:head)
 

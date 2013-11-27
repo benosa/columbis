@@ -10,7 +10,7 @@ module Boss
 
       @results[:count] = []
       [up, middle, down].each do |data|
-        @results[:count].unshift(data.map { |o| {"name" => o["name"], "count" => o["count"]}}.first)
+        @results[:count].push(data.map { |o| {"name" => o["name"], "count" => o["count"]}}.first)
       end
 
       self
@@ -44,16 +44,17 @@ module Boss
       end
 
       def up_query
-        base_query.project("'#{I18n.t('.salesfunnel_report.up')}' as name")
-          .where(claims[:closed].eq(true))
+        tourists.project(tourists[:id].count, "'#{I18n.t('.salesfunnel_report.down')}' as name")
+          .where(tourists[:company_id].eq(company.id))
+          .where(tourists[:potential].eq(true))
       end
       def middle_query
         base_query.project("'#{I18n.t('.salesfunnel_report.middle')}' as name")
           .where(claims[:closed].eq(false))
       end
       def down_query
-        tourists.project(tourists[:id].count, "'#{I18n.t('.salesfunnel_report.down')}' as name")
-          .where(tourists[:potential].eq(true))
+        base_query.project("'#{I18n.t('.salesfunnel_report.up')}' as name")
+          .where(claims[:closed].eq(true))
       end
   end
 end

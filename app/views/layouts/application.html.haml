@@ -30,7 +30,10 @@
     - if CONFIG[:domain] == 'columbis.ru'
       = render 'layouts/google_analytics'
       = render 'layouts/yandex_metrika'
-      = render 'layouts/hintarea' if is_admin? || current_company.try(:subdomain) == 'demo'
+      - if current_user.try(:login) == 'sergey'
+        = render 'layouts/mytips'
+      - elsif is_admin? || current_company.try(:subdomain) == 'demo'
+        = render 'layouts/hintarea'
 
     = csrf_meta_tag
     = yield(:head)

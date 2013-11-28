@@ -1,6 +1,6 @@
 module TariffPlansHelper
   def tariff_plan_select_options
-    tariff_plans = active_tariff_plans
+    tariff_plans = active_tariff_plans.order(:price)
     tariff_plans.collect { |tp| ["#{tp.name} (#{number_to_currency tp.price, precision: 0}/#{t('month').mb_chars.downcase})", tp.id] } if tariff_plans
   end
 

@@ -15,7 +15,6 @@ $(document).ready ->
 
     init: ->
       this.data = tariffs if tariffs?
-      this.period.val("1")
       this.tariff.on 'change', () -> TariffPlanCheck.period_change()
       this.period.on 'change', () -> TariffPlanCheck.period_change()
       this.period_change()

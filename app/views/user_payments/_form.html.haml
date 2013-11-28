@@ -12,10 +12,11 @@
         %p= f.label :tariff, required: false
         = f.select :tariff_id, tariff_plan_select_options, { include_blank: false }, :class => 'tariff'
         %p= f.label :period, required: false
-        = f.select :period, user_payment_periods, { include_blank: false }, :class => 'period'
+        - periods = user_payment_periods
+        = f.select :period, periods, { include_blank: false, selected: f.object.period || periods.values.last }, :class => 'period'
         %p= f.label :amount, required: false
         = f.text_field :amount, :readonly => true, :class => 'amount'
-        = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :readonly => true
+        %label.amount_currency= t('rur')
         %p
           %label{:id => "if_balance"}
 

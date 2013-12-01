@@ -9,7 +9,7 @@ class Ability
     @company = @user.company || Company.new
 
     role = @user.role.to_s
-    role = "unpaid_" + role unless @company.is_active?
+    role = "unpaid_#{role}" unless @user.is_admin? || @company.is_active?
     if self.respond_to?(role)
       self.send(role)
     else

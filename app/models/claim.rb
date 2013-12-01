@@ -109,6 +109,8 @@ class Claim < ActiveRecord::Base
 
   scope :active, lambda { where(:active => true) }
 
+  extend SearchAndSort
+
   define_index do
     indexes :airport_back, :visa, :calculation, :documents_status, :docs_note, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
@@ -143,14 +145,18 @@ class Claim < ActiveRecord::Base
         :profit, :profit_in_percent, :profit_acc, :profit_in_percent_acc,
         :bonus, :bonus_percent, :type => :float
 
+    # indexes by attributes for searching
+    indexes :num, as: :num_index
+    Claim.date_indexes :reservation_date, :arrival_date, :departure_date do |field, index|
+      indexes field, as: index
+    end
+
     set_property :delta => true
   end
 
   local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data,
             :columns_filter => :local_data_columns_filter,
             :scope => :local_data_scope
-
-  extend SearchAndSort
 
   def assign_reflections_and_save(claim_params)
     self.claim_params = claim_params # save claims params

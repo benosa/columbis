@@ -41,6 +41,8 @@ class Tourist < ActiveRecord::Base
 
   default_scope by_full_name
 
+  extend SearchAndSort
+
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
     indexes :passport_series, :passport_number, :phone_number, :email, :sortable => true
@@ -50,10 +52,13 @@ class Tourist < ActiveRecord::Base
     has :company_id
     has :user_id
 
+    # Add index on date fields for searching
+    Tourist.date_indexes :passport_valid_until, :date_of_birth, :created_at do |field, index|
+      indexes field, as: index
+    end
+
     set_property :delta => true
   end
-
-  extend SearchAndSort
 
   local_data :full_name, :initials_name, :attributes => :all
 

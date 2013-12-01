@@ -127,7 +127,7 @@ module ApplicationHelper
   def search_and_sort_options(options = {})
     defaults = options.delete(:defaults) || {}
     defaults.reverse_merge!({
-      :star => true,
+      :star => /[[[:word:]]+,-.@]+/u,
       :filter => params[:filter] || '',
       :page => params[:page],
       :per_page => per_page

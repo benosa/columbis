@@ -23,6 +23,18 @@ class Float
   end
 end
 
+class Fixnum
+  def amount_in_words(currency)
+    begin
+      str = RuPropisju.amount_in_words(self.abs, currency).mb_chars.capitalize.to_s
+      str = '-' + str if self < 0
+      str
+    rescue
+      ''
+    end
+  end
+end
+
 class BigDecimal
   def to_money
     sprintf("%0.0f", self)

@@ -6,6 +6,7 @@
     = f.text_field :passport_series, :class => 'passport_series number_password'
     = f.text_field :passport_number, :class => 'passport_number date'
   = f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.try(:passport_valid_until), :format => :long)
+  = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
 .block-stretch
   .wrap-input.autocomplete-wrap.name-wrap
     - unless local_assigns[:full_name_label] == false

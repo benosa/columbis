@@ -60,6 +60,8 @@ namespace :operators do
         info[:register_series] = tag.next_element.content.split(' ').first
       when tag.content.include?("Сокращенное наименование")
         info[:name] = tag.next_element.content
+      when tag.content.include?("Полное наименование:")
+        info[:full_name] = tag.next_element.content
       when tag.content.include?("ИНН:")
         info[:inn] = tag.next_element.content
       when tag.content.include?("ОГРН:")
@@ -70,8 +72,11 @@ namespace :operators do
         info[:insurer] = tag.next_element.content
       when tag.content.include?("Адрес (место нахождения) организации, предоставившей финансовое обеспечение")
         info[:insurer_address] = tag.next_element.content
+      when tag.content.include?("Почтовый адрес организации, предоставившей финансовое обеспечение")
+        info[:actual_insurer_address] = tag.next_element.content
       when tag.content.include?("Размер финансового обеспечения")
         info[:insurer_provision] = tag.next_element.content
+        info[:insurer_provision].gsub!(/[^0-9]/,'')
       when tag.content.include?("Документ:")
         content = tag.next_element.content
         date = content.last(10).split('/')
@@ -84,27 +89,29 @@ namespace :operators do
         date = content.last(10).split('/').map { |e| e.to_i }
         info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
       when tag.content.include?("Адрес (место нахождения):")
-        info[:joint_address] = tag.next_element.content
+        info[:address] = tag.next_element.content
+      when tag.content.include?("Почтовый адрес:")
+        info[:actual_address] = tag.next_element.content
       end
     end
     info
   end
 
   def load_operator_info_to_base(operator_info)
-    operators = Operator.where(:register_number => operator_info[:register_number],
+    operator = Operator.where(:register_number => operator_info[:register_number],
       :register_series => operator_info[:register_series],
-      :company_id => nil, :common => true)
-    if operators.blank?
-      a = Address.create( parse_address(operator_info.delete(:joint_address)) )
+      :company_id => nil, :common => true).first
+    unless operator
+      operator_info.merge!({:common => true})
+      a = Address.create( parse_address(operator_info.delete(:address)) )
       o = Operator.new(operator_info)
       o.address = a
       o.save
       puts "Save operator: #{operator_info[:name]}"
     else
-      o = operators.first
-      a = o.address
-      Address.update(a.id, parse_address(operator_info.delete(:joint_address)) )
-      Operator.update(o.id, operator_info)
+      a = operator.address
+      Address.update(a.id, parse_address(operator_info.delete(:address)) )
+      Operator.update(operator.id, operator_info)
       puts "Update operator: #{operator_info[:name]}"
     end
   end
@@ -117,7 +124,13 @@ namespace :operators do
     address_array.delete_at(0)
     # street
     address_array.each do |elem|
-      if elem.include?("ул.") || elem.include?("пр-кт") || elem.include?("пл.") || elem.include?("пр.")
+      if elem.include?("ул.") ||
+        elem.include?("пр-кт") ||
+        elem.include?("пл.") ||
+        elem.include?("пр.") ||
+        elem.include?(" пер") ||
+        elem.include?("пер.") ||
+        elem.include?("б-р")
         address["street"] = elem
         break
       end
@@ -135,6 +148,8 @@ namespace :operators do
         elem.include?('Москва') ||
         elem.include?('область') ||
         elem.include?('обл.') ||
+        elem.include?('обл ') ||
+        elem.include?(' обл') ||
         elem.include?('окр.') ||
         elem.include?('округ')
         region << elem

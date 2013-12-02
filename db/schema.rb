@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131126102831) do
+ActiveRecord::Schema.define(:version => 20131118203435) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -148,7 +148,6 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.integer  "num"
     t.integer  "locked_by"
     t.datetime "locked_at"
-    t.decimal  "discount"
   end
 
   create_table "companies", :force => true do |t|
@@ -298,9 +297,9 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.date     "insurer_contract_date"
     t.date     "insurer_contract_start"
     t.date     "insurer_contract_end"
-    t.string   "insurer_provision",      :limit => nil
-    t.boolean  "delta",                                 :default => true
-    t.boolean  "common",                                :default => false
+    t.string   "insurer_provision"
+    t.boolean  "delta",                  :default => true
+    t.boolean  "common",                 :default => false
   end
 
   add_index "operators", ["common"], :name => "index_operators_on_common"
@@ -467,7 +466,6 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.boolean  "delta",                                      :default => true, :null => false
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.string   "pay_method"
   end
 
   create_table "users", :force => true do |t|

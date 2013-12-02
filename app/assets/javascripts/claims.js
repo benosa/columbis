@@ -905,6 +905,7 @@ $(function(){
 
     var $fields = $block.find('.fields:last');
     setDatepicker($fields, true);
+    customizeSelect($fields, true);
     setAutocomplete($fields.find('.full_name.autocomplete'), false, {
       select: function(event, ui) { select_tourist(this, ui.item); },
       change: function(event, ui) { change_tourist(this); }

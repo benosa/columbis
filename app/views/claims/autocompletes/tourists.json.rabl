@@ -5,6 +5,7 @@ node(:label) { |t| t.full_name }
 node(:date_of_birth) { |t| t.date_of_birth.try(:strftime, '%d.%m.%Y') }
 node(:passport_valid_until) { |t| t.passport_valid_until.try(:strftime, '%d.%m.%Y') }
 node(:address) { |t| t.address.try(:joint_address) }
+node(:sex) { |t| t.sex }
 # node(:id) { |t| t['id'] }
 # node(:label) { |t| t['full_name'] "#{last_name} #{first_name} #{middle_name if middle_name}".strip }
 # node(:value) { |t| t['full_name'] }

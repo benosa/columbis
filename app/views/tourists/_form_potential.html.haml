@@ -10,6 +10,8 @@
       .fake_row.fields
         %p= f.label :full_name, :required => true
         = f.text_field :full_name, :class => 'wide'
+        %p= f.label :sex
+        = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
         %p= f.label :phone_number
         = f.text_field :phone_number, :class => 'wide'
         %p= f.label :email

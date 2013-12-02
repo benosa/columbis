@@ -30,7 +30,8 @@ class Claim < ActiveRecord::Base
   # common
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
-                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id, :special_offer
+                  :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id, :special_offer,
+                  :contract_name
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,
@@ -109,8 +110,6 @@ class Claim < ActiveRecord::Base
 
   scope :active, lambda { where(:active => true) }
 
-  extend SearchAndSort
-
   define_index do
     indexes :airport_back, :visa, :calculation, :documents_status, :docs_note, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
@@ -145,18 +144,14 @@ class Claim < ActiveRecord::Base
         :profit, :profit_in_percent, :profit_acc, :profit_in_percent_acc,
         :bonus, :bonus_percent, :type => :float
 
-    # indexes by attributes for searching
-    indexes :num, as: :num_index
-    Claim.date_indexes :reservation_date, :arrival_date, :departure_date do |field, index|
-      indexes field, as: index
-    end
-
     set_property :delta => true
   end
 
   local_data :extra_columns => :local_data_extra_columns, :extra_data => :local_extra_data,
             :columns_filter => :local_data_columns_filter,
             :scope => :local_data_scope
+
+  extend SearchAndSort
 
   def assign_reflections_and_save(claim_params)
     self.claim_params = claim_params # save claims params
@@ -665,7 +660,7 @@ class Claim < ActiveRecord::Base
 
     def calculate_tour_price
 
-      sum_price = (tour_price - discount).to_f * course(tour_price_currency)
+      sum_price = tour_price.to_f * course(tour_price_currency)
       sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
       # some fields are calculated per person
@@ -870,13 +865,31 @@ class Claim < ActiveRecord::Base
       end
     end
 
-    def primary_currency_price_in_word
-      primary_currency_price.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)
+    def price_in_word(price, currency = CurrencyCourse::PRIMARY_CURRENCY)
+      price.to_i.amount_in_words(currency).split(' ')[0...-1].join(' ')
+    end
+
+    def currency_in_word(price, currency = CurrencyCourse::PRIMARY_CURRENCY)
+      price.to_i.amount_in_words(currency).split(' ')[-1]
+    end
+
+    def price_in_word_with_currency(price, currency)
+      price.to_i.amount_in_words(currency)
+    end
+
+    def cut_price_currency(currency)
+      I18n.t("cut_currency.#{currency}")
+    end
+
+    def tour_price_in_primary_currency
+      (tour_price.to_f * course(tour_price_currency)).to_i
     end
 
     def printable_fields
       fields = {
         'Номер' => num,
+        'ДатаЗаездаС' => (arrival_date.strftime('%d/%m/%Y') if arrival_date),
+        'ДатаЗаездаПо' => (departure_date.strftime('%d/%m/%Y') if departure_date),
         'Город' => city.try(:name),
         'Страна' => country.try(:name),
         'Курорт' => resort.try(:name),
@@ -884,6 +897,7 @@ class Claim < ActiveRecord::Base
         'Размещение' => placement,
         'КоличествоТуристов' => (dependents.count + 1),
         'КоличествоНочей' => nights,
+        'КоличествоДней' => nights.to_i > 1 ? nights - 1 : nil ,
         'Переезд' => relocation,
         'Класс' => service_class,
         'Питание' => meals,
@@ -905,13 +919,26 @@ class Claim < ActiveRecord::Base
         'ДополнительныеУслугиСум' => additional_services_price > 0 ?
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
-        'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+        'Сумма' => primary_currency_price.to_money.to_s,
         'Скидка' => discount.round.to_s + ' ' + tour_price_currency,
-        'СуммаПрописью' => primary_currency_price_in_word,
-        'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
-        'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,
+        'СуммаПрописью' => price_in_word(primary_currency_price),
+        'СуммаВал' => total_tour_price_in_curr.to_s,
+        'СуммаПрописьюВал' => price_in_word(total_tour_price_in_curr),
+        'СтоимостьТура' => tour_price_in_primary_currency.to_s,
+        'СтоимостьТураПрописью' => price_in_word(tour_price_in_primary_currency),
+        'СтоимостьТураСВал' => tour_price_in_primary_currency.to_s + ' ' + cut_price_currency(CurrencyCourse::PRIMARY_CURRENCY),
+        'СтоимостьТураПрописьюСВал' => price_in_word_with_currency(tour_price_in_primary_currency, CurrencyCourse::PRIMARY_CURRENCY),
+        'СтоимостьТураВал' => tour_price.round.to_s,
+        'СтоимостьТураВалПрописью' => price_in_word(tour_price.round),
+        'СтоимостьТураВалСВал' => tour_price.round.to_s + ' ' + cut_price_currency(tour_price_currency),
+        'СтоимостьТураВалПрописьюСВал' => price_in_word_with_currency(tour_price.round, tour_price_currency),
+        'Валюта' => currency_in_word(tour_price, tour_price_currency),
+        'ВалютаСокр' => cut_price_currency(tour_price_currency),
+        'КурсВалюты' => course(tour_price_currency),
+        'СрокОплатыТуристом' => (maturity.strftime('%d/%m/%Y') if maturity),
         'Отправление' => arrival_date,
-        'Возврат' => departure_date
+        'Возврат' => departure_date,
+        'ФИОМенеджераИнициалы' => user.try(:initials_name)
       }
 
       fields.merge!({
@@ -923,6 +950,7 @@ class Claim < ActiveRecord::Base
         'ОГРН' => company.try(:ogrn),
         'ОКПО' => company.try(:okpo),
         'ИНН' => company.try(:inn),
+        'КПП' => company.try(:kpp),
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
         'СайтКомпании' => company.try(:site),
@@ -934,12 +962,14 @@ class Claim < ActiveRecord::Base
 
       fields.merge!({
         'ФИО' => applicant.try(:full_name),
+        'ФИОИнициалы' => applicant.try(:initials_name),
         'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
         'СерияПаспорта' => applicant.try(:passport_series),
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
+        'Обращение' => applicant.try(:sex) ? I18n.t("appeal_by_sex.#{applicant.sex}") : '',
         'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', ')
       }) if applicant
 
@@ -949,9 +979,11 @@ class Claim < ActiveRecord::Base
         'ТуроператорСерия' => operator.try(:register_series),
         'ТуроператорИНН' => operator.try(:inn),
         'ТуроператорОГРН' => operator.try(:ogrn),
+        'ТуроператорКПП' => operator.try(:code_of_reason),
         'ТуроператорСайт' => operator.try(:site),
+        'ТуроператорТелефоны' => operator.try(:phone_numbers),
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
-        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
+        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
         'Страховщик' => operator.try(:insurer),
         'СтраховщикАдрес' => operator.try(:insurer_address),
         'ДоговорСтрахования' => operator.try(:insurer_contract),

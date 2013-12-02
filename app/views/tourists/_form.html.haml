@@ -14,6 +14,8 @@
         = f.text_field :first_name, :class => 'wide'
         %p= f.label :middle_name
         = f.text_field :middle_name, :class => 'wide'
+        %p= f.label :sex
+        = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
         %p= f.label :date_of_birth
         = f.text_field :date_of_birth, :class => 'datepicker wide', :value => l(tourist.date_of_birth, :format => :long)
         %p= f.label :phone_number

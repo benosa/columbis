@@ -75,6 +75,10 @@ class User < ActiveRecord::Base
     "#{last_name} #{first_name} #{middle_name}".strip
   end
 
+  def initials_name
+    "#{last_name} #{first_name.try(:initial)}#{middle_name.try(:initial) if middle_name}".strip
+  end
+
   def self.available_colors
     @available_colors = YAML.load_file("#{Rails.root}/app/assets/colors.yml")['colors'].sort unless @available_colors
     @available_colors

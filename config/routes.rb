@@ -4,6 +4,10 @@ Tourism::Application.routes.draw do
   post "visitors/create"
   get "visitors/confirm"
 
+  get '/claim_print/:claim_id/:printer' => 'claim_printers#edit', as: 'edit_claim_printers'
+  put '/claim_print/:claim_id/:printer' => 'claim_printers#update', as: 'update_claim_printers'
+  get '/claim_print/:claim_id/:printer/print' => 'claim_printers#print', as: 'print_claim_printers'
+
   resources :user_payments, :except => [:show, :edit, :update]
 
   resources :tariff_plans
@@ -60,7 +64,6 @@ Tourism::Application.routes.draw do
       put 'update_bonus/:id' => 'claims#update_bonus', :as => 'update_bonus'
       put 'lock/:id' => 'claims#lock', :as => 'lock'
       put 'unlock/:id' => 'claims#unlock', :as => 'unlock'
-      get ':id/printer/:form' => 'claims#printer', :as => 'printer'
     end
     member do
       match 'print/:document' => 'claims#print'

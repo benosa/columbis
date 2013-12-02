@@ -44,6 +44,7 @@ gem 'rabl'
 gem 'i18n-timezones'
 gem 'bust_rails_etags'
 gem 'faker', '1.2.0'
+gem "ckeditor"
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -1,7 +1,7 @@
 - content_for(:error_messages) do
   = f.error_messages
 
-%fieldset.form_column.form_column-small.first
+%fieldset.form_column.first{:class => @printer.template? ? '' : 'form_column-small' }
   .form_block
     .block_title
       %h2= t('.common')
@@ -17,6 +17,11 @@
           = f.fields_for :country, @printer.country do |cf|
             = cf.text_field :name, :class => 'autocomplete country', :style => "width:250px;", :data => { :id => @printer.country_id, :val => cf.object.try(:name) }.merge(ac_data(source: country_autocomplete_claims_path)), :not_highlighted => true
         %p= f.label :template, "#{Printer.human_attribute_name(:template)} #{t('uploaders.uploader_size', :file_size => CONFIG[:max_template_size])}"
+        - if @printer.template?
+          %p.for_editor= cktext_area_tag 'doc_body', @doc_body
+          - if is_admin?
+            %p.for_editor= text_area_tag 'doc_style', @doc_style
+
         %p.file
           = f.file_field :template, :class => 'image_upload'
           = link_to t("uploaders.choose_file"), '#', :class => 'select_file'

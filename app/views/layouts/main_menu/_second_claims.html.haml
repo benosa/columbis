@@ -1,6 +1,6 @@
 - { :contract => t('.contract'), :permit => t('.permit'), :warranty => t('.warranty'), :memo => t('.memo'), :act => t('.act') }.each do |mode, value|
   %li{ :class => li_class(@claim, mode) }
     - if @claim && !@claim.new_record?
-      = link_to(value, printer_claims_path(:id => @claim.id, :form => mode), :target => '_blank')
+      = link_to(value, edit_claim_printers_path(:claim_id => @claim.id, :printer => mode), :target => '_blank')
     - else
       = link_to value, '#', :class => "no_active_a"

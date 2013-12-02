@@ -36,6 +36,7 @@
         = render 'layouts/hintarea'
 
     = csrf_meta_tag
+
     = yield(:head)
 
   %body{ :class => "#{(body_class unless is_claim_form)} #{yield(:body_class)}".strip }

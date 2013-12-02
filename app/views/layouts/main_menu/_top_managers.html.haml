@@ -1,0 +1,11 @@
+%li.top_managers
+  %ul
+    - if @top_managers[0]
+      %li.first
+        = "#{@top_managers[0]['name']}"
+    - if @top_managers[1]
+      %li.second
+        = "#{@top_managers[1]['name']}"
+    - if @top_managers[2]
+      %li.third
+        = "#{@top_managers[2]['name']}"

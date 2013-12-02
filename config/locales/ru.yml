@@ -80,6 +80,7 @@ ru:
       create: 'Сохранить'
       update: 'Сохранить'
   save_and_close: 'Сохранить и закрыть'
+  cancel: 'Отмена'
 
   will_paginate:
     previous_label: 'Предыдущая'

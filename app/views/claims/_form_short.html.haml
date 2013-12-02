@@ -1,0 +1,100 @@
+- claim = f.object
+- content_for(:error_messages) do
+  = f.error_messages
+
+.popup_form.new_claim_block.clearfix.modal
+  %form.new_claim
+    .block_title
+      %h2 Новая заявка
+    .forms_block_area
+      .additional_block.form_block
+        .fake_row.row1
+          %div
+            %p= t('claims.route.arrival_date')
+            %label= t('claims.route.from')
+            = f.text_field :arrival_date, :class => 'datepicker date important arrival_date', :value => l(claim.arrival_date, :format => :long), wrapper: false
+            %label= t('claims.route.till')
+            = f.text_field :departure_date, :class => 'datepicker date important', :value => l(claim.departure_date, :format => :long), wrapper: false
+        .fake_row.row2
+          .two_line
+            %p
+              = f.label :tourist_stat, t('claims.information.tourist_stat')
+            .wrap-select.tourist_stat-wrap
+              - tourist_stat_class = 'tourist_stat documentation_select' + (' editable-select' if is_admin? || is_boss?).to_s
+              = f.select :tourist_stat, tourist_stat_options(claim), {include_blank: true}, :class => tourist_stat_class
+        .fake_row.row3
+          .filter_block.block-check_date
+            %p
+              = f.label :check_date
+            = f.text_field :check_date, :class => 'visa datepicker check_date ' << check_date_status(claim), :value => l(claim.check_date, :format => :long), wrapper: {class: 'check_date-wrap'}
+            .wrap-flag.closed-wrap
+              = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
+              = f.check_box :closed
+      #tourists.tourists_block.form_block
+        .form_block_content
+          .fake_table
+            .clearfix
+              .col-actions
+              .col-main
+                .common_fields
+                  .block-right
+                    %span.dob= t('claims.tourists.date_of_birth')
+                    %span.passport= t('claims.tourists.passport')
+                    %span.expires= t('claims.tourists.passport_expire')
+                    %span.sex= t('claims.tourists.sex')
+                  .block-stretch
+                    %span.fio= t('claims.tourists.full_name')
+                .additional_fields
+                  %span.tel= t('claims.tourists.phone')
+                  %span.tourist_address= t('claims.tourists.address')
+          = f.fields_for :applicant_attributes, @claim.applicant, :wrapper => true do |af|
+            .fake_row.applicant.fields
+              .clearfix
+                .col-actions
+                  .delete-wrap
+                    %a.delete
+                .col-main.clearfix
+                  .common_fields
+                    = render :partial => 'tourist', :locals => { :f => af }
+                  .additional_fields
+                    .block-right
+                      .wrap-input.address-wrap
+                        = af.label :address, t('claims.tourists.address') + ':'
+                        = af.text_field :address, :value => af.object.address.try(:joint_address), :class => 'address', wrapper: false
+                    .block-stretch
+                      .col1
+                        .wrap-input.phone-wrap
+                          = af.label :phone_number, t('claims.tourists.phone') + ':'
+                          = af.text_field :phone_number, :class => 'phone_number phone', wrapper: false
+                      .col2
+                        .wrap-input.email-wrap
+                          = af.label :email, t('claims.tourists.email') + ':', :required => false
+                          = af.text_field :email, :class => 'email', wrapper: false
+
+              = af.hidden_field :id, :class => 'hidden_id'
+
+          - ind = 0
+          = f.fields_for :dependents, :wrapper => true do |df|
+            .fake_row.dependent.fields{ :id => "dependent-#{ind}", :class => df.object.try(:_destroy) && 'destroyed' }
+              .clearfix
+                .col-actions
+                  .delete-wrap
+                    %a.delete
+                .col-main.clearfix
+                  .common_fields
+                    = render :partial => 'tourist', :locals => { :f => df, :full_name_label => false }
+
+              = df.hidden_field :_destroy, :class => '_destroy'
+              = df.hidden_field :id, :class => 'hidden_id'
+              - tourist_claim = @claim.tourist_claims.select{ |r| r.tourist_id == df.object.id }.first
+              - if tourist_claim
+                = df.hidden_field :tourist_claim_id, :value => tourist_claim.id
+            - ind += 1
+
+          .fake_row.add_row
+            .add_btn
+              = link_to t('claims.tourists.add_another_tourist'), '#', :class => 'add add_tourist'
+    .actions_bar.panel_content.clearfix
+      = link_to t('cancel'), '#', :class => 'cancel'
+      = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+      = link_to t('save_and_close'), '#', :class => 'save save_and_close', :data => { :submit => @form_id, :close => true }

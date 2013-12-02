@@ -7,7 +7,7 @@
 -# form_for @claim, :builder => TourismFormBuilder, :highlight_only => highlighted_fields do |form|
 = form_for @claim, :builder => TourismFormBuilder, :wrapper => true do |form|
   - @form_id = form.options[:html][:id]
-  = render :partial => 'form', :locals => { :f => form }
+  = render :partial => params[:short] ? 'form_short' : 'form', :locals => { :f => form }
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

@@ -46,7 +46,7 @@ Tourism::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( jquery-ui.css new_design/css/low.css new_design/css/middle.css new_design/css/high.css common.css css3-mediaqueries.js public.css )
   config.assets.precompile += %w( boss.css boss.js ) # boss assets
-  config.assets.precompile += %w( claim-edit.js claim-edit.css ) # temporary
+  config.assets.precompile += %w( claim-edit.js claim-edit.css claim_printers.js claim_printers.css ) # temporary
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

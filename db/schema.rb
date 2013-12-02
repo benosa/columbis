@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131118203435) do
+ActiveRecord::Schema.define(:version => 20131126102831) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.integer  "num"
     t.integer  "locked_by"
     t.datetime "locked_at"
+    t.string   "contract_name"
+    t.decimal  "discount",                                                           :default => 0.0,            :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -183,6 +185,7 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
     t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
+    t.integer  "kpp"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -297,9 +300,16 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.date     "insurer_contract_date"
     t.date     "insurer_contract_start"
     t.date     "insurer_contract_end"
-    t.string   "insurer_provision"
+    t.float    "insurer_provision"
     t.boolean  "delta",                  :default => true
     t.boolean  "common",                 :default => false
+    t.integer  "code_of_reason"
+    t.string   "full_name"
+    t.string   "insurer_full_name"
+    t.string   "banking_details"
+    t.string   "actual_address"
+    t.string   "actual_insurer_address"
+    t.string   "phone_numbers"
   end
 
   add_index "operators", ["common"], :name => "index_operators_on_common"
@@ -432,13 +442,14 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "delta",                :default => true
-    t.boolean  "potential",            :default => false, :null => false
+    t.boolean  "potential",            :default => false,          :null => false
     t.string   "email"
     t.integer  "user_id"
     t.text     "wishes"
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
+    t.string   "sex",                  :default => "not_selected"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
@@ -490,6 +501,7 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.string   "color"
     t.integer  "company_id"
     t.boolean  "delta",                                 :default => true
+    t.string   "screen_width"
     t.string   "time_zone"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
@@ -498,7 +510,6 @@ ActiveRecord::Schema.define(:version => 20131118203435) do
     t.string   "phone"
     t.boolean  "use_office_password",                   :default => false
     t.string   "subdomain"
-    t.text     "screen_width"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

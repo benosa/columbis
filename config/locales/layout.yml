@@ -101,6 +101,8 @@ ru:
       demo:
         *demo
 
+      top_managers_tooltip_text: 'Результаты за %{month}'
+
     application: &application
       all_rights_reserved: 'Все права защищены'
 

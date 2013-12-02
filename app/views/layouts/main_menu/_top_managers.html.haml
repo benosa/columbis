@@ -1,11 +1,11 @@
-%li.top_managers
+%li.top_managers.with_tooltip{ title: top_managers_tooltip_text }
   %ul
-    - if @top_managers[0]
+    - if top_manager
       %li.first
-        = "#{@top_managers[0]['name']}"
-    - if @top_managers[1]
+        = "#{top_manager(0, 'name')}"
+    - if top_manager(1)
       %li.second
-        = "#{@top_managers[1]['name']}"
-    - if @top_managers[2]
+        = "#{top_manager(1, 'name')}"
+    - if top_manager(2)
       %li.third
-        = "#{@top_managers[2]['name']}"
+        = "#{top_manager(2, 'name')}"

@@ -73,31 +73,62 @@ module Mistral
     end
 
     def top_managers
-      @report = Boss::ManagersMarginReport.new({
+      return @top_managers if @top_managers
+
+      days_from_beginning_of_month = (Date.current - Date.current.beginning_of_month).to_i
+
+      report_options = {
         period: 'month',
         company: current_company,
         user: current_user,
-        margin_type: "profit_acc"
-      }).prepare
+        margin_type: "profit",
+        check_date: true # use start_date and end_date
+      }
+      @report = nil
 
-      @percent_data = @report.data
-      arr = []
-      @percent_data.each do |data|
-        arr << data if data['year'] == Time.now.year.to_s && data['month'] == Time.now.month.to_s && data['percent'] == false
+      if days_from_beginning_of_month > 3
+        report_options.merge!({
+          start_date: Date.current.beginning_of_month,
+          end_date: Date.current.end_of_month
+        })
+        @report = Boss::ManagersMarginReport.new(report_options).prepare
       end
-      @top_managers = (arr.sort_by{|k| k['amount']}).reverse
-      return nil
+
+      # If data in current month are empty, get it from previous
+      if !@report || @report.data.empty?
+        report_options.merge!({
+          start_date: Date.current.prev_month.beginning_of_month,
+          end_date: Date.current.prev_month.end_of_month,
+        })
+        @report = Boss::ManagersMarginReport.new(report_options).prepare
+      end
+
+      @mistral_top_managers_report = @report
+      @top_managers = @report.data.select{|data| !data['percent']}.sort_by{|data| -data['amount']}[0,3]
     end
 
-    def manager_pos(id)
-      if  @top_managers[0] && @top_managers[0]['id'] == id.to_s
+    def top_manager(pos = 0, attribute = false)
+      manager = top_managers[pos]
+      value = manager[attribute] if attribute
+      value || manager
+    end
+
+    def manager_pos(user)
+      id = user.id.to_s if user
+      if id == top_manager(0, 'id')
         return 'first'
-      elsif @top_managers[1] && @top_managers[1]['id'] == id.to_s
+      elsif id == top_manager(1, 'id')
         return 'second'
-      elsif @top_managers[2] && @top_managers[2]['id'] == id.to_s
+      elsif id == top_manager(2, 'id')
         return 'third'
       end
       false
+    end
+
+    def top_managers_tooltip_text
+      start_date = @mistral_top_managers_report.try(:start_date)
+      end_date = @mistral_top_managers_report.try(:end_date)
+      I18n.t 'layouts.main_menu.top_managers_tooltip_text', month: I18n.l(start_date, format: '%B') if start_date && end_date
     end
 
   end

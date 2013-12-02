@@ -158,6 +158,14 @@ $(function(){
     placement: 'top'
   });
 
+  $('.top_managers').tooltip({
+    template: '<div class="tooltip white clock_tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    placement: 'bottom',
+    container: 'body',
+    animation: false,
+    html: true
+  });
+
   $('.with_tooltip[title], label.required').tooltip();
 
   // Prevent default submit of fiter form

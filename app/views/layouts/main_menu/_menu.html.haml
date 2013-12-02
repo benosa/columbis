@@ -12,11 +12,10 @@
     - if can?(:users_sign_in_as, :user) && (show_demo_enter || show_demo_exit)
       = render 'layouts/main_menu/demo'
 %ul.user_panel
-  - cache('top_managers', :expires_in => 1.hour) do
-    - if is_mistral?
-      = top_managers
-      - if @top_managers[0]
-        = render 'layouts/main_menu/top_managers'
+  -# cache('top_managers', :expires_in => 1.hour) do
+  - if is_mistral? && !top_managers.empty?
+    = render 'layouts/main_menu/top_managers'
+
   = render 'devise/menu/registration_items'
   = render 'devise/menu/login_items'
 - if user_signed_in?

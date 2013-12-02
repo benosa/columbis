@@ -275,6 +275,14 @@ module ApplicationHelper
     Time.zone.now.strftime(format)
   end
 
+  def demo_company
+    @demo_company ||= Company.where(subdomain: 'demo').first
+  end
+
+  def demo_company?
+    current_company == demo_company
+  end
+
   private
 
     def manifest_default_text

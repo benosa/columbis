@@ -91,6 +91,7 @@ class SessionsController < Devise::SessionsController
       else
         false
       end
+      @demo_access_allowed ||= request.local? # Don't check visitors for local requests
 
       unless @demo_access_allowed
         sign_out if user_signed_in?

@@ -32,7 +32,7 @@
       = render 'layouts/yandex_metrika'
       - if current_user.try(:login) == 'sergey'
         = render 'layouts/mytips'
-      - elsif is_admin? || current_company.try(:subdomain) == 'demo'
+      - elsif is_admin? || demo_company?
         = render 'layouts/hintarea'
 
     = csrf_meta_tag

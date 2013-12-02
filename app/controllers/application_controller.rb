@@ -139,8 +139,8 @@ class ApplicationController < ActionController::Base
   end
 
   def check_company_access
-    accessible_controllers = %w[companies user_payments robokassa]
-    unless accessible_controllers.include?(controller_name) || is_admin? || devise_controller?
+    accessible_controllers = %w[companies user_payments robokassa uploads]
+    unless accessible_controllers.include?(controller_name) || is_admin? || devise_controller? || demo_company?
       raise CanCan::AccessDenied.new(I18n.t('companies.messages.company_inactive'), :inactive, Company)
     end
   end

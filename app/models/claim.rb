@@ -37,7 +37,7 @@ class Claim < ActiveRecord::Base
                   :maturity, :tourist_advance, :tourist_paid, :operator_advance, :operator_paid,
                   :additional_services_price, :additional_services_currency, :operator_maturity,
                   :profit, :profit_in_percent, :approved_operator_advance, :approved_tourist_advance,
-                  :bonus, :bonus_percent, :excluded_from_profit
+                  :bonus, :bonus_percent, :excluded_from_profit, :discount
 
   # nested attributes
   attr_accessible :applicant_attributes, :dependents_attributes,
@@ -665,7 +665,7 @@ class Claim < ActiveRecord::Base
 
     def calculate_tour_price
 
-      sum_price = tour_price.to_f * course(tour_price_currency)
+      sum_price = (tour_price - discount).to_f * course(tour_price_currency)
       sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
       # some fields are calculated per person
@@ -906,6 +906,7 @@ class Claim < ActiveRecord::Base
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
         'Сумма' => (primary_currency_price.to_money.to_s + ' руб'),
+        'Скидка' => discount.round.to_s + ' ' + tour_price_currency,
         'СуммаПрописью' => primary_currency_price_in_word,
         'СтоимостьТураВал' => tour_price.round.to_s + ' ' + tour_price_currency,
         'СуммаВал' => total_tour_price_in_curr.to_s + ' ' + tour_price_currency,

@@ -490,8 +490,14 @@ $(function(){
         }
 
         val = parseFloat($('#claim_tour_price').val());
-        if (isFinite(val) && val > 0) {
-          str = str + val + $('#claim_tour_price_currency').val() + '(тур) + ';
+        discount = parseFloat($('#claim_discount').val());
+        if (isFinite(val) && val > 0 && isFinite(discount)) {
+          if (discount > 0) {
+            str = str + '(' + val + '-' + discount + ')';
+          } else {
+            str = str + val;
+          }
+          str = str + $('#claim_tour_price_currency').val() + '(тур) + ';
         }
 
         count = $('#claim_visa_count').val();
@@ -549,7 +555,8 @@ $(function(){
   var calculate_tour_price = function(){
     // we must set 0 if user left empty field after editing
     var fields =  '#claim_tour_price, #claim_additional_services_price, #claim_visa_price, #claim_children_visa_price, ' +
-                  '#claim_insurance_price, #claim_additional_insurance_price, #claim_fuel_tax_price';
+                  '#claim_insurance_price, #claim_additional_insurance_price, #claim_fuel_tax_price, ' +
+                  '#claim_discount, #tour_price_with_discount';
 
     $(fields).each(function(){
       var val = parseFloat($(this).val());
@@ -558,7 +565,7 @@ $(function(){
       }
     });
 
-    var sum_price = parseFloat($('#claim_tour_price').val()) * course($('#claim_tour_price_currency').val());
+    var sum_price = parseFloat($('#tour_price_with_discount').val()) * course($('#claim_tour_price_currency').val());
     sum_price = sum_price +
       parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency').val());
 
@@ -585,10 +592,12 @@ $(function(){
   }
 
   function adjust_calculation() {
+    set_discount();
     var tour_price = calculate_tour_price(),
         prev_tour_price = $('#claim_primary_currency_price').data('tour_price');
     if (tour_price != prev_tour_price) {
       $('#claim_primary_currency_price').val(tour_price);
+      $('#claim_primary_currency_price_view').text(tour_price);
       $('.primary_currency_price_view').text(tour_price);
       $('#claim_primary_currency_price').change();
       calculate_tourist_debt();
@@ -668,6 +677,14 @@ $(function(){
       }
     });
 	};
+
+  var set_discount = function(){
+    var price = parseFloat($('#claim_tour_price').val()),
+        discount = parseFloat($('#claim_discount').val());
+    price = price || 0;
+    discount = discount || 0;
+    $('#tour_price_with_discount').val(price - discount);
+  };
 
   var calculate_tourist_debt = function(){
     var price = parseFloat($('#claim_primary_currency_price').val());

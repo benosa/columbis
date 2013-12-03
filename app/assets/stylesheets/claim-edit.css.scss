@@ -497,45 +497,25 @@
     .tour_price_block .fake_row {
       &.row1 {
         .col1 {
-          width: 50%; margin-bottom: 11px;
-          .two_line { margin-right: 50%; width: 100%; }
+          width: 100%; margin-bottom: 11px;
+          .two_line { margin-right: 50%; }
           .amount-input-wrap { margin-right: 97px; }
           .currency-select-wrap { margin-right: 15px; }
         }
-        .col2, .col3, .col4 {
-          width: 50%;
-          float: left;
-        }
         .col2 {
-          .block-stretch {
-            margin-right: 185px;
-            .two_line { margin: 0 0 0 15px; }
-          }
-          .block-right {
-            float: right;
-            width: 175px;
-          }
-        }
-        .col3 {
+          width: 50%;
           .block-stretch {
             margin-right: 90px;
             .two_line { margin: 0 10px 0 0; }
           }
           .block-right {
-            float: right;
             width: 90px;
             .two_line { margin: 0 15px 0 0; }
           }
         }
-        .col4 {
-          .block-stretch {
-            margin-right: 75px;
-            .two_line { margin: 0 10px 0 15px; }
-          }
-          .block-right {
-            float: right;
-            width: 75px;
-          }
+        .col3 {
+          width: 50%;
+          .block-stretch .two_line { margin-left: 15px; }
         }
       }
 

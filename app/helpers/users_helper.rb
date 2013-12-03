@@ -19,7 +19,7 @@ module UsersHelper
   end
 
   def show_demo_enter
-    !demo_user? && current_company.claims_count < CONFIG[:claim_count_for_demo]
+    !demo_user? && current_company.claims_count.to_i < CONFIG[:claim_count_for_demo]
   end
 
   def show_demo_exit

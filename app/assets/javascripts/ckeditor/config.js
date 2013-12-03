@@ -16,3 +16,6 @@
   { name: 'others', items: [ '-' ] },
   { name: 'about', items: [ 'About' ] }
 ];
+
+// Disable Advanced Content Filter to prevent spoiling original content
+CKEDITOR.config.allowedContent = true;

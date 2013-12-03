@@ -660,7 +660,8 @@ class Claim < ActiveRecord::Base
 
     def calculate_tour_price
 
-      sum_price = tour_price.to_f * course(tour_price_currency)
+      price = discount.to_f > 0 ? tour_price.to_f * (1 - discount.to_f / 100) : tour_price.to_f
+      sum_price = price * course(tour_price_currency)
       sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
       # some fields are calculated per person
@@ -920,7 +921,7 @@ class Claim < ActiveRecord::Base
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
         'Сумма' => primary_currency_price.to_money.to_s,
-        'Скидка' => discount.round.to_s + ' ' + tour_price_currency,
+        'Скидка' => discount.round(2).to_s + '%',
         'СуммаПрописью' => price_in_word(primary_currency_price),
         'СуммаВал' => total_tour_price_in_curr.to_s,
         'СуммаПрописьюВал' => price_in_word(total_tour_price_in_curr),
@@ -938,7 +939,8 @@ class Claim < ActiveRecord::Base
         'СрокОплатыТуристом' => (maturity.strftime('%d/%m/%Y') if maturity),
         'Отправление' => arrival_date,
         'Возврат' => departure_date,
-        'ФИОМенеджераИнициалы' => user.try(:initials_name)
+        'ФИОМенеджераИнициалы' => user.try(:initials_name),
+        'НомерДоговора' => contract_name.present? ? contract_name : num
       }
 
       fields.merge!({

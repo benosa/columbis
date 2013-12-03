@@ -493,7 +493,8 @@ $(function(){
         discount = parseFloat($('#claim_discount').val());
         if (isFinite(val) && val > 0 && isFinite(discount)) {
           if (discount > 0) {
-            str = str + '(' + val + '-' + discount + ')';
+            dval = $('#tour_price_with_discount').val();
+            str = str + dval + '(' + val + '-' + discount + '%скидка)';
           } else {
             str = str + val;
           }
@@ -565,13 +566,15 @@ $(function(){
       }
     });
 
-    var sum_price = parseFloat($('#tour_price_with_discount').val()) * course($('#claim_tour_price_currency').val());
+    var discount = parseFloat($('#claim_discount').val()),
+        tour_price = parseFloat(isFinite(discount) && discount > 0 ? $('#tour_price_with_discount').val() : $('#claim_tour_price').val());
+
+    var sum_price = tour_price * course($('#claim_tour_price_currency').val());
     sum_price = sum_price +
       parseFloat($('#claim_additional_services_price').val()) * course($('#claim_additional_services_price_currency').val());
 
     // some fields are calculated per person
     fields =  ['#claim_visa_price', '#claim_children_visa_price', '#claim_insurance_price', '#claim_additional_insurance_price', '#claim_fuel_tax_price'];
-
 
     var total = 0;
     for(var i=0; i<fields.length; i++)  {
@@ -683,7 +686,7 @@ $(function(){
         discount = parseFloat($('#claim_discount').val());
     price = price || 0;
     discount = discount || 0;
-    $('#tour_price_with_discount').val(price - discount);
+    $('#tour_price_with_discount').val((price * (1 - discount / 100)).toFixed(2));
   };
 
   var calculate_tourist_debt = function(){

@@ -206,18 +206,37 @@
     .block_title .rates input { width: 70px; }
     .fake_row {
       &.row1 {
-        .amount-input-wrap { margin-right: 80px; }
-        .currency-select-wrap { float: right; width: 70px; }
-        .col1 { float: left; width: 30%; }
-        .col2, .col3 {
-          float: left; width: 35%;
-          .block-right { float: right; width: 75px; }
+        .col1, .col2, .col3, .col4 {
+          float: left; width: 27%;
+          .block-right {
+            float: right; width: 75px;
+            .two_line { margin-right: 15px; }
+          }
           .block-stretch {
             margin-right: 75px;
-            .two_line { margin: 0 10px 0 30px; }
+            .two_line { margin: 0 10px 0 15px; }
           }
         }
-        .col3 .block-right .two_line { margin-right: 0; }
+        &:first-child {
+          .block-stretch .two_line { margin-left: 0; }
+        }
+        .col2 {
+          width: 19%;
+          .block-right {
+            float: right;
+            width: 100px;
+            margin-right: 15px;
+            .two_line {
+              input[type="text"] { margin: 0; width: 87px; }
+            }
+          }
+          .block-stretch {
+            margin-right: 115px;
+            .two_line { margin: 0 10px 0 15px; }
+          }
+        }
+        .amount-input-wrap { margin-right: 80px; }
+        .currency-select-wrap { float: right; width: 70px; margin-right: 0; }
       }
 
       &.row2 {
@@ -496,26 +515,49 @@
     // Tour price
     .tour_price_block .fake_row {
       &.row1 {
+        .col1, .col2 { margin-bottom: 11px; }
+        .col1, .col2, .col3, .col4 {
+          width: 50%;
+          float: left;
+        }
         .col1 {
-          width: 100%; margin-bottom: 11px;
-          .two_line { margin-right: 50%; }
+          .two_line { margin-right: 50%; width: 100%; }
           .amount-input-wrap { margin-right: 97px; }
           .currency-select-wrap { margin-right: 15px; }
         }
         .col2 {
-          width: 50%;
+          .block-stretch {
+            margin-right: 340px;
+            .two_line { margin: 0 0 0 15px; }
+          }
+          .block-right {
+            float: right;
+            width: 330px;
+            margin: 0;
+            input[type="text"] { width: 316px; }
+          }
+        }
+        .col3 {
           .block-stretch {
             margin-right: 90px;
             .two_line { margin: 0 10px 0 0; }
           }
           .block-right {
+            float: right;
             width: 90px;
             .two_line { margin: 0 15px 0 0; }
           }
         }
-        .col3 {
-          width: 50%;
-          .block-stretch .two_line { margin-left: 15px; }
+        .col4 {
+          .block-stretch {
+            margin-right: 75px;
+            .two_line { margin: 0 10px 0 15px; }
+          }
+          .block-right {
+            float: right;
+            width: 75px;
+            .two_line { margin: 0; }
+          }
         }
       }
 

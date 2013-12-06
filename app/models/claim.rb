@@ -889,6 +889,7 @@ class Claim < ActiveRecord::Base
     def printable_fields
       fields = {
         'Номер' => num,
+        'НомерДоговора' => contract_name,
         'ДатаЗаездаС' => (arrival_date.strftime('%d/%m/%Y') if arrival_date),
         'ДатаЗаездаПо' => (departure_date.strftime('%d/%m/%Y') if departure_date),
         'Город' => city.try(:name),
@@ -926,6 +927,7 @@ class Claim < ActiveRecord::Base
         'СуммаВал' => total_tour_price_in_curr.to_s,
         'СуммаПрописьюВал' => price_in_word(total_tour_price_in_curr),
         'СтоимостьТура' => tour_price_in_primary_currency.to_s,
+        'СтоимостьТураСкидка' => discount.to_i == 0 ? tour_price.round.to_s : (tour_price * (100 - discount) / 100).to_i.to_s,
         'СтоимостьТураПрописью' => price_in_word(tour_price_in_primary_currency),
         'СтоимостьТураСВал' => tour_price_in_primary_currency.to_s + ' ' + cut_price_currency(CurrencyCourse::PRIMARY_CURRENCY),
         'СтоимостьТураПрописьюСВал' => price_in_word_with_currency(tour_price_in_primary_currency, CurrencyCourse::PRIMARY_CURRENCY),
@@ -977,16 +979,19 @@ class Claim < ActiveRecord::Base
 
       fields.merge!({
         'Туроператор' => operator.try(:name),
+        'ТуроператорПолноеНазвание' => operator.try(:full_name),
         'ТуроператорНомер' => operator.try(:register_number),
         'ТуроператорСерия' => operator.try(:register_series),
         'ТуроператорИНН' => operator.try(:inn),
         'ТуроператорОГРН' => operator.try(:ogrn),
         'ТуроператорКПП' => operator.try(:code_of_reason),
+        'ТуроператорБанк' => operator.try(:banking_details),
         'ТуроператорСайт' => operator.try(:site),
         'ТуроператорТелефоны' => operator.try(:phone_numbers),
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
         'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
         'Страховщик' => operator.try(:insurer),
+        'СтраховщикПолноеНазвание' => operator.try(:insurer_full_name),
         'СтраховщикАдрес' => operator.try(:insurer_address),
         'ДоговорСтрахования' => operator.try(:insurer_contract),
         'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',

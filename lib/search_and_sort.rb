@@ -48,8 +48,8 @@ module SearchAndSort
     formats = %w[DD.MM.YY DD.MM.YYYY]
     fields.each do |field|
       formats.each_with_index do |format, i|
-        yield "to_char(#{field}, '#{format}')", :"#{field}_index#{i}"
-     end
+        yield "to_char(#{table_name}.#{field}, '#{format}')", :"#{field}_index#{i}"
+      end
     end
   end
 

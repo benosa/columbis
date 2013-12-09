@@ -36,6 +36,7 @@ class PrintersController < ApplicationController
       @printer.template = File.open(file)
       @printer.save
     end
+    set_charset(@printer) if @printer.template?
     @doc_body = get_doc_part(@printer, 'body') if @printer.template?
     @doc_style = get_doc_part(@printer, 'style') if @printer.template? && is_admin?
   end
@@ -77,10 +78,30 @@ class PrintersController < ApplicationController
       page.at_css(part).inner_html
     end
 
+    def set_charset(printer)
+      page = Nokogiri::HTML(open(printer.template.path), nil, 'utf-8')
+      encoding = page.meta_encoding
+      if !encoding
+        page.meta_encoding = 'utf-8'
+        IO.write(printer.template.path, page.to_html)
+      end
+    end
+
     def set_doc_part(printer, part, value)
+
       page = Nokogiri::HTML(open(printer.template.path))
       page_part = page.at_css(part)
       page_part.inner_html = value
+      if part == 'body'
+        width = 'width:640px'
+        style = page_part['style']
+        if style && !style.include?(width)
+          style += ';' + width
+        else
+          style = width
+        end
+        page_part.set_attribute('style', style)
+      end
       IO.write(printer.template.path, page.to_html)
     end
 

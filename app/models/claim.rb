@@ -110,7 +110,18 @@ class Claim < ActiveRecord::Base
 
   scope :active, lambda { where(:active => true) }
 
-  define_index do
+  define_index 'default_index' do
+ #   indexes :reservation_date, :departure_date
+    indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
+    indexes country(:name), :as => :country, :sortable => true
+
+    has :user_id
+    has :reservation_date, :departure_date, :type => :datetime
+   # indexes [user.last_name], :as => :user, :sortable => true
+    set_property :delta => true
+  end
+
+  define_index 'mistral_index' do
     indexes :airport_back, :visa, :calculation, :documents_status, :docs_note, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
             :operator_confirmation, :sortable => true

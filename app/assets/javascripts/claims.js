@@ -1121,15 +1121,23 @@ $(function() {
     localStorage.setItem('claim_unlock', '');
   }
   // Row highlight
-  $('body').on('click', '#claims td', function(e) {
-    var $row = $(this).closest('.row'),
-        $hrow = $('#claims .row.highlight');
-    if ($row.get(0) == $hrow.get(0)) {
-      $row.toggleClass('highlight');
-    } else {
-      $hrow.removeClass('highlight');
-      $row.addClass('highlight');
+  $('body').on('click', '#claims tr', function(e) {
+    var info_block_id = 'full_claim_info';
+    $row = $(this);
+    if ($('#' + info_block_id).length) {
+      $('#' + info_block_id).remove();
     }
+    $row.addClass('hidden');
+    $row.after('<tr id="' + info_block_id + '"><td>olo</td></tr>');
+
+   // var $row = $(this).closest('.row'),
+      //  $hrow = $('#claims .row.highlight');
+   // if ($row.get(0) == $hrow.get(0)) {
+   //   $row.toggleClass('highlight');
+   // } else {
+    //  $hrow.removeClass('highlight');
+    //  $row.addClass('highlight');
+   // }
   });
 
   // Window scroll event

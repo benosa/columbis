@@ -31,6 +31,7 @@ function removeEditor(save) {
       data: { _method: 'put', body: edit_html },
       success: function(data) {
         if (data.success == true) {
+          $('#delete_doc').removeClass('hidden');
           editor.destroy();
           editor = null;
         }
@@ -39,6 +40,19 @@ function removeEditor(save) {
   }
 }
 
+function delete_doc() {
+  $.ajax({
+    url: $('body').data('delete_path'),
+    type: 'post',
+    data: { _method: 'put' },
+    success: function(data) {
+      if (data.success == true) {
+        $('#delete_doc').addClass('hidden');
+        $('#edit_content').html(data.html);
+      }
+    }
+  });
+}
 
 function showEmptyFields() {
   var el = document.getElementById('empty_fields');
@@ -69,6 +83,11 @@ $(function(){
   });
   $('a#close_editor').on('click', function(){
     removeEditor(0);
+  });
+  $('a#delete_doc').on('click', function(){
+    if (confirm($('body').data('delete_message'))) {
+      delete_doc()
+    }
   });
   $('a#save_editor').on('click', function(){
     removeEditor(1);

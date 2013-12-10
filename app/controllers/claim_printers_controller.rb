@@ -4,8 +4,11 @@ class ClaimPrintersController < ApplicationController
   def edit
     if %w[contract memo permit warranty act].include? params[:printer]
       @claim = Claim.find(params[:claim_id])
+      @empty_fields = get_empty_fields
       html = get_claim_html
       @html_parts = get_html_parts(html)
+      @file_exist = File.exist?(form_path)
+
       render text: nil, layout: 'printer'
     else
       redirect_to claims_url, :alert => "#{t('print_partial_not_found')} '#{params[:form]}'"
@@ -29,6 +32,16 @@ class ClaimPrintersController < ApplicationController
     end
   end
 
+  def delete
+    if %w[contract memo permit warranty act].include? params[:printer]
+      @claim = Claim.find(params[:claim_id])
+      File.delete(form_path) if File.exist?(form_path)
+      render :json => { :success => true, :html => get_claim_html }
+    else
+      render :json => { :success => false }
+    end
+  end
+
   def print
     @claim = Claim.find(params[:claim_id])
     html = get_claim_html
@@ -36,6 +49,12 @@ class ClaimPrintersController < ApplicationController
   end
 
   private
+    def get_empty_fields
+      html = @claim.send(:"print_#{params[:printer]}")
+      page = Nokogiri::HTML(html)
+      page.at_css('#empty_fields')
+    end
+
     def get_claim_html
       html = check_form_file
       html = @claim.send(:"print_#{params[:printer]}") if !html

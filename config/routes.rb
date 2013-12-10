@@ -6,6 +6,7 @@ Tourism::Application.routes.draw do
 
   get '/claim_print/:claim_id/:printer' => 'claim_printers#edit', as: 'edit_claim_printers'
   put '/claim_print/:claim_id/:printer' => 'claim_printers#update', as: 'update_claim_printers'
+  put '/claim_print/:claim_id/:printer/delete' => 'claim_printers#delete', as: 'delete_claim_printers'
   get '/claim_print/:claim_id/:printer/print' => 'claim_printers#print', as: 'print_claim_printers'
 
   resources :user_payments, :except => [:show, :edit, :update]

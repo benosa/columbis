@@ -23,14 +23,17 @@
         .edit_menu {display: none;}
       </style>
 
-  %body{ :data => { :update_path => update_claim_printers_path } }
+  %body{ :data => { :update_path => update_claim_printers_path, :delete_message => I18n.t('claim_printers.edit.delete_message'), :delete_path => delete_claim_printers_path } }
     .edit_menu
       %div
         %div#base_acts
           = link_to I18n.t('claim_printers.edit.edit_doc'), '#', :id => 'create_editor'
           = link_to I18n.t('claim_printers.edit.print_doc'), print_claim_printers_path, :onclick => 'window.print(); return false;'
+          = link_to I18n.t('destroy'), '#', :id => 'delete_doc', :class => !@file_exist ? 'hidden' : ''
         %div#edit_acts
           = link_to I18n.t('save'), '#', :id => 'save_editor', :class => 'uset_filters'
           = link_to I18n.t('cancel'), '#', :id => 'close_editor', :class => 'uset_filters'
+    .empty_fields
+      != "#{@empty_fields}"
     #edit_content
       = raw @html_parts[:body]

@@ -10,6 +10,7 @@ class TasksController < ApplicationController
       if search_or_sort?
         options = { :with => current_ability.attributes_for(:read, Task) }
         options[:index] = 'admin_index' if is_admin?
+        options[:index] = 'default_task_index' if !is_admin?
         options = search_and_sort_options(options)
         set_filters(options)
         search_paginate(Task.search_and_sort(options).with_columns, options)

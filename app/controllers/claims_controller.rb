@@ -18,8 +18,9 @@ class ClaimsController < ApplicationController
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
     if search_or_sort? # Last search was restored from session
       # remover any sql order by reorder(nil), because there are might be composed columns
+      # is_mistral? ? { index: 'mistral_claim_index' } : { index: 'default_claim_index' } 
       @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables),
-        is_mistral? ? { index: 'mistral_index' } : { } ).reorder(nil)
+       { index: 'default_claim_index' }  ).reorder(nil)
       @claims = Claim.sort_by_search_results(@claims_collection)
     else
       page_options = { :page => params[:page], :per_page => per_page }

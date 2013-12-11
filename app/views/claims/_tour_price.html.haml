@@ -19,12 +19,12 @@
         .fake_col.col2
           .block-right
             .two_line
-              %p
-                %strong= label_tag t('.tour_price_with_discount')
-              = text_field_tag :tour_price_with_discount, (claim.tour_price.to_f - claim.discount.to_f).to_s, :class => 'grey_input important', :disabled => true
+              %p= label_tag t('.tour_price_with_discount')
+              = f.text_field :tour_price_with_discount, :class => 'grey_input', :disabled => true
+              %label.tour_price_with_discount_currency= t(claim.tour_price_currency.upcase)
           .block-stretch
             .two_line
-              %p= f.label :discount
+              %p= f.label :discount, t('.discount')
               = f.text_field :discount
         .fake_col.col3
           .block-right

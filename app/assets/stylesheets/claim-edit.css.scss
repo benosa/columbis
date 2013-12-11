@@ -220,20 +220,22 @@
         &:first-child {
           .block-stretch .two_line { margin-left: 0; }
         }
+        .col1 .two_line { margin-right: 15px; }
         .col2 {
           width: 19%;
           .block-right {
-            float: right;
-            width: 100px;
-            margin-right: 15px;
-            .two_line {
-              input[type="text"] { margin: 0; width: 87px; }
-            }
+            float: right; width: 115px;
+            p { visibility: hidden; }
           }
           .block-stretch {
             margin-right: 115px;
             .two_line { margin: 0 10px 0 15px; }
           }
+          .tour_price_with_discount-wrap { display: inline-block; width: 55px; }
+          .tour_price_with_discount_currency { margin: 4px 0 0 5px; display: inline-block; }
+        }
+        .col3 {
+          .block-stretch .two_line { margin-left: 15px; }
         }
         .amount-input-wrap { margin-right: 80px; }
         .currency-select-wrap { float: right; width: 70px; margin-right: 0; }
@@ -527,14 +529,14 @@
         }
         .col2 {
           .block-stretch {
-            margin-right: 340px;
+            margin-right: 165px;
             .two_line { margin: 0 0 0 15px; }
           }
           .block-right {
-            float: right;
-            width: 330px;
-            margin: 0;
-            input[type="text"] { width: 316px; }
+            float: right; width: 155px; margin: 0;
+            .two_line { margin-right: 0; }
+            p { visibility: visible; }
+            .tour_price_with_discount-wrap { width: 110px; }
           }
         }
         .col3 {

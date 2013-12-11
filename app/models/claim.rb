@@ -573,6 +573,10 @@ class Claim < ActiveRecord::Base
     @primary_currency_operator_price ||= self.operator_price.to_f * (course(self.operator_price_currency) || 1)
   end
 
+  def tour_price_with_discount
+    @tour_price_with_discount ||= (discount.to_f > 0 ? tour_price.to_f * (1 - discount.to_f / 100) : tour_price.to_f).round
+  end
+
   private
 
     def self.to_js_type(column_type)
@@ -660,7 +664,7 @@ class Claim < ActiveRecord::Base
 
     def calculate_tour_price
 
-      price = discount.to_f > 0 ? tour_price.to_f * (1 - discount.to_f / 100) : tour_price.to_f
+      price = tour_price_with_discount
       sum_price = price * course(tour_price_currency)
       sum_price += additional_services_price.to_f * course(additional_services_price_currency);
 
@@ -927,7 +931,7 @@ class Claim < ActiveRecord::Base
         'СуммаВал' => total_tour_price_in_curr.to_s,
         'СуммаПрописьюВал' => price_in_word(total_tour_price_in_curr),
         'СтоимостьТура' => tour_price_in_primary_currency.to_s,
-        'СтоимостьТураСкидка' => discount.to_i == 0 ? tour_price.round.to_s : (tour_price * (100 - discount) / 100).to_i.to_s,
+        'СтоимостьТураСкидка' => tour_price_with_discount.to_s,
         'СтоимостьТураПрописью' => price_in_word(tour_price_in_primary_currency),
         'СтоимостьТураСВал' => tour_price_in_primary_currency.to_s + ' ' + cut_price_currency(CurrencyCourse::PRIMARY_CURRENCY),
         'СтоимостьТураПрописьюСВал' => price_in_word_with_currency(tour_price_in_primary_currency, CurrencyCourse::PRIMARY_CURRENCY),

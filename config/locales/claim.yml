@@ -192,6 +192,7 @@ ru:
       price_as_string: 'Стоимость прописью'
       count: 'Кол-во'
       tour_price_with_discount: 'Цена со скидкой'
+      discount: 'Скидка, %'
 
     new:
       title: 'Новая бронь'

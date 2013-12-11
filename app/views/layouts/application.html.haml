@@ -23,8 +23,9 @@
     - if params[:controller] =~ %r[^boss/]
       = stylesheet_link_tag 'boss'
       = javascript_include_tag 'boss'
+
+    = stylesheet_link_tag 'claim-edit'
     - if is_claim_form
-      = stylesheet_link_tag 'claim-edit'
       = javascript_include_tag 'claim-edit'
 
     - if CONFIG[:domain] == 'columbis.ru'

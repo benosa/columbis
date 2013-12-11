@@ -821,7 +821,7 @@ option {
   }
 }
 
-.edit_page {
+.new_claim {
   .popup_form.modal {
     width: 100%;
     margin-left: 30px;
@@ -857,9 +857,10 @@ option {
     .date { width: 90px }
     .new_claim .arrival_date { margin-right: 17px !important;}
     .new_claim .tourist_stat .ik_select_link { margin: 0 !important; }
-  }
-  a.cancel { display: inline-block; color: #666666; text-decoration: underline; line-height: 30px;
-    &:hover { text-decoration: none;}
+
+    a.cancel { display: inline-block; color: #666666; text-decoration: underline; line-height: 30px;
+      &:hover { text-decoration: none;}
+    }
   }
 }
 

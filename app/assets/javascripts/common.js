@@ -106,7 +106,7 @@ $(function(){
   })();
 
   // bind submitting form for links with data-submit attribute
-  $('a[data-submit]').on('click', function(e) {
+  $('body').on('click', 'a[data-submit]', function(e) {
     e.preventDefault();
     var form_id = $(this).data('submit'),
         $form = $('#' + form_id);

@@ -4,7 +4,7 @@ class ClaimPrintersController < ApplicationController
   def edit
     if %w[contract memo permit warranty act].include? params[:printer]
       @claim = Claim.find(params[:claim_id])
-      @empty_fields = get_empty_fields
+      @empty_fields, @optional_fields = get_fields_blocks
       html = get_claim_html
       @html_parts = get_html_parts(html)
       @file_exist = File.exist?(form_path)
@@ -49,10 +49,10 @@ class ClaimPrintersController < ApplicationController
   end
 
   private
-    def get_empty_fields
+    def get_fields_blocks
       html = @claim.send(:"print_#{params[:printer]}")
       page = Nokogiri::HTML(html)
-      page.at_css('#empty_fields')
+      [ page.at_css('#empty_fields'), page.at_css('#optional_fields') ]
     end
 
     def get_claim_html

@@ -35,5 +35,6 @@
           = link_to I18n.t('cancel'), '#', :id => 'close_editor', :class => 'uset_filters'
     .empty_fields
       != "#{@empty_fields}"
+      != "#{@optional_fields}"
     #edit_content
       = raw @html_parts[:body]

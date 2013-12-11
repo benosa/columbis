@@ -1034,6 +1034,7 @@ class Claim < ActiveRecord::Base
         'Туристы' =>
           {
             :collection => dependents,
+            :name => 'dependents',
             'Турист.ФИО' => :full_name,
             'Турист.ДатаРождения' => :date_of_birth,
             'Турист.СерияПаспорта' => :passport_series,

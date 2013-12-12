@@ -301,6 +301,81 @@ function set_claims_tooltip(init) {
   }
 }
 
+function set_new_claim_js() {
+  setDatepicker();
+  setDatetimepicker();
+  customizeSelect();
+  // change years for date_of_birth pickers
+  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
+
+  $('#tourists').on('click', 'a.add', function(e) {
+    e.preventDefault();
+    var $t = $(this);
+    add_tourist($t.closest('.form_block'));
+  });
+
+  $('#tourists').on('click', 'a.delete', function(e) {
+    e.preventDefault();
+    var $t = $(this),
+        $fields = $t.closest('.fields');
+
+    var is_empty_fields = !$fields.find(':input[value!=""]').length;
+    if (is_empty_fields || confirm($t.data('check'))) {
+      del_tourist($fields);
+    }
+  });
+
+  $('#close_new_remote_claim').on('click', function(e) {
+    $('#new_claim_modal').remove();
+  });
+
+}
+
+// del tourist
+var del_tourist = function(fields){
+  var $fields = $(fields);
+
+  if ($fields.hasClass('applicant'))
+    $fields.find(':input').val('');
+  else {
+    $fields.find('.datepicker').datepicker('destroy');
+    // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
+    $fields.find('._destroy').val('1');
+    $fields.addClass('destroyed').hide();
+  }
+};
+
+// add tourist
+var add_tourist = function(tourist_block) {
+  var $block = $(tourist_block),
+      $last_fields = $block.find('.dependent:last'),
+      num = $last_fields.length > 0 ? parseInt($last_fields.attr('id').replace(/dependent-/, ''), 10) + 1 : 0,
+      tourist, html;
+
+  tourist = {
+    num: num,
+    full_name: '',
+    id: '',
+    _destroy: '',
+    date_of_birth: '',
+    passport_series: '',
+    passport_number: '',
+    passport_valid_until: '',
+  }
+  html = JST['claims/dependent'].render(tourist);
+
+  $block.find(' .add_row').before(html);
+
+  var $fields = $block.find('.fields:last');
+  setDatepicker($fields, true);
+  customizeSelect($fields, true);
+  setAutocomplete($fields.find('.full_name.autocomplete'), false, {
+    select: function(event, ui) { select_tourist(this, ui.item); },
+    change: function(event, ui) { change_tourist(this); }
+  });
+ // init_tourist('.full_name.autocomplete');
+}
+
 $(function(){
   bind_to_checkbox_data_message( $('#special_offer_checkbox.active') );//Tourist special_offer
 
@@ -882,55 +957,12 @@ $(function(){
   // Set autocomplete for others autocompletes in the form
   setAutocomplete('.edit_page', true);
 
-  // add tourist
-  var add_tourist = function(tourist_block) {
-    var $block = $(tourist_block),
-        $last_fields = $block.find('.dependent:last'),
-        num = $last_fields.length > 0 ? parseInt($last_fields.attr('id').replace(/dependent-/, ''), 10) + 1 : 0,
-        tourist, html;
-
-    tourist = {
-      num: num,
-      full_name: '',
-      id: '',
-      _destroy: '',
-      date_of_birth: '',
-      passport_series: '',
-      passport_number: '',
-      passport_valid_until: '',
-    }
-    html = JST['claims/dependent'].render(tourist);
-
-    $block.find(' .add_row').before(html);
-
-    var $fields = $block.find('.fields:last');
-    setDatepicker($fields, true);
-    customizeSelect($fields, true);
-    setAutocomplete($fields.find('.full_name.autocomplete'), false, {
-      select: function(event, ui) { select_tourist(this, ui.item); },
-      change: function(event, ui) { change_tourist(this); }
-    });
-    init_tourist('.full_name.autocomplete');
-  }
   $('#tourists').on('click', 'a.add', function(e) {
     e.preventDefault();
     var $t = $(this);
     add_tourist($t.closest('.form_block'));
   });
 
-  // del tourist
-  var del_tourist = function(fields){
-    var $fields = $(fields);
-
-    if ($fields.hasClass('applicant'))
-      $fields.find(':input').val('');
-    else {
-      $fields.find('.datepicker').datepicker('destroy');
-      // $fields.find('.autocomplete').autocomplete('destroy'); // this line is a cause of freezing, maybe it's a bug in jquery-ui
-      $fields.find('._destroy').val('1');
-      $fields.addClass('destroyed').hide();
-    }
-  };
 	$('#tourists').on('click', 'a.delete', function(e) {
     e.preventDefault();
     var $t = $(this),

@@ -1,2 +1,5 @@
+if (!$('#new_claim_modal').length) {
 $('#container').before('<div id="new_claim_modal"></div>');
+}
 $('#new_claim_modal').html("#{j render :partial => 'remote_form'}");
+set_new_claim_js();

@@ -1,8 +1,17 @@
 - claim = f.object
 - content_for(:error_messages) do
   = f.error_messages
+
 .edit_page
   .popup_form.new_claim_block.clearfix.modal
+    - if content_for? :error_messages
+      .alert.alert-error
+        = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
+        = yield :error_messages
+    - if content_for? :success_messages
+      .alert.alert-success
+        = yield :success_messages
+
     %form.new_claim
       .block_title
         %h2 Новая заявка
@@ -23,6 +32,7 @@
                 - tourist_stat_class = 'tourist_stat documentation_select' + (' editable-select' if is_admin? || is_boss?).to_s
                 = f.select :tourist_stat, tourist_stat_options(claim), {include_blank: true}, :class => tourist_stat_class
           .fake_row.row3
+            = f.text_field :reservation_date, :hidden => true, :class => 'visa datepicker', :value => l(claim.reservation_date, :format => :long)
             .filter_block.block-check_date
               %p
                 = f.label :check_date
@@ -95,6 +105,5 @@
               .add_btn
                 = link_to t('claims.tourists.add_another_tourist'), '#', :class => 'add add_tourist'
       .actions_bar.panel_content.clearfix
-        = link_to t('cancel'), '#', :class => 'cancel'
-        = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
-        = link_to t('save_and_close'), '#', :class => 'save save_and_close', :data => { :submit => @form_id, :close => true }
+        = link_to t('cancel'), '#', :class => 'cancel', :id => 'close_new_remote_claim'
+        = f.submit t('save') ,id: "modal_claim_save", class: "btn btn-large btn-primary"

@@ -221,6 +221,48 @@ describe "Claim:", js: true do
       end
     end
 
+    describe "Claim docs save" do
+      before do
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss, visa_count: 1,
+         children_visa_count: 1, fuel_tax_count: 1, fuel_tax_price: 1, insurance_price: 1, additional_insurance_price:1)
+      end
+
+      it "should edit and save on disk claim act" do
+        @path = "uploads/#{@claim.company.id}/claims/#{@claim.id}/act.html"
+        if File.exist?(@path)
+          FileUtils.rm(@path)
+        end
+        visit(edit_claim_printers_path(claim_id: @claim.id, printer: 'act'))
+        click_link I18n.t('claim_printers.edit.edit_doc')
+        File.exist?(@path).should == false
+        click_link I18n.t('save')
+        wait_until { File.exist?(@path) == true }
+        File.exist?(@path).should == true
+
+        # page.should have_selector("div#cke_edit_content")
+       # page.should have_selector("div#content")
+      #  I18n.t('claim_printers.edit.edit_doc')
+      #  @link = all('a').select {|elt| elt.text == I18n.t('layouts.main_menu.claims.act') }.last
+     #   Rails.logger.debug "url_for_current_company: #{@link['href']}"
+      #  expect {
+     #     @link.click
+      #  }.to change{current_path}.from(edit_claim_path(@claim)).to('/claim_print/1/act')
+      #  current_path.should == @link['href']
+
+      end
+    end
+
+    describe "New claim in modal form" do
+      before do
+        @claim_attrs = attributes_for(:claim)
+        Rails.logger.debug "url_for: #{@claim_attrs.inspect}"
+      end
+
+      it "should create an claim" do
+        visit claims_path(:page => 1)
+      end
+    end
+
   end
 
 end

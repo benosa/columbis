@@ -862,6 +862,18 @@ option {
       &:hover { text-decoration: none;}
     }
   }
+
+  #claim_arrival_date_wrapper {
+    width: 105px;
+    display: inline-block;
+  }
+
+  #modal_claim_save {
+    display: inline-block;
+    float: right;
+    height: 30px;
+    padding: 5px 19px 6px 19px;
+  }
 }
 
 /* high_resolution */

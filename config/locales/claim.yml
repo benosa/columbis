@@ -124,7 +124,7 @@ ru:
 
     tourists:
       tourists: 'Туристы'
-      full_name: 'ФИО туриста'
+      full_name: 'ФИО / латиница'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
       passport_expire: 'Действит. до'
@@ -136,6 +136,7 @@ ru:
 
     tourist:
       tourists_full_name_hint: 'Договор оформлен на'
+      passport_issued: 'Паспорт выдан:'
 
     flights:
       title: 'Авиаперелёты'

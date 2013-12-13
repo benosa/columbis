@@ -23,7 +23,7 @@
         .clearfix
           .col-actions
             .delete-wrap
-              %a.delete
+              %a.delete{ 'data-check' => t('are_you_sure') }
           .col-main.clearfix
             .common_fields
               = render :partial => 'tourist', :locals => { :f => af }
@@ -50,7 +50,7 @@
         .clearfix
           .col-actions
             .delete-wrap
-              %a.delete
+              %a.delete{ 'data-check' => t('are_you_sure') }
           .col-main.clearfix
             .common_fields
               = render :partial => 'tourist', :locals => { :f => df, :full_name_label => false }

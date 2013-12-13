@@ -365,6 +365,22 @@
           .passport_valid_until-wrap { width: 80px; margin-right: 0; margin-left: 0; }
           .sex-wrap { width: 44px; margin-left: 10px; }
         }
+        .down-block {
+          width: 100%;
+          margin-top: 10px;
+          .block-stretch .wrap-input { margin-right: 10px; }
+          .block-right {
+            .passport_issued {
+              width: 110px;
+              float: left;
+              margin: 4px 5px !important;
+            }
+            .wrap-input {
+              margin: 0 70px 0 120px;
+              float: none;
+            }
+          }
+        }
         // label { display: none; }
         label { display: block; margin: 0 0 10px 0 !important; white-space: nowrap; }
       }
@@ -388,6 +404,7 @@
     .fake_row.applicant {
       .common_fields { margin-bottom: 10px; }
       .common_fields .block-right, .delete-wrap { margin-top: 24px; }
+      .common_fields .down-block { .block-right { margin: 0; } }
     }
     .fake_table {
       span { display: block; }

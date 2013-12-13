@@ -12,3 +12,10 @@
     - unless local_assigns[:full_name_label] == false
       = f.label :full_name, t('.tourists_full_name_hint') + ':'
     = f.text_field :full_name, :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }, wrapper: false
+.down-block
+  - if @claim.applicant == tourist
+    .block-right
+      = f.label :passport_issued, t('.passport_issued'), :class => 'passport_issued'
+      = f.text_field :passport_issued
+  .block-stretch
+    = f.text_field :fio_latin

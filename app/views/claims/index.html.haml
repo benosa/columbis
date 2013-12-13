@@ -6,7 +6,7 @@
 - content_for :top do
   -#
     / = text_field_tag :full_value
-  %form#filter_bar.filter
+  %form#filter_bar.filter{ :class => is_mistral? ? 'mistral_filter' : '' }
     = render 'shared/search_field'
 
     - if is_admin? or is_boss? or is_supervisor? or is_accountant?
@@ -36,6 +36,9 @@
       - else
         = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
         %a.settings{ :href => "#" }= t('.column_settings')
+  - if is_mistral?
+    - cache [current_company, :top_managers], :expires_in => 1.hour do
+      = render 'layouts/main_menu/top_managers' unless top_managers.empty?
 
 = render :partial => 'list'
 

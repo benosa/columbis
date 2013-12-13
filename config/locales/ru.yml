@@ -43,7 +43,10 @@ ru:
   accept: 'Применить'
   pay: 'Оплатить'
 
-  sale_lider: 'Лидер продаж'
+  sale_lider: 'Лидеры продаж'
+  f_place: '1 место'
+  s_place: '2 место'
+  t_place: '3 место'
   logout: 'Выйти'
   login: 'Войти'
   register: 'Зарегистрироваться'

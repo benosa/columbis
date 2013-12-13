@@ -43,13 +43,14 @@ ru:
       credentials: Учетные данные
       view_settings: Настройки отображения
       color_for_lists: Цвет для списков
-      selected_color: Выбранный цвет
       current_color: Текущий цвет
       personal_data: Личные данные
       create_password: Изменение пароля
       screen_width: Ширина экрана
       auto: Авто
       if_not_password: 'Если никакой пароль не задан, он будет создан автоматически'
+      color_chose_text: 'Выбрать'
+      color_cansel_text: 'отменить'
 
     messages:
       created: 'Пользователь создан'

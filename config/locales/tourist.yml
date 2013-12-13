@@ -5,9 +5,11 @@ ru:
         full_name: "ФИО"
         last_name: "Фамилия"
         first_name: "Имя"
+        fio_latin: 'ФИО на латинском'
         middle_name: "Отчество"
         passport_series: "Серия паспорта"
         passport_number: "Номер паспорта"
+        passport_issued: 'Кем, где и когда выдан паспорт'
         phone_number: "Номер телефона"
         address: "Адрес"
         passport_valid_until: "Действителен до"
@@ -78,6 +80,7 @@ ru:
       list_of_clients: 'Список клиентов'
     form:
       common: 'Общие данные'
+      passport_column: 'Паспортные данные'
       passport: 'Паспорт (серия, номер)'
       passport_valid_until: 'Паспорт действителен до'
       address: 'Адрес'

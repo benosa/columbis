@@ -253,13 +253,41 @@ describe "Claim:", js: true do
     end
 
     describe "New claim in modal form" do
+      def wait_for_ajax
+        Timeout.timeout(Capybara.default_wait_time) do
+          loop do
+            active = page.evaluate_script('jQuery.active')
+            break if active == 0
+          end
+        end
+      end
+
       before do
         @claim_attrs = attributes_for(:claim)
+        FactoryGirl.create(:dropdown_value, company: @company, list: 'tourist_stat', value: 'test')
         Rails.logger.debug "url_for: #{@claim_attrs.inspect}"
       end
 
       it "should create an claim" do
-        visit claims_path(:page => 1)
+        visit claims_path
+        click_link I18n.t('claims.index.add_claim')
+        wait_for_ajax
+        page.execute_script("$('#claim_tourist_stat').ikSelect('select', 'test');")
+        fill_in "claim[applicant_attributes][full_name]", :with => "#{@claim_attrs[:applicant][:first_name]} #{@claim_attrs[:applicant][:last_name]}"
+        fill_in "claim[applicant_attributes][date_of_birth]", :with => l(@claim_attrs[:applicant][:date_of_birth], :format => :long)
+        fill_in "claim[applicant_attributes][passport_series]", :with => "#{@claim_attrs[:applicant][:passport_series]}"
+        fill_in "claim[applicant_attributes][passport_number]", :with => "#{@claim_attrs[:applicant][:passport_number]}"
+        fill_in "claim[applicant_attributes][passport_valid_until]", :with => l(@claim_attrs[:applicant][:passport_valid_until], :format => :long)
+        fill_in "claim[applicant_attributes][phone_number]", :with => "#{@claim_attrs[:applicant][:phone_number]}"
+        fill_in "claim[applicant_attributes][email]", :with => "#{@claim_attrs[:applicant][:email]}"
+        fill_in "claim[applicant_attributes][address]", :with => "Elm street"
+        fill_in "claim[arrival_date]", :with => l(@claim_attrs[:arrival_date], :format => :long)
+        fill_in "claim[check_date]", :with => l(@claim_attrs[:check_date], :format => :long)
+
+        expect {
+          find('#modal_claim_save').click
+          wait_for_ajax
+        }.to change(Claim, :count).by(1)
       end
     end
 

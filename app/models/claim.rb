@@ -962,21 +962,27 @@ class Claim < ActiveRecord::Base
         'АдресКомпании' => (company.address.present? ? company.address.pretty_full_address : ''),
         'ТелефонКомпании' => (company.address.phone_number if company.address.present?),
         'СайтКомпании' => company.try(:site),
+        'EmailКомпании' => company.try(:email),
         'Логотип' => company.logo_url(:thumb),
         'ФИОДериктораКомпании' => company.director,
         'ФИОДериктораКомпанииРод' => company.director_genitive,
-        'ФИОДериктораКомпанииИниц' => initials(company.director)
+        'ФИОДериктораКомпанииИниц' => initials(company.director),
+        'ПолноеНазваниеКомпании' => company.try(:full_name) ? company.full_name : company.try(:name),
+        'ФактическийАдресКомпании' => company.try(:actual_address) ? company.actual_address :
+          (company.address.present? ? company.address.pretty_full_address : '')
       }) if company
 
       fields.merge!({
         'ФИО' => applicant.try(:full_name),
         'ФИОИнициалы' => applicant.try(:initials_name),
+        'ФИОЛатиница' => applicant.try(:fio_latin),
         'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
         'СерияПаспорта' => applicant.try(:passport_series),
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
+        'ПаспортВыдан' => applicant.try(:passport_issued),
         'Обращение' => applicant.try(:sex) ? I18n.t("appeal_by_sex.#{applicant.sex}") : '',
         'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', ')
       }) if applicant
@@ -993,10 +999,14 @@ class Claim < ActiveRecord::Base
         'ТуроператорСайт' => operator.try(:site),
         'ТуроператорТелефоны' => operator.try(:phone_numbers),
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
+        'ТуроператорФактическийАдрес' => operator.try(:actual_address) ? operator.actual_address :
+          (operator.address.present? ? operator.address.pretty_full_address : ''),
         'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
         'Страховщик' => operator.try(:insurer),
         'СтраховщикПолноеНазвание' => operator.try(:insurer_full_name),
         'СтраховщикАдрес' => operator.try(:insurer_address),
+        'СтраховщикФактическийАдрес' => operator.try(:actual_insurer_address) ? operator.actual_insurer_address :
+          operator.try(:insurer_address),
         'ДоговорСтрахования' => operator.try(:insurer_contract),
         'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
         'ДоговорСтрахованияДатаНач' => operator.insurer_contract_start.present? ? I18n.l(operator.insurer_contract_start, :format => :long) : '',
@@ -1039,10 +1049,13 @@ class Claim < ActiveRecord::Base
           {
             :collection => dependents,
             'Турист.ФИО' => :full_name,
+            'Турист.ФИОИнициалы' => :initials_name,
+            'Турист.ФИОЛатиница' => :fio_latin,
             'Турист.ДатаРождения' => :date_of_birth,
             'Турист.СерияПаспорта' => :passport_series,
             'Турист.НомерПаспорта' => :passport_number,
-            'Турист.СрокПаспорта' => :passport_valid_until
+            'Турист.СрокПаспорта' => :passport_valid_until,
+            'Турист.ПаспортВыдан' => :passport_issued
           }
       }
     end

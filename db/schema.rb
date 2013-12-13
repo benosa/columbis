@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131213081257) do
+ActiveRecord::Schema.define(:version => 20131213114305) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -187,6 +187,8 @@ ActiveRecord::Schema.define(:version => 20131213081257) do
     t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
     t.integer  "kpp"
     t.integer  "sms_balance",                                      :default => 0,    :null => false
+    t.string   "full_name"
+    t.string   "actual_address"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"

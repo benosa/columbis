@@ -124,10 +124,10 @@ ru:
 
     tourists:
       tourists: 'Туристы'
-      full_name: 'ФИО / латиница'
+      full_name: 'ФИО / ФИО&nbsp;англ.'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
-      passport_expire: 'Действит. до'
+      passport_expire: 'Действит.&nbsp;до'
       sex: 'Пол'
       phone: 'Телефон'
       address: 'Адрес'

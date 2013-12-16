@@ -5,7 +5,7 @@ ru:
         full_name: "ФИО"
         last_name: "Фамилия"
         first_name: "Имя"
-        fio_latin: 'ФИО на латинском'
+        fio_latin: 'ФИО на английском'
         middle_name: "Отчество"
         passport_series: "Серия паспорта"
         passport_number: "Номер паспорта"

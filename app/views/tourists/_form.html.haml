@@ -49,7 +49,7 @@
         %p= f.label :passport_valid_until, t('.passport_valid_until')
         = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
         %p= f.label :passport_issued
-        = f.text_field :passport_issued, :class => 'wide'
+        = f.text_area :passport_issued, :class => 'wide'
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

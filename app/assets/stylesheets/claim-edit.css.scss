@@ -351,34 +351,31 @@
         // float: left; width: 65%;
         float: none; width: 100%;
         .block-stretch {
-          margin: 0 460px 0 0;
+          margin: 0 430px 0 0;
           .name-wrap { margin: 0 10px 0 0; }
         }
         .block-right {
-          float: right; width: 460px;
+          float: right; width: 430px;
           > div { float: left; margin: 0 10px; }
           .date_of_birth-wrap { width: 80px; }
-          .passport-wrap { width: 170px;
-            .passport_series-wrap { float: left; width: 50px; margin-right: 10px; }
-            .passport_number-wrap { float: left; width: 90px; }
+          .passport-wrap { width: 140px;
+            .passport_series-wrap { float: left; width: 40px; margin-right: 10px; }
+            .passport_number-wrap { float: left; width: 70px; }
           }
           .passport_valid_until-wrap { width: 80px; margin-right: 0; margin-left: 0; }
-          .sex-wrap { width: 44px; margin-left: 10px; }
+          .sex-wrap { width: 60px; margin: 0 0 0 10px; }
         }
         .down-block {
           width: 100%;
           margin-top: 10px;
-          .block-stretch .wrap-input { margin-right: 10px; }
+          .block-stretch {
+             margin-right: 430px;
+            .wrap-input { margin-right: 10px; }
+          }
           .block-right {
-            .passport_issued {
-              width: 110px;
-              float: left;
-              margin: 4px 5px !important;
-            }
-            .wrap-input {
-              margin: 0 70px 0 120px;
-              float: none;
-            }
+            width: 430px;
+            .passport_issued { margin-left: 10px !important; }
+            .wrap-input { margin-right: 0; float: none; }
           }
         }
         // label { display: none; }
@@ -410,7 +407,7 @@
       span { display: block; }
       .fio { float: none; width: auto !important; }
       .dob { width: 96px !important; }
-      .passport { width: 155px !important; }
+      .passport { width: 125px !important; }
       .expires { width: 78px !important; }
       .sex { width: 15px !important; }
       .tourist_address { width: auto !important; }

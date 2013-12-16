@@ -815,6 +815,8 @@ $(function(){
       $row.find('.phone_number').val(data.phone_number);
       $row.find('.email').val(data.email);
       $row.find('.address').val(data.address);
+      $row.find('.fio_latin').val(data.fio_latin);
+      $row.find('.passport_issued').val(data.passport_issued);
     }
     $row.find('.hidden_id').val(data.id);
   };

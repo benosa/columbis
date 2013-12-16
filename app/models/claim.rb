@@ -968,14 +968,14 @@ class Claim < ActiveRecord::Base
         'ФИОДериктораКомпанииРод' => company.director_genitive,
         'ФИОДериктораКомпанииИниц' => initials(company.director),
         'ПолноеНазваниеКомпании' => company.try(:full_name) ? company.full_name : company.try(:name),
-        'ФактическийАдресКомпании' => company.try(:actual_address) ? company.actual_address :
+        'АдресКомпанииФакт' => company.try(:actual_address) ? company.actual_address :
           (company.address.present? ? company.address.pretty_full_address : '')
       }) if company
 
       fields.merge!({
         'ФИО' => applicant.try(:full_name),
         'ФИОИнициалы' => applicant.try(:initials_name),
-        'ФИОЛатиница' => applicant.try(:fio_latin),
+        'ФИОАнгл' => applicant.try(:fio_latin),
         'Адрес' => applicant.try(:address).try(:joint_address),
         'ТелефонТуриста' => applicant.try(:phone_number),
         'ДатаРождения' => applicant.try(:date_of_birth),
@@ -999,13 +999,13 @@ class Claim < ActiveRecord::Base
         'ТуроператорСайт' => operator.try(:site),
         'ТуроператорТелефоны' => operator.try(:phone_numbers),
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
-        'ТуроператорФактическийАдрес' => operator.try(:actual_address) ? operator.actual_address :
+        'ТуроператорАдресФакт' => operator.try(:actual_address) ? operator.actual_address :
           (operator.address.present? ? operator.address.pretty_full_address : ''),
         'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
         'Страховщик' => operator.try(:insurer),
         'СтраховщикПолноеНазвание' => operator.try(:insurer_full_name),
         'СтраховщикАдрес' => operator.try(:insurer_address),
-        'СтраховщикФактическийАдрес' => operator.try(:actual_insurer_address) ? operator.actual_insurer_address :
+        'СтраховщикАдресФакт' => operator.try(:actual_insurer_address) ? operator.actual_insurer_address :
           operator.try(:insurer_address),
         'ДоговорСтрахования' => operator.try(:insurer_contract),
         'ДоговорСтрахованияДата' => operator.insurer_contract_date.present? ? I18n.l(operator.insurer_contract_date, :format => :long) : '',
@@ -1050,7 +1050,7 @@ class Claim < ActiveRecord::Base
             :collection => dependents,
             'Турист.ФИО' => :full_name,
             'Турист.ФИОИнициалы' => :initials_name,
-            'Турист.ФИОЛатиница' => :fio_latin,
+            'Турист.ФИОАнгл' => :fio_latin,
             'Турист.ДатаРождения' => :date_of_birth,
             'Турист.СерияПаспорта' => :passport_series,
             'Турист.НомерПаспорта' => :passport_number,

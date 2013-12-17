@@ -302,19 +302,24 @@ function set_claims_tooltip(init) {
 }
 
 function set_new_claim_js() {
-  setDatepicker();
-  setDatetimepicker();
-  customizeSelect();
+  setDatepicker('#new_claim_modal', true);
+  setDatetimepicker('#new_claim_modal', true);
+  customizeSelect('#new_claim_modal', true);
+  setAutocomplete($('#new_claim_modal').find('.full_name.autocomplete'), false, {
+    select: function(event, ui) { select_tourist(this, ui.item); },
+    change: function(event, ui) { change_tourist(this); }
+  });
+  init_tourist('.full_name.autocomplete');
   // change years for date_of_birth pickers
-  $('.date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
+  $('#new_claim_modal .date_of_birth.hasDatepicker').datepicker('option', 'yearRange', 'c-100:c+0');
 
-  $('#tourists').on('click', 'a.add', function(e) {
+  $('#new_claim_modal #tourists').on('click', 'a.add', function(e) {
     e.preventDefault();
     var $t = $(this);
     add_tourist($t.closest('.form_block'));
   });
 
-  $('#tourists').on('click', 'a.delete', function(e) {
+  $('#new_claim_modal #tourists').on('click', 'a.delete', function(e) {
     e.preventDefault();
     var $t = $(this),
         $fields = $t.closest('.fields');
@@ -326,10 +331,65 @@ function set_new_claim_js() {
   });
 
   $('#close_new_remote_claim').on('click', function(e) {
+    $('#new_claim_modal .popup_form').modal('hide');
     $('#new_claim_modal').remove();
   });
 
+  $('#new_claim_modal .popup_form').on('shown', function() {
+    var w = screen.width * 0.8;
+    if (w < 880) { w = 880 } else if (w > 1400) { w = 1400; }
+    var ml = -w / 2;
+    $(this).css({
+      width: w,
+      'margin-left': ml
+    });
+  }).modal();
 }
+
+// autocomplete
+var select_tourist = function(el, data) {
+  var $row = $(el).closest('.fake_row'),
+      data = data || {};
+  $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
+    $row.find('input.' + this).val(data[this]);
+  });
+  if($row.hasClass('applicant')) {
+    $row.find('.phone_number').val(data.phone_number);
+    $row.find('.email').val(data.email);
+    $row.find('.address').val(data.address);
+  }
+  $row.find('.hidden_id').val(data.id);
+};
+
+var init_tourist = function(el) {
+  $(el).each(function() {
+    var $t = $(this),
+      $h = $t.closest('.fake_row').find('.hidden_id'),
+      ac_data = $t.data('ac_data'),
+      value = $t.val(),
+      id = $h.val();
+    if (!ac_data && value && id) {
+      ac_data = { id: id, value: value };
+      $t.data('ac_data', ac_data);
+    }
+  });
+};
+
+var change_tourist = function(el) {
+  var $t = $(el),
+      $h = $t.closest('.fake_row').find('.hidden_id'),
+      value = $t.val(),
+      ac_data = $t.data('ac_data');
+  if (!value.length) {
+    $h.val('');
+  } else if (ac_data) {
+    if (value == ac_data.value) {
+      $h.val(ac_data.id);
+    } else {
+      $h.val('');
+    }
+  }
+};
 
 // del tourist
 var del_tourist = function(fields){
@@ -373,7 +433,7 @@ var add_tourist = function(tourist_block) {
     select: function(event, ui) { select_tourist(this, ui.item); },
     change: function(event, ui) { change_tourist(this); }
   });
- // init_tourist('.full_name.autocomplete');
+  init_tourist('.full_name.autocomplete');
 }
 
 $(function(){
@@ -874,51 +934,6 @@ $(function(){
   });
 
   $('#claim_primary_currency_price').change(get_amount_in_word);
-
-  // autocomplete
-  var select_tourist = function(el, data) {
-    var $row = $(el).closest('.fake_row'),
-        data = data || {};
-    $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
-      $row.find('input.' + this).val(data[this]);
-    });
-    if($row.hasClass('applicant')) {
-      $row.find('.phone_number').val(data.phone_number);
-      $row.find('.email').val(data.email);
-      $row.find('.address').val(data.address);
-    }
-    $row.find('.hidden_id').val(data.id);
-  };
-
-  var init_tourist = function(el) {
-    $(el).each(function() {
-      var $t = $(this),
-        $h = $t.closest('.fake_row').find('.hidden_id'),
-        ac_data = $t.data('ac_data'),
-        value = $t.val(),
-        id = $h.val();
-      if (!ac_data && value && id) {
-        ac_data = { id: id, value: value };
-        $t.data('ac_data', ac_data);
-      }
-    });
-  };
-
-  var change_tourist = function(el) {
-    var $t = $(el),
-        $h = $t.closest('.fake_row').find('.hidden_id'),
-        value = $t.val(),
-        ac_data = $t.data('ac_data');
-    if (!value.length) {
-      $h.val('');
-    } else if (ac_data) {
-      if (value == ac_data.value) {
-        $h.val(ac_data.id);
-      } else {
-        $h.val('');
-      }
-    }
-  };
 
   setAutocomplete('.full_name.autocomplete', false, {
     select: function(event, ui) { select_tourist(this, ui.item); },

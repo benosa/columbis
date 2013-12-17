@@ -822,11 +822,7 @@ option {
 }
 
 .new_claim {
-  .popup_form.modal {
-    width: 100%;
-    margin-left: 30px;
-    left: 0%;
-  }
+  .popup_form.modal { width: auto; }
   .popup_form {
     min-width: 880px;
     max-width:  1400px;
@@ -861,6 +857,8 @@ option {
     a.cancel { display: inline-block; color: #666666; text-decoration: underline; line-height: 30px;
       &:hover { text-decoration: none;}
     }
+
+    .alert { margin-bottom: 0; }
   }
 
   #claim_arrival_date_wrapper {

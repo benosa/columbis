@@ -119,7 +119,11 @@ $(function(){
       }
     }
     if (form_id && $form.length) {
-      $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
+      if (!$form.data('remote')) {
+        $form[0].submit(); // sometimes after redirecting $form.submit() don't work, maibe it's bug in jquery 1.7.1
+      } else {
+        $form.submit(); // remote form submit only through jquery
+      }
     }
   });
 

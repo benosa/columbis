@@ -5,12 +5,14 @@
 .edit_page
   .popup_form.new_claim_block.clearfix.modal
     - if content_for? :error_messages
-      .alert.alert-error
-        = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
-        = yield :error_messages
+      .messages
+        .alert.alert-error
+          = link_to '&times;'.html_safe, '#', :class => 'close',  :'data-dismiss' => 'alert'
+          = yield :error_messages
     - if content_for? :success_messages
-      .alert.alert-success
-        = yield :success_messages
+      .messages
+        .alert.alert-success
+          = yield :success_messages
 
     %form.new_claim
       .block_title
@@ -106,4 +108,4 @@
                 = link_to t('claims.tourists.add_another_tourist'), '#', :class => 'add add_tourist'
       .actions_bar.panel_content.clearfix
         = link_to t('cancel'), '#', :class => 'cancel', :id => 'close_new_remote_claim'
-        = f.submit t('save') ,id: "modal_claim_save", class: "btn btn-large btn-primary"
+        = link_to t('save'), '#', :class => 'save', :data => { :submit => f.options[:html][:id] }

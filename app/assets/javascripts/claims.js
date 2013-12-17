@@ -1215,3 +1215,17 @@ $(function() {
   });
 
 });
+
+// Aling #mistral_top_managers block for Mistral
+$(function() {
+  if (!$('.main_page.mistral-company')) return;
+  function align_mistral_top_managers() {
+    var left = $('.second_menu .sale_lider').offset().left;
+    if (!left) { left = $('.second_menu .type').offset().left; }
+    if (left) {
+      $('#mistral_top_managers').css('left', left);
+    }
+  }
+  align_mistral_top_managers();
+  $(window).resize(align_mistral_top_managers);
+});

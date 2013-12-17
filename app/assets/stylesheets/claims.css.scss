@@ -334,6 +334,7 @@ option {
 
 // Temporary solution for Mistral company
 .main_page.mistral-company {
+  .messages { width: 1100px; }
   .claims .reservations {
     th {
       p, span { color: #000; }
@@ -364,6 +365,104 @@ option {
       }
     }
     .blue_back, .all_done, .departed { background-color: #BDE0FA !important; }
+  }
+
+  .top {
+    h1 { margin-top: 35px; }
+    .filter {
+      margin-top: 30px;
+      .settings { display: none; }
+    }
+  }
+
+  .top_managers {
+    span.liders {
+      display:block;
+      font-size: 14px;
+      margin-left: 20px;
+      padding-bottom: 5px;
+      color: #FFA500;
+    }
+   // padding:0 10px 0 0 !important;
+    margin-top: -12px;
+    ul {
+      li {
+        div {
+         float:left;
+         margin-left: 4px;
+        }
+        span {
+          display: block;
+          float:left
+        }
+        width: 200px;
+        float: none;
+        height: 15px;
+        text-align: left;
+      }
+      .first div {
+        height: 15px;
+        width: 26px;
+        background: url(/assets/new_design/images/crowns-small.png) left -2px no-repeat;
+      }
+      .second div {
+        height: 13px;
+        width: 26px;
+        background: url(/assets/new_design/images/crowns-small.png) left -17px no-repeat;
+      }
+      .third div {
+        margin-top:3px;
+        height: 10px;
+        width: 26px;
+        background: url(/assets/new_design/images/crowns-small.png) left -30px no-repeat;
+      }
+      li+li {
+        margin-top: 3px;
+      }
+    }
+  }
+
+  .sale_lider {
+    float:right;
+    span {
+      padding: 28px 6px 0 0;
+      color: #BDE0FA;
+      font-size: 22px;
+      display: block;
+      float:left;
+    }
+    div {
+      overflow:hidden;
+      float:left;
+    }
+    .first {
+      height: 55px;
+      width: 70px;
+      background: url(/assets/new_design/images/crowns.png) left top no-repeat;
+    }
+    .second {
+      margin-top: 5px;
+      height: 45px;
+      width: 70px;
+      background: url(/assets/new_design/images/crowns.png) left -52px no-repeat;
+    }
+    .third {
+      margin-top: 15px;
+      height: 35px;
+      width: 70px;
+      background: url(/assets/new_design/images/crowns.png) left -96px no-repeat;
+    }
+  }
+
+  .mistral_filter {
+    float: left;
+    margin-left: 40px;
+  }
+
+  #mistral_top_managers {
+    float: right;
+    position: absolute;
+    right: 200px;
   }
 }
 

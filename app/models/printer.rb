@@ -123,17 +123,26 @@ class Printer < ActiveRecord::Base
     @empty_collection_fields = {}
     collections.each do |key, value|
       collection_name = key.mb_chars.upcase.to_s
-      @text.scan(/(\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%)/m).each do |matches|
+      @collection_block = @text.scan(/(\%\{#{collection_name}\}(.+?)\{#{collection_name}\}\%)/m)
+      if !@collection_block[0] || @collection_block[0].to_s.length < 40
+        @collection_block = @text.scan(/(<tr data-collection=\"#{value[:name]}\">.+?<\/tr>)/m)
+        @new_style = true;
+      end
+      @collection_block.each do |matches|
         collection = value[:collection]
         match = matches[0].clone
-        partial = ''<< matches[1].clone
+        if @new_style
+          partial = ''<< matches[0].clone
+        else
+          partial = ''<< matches[1].clone
+        end
         result = ''
 
         index = 0
         collection.each do |ob|
           row = partial.clone
           value.each  do |collection_key, collection_field|
-            next if collection_key == :collection
+            next if collection_key == :collection || collection_key == :name
             collection_field ||= ''.to_sym
             field = ob.try(collection_field)
             upkey = collection_key.mb_chars.upcase

@@ -1048,6 +1048,7 @@ class Claim < ActiveRecord::Base
         'Туристы' =>
           {
             :collection => dependents,
+            :name => 'dependents',
             'Турист.ФИО' => :full_name,
             'Турист.ФИОИнициалы' => :initials_name,
             'Турист.ФИОАнгл' => :fio_latin,

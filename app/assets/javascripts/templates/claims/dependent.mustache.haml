@@ -26,6 +26,6 @@
         .down-block
           .block-stretch
             .wrap-input.fio_latin-wrap
-              = text_field_tag "#{name_prefix}[fio_latin]", '{{fio_latin}}', :id => "#{id_prefix}_fio_latin"
+              = text_field_tag "#{name_prefix}[fio_latin]", '{{fio_latin}}', :id => "#{id_prefix}_fio_latin", :class => 'fio_latin'
   = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
   = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id", :class => 'hidden_id'

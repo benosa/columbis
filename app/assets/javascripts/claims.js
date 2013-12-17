@@ -808,15 +808,13 @@ $(function(){
   var select_tourist = function(el, data) {
     var $row = $(el).closest('.fake_row'),
         data = data || {};
-    $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
+    $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until', 'fio_latin'], function() {
       $row.find('input.' + this).val(data[this]);
     });
     if($row.hasClass('applicant')) {
-      $row.find('.phone_number').val(data.phone_number);
-      $row.find('.email').val(data.email);
-      $row.find('.address').val(data.address);
-      $row.find('.fio_latin').val(data.fio_latin);
-      $row.find('.passport_issued').val(data.passport_issued);
+      $.each(['phone_number', 'email', 'address', 'passport_issued'], function() {
+        $row.find('input.' + this).val(data[this]);
+      });
     }
     $row.find('.hidden_id').val(data.id);
   };

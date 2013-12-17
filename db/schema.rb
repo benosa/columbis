@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131128100501) do
+ActiveRecord::Schema.define(:version => 20131213114305) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -186,6 +186,9 @@ ActiveRecord::Schema.define(:version => 20131128100501) do
     t.datetime "tariff_end"
     t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
     t.integer  "kpp"
+    t.integer  "sms_balance",                                      :default => 0,    :null => false
+    t.string   "full_name"
+    t.string   "actual_address"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -357,32 +360,40 @@ ActiveRecord::Schema.define(:version => 20131128100501) do
   create_table "sms_groups", :force => true do |t|
     t.integer  "company_id"
     t.string   "name"
-    t.integer  "contact_count"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "sms_sendings", :force => true do |t|
     t.integer  "company_id"
     t.datetime "sending_at"
     t.string   "signature"
-    t.integer  "sms_group_id"
+    t.integer  "group_id"
     t.string   "content"
     t.integer  "count"
     t.boolean  "sending_priority"
     t.integer  "user_id"
     t.integer  "delivered_count"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.boolean  "status"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.string   "status",           :default => "shipping"
+    t.string   "group_name"
+    t.boolean  "delta",            :default => true,       :null => false
+  end
+
+  create_table "sms_signatures", :force => true do |t|
+    t.string   "text",                              :null => false
+    t.integer  "company_id"
+    t.string   "status",     :default => "pending"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   create_table "sms_touristgroups", :force => true do |t|
     t.integer  "tourist_id"
-    t.integer  "sms_group_id"
-    t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "group_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "tariff_plans", :force => true do |t|
@@ -449,9 +460,9 @@ ActiveRecord::Schema.define(:version => 20131128100501) do
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
-    t.text     "notes"
-    t.string   "phone_code"
     t.string   "sex",                  :default => "not_selected"
+    t.string   "fio_latin"
+    t.string   "passport_issued"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

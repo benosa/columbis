@@ -907,22 +907,22 @@ class Claim < ActiveRecord::Base
         'Переезд' => relocation,
         'Класс' => service_class,
         'Питание' => meals,
-        'Виза' => (visa_count > 0 ? 'Да' : 'Нет'),
-        'ВизаВзрослаяСум' => (visa_count > 0 ?
+        'Виза' => (visa_count.to_i > 0 ? 'Да' : 'Нет'),
+        'ВизаВзрослаяСум' => (visa_count.to_i > 0 ?
           (visa_count.to_s + 'x' + visa_price.round.to_s + ' ' + visa_price_currency) : 'Нет'),
-        'ВизаДетскаяСум' => (children_visa_count > 0 ?
+        'ВизаДетскаяСум' => (children_visa_count.to_i > 0 ?
           (children_visa_count.to_s + 'x' + children_visa_price.round.to_s + ' ' + children_visa_price_currency) : 'Нет'),
         'СтраховкаМедицинская' => medical_insurance,
-        'ТопливныйСборСум' => ((fuel_tax_count * fuel_tax_price) > 0 ?
+        'ТопливныйСборСум' => ((fuel_tax_count.to_i * fuel_tax_price.to_f) > 0 ?
            (fuel_tax_count.to_s + 'x' + fuel_tax_price.round.to_s + ' ' + fuel_tax_price_currency) : 'Нет'),
         'Трансфер' => transfer,
-        'СтраховкаОтНевыезда' => (insurance_price > 0 ? 'Да' : 'Нет'),
-        'СтраховкаОтНевыездаСум' => (insurance_price > 0 ?
+        'СтраховкаОтНевыезда' => (insurance_price.to_f > 0 ? 'Да' : 'Нет'),
+        'СтраховкаОтНевыездаСум' => (insurance_price.to_f > 0 ?
           (insurance_count.to_s + 'x' + insurance_price.round.to_s + ' ' + insurance_price_currency) : 'Нет'),
-        'СтраховкаДополнительнаяСум' => (additional_insurance_price > 0 ?
+        'СтраховкаДополнительнаяСум' => (additional_insurance_price.to_f > 0 ?
           (additional_insurance_count.to_s + 'x' + additional_insurance_price.round.to_s + ' ' + additional_insurance_price_currency) : 'Нет'),
         'ДополнительныеУслуги' => additional_services,
-        'ДополнительныеУслугиСум' => additional_services_price > 0 ?
+        'ДополнительныеУслугиСум' => additional_services_price.to_f > 0 ?
           (additional_services_price.round.to_s + ' ' + additional_services_price_currency) : '',
         'ДатаРезервирования' => (reservation_date.strftime('%d/%m/%Y') if reservation_date),
         'Сумма' => primary_currency_price.to_money.to_s,

@@ -1267,8 +1267,12 @@ $(function() {
 $(function() {
   if (!$('.main_page.mistral-company')) return;
   function align_mistral_top_managers() {
-    var left = $('.second_menu .sale_lider').offset().left;
-    if (!left) { left = $('.second_menu .type').offset().left; }
+    var offset = $('.second_menu .sale_lider').offset(),
+        left = offset && offset.left;
+    if (!left) {
+      offset = $('.second_menu .type').offset();
+      left = offset && offset.left;
+    }
     if (left) {
       $('#mistral_top_managers').css('left', left);
     }

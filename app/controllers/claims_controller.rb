@@ -66,8 +66,15 @@ class ClaimsController < ApplicationController
     @claim.assign_reflections_and_save(params[:claim])
 
     unless @claim.errors.any?
-      redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
-      redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
+      respond_to do |format|
+        format.html {
+          redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
+          redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
+        }
+        format.js {
+          render :partial => 'claim_create'
+        }
+      end
     else
       @claim.applicant ||= Tourist.new #Tourist.new(params[:claim][:applicant_attributes])
       check_payments
@@ -163,7 +170,9 @@ class ClaimsController < ApplicationController
       @claim.company ||= current_company
       @claim.current_editor ||= current_user
       if params[:claim]
-        if is_admin? or is_boss?
+        @claim[:tour_price_currency] = CurrencyCourse::PRIMARY_CURRENCY
+        @claim[:operator_price_currency] = CurrencyCourse::PRIMARY_CURRENCY
+        if (is_admin? or is_boss?) && (params[:claim][:user_id] && params[:claim][:office_id])
           @claim.user_id = params[:claim][:user_id]
           @claim.office_id = params[:claim][:office_id]
         else

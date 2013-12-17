@@ -796,7 +796,6 @@ option {
     #tourists .fake_table { width: 781px;
       .fio { width: 295px; }
     }
-    
     .name { width: 262px !important; }
     .expires_date { width: 115px; }
     .additional_fields .email_col { width: 195px; }
@@ -918,6 +917,59 @@ option {
     .payment_operator .price_select.ik_select{margin-right: 5px;}
     .payment_operator .price_select .ik_select_link_text{width:  60px;}/* -15 */
     .payment_operator .price_select .ik_select_list{width: 73px;}/* -2 */
+  }
+}
+
+.new_claim {
+  .popup_form.modal { width: auto; }
+  .popup_form {
+    min-width: 880px;
+    max-width:  1400px;
+    .block_title { width: auto; }
+    .forms_block_area { background: #fafafa; border: 1px solid #D5D5D5; min-height: 214px;}
+    .form_block {
+      margin: 0;
+      box-shadow: none;
+      border-radius: 0;
+      .form_block_content { border-radius: 0; border: 0;}
+    }
+    .tourists_block {margin-right: 300px; clear:none; min-height: 214px; overflow: hidden;   border-right: 1px solid #D5D5D5; }
+    .additional_block {float:right; width: 300px !important;}
+    .check_date { width: 105px !important; float: left; }
+    input.important {  background: #fff !important; color: #000; }
+    label.required:after {
+         content: none;
+    }
+    .fake_row input { margin: 0 17px 0 0; }
+    .add_btn { margin: 0; padding: 0; border: none; }
+    .add_row { padding: 11px 20px; }
+    .new_claim .applicant .full_name, .new_claim .applicant .date_of_birth, .new_claim .applicant .passport_series, .new_claim .applicant .passport_number, .new_claim .applicant .passport_valid_until, .new_claim .applicant .address, .new_claim .applicant .phone_number, .new_claim .applicant .email, .new_claim .arrival_date, .new_claim .check_date, .new_claim .tourist_stat .ik_select_link, .new_claim .check_date, .new_claim .tourist_stat .ik_select_link  { border: 1px solid #D5D5D5;}
+    .applicant { overflow: hidden; }
+    .actions_bar { background: #fafafa;padding: 15px 20px; border:  1px solid #D5D5D5; border-top: none; border-radius: 0 0 4px 4px;}
+    .fake_row label { margin: 3px 4px 0 0; }
+    .fake_row label.checkbox { margin-left: 13px; }
+    .fake_row input.date { margin-right: 0; }
+    .date { width: 90px }
+    .new_claim .arrival_date { margin-right: 17px !important;}
+    .new_claim .tourist_stat .ik_select_link { margin: 0 !important; }
+
+    a.cancel { display: inline-block; color: #666666; text-decoration: underline; line-height: 30px;
+      &:hover { text-decoration: none;}
+    }
+
+    .alert { margin-bottom: 0; }
+  }
+
+  #claim_arrival_date_wrapper {
+    width: 105px;
+    display: inline-block;
+  }
+
+  #modal_claim_save {
+    display: inline-block;
+    float: right;
+    height: 30px;
+    padding: 5px 19px 6px 19px;
   }
 }
 

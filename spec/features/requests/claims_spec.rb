@@ -221,6 +221,76 @@ describe "Claim:", js: true do
       end
     end
 
+    describe "Claim docs save" do
+      before do
+        @claim = FactoryGirl.create(:claim, company: @company, office: @office, user: @boss, visa_count: 1,
+         children_visa_count: 1, fuel_tax_count: 1, fuel_tax_price: 1, insurance_price: 1, additional_insurance_price:1)
+      end
+
+      it "should edit and save on disk claim act" do
+        @path = "uploads/#{@claim.company.id}/claims/#{@claim.id}/act.html"
+        if File.exist?(@path)
+          FileUtils.rm(@path)
+        end
+        visit(edit_claim_printers_path(claim_id: @claim.id, printer: 'act'))
+        click_link I18n.t('claim_printers.edit.edit_doc')
+        File.exist?(@path).should == false
+        click_link I18n.t('save')
+        wait_until { File.exist?(@path) == true }
+        File.exist?(@path).should == true
+
+        # page.should have_selector("div#cke_edit_content")
+       # page.should have_selector("div#content")
+      #  I18n.t('claim_printers.edit.edit_doc')
+      #  @link = all('a').select {|elt| elt.text == I18n.t('layouts.main_menu.claims.act') }.last
+     #   Rails.logger.debug "url_for_current_company: #{@link['href']}"
+      #  expect {
+     #     @link.click
+      #  }.to change{current_path}.from(edit_claim_path(@claim)).to('/claim_print/1/act')
+      #  current_path.should == @link['href']
+
+      end
+    end
+
+    describe "New claim in modal form" do
+      def wait_for_ajax
+        Timeout.timeout(Capybara.default_wait_time) do
+          loop do
+            active = page.evaluate_script('jQuery.active')
+            break if active == 0
+          end
+        end
+      end
+
+      before do
+        @claim_attrs = attributes_for(:claim)
+        FactoryGirl.create(:dropdown_value, company: @company, list: 'tourist_stat', value: 'test')
+        Rails.logger.debug "url_for: #{@claim_attrs.inspect}"
+      end
+
+      it "should create an claim" do
+        visit claims_path
+        click_link I18n.t('claims.index.add_claim')
+        wait_for_ajax
+        page.execute_script("$('#claim_tourist_stat').ikSelect('select', 'test');")
+        fill_in "claim[applicant_attributes][full_name]", :with => "#{@claim_attrs[:applicant][:first_name]} #{@claim_attrs[:applicant][:last_name]}"
+        fill_in "claim[applicant_attributes][date_of_birth]", :with => l(@claim_attrs[:applicant][:date_of_birth], :format => :long)
+        fill_in "claim[applicant_attributes][passport_series]", :with => "#{@claim_attrs[:applicant][:passport_series]}"
+        fill_in "claim[applicant_attributes][passport_number]", :with => "#{@claim_attrs[:applicant][:passport_number]}"
+        fill_in "claim[applicant_attributes][passport_valid_until]", :with => l(@claim_attrs[:applicant][:passport_valid_until], :format => :long)
+        fill_in "claim[applicant_attributes][phone_number]", :with => "#{@claim_attrs[:applicant][:phone_number]}"
+        fill_in "claim[applicant_attributes][email]", :with => "#{@claim_attrs[:applicant][:email]}"
+        fill_in "claim[applicant_attributes][address]", :with => "Elm street"
+        fill_in "claim[arrival_date]", :with => l(@claim_attrs[:arrival_date], :format => :long)
+        fill_in "claim[check_date]", :with => l(@claim_attrs[:check_date], :format => :long)
+
+        expect {
+          find('#modal_claim_save').click
+          wait_for_ajax
+        }.to change(Claim, :count).by(1)
+      end
+    end
+
   end
 
 end

@@ -52,10 +52,10 @@
                     .block-right
                       %span.dob= t('claims.tourists.date_of_birth')
                       %span.passport= t('claims.tourists.passport')
-                      %span.expires= t('claims.tourists.passport_expire')
+                      %span.expires= t('claims.tourists.passport_expire').html_safe
                       %span.sex= t('claims.tourists.sex')
                     .block-stretch
-                      %span.fio= t('claims.tourists.full_name')
+                      %span.fio= t('claims.tourists.full_name').html_safe
                   .additional_fields
                     %span.tel= t('claims.tourists.phone')
                     %span.tourist_address= t('claims.tourists.address')

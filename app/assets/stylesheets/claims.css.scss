@@ -335,6 +335,7 @@ option {
 // Temporary solution for Mistral company
 .main_page.mistral-company {
   .messages { width: 1100px; }
+  .popup_form .messages { width: auto; }
   .claims .reservations {
     th {
       p, span { color: #000; }

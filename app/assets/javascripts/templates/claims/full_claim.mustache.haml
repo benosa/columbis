@@ -1,3 +1,196 @@
-.fake_row.dependent.fields{ :id => "dependent-{{num}}", :class => 'new_record' }
-  %p
-    fghfghfghfghfghfghfjvbnm {{num}}
+%tr.more_info.first_row.full_claim_info
+  %td
+    %a.edit.active{href: "#"}
+  %td Турист
+  %td Направление
+  %td Дата отправления
+  %td Создатель
+  %td Дата создания
+  %td.last_row
+%tr.more_info.second_row.full_claim_info
+  %td{colspan: "2"}
+    .more_info_block.tourist
+      .top-section
+        .pic
+        %h4 {{applicant_last_name}}
+        %p {{applicant_first_middle_name}}
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text Тел.
+              %td.right-col {{phone_number}}
+            %tr
+              %td.gray_text Виза
+              %td.right-col
+                %span.hl{class: '{{visa_color}}'} {{visa_text}}
+            %tr
+              %td.gray_text Срок
+              %td.right-col
+                %span.hl.hl-yellow {{visa_check}}
+  %td
+    .more_info_block.route
+      .top-section
+        .pic
+        %h4 Петропавловск-Камчатский
+        %p Teztour
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Статус
+              %td.right-col
+                %span.hl.hl-green подтвержден
+            %tr
+              %td.gray_text №
+              %td.right-col 36559232124
+  %td
+    .more_info_block.date-mib
+      .top-section
+        .pic
+        %h4.clearfix 22.10.2014
+        .pic1
+        %h4 22.10.2014
+      .bottom-section
+        %p.gray_text Куда
+        %p Петропавлоск-Камчатский
+        %p.gray_text Откуда
+        %p Казань
+  %td
+    .more_info_block.creator
+      .top-section
+        .pic
+        %h4 Щербакова
+        %p manager233434
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Офис
+              %td.right-col Корстон
+            %tr
+              %td.gray_text Документы
+              %td.right-col
+                %span.hl.hl-red не готовы
+  %td.last-col{colspan: "2"}
+    .more_info_block.create_date
+      .top-section
+        .pic
+        %h4 11.01.2014
+        %p #76905
+      .bottom-section
+        %p
+          %span.gray_text Откуда
+          от знакомых
+        %p Внимание, необходимо   уточнить, кто и когда летит
+%tr.more_info.third_row.full_claim_info
+  %td.leftward{colspan: "2"}
+    .more_info_block.price
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Цена
+              %td.right-col
+                %h4 139 599
+                руб.
+            %tr
+              %td.gray_text Аванс
+              %td.right-col
+                %h4 15 000
+                руб.
+            %tr
+              %td.gray_text Долг
+              %td.right-col
+                %h4 120 000
+                руб.
+      %td.rightward
+        .more_info_block.price
+          .bottom-section
+            .pic1
+            %table
+              %tbody
+                %tr
+                  %td.gray_text Сумма оператору
+                  %td.right-col 2 960 $
+                %tr
+                  %td.gray_text Оплатить до
+                  %td.right-col
+                    %span.hl.hl-orange 31.01.2014
+                %tr
+                  %td.gray_text Оплата
+                  %td.right-col о руб.
+                %tr
+                  %td.gray_text Долг оператору
+                  %td.right-col 2 960 $
+  %td
+    .more_info_block.money
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Аванс
+              %td.right-col
+                %span.hl.hl-lightblue 0 руб.
+            %tr
+              %td.gray_text Оплата, $
+              %td.right-col 0
+            %tr
+              %td.gray_text Оплата, руб.
+              %td.right-col 0
+  %td
+    .more_info_block.percents
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Наценка
+              %td.right-col
+                %span.hl.hl-blue 99 000 руб.
+            %tr
+              %td.gray_text Наценка, %
+              %td.right-col 55%
+  %td.last-col{colspan: "2"}
+    .more_info_block.bonus
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text Наценка
+              %td.right-col 99 000 руб.
+            %tr
+              %td.gray_text Наценка, %
+              %td.right-col 55%
+%tr.more_info.fourth_row.full_claim_info
+  %td{colspan: "7"}
+    %a{href: "#"}
+      Свернуть
+      %span

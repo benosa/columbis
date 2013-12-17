@@ -36,8 +36,10 @@
       - else
         = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
         %a.settings{ :href => "#" }= t('.column_settings')
-
-= render :partial => 'list'
+- if is_mistral?
+  = render :partial => 'list'
+- else
+  = render :partial => 'list_new'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

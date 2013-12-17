@@ -1,0 +1,12 @@
+%tr.row{ :class => cycle("", "even") , :data => claim_full_info(claim) }
+  %td.first_row
+    = link_to '', edit_claim_path(claim), :class => 'edit'
+  %td{ :title => tourists_list(claim) }
+    = claim.applicant.try(:initials_name)
+  %td{ :title => claim.country.try(:name) }
+    = claim.country.try(:name)
+  %td= l( claim.departure_date, :format => :default )
+  %td
+    = claim.user.try(:full_name).to_s + (", #{claim.assistant.try(:full_name)}" if claim.assistant.present?).to_s
+  %td= l( claim.reservation_date, :format => :default )
+  %td.last_row

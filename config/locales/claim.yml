@@ -26,6 +26,10 @@ ru:
       all_done: 'В'
 
     index:
+      direction: 'Направление'
+      dep_new_date: 'Дата отправления'
+      creator: 'Создатель'
+      res_new_date: 'Дата создания'
       claims: 'Бронирования'
       only_my: 'Только мои'
       only_active: 'В работе'

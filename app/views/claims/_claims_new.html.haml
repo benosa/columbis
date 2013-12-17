@@ -1,0 +1,15 @@
+- cache_params = [show_office, show_accountant_columns, show_bonus_columns, totals.present?]
+- cache [:claim_list, claims_cache_key(claims_new)] + cache_params do
+  - cur_month = prev_month = false
+
+  - claims_new.each do |claim|
+
+    - if totals
+      - cur_month = claim.reservation_date.month
+      - if cur_month != prev_month && (ti = totals.index{ |t| t.month.to_i == cur_month })
+        = render partial: 'total', locals: { total: totals[ti], description: l(totals[ti].reservation_date, format: "%B %Y") }
+
+    - cache [:claim_list, claim] + cache_params do
+      = render partial: 'claim_new', locals: { claim: claim }
+
+    - prev_month = cur_month

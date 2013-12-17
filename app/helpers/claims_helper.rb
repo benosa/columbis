@@ -249,6 +249,20 @@ module ClaimsHelper
     data
   end
 
+  def claim_full_info(claim)
+    {
+      applicant_last_name: claim.applicant.try(:last_name),
+      applicant_first_middle_name: claim.applicant.try(:first_name) + ' ' + claim.applicant.try(:middle_name),
+      phone_number: claim.applicant.try(:phone_number),
+      visa_check: l(claim.visa_check, :format => :default ),
+      visa_text: text_for_visa(claim),
+      visa_color: color_for_visa(claim),
+      country_name: claim.country.try(:name),
+      resort_name: claim.resort.try(:name),
+      operator: claim.operator.try(:name)
+    }
+  end
+
   def claims_cache_key(claims)
     claims.map(&:cache_key).hash
   end

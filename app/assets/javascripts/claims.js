@@ -1121,20 +1121,25 @@ $(function() {
     localStorage.setItem('claim_unlock', '');
   }
   // Row highlight
-  $('body').on('click', '#claims td', function(e) {
-    var info_block_id = 'full_claim_info';
+  $('body').on('click', '#claims .row td', function(e) {
+    var info_block_class = 'full_claim_info';
     var $row = $(this).closest('.row');
 
-    if ($('#' + info_block_id).length) {
-      $('#' + info_block_id).remove();
+    if ($('.' + info_block_class).length) {
+      $('.' + info_block_class).remove();
     }
     $('#claims tr').removeClass('hidden');
     $row.addClass('hidden');
     claim = {
-      num: 'ololo321'
+      applicant_last_name: $row.data('applicant_last_name'),
+      applicant_first_middle_name: $row.data('applicant_first_middle_name'),
+      phone_number: $row.data('phone_number'),
+      visa_check: $row.data('visa_check'),
+      visa_text: $row.data('visa_text'),
+      visa_color: $row.data('visa_color')
     }
     html = JST['claims/full_claim'].render(claim);
-    $row.after('<tr id="' + info_block_id + '"><td>' + html + '</td></tr>');
+    $row.after(html);
 
    // var $row = $(this).closest('.row'),
       //  $hrow = $('#claims .row.highlight');

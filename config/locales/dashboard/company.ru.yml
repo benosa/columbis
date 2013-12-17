@@ -67,6 +67,9 @@ ru:
         bik: 'БИК'
         curr_account: 'Расчетный счет'
         corr_account: 'Корреспондентский счет'
+        director: 'Директор'
+        director_genitive: 'Директор инициалы'
+        time_zone: 'Часовой пояс'
         ogrn: 'ОРГН'
         okpo: 'ОКПО'
         inn: 'ИНН'
@@ -75,6 +78,8 @@ ru:
         logo: 'Логотип'
         tariff: 'Текущий тарифный план'
         tariff_end: 'Дата окончания тарифного плана'
+        full_name: 'Полное название'
+        actual_address: 'Фактический адрес'
 
       # it's useful only for rails >= 3.2.0
       company/address:

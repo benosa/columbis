@@ -10,10 +10,10 @@
             .block-right
               %span.dob= t('.date_of_birth')
               %span.passport= t('.passport')
-              %span.expires= t('.passport_expire')
+              %span.expires= t('.passport_expire').html_safe
               %span.sex= t('.sex')
             .block-stretch
-              %span.fio= t('.full_name')
+              %span.fio= t('.full_name').html_safe
           .additional_fields
             %span.tel= t('.phone')
             %span.tourist_address= t('.address')
@@ -23,7 +23,7 @@
         .clearfix
           .col-actions
             .delete-wrap
-              %a.delete
+              %a.delete{ 'data-check' => t('are_you_sure') }
           .col-main.clearfix
             .common_fields
               = render :partial => 'tourist', :locals => { :f => af }
@@ -50,7 +50,7 @@
         .clearfix
           .col-actions
             .delete-wrap
-              %a.delete
+              %a.delete{ 'data-check' => t('are_you_sure') }
           .col-main.clearfix
             .common_fields
               = render :partial => 'tourist', :locals => { :f => df, :full_name_label => false }

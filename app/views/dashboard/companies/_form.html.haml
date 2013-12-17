@@ -59,6 +59,8 @@
       %h2= t('.juridical')
     .form_block_content
       .fake_row
+        %p= f.label :full_name
+        = f.text_field :full_name, :class => 'bank'
         %p= f.label :bank
         = f.text_field :bank, :class => 'bank'
         %p= f.label :bik
@@ -84,6 +86,8 @@
       .fake_row
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address }
+        %p= f.label :actual_address
+        = f.text_field :actual_address, :class => 'bank'
 
 .form_column.tariff_plan_block
   .form_block

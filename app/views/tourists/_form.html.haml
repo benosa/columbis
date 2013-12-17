@@ -22,11 +22,6 @@
         = f.text_field :phone_number, :class => 'wide'
         %p= f.label :email
         = f.text_field :email, :class => 'wide'
-        %p= f.label t('.passport')
-        = f.text_field :passport_series, :class => 'passport_series'
-        = f.text_field :passport_number, :class => 'passport_number'
-        %p= f.label :passport_valid_until, t('.passport_valid_until')
-        = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
         %p
           = f.check_box :potential, id: 'tourist_potential'
           = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.tourist_to_potential_warning', tourist: tourist.full_name) }
@@ -39,6 +34,22 @@
       .fake_row
         = f.fields_for :address do |address|
           = render :partial => 'shared/address', :locals => { :f => address, :show_joint_address => true }
+
+%fieldset.form_column.form_column-small
+  .form_block
+    .block_title
+      %h2= t('.passport_column')
+    .form_block_content
+      .fake_row.fields
+        %p= f.label :fio_latin
+        = f.text_field :fio_latin, :class => 'wide'
+        %p= f.label t('.passport')
+        = f.text_field :passport_series, :class => 'passport_series'
+        = f.text_field :passport_number, :class => 'passport_number'
+        %p= f.label :passport_valid_until, t('.passport_valid_until')
+        = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
+        %p= f.label :passport_issued
+        = f.text_area :passport_issued, :class => 'wide'
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

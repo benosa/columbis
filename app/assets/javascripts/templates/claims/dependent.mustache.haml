@@ -5,7 +5,7 @@
   .clearfix
     .col-actions
       .delete-wrap
-        %a.delete
+        %a.delete{ 'data-check' => t('are_you_sure') }
     .col-main.clearfix
       .common_fields
         .block-right
@@ -23,5 +23,9 @@
         .block-stretch
           .wrap-input.autocomplete-wrap.name-wrap
             = text_field_tag "#{name_prefix}[full_name]", '{{full_name}}', :id => "#{id_prefix}_full_name", :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }
+        .down-block
+          .block-stretch
+            .wrap-input.fio_latin-wrap
+              = text_field_tag "#{name_prefix}[fio_latin]", '{{fio_latin}}', :id => "#{id_prefix}_fio_latin", :class => 'fio_latin'
   = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
   = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id", :class => 'hidden_id'

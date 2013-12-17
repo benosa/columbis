@@ -79,7 +79,7 @@ ru:
         tariff: 'Текущий тарифный план'
         tariff_end: 'Дата окончания тарифного плана'
         full_name: 'Полное название'
-        actual_address: 'Физический адрес'
+        actual_address: 'Фактический адрес'
 
       # it's useful only for rails >= 3.2.0
       company/address:

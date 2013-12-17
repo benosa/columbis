@@ -59,6 +59,8 @@
       %h2= t('.juridical')
     .form_block_content
       .fake_row
+        %p= f.label :full_name
+        = f.text_field :full_name, :class => 'bank'
         %p= f.label :bank
         = f.text_field :bank, :class => 'bank'
         %p= f.label :bik
@@ -75,8 +77,6 @@
         = f.text_field :inn, :class => 'bank'
         %p= f.label :kpp
         = f.text_field :kpp, :class => 'bank'
-        %p= f.label :full_name
-        = f.text_field :full_name, :class => 'bank'
 
 .form_column
   .form_block

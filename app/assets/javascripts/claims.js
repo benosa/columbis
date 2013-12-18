@@ -1113,6 +1113,11 @@ function set_deys() {
 	}
 };
 
+function full_claim_hide() {
+  $('.full_claim_info').remove();
+  $('#claims tr').removeClass('hidden');
+}
+
 // On ready
 $(function() {
   if (localStorage.getItem('claim_unlock') == window.location) {
@@ -1122,11 +1127,10 @@ $(function() {
   }
   // Row highlight
   $('body').on('click', '#claims .row td', function(e) {
-    var info_block_class = 'full_claim_info';
     var $row = $(this).closest('.row');
 
-    if ($('.' + info_block_class).length) {
-      $('.' + info_block_class).remove();
+    if ($('.full_claim_info').length) {
+      $('.full_claim_info').remove();
     }
     $('#claims tr').removeClass('hidden');
     $row.addClass('hidden');
@@ -1136,7 +1140,36 @@ $(function() {
       phone_number: $row.data('phone_number'),
       visa_check: $row.data('visa_check'),
       visa_text: $row.data('visa_text'),
-      visa_color: $row.data('visa_color')
+      visa_color: $row.data('visa_color'),
+      country_name: $row.data('country_name'),
+      resort_name: $row.data('resort_name'),
+      operator_confirmation: $row.data('operator_confirmation'),
+      operator_confirmation_flag: $row.data('operator_confirmation_flag'),
+      arrival_date: $row.data('arrival_date'),
+      departure_date: $row.data('departure_date'),
+      airport_back: $row.data('airport_back'),
+      manager_last_name: $row.data('manager_last_name'),
+      manager_login: $row.data('manager_login'),
+      documents_status: $row.data('documents_status'),
+      office_name: $row.data('office_name'),
+      reservation_date: $row.data('reservation_date'),
+      num: $row.data('num'),
+      tourist_stat: $row.data('tourist_stat'),
+      docs_note: $row.data('docs_note'),
+      primary_currency_price: $row.data('primary_currency_price'),
+      tourist_advance: $row.data('tourist_advance'),
+      tourist_debt: $row.data('tourist_debt'),
+      operator_price: $row.data('operator_price'),
+      operator_maturity: $row.data('operator_maturity'),
+      operator_advance: $row.data('operator_advance'),
+      operator_debt: $row.data('operator_debt'),
+      approved_advance_tourist: $row.data('approved_advance_tourist'),
+      approved_advance_op: $row.data('approved_advance_op'),
+      approved_advance_op_prim: $row.data('approved_advance_op_prim'),
+      profit_in_percent: $row.data('profit_in_percent'),
+      profit_in_percent_acc: $row.data('profit_in_percent_acc'),
+      profit: $row.data('profit'),
+      profit_acc: $row.data('profit_acc')
     }
     html = JST['claims/full_claim'].render(claim);
     $row.after(html);

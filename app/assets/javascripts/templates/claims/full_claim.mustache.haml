@@ -32,8 +32,8 @@
     .more_info_block.route
       .top-section
         .pic
-        %h4 Петропавловск-Камчатский
-        %p Teztour
+        %h4 {{country_name}} {{resort_name}}
+        %p {{operator}}
       .bottom-section
         %table
           %tbody
@@ -43,28 +43,28 @@
             %tr
               %td.gray_text Статус
               %td.right-col
-                %span.hl.hl-green подтвержден
+                %span.hl.hl-green{class: '{{operator_confirmation_flag}}'} подтвержден
             %tr
               %td.gray_text №
-              %td.right-col 36559232124
+              %td.right-col {{operator_confirmation}}
   %td
     .more_info_block.date-mib
       .top-section
         .pic
-        %h4.clearfix 22.10.2014
+        %h4.clearfix {{arrival_date}}
         .pic1
-        %h4 22.10.2014
+        %h4 {{departure_date}}
       .bottom-section
         %p.gray_text Куда
-        %p Петропавлоск-Камчатский
+        %p {{country_name}}
         %p.gray_text Откуда
-        %p Казань
+        %p {{airport_back}}
   %td
     .more_info_block.creator
       .top-section
         .pic
-        %h4 Щербакова
-        %p manager233434
+        %h4 {{manager_last_name}}
+        %p {{manager_login}}
       .bottom-section
         %table
           %tbody
@@ -73,22 +73,22 @@
               %td.right-col
             %tr
               %td.gray_text Офис
-              %td.right-col Корстон
+              %td.right-col {{office_name}}
             %tr
               %td.gray_text Документы
               %td.right-col
-                %span.hl.hl-red не готовы
+                %span.hl.hl-red{class: '{{documents_status}}'} {{documents_status}}
   %td.last-col{colspan: "2"}
     .more_info_block.create_date
       .top-section
         .pic
-        %h4 11.01.2014
-        %p #76905
+        %h4 {{reservation_date}}
+        %p № {{num}}
       .bottom-section
         %p
           %span.gray_text Откуда
-          от знакомых
-        %p Внимание, необходимо   уточнить, кто и когда летит
+          {{tourist_stat}}
+        %p{class: 'doc_note'} {{docs_note}}
 %tr.more_info.third_row.full_claim_info
   %td.leftward{colspan: "2"}
     .more_info_block.price
@@ -102,17 +102,17 @@
             %tr
               %td.gray_text Цена
               %td.right-col
-                %h4 139 599
+                %h4 {{primary_currency_price}}
                 руб.
             %tr
               %td.gray_text Аванс
               %td.right-col
-                %h4 15 000
+                %h4 {{tourist_advance}}
                 руб.
             %tr
               %td.gray_text Долг
               %td.right-col
-                %h4 120 000
+                %h4 {{tourist_debt}}
                 руб.
       %td.rightward
         .more_info_block.price
@@ -122,17 +122,17 @@
               %tbody
                 %tr
                   %td.gray_text Сумма оператору
-                  %td.right-col 2 960 $
+                  %td.right-col {{operator_price}}
                 %tr
                   %td.gray_text Оплатить до
                   %td.right-col
-                    %span.hl.hl-orange 31.01.2014
+                    %span.hl.hl-orange {{operator_maturity}}
                 %tr
                   %td.gray_text Оплата
-                  %td.right-col о руб.
+                  %td.right-col {{operator_advance}}
                 %tr
                   %td.gray_text Долг оператору
-                  %td.right-col 2 960 $
+                  %td.right-col {{operator_debt}}
   %td
     .more_info_block.money
       .top-section
@@ -145,13 +145,13 @@
             %tr
               %td.gray_text Аванс
               %td.right-col
-                %span.hl.hl-lightblue 0 руб.
+                %span.hl.hl-lightblue {{approved_advance_tourist}} руб.
             %tr
               %td.gray_text Оплата, $
-              %td.right-col 0
+              %td.right-col {{approved_advance_op_prim}}
             %tr
               %td.gray_text Оплата, руб.
-              %td.right-col 0
+              %td.right-col {{approved_advance_op}}
   %td
     .more_info_block.percents
       .top-section
@@ -167,10 +167,10 @@
             %tr
               %td.gray_text Наценка
               %td.right-col
-                %span.hl.hl-blue 99 000 руб.
+                %span.hl.hl-blue {{profit_acc}} руб.
             %tr
               %td.gray_text Наценка, %
-              %td.right-col 55%
+              %td.right-col {{profit_in_percent_acc}}
   %td.last-col{colspan: "2"}
     .more_info_block.bonus
       .top-section
@@ -185,12 +185,12 @@
               %td.right-col
             %tr
               %td.gray_text Наценка
-              %td.right-col 99 000 руб.
+              %td.right-col {{profit}} руб.
             %tr
               %td.gray_text Наценка, %
-              %td.right-col 55%
+              %td.right-col {{profit_in_percent}}
 %tr.more_info.fourth_row.full_claim_info
   %td{colspan: "7"}
-    %a{href: "#"}
+    %a{href: "#", onclick: 'javascript: full_claim_hide()'}
       Свернуть
       %span

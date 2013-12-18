@@ -10,7 +10,7 @@
             %th.departure_date= sort_link 'departure_date', t('claims.index.dep_new_date')
             %th.user_id= sort_link 'user_id', t('claims.index.creator')
             %th.reservation_date= sort_link 'reservation_date', t('claims.index.res_new_date'), :desc
-            %th.last_row
+            %th
         %tbody#claims_body
           = render partial: 'claims_new', object: @claims, locals: { totals: @totals }
 

@@ -71,6 +71,15 @@ describe Dashboard::UsersController do
     it { response.should render_template('new') }
     it { response.should be_success }
   end
+
+  describe 'PUT update' do
+    it 'should update claim updated_at if update user login' do
+      Delayed::Worker.delay_jobs = false
+      @claim = FactoryGirl.create(:claim, company: @boss.company, office: @boss.office, user: @boss)
+      put :update, id: @boss.id, user: attributes_for(:user, login: 'ivanov')
+      Claim.find(@claim.id).updated_at.should > @claim.updated_at
+    end
+  end
 end
 
 def email_to_check(attrs)

@@ -41,6 +41,8 @@ class User < ActiveRecord::Base
   before_save :check_owner_boss
   after_save :send_registration_info_to_support, :if => :just_confirmed? if CONFIG[:support_delivery]
   after_save :create_company, :if => :just_confirmed?
+  after_update :touch_claims
+  after_destroy :touch_claims
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :fio, :sortable => true
@@ -263,5 +265,10 @@ class User < ActiveRecord::Base
 
     def check_owner_boss
       self.role = 'boss' if role_changed? && company_owner?
+    end
+
+    def touch_claims
+      # Potentially long operation, handle it asynchronously
+      UserJobs.touch_claims(id) if (!new_record? and login_changed?) or destroyed?
     end
 end

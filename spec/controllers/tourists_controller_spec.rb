@@ -6,8 +6,8 @@ describe TouristsController do
 
   def create_tourist
     @tourist = FactoryGirl.create(:tourist)
-    user = FactoryGirl.create(:admin)
-    test_sign_in(user)
+    @user = FactoryGirl.create(:admin)
+    test_sign_in(@user)
   end
 
   describe "GET #index" do
@@ -57,6 +57,18 @@ describe TouristsController do
         put :update, id: @tourist.id, tourist: attributes_for(:tourist, last_name: 'Ivanov1')
         @tourist.reload
       }.to change(@tourist, :last_name).to('Ivanov1')
+    end
+
+    it 'should update claim updated_at if update tourist full name or phone number' do
+      Delayed::Worker.delay_jobs = false
+      @claim = FactoryGirl.create(:claim, company: @user.company, office: @user.office, user: @user)
+      @claim.applicant = @tourist
+      @claim.save
+      put :update, id: @tourist.id, tourist: attributes_for(:tourist, first_name: 'ivanov123')
+      Claim.find(@claim.id).updated_at.should > @claim.updated_at
+      @claim = Claim.find(@claim.id)
+      put :update, id: @tourist.id, tourist: attributes_for(:tourist, phone_number: '1234569879')
+      Claim.find(@claim.id).updated_at.should > @claim.updated_at
     end
   end
 

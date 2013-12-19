@@ -116,6 +116,8 @@ class Claim < ActiveRecord::Base
     indexes country(:name), :as => :country, :sortable => true
 
     has :user_id
+    has :company_id
+    has :office_id
     has :reservation_date, :departure_date, :type => :datetime
    # indexes [user.last_name], :as => :user, :sortable => true
     set_property :delta => true

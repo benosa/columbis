@@ -1126,7 +1126,7 @@ $(function() {
     localStorage.setItem('claim_unlock', '');
   }
   // Row highlight
-  $('body').on('click', '#claims .row td', function(e) {
+  $('body').on('click', '.claims_list_new #claims .row td', function(e) {
     var $row = $(this).closest('.row');
 
     if ($('.full_claim_info').length) {
@@ -1135,6 +1135,7 @@ $(function() {
     $('#claims tr').removeClass('hidden');
     $row.addClass('hidden');
     claim = {
+      edit_path: $row.data('edit_path'),
       applicant_last_name: $row.data('applicant_last_name'),
       applicant_first_middle_name: $row.data('applicant_first_middle_name'),
       phone_number: $row.data('phone_number'),
@@ -1145,12 +1146,14 @@ $(function() {
       resort_name: $row.data('resort_name'),
       operator_confirmation: $row.data('operator_confirmation'),
       operator_confirmation_flag: $row.data('operator_confirmation_flag'),
+      operator_confirmation_flag_text: $row.data('operator_confirmation_flag_text'),
       arrival_date: $row.data('arrival_date'),
       departure_date: $row.data('departure_date'),
       airport_back: $row.data('airport_back'),
       manager_last_name: $row.data('manager_last_name'),
       manager_login: $row.data('manager_login'),
       documents_status: $row.data('documents_status'),
+      documents_status_text: $row.data('documents_status_text'),
       office_name: $row.data('office_name'),
       reservation_date: $row.data('reservation_date'),
       num: $row.data('num'),
@@ -1166,6 +1169,7 @@ $(function() {
       approved_advance_tourist: $row.data('approved_advance_tourist'),
       approved_advance_op: $row.data('approved_advance_op'),
       approved_advance_op_prim: $row.data('approved_advance_op_prim'),
+      approved_advance_class: $row.data('approved_advance_class'),
       profit_in_percent: $row.data('profit_in_percent'),
       profit_in_percent_acc: $row.data('profit_in_percent_acc'),
       profit: $row.data('profit'),
@@ -1174,14 +1178,17 @@ $(function() {
     html = JST['claims/full_claim'].render(claim);
     $row.after(html);
 
-   // var $row = $(this).closest('.row'),
-      //  $hrow = $('#claims .row.highlight');
-   // if ($row.get(0) == $hrow.get(0)) {
-   //   $row.toggleClass('highlight');
-   // } else {
-    //  $hrow.removeClass('highlight');
-    //  $row.addClass('highlight');
-   // }
+  });
+
+  $('.mistral-company').on('click', '#claims .row td', function(e) {
+    var $row = $(this).closest('.row'),
+    $hrow = $('#claims .row.highlight');
+    if ($row.get(0) == $hrow.get(0)) {
+      $row.toggleClass('highlight');
+    } else {
+      $hrow.removeClass('highlight');
+      $row.addClass('highlight');
+    }
   });
 
   // Window scroll event

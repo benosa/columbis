@@ -26,6 +26,8 @@ ru:
       all_done: 'В'
 
     index:
+      confirm_new: 'подтвержден'
+      unconfirm_new: 'не подтвержден'
       direction: 'Направление'
       dep_new_date: 'Дата отправления'
       creator: 'Создатель'
@@ -33,6 +35,13 @@ ru:
       claims: 'Бронирования'
       only_my: 'Только мои'
       only_active: 'В работе'
+      term_only: 'Срок'
+      op_price: 'Сумма оператору'
+      op_debt: 'Долг оператору'
+      pay_to: 'Оплатить до'
+      pay_only: 'Оплата'
+      margin: 'Наценка'
+      turn_off: 'Свернуть'
       office_filter: 'Офис'
       user_filter: 'Менеджер'
       unset_filters: 'Сбросить фильтры'

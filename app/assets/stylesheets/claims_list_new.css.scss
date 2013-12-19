@@ -84,9 +84,9 @@
         h4 { font-size: 18px; }
         td { padding: 0;
           span { color: #000; }
-          .hl-red { color: #ac3939; }
-          .hl-green { color: #398539;}
-          .hl-lightblue { color: #3f6cb8; }
+          .hl-red, .nothing_done_new, .not_ready_new { color: #ac3939; }
+          .hl-green, .docs_sent_new { color: #398539;}
+          .hl-lightblue, .all_done_new, .visa_approved_new { color: #3f6cb8; }
         }
         .gray_text { color: #666; }
         .right-col  { padding-left: 10px; }
@@ -116,9 +116,9 @@
   .doc_note { width: 272px; overflow: hidden; min-height: 40px !important; white-space: pre-wrap; }
   .stuck div a { padding-top: 10px !important; }
   .hl { display: inline-block !important; padding: 0 5px;  }
-  .hl-red {   border: solid 1px #ff96a7; background: url("/assets/new_design/images/hl-red.png");  }
-  .hl-green {  border: solid 1px #b8e8ae; background: url("/assets/new_design/images/hl-green.png");   }
+  .hl-red, .nothing_done_new, .not_ready_new {   border: solid 1px #ff96a7; background: url("/assets/new_design/images/hl-red.png");  }
+  .hl-green, .docs_sent_new {  border: solid 1px #b8e8ae; background: url("/assets/new_design/images/hl-green.png");   }
   .hl-yellow {   border: solid 1px #faeeb3; background: url("/assets/new_design/images/hl-yellow.png");   }
-  .hl-orange {   border: solid 1px #f6c8a9; background: url("/assets/new_design/images/hl-orange.png");   }
-  .hl-lightblue {   border: solid 1px #bbcce8; background: url("/assets/new_design/images/hl-lightblue.png");    }
+  .hl-orange, .docs_get_new {   border: solid 1px #f6c8a9; background: url("/assets/new_design/images/hl-orange.png");   }
+  .hl-lightblue, .all_done_new, .visa_approved_new {   border: solid 1px #bbcce8; background: url("/assets/new_design/images/hl-lightblue.png");    }
 }

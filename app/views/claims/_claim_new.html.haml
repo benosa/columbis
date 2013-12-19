@@ -10,3 +10,6 @@
     = claim.user.try(:full_name).to_s + (", #{claim.assistant.try(:full_name)}" if claim.assistant.present?).to_s
   %td= l( claim.reservation_date, :format => :default )
   %td.last_row
+    - if claim_event_count(claim) > 0
+      %span.tickers
+        = @claim_event_count

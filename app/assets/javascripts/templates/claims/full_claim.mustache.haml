@@ -1,11 +1,16 @@
 %tr.more_info.first_row.full_claim_info
   %td
-    %a.edit.active{href: "#"}
-  %td Турист
-  %td Направление
-  %td Дата отправления
-  %td Создатель
-  %td Дата создания
+    %a.edit.active{href: "{{edit_path}}"}
+  %td
+    = I18n.t('claims.form.tourist')
+  %td
+    = I18n.t('claims.index.direction')
+  %td
+    = I18n.t('claims.index.dep_new_date')
+  %td
+    = I18n.t('claims.index.creator')
+  %td
+    = I18n.t('claims.index.res_new_date')
   %td.last_row
 %tr.more_info.second_row.full_claim_info
   %td{colspan: "2"}
@@ -18,16 +23,19 @@
         %table
           %tbody
             %tr
-              %td.gray_text Тел.
+              %td.gray_text
+                = I18n.t('claims.index.phone_number')
               %td.right-col {{phone_number}}
             %tr
-              %td.gray_text Виза
+              %td.gray_text
+                = I18n.t('claims.index.visa')
               %td.right-col
-                %span.hl{class: '{{visa_color}}'} {{visa_text}}
+                %span.hl{class: "{{visa_color}}_new"} {{visa_text}}
             %tr
-              %td.gray_text Срок
+              %td.gray_text
+                = I18n.t('claims.index.term_only')
               %td.right-col
-                %span.hl.hl-yellow {{visa_check}}
+                %span.hl{class: "{{visa_color}}_new"} {{visa_check}}
   %td
     .more_info_block.route
       .top-section
@@ -41,9 +49,10 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Статус
+              %td.gray_text
+                = I18n.t('activerecord.attributes.tourist.state')
               %td.right-col
-                %span.hl.hl-green{class: '{{operator_confirmation_flag}}'} подтвержден
+                %span.hl{class: '{{operator_confirmation_flag}}'} {{operator_confirmation_flag_text}}
             %tr
               %td.gray_text №
               %td.right-col {{operator_confirmation}}
@@ -55,9 +64,11 @@
         .pic1
         %h4 {{departure_date}}
       .bottom-section
-        %p.gray_text Куда
+        %p.gray_text
+          = I18n.t('claims.index.to')
         %p {{country_name}}
-        %p.gray_text Откуда
+        %p.gray_text
+          = I18n.t('claims.index.from')
         %p {{airport_back}}
   %td
     .more_info_block.creator
@@ -72,12 +83,14 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Офис
+              %td.gray_text
+                = I18n.t('claims.index.office_filter')
               %td.right-col {{office_name}}
             %tr
-              %td.gray_text Документы
+              %td.gray_text
+                = I18n.t('claims.index.docs')
               %td.right-col
-                %span.hl.hl-red{class: '{{documents_status}}'} {{documents_status}}
+                %span.hl{class: '{{documents_status}}_new'} {{documents_status_text}}
   %td.last-col{colspan: "2"}
     .more_info_block.create_date
       .top-section
@@ -86,7 +99,8 @@
         %p № {{num}}
       .bottom-section
         %p
-          %span.gray_text Откуда
+          %span.gray_text
+            = I18n.t('claims.index.from')
           {{tourist_stat}}
         %p{class: 'doc_note'} {{docs_note}}
 %tr.more_info.third_row.full_claim_info
@@ -100,17 +114,20 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Цена
+              %td.gray_text
+                = I18n.t('claims.index.price')
               %td.right-col
                 %h4 {{primary_currency_price}}
                 руб.
             %tr
-              %td.gray_text Аванс
+              %td.gray_text
+                = I18n.t('claims.index.advance')
               %td.right-col
                 %h4 {{tourist_advance}}
                 руб.
             %tr
-              %td.gray_text Долг
+              %td.gray_text
+                = I18n.t('claims.index.debt')
               %td.right-col
                 %h4 {{tourist_debt}}
                 руб.
@@ -121,17 +138,21 @@
             %table
               %tbody
                 %tr
-                  %td.gray_text Сумма оператору
+                  %td.gray_text
+                    = I18n.t('claims.index.op_price')
                   %td.right-col {{operator_price}}
                 %tr
-                  %td.gray_text Оплатить до
+                  %td.gray_text
+                    = I18n.t('claims.index.pay_to')
                   %td.right-col
-                    %span.hl.hl-orange {{operator_maturity}}
+                    %span.hl {{operator_maturity}}
                 %tr
-                  %td.gray_text Оплата
+                  %td.gray_text
+                    = I18n.t('claims.index.pay_only')
                   %td.right-col {{operator_advance}}
                 %tr
-                  %td.gray_text Долг оператору
+                  %td.gray_text
+                    = I18n.t('claims.index.op_debt')
                   %td.right-col {{operator_debt}}
   %td
     .more_info_block.money
@@ -143,14 +164,18 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Аванс
+              %td.gray_text
+                = I18n.t('claims.index.advance')
               %td.right-col
-                %span.hl.hl-lightblue {{approved_advance_tourist}} руб.
+                %span.hl{class: '{{approved_advance_class}}'}
+                  = "{{approved_advance_tourist}} #{I18n.t('rur')}"
             %tr
-              %td.gray_text Оплата, $
+              %td.gray_text
+                = "#{I18n.t('claims.index.pay_only')}, $"
               %td.right-col {{approved_advance_op_prim}}
             %tr
-              %td.gray_text Оплата, руб.
+              %td.gray_text
+                = "#{I18n.t('claims.index.pay_only')}, #{I18n.t('rur')}"
               %td.right-col {{approved_advance_op}}
   %td
     .more_info_block.percents
@@ -165,11 +190,14 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Наценка
+              %td.gray_text
+                = I18n.t('claims.index.margin')
               %td.right-col
-                %span.hl.hl-blue {{profit_acc}} руб.
+                %span.hl
+                  = "{{profit_acc}} #{I18n.t('rur')}"
             %tr
-              %td.gray_text Наценка, %
+              %td.gray_text
+                = "#{I18n.t('claims.index.margin')}, %"
               %td.right-col {{profit_in_percent_acc}}
   %td.last-col{colspan: "2"}
     .more_info_block.bonus
@@ -184,13 +212,16 @@
               %td.gray_text  
               %td.right-col
             %tr
-              %td.gray_text Наценка
-              %td.right-col {{profit}} руб.
+              %td.gray_text
+                = I18n.t('claims.index.margin')
+              %td.right-col
+                = "{{profit}} #{I18n.t('rur')}"
             %tr
-              %td.gray_text Наценка, %
+              %td.gray_text
+                = "#{I18n.t('claims.index.margin')}, %"
               %td.right-col {{profit_in_percent}}
 %tr.more_info.fourth_row.full_claim_info
   %td{colspan: "7"}
     %a{href: "#", onclick: 'javascript: full_claim_hide()'}
-      Свернуть
+      = I18n.t('claims.index.turn_off')
       %span

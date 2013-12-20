@@ -97,6 +97,13 @@
         .pic
         %h4 {{reservation_date}}
         %p № {{num}}
+        %table
+          %tbody
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.check_date')
+              %td.right-col
+                %span.hl{class: '{{check_date_class}}'} {{check_date}}
       .bottom-section
         %p
           %span.gray_text
@@ -168,7 +175,7 @@
                 = I18n.t('claims.index.advance')
               %td.right-col
                 %span.hl{class: '{{approved_advance_class}}'}
-                  = "{{approved_advance_tourist}} #{I18n.t('rur')}"
+                  = "{{approved_advance_tourist}}"
             %tr
               %td.gray_text
                 = "#{I18n.t('claims.index.pay_only')}, $"
@@ -184,20 +191,23 @@
         %table
           %tbody
             %tr
-              %td.gray_text  
-              %td.right-col
-            %tr
-              %td.gray_text  
-              %td.right-col
-            %tr
               %td.gray_text
                 = I18n.t('claims.index.margin')
+              %td.right-col
+                = "{{profit}} #{I18n.t('rur')}"
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.margin')}, %"
+              %td.right-col {{profit_in_percent}}
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.margin_buh')
               %td.right-col
                 %span.hl
                   = "{{profit_acc}} #{I18n.t('rur')}"
             %tr
               %td.gray_text
-                = "#{I18n.t('claims.index.margin')}, %"
+                = "#{I18n.t('claims.index.margin_buh')}, %"
               %td.right-col {{profit_in_percent_acc}}
   %td.last-col{colspan: "2"}
     .more_info_block.bonus
@@ -213,13 +223,13 @@
               %td.right-col
             %tr
               %td.gray_text
-                = I18n.t('claims.index.margin')
-              %td.right-col
-                = "{{profit}} #{I18n.t('rur')}"
+                = "#{I18n.t('claims.index.premium')}, #{I18n.t('rur')}"
+              %td.right-col#bonus_new
+                = "{{bonus}}"
             %tr
               %td.gray_text
-                = "#{I18n.t('claims.index.margin')}, %"
-              %td.right-col {{profit_in_percent}}
+                = "#{I18n.t('claims.index.premium')}, %"
+              %td.right-col#bonus_percent_new
 %tr.more_info.fourth_row.full_claim_info
   %td{colspan: "7"}
     %a{href: "#", onclick: 'javascript: full_claim_hide()'}

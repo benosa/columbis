@@ -26,6 +26,7 @@ ru:
       all_done: 'В'
 
     index:
+      premium: 'Премия'
       confirm_new: 'подтвержден'
       unconfirm_new: 'не подтвержден'
       direction: 'Направление'
@@ -41,6 +42,7 @@ ru:
       pay_to: 'Оплатить до'
       pay_only: 'Оплата'
       margin: 'Наценка'
+      margin_buh: 'Наценка бух.'
       turn_off: 'Свернуть'
       office_filter: 'Офис'
       user_filter: 'Менеджер'

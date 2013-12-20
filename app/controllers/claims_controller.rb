@@ -18,9 +18,7 @@ class ClaimsController < ApplicationController
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
     if search_or_sort? # Last search was restored from session
       # remover any sql order by reorder(nil), because there are might be composed columns
-      # is_mistral? ? { index: 'mistral_claim_index' } : { index: 'default_claim_index' }
-      @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables),
-       { index: 'default_claim_index' }  ).reorder(nil)
+      @claims_collection = search_paginate(Claim.search_and_sort(search_options).includes(inluded_tables) ).reorder(nil)
       @claims = Claim.sort_by_search_results(@claims_collection)
     else
       page_options = { :page => params[:page], :per_page => per_page }
@@ -210,8 +208,10 @@ class ClaimsController < ApplicationController
         :order => Claim::DEFAULT_SORT[:col],
         :sort_mode => Claim::DEFAULT_SORT[:dir]
       })
+      opts[:index] = is_mistral? ? 'mistral_claim_index' : 'default_claim_index'
       opts[:with] = current_ability.attributes_for(:read, Claim) # opts[:with] = { :company_id => current_company.id }
       opts[:with][:active] = true if params[:only_active] == '1'
+      opts[:sphinx_select] = "*, IF(check_date <= NOW() AND active = 1, 1, 0) AS control_error" if !is_mistral?
       if is_admin? or is_boss? or is_supervisor? or is_accountant?
         unless params[:user_id].blank?
           manager = params[:user_id].to_i
@@ -228,7 +228,11 @@ class ClaimsController < ApplicationController
           opts[:with]['manager'] = 1
         end
       end
-      opts[:order] = "#{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+      if is_mistral?
+        opts[:order] = "#{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+      else
+        opts[:order] = "control_error desc, #{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+      end
       opts[:sort_mode] = :extended
       @search_options = opts.delete_if{ |key, value| value.blank? }
     end

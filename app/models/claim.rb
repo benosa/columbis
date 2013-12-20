@@ -111,15 +111,14 @@ class Claim < ActiveRecord::Base
   scope :active, lambda { where(:active => true) }
 
   define_index 'default_claim_index' do
- #   indexes :reservation_date, :departure_date
     indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
     indexes country(:name), :as => :country, :sortable => true
-
+    indexes [user.last_name, user.first_name], :as => :user, :sortable => true
     has :user_id
     has :company_id
     has :office_id
-    has :reservation_date, :departure_date, :type => :datetime
-   # indexes [user.last_name], :as => :user, :sortable => true
+    has :reservation_date, :departure_date, :check_date, :type => :datetime
+    has :active, :type => :boolean
     set_property :delta => true
   end
 

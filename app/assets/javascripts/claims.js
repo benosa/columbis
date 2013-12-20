@@ -1173,11 +1173,22 @@ $(function() {
       profit_in_percent: $row.data('profit_in_percent'),
       profit_in_percent_acc: $row.data('profit_in_percent_acc'),
       profit: $row.data('profit'),
-      profit_acc: $row.data('profit_acc')
+      profit_acc: $row.data('profit_acc'),
+      check_date: $row.data('check_date'),
+      check_date_class: $row.data('check_date_class'),
+      bonus: $row.data('bonus')
     }
     html = JST['claims/full_claim'].render(claim);
     $row.after(html);
+    $('#bonus_percent_new').html($row.data('bonus_percent'));
 
+    $('#bonus_percent_new .best_in_place:not(.active)').addClass('active').best_in_place().bind('ajax:success', function(event, jstr) {
+      var json = $.parseJSON(jstr),
+          bip = $(this).data('bestInPlaceEditor');
+      bip.original_content = json.bonus_percent;
+      $(this).html(json.bonus_percent).attr("data-original-content", json.bonus_percent);
+      $('#bonus_new').html(json.bonus);
+    });
   });
 
   $('.mistral-company').on('click', '#claims .row td', function(e) {

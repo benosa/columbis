@@ -26,6 +26,11 @@
             - else
               - contract_name = nil
             = f.text_field :contract_name, :value => contract_name
+        - if is_mistral?
+          .fake_col.col2
+            .one_line
+              = f.label :return_call, t('.return_call'), :class => 'checkbox', :style => "padding-left:20px;"
+              = f.check_box :return_call
     .fake_row.row2
       .two_line
         %p= f.label :docs_note

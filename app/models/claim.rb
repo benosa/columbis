@@ -31,7 +31,7 @@ class Claim < ActiveRecord::Base
   attr_accessible :reservation_date, :visa, :visa_check, :visa_confirmation_flag, :check_date,
                   :operator_confirmation, :operator_confirmation_flag, :early_reservation, :documents_status,
                   :docs_note, :closed, :memo_tasks_done, :canceled, :tourist_stat, :assistant_id, :special_offer,
-                  :contract_name
+                  :contract_name, :return_call
 
   # amounts and payments
   attr_accessible :operator_price, :operator_price_currency, :operator_debt, :tourist_debt,

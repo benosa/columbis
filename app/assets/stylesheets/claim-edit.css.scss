@@ -100,6 +100,12 @@
     width: auto !important;
     padding: 11px 20px 15px 20px;
 
+    .one_line {
+      display: block;
+      p { white-space: nowrap; }
+      padding: 22px 0 0 20px;
+    }
+
     .two_line {
       display: block;
       p { white-space: nowrap; }

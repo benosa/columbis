@@ -150,6 +150,14 @@ module ClaimsHelper
     end
   end
 
+  def color_for_departure_date_call(claim)
+    if (claim.arrival_date <= Date.current) && claim.return_call
+      'red_back'
+    else
+      ''
+    end
+  end
+
   def text_value(value)
     return I18n.t(:nope) if value.nil? or value.is_a?(String) and value.blank?
     value.to_s

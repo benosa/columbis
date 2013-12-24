@@ -117,7 +117,7 @@
       %h2= t('.export')
     .form_block_content
       .fake_row
-        %p= link_to t(".export_all"), export_to_claims_path(:format => 'xls'), :style => "text-decoration: underline;"
+        %p= link_to t(".export_all"), dashboard_export_path(:format => 'xls'), :style => "text-decoration: underline;"
 
 - if is_admin?
   .form_column

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131213114305) do
+ActiveRecord::Schema.define(:version => 20131223082841) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20131213114305) do
     t.datetime "locked_at"
     t.string   "contract_name"
     t.decimal  "discount",                                                           :default => 0.0,            :null => false
+    t.boolean  "return_call",                                                        :default => false
   end
 
   create_table "companies", :force => true do |t|
@@ -451,6 +452,8 @@ ActiveRecord::Schema.define(:version => 20131213114305) do
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
+    t.text     "notes"
+    t.string   "phone_code"
     t.string   "sex",                  :default => "not_selected"
     t.string   "fio_latin"
     t.string   "passport_issued"

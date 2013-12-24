@@ -70,6 +70,9 @@
     <Style ss:ID="companies-dates-gray_back" ss:Parent="companies-gray_back">
       <NumberFormat ss:Format="Short Date"/>
     </Style>
+    <Style ss:ID="companies-dates-red_back" ss:Parent="companies-red_back">
+      <NumberFormat ss:Format="Short Date"/>
+    </Style>
     <Style ss:ID="companies-dates-departed" ss:Parent="companies-departed">
       <NumberFormat ss:Format="Short Date"/>
     </Style>
@@ -140,10 +143,15 @@
         <Cell><Data ss:Type="String"><%= t('claims.index.docs') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.index.memo') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.index.check_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.form.early_reservation') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.excluded_from_profit') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.canceled') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.active') %></Data></Cell>
       </Row>
     <% @totals.each do |claim| %>
       <%= excel_element "Row", "companies-gray_back", styles, claim.canceled? %>
       <% row_date_style = claim.canceled? ? "companies-dates-gray_back" : "date" %>
+      <% departure_date_style = claim.canceled? ? "companies-dates-gray_back" : "companies-dates-#{color_for_departure_date_call(claim)}" %>
         <Cell><Data ss:Type="Number"><%= claim.num %></Data></Cell>
         <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.reservation_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.tourist_stat %></Data></Cell>
@@ -158,7 +166,7 @@
         <%= excel_element "Cell", "companies-dates-#{color_for_flight(claim)}", styles %>
         <% end %>
           <%= excel_date claim.arrival_date %></Cell>
-        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.departure_date %></Cell>
+        <Cell ss:StyleID="<%= departure_date_style %>"><%= excel_date claim.departure_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.country.try(:name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.city.try(:name) %></Data></Cell>
         <%= excel_element "Cell", "companies-#{color_for_visa(claim)}", styles %>
@@ -205,6 +213,10 @@
         <%= excel_element "Cell", "companies-dates-#{check_date_status(claim)}", styles %>
         <% end %>
           <%= excel_date claim.check_date %></Cell>
+        <Cell><Data ss:Type="String"><%= claim.early_reservation ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.excluded_from_profit ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.canceled ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.active ? 'Да' : 'Нет' %></Data></Cell>
       </Row>
     <% end %>
     </Table>

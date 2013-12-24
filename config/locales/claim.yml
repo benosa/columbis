@@ -78,6 +78,7 @@ ru:
       add_claim: 'Добавить бронь'
       column_settings: 'Настройки столбцов'
       options_all: 'Все'
+      active: 'Активна'
 
     form:
       reset: 'Сброс'

@@ -208,7 +208,6 @@ namespace :demo do
     user.company = company
     user.office = office
     user.role = role
-    user.screen_width = 1600
     user.confirmed_at = Time.zone.now
     user.save(validate: false)
     user

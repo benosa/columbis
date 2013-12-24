@@ -44,7 +44,7 @@ Tourism::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( jquery-ui.css new_design/css/low.css new_design/css/middle.css new_design/css/high.css common.css css3-mediaqueries.js public.css )
+  config.assets.precompile += %w( jquery-ui.css common.css css3-mediaqueries.js public.css )
   config.assets.precompile += %w( boss.css boss.js ) # boss assets
   config.assets.precompile += %w( claim-edit.js claim-edit.css claim_printers.js claim_printers.css ) # temporary
 

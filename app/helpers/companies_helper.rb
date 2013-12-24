@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'import'
+
 module CompaniesHelper
 
   def sort_printers(printers)
@@ -11,6 +13,11 @@ module CompaniesHelper
         a.mode == 'memo' ? 1 : (b.mode == 'memo' ? -1 : a.mode <=> b.mode)
       end
     end
+  end
+
+  def import(tables, file_path, company_id)
+    importing = Import::Formats::XLS.new(tables, file_path, company_id)
+    importing.start
   end
 
 end

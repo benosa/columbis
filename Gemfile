@@ -10,6 +10,7 @@ gem 'delayed_job', '3.0.5'
 gem "delayed_job_web", '~> 1.2.0'
 gem "daemons", '1.1.9'
 gem 'activemerchant', '~> 1.39.2'
+gem "roo"
 
 gem 'haml', '~> 3.1.7'
 # Using haml-rails, because haml gem dosn't give generators for rails 3

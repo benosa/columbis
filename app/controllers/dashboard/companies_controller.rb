@@ -21,9 +21,11 @@ class Dashboard::CompaniesController < ApplicationController
   end
 
   def update
+    params[:company].delete(:import) # no access to import
     @company = current_company unless @company
     if @company.update_attributes(params[:company])
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
+
       if @company.previous_changes['subdomain'] != nil
         @boss = User.where(company_id: @company.id, role: :boss).first
         @boss.update_attribute(:subdomain, @company.subdomain) if @boss

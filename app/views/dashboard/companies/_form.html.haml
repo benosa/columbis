@@ -118,3 +118,17 @@
     .form_block_content
       .fake_row
         %p= link_to t(".export_all"), export_to_claims_path(:format => 'xls'), :style => "text-decoration: underline;"
+
+- if is_admin?
+  .form_column
+    .form_block
+      .block_title
+        %h2= t('.import')
+      .form_block_content
+        .fake_row
+          %p
+            = label_tag '', t('.import_label'),:style => "width: 200px"
+          %p.file
+            = f.file_field :import
+            = link_to t(".import_button"), '#', :class => 'select_file'
+          %p= link_to t(".template"), root_path + "import.xls"

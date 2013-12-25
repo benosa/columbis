@@ -26,7 +26,7 @@
       <Protection/>
     </Style>
     <Style ss:ID="date">
-      <NumberFormat ss:Format="Short Date"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
     <Style ss:ID="companies-gray_back">
       <Interior ss:Color="#CCCCCC" ss:Pattern="Solid"/>
@@ -67,35 +67,45 @@
     <Style ss:ID="companies-orange_back">
       <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
     </Style>
-    <Style ss:ID="companies-dates-gray_back" ss:Parent="companies-gray_back">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-gray_back">
+      <Interior ss:Color="#CCCCCC" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-red_back" ss:Parent="companies-red_back">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-red_back">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-departed" ss:Parent="companies-departed">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-departed">
+      <Interior ss:Color="#E5F5FE" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-hot" ss:Parent="companies-hot">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-hot">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-soon" ss:Parent="companies-soon">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-soon">
+      <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-nothing_done" ss:Parent="companies-nothing_done">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-nothing_done">
+      <Interior ss:Color="#ED2222" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-all_done" ss:Parent="companies-all_done">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-all_done">
+      <Interior ss:Color="#F5F5F5" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-docs_got" ss:Parent="companies-docs_got">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-docs_got">
+      <Interior ss:Color="#FF8888" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-docs_sent" ss:Parent="companies-docs_sent">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-docs_sent">
+      <Interior ss:Color="#21D00C" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
-    <Style ss:ID="companies-dates-visa_approved" ss:Parent="companies-visa_approved">
-      <NumberFormat ss:Format="Short Date"/>
+    <Style ss:ID="companies-dates-visa_approved">
+      <Interior ss:Color="#96B1F0" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="Long Date"/>
     </Style>
     <% @managers.each do |user| %>
       <% if user.try(:color) %>
@@ -166,7 +176,12 @@
         <%= excel_element "Cell", "companies-dates-#{color_for_flight(claim)}", styles %>
         <% end %>
           <%= excel_date claim.arrival_date %></Cell>
-        <Cell ss:StyleID="<%= departure_date_style %>"><%= excel_date claim.departure_date %></Cell>
+        <% if claim.canceled? %>
+          <Cell ss:StyleID="companies-dates-gray_back">
+        <% else %>
+          <Cell ss:StyleID="<%= color_for_departure_date_call(claim).to_s != '' ? "companies-dates-#{color_for_departure_date_call(claim)}" : "date" %>">
+        <% end %>
+          <%= excel_date claim.departure_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.country.try(:name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.city.try(:name) %></Data></Cell>
         <%= excel_element "Cell", "companies-#{color_for_visa(claim)}", styles %>
@@ -241,24 +256,34 @@
   <Worksheet ss:Name="Туристы">
     <Table>
       <Row>
-        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(t('tourists.tourists.full_name')) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:date_of_birth) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:phone_number) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.email') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.passport_series') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.passport_number') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:passport_valid_until) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.last_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.first_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.middle_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.sex') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.date_of_birth') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.phone_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.email') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.fio_latin') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_series') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_valid_until') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_issued') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
       </Row>
     <% @tourists.each do |tourist| %>
       <%= excel_element "Row", "users-#{tourist.try(:user).try(:id)}", styles %>
-        <Cell><Data ss:Type="String"><%= tourist.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.last_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.first_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.middle_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t("sex_states.#{tourist.sex}") %></Data></Cell>
         <Cell ss:StyleID="date"><%= excel_date tourist.date_of_birth %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.email %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.fio_latin %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_series %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_number %></Data></Cell>
         <Cell ss:StyleID="date"><%= excel_date tourist.passport_valid_until %></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.passport_issued %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.address.try(:joint_address) %></Data></Cell>
       </Row>
     <% end %>
@@ -287,18 +312,95 @@
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:created_at) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.manager') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(t('tourists.tourists.full_name')) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.sex') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:phone_number) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.email') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.wishes') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.actions') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.state') %></Data></Cell>
       </Row>
     <% @clients.each do |client| %>
       <%= excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
         <Cell ss:StyleID="date"><%= excel_date client.created_at.to_date %></Cell>
         <Cell><Data ss:Type="String"><%= client.user.try(:full_name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t("sex_states.#{client.sex}") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.email %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.wishes %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.actions %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.state.to_s != '' ? t("potential_states.#{client.state}") : '' %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Операторы">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.full_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.register_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.register_series') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.inn') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.ogrn') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.code_of_reason') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.phone_numbers') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.site') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.register_series') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.banking_details') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.actual_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_full_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.actual_insurer_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('operators.form.provision') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_start') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_end') %></Data></Cell>
+      </Row>
+    <% @operators.each do |operator| %>
+      <%= excel_element "Row", "", styles %>
+        <Cell><Data ss:Type="String"><%= operator.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.full_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.register_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.register_series %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.inn %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.ogrn %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.code_of_reason %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.phone_numbers %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.site %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.register_series %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.banking_details %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.actual_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.address.try(:joint_address) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_full_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.actual_insurer_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_provision %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_contract %></Data></Cell>
+        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_date %></Cell>
+        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_start %></Cell>
+        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_end %></Cell>
       </Row>
     <% end %>
     </Table>

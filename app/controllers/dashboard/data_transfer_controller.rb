@@ -10,6 +10,8 @@ class Dashboard::DataTransferController < ApplicationController
 
     @managers = User.where(:company_id => current_company.id)
 
+    @operators = Operator.by_company_or_common(current_company).includes(:address)
+
     respond_to do |format|
       format.xls { render "claims" }
     end

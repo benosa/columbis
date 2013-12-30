@@ -39,6 +39,7 @@ module Import
           if (!check_exist(params, company))
             tourist = Tourist.new(params)
             tourist.company = company
+            tourist.sex = ClientTable.find_sex_state(data_row)
             if tourist.save
               if data_row[:address][:value]
                 tourist.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
@@ -76,7 +77,6 @@ module Import
             :last_name => row[:last_name][:value],
             :first_name => row[:first_name][:value],
             :middle_name => row[:middle_name][:value],
-            :sex => row[:sex][:value],
             :date_of_birth => row[:date_of_birth][:value],
             :phone_number => row[:phone_number][:value],
             :email => row[:email][:value],

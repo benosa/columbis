@@ -168,7 +168,7 @@
         <Cell><Data ss:Type="String"><%= claim.office.name %></Data></Cell>
         <%= excel_element "Cell", "users-#{claim.user.id}", styles %>
           <Data ss:Type="String"><%= claim.user.login %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= claim.applicant.try(:initials_name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourists_list(claim) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.applicant.try(:phone_number) %></Data></Cell>
         <% if claim.canceled? %>
         <Cell ss:StyleID="companies-dates-gray_back">
@@ -322,7 +322,7 @@
     <% @clients.each do |client| %>
       <%= excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
         <Cell ss:StyleID="date"><%= excel_date client.created_at.to_date %></Cell>
-        <Cell><Data ss:Type="String"><%= client.user.try(:full_name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.user.try(:login) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t("sex_states.#{client.sex}") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.phone_number %></Data></Cell>

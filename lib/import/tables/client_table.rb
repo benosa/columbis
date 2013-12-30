@@ -18,7 +18,7 @@ module Import
 
       class << self
         def columns_count
-          8
+          9
         end
 
         def sheet_number
@@ -36,7 +36,9 @@ module Import
             tourist = Tourist.new(params)
             tourist.company = company
             tourist.user = find_manager(data_row)
-            tourist.state = find_state(data_row)
+            tourist.state = find_potential_state(data_row)
+            tourist.sex = find_sex_state(data_row)
+
             if tourist.save
               puts "Tourist was importing"
               true
@@ -50,6 +52,18 @@ module Import
          # end
         end
 
+        def find_sex_state(row)
+          sex_states = {}
+          Tourist::SEX_STATES.each do |state|
+            sex_states.merge!({ I18n.t("sex_states.#{state}") => state })
+          end
+          if sex_states.keys.include?(row[:sex][:value])
+            return sex_states[row[:sex][:value]]
+          else
+            return nil
+          end
+        end
+
         private
 
         def find_manager(data_row)
@@ -59,10 +73,16 @@ module Import
           user
         end
 
-        def find_state(data_row)
-          'important' if data_row[:state][:value] == 'Активно звонить!'
-          'reserved' if data_row[:state][:value] == 'Забронирован'
-          'refused' if data_row[:state][:value] == 'Отказался'
+        def find_potential_state(row)
+          potencial_states = {}
+          Tourist::POTENTIAL_STATES.each do |state|
+            potencial_states.merge!({ I18n.t("potential_states.#{state}") => state })
+          end
+          if potencial_states.keys.include?(row[:state][:value])
+            return potencial_states[row[:state][:value]]
+          else
+            return nil
+          end
         end
 
         def prepare_data(row, company)
@@ -82,7 +102,6 @@ module Import
         def create_client_params(row, company)
           {
             :full_name => row[:full_name][:value],
-            :sex => row[:sex][:value],
             :phone_number => row[:phone_number][:value],
             :email => row[:email][:value],
             :wishes => row[:wishes][:value],

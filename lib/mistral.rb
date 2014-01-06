@@ -96,11 +96,15 @@ module Mistral
 
       # If data in current month are empty, get it from previous
       if !@report || @report.data.empty?
-        report_options.merge!({
-          start_date: Date.current.prev_month.beginning_of_month,
-          end_date: Date.current.prev_month.end_of_month,
-        })
-        @report = Boss::ManagersMarginReport.new(report_options).prepare
+        @i = 1
+        while !@report || @report.data.empty? do
+          report_options.merge!({
+            start_date: (Date.current - @i.month).beginning_of_month,
+            end_date: (Date.current - @i.month).end_of_month
+          })
+          @i += 1
+          @report = Boss::ManagersMarginReport.new(report_options).prepare
+        end
       end
 
       @mistral_top_managers_report = @report
@@ -109,7 +113,7 @@ module Mistral
 
     def top_manager(pos = 0, attribute = false)
       manager = top_managers[pos]
-      value = manager[attribute] if attribute
+      value = manager[attribute] if manager && attribute
       value || manager
     end
 

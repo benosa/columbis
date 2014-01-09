@@ -1191,7 +1191,7 @@ $(function() {
     });
   });
 
-  $('.mistral-company').on('click', '#claims .row td', function(e) {
+  $('.claims_list_old').on('click', '#claims .row td', function(e) {
     var $row = $(this).closest('.row'),
     $hrow = $('#claims .row.highlight');
     if ($row.get(0) == $hrow.get(0)) {

@@ -34,10 +34,10 @@ class ClaimsController < ApplicationController
     @totals = get_totals(@claims) if params[:list_type] == 'accountant_list'
     limit_collection_total_entries @claims_collection
     if request.xhr?
-      if is_mistral?
-        render :partial => 'list'
-      else
+      if current_company.short_claim_list
         render :partial => 'list_new'
+      else
+        render :partial => 'list'
       end
     end
 

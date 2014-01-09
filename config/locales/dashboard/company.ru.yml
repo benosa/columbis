@@ -75,6 +75,7 @@ ru:
         logo: 'Логотип'
         tariff: 'Текущий тарифный план'
         tariff_end: 'Дата окончания тарифного плана'
+        short_claim_list: 'Сокращенный вид заявок'
 
       # it's useful only for rails >= 3.2.0
       company/address:

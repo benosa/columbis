@@ -25,6 +25,9 @@
         = f.text_field :director_genitive, :class => 'bank'
         %p= f.label :time_zone
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
+        %p
+          = f.check_box :short_claim_list
+          = f.label :short_claim_list
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         - if company.logo.present?
           = image_tag company.logo_url(:thumb)

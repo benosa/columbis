@@ -1,7 +1,7 @@
-- if is_mistral?
-  = render partial: 'claims', object: @claims, locals: { totals: @totals }
-- else
+- if current_company.short_claim_list
   = render partial: 'claims_new', object: @claims, locals: { totals: @totals }
+- else
+  = render partial: 'claims', object: @claims, locals: { totals: @totals }
 
 - if next_page <= @claims_collection.total_pages
   %tr{ :class => "waypoint", :data => {:page => next_page} }

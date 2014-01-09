@@ -1081,3 +1081,5 @@ input[type="checkbox"]{display: none;}
 				text-align: right;
 				width: 594px;
 			}
+
+#company_short_claim_list {display: inline-block; margin-right: 5px; margin-top: 4px; }

@@ -36,10 +36,10 @@
       - else
         = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
         %a.settings{ :href => "#" }= t('.column_settings')
-- if is_mistral?
-  = render :partial => 'list'
-- else
+- if current_company.short_claim_list
   = render :partial => 'list_new'
+- else
+  = render :partial => 'list'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

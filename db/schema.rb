@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131126102831) do
+ActiveRecord::Schema.define(:version => 20140109141430) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.datetime "locked_at"
     t.string   "contract_name"
     t.decimal  "discount",                                                           :default => 0.0,            :null => false
+    t.boolean  "return_call",                                                        :default => false
   end
 
   create_table "companies", :force => true do |t|
@@ -186,6 +187,9 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.datetime "tariff_end"
     t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
     t.integer  "kpp"
+    t.string   "full_name"
+    t.string   "actual_address"
+    t.boolean  "short_claim_list",                                 :default => true, :null => false
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -449,7 +453,11 @@ ActiveRecord::Schema.define(:version => 20131126102831) do
     t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
+    t.text     "notes"
+    t.string   "phone_code"
     t.string   "sex",                  :default => "not_selected"
+    t.string   "fio_latin"
+    t.string   "passport_issued"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

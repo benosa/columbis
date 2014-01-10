@@ -60,7 +60,9 @@ module Import
           data_row = prepare_data(row, company)
           if data_row && !data_row[:cant_be_nil]
             params = create_claim_params(data_row, company)
+           # puts params
             claim = Claim.new(params)
+
             claim.company = company
             claim.user = user_manual_check(data_row, company)
             claim.office = office_manual_check(data_row, company)
@@ -68,7 +70,9 @@ module Import
             claim.city = city_manual_check(data_row, company)
             tourists = parse_tourists(data_row)
             claim.applicant = tourist_manual_check(tourists[0], company) if tourists[0]
-            if claim.assign_reflections_and_save(params)
+          #  puts claim.inspect
+          #if claim.assign_reflections_and_save(params)
+            if claim.save
               puts "    Claim was importing"
               true
             else
@@ -224,17 +228,17 @@ module Import
         end
 
         def create_claim_params(row, company)
-          puts row
+         # puts row
           {
             :num => row[:num][:value].to_i,
             :reservation_date => row[:reservation_date][:value],
             :tourist_stat => row[:tourist_stat][:value],
             :arrival_date => row[:arrival_date][:value],
             :departure_date => row[:departure_date][:value],
-            :visa => row[:visa][:value],
+            :visa => 'all_done',#row[:visa][:value],
             :visa_check => row[:visa_check][:value],
             :operator_confirmation => row[:operator_confirmation][:value],
-            :primary_currency_price => row[:primary_currency_price][:value],
+            :primary_currency_price => row[:primary_currency_price][:value].to_f,
             :calculation => row[:calculation][:value],
             :tourist_advance => row[:tourist_advance][:value],
             :tourist_debt => row[:tourist_debt][:value],

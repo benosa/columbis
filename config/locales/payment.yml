@@ -10,5 +10,6 @@ ru:
         amount_prim: 'Сумма осн.'
         approved: 'Подтверждено'
         reversed_course: 'Обратный курс'
+        course: 'Курс'
         payer: 'Плательщик'
         recipient: 'Получатель'

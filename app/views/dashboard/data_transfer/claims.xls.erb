@@ -420,5 +420,99 @@
       <ProtectScenarios>False</ProtectScenarios>
     </WorksheetOptions>
   </Worksheet>
+  <Worksheet ss:Name="Оплаты от туриста">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Номер заявки</Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.date_in') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.currency') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.description') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.form') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount_prim') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.approved') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
+      </Row>
+    <% @tourists_payments.each do |payment| %>
+      <%= excel_element "Row", "", styles %>
+        <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+        <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+        <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Оплаты оператору">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Номер заявки</Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.date_in') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.currency') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.description') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.form') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount_prim') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.approved') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
+      </Row>
+    <% @operator_payments.each do |payment| %>
+      <%= excel_element "Row", "", styles %>
+        <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+        <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+        <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
 </Workbook>
 

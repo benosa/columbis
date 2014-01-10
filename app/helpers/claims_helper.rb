@@ -266,8 +266,8 @@ module ClaimsHelper
   def claim_full_info(claim)
     {
       edit_path: edit_claim_path(claim),
-      applicant_last_name: claim.applicant.try(:last_name),
-      applicant_first_middle_name: claim.applicant.try(:first_name) + ' ' + claim.applicant.try(:middle_name),
+      applicant_last_name: claim.applicant.try(:last_name).to_s,
+      applicant_first_middle_name: claim.applicant.try(:first_name).to_s + ' ' + claim.applicant.try(:middle_name).to_s,
       phone_number: claim.applicant.try(:phone_number),
       visa_check: l(claim.visa_check, :format => :default ),
       visa_text: text_for_visa(claim),

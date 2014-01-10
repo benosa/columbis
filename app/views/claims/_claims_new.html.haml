@@ -4,10 +4,10 @@
 
   - claims_new.each do |claim|
 
-    - if totals
-      - cur_month = claim.reservation_date.month
-      - if cur_month != prev_month && (ti = totals.index{ |t| t.month.to_i == cur_month })
-        = render partial: 'total', locals: { total: totals[ti], description: l(totals[ti].reservation_date, format: "%B %Y") }
+    -#- if totals
+    -#  - cur_month = claim.reservation_date.month
+    -#  - if cur_month != prev_month && (ti = totals.index{ |t| t.month.to_i == cur_month })
+    -#   = render partial: 'total', locals: { total: totals[ti], description: l(totals[ti].reservation_date, format: "%B %Y") }
 
     - cache [:claim_list, claim] + cache_params do
       = render partial: 'claim_new', locals: { claim: claim }

@@ -129,6 +129,6 @@
           %p
             = label_tag '', t('.import_label'),:style => "width: 200px"
           %p.file
-            = f.file_field :import
+            = f.file_field :import, :class => 'image1_upload'
             = link_to t(".import_button"), '#', :class => 'select_file'
           %p= link_to t(".template"), root_path + "import.xls"

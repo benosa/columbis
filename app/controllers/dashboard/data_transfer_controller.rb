@@ -21,4 +21,14 @@ class Dashboard::DataTransferController < ApplicationController
     end
   end
 
+  def import
+    filename = "/home/ololo/rails_proj/columb/devmen_tourism/public/#{params[:filename]}"
+    @import_new = ImportInfo.new(filename: filename)
+    @import_new.company = current_company
+    @import_new.save
+    importing = Import::Formats::XLS.new([:claim], filename, current_company.id)
+    importing.start
+    render :json => {:success => true}
+  end
+
 end

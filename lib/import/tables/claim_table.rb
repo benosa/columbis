@@ -72,7 +72,9 @@ module Import
             claim.applicant = tourist_manual_check(tourists[0], company) if tourists[0]
           #  puts claim.inspect
           #if claim.assign_reflections_and_save(params)
+            info_params = { model_class: 'Claim' }
             if claim.save
+              info_params[:model_id] = claim.id
               puts "    Claim was importing"
               true
             else
@@ -80,6 +82,8 @@ module Import
               puts "    Claim not save"
               false
             end
+            DefaultTable.save_import_item(info_params)
+            #save_import_item(params)
           else
             puts " #{data_row[:cant_be_nil]} empty"
             false

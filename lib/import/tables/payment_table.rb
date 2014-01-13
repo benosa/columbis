@@ -6,7 +6,7 @@ module Import
       FORMAT =
         {
           :claim_num               => {:type => 'Int', :may_nil => false, :value => nil},
-          :date_in                 => {:type => 'String', :may_nil => true, :value => nil},
+          :date_in                 => {:type => 'String', :may_nil => false, :value => nil},
           :currency                => {:type => 'Float', :may_nil => true, :value => nil},
           :amount                  => {:type => 'Int', :may_nil => true, :value => nil},
           :description             => {:type => 'String', :may_nil => true, :value => nil},
@@ -19,11 +19,11 @@ module Import
 
       class << self
         def columns_count
-          21
+          10
         end
 
         def sheet_number
-          3
+          4
         end
 
         def import(row, company)
@@ -63,33 +63,23 @@ module Import
           data_row
         end
 
-        def check_exist(params, company)
-          operator = Operator.where(name: params[:name], company_id: company.id).first
-          operator
-        end
+       # def check_exist(params, company)
+       #   operator = Operator.where(name: params[:name], company_id: company.id).first
+       #   operator
+       # end
 
-        def create_operator_params(row, company)
+        def create_payment_params(row, company)
           {
-            :name => row[:name][:value],
-            :full_name => row[:full_name][:value],
-            :register_number => row[:register_number][:value],
-            :register_series => row[:register_series][:value],
-            :inn => row[:inn][:value],
-            :ogrn => row[:ogrn][:value],
-            :code_of_reason => row[:code_of_reason][:value],
-            :phone_numbers => row[:phone_numbers][:value],
-            :site => row[:site][:value],
-            :banking_details =>row[:banking_details][:value],
-            :actual_address => row[:actual_address][:value],
-            :insurer => row[:insurer][:value],
-            :insurer_full_name => row[:insurer_full_name][:value],
-            :insurer_address => row[:insurer_address][:value],
-            :actual_insurer_address => row[:actual_insurer_address][:value],
-            :insurer_provision => row[:insurer_provision][:value],
-            :insurer_contract => row[:insurer_contract][:value],
-            :insurer_contract_date => row[:insurer_contract_date][:value],
-            :insurer_contract_start => row[:insurer_contract_start][:value],
-            :insurer_contract_end => row[:insurer_contract_end][:value],
+            :claim_id                => row[:claim_num][:value],
+            :date_in                 => row[:date_in][:value],
+            :currency                => row[:currency][:value],
+            :amount                  => row[:amount][:value],
+            :description             => row[:description][:value],
+            :form                    => row[:form][:value],
+            :amount_prim             => row[:amount_prim][:value]},
+            :approved                => row[:approved][:value],
+            :course                  => row[:course][:value],
+            :reversed_course         => row[:reversed_course][:value]
           }
         end
       end

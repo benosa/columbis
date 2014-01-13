@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131223082841) do
+ActiveRecord::Schema.define(:version => 20140113143939) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -189,6 +189,8 @@ ActiveRecord::Schema.define(:version => 20131223082841) do
     t.integer  "kpp"
     t.string   "full_name"
     t.string   "actual_address"
+    t.boolean  "short_claim_list",                                 :default => true, :null => false
+    t.string   "import"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -253,6 +255,28 @@ ActiveRecord::Schema.define(:version => 20131223082841) do
     t.integer  "claim_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "import_infos", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "num"
+    t.string   "integer"
+    t.datetime "load_date"
+    t.string   "filename"
+    t.integer  "success_count"
+    t.integer  "count"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "import_items", :force => true do |t|
+    t.integer  "import_info_id"
+    t.string   "model_class"
+    t.integer  "model_id"
+    t.text     "data"
+    t.integer  "file_line"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "item_fields", :force => true do |t|

@@ -2,10 +2,11 @@ module Import
   class Importer
     attr_reader :file, :tables, :company
 
-    def initialize(tables, file, company)
+    def initialize(tables, file, company, import_new)
       @tables = tables
       @file = (Rails.root + "uploads/#{company.to_s}/import.xls").to_s
       @company = Company.find company
+      @import_new = ImportInfo.find import_new
       FileUtils.mkdir_p(File.dirname(@file))
       FileUtils.cp(file, @file)
     end
@@ -42,7 +43,9 @@ module Import
 
     def import(table, row)
       #begin
-        "import/tables/#{table.to_s}_table".camelize.constantize.import(row, @company)
+       # table = "import/tables/#{table.to_s}_table".camelize.constantize.import(row, @company, @import_new)
+        table = "import/tables/#{table.to_s}_table".camelize.constantize.new
+        table.import(row, @company, @import_new)
       #rescue
       #  Rails.logger.info "Import operation error. Importing #{row.to_s} to [#{table.to_s}] fail. Check params"
       #  false

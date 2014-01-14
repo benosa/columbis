@@ -23,12 +23,17 @@ class Dashboard::DataTransferController < ApplicationController
 
   def import
     filename = "/home/ololo/rails_proj/columb/devmen_tourism/public/#{params[:filename]}"
-    @import_new = ImportInfo.new(filename: filename)
-    @import_new.company = current_company
-    @import_new.save
-    importing = Import::Formats::XLS.new([:claim], filename, current_company.id)
+    import_new = ImportInfo.new(filename: filename)
+    import_new.company = current_company
+    import_new.save
+    importing = Import::Formats::XLS.new([:claim], filename, current_company.id, import_new.id)
     importing.start
-    render :json => {:success => true}
+    #claim_ids = Claim
+  #  claim_ids = ImportItem.select(:model_id).where(model_class: 'Claim', import_info_id: 27).all.map { |c| c.model_id }
+  #  Claim.find(claim_ids).each do |cl|
+  #    cl.save
+  #  end
+    render :json => {:success => 'ololo'}
   end
 
 end

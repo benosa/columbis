@@ -190,7 +190,6 @@ ActiveRecord::Schema.define(:version => 20140113143939) do
     t.string   "full_name"
     t.string   "actual_address"
     t.boolean  "short_claim_list",                                 :default => true, :null => false
-    t.string   "import"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"

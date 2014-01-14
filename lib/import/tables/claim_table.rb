@@ -1,6 +1,6 @@
 module Import
   module Tables
-    module ClaimTable
+    class ClaimTable
       extend Tables::DefaultTable
 
       FORMAT =
@@ -43,19 +43,24 @@ module Import
           :early_reservation               => {:type => 'String', :may_nil => true,  :value => nil},
           :excluded_from_profit            => {:type => 'String', :may_nil => true,  :value => nil},
           :canceled                        => {:type => 'String', :may_nil => true,  :value => nil},
-          :active                          => {:type => 'String', :may_nil => true,  :value => nil}
+          :active                          => {:type => 'String', :may_nil => true,  :value => nil},
+          :tour_price                      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :insurance_price                 => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :additional_insurance_price      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :discount                        => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :visa_price                        => {:type => 'Float',  :may_nil => true,  :value => nil}
         }
 
-      class << self
-        def columns_count
-          39
+     # class << self
+        def self.columns_count
+          43
         end
 
-        def sheet_number
+        def self.sheet_number
           0
         end
 
-        def import(row, company)
+        def import(row, company, import_new)
           puts "    Start import row."
           data_row = prepare_data(row, company)
           if data_row && !data_row[:cant_be_nil]
@@ -82,15 +87,13 @@ module Import
               puts "    Claim not save"
               false
             end
-            DefaultTable.save_import_item(info_params)
+            DefaultTable.save_import_item(info_params, import_new)
             #save_import_item(params)
           else
             puts " #{data_row[:cant_be_nil]} empty"
             false
           end
         end
-
-        private
 
         def parse_tourists(row)
           tourists = []
@@ -141,6 +144,8 @@ module Import
           end
           row
         end
+
+        private
 
         def user_manual_check(row, company)
           user = company.users.where(:login => row[:user][:value]).first
@@ -268,10 +273,15 @@ module Import
             :active => row[:active][:value],
           #  :operator_paid => row[:operator_paid][:value],
             :tour_price_currency => "rur",
-            :operator_price_currency => "rur"
+            :operator_price_currency => "rur",
+            :tour_price => row[:tour_price][:value],
+            :insurance_price => row[:insurance_price][:value],
+            :additional_insurance_price => row[:additional_insurance_price][:value],
+            :discount => row[:discount][:value],
+            :visa_price => row[:visa_price][:value]
           }
         end
-      end
+     # end
     end
   end
 end

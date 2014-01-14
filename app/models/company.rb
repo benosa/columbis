@@ -4,8 +4,7 @@ class Company < ActiveRecord::Base
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
                   :sms_signature, :sms_birthday_send, :owner, :user_payment_id, :tariff_end,
-                  :tariff_id, :paid, :kpp, :full_name, :actual_address, :import
-  mount_uploader :import, ImportUploader
+                  :tariff_id, :paid, :kpp, :full_name, :actual_address
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
@@ -23,6 +22,7 @@ class Company < ActiveRecord::Base
   has_many :claims, :dependent => :destroy
   has_many :user_payments, :dependent => :destroy
   has_many :tourists, :dependent => :destroy
+  has_many :import_infos, :dependent => :destroy
   has_many :operators, :dependent => :destroy, :order => 'name ASC'
   has_many :dropdown_values, :dependent => :destroy
 

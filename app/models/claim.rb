@@ -4,7 +4,7 @@ class Claim < ActiveRecord::Base
 
   delegate :url_helpers, to: 'Rails.application.routes'
 
-  VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done].freeze
+  VISA_STATUSES = %w[nothing_done docs_got docs_sent visa_approved all_done unrequired].freeze
   DOCUMENTS_STATUSES = %w[not_ready received all_done].freeze
   DEFAULT_SORT = { :col => 'reservation_date', :dir => 'desc' }.freeze
 

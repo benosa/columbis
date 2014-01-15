@@ -156,12 +156,24 @@
         <Cell><Data ss:Type="String"><%= t('claims.form.early_reservation') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.excluded_from_profit') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.canceled') %></Data></Cell>
+        <Cell><Data ss:Type="String">Закрыта</Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.index.active') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.tour_price.tour_price') %></Data></Cell>
         <Cell><Data ss:Type="String">Страховка</Data></Cell>
         <Cell><Data ss:Type="String">Дополнительная страховка</Data></Cell>
         <Cell><Data ss:Type="String">Скидка</Data></Cell>
         <Cell><Data ss:Type="String">Цена визы</Data></Cell>
+        <Cell><Data ss:Type="String">Топливный сбор</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительные услуги</Data></Cell>
+        <Cell><Data ss:Type="String">Оператор валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Цена тура валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Страховка валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительная страховка валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Виза валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Топливный сбор валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительные услуги валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Курс USD</Data></Cell>
+        <Cell><Data ss:Type="String">Курс EUR</Data></Cell>
 
       </Row>
     <% @totals.each do |claim| %>
@@ -238,11 +250,24 @@
         <Cell><Data ss:Type="String"><%= claim.excluded_from_profit ? 'Да' : 'Нет' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.canceled ? 'Да' : 'Нет' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.active ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.closed ? 'Да' : 'Нет' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.tour_price %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.insurance_price %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.additional_insurance_price %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.discount %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.visa_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.fuel_tax_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_services_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.operator_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.tour_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.insurance_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_insurance_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.visa_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.fuel_tax_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_services_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.course_usd.to_f.round 3 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.course_eur.to_f.round 3 %></Data></Cell>
+
       </Row>
     <% end %>
     </Table>

@@ -1,6 +1,6 @@
 module Import
   module Tables
-    module ClientTable
+    class ClientTable
       extend Tables::DefaultTable
 
       FORMAT =
@@ -16,30 +16,31 @@ module Import
           :state         => {:type => 'String', :may_nil => true, :value => nil}
         }
 
-      class << self
-        def columns_count
+    #  class << self
+        def self.columns_count
           9
         end
 
-        def sheet_number
+        def self.sheet_number
           2
         end
 
-        def import(row, company)
+        def import(row, company, import_new)
           puts "Start import Tourist"
           puts row.to_s
 
           data_row = prepare_data(row, company)
 
           params = create_client_params(data_row, company)
-         # if (!check_exist(params, company))
+          if (!check_exist(params, company))
             tourist = Tourist.new(params)
             tourist.company = company
             tourist.user = find_manager(data_row)
             tourist.state = find_potential_state(data_row)
-            tourist.sex = find_sex_state(data_row)
-
+            tourist.sex = ClientTable.find_sex_state(data_row)
+            info_params = { model_class: 'Tourist' }
             if tourist.save
+              info_params[:model_id] = tourist.id
               puts "Tourist was importing"
               true
             else
@@ -47,12 +48,13 @@ module Import
               puts "Tourist not save"
               false
             end
-         # else
-         #   puts "Tourist exist"
-         # end
+            DefaultTable.save_import_item(info_params, import_new)
+          else
+            puts "Tourist exist"
+          end
         end
 
-        def find_sex_state(row)
+        def self.find_sex_state(row)
           sex_states = {}
           Tourist::SEX_STATES.each do |state|
             sex_states.merge!({ I18n.t("sex_states.#{state}") => state })
@@ -95,7 +97,7 @@ module Import
         end
 
         def check_exist(params, company)
-          tourist = Tourist.where(full_name: params[:full_name], company_id: company.id).first
+          tourist = Tourist.where(last_name: params[:last_name], first_name: params[:first_name], middle_name: params[:middle_name], company_id: company.id, potential: true).first
           tourist
         end
 
@@ -109,7 +111,7 @@ module Import
             :potential => true
           }
         end
-      end
+    #  end
     end
   end
 end

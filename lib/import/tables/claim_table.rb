@@ -44,20 +44,37 @@ module Import
           :excluded_from_profit            => {:type => 'String', :may_nil => true,  :value => nil},
           :canceled                        => {:type => 'String', :may_nil => true,  :value => nil},
           :active                          => {:type => 'String', :may_nil => true,  :value => nil},
+          :closed                          => {:type => 'String', :may_nil => true,  :value => nil},
           :tour_price                      => {:type => 'Float',  :may_nil => true,  :value => nil},
           :insurance_price                 => {:type => 'Float',  :may_nil => true,  :value => nil},
           :additional_insurance_price      => {:type => 'Float',  :may_nil => true,  :value => nil},
           :discount                        => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :visa_price                        => {:type => 'Float',  :may_nil => true,  :value => nil}
+          :visa_price                      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :fuel_tax_price                  => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :additional_services_price       => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :operator_price_currency         => {:type => 'String',  :may_nil => true,  :value => nil},
+          :tour_price_currency             => {:type => 'String',  :may_nil => true,  :value => nil},
+          :insurance_price_currency        => {:type => 'String',  :may_nil => true,  :value => nil},
+          :additional_insurance_price_currency => {:type => 'String',  :may_nil => true,  :value => nil},
+          :visa_price_currency              => {:type => 'String',  :may_nil => true,  :value => nil},
+          :fuel_tax_price_currency          => {:type => 'String',  :may_nil => true,  :value => nil},
+          :additional_services_price_currency => {:type => 'String',  :may_nil => true,  :value => nil},
+          :course_usd          => {:type => 'String',  :may_nil => true,  :value => nil},
+          :course_eur => {:type => 'String',  :may_nil => true,  :value => nil}
         }
 
      # class << self
         def self.columns_count
-          43
+          56
         end
 
         def self.sheet_number
           0
+        end
+
+        def self.check_boolean(str)
+          # Rails.logger.debug "ololo322 : #{str}"
+          str == 'Да' ? true : false
         end
 
         def import(row, company, import_new)
@@ -75,6 +92,7 @@ module Import
             claim.city = city_manual_check(data_row, company)
             tourists = parse_tourists(data_row)
             claim.applicant = tourist_manual_check(tourists[0], company) if tourists[0]
+            claim.operator = operator_manual_check(data_row, company)
           #  puts claim.inspect
           #if claim.assign_reflections_and_save(params)
             info_params = { model_class: 'Claim' }
@@ -84,6 +102,7 @@ module Import
               true
             else
               puts claim.errors.inspect
+              Rails.logger.debug "ololo555 #{claim.errors.inspect}"
               puts "    Claim not save"
               false
             end
@@ -159,7 +178,7 @@ module Import
         end
 
         def tourist_manual_check(t_names, company)
-          tourist = Tourist.where(:company_id => company.id)
+          tourist = Tourist.where(:company_id => company.id, potential: false)
             .where("last_name = ? and first_name = ? and middle_name = ?", t_names[:last_name], t_names[:first_name], t_names[:middle_name])
             .first
           if tourist
@@ -217,6 +236,7 @@ module Import
           Claim::VISA_STATUSES.each do |status|
             visa_statuses.merge!({ I18n.t(".claims.visa_statuses.#{status}") => status })
           end
+        #  Rails.logger.debug "ololo321: #{row} #{visa_statuses}"
           if visa_statuses.keys.include?(row[:visa][:value])
             row[:visa][:value] = visa_statuses[row[:visa][:value]]
           else
@@ -244,7 +264,7 @@ module Import
             :tourist_stat => row[:tourist_stat][:value],
             :arrival_date => row[:arrival_date][:value],
             :departure_date => row[:departure_date][:value],
-            :visa => 'all_done',#row[:visa][:value],
+            :visa => row[:visa][:value],
             :visa_check => row[:visa_check][:value],
             :operator_confirmation => row[:operator_confirmation][:value],
             :primary_currency_price => row[:primary_currency_price][:value].to_f,
@@ -267,18 +287,30 @@ module Import
             :documents_status => row[:documents_status][:value],
             :docs_note => row[:docs_note][:value],
             :check_date => row[:check_date][:value],
-            :early_reservation => row[:early_reservation][:value],
-            :excluded_from_profit => row[:excluded_from_profit][:value],
-            :canceled => row[:canceled][:value],
-            :active => row[:active][:value],
+            :early_reservation => ClaimTable.check_boolean(row[:early_reservation][:value]),
+            :excluded_from_profit => ClaimTable.check_boolean(row[:excluded_from_profit][:value]),
+            :canceled => ClaimTable.check_boolean(row[:canceled][:value]),
+            :active => ClaimTable.check_boolean(row[:active][:value]),
+            :closed => ClaimTable.check_boolean(row[:closed][:value]),
           #  :operator_paid => row[:operator_paid][:value],
-            :tour_price_currency => "rur",
-            :operator_price_currency => "rur",
+            :tour_price_currency => row[:tour_price_currency][:value],
+            :operator_price_currency => row[:operator_price_currency][:value],
             :tour_price => row[:tour_price][:value],
             :insurance_price => row[:insurance_price][:value],
             :additional_insurance_price => row[:additional_insurance_price][:value],
             :discount => row[:discount][:value],
-            :visa_price => row[:visa_price][:value]
+            :visa_price => row[:visa_price][:value],
+            :fuel_tax_price => row[:fuel_tax_price][:value],
+            :additional_services_price       => row[:additional_services_price][:value],
+            :operator_price_currency         => row[:operator_price_currency][:value],
+            :tour_price_currency             => row[:tour_price_currency][:value],
+            :insurance_price_currency        => row[:insurance_price_currency][:value],
+            :additional_insurance_price_currency => row[:additional_insurance_price_currency][:value],
+            :visa_price_currency              => row[:visa_price_currency][:value],
+            :fuel_tax_price_currency          => row[:fuel_tax_price_currency][:value],
+            :additional_services_price_currency => row[:additional_services_price_currency][:value],
+            :course_usd => row[:course_usd][:value],
+            :course_eur => row[:course_eur][:value]
           }
         end
      # end

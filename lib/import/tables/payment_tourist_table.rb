@@ -40,7 +40,7 @@ module Import
             payment.claim = claim
             payment.payer_type = 'Tourist'
             payment.recipient_type = 'Company'
-            payment.payer_id = claim.applicant.id
+            payment.payer_id = claim.applicant.id if claim.applicant
             payment.recipient_id = company.id
             info_params = { model_class: 'Payment' }
             if payment.save
@@ -92,9 +92,9 @@ module Import
             :description             => row[:description][:value],
             :form                    => row[:form][:value],
             :amount_prim             => row[:amount_prim][:value],
-            :approved                => row[:approved][:value],
+            :approved                => ClaimTable.check_boolean(row[:approved][:value]),
             :course                  => row[:course][:value],
-            :reversed_course         => row[:reversed_course][:value]
+            :reversed_course         => ClaimTable.check_boolean(row[:reversed_course][:value])
           }
         end
      # end

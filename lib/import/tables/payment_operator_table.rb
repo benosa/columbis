@@ -26,7 +26,7 @@ module Import
             payment.payer_type = 'Company'
             payment.recipient_type = 'Operator'
             payment.payer_id = company.id
-            payment.recipient_id = claim.operator.id
+            payment.recipient_id = claim.operator.id if claim.operator
             info_params = { model_class: 'Payment' }
             if payment.save
               info_params[:model_id] = payment.id

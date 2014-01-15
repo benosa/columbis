@@ -1,6 +1,6 @@
 module Import
   module Tables
-    module TouristTable
+    class TouristTable
       extend Tables::DefaultTable
 
       FORMAT =
@@ -20,16 +20,16 @@ module Import
           :address               => {:type => 'String', :may_nil => true, :value => nil}
         }
 
-      class << self
-        def columns_count
+     # class << self
+        def self.columns_count
           13
         end
 
-        def sheet_number
+        def self.sheet_number
           1
         end
 
-        def import(row, company)
+        def import(row, company, import_new)
           puts "Start import Tourist"
           puts row.to_s
 
@@ -40,7 +40,9 @@ module Import
             tourist = Tourist.new(params)
             tourist.company = company
             tourist.sex = ClientTable.find_sex_state(data_row)
+            info_params = { model_class: 'Tourist' }
             if tourist.save
+              info_params[:model_id] = tourist.id
               if data_row[:address][:value]
                 tourist.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
               end
@@ -48,9 +50,11 @@ module Import
               true
             else
               puts tourist.errors.inspect
+              Rails.logger.debug "ololo555 #{tourist.errors.inspect}"
               puts "Tourist not save"
               false
             end
+            DefaultTable.save_import_item(info_params, import_new)
           else
             puts "Tourist exist"
           end
@@ -68,7 +72,7 @@ module Import
         end
 
         def check_exist(params, company)
-          tourist = Tourist.where(last_name: params[:last_name], first_name: params[:first_name], middle_name: params[:middle_name], company_id: company.id).first
+          tourist = Tourist.where(last_name: params[:last_name], first_name: params[:first_name], middle_name: params[:middle_name], company_id: company.id, potential: false).first
           tourist
         end
 
@@ -85,9 +89,10 @@ module Import
             :passport_number =>row[:passport_number][:value],
             :passport_valid_until => row[:passport_valid_until][:value],
             :passport_issued => row[:passport_issued][:value],
+            :potential => false
           }
         end
-      end
+    #  end
     end
   end
 end

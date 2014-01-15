@@ -1,6 +1,6 @@
 module Import
   module Tables
-    module OperatorTable
+    class OperatorTable
       extend Tables::DefaultTable
 
       FORMAT =
@@ -28,16 +28,16 @@ module Import
           :insurer_contract_end    => {:type => 'Date',   :may_nil => true, :value => nil}
         }
 
-      class << self
-        def columns_count
+    #  class << self
+        def self.columns_count
           21
         end
 
-        def sheet_number
+        def self.sheet_number
           3
         end
 
-        def import(row, company)
+        def import(row, company, import_new)
           puts "Start import Operator"
           puts row.to_s
 
@@ -47,7 +47,9 @@ module Import
           if (!check_exist(params, company))
             operator = Operator.new(params)
             operator.company = company
+            info_params = { model_class: 'Operator' }
             if operator.save
+              info_params[:model_id] = operator.id
               if data_row[:address][:value]
                 operator.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
               end
@@ -55,9 +57,11 @@ module Import
               true
             else
               puts operator.errors.inspect
+              Rails.logger.debug "ololo555 #{operator.errors.inspect}"
               puts "Operator not save"
               false
             end
+            DefaultTable.save_import_item(info_params, import_new)
           else
             puts "Operator exist"
           end
@@ -103,7 +107,7 @@ module Import
             :insurer_contract_end => row[:insurer_contract_end][:value],
           }
         end
-      end
+     # end
     end
   end
 end

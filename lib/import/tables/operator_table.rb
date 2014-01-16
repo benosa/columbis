@@ -37,7 +37,7 @@ module Import
           3
         end
 
-        def import(row, company, import_new)
+        def import(row, company, import_new, line)
           puts "Start import Operator"
           puts row.to_s
 
@@ -47,9 +47,10 @@ module Import
           if (!check_exist(params, company))
             operator = Operator.new(params)
             operator.company = company
-            info_params = { model_class: 'Operator' }
+            info_params = { model_class: 'Operator', file_line: line, success:false }
             if operator.save
               info_params[:model_id] = operator.id
+              info_params[:success] = true
               if data_row[:address][:value]
                 operator.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
               end

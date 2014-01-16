@@ -13,8 +13,10 @@ module Import
 
     def start
       @tables.each do |table|
+        line = 2
         get_rows(columns_count(table), sheet_number(table)).each do |row|
-          import(table, row)
+          import(table, row, line)
+          line += 1
         end
       end
     end
@@ -41,11 +43,11 @@ module Import
       []
     end
 
-    def import(table, row)
+    def import(table, row, line)
       #begin
        # table = "import/tables/#{table.to_s}_table".camelize.constantize.import(row, @company, @import_new)
         table = "import/tables/#{table.to_s}_table".camelize.constantize.new
-        table.import(row, @company, @import_new)
+        table.import(row, @company, @import_new, line)
       #rescue
       #  Rails.logger.info "Import operation error. Importing #{row.to_s} to [#{table.to_s}] fail. Check params"
       #  false

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140113143939) do
+ActiveRecord::Schema.define(:version => 20140116143530) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -258,14 +258,14 @@ ActiveRecord::Schema.define(:version => 20140113143939) do
 
   create_table "import_infos", :force => true do |t|
     t.integer  "company_id"
-    t.string   "num"
-    t.string   "integer"
+    t.integer   "num"
     t.datetime "load_date"
     t.string   "filename"
     t.integer  "success_count"
     t.integer  "count"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "status"
   end
 
   create_table "import_items", :force => true do |t|
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(:version => 20140113143939) do
     t.integer  "file_line"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.boolean  "success"
   end
 
   create_table "item_fields", :force => true do |t|

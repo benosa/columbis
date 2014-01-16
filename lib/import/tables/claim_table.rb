@@ -77,40 +77,54 @@ module Import
           str == 'Да' ? true : false
         end
 
-        def import(row, company, import_new)
+        def import(row, company, import_new, line)
           puts "    Start import row."
           data_row = prepare_data(row, company)
-          if data_row && !data_row[:cant_be_nil]
-            params = create_claim_params(data_row, company)
-           # puts params
-            claim = Claim.new(params)
+          if !check_claim(data_row[:num][:value].to_i, company)
+            if data_row && !data_row[:cant_be_nil]
+              params = create_claim_params(data_row, company)
+             # puts params
+              claim = Claim.new(params)
 
-            claim.company = company
-            claim.user = user_manual_check(data_row, company)
-            claim.office = office_manual_check(data_row, company)
-            claim.country = country_manual_check(data_row, company)
-            claim.city = city_manual_check(data_row, company)
-            tourists = parse_tourists(data_row)
-            claim.applicant = tourist_manual_check(tourists[0], company) if tourists[0]
-            claim.operator = operator_manual_check(data_row, company)
-          #  puts claim.inspect
-          #if claim.assign_reflections_and_save(params)
-            info_params = { model_class: 'Claim' }
-            if claim.save
-              info_params[:model_id] = claim.id
-              puts "    Claim was importing"
-              true
+              claim.company = company
+              claim.user = user_manual_check(data_row, company)
+              claim.office = office_manual_check(data_row, company)
+              claim.country = country_manual_check(data_row, company)
+              claim.city = city_manual_check(data_row, company)
+              claim.num = data_row[:num][:value].to_i
+              tourists = parse_tourists(data_row)
+              applicant = tourist_manual_check(tourists[0], company) if tourists[0]
+              claim.applicant = applicant if applicant
+              if tourists.count > 1
+                tourists[1..tourists.count].each do |dependent|
+                  dep = tourist_manual_check(dependent, company)
+                  claim.dependents << dep if dep
+                end
+              end
+              claim.operator = operator_manual_check(data_row, company)
+              Rails.logger.debug "ololo777 #{claim.inspect}"
+            #  puts claim.inspect
+            #if claim.assign_reflections_and_save(params)
+              info_params = { model_class: 'Claim', file_line: line, success: false }
+              if claim.save
+                info_params[:model_id] = claim.id
+                info_params[:success] = true
+                puts "    Claim was importing"
+                true
+              else
+                puts claim.errors.inspect
+                Rails.logger.debug "ololo555 #{claim.errors.inspect}"
+                puts "    Claim not save"
+                false
+              end
+              DefaultTable.save_import_item(info_params, import_new)
+              #save_import_item(params)
             else
-              puts claim.errors.inspect
-              Rails.logger.debug "ololo555 #{claim.errors.inspect}"
-              puts "    Claim not save"
+              puts " #{data_row[:cant_be_nil]} empty"
               false
             end
-            DefaultTable.save_import_item(info_params, import_new)
-            #save_import_item(params)
           else
-            puts " #{data_row[:cant_be_nil]} empty"
-            false
+            puts "Claim exist"
           end
         end
 
@@ -130,6 +144,10 @@ module Import
           data_row = check_for_nil(data_row)
           puts "    Check for nil complete."
           data_row
+        end
+
+        def check_claim(num, company)
+          Claim.where(company_id: company.id, num: num).first
         end
 
         def type_check(row)
@@ -259,7 +277,6 @@ module Import
         def create_claim_params(row, company)
          # puts row
           {
-            :num => row[:num][:value].to_i,
             :reservation_date => row[:reservation_date][:value],
             :tourist_stat => row[:tourist_stat][:value],
             :arrival_date => row[:arrival_date][:value],

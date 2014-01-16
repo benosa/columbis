@@ -29,7 +29,7 @@ module Import
           1
         end
 
-        def import(row, company, import_new)
+        def import(row, company, import_new, line)
           puts "Start import Tourist"
           puts row.to_s
 
@@ -40,9 +40,10 @@ module Import
             tourist = Tourist.new(params)
             tourist.company = company
             tourist.sex = ClientTable.find_sex_state(data_row)
-            info_params = { model_class: 'Tourist' }
+            info_params = { model_class: 'Tourist', file_line: line, success: false }
             if tourist.save
               info_params[:model_id] = tourist.id
+               info_params[:success] = true
               if data_row[:address][:value]
                 tourist.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
               end

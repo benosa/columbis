@@ -11,7 +11,7 @@ module Import
           5
         end
 
-        def import(row, company, import_new)
+        def import(row, company, import_new, line)
           puts "Start import Operator"
           puts row.to_s
 
@@ -21,15 +21,18 @@ module Import
          # if (!check_exist(params, company))
             payment = Payment.new(params)
             claim = find_claim(data_row[:claim_num][:value], company)
-            payment.company = company
-            payment.claim = claim
-            payment.payer_type = 'Company'
-            payment.recipient_type = 'Operator'
-            payment.payer_id = company.id
-            payment.recipient_id = claim.operator.id if claim.operator
-            info_params = { model_class: 'Payment' }
+            if claim
+              payment.company = company
+              payment.claim = claim
+              payment.payer_type = 'Company'
+              payment.recipient_type = 'Operator'
+              payment.payer_id = company.id
+              payment.recipient_id = claim.operator.id if claim.operator
+            end
+            info_params = { model_class: 'Payment', file_line: line, success:false }
             if payment.save
               info_params[:model_id] = payment.id
+              info_params[:success] = true
              # if data_row[:address][:value]
              #   operator.create_address(company_id: company.id, joint_address: data_row[:address][:value] )
              # end

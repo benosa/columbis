@@ -97,7 +97,8 @@ Tourism::Application.routes.draw do
     get 'get_regions/:country_id' => 'countries#get_regions', :as => :get_regions
     get 'get_cities/:region_id' => 'countries#get_cities', :as => :get_cities
     get 'export' => 'data_transfer#export'
-    get 'import' => 'data_transfer#import'
+    post 'import' => 'data_transfer#import'
+    get 'data_index' => 'data_transfer#index'
 
     resources :companies, :except => [:index, :show, :destroy]
     resources :dropdown_values, :except => :show

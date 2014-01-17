@@ -17,10 +17,10 @@ class ImportUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.id}/import/"
+    "uploads/#{model.company.id}/import/#{model.id}"
   end
   def cache_dir
-    "tmp/cache/uploads/import/"
+    "tmp/cache/uploads/#{model.company.id}/import/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -29,13 +29,6 @@ class ImportUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :uppercase
-  def uppercase
-    txt = File.read(self.file.path)
-    File.open(self.file.path, 'w') do |file|
-      file.puts(txt.gsub!( /\{[а-яА-ЯёЁ0-9.]+\}/ ){ |m| m = m.mb_chars.upcase})
-    end
-  end
 
   # Create different versions of your uploaded files:
   # version :thumb do

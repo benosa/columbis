@@ -1,0 +1,24 @@
+.form_column
+  .form_block
+    .block_title
+      %h2= t('dashboard.companies.form.export')
+    .form_block_content
+      .fake_row
+        %p= link_to t("dashboard.companies.form.export_all"), dashboard_export_path(:format => 'xls'), :style => "text-decoration: underline;"
+
+= form_for [:dashboard, @import_info], :url => dashboard_import_path do |f|
+  .form_column
+    .form_block
+      .block_title
+        %h2= t('dashboard.companies.form.import')
+      .form_block_content
+        .fake_row
+          %p
+            = label_tag '', t('dashboard.companies.form.import_label'),:style => "width: 200px"
+          %p.file
+            = f.file_field :filename, :class => 'image_upload'
+            = link_to t("dashboard.companies.form.import_button"), '#', :class => 'select_file'
+          %p.image_message{ :data => { :size => CONFIG[:max_template_size], :extensions => CONFIG[:all_formats] }, :style => "clear:left;" }
+          %p= link_to t("dashboard.companies.form.template"), root_path + "import.xls"
+          %p
+            = f.submit

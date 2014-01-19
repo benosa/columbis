@@ -7,8 +7,14 @@
   .import_block {
     width: 20%;
   }
+
   .import_list_block {
     width: 50%;
+    td, th {
+      padding: 0 10px 5px 0;
+      color: #666;
+      font-size: 13px;
+    }
   }
   .form_block {width: 100% !important}
 }

@@ -19,10 +19,10 @@
             %p.file
               = f.file_field :filename, :class => 'image_upload'
               = link_to t("dashboard.companies.form.import_button"), '#', :class => 'select_file'
-            %p.image_message{ :data => { :size => CONFIG[:max_template_size], :extensions => CONFIG[:all_formats] }, :style => "clear:left;" }
-            %p= link_to t("dashboard.companies.form.template"), root_path + "import.xls"
+            %p.image_message{ :data => { :size => CONFIG[:max_template_size], :extensions => "xls" }, :style => "clear:left;" }
+
             %p
-              = f.submit
+              = f.submit t("dashboard.transfer.import")
 
   .form_column.import_list_block
     .form_block
@@ -33,17 +33,17 @@
           %table
             %tr
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.num")
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.filename")
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.created_at")
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.count")
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.success_count")
               %th
-                = t("dashboard.transfer.file")
+                = t("dashboard.transfer.status")
             - @import_list.each do |import|
               %tr
                 %td
@@ -58,7 +58,7 @@
                 %td
                   = import.success_count
                 %td
-                  = t("dashboard.companies.form.#{import.status}")
+                  = t("dashboard.transfer.stat.#{import.status}")
 
 
 

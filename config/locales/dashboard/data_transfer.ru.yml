@@ -1,4 +1,15 @@
 ru:
   dashboard:
     transfer:
-      file: 'sdfsdf'
+      stat:
+        new: 'Загружается'
+        success: 'Успешно'
+        failed: 'Неуспешно'
+      num: 'Номер'
+      filename: 'Имя файла'
+      created_at: 'Дата создания'
+      count: 'Всего'
+      success_count: 'Успешно'
+      status: 'Статус'
+      import: 'Импортировать'
+

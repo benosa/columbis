@@ -19,7 +19,7 @@
             %p.file
               = f.file_field :filename, :class => 'image_upload'
               = link_to t("dashboard.companies.form.import_button"), '#', :class => 'select_file'
-            %p.image_message{ :data => { :size => CONFIG[:max_template_size], :extensions => "xls" }, :style => "clear:left;" }
+            %p.image_message{ :data => { :size => CONFIG[:max_xls_size], :extensions => "xls" }, :style => "clear:left;" }
 
             %p
               = f.submit t("dashboard.transfer.import")

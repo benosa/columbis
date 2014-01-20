@@ -12,7 +12,7 @@ module Import
         end
 
         def import(row, company, import_new, line)
-          puts "Start import Operator"
+          puts "Start import Payment"
           puts row.to_s
 
           data_row = prepare_data(row, company)
@@ -39,9 +39,10 @@ module Import
               puts "Payment was importing"
               true
             else
-              puts payment.errors.inspect
-              Rails.logger.debug "url_for_current_company: #{payment.errors.inspect}"
-              puts "Payment not save"
+             # puts payment.errors.inspect
+              info_params[:data] = payment.errors.messages.to_yaml
+             # Rails.logger.debug "url_for_current_company: #{payment.errors.inspect}"
+            #  puts "Payment not save"
               false
             end
             DefaultTable.save_import_item(info_params, import_new)

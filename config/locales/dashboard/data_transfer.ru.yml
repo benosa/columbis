@@ -12,4 +12,5 @@ ru:
       success_count: 'Успешно'
       status: 'Статус'
       import: 'Импортировать'
+      import_start: 'Загрузка начата'
 

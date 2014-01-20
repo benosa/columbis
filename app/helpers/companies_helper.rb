@@ -15,8 +15,8 @@ module CompaniesHelper
     end
   end
 
-  def import(tables, file_path, company_id)
-    importing = Import::Formats::XLS.new(tables, file_path, company_id)
+  def import(tables, file_path, company_id, import_new)
+    importing = Import::Formats::XLS.new(tables, file_path, company_id, import_new)
     importing.start
   end
 

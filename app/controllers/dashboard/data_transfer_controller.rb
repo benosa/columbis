@@ -28,12 +28,12 @@ class Dashboard::DataTransferController < ApplicationController
   end
 
   def import
-    @import_info = ImportInfo.create
+    @import_info = ImportInfo.create(status: 'new')
     @import_info.company = current_company
     @import_info.filename = params[:import_info][:filename]
     @import_info.save
     @import_info.perform
-    render :index
+    redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.import_start")
   end
 
 end

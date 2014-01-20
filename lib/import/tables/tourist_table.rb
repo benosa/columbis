@@ -50,9 +50,10 @@ module Import
               puts "Tourist was importing"
               true
             else
-              puts tourist.errors.inspect
-              Rails.logger.debug "ololo555 #{tourist.errors.inspect}"
-              puts "Tourist not save"
+             # puts tourist.errors.inspect
+              info_params[:data] = tourist.errors.messages.to_yaml
+            #  Rails.logger.debug "ololo555 #{tourist.errors.inspect}"
+            #  puts "Tourist not save"
               false
             end
             DefaultTable.save_import_item(info_params, import_new)

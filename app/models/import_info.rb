@@ -1,5 +1,5 @@
 class ImportInfo < ActiveRecord::Base
-  attr_accessible :company_id, :count, :filename, :integer, :load_date, :num, :success_count, :status
+  attr_accessible :company_id, :count, :filename, :integer, :load_date, :num, :success_count, :status, :data
   mount_uploader :filename, ImportUploader
   belongs_to :company
   has_many :import_items, :dependent => :destroy

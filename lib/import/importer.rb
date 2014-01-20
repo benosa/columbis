@@ -12,12 +12,23 @@ module Import
     end
 
     def start
+      tabs_info = {}
       @tables.each do |table|
-        line = 2
-        get_rows(columns_count(table), sheet_number(table)).each do |row|
-          import(table, row, line)
-          line += 1
+        tabs_info[table] = { :column_count => columns_count(table),  :sheet_number => sheet_number(table)}
+      end
+     # puts tabs_info
+      result = check_tabs(tabs_info)
+      if !result[:success]
+        return result
+      else
+        @tables.each do |table|
+          line = 2
+          get_rows(columns_count(table), sheet_number(table)).each do |row|
+            import(table, row, line)
+            line += 1
+          end
         end
+        return {success: true}
       end
     end
 
@@ -41,6 +52,10 @@ module Import
 
     def get_rows(column_count, sheet_number)
       []
+    end
+
+    def check_tabs(tabs_info)
+      {}
     end
 
     def import(table, row, line)

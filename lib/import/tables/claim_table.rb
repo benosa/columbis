@@ -80,8 +80,8 @@ module Import
         def import(row, company, import_new, line)
           puts "    Start import row."
           data_row = prepare_data(row, company)
-          if !check_claim(data_row[:num][:value].to_i, company)
-            if data_row && !data_row[:cant_be_nil]
+          if data_row && !data_row[:cant_be_nil]
+            if !check_claim(data_row[:num][:value].to_i, company)
               params = create_claim_params(data_row, company)
              # puts params
               claim = Claim.new(params)
@@ -112,19 +112,21 @@ module Import
                 puts "    Claim was importing"
                 true
               else
-                puts claim.errors.inspect
-                Rails.logger.debug "ololo555 #{claim.errors.inspect}"
+               # puts claim.errors.inspect
+                info_params[:data] = claim.errors.messages.to_yaml
+              #  Rails.logger.debug "ololo555 #{claim.errors.inspect}"
                 puts "    Claim not save"
                 false
               end
               DefaultTable.save_import_item(info_params, import_new)
               #save_import_item(params)
             else
-              puts " #{data_row[:cant_be_nil]} empty"
-              false
+              puts "Claim exist"
             end
           else
-            puts "Claim exist"
+            DefaultTable.save_import_item({ model_class: 'Claim', file_line: line, success: false, data: "#{data_row[:cant_be_nil]} empty".to_yaml }, import_new)
+            #{data_row[:cant_be_nil]} empty"
+            false
           end
         end
 

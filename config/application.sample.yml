@@ -33,6 +33,7 @@ development: &defaults
   max_image_size: 5
   max_logo_size: 5
   max_template_size: 5
+  max_xls_size: 7
   image_formats: "jpg,jpeg,gif,png"
   template_formats: "html,htm"
   all_formats: "true"

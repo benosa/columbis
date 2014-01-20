@@ -471,18 +471,20 @@
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
       </Row>
     <% @tourists_payments.each do |payment| %>
-      <%= excel_element "Row", "", styles %>
-        <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
-        <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
-        <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
-      </Row>
+      <% if payment.claim %>
+        <%= excel_element "Row", "", styles %>
+          <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+          <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+          <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+        </Row>
+        <% end %>
     <% end %>
     </Table>
     <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -518,18 +520,20 @@
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
       </Row>
     <% @operator_payments.each do |payment| %>
-      <%= excel_element "Row", "", styles %>
-        <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
-        <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
-        <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
-      </Row>
+      <% if payment.claim %>
+        <%= excel_element "Row", "", styles %>
+          <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+          <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+          <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+        </Row>
+      <% end %>
     <% end %>
     </Table>
     <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">

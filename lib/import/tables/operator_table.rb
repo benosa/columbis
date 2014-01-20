@@ -57,9 +57,10 @@ module Import
               puts "Operator was importing"
               true
             else
-              puts operator.errors.inspect
-              Rails.logger.debug "ololo555 #{operator.errors.inspect}"
-              puts "Operator not save"
+              info_params[:data] = operator.errors.messages.to_yaml
+            #  puts operator.errors.inspect
+           #   Rails.logger.debug "ololo555 #{operator.errors.inspect}"
+           #   puts "Operator not save"
               false
             end
             DefaultTable.save_import_item(info_params, import_new)

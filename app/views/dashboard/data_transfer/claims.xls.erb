@@ -10,7 +10,7 @@
     <LastAuthor>columbis.ru</LastAuthor>
     <Version>12.00</Version>
   </DocumentProperties>
-  <% styles = excel_styles(@managers) %>
+  <% styles = ExportJobs.excel_styles(@managers) %>
   <Styles>
     <Style ss:ID="Default" ss:Name="Normal">
       <Alignment ss:Vertical="Bottom"/>
@@ -177,75 +177,75 @@
 
       </Row>
     <% @totals.each do |claim| %>
-      <%= excel_element "Row", "companies-gray_back", styles, claim.canceled? %>
+      <%= ExportJobs.excel_element "Row", "companies-gray_back", styles, claim.canceled? %>
       <% row_date_style = claim.canceled? ? "companies-dates-gray_back" : "date" %>
       <% departure_date_style = claim.canceled? ? "companies-dates-gray_back" : "companies-dates-#{color_for_departure_date_call(claim)}" %>
         <Cell><Data ss:Type="Number"><%= claim.num %></Data></Cell>
-        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.reservation_date %></Cell>
+        <Cell ss:StyleID="<%= row_date_style %>"><%= ExportJobs.excel_date claim.reservation_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.tourist_stat %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.office.name %></Data></Cell>
-        <%= excel_element "Cell", "users-#{claim.user.id}", styles %>
+        <%= ExportJobs.excel_element "Cell", "users-#{claim.user.id}", styles %>
           <Data ss:Type="String"><%= claim.user.login %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourists_list(claim) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.applicant.try(:phone_number) %></Data></Cell>
         <% if claim.canceled? %>
         <Cell ss:StyleID="companies-dates-gray_back">
         <% else %>
-        <%= excel_element "Cell", "companies-dates-#{color_for_flight(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-dates-#{color_for_flight(claim)}", styles %>
         <% end %>
-          <%= excel_date claim.arrival_date %></Cell>
+          <%= ExportJobs.excel_date claim.arrival_date %></Cell>
         <% if claim.canceled? %>
           <Cell ss:StyleID="companies-dates-gray_back">
         <% else %>
           <Cell ss:StyleID="<%= color_for_departure_date_call(claim).to_s != '' ? "companies-dates-#{color_for_departure_date_call(claim)}" : "date" %>">
         <% end %>
-          <%= excel_date claim.departure_date %></Cell>
+          <%= ExportJobs.excel_date claim.departure_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.country.try(:name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.city.try(:name) %></Data></Cell>
-        <%= excel_element "Cell", "companies-#{color_for_visa(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-#{color_for_visa(claim)}", styles %>
           <Data ss:Type="String"><%= text_for_visa(claim) %></Data></Cell>
         <% if claim.canceled? %>
         <Cell ss:StyleID="companies-dates-gray_back">
         <% else %>
-        <%= excel_element "Cell", "companies-dates-#{color_for_visa(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-dates-#{color_for_visa(claim)}", styles %>
         <% end %>
-          <%= excel_date claim.visa_check %></Cell>
+          <%= ExportJobs.excel_date claim.visa_check %></Cell>
         <Cell><Data ss:Type="String"><%= claim.operator.try(:name) %></Data></Cell>
-        <%= excel_element "Cell", "companies-red_back", styles, (!claim.canceled? && !claim.operator_confirmation_flag) %>
+        <%= ExportJobs.excel_element "Cell", "companies-red_back", styles, (!claim.canceled? && !claim.operator_confirmation_flag) %>
           <Data ss:Type="String"><%= claim.operator_confirmation %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.primary_currency_price.to_money %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.calculation %></Data></Cell>
-        <%= excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
           <Data ss:Type="Number"><%= claim.tourist_advance.to_money %></Data></Cell>
-        <%= excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-#{color_for_tourist_advance(claim)}", styles %>
           <Data ss:Type="Number"><%= claim.tourist_debt.to_money %></Data></Cell>
-        <%= excel_element "Cell", "companies-#{color_for_operator_price(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-#{color_for_operator_price(claim)}", styles %>
           <Data ss:Type="String"><%= operator_price(claim) %></Data></Cell>
-        <Cell ss:StyleID="<%= row_date_style %>"><%= excel_date claim.operator_maturity %></Cell>
+        <Cell ss:StyleID="<%= row_date_style %>"><%= ExportJobs.excel_date claim.operator_maturity %></Cell>
         <Cell><Data ss:Type="String"><%= operator_advance(claim) %></Data></Cell>
-        <%= excel_element "Cell", "companies-#{color_for_operator_debt(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-#{color_for_operator_debt(claim)}", styles %>
           <Data ss:Type="String"><%= operator_debt(claim) %></Data></Cell>
-        <%= excel_element "Cell", "companies-red_back", styles, (claim.approved_tourist_advance < claim.primary_currency_price) %>
+        <%= ExportJobs.excel_element "Cell", "companies-red_back", styles, (claim.approved_tourist_advance < claim.primary_currency_price) %>
           <Data ss:Type="String"><%= approved_advance(claim, :tourist) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= approved_advance(claim, :operator_prim) %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= approved_advance(claim, :operator) %></Data></Cell>
-        <%= excel_element "Cell", "companies-red_back", styles, (claim.profit_acc < 0 && !claim.excluded_from_profit) %>
+        <%= ExportJobs.excel_element "Cell", "companies-red_back", styles, (claim.profit_acc < 0 && !claim.excluded_from_profit) %>
           <Data ss:Type="Number"><%= claim.profit_acc.to_money %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.profit_in_percent_acc.to_percent unless claim.excluded_from_profit %></Data></Cell>
-        <%= excel_element "Cell", "companies-red_back", styles, (claim.profit < 0 && !claim.excluded_from_profit) %>
+        <%= ExportJobs.excel_element "Cell", "companies-red_back", styles, (claim.profit < 0 && !claim.excluded_from_profit) %>
           <Data ss:Type="Number"><%= claim.profit.to_money %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.profit_in_percent.to_percent unless claim.excluded_from_profit %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.bonus_percent.to_percent %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= claim.bonus.to_money %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.documents_statuses.' << claim.documents_status) %></Data></Cell>
-        <%= excel_element "Cell", "companies-red_back", styles, (!claim.memo_tasks_done and claim.memo != '') %>
+        <%= ExportJobs.excel_element "Cell", "companies-red_back", styles, (!claim.memo_tasks_done and claim.memo != '') %>
           <Data ss:Type="String"><%= claim.memo %></Data></Cell>
         <% if claim.canceled? %>
         <Cell ss:StyleID="companies-dates-gray_back">
         <% else %>
-        <%= excel_element "Cell", "companies-dates-#{check_date_status(claim)}", styles %>
+        <%= ExportJobs.excel_element "Cell", "companies-dates-#{check_date_status(claim)}", styles %>
         <% end %>
-          <%= excel_date claim.check_date %></Cell>
+          <%= ExportJobs.excel_date claim.check_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.early_reservation ? 'Да' : 'Нет' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.excluded_from_profit ? 'Да' : 'Нет' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.canceled ? 'Да' : 'Нет' %></Data></Cell>
@@ -307,18 +307,18 @@
         <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
       </Row>
     <% @tourists.each do |tourist| %>
-      <%= excel_element "Row", "users-#{tourist.try(:user).try(:id)}", styles %>
+      <%= ExportJobs.excel_element "Row", "users-#{tourist.try(:user).try(:id)}", styles %>
         <Cell><Data ss:Type="String"><%= tourist.last_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.first_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.middle_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t("sex_states.#{tourist.sex}") %></Data></Cell>
-        <Cell ss:StyleID="date"><%= excel_date tourist.date_of_birth %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date tourist.date_of_birth %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.email %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.fio_latin %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_series %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_number %></Data></Cell>
-        <Cell ss:StyleID="date"><%= excel_date tourist.passport_valid_until %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date tourist.passport_valid_until %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_issued %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.address.try(:joint_address) %></Data></Cell>
       </Row>
@@ -356,8 +356,8 @@
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.state') %></Data></Cell>
       </Row>
     <% @clients.each do |client| %>
-      <%= excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
-        <Cell ss:StyleID="date"><%= excel_date client.created_at.to_date %></Cell>
+      <%= ExportJobs.excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date client.created_at.to_date %></Cell>
         <Cell><Data ss:Type="String"><%= client.user.try(:login) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t("sex_states.#{client.sex}") %></Data></Cell>
@@ -413,7 +413,7 @@
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_end') %></Data></Cell>
       </Row>
     <% @operators.each do |operator| %>
-      <%= excel_element "Row", "", styles %>
+      <%= ExportJobs.excel_element "Row", "", styles %>
         <Cell><Data ss:Type="String"><%= operator.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= operator.full_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= operator.register_number %></Data></Cell>
@@ -432,9 +432,9 @@
         <Cell><Data ss:Type="String"><%= operator.actual_insurer_address %></Data></Cell>
         <Cell><Data ss:Type="String"><%= operator.insurer_provision %></Data></Cell>
         <Cell><Data ss:Type="String"><%= operator.insurer_contract %></Data></Cell>
-        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_date %></Cell>
-        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_start %></Cell>
-        <Cell ss:StyleID="date"><%= excel_date operator.insurer_contract_end %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_date %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_start %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_end %></Cell>
       </Row>
     <% end %>
     </Table>
@@ -472,9 +472,9 @@
       </Row>
     <% @tourists_payments.each do |payment| %>
       <% if payment.claim %>
-        <%= excel_element "Row", "", styles %>
+        <%= ExportJobs.excel_element "Row", "", styles %>
           <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
-          <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+          <Cell ss:StyleID="date"><%= ExportJobs.excel_date payment.date_in %></Cell>
           <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
           <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
           <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
@@ -521,9 +521,9 @@
       </Row>
     <% @operator_payments.each do |payment| %>
       <% if payment.claim %>
-        <%= excel_element "Row", "", styles %>
+        <%= ExportJobs.excel_element "Row", "", styles %>
           <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
-          <Cell ss:StyleID="date"><%= excel_date payment.date_in %></Cell>
+          <Cell ss:StyleID="date"><%= ExportJobs.excel_date payment.date_in %></Cell>
           <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
           <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
           <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>

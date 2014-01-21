@@ -6,6 +6,7 @@
       .form_block_content
         .fake_row
           %p= link_to t("dashboard.companies.form.export_all"), dashboard_export_path(:format => 'xls'), :style => "text-decoration: underline;"
+          %p= link_to t("dashboard.transfer.download") + " (#{l(@ftime,:format => :long)})", @furl, :style => "text-decoration: underline;"
 
   .form_column.import_block
     .form_block
@@ -44,6 +45,8 @@
                 = t("dashboard.transfer.success_count")
               %th
                 = t("dashboard.transfer.status")
+              %th
+                = t("dashboard.transfer.data")
             - @import_list.each do |import|
               %tr
                 %td
@@ -59,6 +62,8 @@
                   = import.success_count
                 %td
                   = t("dashboard.transfer.stat.#{import.status}")
+                %td
+                  = import.data
 
 
 

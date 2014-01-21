@@ -13,4 +13,16 @@ ru:
       status: 'Статус'
       import: 'Импортировать'
       import_start: 'Загрузка начата'
+      export_start: 'Выгрузка начата'
+      claim: 'Лист заявок'
+      client: 'Лист клиентов'
+      tourist: 'Лист туристов'
+      operator: 'Лист операторов'
+      payment_tourist: 'Лист оплат от туриста'
+      payment_operator: 'Лист оплат оператору'
+      file_format: 'Формат файла'
+      data: 'Дополнительная информация'
+      download: 'Скачать экспорт'
+      select_file: 'Выберите файл'
+
 

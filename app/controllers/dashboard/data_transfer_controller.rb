@@ -1,39 +1,54 @@
 class Dashboard::DataTransferController < ApplicationController
 
+  before_filter { raise CanCan::AccessDenied unless is_admin? or is_boss? }
+
   def index
-    @import_list = ImportInfo.where(company_id: current_company.id).all
+    @import_list = ImportInfo.where(company_id: current_company.id).order('num desc').all
+    @import_list.each do |lv|
+      data_str = ''
+      if lv.data
+        data_a = YAML.load lv.data
+        if data_a.kind_of?(Hash)
+          data_a.each do |k,v|
+            data_str += t("dashboard.transfer.#{k}") + " #{v}; "
+          end
+          lv.data = data_str
+        end
+      end
+    end
+
+    path = Rails.root.join "uploads/#{current_company.id}/export.xls"
+    if File.exist?(path)
+      @furl = root_path + "uploads/#{current_company.id}/export.xls"
+      @ftime = File.mtime(path)
+    end
+
     @import_info = ImportInfo.new
     render :index
   end
 
   def export
-    inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-    @totals = Claim.accessible_by(current_ability).includes(inluded_tables)
-
-    @tourists = Tourist.accessible_by(current_ability).includes([:address, :user])
-
-    @clients = Tourist.accessible_by(current_ability).includes(:address).potentials
-
-    @managers = User.where(:company_id => current_company.id)
-
-    @operators = Operator.by_company_or_common(current_company).includes(:address)
-
-    @tourists_payments = Payment.where(:company_id => current_company.id, :payer_type => 'Tourist').order('date_in desc')
-
-    @operator_payments = Payment.where(:company_id => current_company.id, :recipient_type => 'Operator').order('date_in desc')
+   # ExportJobs.import_file(current_company.id)
 
     respond_to do |format|
-      format.xls { render "claims" }
+      format.xls {
+        ExportJobs.export_file(current_company.id)
+        redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.export_start")
+      }
     end
   end
 
   def import
-    @import_info = ImportInfo.create(status: 'new')
-    @import_info.company = current_company
-    @import_info.filename = params[:import_info][:filename]
-    @import_info.save
-    @import_info.perform
-    redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.import_start")
+    if params[:import_info] && params[:import_info][:filename]
+      @import_info = ImportInfo.create(status: 'new')
+      @import_info.company = current_company
+      @import_info.filename = params[:import_info][:filename]
+      @import_info.save
+      @import_info.perform
+      redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.import_start")
+    else
+      redirect_to dashboard_data_index_path, :alert => t("dashboard.transfer.select_file")
+    end
   end
 
 end

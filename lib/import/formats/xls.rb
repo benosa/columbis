@@ -22,14 +22,14 @@ module Import
         begin
           oo = Roo::Excel.new(@file)
         rescue
-          return result = { success: false, :data => {file_format: 'bad'} }
+          return result = { success: false, :data => {file_format: 'неверный'} }
         end
 
         result = { success: true, :data => {} }
         tabs_info.each do |k,v|
           #puts k.to_s + ' ' + v[:sheet_number].to_s + ' ' + oo.last_column(oo.sheets[v[:sheet_number]]).to_s
           if v[:column_count] != oo.last_column(oo.sheets[v[:sheet_number]])
-            result[:data][k] = oo.last_column(oo.sheets[v[:sheet_number]]).to_s + ' instead ' + v[:column_count].to_s
+            result[:data][k] = oo.last_column(oo.sheets[v[:sheet_number]]).to_s + ' вместо ' + v[:column_count].to_s
             result[:success] = false
           end
         end

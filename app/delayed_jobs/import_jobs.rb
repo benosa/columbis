@@ -9,9 +9,8 @@ module ImportJobs
     def perform
       import_info = ImportInfo.find(import_info_id)
       if import_info.filename?
-       # ImportInfo.update(import_info_id, status: 'olo3')
-#        importing = Import::Formats::XLS.new([:client, :operator, :tourist, :claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
-        importing = Import::Formats::XLS.new([:claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
+        importing = Import::Formats::XLS.new([:client, :operator, :tourist, :claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
+#        importing = Import::Formats::XLS.new([:claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
 
         result = importing.start
         if result[:success]
@@ -28,7 +27,7 @@ module ImportJobs
           ImportInfo.update(import_info_id, status: 'failed', data: result[:data].to_yaml)
         end
       else
-        ImportInfo.update(import_info_id, status: 'neolo')
+        ImportInfo.update(import_info_id, status: 'failed')
       end
     end
   end

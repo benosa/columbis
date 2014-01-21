@@ -102,7 +102,7 @@ module Import
                 end
               end
               claim.operator = operator_manual_check(data_row, company)
-              Rails.logger.debug "ololo777 #{claim.inspect}"
+             # Rails.logger.debug "ololo777 #{claim.inspect}"
             #  puts claim.inspect
             #if claim.assign_reflections_and_save(params)
               info_params = { model_class: 'Claim', file_line: line, success: false }

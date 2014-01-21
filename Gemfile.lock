@@ -295,6 +295,8 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
+    render_anywhere (0.0.4)
+      rails (>= 3.0.7)
     riddle (1.5.7)
     roo (1.12.2)
       nokogiri
@@ -466,6 +468,7 @@ DEPENDENCIES
   rails (~> 3.2.14)
   rails3-generators (= 1.0.0)
   rails_best_practices (~> 1.13.2)
+  render_anywhere
   roo
   rspec-cells
   rspec-rails (~> 2.12.0)

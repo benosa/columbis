@@ -99,13 +99,15 @@ class UserPayment < ActiveRecord::Base
     end
 
     def check_tariff
-      balance = company.tariff_balance
-      self.tariff = TariffPlan.default unless self.tariff
-      self.currency = self.tariff.currency
-      self.period = 1 unless self.period
-      payed_period = period >= 12 ? period - 2 : period
-      self.amount = self.tariff.price * payed_period - balance
-      self.amount = 0 if self.amount < 0
+      if company
+        balance = company.tariff_balance
+        self.tariff = TariffPlan.default if self.tariff.blank?
+        self.currency = self.tariff.currency
+        self.period = 1 unless self.period
+        payed_period = period >= 12 ? period - 2 : period
+        self.amount = self.tariff.price * payed_period - balance
+        self.amount = 0 if self.amount < 0
+      end
     end
 
     def set_status

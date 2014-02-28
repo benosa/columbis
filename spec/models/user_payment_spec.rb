@@ -2,17 +2,21 @@
 require 'spec_helper'
 
 describe UserPayment do
+  before(:all) { FactoryGirl.create(:tariff_plan, :default => true) }
+
   it "has a valid factory" do
     FactoryGirl.create(:user_payment).should be_valid
     FactoryGirl.create(:fail_user_payment).should be_valid
     FactoryGirl.create(:success_user_payment).should be_valid
     FactoryGirl.create(:approved_user_payment).should be_valid
+    FactoryGirl.create(:default_user_payment).should be_valid
   end
 
   describe ".associtiations" do
     it { should belong_to :company }
     it { should belong_to :user }
     it { should belong_to :tariff }
+    it { should have_one :payment_company }
   end
 
   describe ".validations" do
@@ -44,7 +48,7 @@ describe UserPayment do
       let(:payment) { FactoryGirl.create :default_user_payment }
       subject { payment }
 
-      it { payment.amount.should == 0 }
+      it { payment.amount.to_f.should == 1.0 }
       it { payment.currency.should == "rur" }
       it { payment.description.should_not be_nil }
       it { payment.tariff.should_not be_nil }

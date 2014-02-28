@@ -2,8 +2,8 @@ ru:
   items:
     index:
       all_catalogs: 'Все каталоги'
-      add_values: 'Добавить запись' 
-      catalog_items: 'Записи текущего каталога'  
+      add_values: 'Добавить запись'
+      catalog_items: 'Записи текущего каталога'
     new:
       new_item: 'Создание записи'
 

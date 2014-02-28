@@ -47,6 +47,8 @@ gem 'bust_rails_etags'
 gem 'faker', '1.2.0'
 gem "ckeditor"
 
+gem 'render_anywhere', :require => false
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

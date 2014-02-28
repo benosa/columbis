@@ -1,79 +1,143 @@
 module Import
   module Tables
-    module ClaimTable
+    class ClaimTable
       extend Tables::DefaultTable
 
       FORMAT =
         {
-          :date                   => {:type => 'Date',   :may_nil => false, :value => Time.zone.now},
-          :promotion              => {:type => 'String', :may_nil => false, :value => 'Другое'},
-          :user                   => {:type => 'String', :may_nil => false, :value => nil},
-          :office                 => {:type => 'String', :may_nil => false, :value => nil},
-          :tourist                => {:type => 'String', :may_nil => false, :value => nil},
-          :telephone              => {:type => 'String', :may_nil => false, :value => nil},
-          :passport_number        => {:type => 'String', :may_nil => false, :value => nil},
-          :passport_series        => {:type => 'String', :may_nil => false, :value => nil},
-          :email                  => {:type => 'String', :may_nil => true,  :value => nil},
-          :address                => {:type => 'String', :may_nil => false, :value => nil},
-          :date_of_birth          => {:type => 'Date',   :may_nil => false, :value => nil},
-          :passport_valid_until   => {:type => 'Date',   :may_nil => false, :value => nil},
-          :arrival_date           => {:type => 'Date',   :may_nil => false, :value => nil},
-          :departure_date         => {:type => 'Date',   :may_nil => false, :value => nil},
-          :country                => {:type => 'String', :may_nil => false, :value => nil},
-          :visa                   => {:type => 'String', :may_nil => true,  :value => 'Виза не нужна'},
-          :visa_check             => {:type => 'Date',   :may_nil => true,  :value => nil},
-          :operator               => {:type => 'String', :may_nil => false, :value => nil},
-          :operator_number        => {:type => 'String', :may_nil => true,  :value => nil},
-          :operator_series        => {:type => 'String', :may_nil => true,  :value => nil},
-          :operator_confirmation  => {:type => 'String', :may_nil => true,  :value => nil},
-          :primary_currency_price => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :operator_price         => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :operator_maturity      => {:type => 'Date',   :may_nil => true,  :value => nil},
-          :operator_paid          => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :tourist_advance        => {:type => 'Float',  :may_nil => true,  :value => nil},
-          :documents_status       => {:type => 'String', :may_nil => true,  :value => 'Не готовы'},
-          :docs_note              => {:type => 'String', :may_nil => true,  :value => ''},
-          :check_date             => {:type => 'Date',   :may_nil => false, :value => Time.zone.now}
+          :num                             => {:type => 'Int',    :may_nil => false, :value => nil},
+          :reservation_date                => {:type => 'Date',   :may_nil => false, :value => Time.zone.now},
+          :tourist_stat                    => {:type => 'String', :may_nil => false, :value => 'Другое'},
+          :office                          => {:type => 'String', :may_nil => false, :value => nil},
+          :user                            => {:type => 'String', :may_nil => false, :value => nil},
+          :tourist                         => {:type => 'String', :may_nil => false, :value => nil},
+          :phone_number                    => {:type => 'String', :may_nil => false, :value => nil},
+          :arrival_date                    => {:type => 'Date',   :may_nil => false, :value => nil},
+          :departure_date                  => {:type => 'Date',   :may_nil => false, :value => nil},
+          :country                         => {:type => 'String', :may_nil => false, :value => nil},
+          :city                            => {:type => 'String', :may_nil => true,  :value => nil},
+          :visa                            => {:type => 'String', :may_nil => true,  :value => 'Виза не нужна'},
+          :visa_check                      => {:type => 'Date',   :may_nil => true,  :value => nil},
+          :operator                        => {:type => 'String', :may_nil => false, :value => nil},
+          :operator_confirmation           => {:type => 'String', :may_nil => true,  :value => nil},
+          :primary_currency_price          => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :calculation                     => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :tourist_advance                 => {:type => 'Float',  :may_nil => false, :value => nil},
+          :tourist_debt                    => {:type => 'Float',  :may_nil => false, :value => nil},
+          :operator_price                  => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :operator_maturity               => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :operator_advance                => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :operator_debt                   => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :approved_tourist_advance        => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :approved_operator_advance       => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :approved_operator_advance_prim  => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :profit_acc                      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :profit_in_percent_acc           => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :profit                          => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :profit_in_percent               => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :bonus_percent                   => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :bonus                           => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :documents_status                => {:type => 'String', :may_nil => true,  :value => 'Не готовы'},
+          :docs_note                       => {:type => 'String', :may_nil => true,  :value => ''},
+          :check_date                      => {:type => 'Date',   :may_nil => false, :value => Time.zone.now},
+          :early_reservation               => {:type => 'String', :may_nil => true,  :value => nil},
+          :excluded_from_profit            => {:type => 'String', :may_nil => true,  :value => nil},
+          :canceled                        => {:type => 'String', :may_nil => true,  :value => nil},
+          :active                          => {:type => 'String', :may_nil => true,  :value => nil},
+          :closed                          => {:type => 'String', :may_nil => true,  :value => nil},
+          :tour_price                      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :insurance_price                 => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :additional_insurance_price      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :discount                        => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :visa_price                      => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :fuel_tax_price                  => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :additional_services_price       => {:type => 'Float',  :may_nil => true,  :value => nil},
+          :operator_price_currency         => {:type => 'String',  :may_nil => true,  :value => nil},
+          :tour_price_currency             => {:type => 'String',  :may_nil => true,  :value => nil},
+          :insurance_price_currency        => {:type => 'String',  :may_nil => true,  :value => nil},
+          :additional_insurance_price_currency => {:type => 'String',  :may_nil => true,  :value => nil},
+          :visa_price_currency              => {:type => 'String',  :may_nil => true,  :value => nil},
+          :fuel_tax_price_currency          => {:type => 'String',  :may_nil => true,  :value => nil},
+          :additional_services_price_currency => {:type => 'String',  :may_nil => true,  :value => nil},
+          :course_usd          => {:type => 'String',  :may_nil => true,  :value => nil},
+          :course_eur => {:type => 'String',  :may_nil => true,  :value => nil}
         }
 
-      class << self
-        def columns_count
-          28
+     # class << self
+        def self.columns_count
+          56
         end
 
-        def sheet_number
-          1
+        def self.sheet_number
+          0
         end
 
-        def import(row, company)
+        def self.check_boolean(str)
+          # Rails.logger.debug "ololo322 : #{str}"
+          str == 'Да' ? true : false
+        end
+
+        def import(row, company, import_new, line)
           puts "    Start import row."
           data_row = prepare_data(row, company)
-          if data_row
-            params = create_claim_params(data_row, company)
-            claim = Claim.new(params)
-            claim.company = company
-            claim.user_id = data_row[:user]
-            claim.office_id = data_row[:office]
-            temp_tourist = Tourist.where(data_row[:tourist]).first_or_create
-            if temp_tourist.address.nil?
-              temp_tourist.address = Address.create(:company_id => company.id, :joint_address => data_row[:address])
-            end
-            claim.applicant = temp_tourist
-            if claim.assign_reflections_and_save(params)
-              puts "    Claim was importing"
-              true
+          if data_row && !data_row[:cant_be_nil]
+            if !check_claim(data_row[:num][:value].to_i, company)
+              params = create_claim_params(data_row, company)
+             # puts params
+              claim = Claim.new(params)
+
+              claim.company = company
+              claim.user = user_manual_check(data_row, company)
+              claim.office = office_manual_check(data_row, company)
+              claim.country = country_manual_check(data_row, company)
+              claim.city = city_manual_check(data_row, company)
+              claim.num = data_row[:num][:value].to_i
+              tourists = parse_tourists(data_row)
+              applicant = tourist_manual_check(tourists[0], company) if tourists[0]
+              claim.applicant = applicant if applicant
+              if tourists.count > 1
+                tourists[1..tourists.count].each do |dependent|
+                  dep = tourist_manual_check(dependent, company)
+                  claim.dependents << dep if dep
+                end
+              end
+              claim.operator = operator_manual_check(data_row, company)
+             # Rails.logger.debug "ololo777 #{claim.inspect}"
+            #  puts claim.inspect
+            #if claim.assign_reflections_and_save(params)
+              info_params = { model_class: 'Claim', file_line: line, success: false }
+              if claim.save
+                info_params[:model_id] = claim.id
+                info_params[:success] = true
+                puts "    Claim was importing"
+                true
+              else
+               # puts claim.errors.inspect
+                info_params[:data] = claim.errors.messages.to_yaml
+              #  Rails.logger.debug "ololo555 #{claim.errors.inspect}"
+                puts "    Claim not save"
+                false
+              end
+              DefaultTable.save_import_item(info_params, import_new)
+              #save_import_item(params)
             else
-              puts claim.errors.inspect
-              puts "    Claim not save"
-              false
+              puts "Claim exist"
             end
           else
-            puts "    Row invalid"
+            DefaultTable.save_import_item({ model_class: 'Claim', file_line: line, success: false, data: "#{data_row[:cant_be_nil]} empty".to_yaml }, import_new)
+            #{data_row[:cant_be_nil]} empty"
             false
           end
         end
 
-        private
+        def parse_tourists(row)
+          tourists = []
+          row[:tourist][:value].split(',').each do |tourist|
+            tourist_split = tourist.split(' ')
+            tourists << { last_name: tourist_split[0], first_name: tourist_split[1], middle_name: tourist_split[2] }
+          end
+          tourists
+        end
 
         def prepare_data(row, company)
           data_row = type_check(row)
@@ -84,8 +148,12 @@ module Import
           data_row
         end
 
+        def check_claim(num, company)
+          Claim.where(company_id: company.id, num: num).first
+        end
+
         def type_check(row)
-          data_row = FORMAT.dup
+          data_row = Marshal.load(Marshal.dump(FORMAT))
           row.each_with_index do |field, i|
             key = data_row.keys[i]
             if data_row[key][:type] == "String" && field.class.to_s == "Float"
@@ -96,7 +164,7 @@ module Import
             data_row[key].delete(:type)
             data_row[key][:value] = field unless field.blank?
           end
-          puts data_row.to_s
+        #  puts data_row.to_s
           data_row
         end
 
@@ -110,71 +178,77 @@ module Import
 
         def check_for_nil(row)
           row.each do |field|
-            return false if row[field[0]][:value].nil? && !row[field[0]][:may_nil]
-            row[field[0]] = row[field[0]][:value]
+            return { cant_be_nil: field }  if row[field[0]][:value].nil? && !row[field[0]][:may_nil]
+            # row[field[0]] = row[field[0]][:value]
           end
           row
         end
 
-        def user_check(row, company)
+        private
+
+        def user_manual_check(row, company)
           user = company.users.where(:login => row[:user][:value]).first
-          row[:user][:value] = user.try(:id)
+          user
         end
 
-        def office_check(row, company)
+        def office_manual_check(row, company)
           office = company.offices.where(:name => row[:office][:value]).first
           office = company.offices.first if office.nil?
-          row[:office][:value] = office.try(:id)
+          office
         end
 
-        def tourist_check(row, company)
-          tourist =
-            if row[:passport_series][:value] != nil && row[:passport_number][:value] != nil
-              Tourist.where(:company_id => company.id)
-                .where("passport_series = '#{row[:passport_series][:value]}'")
-                .where("passport_number = '#{row[:passport_number][:value]}'")
-                .first
-            end
-          unless tourist
-            tourist = Tourist.new do |t|
-              t.full_name = row[:tourist][:value]
-              t.passport_series = row[:passport_series][:value]
-              t.passport_number = row[:passport_number][:value]
-              t.passport_valid_until = row[:passport_valid_until][:value]
-              t.date_of_birth = row[:date_of_birth][:value]
-              t.email = row[:email][:value]
-              t.phone_number = row[:telephone][:value]
-            end
-            tourist.company_id = company.id
-          end
-          if tourist.id || tourist.valid?
-            row[:tourist] = {:value => tourist.attributes, :may_nil => false}
+        def tourist_manual_check(t_names, company)
+          tourist = Tourist.where(:company_id => company.id, potential: false)
+            .where("last_name = ? and first_name = ? and middle_name = ?", t_names[:last_name], t_names[:first_name], t_names[:middle_name])
+            .first
+          if tourist
+            return tourist
           else
-            row[:tourist] = {:value => nil, :may_nil => false}
+            puts "Tourist #{t_names[:last_name]} #{t_names[:first_name]} #{t_names[:middle_name]} not found"
+            return false
           end
         end
 
-        def operator_check(row, company)
-          operator =
-            if row[:operator_number][:value] != nil && row[:operator_series][:value] != nil
-              Operator.where(:company_id => company.id)
-                .where("register_number = '#{row[:operator_number][:value]}'")
-                .where("register_series = '#{row[:operator_series][:value]}'")
-                .first
-            end
-          operator =
-            unless operator
-              Operator.new do |o|
-                o.name = row[:operator][:value]
-                o.register_number = row[:operator_number][:value]
-                o.register_series = row[:operator_series][:value]
-              end
-            end
-          if operator.id || operator.valid?
-            row[:operator] = {:value => operator.attributes, :may_nil => false}
-          else
-            row[:operator] = {:value => nil, :may_nil => false}
+        def operator_manual_check(row, company)
+          if row[:operator][:value]
+            operator = Operator.where(:company_id => company.id)
+              .where("(company_id = ? or common = true ) and name = ?", company.id, row[:operator][:value])
+              .first
           end
+          unless operator
+            operator = Operator.new(name: row[:operator][:value], common: false)
+            operator.company = company
+            operator.save
+          end
+          operator
+        end
+
+        def country_manual_check(row, company)
+          if row[:country][:value]
+            country = Country.where(:company_id => company.id)
+              .where("(company_id = ? or common = true ) and name = ?", company.id, row[:country][:value])
+              .first
+          end
+          unless country
+            country = Country.new(name: row[:country][:value], common: false)
+            country.company = company
+            country.save
+          end
+          country
+        end
+
+        def city_manual_check(row, company)
+          if row[:city][:value]
+            city = City.where(:company_id => company.id)
+              .where("(company_id = ? or common = true ) and name = ?", company.id, row[:city][:value])
+              .first
+          end
+          unless city
+            city = City.new(name: row[:city][:value], common: false)
+            city.company = company
+            city.save
+          end
+          city
         end
 
         def visa_check(row, company)
@@ -182,6 +256,7 @@ module Import
           Claim::VISA_STATUSES.each do |status|
             visa_statuses.merge!({ I18n.t(".claims.visa_statuses.#{status}") => status })
           end
+        #  Rails.logger.debug "ololo321: #{row} #{visa_statuses}"
           if visa_statuses.keys.include?(row[:visa][:value])
             row[:visa][:value] = visa_statuses[row[:visa][:value]]
           else
@@ -202,80 +277,62 @@ module Import
         end
 
         def create_claim_params(row, company)
+         # puts row
           {
-            "reservation_date" => row[:date],
-            "check_date" => row[:check_date],
-            "tourist_stat" => row[:promotion],
-            "arrival_date" => row[:arrival_date],
-            "departure_date" => row[:departure_date],
-            "visa" => row[:visa],
-            "visa_check" => row[:visa_check],
-            "primary_currency_price" => row[:primary_currency_price],
-            "operator_confirmation_flag"=>"0",
-            "closed"=>"0",
-            "operator_confirmation" => row[:operator_confirmation],
-            "operator_price" => row[:operator_price],
-            "operator_maturity" => row[:operator_maturity],
-            "operator_paid" => row[:operator_paid],
-            "docs_note" => row[:docs_note],
-            "tourist_advance" => row[:tourist_advance],
-            "documents_status" => row[:documents_status],
-            "country" => { "name" => row[:country] },
-            "operator" => row[:operator].nil? ? nil : row[:operator]['name'],
-            "operator_id" => row[:operator].nil? ? nil : row[:operator]['id'],
-            "tour_price_currency"=>"rur",
-            "operator_price_currency"=>"rur"
-            # "payments_in_attributes" => {
-            #   "0"=>{
-            #     "date_in"=>"",
-            #     "amount"=>row[:tourist_advance],
-            #     "approved"=>"0",
-            #     "form"=>"",
-            #     "_destroy"=>"false",
-            #     "id"=>""
-            #   }
-            # },
-            # "operator_price_currency"=>"rur",
-            # "payments_out_attributes" => {
-            #   "0"=>{
-            #     "date_in"=>row[:operator_maturity],
-            #     "amount_prim"=>"0.0",
-            #     "course"=>"",
-            #     "amount"=>row[:operator_paid],
-            #     "approved"=>"1",
-            #     "form"=>"",
-            #     "_destroy"=>"false",
-            #     "id"=>""
-            #   }
-            # },
-            # "assistant_id"=>"",
-            # "early_reservation"=>"0",
-            # "canceled"=>"0",
-            # "excluded_from_profit"=>"0",
-            # "course_eur"=>"0",
-            # "course_usd"=>"0",
-            # "tour_price_currency"=>"rur",
-            # "tour_price"=>row[:primary_currency_price],
-            # "visa_count"=>"0",
-            # "visa_price_currency"=>"rur",
-            # "visa_price"=>"0",
-            # "children_visa_count"=>"0",
-            # "children_visa_price_currency"=>"rur",
-            # "children_visa_price"=>"0",
-            # "insurance_count"=>"0",
-            # "insurance_price_currency"=>"rur",
-            # "insurance_price"=>"0",
-            # "additional_insurance_count"=>"0",
-            # "additional_insurance_price_currency"=>"rur",
-            # "additional_insurance_price"=>"0",
-            # "fuel_tax_count"=>"0",
-            # "fuel_tax_price_currency"=>"rur",
-            # "fuel_tax_price"=>"0",
-            # "additional_services_price_currency"=>"rur",
-            # "additional_services_price"=>"0"
+            :reservation_date => row[:reservation_date][:value],
+            :tourist_stat => row[:tourist_stat][:value],
+            :arrival_date => row[:arrival_date][:value],
+            :departure_date => row[:departure_date][:value],
+            :visa => row[:visa][:value],
+            :visa_check => row[:visa_check][:value],
+            :operator_confirmation => row[:operator_confirmation][:value],
+            :primary_currency_price => row[:primary_currency_price][:value].to_f,
+            :calculation => row[:calculation][:value],
+            :tourist_advance => row[:tourist_advance][:value],
+            :tourist_debt => row[:tourist_debt][:value],
+            :operator_price => row[:operator_price][:value],
+            :operator_maturity => row[:operator_maturity][:value],
+            :operator_advance => row[:operator_advance][:value],
+            :operator_debt => row[:operator_debt][:value],
+            :approved_tourist_advance => row[:approved_tourist_advance][:value],
+            :approved_operator_advance => row[:approved_operator_advance][:value],
+            :approved_operator_advance_prim => row[:approved_operator_advance_prim][:value],
+            :profit_acc => row[:profit_acc][:value],
+            :profit_in_percent_acc => row[:profit_in_percent_acc][:value],
+            :profit => row[:profit][:value],
+            :profit_in_percent => row[:profit_in_percent][:value],
+            :bonus_percent => row[:bonus_percent][:value],
+            :bonus => row[:bonus][:value],
+            :documents_status => row[:documents_status][:value],
+            :docs_note => row[:docs_note][:value],
+            :check_date => row[:check_date][:value],
+            :early_reservation => ClaimTable.check_boolean(row[:early_reservation][:value]),
+            :excluded_from_profit => ClaimTable.check_boolean(row[:excluded_from_profit][:value]),
+            :canceled => ClaimTable.check_boolean(row[:canceled][:value]),
+            :active => ClaimTable.check_boolean(row[:active][:value]),
+            :closed => ClaimTable.check_boolean(row[:closed][:value]),
+          #  :operator_paid => row[:operator_paid][:value],
+            :tour_price_currency => row[:tour_price_currency][:value],
+            :operator_price_currency => row[:operator_price_currency][:value],
+            :tour_price => row[:tour_price][:value],
+            :insurance_price => row[:insurance_price][:value],
+            :additional_insurance_price => row[:additional_insurance_price][:value],
+            :discount => row[:discount][:value],
+            :visa_price => row[:visa_price][:value],
+            :fuel_tax_price => row[:fuel_tax_price][:value],
+            :additional_services_price       => row[:additional_services_price][:value],
+            :operator_price_currency         => row[:operator_price_currency][:value],
+            :tour_price_currency             => row[:tour_price_currency][:value],
+            :insurance_price_currency        => row[:insurance_price_currency][:value],
+            :additional_insurance_price_currency => row[:additional_insurance_price_currency][:value],
+            :visa_price_currency              => row[:visa_price_currency][:value],
+            :fuel_tax_price_currency          => row[:fuel_tax_price_currency][:value],
+            :additional_services_price_currency => row[:additional_services_price_currency][:value],
+            :course_usd => row[:course_usd][:value],
+            :course_eur => row[:course_eur][:value]
           }
         end
-      end
+     # end
     end
   end
 end

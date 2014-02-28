@@ -12,6 +12,7 @@ ru:
           cities: 'Курорты'
           countries: 'Направления'
           operators: 'Туроператоры'
+          import: 'Импорт экспорт'
           tariff_plans: 'Тарифные планы'
         - &claims
           claims: 'Брони'

@@ -43,21 +43,6 @@ class ClaimsController < ApplicationController
 
   end
 
-  def export_to
-    inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-    @totals = Claim.accessible_by(current_ability).includes(inluded_tables)
-
-    @tourists = Tourist.accessible_by(current_ability).includes([:address, :user])
-
-    @clients = Tourist.accessible_by(current_ability).includes(:address).potentials
-
-    @managers = User.where(:company_id => current_company.id)
-
-    respond_to do |format|
-      format.xls { render "claims" }
-    end
-  end
-
   def scroll
     inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
     # remover any sql order by reorder(nil), because there are might be composed columns

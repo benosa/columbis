@@ -6,5 +6,6 @@
     %ul
       %li.first_menu_stroke= link_to t('.companies'), admin_index_path
       %li.first_menu_stroke= link_to t('.visitors'), admin_visitors_path
+      %li.first_menu_stroke= link_to t('layouts.main_menu.management.tariff_plans'), tariff_plans_path if can? :manage, TariffPlan
       -# Temporary removed
         %li.first_menu_stroke= link_to t('.instructions'), admin_instructions_path

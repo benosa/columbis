@@ -32,7 +32,7 @@ class ClaimSweeper < ActionController::Caching::Sweeper
 
   def self.expire_active_claims
     sweeper.expire_claims
-    Claim.where(:active => true).select([:id, :updated_at]).find_each do |claim| # for this project it could expire cache for all active claims
+    Claim.where("active = TRUE OR updated_at > '#{(Time.now - 2.days).utc}'").select([:id, :updated_at]).find_each do |claim| # for this project it could expire cache for all active claims
       sweeper.expire_claim(claim)
     end
   end

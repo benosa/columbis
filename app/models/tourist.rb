@@ -36,6 +36,9 @@ class Tourist < ActiveRecord::Base
   validates_presence_of :phone_number, :if => :secondary_attributes_validation_condition
   validates :email, email: true, presence: true, :if => :secondary_attributes_validation_condition # uniqueness: { scope: :company_id }
 
+  after_update :touch_claims
+  after_destroy :touch_claims
+
   scope :clients, where(:potential => false)
   scope :potentials, where(:potential => true)
   scope :by_full_name, order([:last_name, :first_name, :middle_name])
@@ -106,6 +109,11 @@ class Tourist < ActiveRecord::Base
 
     def secondary_attributes_validation_condition
       additional_attributes_validation_condition unless validate_secondary_attributes === false
+    end
+
+    def touch_claims
+      TpouristJobs.touch_claims(id) if
+        (!new_record? and (first_name_changed? or last_name_changed? or middle_name_changed? or phone_number_changed?)) or destroyed?
     end
 
 end

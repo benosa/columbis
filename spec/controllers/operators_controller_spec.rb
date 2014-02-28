@@ -4,8 +4,8 @@ require 'spec_helper'
 describe OperatorsController do
   def create_operator
     @operator = FactoryGirl.create(:operator)
-    user = FactoryGirl.create(:admin)
-    test_sign_in(user)
+    @user = FactoryGirl.create(:admin)
+    test_sign_in(@user)
   end
 
   before (:each) do
@@ -46,6 +46,13 @@ describe OperatorsController do
 
     it 'should redirect to operators/show.html' do
       response.should redirect_to operators_path
+    end
+
+    it 'should update claim updated_at if update operator name' do
+      Delayed::Worker.delay_jobs = false
+      @claim = FactoryGirl.create(:claim, company: @user.company, office: @user.office, user: @user, operator_id: @operator.id)
+      put :update, id: @operator.id, operator: attributes_for(:operator, name: 'ivanov')
+      Claim.find(@claim.id).updated_at.should > @claim.updated_at
     end
   end
 

@@ -91,9 +91,9 @@ class ApplicationController < ActionController::Base
   # end
 
   def check_subdomain
+    # current_company.subdomain = nil if current_company # To local production
     # Check subdomain only for remote GET requests to proper domain
     return unless request.get? && !request.local? && request.host.index(CONFIG[:domain])
-
     subdomain = request.host.sub(/\.?#{CONFIG[:domain]}\Z/, '')
     is_public_controller = CONFIG[:public_controllers].include?(params[:controller])
     redirect_url = nil

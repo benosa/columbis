@@ -9,7 +9,7 @@ shared_path = "/opt/apps/columbis/shared"
 # Set unicorn options
 worker_processes 4
 preload_app true
-timeout 30
+timeout 60
 listen "#{shared_path}/sockets/unicorn.sock", :backlog => 2048
 
 # Spawn unicorn master worker for user apps (group: apps)

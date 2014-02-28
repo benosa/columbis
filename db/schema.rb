@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131213114305) do
+ActiveRecord::Schema.define(:version => 20140109141430) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(:version => 20131213114305) do
     t.integer  "kpp"
     t.string   "full_name"
     t.string   "actual_address"
+    t.boolean  "short_claim_list",                                 :default => true, :null => false
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -505,7 +506,6 @@ ActiveRecord::Schema.define(:version => 20131213114305) do
     t.string   "color"
     t.integer  "company_id"
     t.boolean  "delta",                                 :default => true
-    t.string   "screen_width"
     t.string   "time_zone"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"

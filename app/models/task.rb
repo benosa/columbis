@@ -31,7 +31,7 @@ class Task < ActiveRecord::Base
 
   extend SearchAndSort
 
-  define_index do
+  define_index 'default_task_index' do
     indexes body, status, sortable: true
     has :id
     has :user_id

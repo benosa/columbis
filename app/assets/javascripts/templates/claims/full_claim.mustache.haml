@@ -1,0 +1,237 @@
+%tr.more_info.first_row.full_claim_info
+  %td
+    %a.edit.active{href: "{{edit_path}}"}
+  %td
+    = I18n.t('claims.form.tourist')
+  %td
+    = I18n.t('claims.index.direction')
+  %td
+    = I18n.t('claims.index.dep_new_date')
+  %td
+    = I18n.t('claims.index.creator')
+  %td
+    = I18n.t('claims.index.res_new_date')
+  %td.last_row
+%tr.more_info.second_row.full_claim_info
+  %td{colspan: "2"}
+    .more_info_block.tourist
+      .top-section
+        .pic
+        %h4 {{applicant_last_name}}
+        %p {{applicant_first_middle_name}}
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.phone_number')
+              %td.right-col {{phone_number}}
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.visa')
+              %td.right-col
+                %span.hl{class: "{{visa_color}}_new"} {{visa_text}}
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.term_only')
+              %td.right-col
+                %span.hl{class: "{{visa_color}}_new"} {{visa_check}}
+  %td
+    .more_info_block.route
+      .top-section
+        .pic
+        %h4 {{country_name}} {{resort_name}}
+        %p {{operator}}
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text
+                = I18n.t('activerecord.attributes.tourist.state')
+              %td.right-col
+                %span.hl{class: '{{operator_confirmation_flag}}'} {{operator_confirmation_flag_text}}
+            %tr
+              %td.gray_text №
+              %td.right-col {{operator_confirmation}}
+  %td
+    .more_info_block.date-mib
+      .top-section
+        .pic
+        %h4.clearfix {{arrival_date}}
+        .pic1
+        %h4 {{departure_date}}
+      .bottom-section
+        %p.gray_text
+          = I18n.t('claims.index.to')
+        %p {{country_name}}
+        %p.gray_text
+          = I18n.t('claims.index.from')
+        %p {{airport_back}}
+  %td
+    .more_info_block.creator
+      .top-section
+        .pic
+        %h4 {{manager_last_name}}
+        %p {{manager_login}}
+      .bottom-section
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.office_filter')
+              %td.right-col {{office_name}}
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.docs')
+              %td.right-col
+                %span.hl{class: '{{documents_status}}_new'} {{documents_status_text}}
+  %td.last-col{colspan: "2"}
+    .more_info_block.create_date
+      .top-section
+        .pic
+        %h4 {{reservation_date}}
+        %p № {{num}}
+        %table
+          %tbody
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.check_date')
+              %td.right-col
+                %span.hl{class: '{{check_date_class}}'} {{check_date}}
+      .bottom-section
+        %p
+          %span.gray_text
+            = I18n.t('claims.index.from')
+          {{tourist_stat}}
+        %p{class: 'doc_note'} {{docs_note}}
+%tr.more_info.third_row.full_claim_info
+  %td.leftward{colspan: "2"}
+    .more_info_block.price
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.price')
+              %td.right-col
+                %h4 {{primary_currency_price}}
+                руб.
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.advance')
+              %td.right-col
+                %h4 {{tourist_advance}}
+                руб.
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.debt')
+              %td.right-col
+                %h4 {{tourist_debt}}
+                руб.
+      %td.rightward
+        .more_info_block.price
+          .bottom-section
+            .pic1
+            %table
+              %tbody
+                %tr
+                  %td.gray_text
+                    = I18n.t('claims.index.op_price')
+                  %td.right-col {{operator_price}}
+                %tr
+                  %td.gray_text
+                    = I18n.t('claims.index.pay_to')
+                  %td.right-col
+                    %span.hl {{operator_maturity}}
+                %tr
+                  %td.gray_text
+                    = I18n.t('claims.index.pay_only')
+                  %td.right-col {{operator_advance}}
+                %tr
+                  %td.gray_text
+                    = I18n.t('claims.index.op_debt')
+                  %td.right-col {{operator_debt}}
+  %td
+    .more_info_block.money
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.advance')
+              %td.right-col
+                %span.hl{class: '{{approved_advance_class}}'}
+                  = "{{approved_advance_tourist}}"
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.pay_only')}, $"
+              %td.right-col {{approved_advance_op_prim}}
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.pay_only')}, #{I18n.t('rur')}"
+              %td.right-col {{approved_advance_op}}
+  %td
+    .more_info_block.percents
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.margin')
+              %td.right-col
+                = "{{profit}} #{I18n.t('rur')}"
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.margin')}, %"
+              %td.right-col {{profit_in_percent}}
+            %tr
+              %td.gray_text
+                = I18n.t('claims.index.margin_buh')
+              %td.right-col
+                %span.hl
+                  = "{{profit_acc}} #{I18n.t('rur')}"
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.margin_buh')}, %"
+              %td.right-col {{profit_in_percent_acc}}
+  %td.last-col{colspan: "2"}
+    .more_info_block.bonus
+      .top-section
+        .pic
+        %table
+          %tbody
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text  
+              %td.right-col
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.premium')}, #{I18n.t('rur')}"
+              %td.right-col#bonus_new
+                = "{{bonus}}"
+            %tr
+              %td.gray_text
+                = "#{I18n.t('claims.index.premium')}, %"
+              %td.right-col#bonus_percent_new
+%tr.more_info.fourth_row.full_claim_info
+  %td{colspan: "7"}
+    %a{href: "#", onclick: 'javascript: full_claim_hide()'}
+      = I18n.t('claims.index.turn_off')
+      %span

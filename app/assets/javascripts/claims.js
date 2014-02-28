@@ -1161,6 +1161,11 @@ function set_deys() {
 	}
 };
 
+function full_claim_hide() {
+  $('.full_claim_info').remove();
+  $('#claims tr').removeClass('hidden');
+}
+
 // On ready
 $(function() {
   if (localStorage.getItem('claim_unlock') == window.location) {
@@ -1169,9 +1174,74 @@ $(function() {
     localStorage.setItem('claim_unlock', '');
   }
   // Row highlight
-  $('body').on('click', '#claims td', function(e) {
+  $('body').on('click', '.claims_list_new #claims .row td', function(e) {
+    var $row = $(this).closest('.row');
+
+    if ($('.full_claim_info').length) {
+      $('.full_claim_info').remove();
+    }
+    $('#claims tr').removeClass('hidden');
+    $row.addClass('hidden');
+    claim = {
+      edit_path: $row.data('edit_path'),
+      applicant_last_name: $row.data('applicant_last_name'),
+      applicant_first_middle_name: $row.data('applicant_first_middle_name'),
+      phone_number: $row.data('phone_number'),
+      visa_check: $row.data('visa_check'),
+      visa_text: $row.data('visa_text'),
+      visa_color: $row.data('visa_color'),
+      country_name: $row.data('country_name'),
+      resort_name: $row.data('resort_name'),
+      operator_confirmation: $row.data('operator_confirmation'),
+      operator_confirmation_flag: $row.data('operator_confirmation_flag'),
+      operator_confirmation_flag_text: $row.data('operator_confirmation_flag_text'),
+      arrival_date: $row.data('arrival_date'),
+      departure_date: $row.data('departure_date'),
+      airport_back: $row.data('airport_back'),
+      manager_last_name: $row.data('manager_last_name'),
+      manager_login: $row.data('manager_login'),
+      documents_status: $row.data('documents_status'),
+      documents_status_text: $row.data('documents_status_text'),
+      office_name: $row.data('office_name'),
+      reservation_date: $row.data('reservation_date'),
+      num: $row.data('num'),
+      tourist_stat: $row.data('tourist_stat'),
+      docs_note: $row.data('docs_note'),
+      primary_currency_price: $row.data('primary_currency_price'),
+      tourist_advance: $row.data('tourist_advance'),
+      tourist_debt: $row.data('tourist_debt'),
+      operator_price: $row.data('operator_price'),
+      operator_maturity: $row.data('operator_maturity'),
+      operator_advance: $row.data('operator_advance'),
+      operator_debt: $row.data('operator_debt'),
+      approved_advance_tourist: $row.data('approved_advance_tourist'),
+      approved_advance_op: $row.data('approved_advance_op'),
+      approved_advance_op_prim: $row.data('approved_advance_op_prim'),
+      approved_advance_class: $row.data('approved_advance_class'),
+      profit_in_percent: $row.data('profit_in_percent'),
+      profit_in_percent_acc: $row.data('profit_in_percent_acc'),
+      profit: $row.data('profit'),
+      profit_acc: $row.data('profit_acc'),
+      check_date: $row.data('check_date'),
+      check_date_class: $row.data('check_date_class'),
+      bonus: $row.data('bonus')
+    }
+    html = JST['claims/full_claim'].render(claim);
+    $row.after(html);
+    $('#bonus_percent_new').html($row.data('bonus_percent'));
+
+    $('#bonus_percent_new .best_in_place:not(.active)').addClass('active').best_in_place().bind('ajax:success', function(event, jstr) {
+      var json = $.parseJSON(jstr),
+          bip = $(this).data('bestInPlaceEditor');
+      bip.original_content = json.bonus_percent;
+      $(this).html(json.bonus_percent).attr("data-original-content", json.bonus_percent);
+      $('#bonus_new').html(json.bonus);
+    });
+  });
+
+  $('.claims_list_old').on('click', '#claims .row td', function(e) {
     var $row = $(this).closest('.row'),
-        $hrow = $('#claims .row.highlight');
+    $hrow = $('#claims .row.highlight');
     if ($row.get(0) == $hrow.get(0)) {
       $row.toggleClass('highlight');
     } else {

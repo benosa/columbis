@@ -1,5 +1,5 @@
 -# set_current_width(:small)# if small_width? # TODO: small_width in claims and claim form
-- content_for(:html_class) { 'main_page' + (is_mistral? ? ' mistral-company' : '') } # If it's Mistral company, use special class
+- content_for(:html_class) { 'main_page' + (is_mistral? && !current_company.short_claim_list ? ' mistral-company' : '') } # If it's Mistral company, use special class
 
 - title t('.claims')
 
@@ -32,12 +32,16 @@
     %fieldset
       = link_to t('.unset_filters'), '#', :id => 'unset_filters', :class => 'unset_filters'
       %a.settings{ :href => "#" }= t('.column_settings')
+
   - if is_mistral?
     - cache [current_company, :top_managers], :expires_in => 1.hour do
       = render 'layouts/main_menu/top_managers' unless top_managers.empty?
 
-= render :partial => 'list'
+- if current_company.short_claim_list
+  = render :partial => 'list_new'
+- else
+  = render :partial => 'list'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('.add_claim'), new_claim_path, :class => 'add_operator', remote: true
+  = link_to t('.add_claim'), new_claim_path, :class => 'add_operator'

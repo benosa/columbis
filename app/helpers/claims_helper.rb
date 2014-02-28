@@ -249,6 +249,69 @@ module ClaimsHelper
     data
   end
 
+  def claim_event_count(claim)
+    @claim_event_count = 0
+    @claim_event_count += 1 if !(['unrequired', 'all_done', ''].include? color_for_visa(claim).to_s)
+    @claim_event_count += 1 if !claim.operator_confirmation_flag
+    @claim_event_count += 1 if claim.documents_status == 'not_ready'
+    @claim_event_count += 1 if !(['departed', ''].include? color_for_flight(claim).to_s)
+    @claim_event_count += 1 if claim.has_tourist_debt?
+    @claim_event_count += 1 if !(['blue_back', ''].include?  color_for_operator_price(claim).to_s)
+    @claim_event_count += 1 if color_for_operator_debt(claim).to_s == 'red_back'
+    @claim_event_count += 1 if claim.approved_tourist_advance < claim.primary_currency_price
+    @claim_event_count += 1 if !(['departed', ''].include? check_date_status(claim).to_s)
+    @claim_event_count
+  end
+
+  def claim_full_info(claim)
+    {
+      edit_path: edit_claim_path(claim),
+      applicant_last_name: claim.applicant.try(:last_name).to_s,
+      applicant_first_middle_name: claim.applicant.try(:first_name).to_s + ' ' + claim.applicant.try(:middle_name).to_s,
+      phone_number: claim.applicant.try(:phone_number),
+      visa_check: l(claim.visa_check, :format => :default ),
+      visa_text: text_for_visa(claim),
+      visa_color: color_for_visa(claim),
+      country_name: claim.country.try(:name),
+      resort_name: claim.resort.try(:name),
+      operator: claim.operator.try(:name),
+      operator_confirmation: claim.operator_confirmation,
+      operator_confirmation_flag: claim.operator_confirmation_flag ? 'hl-lightblue' : 'hl-red',
+      operator_confirmation_flag_text: claim.operator_confirmation_flag ? t('claims.index.confirm_new') : t('claims.index.unconfirm_new'),
+      arrival_date: l(claim.arrival_date, :format => :default ),
+      departure_date: l(claim.departure_date, :format => :default ),
+      airport_back: claim.airport_back,
+      manager_last_name: claim.user.try(:last_name),
+      manager_login: claim.user.try(:login),
+      documents_status: claim.documents_status,
+      documents_status_text: t('claims.documents_statuses.' << claim.documents_status),
+      office_name: claim.office.name,
+      reservation_date: l(claim.reservation_date, :format => :default),
+      num: claim.num,
+      tourist_stat: claim.tourist_stat,
+      docs_note: truncate(claim.docs_note, length: 50),
+      primary_currency_price: claim.primary_currency_price.to_money,
+      tourist_advance: claim.tourist_advance.to_money,
+      tourist_debt: claim.tourist_debt.to_money,
+      operator_price: operator_price(claim),
+      operator_maturity: claim.operator_maturity,
+      operator_advance: operator_advance(claim),
+      operator_debt: operator_debt(claim),
+      approved_advance_class: claim.approved_tourist_advance < claim.primary_currency_price ? 'hl-red' : 'hl-lightblue',
+      approved_advance_tourist: approved_advance(claim, :tourist),
+      approved_advance_op_prim: approved_advance(claim, :operator_prim),
+      approved_advance_op: approved_advance(claim, :operator),
+      profit_acc: claim.profit_acc.to_money,
+      profit_in_percent_acc: claim.profit_in_percent_acc.to_percent,
+      profit: claim.profit.to_money,
+      profit_in_percent: claim.profit_in_percent.to_percent,
+      check_date: l(claim.check_date, :format => :default),
+      check_date_class: (claim.check_date.to_date <= Date.current && claim.active) ? 'hl-red' : '', #: check_date_status(claim),
+      bonus: claim.bonus.to_money,
+      bonus_percent: best_in_place(claim, :bonus_percent, :path => update_bonus_claims_path(claim),:display_with => lambda {|b| b.to_percent.html_safe })
+    }
+  end
+
   def claims_cache_key(claims)
     claims.map(&:cache_key).hash
   end

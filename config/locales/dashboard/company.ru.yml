@@ -86,6 +86,7 @@ ru:
         tariff_end: 'Дата окончания тарифного плана'
         full_name: 'Полное название'
         actual_address: 'Фактический адрес'
+        short_claim_list: 'Сокращенный вид заявок'
 
       # it's useful only for rails >= 3.2.0
       company/address:

@@ -19,8 +19,8 @@
   %td{ :class => color_for_flight(claim) }
     %span{ :title => l(claim.arrival_date, :format => :long) }
       = l( claim.arrival_date, :format => :short )
-  %td
-    %span{ :title => l(claim.departure_date, :format => :long) }
+  %td{ :class => "#{color_for_departure_date_call(claim)}" }
+    %span{ :title => l(claim.departure_date, :format => :long)}
       = l( claim.departure_date, :format => :short )
   %td{ :title => claim.country.try(:name) }
     = truncate(claim.country.try(:name), :length => 8)

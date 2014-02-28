@@ -38,7 +38,8 @@ function bind_widget_area_to_sortable(){
   //   }
   // });
   $('.dashboard .widget-area').shapeshift({
-    align: 'left'
+    align: 'left',
+    minColumns: 3
   });
   $('.dashboard .widget-area').on("ss-rearranged", function(e, selected) {
     var widgets = $(this).children(".widget");

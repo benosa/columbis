@@ -47,14 +47,10 @@
       .fake_row.single_row
         - available_colors = Hash[User.available_colors]
         - key_method = Hash.respond_to?(:key) ? :key : :index # In ruby 1.8.7 Hash class has no :key method
-        .two_line
-          %p= t('.color_for_lists')
-          = f.select :color, User.available_colors, {}, :class => 'color_select'
-        .two_line
-          %p= t('.selected_color')
-          = text_field_tag nil, nil, :disabled => true,
-            :class => 'color color_sample', :style => "background-color: #{user.color};"
-
+        %p= t('.color_for_lists')
+        .user_color
+          = f.text_field :color, 'data-chose_text' => t('.color_chose_text'), 'data-cansel_text' => t('.color_cansel_text'), 'data-pallete' => User.available_colors.map{|c| c[1]}.join(',')
+ 
 %fieldset.form_column.form_column-middle.last
   .form_block
     .block_title

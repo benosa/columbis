@@ -27,3 +27,4 @@
 //= require users
 //= require user_payments
 //= require ckeditor/init
+//= require spectrum

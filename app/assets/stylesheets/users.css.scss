@@ -35,6 +35,22 @@
   }
 }
 
+.user_color {
+  margin-right: 33px;
+  .full-spectrum {
+    width: 100%;
+    height:19px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    .sp-preview {
+      width:96%;
+      height:15px;
+    }
+  }
+}
+
+.profile_edit .sp-container { border-radius: 5px; }
+
 .new_user {
   #user_phone_code { width: 45px; }
   #user_phone { width: 188px; }

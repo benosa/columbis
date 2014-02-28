@@ -1,4 +1,15 @@
 $(function() {
+  $("#user_color").spectrum({
+    cancelText: $("#user_color").attr('data-cansel_text'),
+    chooseText: $("#user_color").attr('data-chose_text'),
+    showInput: false,
+    className: "full-spectrum",
+    showInitial: true,
+    showPalette: true,
+    showSelectionPalette: true,
+    palette: $("#user_color").attr('data-pallete').split(',')
+  });
+
   var OfficeWithPassword = {
     use_office_selector: $('select#user_office_id'),
     use_office_label: $('#use_office_password_label'),

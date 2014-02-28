@@ -1085,4 +1085,83 @@ describe "Abilities for" do
       it{ should not_be_able_to(:manage, unresource)}
     end
   end
+
+  describe "all for boss if tariff plan is nil" do
+    let(:user){ @boss }
+
+    clean_once do
+      before(:all) do
+        company.tariff_id = nil
+        company.save
+      end
+
+      it{ should not_be_able_to([:create, :new, :index], Company) }
+      it{ should     be_able_to(:manage, company) }
+
+      it{ should not_be_able_to([:new, :index, :create], Address) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:address, :company => company))}
+
+      it{ should not_be_able_to([:new, :index, :create], CurrencyCourse) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:currency_course, :user => user, :company => company))}
+
+      it{ should not_be_able_to([:create, :new, :index], Office) }
+      it{ should not_be_able_to(:manage, office) }
+
+      it{ should not_be_able_to([:create, :new, :index], Printer) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:printer, :company => company))}
+
+      it{ should not_be_able_to([:create, :new, :index], City) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:open_city))}
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:city, :company => company))}
+
+      it{ should not_be_able_to([:create, :new, :index], Country) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:open_country))}
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:country, :company => company))}
+
+      it{ should not_be_able_to([:create, :new, :index], DropdownValue) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:dropdown_value, :company_id => company.id))}
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:open_dropdown_value))}
+
+      it{ should not_be_able_to([:create, :new, :index], Payment) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:clientbase_payment, :company => company, :recipient => company, :date_in => Time.zone.now, :claim => user_claim))}
+
+      it{ should not_be_able_to([:create, :new, :index], Region) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:region))}
+
+      it{ should not_be_able_to([:create, :new, :index], TariffPlan) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:tariff_plan))}
+
+      it{ should not_be_able_to([:create, :new, :index], Task) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:task, :user => user))}
+
+      it{ should not_be_able_to([:index, :create, :new], Task) }
+      it{ should not_be_able_to([:read, :edit, :destroy, :update], FactoryGirl.create(:task, :user => user)) }
+
+      it{ should     be_able_to(:index, User) }
+      it{ should     be_able_to(:create, User) }
+      it{ should     be_able_to(:new, User) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:admin, :company => company)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:boss, :company => company)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:accountant, :company => company)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:supervisor, :company => company)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:manager, :company => company)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:accountant, :company => company, :office => another_office)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:supervisor, :company => company, :office => another_office)) }
+      it{ should     be_able_to(:manage, FactoryGirl.create(:manager, :company => company, :office => another_office)) }
+      it{ should not_be_able_to([:offline_version], User) }
+      it{ should not_be_able_to([:switch_view], User) }
+
+      it{ should not_be_able_to([:create, :new, :index], Boss::Widget) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:widget, :company => company))}
+
+      it{ should     be_able_to(:index, Claim) }
+      it{ should     be_able_to(:scroll, Claim) }
+      it{ should not_be_able_to([:totals, :printer, :new, :create, :update_bonus, :lock, :unlock], Claim) }
+      it{ should not_be_able_to([:read], :robokassa_pay) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:claim, :company => company)) }
+
+      it{ should not_be_able_to([:create, :new, :index], UserPayment) }
+      it{ should not_be_able_to(:manage, FactoryGirl.create(:user_payment, :company => company, :user => user))}
+    end
+  end
 end

@@ -2,12 +2,23 @@
 class Ability
   include CanCan::Ability
 
+  TARIFF_RESTRICTIONS = %w[back_office documents_flow claims_base analytics boss_desktop crm_system managers_reminder sms_sending]
+
   attr_reader :user, :company
 
   def initialize(user)
     @user = user || User.new
     @company = @user.company || Company.new
+    @tariff = @company.tariff
+    @is_paid = @company.is_active?
 
+    full_rights_by_role
+    restrictions_on_rights_by_tariff() if @is_paid
+
+    demo_restriction
+  end
+
+  def full_rights_by_role
     role = @user.role.to_s
     role = "unpaid_#{role}" unless @user.is_admin? || @company.is_active? || company.subdomain == 'demo'
     if self.respond_to?(role)
@@ -15,8 +26,29 @@ class Ability
     else
       can [:update, :destroy], User, :id => @user.id
     end
+  end
 
-    demo_restriction
+  def restrictions_on_rights_by_tariff
+    if @tariff
+      TARIFF_RESTRICTIONS. each do |rest|
+        self.send("#{rest}_restrictions_on_right") if !@tariff.try(rest) && self.respond_to?("#{rest}_restrictions_on_right")
+      end
+    else
+      null_restrictions
+    end
+  end
+
+  def null_restrictions
+    cannot :manage, [
+      Address, Catalog, City, Claim, Client, Country, CurrencyCourse, DropdownValue, Flight,
+      Item, ItemField, Note, Office, Operator, Payment, Printer, SmsGroup, SmsSending, Boss::Widget,
+      SmsTouristgroup, UserMailer, Region, Task
+    ]
+    can [:read, :scroll], Claim, :company_id => user.company_id
+    cannot :dasboard_index, :user
+    cannot :users_sign_in_as, :user
+    cannot :offline_version, User
+    cannot :switch_view, User
   end
 
   def admin

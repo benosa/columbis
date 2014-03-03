@@ -1,4 +1,7 @@
 $(function() {
+  var palette = $("#user_color").attr('data-pallete');
+  if (palette) { palette = palette.split(','); }
+
   $("#user_color").spectrum({
     cancelText: $("#user_color").attr('data-cansel_text'),
     chooseText: $("#user_color").attr('data-chose_text'),
@@ -7,7 +10,7 @@ $(function() {
     showInitial: true,
     showPalette: true,
     showSelectionPalette: true,
-    palette: $("#user_color").attr('data-pallete').split(',')
+    palette: palette
   });
 
   var OfficeWithPassword = {

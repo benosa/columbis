@@ -2,6 +2,8 @@
 require 'render_anywhere'
 require 'fileutils'
 
+RenderAnywhere::RenderingController.send :helper, ClaimsHelper
+
 module ExportJobs
 
   def self.export_file(company_id)

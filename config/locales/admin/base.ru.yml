@@ -13,6 +13,10 @@ ru:
       claims_count: 'Заявки'
       tourists_count: 'Туристы'
       tasks_count: 'Отзывы'
+      active: 'Состояние значения Активна'
+      turn_off: 'Отключена'
+      tariff: 'Тариф'
+      payed_until: 'Оплачен до'
 
     visitors_info:
       title: 'Информация о посетителях'

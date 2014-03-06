@@ -18,15 +18,15 @@ module ExportJobs
       company = Company.find(company_id)
 
       inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-      @totals = Claim.where(:company_id => company_id).includes(inluded_tables)
+      @totals = Claim.where(:company_id => company_id).includes(inluded_tables).order('claims.reservation_date desc')
 
       @tourists = Tourist.where(:company_id => company_id).includes([:address, :user])
 
-      @clients = Tourist.where(:company_id => company_id).includes(:address).potentials
+      @clients = Tourist.where(:company_id => company_id).includes(:address).potentials.order('tourists.created_at DESC')
 
       @managers = User.where(:company_id => company_id)
 
-      @operators = Operator.by_company_or_common(company).includes(:address)
+      @operators = Operator.by_company_or_common(company).includes(:address).order(:name)
 
       @tourists_payments = Payment.where(:company_id => company_id, :payer_type => 'Tourist').order('date_in desc')
 

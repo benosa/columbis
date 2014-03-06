@@ -12,6 +12,6 @@
       %li.management.first_menu_stroke{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
       %li.management.first_menu_stroke{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path
       %li.management.first_menu_stroke{:class => c == 'dashboard/dropdown_values' && 'active' }= link_to t('.dropdown_values'), dashboard_dropdown_values_path
-      %li.management= link_to t('.import'), dashboard_data_index_path
+      %li.management= link_to t('.export_import'), dashboard_data_index_path
       -#
         %li.management.first_menu_stroke{:class => c == 'sms_sendings' && 'active' }= link_to t('.sms_sendings'), sms_sendings_path

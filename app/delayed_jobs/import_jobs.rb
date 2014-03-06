@@ -7,6 +7,14 @@ module ImportJobs
 
   class ImportFile < Struct.new(:import_info_id)
     def perform
+      # Original values of configuration parameters
+      origin_config_values = {
+        deltas_enabled: ThinkingSphinx.deltas_enabled?,
+        support_delivery: CONFIG[:support_delivery]
+      }
+      ThinkingSphinx.deltas_enabled = false # Suppress delta indexing of thinking sphinx
+      CONFIG[:support_delivery] = false # Turn off email sendings
+
       import_info = ImportInfo.find(import_info_id)
       if import_info.filename?
         importing = Import::Formats::XLS.new([:client, :operator, :tourist, :claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
@@ -16,7 +24,7 @@ module ImportJobs
         if result[:success]
           claim_ids = ImportItem.select(:model_id).where(model_class: 'Claim', import_info_id: import_info_id).all.map { |c| c.model_id }
           if claim_ids.count
-            Claim.find(claim_ids).each do |cl|
+            Claim.where(id: claim_ids).each do |cl|
               cl.save
             end
           end
@@ -29,6 +37,10 @@ module ImportJobs
       else
         ImportInfo.update(import_info_id, status: 'failed')
       end
+
+      ThinkingSphinx.deltas_enabled = origin_config_values[:deltas_enabled]
+      CONFIG[:support_delivery] = origin_config_values[:support_delivery]
+      Rake::Task["thinking_sphinx:reindex"].invoke
     end
   end
 end

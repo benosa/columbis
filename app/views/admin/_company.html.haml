@@ -21,3 +21,11 @@
     = company.tourists_count
   %td
     = company.tasks_count
+  %td
+    = company.is_active? ? I18n.t('admin.companies_info.active') : I18n.t('admin.companies_info.turn_off')
+  %td
+    = company.tariff.name
+  %td
+    = l(company.tariff_end, format: :long)
+  %td
+    = link_to '', admin_companies_edit_path(company.id), :class => 'edit_row', :title => t('edit')

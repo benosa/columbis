@@ -115,12 +115,16 @@ class Company < ActiveRecord::Base
     self.save
   end
 
+  def tariff_values
+    TariffPlan.select(:name, :id)
+  end
+
   def tariff_end_day
     tariff_end ? tariff_end.end_of_day : DateTime.new(1970,1,1)
   end
 
   def is_active?
-    !tariff_end? || Time.zone.now < tariff_end_day + 1.day
+    active && (!tariff_end? || Time.zone.now < tariff_end_day + 1.day)
   end
 
   def tariff_end?

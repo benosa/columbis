@@ -23,13 +23,14 @@
     %th
       = sort_link :tasks_count, t('admin.companies_info.tasks_count')
     %th
-      = sort_link :tasks_count, t('admin.companies_info.active')
+      %span= t('admin.companies_info.active')
     %th
-      = sort_link :tasks_count, t('admin.companies_info.turn_off')
+      %span= t('admin.companies_info.tariff')
     %th
-      = sort_link :tasks_count, t('admin.companies_info.tariff')
+      %span= t('admin.companies_info.payed_until')
     %th
-      = sort_link :tasks_count, t('admin.companies_info.payed_until')
+      %span= t('actions')
+
 
     - @companies_info.each do |c|
       = render :partial => 'admin/company', :locals => { :company => c }

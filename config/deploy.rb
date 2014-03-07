@@ -25,6 +25,7 @@ set :repository,  "git@devmen.unfuddle.com:devmen/tourism.git"
 set :user, "deploy"
 set :use_sudo, false
 
+before "deploy:update_code", "delayed_job:stop"
 before "deploy:update_code", "thinking_sphinx:stop"
 after "deploy:update_code", "deploy:config"
 after "deploy:update_code", "deploy:uploads"
@@ -41,6 +42,7 @@ after "deploy:update_code", "deploy:create_manifest"
 after "deploy:update_code", "deploy:claims:expire_active_cache"
 
 after 'deploy:restart', 'unicorn:restart'  # app preloaded
+after "deploy:restart", "delayed_job:start"
 after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do

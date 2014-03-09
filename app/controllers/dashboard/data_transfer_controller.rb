@@ -17,10 +17,10 @@ class Dashboard::DataTransferController < ApplicationController
       end
     end
 
-    path = Rails.root.join "uploads/#{current_company.id}/export.xls"
-    if File.exist?(path)
+    export_file = Rails.root.join "uploads/#{current_company.id}/export.xls"
+    if File.exist?(export_file)
       @furl = root_path + "uploads/#{current_company.id}/export.xls"
-      @ftime = File.mtime(path)
+      @ftime = File.mtime(export_file).in_time_zone
     end
 
     @import_info = ImportInfo.new

@@ -3,6 +3,7 @@
     .form_block
       .block_title
         %h2= t('dashboard.companies.form.export')
+        %div#export-indicator{ :class => ExportJobs.working?(current_company.id) && 'active', data: { check_url: dashboard_check_export_path } }
       .form_block_content
         .fake_row
           %p= link_to t("dashboard.companies.form.export_all"), dashboard_export_path(:format => 'xls'), :style => "text-decoration: underline;"

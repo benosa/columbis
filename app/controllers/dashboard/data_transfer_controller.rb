@@ -32,9 +32,28 @@ class Dashboard::DataTransferController < ApplicationController
 
     respond_to do |format|
       format.xls {
-        ExportJobs.export_file(current_company.id)
-        redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.export_start")
+        unless ExportJobs.working? current_company.id
+          ExportJobs.export_file current_company.id
+          redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.export_start")
+        else
+          redirect_to dashboard_data_index_path, :alert => t("dashboard.transfer.export_working")
+        end
       }
+    end
+  end
+
+  def check_export
+    respond_to do |format|
+      format.json do
+        render json: { working: ExportJobs.working?(current_company.id) }.to_json
+      end
+      format.html do
+        unless ExportJobs.working? current_company.id
+          redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.export_done")
+        else
+          redirect_to dashboard_data_index_path, :alert => t("dashboard.transfer.export_working")
+        end
+      end
     end
   end
 

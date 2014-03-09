@@ -2,6 +2,18 @@
 
   .export_block {
     width: 20%;
+    h2 { float: left; }
+    #export-indicator {
+      float: right;
+      display: none;
+      width: 24px;
+      height: 24px;
+      margin: 5px 5px 0 0;
+      &.active {
+        display: block;
+        background: url(/assets/ajax_ind2.gif) no-repeat transparent;
+      }
+    }
   }
 
   .import_block {

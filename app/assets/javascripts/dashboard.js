@@ -202,4 +202,29 @@ $(function(){
     setTimeout(function() { $el.tooltip('hide') }, 3000);
   }
 
+  function check_export() {
+    var export_timer,
+        $ei = $('#export-indicator');
+
+    export_timer = setTimeout(function() {
+      $.ajax({
+        url: $ei.data('check_url'),
+        dataType: 'json'
+      })
+      .fail(function() { check_export(); })
+      .done(function(res) {
+        if (res && res.working) {
+          check_export();
+        } else {
+          $ei.removeClass('active');
+          window.location = $ei.data('check_url');
+        }
+      });
+    }, 10000);
+  }
+
+  if ($('#export-indicator').hasClass('active')) {
+    check_export();
+  }
+
 });

@@ -10,6 +10,10 @@ module ExportJobs
     Delayed::Job.enqueue ExportFile.new(company_id)
   end
 
+  def self.working?(company_id)
+    !!Rails.cache.read("export_file/#{company_id}")
+  end
+
   class ExportFile < Struct.new(:company_id)
     include RenderAnywhere
     include FileUtils
@@ -42,6 +46,14 @@ module ExportJobs
       FileUtils.mkdir_p path if !File.directory?(path)
 
       IO.write("#{path}/export.xls", html)
+    end
+
+    def enqueue(job)
+      Rails.cache.write "export_file/#{company_id}", true
+    end
+
+    def after(job)
+      Rails.cache.clear "export_file/#{company_id}"
     end
   end
 

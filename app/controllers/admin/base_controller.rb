@@ -51,5 +51,17 @@ module Admin
         render 'admin/visitors'
       end
     end
+
+    def companies_edit
+      @company = Company.find(params[:company_id])
+      render 'admin/companies_edit'
+    end
+
+    def companies_update
+      @company = Company.find(params[:company_id])
+      @company.update_attributes(params[:company])
+      render 'admin/companies_edit'
+    end
+
   end
 end

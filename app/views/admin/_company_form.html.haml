@@ -1,0 +1,18 @@
+- content_for(:error_messages) do
+  = f.error_messages
+
+%fieldset.form_column.form_column-small.first
+  .form_block
+    .block_title
+      %h2= I18n.t('.admin.companies_info.settings')
+    .form_block_content
+      .fake_row
+        %p= f.label :active, I18n.t('.admin.companies_info.state')
+        = f.select :active, options_for_select([ [ I18n.t('.admin.companies_info.active'), true ], [ I18n.t('.admin.companies_info.turn_off'), false ] ], @company.active), {}, :not_highlighted => true
+        %p= f.label :tariff_id, I18n.t('.admin.companies_info.tariff')
+        = f.select :tariff_id, active_tariff_plans.collect {|p| [ p.name, p.id ] }, {}, :not_highlighted => true
+        %p= f.label :tariff_end, I18n.t('.admin.companies_info.payed_until')
+        = f.text_field :tariff_end, :class => 'datepicker date', :value => l(@company.tariff_end.to_date, :format => :long), wrapper: false
+
+%fieldset.form_submit{ :style => 'display: none; height: 0;' }
+  = f.submit

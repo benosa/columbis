@@ -118,6 +118,8 @@ Tourism::Application.routes.draw do
     match '/' => 'base#index', :as => :index
     match '/instructions' => 'base#instructions', :as => :instructions
     match '/visitors' => 'base#visitors', :as => :visitors
+    get '/companies/:company_id/edit' => 'base#companies_edit', :as => :companies_edit
+    put '/companies/:company_id' => 'base#companies_update', :as => :companies_update
   end
 
   scope 'dashboard' do

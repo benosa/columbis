@@ -1,0 +1,12 @@
+- content_for(:body_class) { 'panel edit_operator' }
+
+- title I18n.t('.admin.companies_info.edit', :company_name => @company.name)
+
+= form_for @company, :url => admin_companies_update_path(@company.id) do |form|
+  - @form_id = form.options[:html][:id]
+  = render :partial => 'admin/company_form', :locals => { :f => form }
+
+- content_for(:float_panel) do
+  = link_to t('back'), :back, :class => 'back'
+  = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to I18n.t('.admin.companies_info.company_list'), admin_index_path, :class => 'list_operator'

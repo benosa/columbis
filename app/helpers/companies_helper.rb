@@ -15,4 +15,14 @@ module CompaniesHelper
     end
   end
 
+  def company_state(company)
+    if company.tariff_end? && company.active
+      I18n.t('admin.companies_info.not_payed')
+    elsif !company.active
+      I18n.t('admin.companies_info.turn_off')
+    else
+      I18n.t('admin.companies_info.active')
+    end
+  end
+
 end

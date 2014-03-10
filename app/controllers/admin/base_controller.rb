@@ -10,6 +10,7 @@ module Admin
           :defaults => { :order => :created_at, :sort_mode => :desc },
           :sql_order => false
         )
+        set_filters(options)
         @companies_collection = search_paginate(Company.search_and_sort(options))#Company.search_and_sort(options), options)
         @companies_info = Company.sort_by_search_results(@companies_collection) #.search params[:filter]
       else
@@ -62,6 +63,23 @@ module Admin
       @company.update_attributes(params[:company])
       render 'admin/companies_edit'
     end
+
+    private
+
+      def set_filters(options)
+        filter = {}
+        # filter[:user_id] = params[:user_id] if params[:user_id].present?
+        # if params[:status].present? and params[:status] != 'all'
+        #   filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
+        # end
+
+        if params[:state].present?# and params[:type] != 'all'
+          filter[:active] = params[:state] == 'true'
+        end
+
+        options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?
+        options
+      end
 
   end
 end

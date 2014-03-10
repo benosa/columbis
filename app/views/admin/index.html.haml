@@ -6,6 +6,9 @@
   %form.filter
     = render :partial => 'shared/search_field', :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
 
+    = label_tag :state, I18n.t('.admin.companies_info.state')
+    = select_tag :state, options_for_select([ [ I18n.t('.admin.companies_info.active'), true ], [ I18n.t('.admin.companies_info.turn_off'), false ] ], true), class: 'filter_select', id: 'state_filter_options', data: { param: 'state', filter: true }
+
 .admin_companies
   = render "admin/companies"
 

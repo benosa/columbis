@@ -22,7 +22,7 @@
   %td
     = company.tasks_count
   %td
-    = company.is_active? ? I18n.t('admin.companies_info.active') : I18n.t('admin.companies_info.turn_off')
+    = company_state(company)
   %td
     = company.tariff.name
   %td

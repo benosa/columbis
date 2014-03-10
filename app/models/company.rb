@@ -4,7 +4,7 @@ class Company < ActiveRecord::Base
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
                   :sms_signature, :sms_birthday_send, :owner, :user_payment_id, :tariff_end,
-                  :tariff_id, :paid, :kpp, :full_name, :actual_address, :short_claim_list
+                  :tariff_id, :paid, :kpp, :full_name, :actual_address, :short_claim_list, :active
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
@@ -113,10 +113,6 @@ class Company < ActiveRecord::Base
     self.tariff = payment.tariff
     self.tariff_end = Time.zone.now + payment.period.months
     self.save
-  end
-
-  def tariff_values
-    TariffPlan.select(:name, :id)
   end
 
   def tariff_end_day

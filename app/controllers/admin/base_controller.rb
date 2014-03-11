@@ -72,9 +72,19 @@ module Admin
         # if params[:status].present? and params[:status] != 'all'
         #   filter[:status_crc32] = params[:status] == 'active' ? ['new'.to_crc32, 'work'.to_crc32] : params[:status].to_s.to_crc32
         # end
-
         if params[:state].present?# and params[:type] != 'all'
-          filter[:active] = params[:state] == 'true'
+          min_time = Time.now.advance(:years => -10)
+          max_time = Time.now.advance(:years => 10)
+
+          if params[:state] == 'active'
+            filter[:active] = true
+            filter[:tariff_end] = Time.zone.now..max_time
+          elsif params[:state] == 'not_payed'
+            filter[:active] = true
+            filter[:tariff_end] = min_time..Time.zone.now
+          elsif params[:state] == 'turn_off'
+            filter[:active] = false
+          end
         end
 
         options[:with] = (options[:with] || {}).merge!(filter) unless filter.empty?

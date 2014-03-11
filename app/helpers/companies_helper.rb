@@ -25,4 +25,11 @@ module CompaniesHelper
     end
   end
 
+  def company_filter_states
+    [ [ I18n.t('.admin.companies_info.active'), 'active' ],
+      [ I18n.t('.admin.companies_info.turn_off'), 'turn_off' ],
+      [ I18n.t('.admin.companies_info.not_payed'), 'not_payed' ],
+      [ I18n.t('.admin.companies_info.all'), 'all' ] ]
+  end
+
 end

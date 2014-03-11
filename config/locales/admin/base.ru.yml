@@ -22,6 +22,7 @@ ru:
       edit: "Редактирование компании %{company_name}"
       settings: 'Настройки'
       company_list: 'Список компаний'
+      all: 'Все'
 
     visitors_info:
       title: 'Информация о посетителях'

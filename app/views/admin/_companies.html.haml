@@ -25,9 +25,9 @@
     %th
       %span= t('admin.companies_info.state')
     %th
-      %span= t('admin.companies_info.tariff')
+      = sort_link :tariff, t('admin.companies_info.tariff')
     %th
-      %span= t('admin.companies_info.payed_until')
+      = sort_link :tariff_end, t('admin.companies_info.payed_until')
     %th
       %span= t('actions')
 

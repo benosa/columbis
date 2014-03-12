@@ -859,6 +859,34 @@ input[type="checkbox"]{display: none;}
 			text-shadow: #2b4b67 0px -1px 0px;
 			width: 111px;
 		}
+
+        .add_city {
+		    background: url("/assets/new_design/images/add_city.png") no-repeat scroll 0 0 transparent;
+		    color: #FFFFFF;
+		    display: block;
+		    font-size: 11px;
+		    font-weight: bold;
+		    height: 20px;
+		    margin: 3px 0 6px;
+		    padding: 4px 0 0 21px;
+		    text-shadow: 0 -1px 0 #2B4B67;
+		    width: 100px;
+		}
+
+		.file .select_file {
+		    background: url("/assets/new_design/images/select_file.png") no-repeat scroll 0 0 transparent;
+		    color: #FFFFFF;
+		    float: left;
+		    font-size: 11px;
+		    height: 19px;
+		    line-height: 12px;
+		    margin-right: 10px;
+		    padding-top: 5px;
+		    text-align: center;
+		    text-shadow: 0 -1px 0 #2B4B67;
+		    width: 110px;
+		}
+
 			.paying.add_btn .add_tourist{margin-top: 13px;}
 .form_column{
 	display: inline-block;

@@ -200,11 +200,11 @@ class Claim < ActiveRecord::Base
         applicant = Tourist.new
         applicant.company = company
       else
-        applicant = self.applicant || Tourist.where(id: id, company_id: company_id).first
+        applicant = self.applicant || Tourist.where(id: id, company_id: company.id).first
       end
       if applicant
         applicant.assign_attributes(attributes)
-        address = applicant.address || applicant.build_address(company_id: company_id)
+        address = applicant.address || applicant.build_address(company_id: company.id)
         address.joint_address = joint_address if address
       end
     else

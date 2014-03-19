@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(:version => 20140306084832) do
     t.datetime "locked_at"
     t.string   "contract_name"
     t.decimal  "discount",                                                           :default => 0.0,            :null => false
-    t.boolean  "return_call",                                                        :default => false
+    t.boolean  "return_call",                                                        :default => true,           :null => false
   end
 
   create_table "companies", :force => true do |t|

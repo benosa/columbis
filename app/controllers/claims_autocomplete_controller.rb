@@ -12,7 +12,7 @@ class ClaimsAutocompleteController < ApplicationController
     #   .limit(100)
     # @tourists = Tourist.all_hashes tourists_arel
     terms = params[:term].split(' ')
-    @tourists = Tourist.accessible_by(current_ability).includes(:address).limit(50)
+    @tourists = Tourist.accessible_by(current_ability).where(company_id: current_company.id).includes(:address).limit(50)
     @tourists = @tourists.where(["last_name ILIKE '%' || ? || '%'", terms[0].strip]) if terms[0]
     @tourists = @tourists.where(["first_name ILIKE '%' || ? || '%'", terms[1].strip]) if terms[1]
     @tourists = @tourists.where(["middle_name ILIKE '%' || ? || '%'", terms[2].strip]) if terms[2]

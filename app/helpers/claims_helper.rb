@@ -185,6 +185,14 @@ module ClaimsHelper
     is_admin? or is_boss?
   end
 
+  def short_claim_list?
+    current_company.short_claim_list if current_company
+  end
+
+  def mistral_claim_list?
+    !short_claim_list?
+  end
+
   def profit_tooltip(claim)
     pcs = CurrencyCourse.currency_symbol(CurrencyCourse::PRIMARY_CURRENCY)
     ocs = CurrencyCourse.currency_symbol(claim.operator_price_currency)

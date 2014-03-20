@@ -110,18 +110,6 @@ class Claim < ActiveRecord::Base
 
   scope :active, lambda { where(:active => true) }
 
-  define_index 'default_claim_index' do
-    indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
-    indexes country(:name), :as => :country, :sortable => true
-    indexes [user.last_name, user.first_name], :as => :user, :sortable => true
-    has :user_id
-    has :company_id
-    has :office_id
-    has :reservation_date, :departure_date, :check_date, :type => :datetime
-    has :active, :type => :boolean
-    set_property :delta => true
-  end
-
   define_index 'mistral_claim_index' do
     indexes :airport_back, :visa, :calculation, :documents_status, :docs_note, :meals, :placement,
             :tourist_stat, :hotel, :memo, :transfer, :relocation, :service_class, :additional_services,
@@ -156,6 +144,19 @@ class Claim < ActiveRecord::Base
         :profit, :profit_in_percent, :profit_acc, :profit_in_percent_acc,
         :bonus, :bonus_percent, :type => :float
 
+    set_property :delta => true
+  end
+
+  define_index 'short_claim_index' do
+    indexes [applicant.last_name, applicant.first_name], :as => :applicant, :sortable => true
+    indexes country(:name), :as => :country, :sortable => true
+    indexes [user.last_name, user.first_name], :as => :user, :sortable => true
+    has :user_id
+    has :assistant_id
+    has :company_id
+    has :office_id
+    has :reservation_date, :departure_date, :check_date, :type => :datetime
+    has :active, :type => :boolean
     set_property :delta => true
   end
 

@@ -217,10 +217,10 @@ class ClaimsController < ApplicationController
         :order => Claim::DEFAULT_SORT[:col],
         :sort_mode => Claim::DEFAULT_SORT[:dir]
       })
-      opts[:index] = is_mistral? ? 'mistral_claim_index' : 'default_claim_index'
+      opts[:index] = mistral_claim_list? ? 'mistral_claim_index' : 'short_claim_index'
       opts[:with] = current_ability.attributes_for(:read, Claim) # opts[:with] = { :company_id => current_company.id }
       opts[:with][:active] = true if params[:only_active] == '1'
-      opts[:sphinx_select] = "*, IF(check_date <= NOW() AND active = 1, 1, 0) AS control_error" if !is_mistral?
+
       if is_admin? or is_boss? or is_supervisor? or is_accountant?
         unless params[:user_id].blank?
           manager = params[:user_id].to_i
@@ -237,11 +237,14 @@ class ClaimsController < ApplicationController
           opts[:with]['manager'] = 1
         end
       end
-      if is_mistral?
+
+      if mistral_claim_list?
         opts[:order] = "#{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
       else
-        opts[:order] = "control_error desc, #{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
+        opts[:sphinx_select] = "#{opts[:sphinx_select] || '*'}, IF(check_date <= NOW() AND active = 1, 1, 0) AS check_date_alert"
+        opts[:order] = "check_date_alert DESC, #{opts[:order]} #{opts[:sort_mode]}, id #{opts[:sort_mode]}"
       end
+
       opts[:sort_mode] = :extended
       @search_options = opts.delete_if{ |key, value| value.blank? }
     end

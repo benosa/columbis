@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140306084832) do
+ActiveRecord::Schema.define(:version => 20140320153700) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -181,15 +181,15 @@ ActiveRecord::Schema.define(:version => 20140306084832) do
     t.integer  "claims_count"
     t.integer  "tourists_count"
     t.integer  "tasks_count"
-    t.boolean  "delta",                                            :default => true, :null => false
+    t.boolean  "delta",                                            :default => true,  :null => false
     t.integer  "tariff_id"
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
-    t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,  :null => false
+    t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,   :null => false
     t.integer  "kpp"
     t.string   "full_name"
     t.string   "actual_address"
-    t.boolean  "short_claim_list",                                 :default => true, :null => false
+    t.boolean  "short_claim_list",                                 :default => false, :null => false
     t.boolean  "active",                                           :default => true
   end
 

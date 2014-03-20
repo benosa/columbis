@@ -872,22 +872,68 @@ input[type="checkbox"]{display: none;}
 		    text-shadow: 0 -1px 0 #2B4B67;
 		    width: 100px;
 		}
+					.paying.add_btn .add_tourist{margin-top: 13px;}
 
-		.file .select_file {
-		    background: url("/assets/new_design/images/select_file.png") no-repeat scroll 0 0 transparent;
-		    color: #FFFFFF;
-		    float: left;
-		    font-size: 11px;
-		    height: 19px;
-		    line-height: 12px;
-		    margin-right: 10px;
-		    padding-top: 5px;
-		    text-align: center;
-		    text-shadow: 0 -1px 0 #2B4B67;
-		    width: 110px;
+.file{
+	cursor: pointer;
+	float: left;
+	position: relative;
+	width: 500px;
+}
+	.file input{
+		cursor: pointer;
+		height: 26px;
+		opacity: 0.01;
+		filter: alpha(opacity=0);
+		margin: 0px;
+  		position: absolute;
+  		left: -10px;
+  		top: 0;
+  		width: 315px;
+	}
+	.file .select_file{
+		background: url(/assets/new_design/images/select_file.png) no-repeat;
+		color: #fff;
+		float: left;
+		height: 19px;
+		font-size: 11px;
+		line-height: 12px;
+		margin-right: 10px;
+		padding-top: 5px;
+		text-shadow: #2b4b67 0px -1px 0px;
+		text-align: center;
+		width: 110px;
+	}
+	.file .file_holder{
+		color: #666;
+		float: left;
+		font-size: 12px;
+		height: 20px;
+		line-height: 13px;
+		overflow: hidden;
+		padding-top: 4px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 215px;
+	}
+		.file .file_holder strong{
+			color: #000;
+			font-weight: normal;
 		}
 
-			.paying.add_btn .add_tourist{margin-top: 13px;}
+.fake_row .add_file{
+	background: url(/assets/new_design/images/add_file.png) 0 0 no-repeat;
+	color: #fff;
+	float: right;
+	font-size: 11px;
+	font-weight: bold;
+	height: 20px;
+	margin: 0 15px 5px 0;
+	padding: 4px 0px 0px 24px;
+	text-shadow: #2b4b67 0px -1px 0px;
+	width: 93px;
+}
+
 .form_column{
 	display: inline-block;
 	position: relative;

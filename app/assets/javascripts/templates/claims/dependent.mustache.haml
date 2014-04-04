@@ -10,22 +10,28 @@
       .common_fields
         .block-right
           .wrap-input.date_of_birth-wrap
+            %label{ :for => "#{id_prefix}_date_of_birth", :class => 'required' }= I18n.t('claims.tourists.date_of_birth')
             = text_field_tag "#{name_prefix}[date_of_birth]", '{{date_of_birth}}', :id => "#{id_prefix}_date_of_birth", :class => 'datepicker date_of_birth date'
           .passport-wrap
+            %label{ :for => "#{id_prefix}_passport_series", :class => 'required' }= I18n.t('claims.tourists.passport_full')
             .wrap-input.passport_series-wrap
               = text_field_tag "#{name_prefix}[passport_series]", '{{passport_series}}', :id => "#{id_prefix}_passport_series", :class => 'passport_series number_password'
             .wrap-input.passport_number-wrap
               = text_field_tag "#{name_prefix}[passport_number]", '{{passport_number}}', :id => "#{id_prefix}_passport_number", :class => 'passport_number date'
           .wrap-input.passport_valid_until-wrap
+            %label{ :for => "#{id_prefix}_passport_valid_until", :class => 'required' }= I18n.t('claims.tourists.passport_expire')
             = text_field_tag "#{name_prefix}[passport_valid_until]", '{{passport_valid_until}}', :id => "#{id_prefix}_passport_valid_until", :class => 'datepicker passport_valid_until expires_date'
           .wrap-select.sex-wrap
+            %label{ :for => "#{id_prefix}_sex", :class => 'required' }= I18n.t('claims.tourists.sex')
             = select_tag "#{name_prefix}[sex]", options_for_select(Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, '{{sex}}'), :id => "#{id_prefix}_sex", :class => 'wide', :not_highlighted => true
         .block-stretch
           .wrap-input.autocomplete-wrap.name-wrap
+            %label{ :for => "#{id_prefix}_full_name", :class => 'required' }= I18n.t('claims.tourist.tourists_full_name_hint') + ':'
             = text_field_tag "#{name_prefix}[full_name]", '{{full_name}}', :id => "#{id_prefix}_full_name", :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }
         .down-block
           .block-stretch
             .wrap-input.fio_latin-wrap
+              %label{ :for => "#{id_prefix}_fio_latin", :class => 'required' }= I18n.t('activerecord.attributes.tourist.fio_latin')
               = text_field_tag "#{name_prefix}[fio_latin]", '{{fio_latin}}', :id => "#{id_prefix}_fio_latin", :class => 'fio_latin'
   = hidden_field_tag "#{name_prefix}[_destroy]", '{{_destroy}}', :id => "#{id_prefix}__destroy", :class => '_destroy'
   = hidden_field_tag "#{name_prefix}[id]", '{{id}}', :id => "#{id_prefix}_id", :class => 'hidden_id'

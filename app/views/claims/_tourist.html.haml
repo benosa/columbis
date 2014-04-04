@@ -1,18 +1,18 @@
 - tourist = f.object
 
-.block-right
+.block-right.no_margin
   .wrap-input.birth_date
-    = f.label :date_of_birth, 'Дата рождения'
+    = f.label :date_of_birth, I18n.t('claims.tourists.date_of_birth')
     = f.text_field :date_of_birth, :class => 'datepicker date_of_birth date', :value => l(tourist.try(:date_of_birth), :format => :long)
   .passport-wrap
-    = f.label :passport_series, 'Паспорт(серия/номер)'
+    = f.label :passport_series, I18n.t('claims.tourists.passport_full')
     = f.text_field :passport_series, :class => 'passport_series number_password'
     = f.text_field :passport_number, :class => 'passport_number date'
-  .wrap-input.no_margin
-    = f.label :passport_valid_until, 'Действит. до'
+  .wrap-input.no_margin_passport
+    = f.label :passport_valid_until, I18n.t('claims.tourists.passport_expire')
     = f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.try(:passport_valid_until), :format => :long)
-  .wrap-input.no_margin
-    = f.label :sex, 'Пол'
+  .wrap-input.no_margin_sex
+    = f.label :sex, I18n.t('claims.tourists.sex')
     = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
 .block-stretch
   .wrap-input.autocomplete-wrap.name-wrap

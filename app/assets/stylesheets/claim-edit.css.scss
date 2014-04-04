@@ -76,6 +76,10 @@
   .no_margin_sex {margin: 0 0 0 6px !important; padding: 0 0 0 2px !important}
   .no_margin_sex .sex-wrap {margin-left: 0 !important;}
   .no_margin_passport {margin: 0 !important; padding: 0 2px 0 2px; }
+  .dep_email {width:150px; float: left !important}
+  .dep_phone {width:230px; float: left !important}
+  .dep_email label, .dep_phone label {margin-left: 2px !important;}
+
 
   .forms {
     width: 100%;
@@ -386,7 +390,7 @@
           }
           .block-right {
             width: 430px;
-            label { margin-left: 10px !important; }
+            .app_passport_date {margin-left: 10px !important;}
             .wrap-input { margin-right: 0; float: none; }
           }
         }

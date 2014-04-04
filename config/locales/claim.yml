@@ -141,6 +141,7 @@ ru:
     tourists:
       tourists: 'Туристы'
       full_name: 'ФИО / ФИО&nbsp;англ.'
+      full_name_fio: 'ФИО'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
       passport_full: 'Паспорт(серия/номер)'

@@ -112,7 +112,7 @@ class Tourist < ActiveRecord::Base
     end
 
     def touch_claims
-      TpouristJobs.touch_claims(id) if
+      TouristJobs.touch_claims(id) if
         (!new_record? and (first_name_changed? or last_name_changed? or middle_name_changed? or phone_number_changed?)) or destroyed?
     end
 

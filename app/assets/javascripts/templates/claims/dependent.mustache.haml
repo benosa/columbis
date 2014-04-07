@@ -30,12 +30,12 @@
             = text_field_tag "#{name_prefix}[full_name]", '{{full_name}}', :id => "#{id_prefix}_full_name", :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }
         .down-block
           .block-right
+            .wrap-input.dep_phone
+              %label{ :for => "#{id_prefix}_phone_number"}= I18n.t('claims.tourists.phone')
+              = text_field_tag "#{name_prefix}[phone_number]", '{{phone_number}}', :id => "#{id_prefix}_phone_number", :class => 'phone_number'
             .wrap-input.dep_email
               %label{ :for => "#{id_prefix}_email"}= I18n.t('claims.tourists.email')
               = text_field_tag "#{name_prefix}[email]", '{{email}}', :id => "#{id_prefix}_email", :class => 'email'
-            .wrap-input.dep_phone
-              %label{ :for => "#{id_prefix}_phone"}= I18n.t('claims.tourists.phone')
-              = text_field_tag "#{name_prefix}[phone]", '{{phone}}', :id => "#{id_prefix}_phone", :class => 'phone'
           .block-stretch
             .wrap-input.fio_latin-wrap
               %label{ :for => "#{id_prefix}_fio_latin"}= I18n.t('activerecord.attributes.tourist.fio_latin')

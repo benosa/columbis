@@ -26,6 +26,14 @@
     .block-right
       = f.label :passport_issued, t('.passport_issued'), :class => 'app_passport_date'
       = f.text_field :passport_issued, :class => 'passport_issued'
+  - else
+    .block-right
+      .wrap-input.dep_phone.dep_phone_marg
+        = f.label :phone_number, I18n.t('claims.tourists.phone'),  :required => false, :class => 'phone_number'
+        = f.text_field :phone_number, :class => 'phone_number'
+      .wrap-input.dep_email.dep_mail_marg
+        = f.label :email, I18n.t('claims.tourists.email'), :required => false, :class => 'email'
+        = f.text_field :email, :class => 'email'
   .block-stretch
     = f.label :fio_latin
     = f.text_field :fio_latin, :class => 'fio_latin'

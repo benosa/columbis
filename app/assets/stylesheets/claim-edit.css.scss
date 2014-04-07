@@ -76,10 +76,11 @@
   .no_margin_sex {margin: 0 0 0 6px !important; padding: 0 0 0 2px !important}
   .no_margin_sex .sex-wrap {margin-left: 0 !important;}
   .no_margin_passport {margin: 0 !important; padding: 0 2px 0 2px; }
-  .dep_email {width:150px; float: left !important}
-  .dep_phone {width:230px; float: left !important}
+  .dep_phone {width:150px; float: left !important;}
+  .dep_email {width:237px; float: left !important}
   .dep_email label, .dep_phone label {margin-left: 2px !important;}
-
+  .dep_phone_marg {margin-left: 4px !important; width:160px;}
+  .dep_mail_marg {margin-left: 0px !important; padding-right: 2px !important; width:247px;}
 
   .forms {
     width: 100%;

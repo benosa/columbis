@@ -1,22 +1,39 @@
 - tourist = f.object
 
-.block-right
-  = f.text_field :date_of_birth, :class => 'datepicker date_of_birth date', :value => l(tourist.try(:date_of_birth), :format => :long)
+.block-right.no_margin
+  .wrap-input.birth_date
+    = f.label :date_of_birth, I18n.t('claims.tourists.date_of_birth')
+    = f.text_field :date_of_birth, :class => 'datepicker date_of_birth date', :value => l(tourist.try(:date_of_birth), :format => :long)
   .passport-wrap
+    = f.label :passport_series, I18n.t('claims.tourists.passport_full')
     = f.text_field :passport_series, :class => 'passport_series number_password'
     = f.text_field :passport_number, :class => 'passport_number date'
-  = f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.try(:passport_valid_until), :format => :long)
-  = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
+  .wrap-input.no_margin_passport
+    = f.label :passport_valid_until, I18n.t('claims.tourists.passport_expire')
+    = f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.try(:passport_valid_until), :format => :long)
+  .wrap-input.no_margin_sex
+    = f.label :sex, I18n.t('claims.tourists.sex')
+    = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
 .block-stretch
   .wrap-input.autocomplete-wrap.name-wrap
     - unless local_assigns[:full_name_label] == false
       = f.label :full_name, t('.tourists_full_name_hint') + ':'
+    - else
+      = f.label :full_name, I18n.t('claims.tourists.full_name_fio')
     = f.text_field :full_name, :class => 'autocomplete full_name name', data: { ac: { source: tourist_autocomplete_claims_path } }, wrapper: false
 .down-block
   - if @claim.applicant == tourist
     .block-right
-      = f.label :passport_issued, t('.passport_issued')
+      = f.label :passport_issued, t('.passport_issued'), :class => 'app_passport_date'
       = f.text_field :passport_issued, :class => 'passport_issued'
+  - else
+    .block-right
+      .wrap-input.dep_phone.dep_phone_marg
+        = f.label :phone_number, I18n.t('claims.tourists.phone'),  :required => false, :class => 'phone_number'
+        = f.text_field :phone_number, :class => 'phone_number'
+      .wrap-input.dep_email.dep_mail_marg
+        = f.label :email, I18n.t('claims.tourists.email'), :required => false, :class => 'email'
+        = f.text_field :email, :class => 'email'
   .block-stretch
     = f.label :fio_latin
     = f.text_field :fio_latin, :class => 'fio_latin'

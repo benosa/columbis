@@ -2,22 +2,6 @@
   .block_title
     %h2= t('.tourists')
   .form_block_content
-    .fake_table
-      .clearfix
-        .col-actions
-        .col-main
-          .common_fields
-            .block-right
-              %span.dob= t('.date_of_birth')
-              %span.passport= t('.passport')
-              %span.expires= t('.passport_expire').html_safe
-              %span.sex= t('.sex')
-            .block-stretch
-              %span.fio= t('.full_name').html_safe
-          .additional_fields
-            %span.tel= t('.phone')
-            %span.tourist_address= t('.address')
-
     = f.fields_for :applicant_attributes, @claim.applicant, :wrapper => true do |af|
       .fake_row.applicant.fields
         .clearfix

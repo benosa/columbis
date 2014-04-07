@@ -1,5 +1,5 @@
 # Custom delayed jobs for operators
-module TpouristJobs
+module TouristJobs
 
   # Touch all claims with specific operator_id
   def self.touch_claims(tourist_id)

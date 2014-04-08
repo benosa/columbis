@@ -18,8 +18,9 @@ namespace :operators do
     # 'http://reestr.russiatourism.ru/?ac=search&mode=1&ext=1&number=&name=&id_region=0&address=&fo_name='
     # Load only operators with insurer provision over 60 million rubles
     urls = [
-      'http://reestr.russiatourism.ru/?fo_sum=100000000&ac=search_sum&mode=1',
-      'http://reestr.russiatourism.ru/?fo_sum=60000000&ac=search_sum&mode=1'
+     # 'http://reestr.russiatourism.ru/?fo_sum=100000000&ac=search_sum&mode=1'#,
+     # 'http://reestr.russiatourism.ru/?fo_sum=60000000&ac=search_sum&mode=1'
+      'http://reestr.russiatourism.ru/?fo_sum=10000000&ac=search_sum&mode=1'
     ]
     paths = []
     urls.each do |url|
@@ -98,27 +99,33 @@ namespace :operators do
   end
 
   def load_operator_info_to_base(operator_info)
-    operator = Operator.where(:register_number => operator_info[:register_number],
-      :register_series => operator_info[:register_series],
-      :company_id => nil, :common => true).first
-    unless operator
-      operator_info.merge!({:common => true})
-      a = Address.create( parse_address(operator_info.delete(:address)) )
-      o = Operator.new(operator_info)
-      o.address = a
-      o.save
-      puts "Save operator: #{operator_info[:name]}"
+   # puts operator_info
+   # return
+    if operator_info[:register_number]
+      operator = Operator.where(:register_number => operator_info[:register_number],
+        :register_series => operator_info[:register_series],
+        :company_id => nil, :common => true).first
+      unless operator
+        operator_info.merge!({:common => true})
+        a = Address.create( parse_address(operator_info.delete(:address)) )
+        o = Operator.new(operator_info)
+        o.address = a
+        o.save
+        puts "Save operator: #{operator_info[:name]}"
+      else
+        a = operator.address
+        Address.update(a.id, parse_address(operator_info.delete(:address)) )
+        Operator.update(operator.id, operator_info)
+        puts "Update operator: #{operator_info[:name]}"
+      end
     else
-      a = operator.address
-      Address.update(a.id, parse_address(operator_info.delete(:address)) )
-      Operator.update(operator.id, operator_info)
-      puts "Update operator: #{operator_info[:name]}"
+      false
     end
   end
 
   def parse_address(address_string)
     address = {}
-    address_array = address_string.gsub(/\,\s/, ',').split(',')
+    address_array = address_string.gsub(/\,\s/, ',').split(',') if address_string
     # zip_code
     address["zip_code"] = address_array[0]
     address_array.delete_at(0)

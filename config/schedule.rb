@@ -18,3 +18,7 @@ end
 every 1.day, :at => '2:30 am', :roles => [:app] do
   rake_with_rvm 'demo:seed[index]'
 end
+
+every 1.month, :at => 'start of the month at 3:00 am' do
+  rake_with_rvm '"operators:load[8]"'
+end

@@ -64,42 +64,42 @@ namespace :operators do
       doc.xpath('//table[@class="mra-l"]/tr/td').each do |tag|
         case
         when tag.content.include?("Реестровый номер")
-          info[:register_number] = tag.next_element.content.split(' ').last
-          info[:register_series] = tag.next_element.content.split(' ').first
+          info[:register_number] = tag.next_element.content.split(' ').last if tag.next_element
+          info[:register_series] = tag.next_element.content.split(' ').first if tag.next_element
         when tag.content.include?("Сокращенное наименование")
-          info[:name] = tag.next_element.content
+          info[:name] = tag.next_element.content if tag.next_element
         when tag.content.include?("Полное наименование:")
-          info[:full_name] = tag.next_element.content
+          info[:full_name] = tag.next_element.content if tag.next_element
         when tag.content.include?("ИНН:")
-          info[:inn] = tag.next_element.content
+          info[:inn] = tag.next_element.content if tag.next_element
         when tag.content.include?("ОГРН:")
-          info[:ogrn] = tag.next_element.content
+          info[:ogrn] = tag.next_element.content if tag.next_element
         when tag.content.include?("сайт")
-          info[:site] = tag.next_element.content
+          info[:site] = tag.next_element.content if tag.next_element
         when tag.content.include?("Наименование организации, предоставившей финансовое обеспечение")
-          info[:insurer] = tag.next_element.content
+          info[:insurer] = tag.next_element.content if tag.next_element
         when tag.content.include?("Адрес (место нахождения) организации, предоставившей финансовое обеспечение")
-          info[:insurer_address] = tag.next_element.content
+          info[:insurer_address] = tag.next_element.content if tag.next_element
         when tag.content.include?("Почтовый адрес организации, предоставившей финансовое обеспечение")
-          info[:actual_insurer_address] = tag.next_element.content
+          info[:actual_insurer_address] = tag.next_element.content if tag.next_element
         when tag.content.include?("Размер финансового обеспечения")
-          info[:insurer_provision] = tag.next_element.content
+          info[:insurer_provision] = tag.next_element.content if tag.next_element
           info[:insurer_provision].gsub!(/[^0-9]/,'')
         when tag.content.include?("Документ:")
-          content = tag.next_element.content
+          content = tag.next_element.content if tag.next_element
           date = content.last(10).split('/')
           info[:insurer_contract] = content.first(content.length - 14)
           info[:insurer_contract_date] = [date[2], date[1], date[0]].join('.')
         when tag.content.include?("Срок действия финансового обеспечения")
-          content = tag.next_element.content
+          content = tag.next_element.content if tag.next_element
           date = content[2..11].split('/').map { |e| e.to_i }
           info[:insurer_contract_start] = [date[2], date[1], date[0]].join('.')
           date = content.last(10).split('/').map { |e| e.to_i }
           info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
         when tag.content.include?("Адрес (место нахождения):")
-          info[:address] = tag.next_element.content
+          info[:address] = tag.next_element.content if tag.next_element
         when tag.content.include?("Почтовый адрес:")
-          info[:actual_address] = tag.next_element.content
+          info[:actual_address] = tag.next_element.content if tag.next_element
         end
       end
       info

@@ -10,7 +10,9 @@ $(function() {
     showInitial: true,
     showPalette: true,
     showSelectionPalette: true,
-    palette: palette
+    palette: palette,
+    showAlpha: false,
+    preferredFormat: "hex"
   });
 
   var OfficeWithPassword = {

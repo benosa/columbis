@@ -1,9 +1,11 @@
 - c = params[:controller]
+- abil = params[:availability]
 
 %li.management{:class => c == 'dashboard/companies' && 'active' }= link_to t('.company'), dashboard_edit_company_path
 %li.management{:class => c == 'dashboard/users' && 'active' }= link_to t('.users'), dashboard_users_path
 %li.management{:class => c == 'printers' && 'active' }= link_to t('.printers'), printers_path
-%li.management{:class => c == 'operators' && 'active' }= link_to t('.operators'), operators_path
+%li.management{:class => c == 'operators' && abil == 'own' && 'active' }= link_to t('.operators_own'), operators_path(:availability => "own")
+%li.management{:class => c == 'operators' && abil == 'common' && 'active' }= link_to t('.operators_common'), operators_path(:availability => "common")
 %li.management{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
 %li.management{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path
 %li.management{:class => c == 'dashboard/dropdown_values' && 'active' }= link_to t('.dropdown_values'), dashboard_dropdown_values_path

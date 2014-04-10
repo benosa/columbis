@@ -13,11 +13,10 @@ class OperatorsController < ApplicationController
         options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
         availability_filter options
-        search_paginate Operator.search_and_sort(options).where('common = false').includes(:address), options
+        search_paginate Operator.search_and_sort(options).includes(:address), options
       else
         Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
-    Rails.logger.debug "dasdasd:  #{@operators.inspect}"
     render :partial => 'list' if request.xhr?
   end
 

@@ -20,6 +20,7 @@
 //= require common
 //= require filter
 //= require claims
+//= require operators
 //= require dashboard
 //= require tourists
 //= require offline

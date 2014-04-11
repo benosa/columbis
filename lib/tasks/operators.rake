@@ -17,6 +17,18 @@ namespace :operators do
     @logger.info(){"Load in #{(Time.zone.now - start).to_s} second"}
   end
 
+  task :update, [:id] => :environment do |t, args|
+    if args[:id]
+      operator = Operator.find(args[:id])
+      if operator.url
+        operator_info = create_operator_info(operator.url)
+        a = operator.address
+        Address.update(a.id, parse_address(operator_info.delete(:address)) )
+        Operator.update(operator.id, operator_info)
+      end
+    end
+  end
+
   def get_operator_pages
     # 'http://reestr.russiatourism.ru/?ac=search&mode=1&ext=1&number=&name=&id_region=0&address=&fo_name='
     # Load only operators with insurer provision over 60 million rubles
@@ -57,7 +69,7 @@ namespace :operators do
   end
 
   def create_operator_info(path)
-    info = {}
+    info = {url: path}
     puts "Open: #{path}"
     doc = Nokogiri::HTML(open(path))
     if doc

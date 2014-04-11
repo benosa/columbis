@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140320172351) do
+ActiveRecord::Schema.define(:version => 20140411090245) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -339,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20140320172351) do
     t.string   "actual_address"
     t.string   "actual_insurer_address"
     t.string   "phone_numbers"
+    t.string   "url"
   end
 
   add_index "operators", ["common"], :name => "index_operators_on_common"

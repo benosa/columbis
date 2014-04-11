@@ -80,6 +80,14 @@ class OperatorsController < ApplicationController
     redirect_to operators_path, :notice => t('operators.messages.destroyed')
   end
 
+  def refresh
+    if OperatorJobs::UpdateCommonOperator.working? params[:id]
+      redirect_to edit_operator_path, :alert => t('operators.messages.refreshing')
+    else
+      redirect_to edit_operator_path, :notice => t('operators.messages.refresh')
+    end
+  end
+
   private
 
     def search_params

@@ -76,6 +76,7 @@ Tourism::Application.routes.draw do
   resources :cities
   resources :payments
   resources :operators
+  get '/operators/refresh/:id' => 'operators#refresh', as: 'operator_refresh'
   resources :tourists
 
   # Disable catalogs and addresses

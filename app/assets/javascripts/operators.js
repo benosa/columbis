@@ -1,16 +1,27 @@
 $(document).ready(function() {
 
- // $('#refresh_operator').on('click', function(evt, params) {
-  //  alert($('#refresh_operator').data('path'));
-    // $.ajax({
-    //   url: $('#refresh_operator').data('path'),
-    //   type: 'post',
-    //   data: { _method: 'put' },
-    //   success: function(data) {
-    //     //$('#price_calc').data('change', false);
-    //   }
-    // });
- //   $('#content .top h1').prepend();
-  //  $('<p>dfgdfgdfg</p>').insertAfter('.h1_title');
-//  });
+ function check_refresh() {
+    var refresh_timer,
+        $ro = $('#refresh_operator');
+
+    refresh_timer = setTimeout(function() {
+      $.ajax({
+        url: $ro.data('check-path'),
+        dataType: 'json'
+      })
+      .fail(function() { check_refresh(); })
+      .done(function(res) {
+        if (res && res.working) {
+          check_refresh();
+        } else {
+          window.location = $ro.data('check-path');
+        }
+      });
+    }, 10000);
+  }
+
+  if ($('#refresh_operator').data('working') == true) {
+    ajaxCounterInc(1);
+    check_refresh();
+  };
 });

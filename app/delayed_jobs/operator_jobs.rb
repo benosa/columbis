@@ -7,7 +7,7 @@ module OperatorJobs
   end
 
   def self.update_operator(operator_id)
-    Delayed::Job.enqueue ExportFile.new(company_id)
+    Delayed::Job.enqueue UpdateCommonOperator.new(operator_id)
   end
 
   class UpdateCommonOperator < Struct.new(:operator_id)
@@ -16,7 +16,7 @@ module OperatorJobs
     end
 
     def perform
-      %x(bundle exec rake peck:init[#{@agent.url},#{@agent.terms}])
+      %x(bundle exec rake operators:update[#{operator_id}])
     end
 
     def enqueue(job)

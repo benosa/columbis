@@ -28,6 +28,7 @@
   - elsif @create_own_condition
     = link_to t('.create_own'), '#', :class => 'add_operator', :data => { :submit => @form_id }
   - if @operator.common
-    %div#refresh-indicator{ :class => 'active' }
-    = link_to t('.refresh_operator'), operator_refresh_path, :id => 'refresh_operator', :class => 'save save_and_close'
+    -# - if @working
+    -#  %div#refresh-indicator{ :class => 'active' }
+    = link_to t('.refresh_operator'), operator_refresh_path, :id => 'refresh_operator', :class => 'save save_and_close', :data => { :working => @working, :check_path => operator_refresh_check_path }
   = link_to t('.list_of_operator'), operators_path, :class => 'list_operator'

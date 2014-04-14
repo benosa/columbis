@@ -48,6 +48,7 @@ class OperatorsController < ApplicationController
 
   def edit
     @operator.build_address unless @operator.address.present?
+    @working = OperatorJobs::UpdateCommonOperator.working? params[:id]
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates
@@ -84,7 +85,23 @@ class OperatorsController < ApplicationController
     if OperatorJobs::UpdateCommonOperator.working? params[:id]
       redirect_to edit_operator_path, :alert => t('operators.messages.refreshing')
     else
+      OperatorJobs.update_operator params[:id]
       redirect_to edit_operator_path, :notice => t('operators.messages.refresh')
+    end
+  end
+
+  def refresh_check
+    respond_to do |format|
+      format.json do
+        render json: { working: OperatorJobs::UpdateCommonOperator.working?(params[:id]) }.to_json
+      end
+      format.html do
+        unless OperatorJobs::UpdateCommonOperator.working?(params[:id])
+          redirect_to edit_operator_path, :notice => t('operators.messages.refreshed')
+        else
+          redirect_to dashboard_data_index_path, :alert => t('operators.messages.refreshing')
+        end
+      end
     end
   end
 

@@ -39,11 +39,18 @@ class OperatorsController < ApplicationController
         @operator.address.company = current_company
         @operator.address.save
       end
+      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
       redirect_path = params[:create_own] ? edit_operator_path(@operator) : operators_path
       redirect_to redirect_path, :notice => t('operators.messages.created')
     else
       render :action => 'new'
     end
+  end
+
+  def create_own
+    authorize! :create_own, @operator
+    CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id) if @operator.id
+    redirect_to operators_path, :notice => t('operators.messages.created')
   end
 
   def edit

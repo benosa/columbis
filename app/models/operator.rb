@@ -11,6 +11,8 @@ class Operator < ActiveRecord::Base
   attr_reader :common_operator # common_operator relation for company operator
 
   belongs_to :company
+  has_many :company_operators
+  has_many :companies, :through => :company_operators, :as => :comps
   has_many :claims, :inverse_of => :operator
   has_many :payments, :as => :recipient
   has_one :address, :as => :addressable, :dependent => :destroy
@@ -27,6 +29,7 @@ class Operator < ActiveRecord::Base
   define_index do
     indexes :name, :register_number, :register_series, :inn, :ogrn, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
+    indexes comps.id, :as => :comps, :sortable => true
     has :company_id
     has :common, :type => :boolean
     set_property :delta => true

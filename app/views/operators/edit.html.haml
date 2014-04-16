@@ -25,6 +25,8 @@
     = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
     - if @sync_proposition
       = link_to t('.sync'), edit_operator_path(@operator, sync: 1), :class => 'add_operator'
+  - elsif @create_own_condition && @common_use
+    = link_to t('.destroy_own'), operator_create_own_path, :class => 'add_operator'
   - elsif @create_own_condition
     = link_to t('.create_own'), operator_create_own_path, :class => 'add_operator'
     -#, :data => { :submit => @form_id }

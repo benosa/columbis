@@ -49,13 +49,22 @@ class OperatorsController < ApplicationController
 
   def create_own
     authorize! :create_own, @operator
-    CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id) if @operator.id
-    redirect_to operators_path, :notice => t('operators.messages.created')
+    unless (@operator.comps.count > 0) && @operator.common
+      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id) if @operator.id
+      redirect_to edit_operator_path(@operator), :notice => t('operators.messages.added')
+    else
+      co = CompanyOperator.where(company_id: current_company.id, operator_id: @operator.id).first if @operator.id
+      if co
+        co.destroy
+        redirect_to operators_path, :notice => t('operators.messages.removed')
+      end
+    end
   end
 
   def edit
     @operator.build_address unless @operator.address.present?
     @working = OperatorJobs::UpdateCommonOperator.working? params[:id]
+    @common_use = (@operator.comps.count > 0) && @operator.common
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates

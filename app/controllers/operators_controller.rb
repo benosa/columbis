@@ -6,6 +6,16 @@ class OperatorsController < ApplicationController
 
   before_filter :set_last_search, :only => :index
 
+  def arel_tables(*tables)
+    tables.each do |method|
+      self.class_eval <<-EOS, __FILE__, __LINE__
+        def #{method}
+          @#{method} ||= Arel::Table.new(:#{method})
+        end
+      EOS
+    end
+  end
+
   def index
     @operators =
       if search_or_sort?
@@ -15,7 +25,31 @@ class OperatorsController < ApplicationController
         availability_filter options
         search_paginate Operator.search_and_sort(options).includes(:address), options
       else
-        Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+       # assistant_id
+       # arel_tables :operators, :company_operators
+       t = Operator.arel_table
+     #  q1 =
+       #Operator.where(t[:common].eq(false)).where(t[:company_id].eq(current_company.id)).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        results = t.project(Arel.sql('*')).where(t[:common].eq(false)).where(t[:company_id].eq(current_company.id)).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+       # Operator.find_by_sql(t.project(Arel.sql('*')).where(t[:common].eq(false)).where(t[:company_id].eq(current_company.id))).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+       # Operator.where(operators[:common].eq(false))#.order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+         # payments.project( payments[:id].count.as('number'), payments[:payer_id].as('payer_id') )
+         #  .where(payments[:payer_type].eq('Tourist'))
+         #  .where(payments[:recipient_id].eq(company.id))
+         #  .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
+         #  .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
+         #  .group(:payer_id, :claim_id)
+         #  .as('payments')
+       # t = Post.arel_table
+       # scoped = Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+      #if is_manager? # manager can see only his claims
+      #  scoped1 = scoped.where(common: true)
+      #    .joins("JOIN company_operators ON company_operators.operator_id = operators.id AND company_operators.company_id = #{current_company.id}")
+      #  scoped2 = scoped.where('operators.company_id = :company AND operators.common = false', company: current_company.id)#.merge(scoped2)
+        #Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+      #  scoped1 = scoped1.where_values.reduce(:and)
+       # scoped2 = scoped2.where_values.reduce(:and)
+       # Operator.where(scoped1.or(scoped2)).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end

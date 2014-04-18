@@ -8,8 +8,11 @@
   %form#filter_bar.filter{ :class => is_mistral? ? 'mistral_filter' : '' }
     = render 'shared/search_field'
 
-    - if is_admin? or is_boss? or is_supervisor? or is_accountant?
+    - if is_admin?
+      = label_tag :company_id, t('.company_filter')
+      = select_tag :company_id,  options_from_collection_for_select(companies_filter, 'id', 'name', params[:company_id]), :prompt => t('all'), :class => 'company_select', :data => { :param=> 'company_id', :filter => 1 }
 
+    - if is_admin? or is_boss? or is_supervisor? or is_accountant?
       = label_tag :office_id, t('.office_filter')
       = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]), :prompt => t('all'), :class => 'filter_select', :data => { :param=> 'office_id', :filter => 1 }
 

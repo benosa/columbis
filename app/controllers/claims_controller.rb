@@ -221,6 +221,16 @@ class ClaimsController < ApplicationController
       opts[:with] = current_ability.attributes_for(:read, Claim) # opts[:with] = { :company_id => current_company.id }
       opts[:with][:active] = true if params[:only_active] == '1'
 
+      if is_admin?
+        if params[:company_id]
+          opts[:with][:company_id] = params[:company_id]
+        else
+          demo_id = 2
+          opts[:sphinx_select] = "*, IF(company_id = #{demo_id}, 0, 1) AS not_demo"
+          opts[:with]['not_demo'] = 1
+        end
+      end
+
       if is_admin? or is_boss? or is_supervisor? or is_accountant?
         unless params[:user_id].blank?
           manager = params[:user_id].to_i

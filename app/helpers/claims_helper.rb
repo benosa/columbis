@@ -405,4 +405,8 @@ module ClaimsHelper
       "<#{element}>".html_safe
     end
   end
+
+  def companies_filter
+    Company.where("companies.name != ''").order('name').all
+  end
 end

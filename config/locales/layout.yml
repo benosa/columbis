@@ -12,7 +12,7 @@ ru:
           cities: 'Курорты'
           countries: 'Направления'
           operators: 'Туроператоры'
-          operators_own: 'Туроператоры собственные'
+          operators_own: 'Туроператоры компании'
           operators_common: 'Туроператоры реестра'
           export_import: 'Экспорт Импорт'
           tariff_plans: 'Тарифные планы'

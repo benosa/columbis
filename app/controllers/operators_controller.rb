@@ -6,35 +6,27 @@ class OperatorsController < ApplicationController
 
   before_filter :set_last_search, :only => :index
 
-  def arel_tables(*tables)
-    tables.each do |method|
-      self.class_eval <<-EOS, __FILE__, __LINE__
-        def #{method}
-          @#{method} ||= Arel::Table.new(:#{method})
-        end
-      EOS
-    end
-  end
-
   def index
     @operators =
       if search_or_sort?
-        options = { with_current_abilities: true }
+        options = { with_current_abilities: true, with: {} }
         options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
-        availability_filter options
-        search_paginate Operator.search_and_sort(options).includes(:address), options
-      else
-
-        if params[:availability] == 'own'
-          Operator.where("operators.id IN (?) OR operators.id IN (?)",
-            Operator.where('operators.company_id = :company AND operators.common = false', company: current_company.id),
-            Operator.joins("JOIN company_operators ON company_operators.operator_id = operators.id AND company_operators.company_id = #{current_company.id}")
-              .where(common: true)
-          ).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
-        elsif params[:availability] == 'common'
-          Operator.where('operators.common = true').order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        if params[:availability] == 'common'
+          options[:with][:common] = true
+        else
+          options[:with][:company_id] = current_company.id
         end
+        search_paginate Operator.search_and_sort(options).includes(:address), options
+
+      else
+        scoped = Operator.accessible_by(current_ability)
+        scoped = if params[:availability] == 'common'
+          scoped.common
+        else # params[:availability] is own or nothing
+          scoped.by_company(current_company)
+        end
+        scoped.order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -68,7 +60,7 @@ class OperatorsController < ApplicationController
 
   def create_own
     authorize! :create_own, @operator
-    unless (@operator.comps.count > 0) && @operator.common
+    unless (@operator.companies.count > 0) && @operator.common
       CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id) if @operator.id
       redirect_to edit_operator_path(@operator), :notice => t('operators.messages.added')
     else
@@ -83,7 +75,7 @@ class OperatorsController < ApplicationController
   def edit
     @operator.build_address unless @operator.address.present?
     @working = OperatorJobs::UpdateCommonOperator.working? params[:id]
-    @common_use = (@operator.comps.count > 0) && @operator.common
+    @common_use = (@operator.companies.count > 0) && @operator.common
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates
@@ -112,7 +104,11 @@ class OperatorsController < ApplicationController
   end
 
   def destroy
-    @operator.destroy
+    unless @operator.common?
+      @operator.destroy
+    else
+      @operator.company_operators.where(company_id: current_company.id).destroy_all
+    end
     redirect_to operators_path, :notice => t('operators.messages.destroyed')
   end
 
@@ -145,7 +141,7 @@ class OperatorsController < ApplicationController
     def search_params
       return @search_params if @search_params
       @search_params = {}
-      exluded_params = [:controller, :action, :potential]
+      exluded_params = [:controller, :action, :availability]
       params.each do |k, v|
         @search_params[k] = v unless exluded_params.include?(k.to_sym) || v.blank?
       end

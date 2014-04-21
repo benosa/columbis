@@ -9,7 +9,7 @@
       %li.management.first_menu_stroke{:class => c == 'dashboard/companies' && 'active' }= link_to t('.company'), dashboard_edit_company_path
       %li.management.first_menu_stroke{:class => c == 'dashboard/users' && 'active' }= link_to t('.users'), dashboard_users_path
       %li.management.first_menu_stroke{:class => c == 'printers' && 'active' }= link_to t('.printers'), printers_path
-      %li.management.first_menu_stroke{:class => c == 'operators' && abil == 'own' && 'active' }= link_to t('.operators_own'), operators_path(:availability => "own")
+      %li.management.first_menu_stroke{:class => c == 'operators' && abil != 'common' && 'active' }= link_to t('.operators_own'), operators_path
       %li.management.first_menu_stroke{:class => c == 'operators' && abil == 'common' && 'active' }= link_to t('.operators_common'), operators_path(:availability => "common")
       %li.management.first_menu_stroke{:class => c == 'countries' && 'active' }= link_to t('.countries'), countries_path
       %li.management.first_menu_stroke{:class => c == 'cities' && 'active' }= link_to t('.cities'), cities_path

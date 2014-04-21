@@ -828,7 +828,7 @@ class Claim < ActiveRecord::Base
     end
 
     def check_operator
-      scoped = Operator.by_company_or_common(company)
+      scoped = Operator.by_company(company)
       if claim_params[:operator_id].blank?
         scoped = scoped.where(name: claim_params[:operator])
       else

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class OperatorsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: [:show, :create, :edit]
+  skip_authorize_resource only: [:show, :create, :create_own, :edit, :destroy_own]
   skip_load_resource only: :create
 
   before_filter :set_last_search, :only => :index
@@ -60,22 +60,16 @@ class OperatorsController < ApplicationController
 
   def create_own
     authorize! :create_own, @operator
-    unless (@operator.companies.count > 0) && @operator.common
-      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id) if @operator.id
+    if @operator.common? && !@operator.in_company?(current_company)
+      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
+      @operator.update_attributes(delta: true)
       redirect_to edit_operator_path(@operator), :notice => t('operators.messages.added')
-    else
-      co = CompanyOperator.where(company_id: current_company.id, operator_id: @operator.id).first if @operator.id
-      if co
-        co.destroy
-        redirect_to operators_path, :notice => t('operators.messages.removed')
-      end
     end
   end
 
   def edit
     @operator.build_address unless @operator.address.present?
     @working = OperatorJobs::UpdateCommonOperator.working? params[:id]
-    @common_use = (@operator.companies.count > 0) && @operator.common
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates
@@ -108,8 +102,16 @@ class OperatorsController < ApplicationController
       @operator.destroy
     else
       @operator.company_operators.where(company_id: current_company.id).destroy_all
+      @operator.update_attributes(delta: true)
     end
     redirect_to operators_path, :notice => t('operators.messages.destroyed')
+  end
+
+  def destroy_own
+    authorize! :create_own, @operator
+    CompanyOperator.where(company_id: current_company.id, operator_id: @operator.id).destroy_all
+    @operator.update_attributes(delta: true)
+    redirect_to operators_path, :notice => t('operators.messages.removed')
   end
 
   def refresh

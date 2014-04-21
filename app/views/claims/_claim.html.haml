@@ -5,13 +5,10 @@
     = truncate(claim.tourist_stat, :length => 4)
   - manager_names = claim.user.try(:full_name).to_s + (", #{claim.assistant.try(:full_name)}" if claim.assistant.present?).to_s
   - if show_office
-    %td{ :title => claim.office.name }
+    %td{ :title => claim.office.name + (is_admin? ? ", #{claim.company.name}" : "") }
       = truncate(claim.office.name, :length => 8)
-    %td{ :title => manager_names, :style => claim.user.try(:color) && "background: none #{claim.user.try(:color)} !important;" }
-      = truncate(claim.user.try(:login), :length => 8)
-  - else
-    %td{ :title => manager_names, :style => claim.user.try(:color) && "background: none #{claim.user.try(:color)} !important;" }
-      = truncate(claim.user.try(:login), :length => 8)
+  %td{ :title => manager_names + (is_admin? ? ", #{claim.company.name}" : ""), :style => claim.user.try(:color) && "background: none #{claim.user.try(:color)} !important;" }
+    = truncate(claim.user.try(:login), :length => 8)
   %td{ :title => tourists_list(claim), :style => claim.assistant.try(:color) && "background: none #{claim.assistant.try(:color)} !important;" }
     = truncate(claim.applicant.try(:initials_name), :length => 8)
   %td{ :title => claim.applicant.try(:phone_number) }

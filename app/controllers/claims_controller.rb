@@ -27,6 +27,9 @@ class ClaimsController < ApplicationController
       if is_manager? # manager can see only his claims
         scoped = scoped.where('claims.user_id = :manager OR claims.assistant_id = :manager', manager: current_user.id)
       end
+      if is_admin? && !params[:company_id]
+        scoped = scoped.where('claims.company_id != ?', demo_company.id)
+      end
       @claims_collection = scoped.paginate(page_options)
       @claims = @claims_collection.all
     end
@@ -225,7 +228,7 @@ class ClaimsController < ApplicationController
         if params[:company_id]
           opts[:with][:company_id] = params[:company_id]
         else
-          demo_id = 2
+          demo_id = demo_company.id
           opts[:sphinx_select] = "*, IF(company_id = #{demo_id}, 0, 1) AS not_demo"
           opts[:with]['not_demo'] = 1
         end

@@ -11,6 +11,8 @@ class Operator < ActiveRecord::Base
   attr_reader :common_operator # common_operator relation for company operator
 
   belongs_to :company
+  has_many :company_operators, :dependent => :destroy
+  has_many :companies, :through => :company_operators, :source => :company
   has_many :claims, :inverse_of => :operator
   has_many :payments, :as => :recipient
   has_one :address, :as => :addressable, :dependent => :destroy
@@ -19,7 +21,8 @@ class Operator < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :company_id }, length: { maximum: 255 }
 
-  scope :by_company_or_common, ->(company) { where("common = ? OR company_id = ?", true, company.id) }
+  scope :by_company, ->(company) { joins(:company_operators).where(["company_operators.company_id = ?", company.id]) }
+  scope :common, -> { where('operators.common = true') }
 
   after_update :touch_claims
   after_destroy :touch_claims
@@ -27,7 +30,7 @@ class Operator < ActiveRecord::Base
   define_index do
     indexes :name, :register_number, :register_series, :inn, :ogrn, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
-    has :company_id
+    has company_operators(:company_id), :as => :company_id
     has :common, :type => :boolean
     set_property :delta => true
   end
@@ -76,6 +79,10 @@ class Operator < ActiveRecord::Base
       address.assign_attributes attrs[:common_address_attributes]
     end
     self
+  end
+
+  def in_company?(company)
+    company_id == company.id || company_operators.where(company_id: company.id).exists?
   end
 
   private

@@ -840,6 +840,16 @@ input[type="checkbox"]{display: none;}
 			width: 13px;
 		}
 			.delete:hover{background-position: 0px -13px ;}
+
+		.create_own{
+			background: url(/assets/new_design/images/plus.png) no-repeat;
+			display: inline-block;
+			height: 13px;
+			margin: 4px 0 0 -5px;
+			width: 13px;
+		}
+			.create_own:hover{background-position: 0px -13px ;}
+
 		.add_btn{
 			border-right: 1px #e7e7e7 solid;
 			display: inline-block;
@@ -1041,6 +1051,19 @@ input[type="checkbox"]{display: none;}
 					background: url(/assets/new_design/images/delete_operator_hover.png) no-repeat;
 					text-shadow: #7d2c2c 0px -1px 0px;
 				}
+            .not_use_operator{
+				background: url(/assets/new_design/images/delete_button.png) no-repeat;
+				float: right;
+				margin-left: 8px;
+				padding: 9px 0 0 43px;
+				text-shadow: #345a80 0px -1px 0px;
+				width: 163px;
+			}
+				.not_use_operator:hover{
+					background: url(/assets/new_design/images/delete_button_hover.png) no-repeat;
+					text-shadow: #7d2c2c 0px -1px 0px;
+				}
+
 			.switch_user{
 				background: url(/assets/new_design/images/switch_user.png) no-repeat;
 				float: right;

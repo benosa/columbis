@@ -29,7 +29,7 @@ class ClaimsAutocompleteController < ApplicationController
   def operator
     unless is_mistral?
       @list = Operator.select('operators.id, operators.name')
-        .where(["(common = ? OR company_id = ?) AND operators.name ILIKE '%' || ? || '%'", true, current_company.id, params[:term]])
+        .where(["(company_id = ?) AND operators.name ILIKE '%' || ? || '%'", current_company.id, params[:term]])
         .order('common ASC, name ASC')
         .limit(50)
     else

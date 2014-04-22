@@ -1,5 +1,8 @@
 # -*- encoding : utf-8 -*-
-set :branch, "develop"
+#set :branch, "develop"
+set :branch , 'feature/velez_321'
+set :repository, '.'
+set :deploy_via, :copy
 
 set :application, "columbis-dev"
 set(:deploy_to) { "/opt/apps/#{application}" }

@@ -30,7 +30,7 @@ module ExportJobs
 
       @managers = User.where(:company_id => company_id)
 
-      @operators = Operator.by_company_or_common(company).includes(:address).order(:name)
+      @operators = Operator.by_company(company).includes(:address).order(:name)
 
       @tourists_payments = Payment.where(:company_id => company_id, :payer_type => 'Tourist').order('date_in desc')
 

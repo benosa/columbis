@@ -3,6 +3,8 @@ require 'open-uri'
 
 namespace :operators do
   task :load, [:threads_number] => :environment do |t, args|
+    @logger = Logger.new('log/operators_load.log')
+    @logger.info(){"#{Time.zone.now}. Begin load"}
     db_pool = ActiveRecord::Base.configurations[Rails.env]['pool'].to_i
     default_threads_number = db_pool > 2 ? db_pool - 1 : 5
     threads_number = args[:threads_number].nil? ? default_threads_number : args[:threads_number].to_i
@@ -12,6 +14,19 @@ namespace :operators do
     peach threads_number, get_operator_pages, lambda { |path| load_operator_info_to_base(create_operator_info(path)) }
     puts (Time.zone.now - start).to_s
     puts Time.zone.now.to_s
+    @logger.info(){"Load in #{(Time.zone.now - start).to_s} second"}
+  end
+
+  task :update, [:id] => :environment do |t, args|
+    if args[:id]
+      operator = Operator.find(args[:id])
+      if operator.url
+        operator_info = create_operator_info(operator.url)
+        a = operator.address
+        Address.update(a.id, parse_address(operator_info.delete(:address)) )
+        Operator.update(operator.id, operator_info)
+      end
+    end
   end
 
   def get_operator_pages
@@ -19,7 +34,11 @@ namespace :operators do
     # Load only operators with insurer provision over 60 million rubles
     urls = [
       'http://reestr.russiatourism.ru/?fo_sum=100000000&ac=search_sum&mode=1',
-      'http://reestr.russiatourism.ru/?fo_sum=60000000&ac=search_sum&mode=1'
+      'http://reestr.russiatourism.ru/?fo_sum=60000000&ac=search_sum&mode=1',
+      'http://reestr.russiatourism.ru/?fo_sum=30000000&ac=search_sum&mode=1',
+      'http://reestr.russiatourism.ru/?fo_sum=10000000&ac=search_sum&mode=1',
+      'http://reestr.russiatourism.ru/?fo_sum_x=550&ac=search_sum&mode=1',
+      'http://reestr.russiatourism.ru/?fo_sum=500000&ac=search_sum&mode=1'
     ]
     paths = []
     urls.each do |url|
@@ -50,75 +69,85 @@ namespace :operators do
   end
 
   def create_operator_info(path)
-    info = {}
+    info = {url: path}
     puts "Open: #{path}"
     doc = Nokogiri::HTML(open(path))
-    doc.xpath('//table[@class="mra-l"]/tr/td').each do |tag|
-      case
-      when tag.content.include?("Реестровый номер")
-        info[:register_number] = tag.next_element.content.split(' ').last
-        info[:register_series] = tag.next_element.content.split(' ').first
-      when tag.content.include?("Сокращенное наименование")
-        info[:name] = tag.next_element.content
-      when tag.content.include?("Полное наименование:")
-        info[:full_name] = tag.next_element.content
-      when tag.content.include?("ИНН:")
-        info[:inn] = tag.next_element.content
-      when tag.content.include?("ОГРН:")
-        info[:ogrn] = tag.next_element.content
-      when tag.content.include?("сайт")
-        info[:site] = tag.next_element.content
-      when tag.content.include?("Наименование организации, предоставившей финансовое обеспечение")
-        info[:insurer] = tag.next_element.content
-      when tag.content.include?("Адрес (место нахождения) организации, предоставившей финансовое обеспечение")
-        info[:insurer_address] = tag.next_element.content
-      when tag.content.include?("Почтовый адрес организации, предоставившей финансовое обеспечение")
-        info[:actual_insurer_address] = tag.next_element.content
-      when tag.content.include?("Размер финансового обеспечения")
-        info[:insurer_provision] = tag.next_element.content
-        info[:insurer_provision].gsub!(/[^0-9]/,'')
-      when tag.content.include?("Документ:")
-        content = tag.next_element.content
-        date = content.last(10).split('/')
-        info[:insurer_contract] = content.first(content.length - 14)
-        info[:insurer_contract_date] = [date[2], date[1], date[0]].join('.')
-      when tag.content.include?("Срок действия финансового обеспечения")
-        content = tag.next_element.content
-        date = content[2..11].split('/').map { |e| e.to_i }
-        info[:insurer_contract_start] = [date[2], date[1], date[0]].join('.')
-        date = content.last(10).split('/').map { |e| e.to_i }
-        info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
-      when tag.content.include?("Адрес (место нахождения):")
-        info[:address] = tag.next_element.content
-      when tag.content.include?("Почтовый адрес:")
-        info[:actual_address] = tag.next_element.content
+    if doc
+      doc.xpath('//table[@class="mra-l"]/tr/td').each do |tag|
+        case
+        when tag.content.include?("Реестровый номер")
+          info[:register_number] = tag.next_element.content.split(' ').last if tag.next_element
+          info[:register_series] = tag.next_element.content.split(' ').first if tag.next_element
+        when tag.content.include?("Сокращенное наименование")
+          info[:name] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Полное наименование:")
+          info[:full_name] = tag.next_element.content if tag.next_element
+        when tag.content.include?("ИНН:")
+          info[:inn] = tag.next_element.content if tag.next_element
+        when tag.content.include?("ОГРН:")
+          info[:ogrn] = tag.next_element.content if tag.next_element
+        when tag.content.include?("сайт")
+          info[:site] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Наименование организации, предоставившей финансовое обеспечение")
+          info[:insurer] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Адрес (место нахождения) организации, предоставившей финансовое обеспечение")
+          info[:insurer_address] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Почтовый адрес организации, предоставившей финансовое обеспечение")
+          info[:actual_insurer_address] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Размер финансового обеспечения")
+          info[:insurer_provision] = tag.next_element.content if tag.next_element
+          info[:insurer_provision].gsub!(/[^0-9]/,'')
+        when tag.content.include?("Документ:")
+          content = tag.next_element.content if tag.next_element
+          date = content.last(10).split('/')
+          info[:insurer_contract] = content.first(content.length - 14)
+          info[:insurer_contract_date] = [date[2], date[1], date[0]].join('.')
+        when tag.content.include?("Срок действия финансового обеспечения")
+          content = tag.next_element.content if tag.next_element
+          date = content[2..11].split('/').map { |e| e.to_i }
+          info[:insurer_contract_start] = [date[2], date[1], date[0]].join('.')
+          date = content.last(10).split('/').map { |e| e.to_i }
+          info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
+        when tag.content.include?("Адрес (место нахождения):")
+          info[:address] = tag.next_element.content if tag.next_element
+        when tag.content.include?("Почтовый адрес:")
+          info[:actual_address] = tag.next_element.content if tag.next_element
+        end
       end
+      info
+    else
+      @logger.info(){"Bad link #{path}"}
     end
-    info
   end
 
   def load_operator_info_to_base(operator_info)
-    operator = Operator.where(:register_number => operator_info[:register_number],
-      :register_series => operator_info[:register_series],
-      :company_id => nil, :common => true).first
-    unless operator
-      operator_info.merge!({:common => true})
-      a = Address.create( parse_address(operator_info.delete(:address)) )
-      o = Operator.new(operator_info)
-      o.address = a
-      o.save
-      puts "Save operator: #{operator_info[:name]}"
+   # puts operator_info
+   # return
+    if operator_info[:register_number]
+      operator = Operator.where(:register_number => operator_info[:register_number],
+        :register_series => operator_info[:register_series],
+        :company_id => nil, :common => true).first
+      unless operator
+        operator_info.merge!({:common => true})
+        a = Address.create( parse_address(operator_info.delete(:address)) )
+        o = Operator.new(operator_info)
+        o.address = a
+        o.save
+        puts "Save operator: #{operator_info[:name]}"
+      else
+        a = operator.address
+        Address.update(a.id, parse_address(operator_info.delete(:address)) )
+        Operator.update(operator.id, operator_info)
+        puts "Update operator: #{operator_info[:name]}"
+      end
     else
-      a = operator.address
-      Address.update(a.id, parse_address(operator_info.delete(:address)) )
-      Operator.update(operator.id, operator_info)
-      puts "Update operator: #{operator_info[:name]}"
+      false
     end
   end
 
   def parse_address(address_string)
     address = {}
-    address_array = address_string.gsub(/\,\s/, ',').split(',')
+    address_array = address_string.gsub(/\,\s/, ',').split(',') if address_string
     # zip_code
     address["zip_code"] = address_array[0]
     address_array.delete_at(0)

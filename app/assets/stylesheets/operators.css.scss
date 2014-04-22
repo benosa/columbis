@@ -4,5 +4,16 @@
     margin-left: 0;
   }
   .top_info { clear: both; padding: 10px 0 0; }
+   #refresh-indicator {
+      float: right;
+      display: none;
+      width: 24px;
+      height: 24px;
+      margin: 5px 5px 0 0;
+      &.active {
+        display: block;
+        background: url(/assets/ajax_ind2.gif) no-repeat transparent;
+      }
+    }
 }
 

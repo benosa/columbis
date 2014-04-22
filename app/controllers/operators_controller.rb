@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class OperatorsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: [:show, :create, :edit]
+  skip_authorize_resource only: [:show, :create, :create_own, :edit, :destroy_own]
   skip_load_resource only: :create
 
   before_filter :set_last_search, :only => :index
@@ -9,13 +9,24 @@ class OperatorsController < ApplicationController
   def index
     @operators =
       if search_or_sort?
-        options = { with_current_abilities: true }
+        options = { with_current_abilities: true, with: {} }
         options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
-        availability_filter options
+        if params[:availability] == 'common'
+          options[:with][:common] = true
+        else
+          options[:with][:company_id] = current_company.id
+        end
         search_paginate Operator.search_and_sort(options).includes(:address), options
+
       else
-        Operator.accessible_by(current_ability).order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        scoped = Operator.accessible_by(current_ability)
+        scoped = if params[:availability] == 'common'
+          scoped.common
+        else # params[:availability] is own or nothing
+          scoped.by_company(current_company)
+        end
+        scoped.order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -39,6 +50,7 @@ class OperatorsController < ApplicationController
         @operator.address.company = current_company
         @operator.address.save
       end
+      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
       redirect_path = params[:create_own] ? edit_operator_path(@operator) : operators_path
       redirect_to redirect_path, :notice => t('operators.messages.created')
     else
@@ -46,8 +58,18 @@ class OperatorsController < ApplicationController
     end
   end
 
+  def create_own
+    authorize! :create_own, @operator
+    if @operator.common? && !@operator.in_company?(current_company)
+      CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
+      @operator.update_attributes(delta: true)
+      redirect_to operators_path, :notice => t('operators.messages.added')
+    end
+  end
+
   def edit
     @operator.build_address unless @operator.address.present?
+    @working = OperatorJobs::UpdateCommonOperator.working? params[:id]
     authorize! :read, @operator
     unless @operator.common?
       # If it's a twin of common operator, check for updates
@@ -76,8 +98,44 @@ class OperatorsController < ApplicationController
   end
 
   def destroy
-    @operator.destroy
+    unless @operator.common?
+      @operator.destroy
+    else
+      @operator.company_operators.where(company_id: current_company.id).destroy_all
+      @operator.update_attributes(delta: true)
+    end
     redirect_to operators_path, :notice => t('operators.messages.destroyed')
+  end
+
+  def destroy_own
+    authorize! :create_own, @operator
+    CompanyOperator.where(company_id: current_company.id, operator_id: @operator.id).destroy_all
+    @operator.update_attributes(delta: true)
+    redirect_to operators_path, :notice => t('operators.messages.removed')
+  end
+
+  def refresh
+    if OperatorJobs::UpdateCommonOperator.working? params[:id]
+      redirect_to edit_operator_path, :alert => t('operators.messages.refreshing')
+    else
+      OperatorJobs.update_operator params[:id]
+      redirect_to edit_operator_path, :notice => t('operators.messages.refresh')
+    end
+  end
+
+  def refresh_check
+    respond_to do |format|
+      format.json do
+        render json: { working: OperatorJobs::UpdateCommonOperator.working?(params[:id]) }.to_json
+      end
+      format.html do
+        unless OperatorJobs::UpdateCommonOperator.working?(params[:id])
+          redirect_to edit_operator_path, :notice => t('operators.messages.refreshed')
+        else
+          redirect_to dashboard_data_index_path, :alert => t('operators.messages.refreshing')
+        end
+      end
+    end
   end
 
   private
@@ -85,7 +143,7 @@ class OperatorsController < ApplicationController
     def search_params
       return @search_params if @search_params
       @search_params = {}
-      exluded_params = [:controller, :action, :potential]
+      exluded_params = [:controller, :action, :availability]
       params.each do |k, v|
         @search_params[k] = v unless exluded_params.include?(k.to_sym) || v.blank?
       end

@@ -79,6 +79,9 @@ class Ability
     can :read, Task, :user_id => user.id
     cannot :manage, User, :role => 'admin'
     can :dasboard_index, :user
+    can :create_own, Operator
+    can :refresh, Operator
+    can :refresh_check, Operator
     can :users_sign_in_as, :user
     can :offline_version, User
     can :switch_view, User

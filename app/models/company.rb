@@ -23,6 +23,7 @@ class Company < ActiveRecord::Base
   has_many :user_payments, :dependent => :destroy
   has_many :tourists, :dependent => :destroy
   has_many :import_infos, :dependent => :destroy
+  has_many :company_operators, :dependent => :destroy
   has_many :operators, :through => :company_operators#:dependent => :destroy, :order => 'name ASC'
   has_many :dropdown_values, :dependent => :destroy
 

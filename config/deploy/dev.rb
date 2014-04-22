@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
-#set :branch, "develop"
-set :branch , 'feature/velez_321'
+set :branch, "develop"
 set :repository, '.'
 set :deploy_via, :copy
 

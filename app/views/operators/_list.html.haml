@@ -30,6 +30,11 @@
             %div{ :title => t('.action_title_for_common') }
               - if can? :read, operator
                 = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit'), id: "edit_operator_#{operator.id}"
+              - if can? :create_own, operator
+                - if operator.in_company?(current_company)
+                  = link_to '', operator_destroy_own_path(operator), confirm: t('are_you_sure'),:class => 'delete', :title => I18n.t('operators.edit.destroy_own'), id: "destoy_own_operator_#{operator.id}", method: :post
+                - else
+                  = link_to '', operator_create_own_path(operator), :class => 'create_own', :title => I18n.t('operators.edit.create_own'), id: "create_own_operator_#{operator.id}", method: :post
           - else
             - if can? :update, operator
               = link_to '', edit_operator_path(operator), :class => 'edit_row', :title => t('edit'), id: "edit_operator_#{operator.id}"

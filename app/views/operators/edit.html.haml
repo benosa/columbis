@@ -27,7 +27,7 @@
       = link_to t('.sync'), edit_operator_path(@operator, sync: 1), :class => 'add_operator'
   - elsif @create_own_condition
     - if @operator.in_company?(current_company)
-      = link_to t('.destroy_own'), operator_destroy_own_path, :class => 'delete_operator', method: :post
+      = link_to t('.destroy_own'), operator_destroy_own_path, :class => 'not_use_operator', method: :post
     - else
       = link_to t('.create_own'), operator_create_own_path, :class => 'add_operator', method: :post
       -#, :data => { :submit => @form_id }

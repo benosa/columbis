@@ -63,7 +63,7 @@ class OperatorsController < ApplicationController
     if @operator.common? && !@operator.in_company?(current_company)
       CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
       @operator.update_attributes(delta: true)
-      redirect_to edit_operator_path(@operator), :notice => t('operators.messages.added')
+      redirect_to operators_path, :notice => t('operators.messages.added')
     end
   end
 

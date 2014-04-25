@@ -1,18 +1,13 @@
 - content_for(:body_class) { 'panel' }
 
-- if params[:availability] == 'own'
-  - title I18n.t('layouts.main_menu.management.operators_own')
-- elsif params[:availability] == 'common'
+- if common_operators?
   - title I18n.t('layouts.main_menu.management.operators_common')
 - else
-  - title t('.operators')
+  - title I18n.t('layouts.main_menu.management.operators_own')
 
 - content_for :top do
   %form.filter
     = render 'shared/search_field'
-
-  -#  = label_tag :availability, t('.availability')
-  -#  = select_tag :availability, options_for_select(availability_filter_options, 'all'), class: 'filter_select', id: 'availability_filter_options', data: { param: 'availability', filter: true }
 
 = render 'list'
 

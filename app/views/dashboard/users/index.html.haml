@@ -7,8 +7,12 @@
     - if @can_search_by_office
       = render :partial => 'shared/search_field',
         :locals => { :filter_class => 'search small_filter', :submit_class => 'go_search filter_margin' }
-      = label_tag :office_id, t('.office')
-      = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
+      - if is_admin?
+        = label_tag :company_id, I18n.t('claims.index.company_filter')
+        = select_tag :company_id,  options_from_collection_for_select(companies_filter, 'id', 'name', params[:company_id]), :prompt => t('all'), :class => 'company_select', :data => { :param=> 'company_id', :filter => 1 }
+      - else
+        = label_tag :office_id, t('.office')
+        = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]),
         :prompt => t('nope'), :class => 'filter_select', :data => { :param => 'office_id', :filter => '1' }
 
     - else

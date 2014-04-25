@@ -75,7 +75,11 @@ class PrintersController < ApplicationController
 
     def get_doc_part(printer, part)
       page = Nokogiri::HTML(open(printer.template.path))
-      page.at_css(part).inner_html
+      if page.at_css(part)
+        page.at_css(part).inner_html
+      else
+        nil
+      end
     end
 
     def set_charset(printer)
@@ -88,10 +92,16 @@ class PrintersController < ApplicationController
     end
 
     def set_doc_part(printer, part, value)
-
       page = Nokogiri::HTML(open(printer.template.path))
       page_part = page.at_css(part)
-      page_part.inner_html = value
+      if page_part
+        page_part.inner_html = value
+      else
+        head = page.at_css "head"
+        page_part = Nokogiri::XML::Node.new part, page
+        page_part.content = value
+        head.add_next_sibling(page_part)
+      end
       if part == 'body'
         width = 'width:640px'
         style = page_part['style']

@@ -8,6 +8,10 @@
 - content_for :top do
   %form.filter
     = render 'shared/search_field'
+    - if !common_operators?
+      = label_tag :source, t('.source')
+      = select_tag :source, options_for_select(source_filter_options, params[:source]), class: 'filter_select', id: 'source_filter_options', data: { param: 'source', filter: true }
+
 
 = render 'list'
 

@@ -50,6 +50,7 @@ class Dashboard::UsersController < ApplicationController
           :sort_mode => :extended
         }
         options[:with] = { :office_id => params[:office_id] } if params[:office_id].present?
+        options[:with] = { :company_id => params[:company_id] } if params[:company_id].present?
         search_and_sort(User, options)
       else
         User.accessible_by(current_ability).

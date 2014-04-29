@@ -1,10 +1,15 @@
 ru:
   operators:
+    source_filter_options:
+      all: 'Все'
+      own: 'Собственные'
+      reestr: 'Из реестра'
     index:
       operators: 'Туроператоры'
       new_operator: 'Добавить оператора'
       name: 'Название'
       availability: 'Вид'
+      source: 'Источник'
     new:
       new_operator: 'Новый оператор'
       list_of_operator: 'Список операторов'

@@ -25,7 +25,7 @@
     = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
     - if @sync_proposition
       = link_to t('.sync'), edit_operator_path(@operator, sync: 1), :class => 'add_operator'
-  - elsif @create_own_condition
+  - if @create_own_condition || (is_admin? && @operator.common?)
     - if @operator.in_company?(current_company)
       = link_to t('.destroy_own'), operator_destroy_own_path, :class => 'not_use_operator', method: :post
     - else

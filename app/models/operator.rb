@@ -22,7 +22,8 @@ class Operator < ActiveRecord::Base
   validates :name, presence: true, uniqueness: { scope: :company_id }, length: { maximum: 255 }
 
   scope :by_company, ->(company) { joins(:company_operators).where(["company_operators.company_id = ?", company.id]) }
-  scope :common, -> { where('operators.common = true') }
+  scope :common, ->(company) { where('operators.common = true').joins("LEFT JOIN company_operators ON company_operators.operator_id = operators.id and company_operators.company_id = #{company.id}") }
+  scope :own, -> { where('operators.common = false') }
 
   after_update :touch_claims
   after_destroy :touch_claims

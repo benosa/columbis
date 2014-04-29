@@ -16,17 +16,22 @@ class OperatorsController < ApplicationController
           options[:with][:common] = true
         else
           options[:with][:company_id] = current_company.id
+          if params[:source] == 'reestr'
+            options[:with][:common] = true
+          elsif params[:source] == 'own'
+            options[:with][:common] = false
+          end
         end
         search_paginate Operator.search_and_sort(options).includes(:address), options
 
       else
         scoped = Operator.accessible_by(current_ability)
         scoped = if params[:availability] == 'common'
-          scoped.common
+          scoped.common(current_company).order('company_operators.id', 'operators.name')
         else # params[:availability] is own or nothing
-          scoped.by_company(current_company)
+          scoped.by_company(current_company).order("common ASC, name ASC")
         end
-        scoped.order("common ASC, name ASC").includes(:address).paginate(:page => params[:page], :per_page => per_page)
+        scoped.includes(:address).paginate(:page => params[:page], :per_page => per_page)
       end
     render :partial => 'list' if request.xhr?
   end
@@ -63,7 +68,7 @@ class OperatorsController < ApplicationController
     if @operator.common? && !@operator.in_company?(current_company)
       CompanyOperator.create(company_id: current_company.id, operator_id: @operator.id)
       @operator.update_attributes(delta: true)
-      redirect_to operators_path, :notice => t('operators.messages.added')
+      redirect_to operators_path(:availability => 'common'), :notice => t('operators.messages.added')
     end
   end
 

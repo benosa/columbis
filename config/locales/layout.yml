@@ -12,8 +12,8 @@ ru:
           cities: 'Курорты'
           countries: 'Направления'
           operators: 'Туроператоры'
-          operators_own: 'Туроператоры компании'
-          operators_common: 'Туроператоры реестра'
+          operators_own: 'Мои туроператоры'
+          operators_common: 'Реестр туроператоров'
           export_import: 'Экспорт Импорт'
           tariff_plans: 'Тарифные планы'
         - &claims

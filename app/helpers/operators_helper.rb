@@ -9,4 +9,12 @@ module OperatorsHelper
     I18n.t('operators.source_filter_options').invert.to_a
   end
 
+  def from_reestr_class(operator)
+    if operator.from_reestr?(current_company)
+      " from_reestr"
+    else
+      ""
+    end
+  end
+
 end

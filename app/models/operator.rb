@@ -86,6 +86,10 @@ class Operator < ActiveRecord::Base
     company_id == company.id || company_operators.where(company_id: company.id).exists?
   end
 
+  def from_reestr?(company)
+    in_company?(company) && common?
+  end
+
   private
 
     def touch_claims

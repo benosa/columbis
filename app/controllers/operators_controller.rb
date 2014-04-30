@@ -9,11 +9,16 @@ class OperatorsController < ApplicationController
   def index
     @operators =
       if search_or_sort?
-        options = { with_current_abilities: true, with: {} }
+        options = { with_current_abilities: true, with: {}, without: {} }
         options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
         if params[:availability] == 'common'
           options[:with][:common] = true
+          if params[:source] == 'reestr'
+            options[:without][:company_id] = current_company.id
+          elsif params[:source] == 'own'
+            options[:with][:company_id] = current_company.id
+          end
         else
           options[:with][:company_id] = current_company.id
           if params[:source] == 'reestr'

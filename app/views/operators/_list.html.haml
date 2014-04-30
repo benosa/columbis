@@ -12,7 +12,7 @@
         %span= t('actions')
 
     - for operator in @operators
-      %tr{ :class => cycle('odd', 'even'), id: "operator_#{operator.id}" }
+      %tr{ :class => cycle('odd', 'even') + from_reestr_class(operator), id: "operator_#{operator.id}" }
         %td
           %p= operator.name
         %td

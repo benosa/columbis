@@ -18,6 +18,7 @@ ru:
       payed_until: 'Оплачен до'
       active: 'Активна'
       turn_off: 'Отключена'
+      not_turn_off: 'Не отключена'
       not_payed: 'Не оплачена'
       edit: "Редактирование компании %{company_name}"
       settings: 'Настройки'

@@ -84,6 +84,8 @@ module Admin
             filter[:tariff_end] = min_time..Time.zone.now
           elsif params[:state] == 'turn_off'
             filter[:active] = false
+          elsif params[:state] == 'not_turn_off'
+            filter[:active] = true
           end
         end
 

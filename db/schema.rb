@@ -195,6 +195,13 @@ ActiveRecord::Schema.define(:version => 20140416085508) do
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
 
+  create_table "company_operators", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "operator_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "countries", :force => true do |t|
     t.string  "name"
     t.integer "company_id"
@@ -339,6 +346,7 @@ ActiveRecord::Schema.define(:version => 20140416085508) do
     t.string   "actual_address"
     t.string   "actual_insurer_address"
     t.string   "phone_numbers"
+    t.string   "url"
   end
 
   add_index "operators", ["common"], :name => "index_operators_on_common"

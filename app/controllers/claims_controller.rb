@@ -334,18 +334,22 @@ class ClaimsController < ApplicationController
     end
 
     def get_totals(claims)
+      totals = nil
       # show totals only if list is sorted by reservation_date
       if (is_admin? or is_boss?) and sort_col == :reservation_date and !claims.empty?
-         # Get beginning of month of min date and end of month of max date from particular claims
-        period = if sort_dir == :desc
-          claims.last.reservation_date.beginning_of_month..claims.first.reservation_date.end_of_month
-        else
-          claims.first.reservation_date.beginning_of_month..claims.last.reservation_date.end_of_month
+        # Get beginning of month of min date and end of month of max date from particular claims
+        first_reservation_date = claims.first.try(:reservation_date)
+        last_reservation_date = claims.last.try(:reservation_date)
+        if first_reservation_date && last_reservation_date
+          period = if sort_dir == :desc
+            last_reservation_date.beginning_of_month..first_reservation_date.end_of_month
+          else
+            first_reservation_date.beginning_of_month..last_reservation_date.end_of_month
+          end
+          totals = claim_totals(period, params)
         end
-        claim_totals(period, params)
-      else
-        nil
       end
+      totals
     end
 
     def permit_actions

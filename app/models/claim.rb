@@ -683,8 +683,8 @@ class Claim < ActiveRecord::Base
     def calculate_tour_price
 
       price = tour_price_with_discount
-      sum_price = price * course(tour_price_currency)
-      sum_price += additional_services_price.to_f * course(additional_services_price_currency);
+      sum_price = price * course(tour_price_currency) rescue 0
+      sum_price += additional_services_price.to_f * course(additional_services_price_currency) rescue 0;
 
       # some fields are calculated per person
       fields =  ['visa_price', 'children_visa_price', 'insurance_price', 'additional_insurance_price', 'fuel_tax_price'];

@@ -10,7 +10,7 @@ class OperatorsController < ApplicationController
     @operators =
       if search_or_sort?
         options = { with_current_abilities: true, with: {}, without: {} }
-        options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
+        #options.merge!(order: "common asc, #{sort_col} #{sort_dir}", sort_mode: :extended)
         options = search_and_sort_options options
         if params[:availability] == 'common'
           options[:with][:common] = true

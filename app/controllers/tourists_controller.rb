@@ -41,6 +41,9 @@ class TouristsController < ApplicationController
   end
 
   def edit
+    1.times do |i|
+      @tourist.images.build
+    end
     check_address(@tourist)
   end
 

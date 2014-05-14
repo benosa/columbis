@@ -194,6 +194,7 @@ class Claim < ActiveRecord::Base
   end
 
   def applicant_attributes=(attributes)
+    return if company.nil? # fix bug when session is closed
     unless empty_tourist_hash?(attributes)
       id = attributes.delete('id')
       joint_address = attributes.delete('address')
@@ -212,9 +213,7 @@ class Claim < ActiveRecord::Base
       applicant = Tourist.new
       applicant.company = company
     end
-    Rails.logger.debug "company: #{company.id}"
-    Rails.logger.debug "id: #{company.id}"
-    Rails.logger.debug "applicant: #{applicant}"
+
     applicant.special_offer = @special_offer if applicant && !@special_offer.nil?
     applicant.save if applicant && applicant.new_record?
     self.applicant = applicant

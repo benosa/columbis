@@ -22,6 +22,8 @@ ru:
         created_at: 'Создан'
         state: 'Статус'
         sex: 'Пол'
+      images:
+        file: 'Файл'
 
   potential_states:
     important: 'Активно звонить!'
@@ -87,11 +89,14 @@ ru:
       email: 'Email'
       special_offer: 'Получать спецпредложения на телефон и электронную почту'
       tourist_to_potential_warning: 'Турист %{tourist} после сохранения будет переведен в потенциальные клиенты. Вы уверены?'
+      files: 'Файлы'
     form_potential:
       common: 'Общие данные'
       status: 'Статус'
       potential_to_tourist_warning: 'Клиент %{client} после сохранения будет переведен в туристы. Вы уверены?'
-
+      files: 'Файлы'
+    images:
+      file: Файл должен быть не больше 512.0 КБ
     messages:
       created: 'Турист создан'
       updated: 'Турист обновлен'

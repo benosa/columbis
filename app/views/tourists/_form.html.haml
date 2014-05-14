@@ -51,5 +51,18 @@
         %p= f.label :passport_issued
         = f.text_area :passport_issued, :class => 'wide'
 
+%fieldset.form_column.form_column-small
+  .form_block
+    .block_title
+      %h2= t('.files')
+    .form_block_content
+      .fake_row.fields
+        = f.fields_for :images do |pic|
+          %p
+            - if pic.object.id
+              %a{ href: pic.object.file, target: "blank" }
+                = File.basename(pic.object.file.to_s)
+            = pic.file_field :file, as: :file
+
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

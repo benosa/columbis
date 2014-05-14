@@ -6,7 +6,7 @@ class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
-                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued
+                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file
 
   attr_protected :company_id, :user_id
 
@@ -15,6 +15,7 @@ class Tourist < ActiveRecord::Base
   belongs_to :company, :counter_cache => true
   belongs_to :user
   has_many :payments, :as => :payer
+  has_many :images, as: :imageable
 
   has_many :tourist_claims, :dependent => :destroy
   has_many :claims, :through => :tourist_claims
@@ -24,6 +25,7 @@ class Tourist < ActiveRecord::Base
   has_many :sms_groups, through: :sms_touristgroups
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
+  accepts_nested_attributes_for :images, allow_destroy: true
 
   validates_presence_of :company_id
   validate :presence_of_full_name

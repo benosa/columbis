@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140513120129) do
+ActiveRecord::Schema.define(:version => 20140514132908) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(:version => 20140513120129) do
     t.string   "imageable_type"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "company_id"
   end
 
   create_table "import_infos", :force => true do |t|

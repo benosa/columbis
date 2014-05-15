@@ -4,5 +4,5 @@ class Image < ActiveRecord::Base
   belongs_to :company
   mount_uploader :file, ImageUploader
 
-  validates :file, :file_size => { :maximum => 0.5.megabytes.to_i  }
+  validates :file, :file_size => { :maximum => CONFIG[:max_image_size].megabytes.to_i  }
 end

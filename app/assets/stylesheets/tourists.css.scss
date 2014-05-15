@@ -44,6 +44,18 @@
     p.one_row { margin-bottom: 13px; }
     .potential_wrapper { border-bottom: 1px solid #d5d5d5; padding-bottom: 10px; margin-right: 20px; }
   }
+
+  #files_block {
+    h2 span { font-size: 13px; }
+    .file_link { position: relative; overflow: hidden; padding-right: 20px;
+      .link_url { width: 200px; word-wrap: none; }
+      .del { float: right; }
+    }
+    .new_file { position: relative; overflow: hidden; padding-right: 20px;
+      .file, input { width: 200px; }
+      .del { float: right; }
+    }
+  }
 }
 
 // .edit_tourists {

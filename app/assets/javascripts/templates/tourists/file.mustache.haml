@@ -1,0 +1,7 @@
+- id_prefix = 'tourist_images_attributes_{{id}}'
+- name_prefix = 'tourist[images_attributes][{{id}}]'
+.new_file.new_record
+  %p.file
+    = file_field_tag "#{name_prefix}[file]", :id => "#{id_prefix}_file"
+    = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
+  = link_to '', '#', :class => 'del delete', :title => t('delete')

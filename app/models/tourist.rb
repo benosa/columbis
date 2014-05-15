@@ -25,7 +25,7 @@ class Tourist < ActiveRecord::Base
   has_many :sms_groups, through: :sms_touristgroups
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
-  accepts_nested_attributes_for :images, allow_destroy: true
+  accepts_nested_attributes_for :images, allow_destroy: true, reject_if: :all_blank
 
   validates_presence_of :company_id
   validate :presence_of_full_name

@@ -2,7 +2,7 @@
 
 - title !@tourist.potential? ? t('.new_tourist') : t('.new_client')
 
-= form_for @tourist, url: !@tourist.potential? ? tourists_path : tourists_path(potential: 1) do |form|
+= form_for @tourist, url: !@tourist.potential? ? tourists_path : tourists_path(potential: 1), html: { multipart: true } do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => !@tourist.potential? ? 'form' : 'form_potential', :locals => { :f => form }
 

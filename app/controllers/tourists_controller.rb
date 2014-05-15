@@ -24,7 +24,6 @@ class TouristsController < ApplicationController
   end
 
   def new
-    build_images
     @tourist.potential = true if show_potential_clients
     check_address(@tourist)
   end
@@ -36,7 +35,6 @@ class TouristsController < ApplicationController
     if @tourist.save
       redirect_to_tourists(@tourist.potential?, :created)
     else
-      build_images
       @tourist.user = nil
       check_address(@tourist)
       render :action => "new"
@@ -44,7 +42,6 @@ class TouristsController < ApplicationController
   end
 
   def edit
-    build_images
     check_address(@tourist)
   end
 
@@ -57,7 +54,6 @@ class TouristsController < ApplicationController
       redirect_to_tourists(@tourist.potential?, :updated)
     else
       @tourist.user = nil unless manager
-      build_images
       check_address(@tourist, params[:potential])
       render :action => "edit"
     end
@@ -76,12 +72,6 @@ class TouristsController < ApplicationController
   end
 
   private
-
-    def build_images
-      (10 - @tourist.images.count).times do |i|
-        @tourist.images.build
-      end
-    end
 
     def set_images
       @tourist.images.each do |img|

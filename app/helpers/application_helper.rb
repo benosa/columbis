@@ -249,6 +249,19 @@ module ApplicationHelper
     current_company == demo_company
   end
 
+  # Nested fields
+  def fields_for_add_button(text, form, association, options = {})
+    new_object = form.object.send(association).klass.new
+    id = new_object.object_id
+    partial = options.delete(:partial) || association.to_s.singularize + '_fields'
+    button_class = options.delete(:class) || 'nested-fields-add'
+    fields = form.fields_for(association, new_object, child_index: id) do |builder|
+      render partial, f: builder
+    end
+    link_data = { id: id, fields: fields.gsub("\n", '') }.reverse_merge(options)
+    link_to text, '#', class: button_class, data: link_data
+  end
+
   private
 
     def manifest_default_text

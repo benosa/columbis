@@ -51,7 +51,7 @@ class ClaimsAutocompleteController < ApplicationController
 
   def resort
     country_id = params[:country_id] || ''
-    unless country_id.to_i > 0 # country_id is a string - name of country
+    unless country_id.to_i > 0 && country_id.to_i.to_s == country_id # country_id is a string - name of country
       country_name = country_id.strip
       cond = ["(common = ? OR company_id = ?) AND name = ?", true, current_company.id, country_name]
       country_id = Country.where(cond).first.try(:id)

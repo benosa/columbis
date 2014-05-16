@@ -49,7 +49,7 @@ class TouristsController < ApplicationController
     @tourist.company = current_company
     manager = @tourist.user
     @tourist.user = current_user unless manager
-    set_images
+    set_attrs
     if @tourist.update_attributes(params[:tourist])
       redirect_to_tourists(@tourist.potential?, :updated)
     else
@@ -72,6 +72,16 @@ class TouristsController < ApplicationController
   end
 
   private
+
+    def set_attrs
+      if params[:tourist][:images_attributes]
+        params[:tourist][:images_attributes].each do |attrs|
+          if attrs[1]["file"] && !attrs[1]["company_id"]
+            attrs[1][:company_id] = current_company.id
+          end
+        end
+      end
+    end
 
     def set_images
       @tourist.images.each do |img|

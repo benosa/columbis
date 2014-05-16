@@ -33,7 +33,11 @@ class TouristsController < ApplicationController
     @tourist.user = current_user
     set_images
     if @tourist.save
-      redirect_to_tourists(@tourist.potential?, :created)
+      if params[:save_and_close]
+        redirect_to_tourists(@tourist.potential?, :created)
+      else
+        redirect_to edit_tourist_url(@tourist), notice: t("tourists.messages.#{@tourist.potential? ? 'client_' : ''}created")
+      end
     else
       @tourist.user = nil
       check_address(@tourist)
@@ -51,7 +55,11 @@ class TouristsController < ApplicationController
     @tourist.user = current_user unless manager
     set_attrs
     if @tourist.update_attributes(params[:tourist])
-      redirect_to_tourists(@tourist.potential?, :updated)
+      if params[:save_and_close]
+        redirect_to_tourists(@tourist.potential?, :updated)
+      else
+        redirect_to edit_tourist_url(@tourist), notice: t("tourists.messages.#{@tourist.potential? ? 'client_' : ''}updated")
+      end
     else
       @tourist.user = nil unless manager
       check_address(@tourist, params[:potential])

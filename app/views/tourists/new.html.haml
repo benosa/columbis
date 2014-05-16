@@ -9,6 +9,7 @@
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
   = link_to t('save'), '#', :class => 'save', :data => { :submit => @form_id }
+  = link_to t('save_and_close'), '#', :class => 'save save_and_close', :data => { :submit => @form_id, :close => true }
   - unless @tourist.potential?
     = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'
   - else

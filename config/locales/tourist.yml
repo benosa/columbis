@@ -89,6 +89,7 @@ ru:
       email: 'Email'
       special_offer: 'Получать спецпредложения на телефон и электронную почту'
       tourist_to_potential_warning: 'Турист %{tourist} после сохранения будет переведен в потенциальные клиенты. Вы уверены?'
+    files:
       files: 'Файлы'
       new_files_message: Файл должен быть не больше 512.0 КБ
       add_file: 'Еще файл'

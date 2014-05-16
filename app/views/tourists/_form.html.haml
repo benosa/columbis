@@ -51,31 +51,7 @@
         %p= f.label :passport_issued
         = f.text_area :passport_issued, :class => 'wide'
 
-%fieldset#files_block.form_column.form_column-small
-  .form_block
-    .block_title
-      %h2= t('.files')
-    .form_block_content
-      - images_size = tourist.images.size
-      - if images_size > 0
-        .fake_row.fields
-          = f.fields_for :images do |fi|
-            - img = fi.object
-            - if img.errors.empty?
-              .file_link
-                = link_to img.file_identifier, img.file_url, target: "blank", :class => 'file_url'
-                = link_to '', '#', :class => 'del delete', :title => t('delete'), :data => { confirm_text: t('are_you_sure') }
-                = fi.hidden_field(:_destroy)
-                = fi.hidden_field :id
-      .fake_row.new_files
-        %p= t('.new_files_message')
-        .new_file
-          %p.file
-            = file_field_tag "tourist[images_attributes][#{images_size}][file]", :id => "tourist_images_attributes_#{images_size}_file"
-            = link_to t("uploaders.choose_file"), '#', :class => 'select_file'
-          = link_to '', '#', :class => 'del delete', :title => t('delete')
-        #add_file_block
-          = link_to t('.add_file'), '#', :class => 'add'
+= render partial: 'files', locals: { f: f, images: tourist.images }
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

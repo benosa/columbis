@@ -49,7 +49,7 @@
                 %p= pof.label :form, t('.paid_type')
                 .approved-wrap
                   = pof.label :approved, '&nbsp;'.html_safe, :class => 'checkbox approved_label', :title => Payment.human_attribute_name(:approved)
-                  = pof.check_box :approved, :class => 'approved', :readonly => @claim.new_record? || approved_disabled
+                  = pof.check_box :approved, :class => 'approved', :readonly => @claim.new_record? || approved_disabled, :disabled => approved_disabled
                 = pof.select :form, form_options, { :include_blank => t('nope') }, :class => 'form-select', :readonly => disabled, wrapper: { class: 'form-select-wrap' }
         = pof.hidden_field :_destroy, :class => '_destroy'
         = pof.hidden_field :id, :class => 'payment_id'

@@ -180,8 +180,8 @@ class ClaimsController < ApplicationController
       @claim.company ||= current_company
       @claim.current_editor ||= current_user
       if params[:claim]
-        @claim[:tour_price_currency] = CurrencyCourse::PRIMARY_CURRENCY
-        @claim[:operator_price_currency] = CurrencyCourse::PRIMARY_CURRENCY
+        @claim[:tour_price_currency] ||= CurrencyCourse::PRIMARY_CURRENCY
+        @claim[:operator_price_currency] ||= CurrencyCourse::PRIMARY_CURRENCY
         if (is_admin? or is_boss?) && (params[:claim][:user_id] && params[:claim][:office_id])
           @claim.user_id = params[:claim][:user_id]
           @claim.office_id = params[:claim][:office_id]

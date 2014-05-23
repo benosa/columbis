@@ -1,11 +1,8 @@
 class Smsaero
-  
   attr_accessor :login, :password, :json
-  
   attr_accessor :data, :url
-  
   attr_reader :error, :error_message
-  
+
   def initialize(user, password, json = true)
     @user, @password, @json = user.strip, password.strip, json
     @data = {'user' => @user, 'password' => self.md5_password}
@@ -13,9 +10,9 @@ class Smsaero
     @error = false
     @url = 'http://gate.smsaero.ru/'
   end
-  
+
   ### Передача сообщения
-  # 
+  #
   # user......Обязательно  Логин в системе
   # password..Обязательно  Пароль (md5)
   # to........Обязательно  Номер телефона получателя, в формате 71234567890
@@ -50,27 +47,28 @@ class Smsaero
     end
     response
   end
-  
+
   ### + Проверка состояния счета
   def balance
     self.send_query(@url + 'balance/?' + @data.to_param)
   end
-  
+
   ### +/- Список доступных подписей отправителя <-- не работает на стороне оператора в случае если нет подписей созданных пользователем
   def signatures
     self.send_query(@url + 'senders/?' + @data.to_param)
   end
-  
+
   ### +/- Добавляем новую подпись <-- выявлены периодические несрабатывания на стороне оператора (проблема не решена, необходимы проверки)
   # подпись будет добавлена после ее подтверждения в смс-центре
   def add_signature signature
     params = @data.merge({'sign' => signature})
     self.send_query(@url + 'sign/?' + params.to_param)
   end
-  
+
   def send_query path
     response = JSON.parse(open(path).read)
-    if response['result'].present?
+
+    if response.class == 'Hash' && response['result'].present?
       if response['result'] == 'reject'
         @error_message = self.auth_error(response)
         @error = true
@@ -79,11 +77,11 @@ class Smsaero
     end
     response
   end
-  
+
   def md5_password
     Digest::MD5.hexdigest(self.password)
   end
-  
+
   def send_message response
     result = {
       'accepted' => 'Сообщение принято сервисом',
@@ -95,10 +93,10 @@ class Smsaero
       'incorrect date' => 'Неправильный формат даты',
       'in blacklist' => 'Телефон находится в черном списке'
     }
-    
+
     result[response['reason']]
   end
-  
+
   def status_message response
     status = {
       'delivery success' => 'Сообщение доставлено',
@@ -111,10 +109,10 @@ class Smsaero
       'empty field' => 'Не все обязательные поля заполнены',
       'incorrect user or password' => 'Ошибка авторизации'
     }
-    
+
     status[response['reason']]
   end
-  
+
   def auth_error response
     errors = {
       'empty field' => 'Не все обязательные поля заполнены',
@@ -125,10 +123,10 @@ class Smsaero
       'incorrect date' => 'Неправильный формат даты',
       'in blacklist' => 'Телефон находится в черном списке'
     }
-    
+
     errors[response['reason']]
   end
-  
+
   def error
     {
       status: @error,

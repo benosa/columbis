@@ -1,5 +1,5 @@
 class SmsGroupsController < ApplicationController
-  
+
   load_and_authorize_resource
   
   before_filter :sms_groups

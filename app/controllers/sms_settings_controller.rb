@@ -2,7 +2,7 @@ class SmsSettingsController < ApplicationController
   def index
     @company = Company.find(current_company.id)
   end
-  
+
   def update
     @company = Company.find(current_company.id)
     if @company.update_attributes(params[:company])

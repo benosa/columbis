@@ -81,6 +81,8 @@ module Tourism
     # Special module for Mistral
     require 'mistral'
 
+    require 'smsaero'
+
     # Use middleware to protect public forms
     require 'user_params_check'
     config.middleware.insert_before Warden::Manager, UserParamsCheck

@@ -35,9 +35,10 @@ class Tourist < ActiveRecord::Base
     :if => proc{ |tourist| !tourist.potential && tourist.send(:additional_attributes_validation_condition) }
 
   # Secondary attributes validation
-  validates_presence_of :phone_number, :if => :secondary_attributes_validation_condition
   validates :email, email: true, presence: true, :if => :secondary_attributes_validation_condition # uniqueness: { scope: :company_id }
+  validates :phone_number, phone_number: true, presence: true, :if => :secondary_attributes_validation_condition
 
+  after_validation :set_valid_phone
   after_update :touch_claims
   after_destroy :touch_claims
 
@@ -90,6 +91,10 @@ class Tourist < ActiveRecord::Base
   alias_method :name, :full_name
 
   private
+
+    def set_valid_phone
+      self.phone_number_valid = phone_number
+    end
 
     def presence_of_full_name
       unless potential?

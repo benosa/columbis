@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140514132908) do
+ActiveRecord::Schema.define(:version => 20140523120042) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -498,6 +498,7 @@ ActiveRecord::Schema.define(:version => 20140514132908) do
     t.string   "sex",                  :default => "not_selected"
     t.string   "fio_latin"
     t.string   "passport_issued"
+    t.string   "phone_number_valid"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

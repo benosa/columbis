@@ -50,8 +50,12 @@
         = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
         %p= f.label :passport_issued
         = f.text_area :passport_issued, :class => 'wide'
+  .form_block
+    .block_title
+      %h2= t('.passport_column')
+    .form_block_content
+      .fake_row.fields
+        %p= f.label :group
+        = f.select :group, current_company.dropdown_values_for('tourist_group'), {include_blank: true}, :class => 'editable-select'
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
-
-%fieldset.form_submit{ :style => 'display: none; height: 0;' }
-  = f.submit

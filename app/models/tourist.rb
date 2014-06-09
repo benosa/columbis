@@ -6,7 +6,7 @@ class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
-                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file
+                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file, :group
 
   attr_protected :company_id, :user_id
 
@@ -86,6 +86,10 @@ class Tourist < ActiveRecord::Base
     self.last_name = split[0]
     self.first_name = split[1]
     self.middle_name = split[2]
+  end
+
+  def check_and_save_group(group)
+    company.check_and_save_dropdown('tourist_group', group)
   end
 
   alias_method :name, :full_name

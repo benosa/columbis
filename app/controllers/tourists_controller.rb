@@ -51,6 +51,7 @@ class TouristsController < ApplicationController
 
   def update
     @tourist.company = current_company
+    @tourist.check_and_save_group(params[:tourist][:group])
     manager = @tourist.user
     @tourist.user = current_user unless manager
     set_attrs

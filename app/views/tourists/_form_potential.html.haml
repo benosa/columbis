@@ -32,9 +32,15 @@
           = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
         = f.hidden_field :state, value: nil
         - Tourist::POTENTIAL_STATES.each do |state|
-          %p.state
-            = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
-            = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
+          - if state != 'refused'
+            %p.state{ class: "#{state}" }
+              = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
+              = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
+          - else
+            %p.state.refused_state
+              = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
+              = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
+
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 

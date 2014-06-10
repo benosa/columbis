@@ -27,7 +27,11 @@ ru:
         file: 'Файл'
 
   potential_states:
-    important: 'Активно звонить!'
+    selection: 'Подбор'
+    sent: 'Отправлено'
+    revision: 'Доработка'
+    ready: 'Готов'
+    waiting: 'На ожидании'
     reserved: 'Забронирован'
     refused: 'Отказался'
 

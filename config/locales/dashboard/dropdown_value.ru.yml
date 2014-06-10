@@ -43,6 +43,7 @@ ru:
       service_class: 'Класс'
       relocation: 'Переезд'
       tourist_group: 'Группы туристов'
+      refusal_reason: 'Причина отказа'
 
   activerecord:
     attributes:

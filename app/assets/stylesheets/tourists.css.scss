@@ -19,6 +19,17 @@
 /*.tourist .first,
 .tourist .first .form_block { width: 450px; }
 .tourist .first .block_title { width: 428px; }*/
+.refused_state {
+  border-top: 1px solid #d5d5d5; padding-top: 10px;
+}
+
+.state.selection label, .state.revision label  {
+  color: #ED2222
+}
+
+.state.reserved label{
+  color: #FF8888
+}
 
 .tourist {
   h1 { float: left; }

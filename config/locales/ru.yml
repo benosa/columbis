@@ -98,6 +98,7 @@ ru:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
+      right_denied: 'недостаточно прав для создания'
       wrong_size: "не верный размер (должен быть %{file_size})"
       wrong_format: "неверный формат (+7XXXXXXXXXX)"
       size_too_small: "слишком маленький (должен быть не меньше %{file_size})"

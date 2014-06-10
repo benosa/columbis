@@ -52,10 +52,10 @@
         = f.text_area :passport_issued, :class => 'wide'
   .form_block
     .block_title
-      %h2= t('.passport_column')
+      %h2= t('.class_group')
     .form_block_content
       .fake_row.fields
-        %p= f.label :group
-        = f.select :group, current_company.dropdown_values_for('tourist_group'), {include_blank: true}, :class => 'editable-select'
+        %p= f.label :class_group
+        = f.select :class_group, current_company.dropdown_values_for('tourist_group'), {include_blank: true}, :class => (is_admin? || is_boss?) ? 'editable-select' : ''
 
 = render partial: 'files', locals: { f: f, images: tourist.images }

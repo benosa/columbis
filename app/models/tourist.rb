@@ -6,11 +6,13 @@ class Tourist < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
-                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file, :group
+                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file, :class_group
 
   attr_protected :company_id, :user_id
 
   attr_accessor :validate_secondary_attributes, :full_name
+
+  attr_accessor :tourist_params
 
   belongs_to :company, :counter_cache => true
   belongs_to :user
@@ -29,6 +31,8 @@ class Tourist < ActiveRecord::Base
 
   validates_presence_of :company_id
   validate :presence_of_full_name
+
+  validate :check_for_boss
 
   # Additional attributes validation
   validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until,
@@ -52,7 +56,7 @@ class Tourist < ActiveRecord::Base
 
   define_index do
     indexes [:last_name, :first_name, :middle_name], :as => :full_name, :sortable => true
-    indexes :passport_series, :passport_number, :phone_number, :email, :sortable => true
+    indexes :passport_series, :passport_number, :phone_number, :email, :class_group, :sortable => true
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :passport_valid_until, :date_of_birth, :created_at, :type => :datetime
     has :potential, :type => :boolean
@@ -88,9 +92,26 @@ class Tourist < ActiveRecord::Base
     self.middle_name = split[2]
   end
 
-  def check_and_save_group(group)
-    company.check_and_save_dropdown('tourist_group', group)
+  def check_and_save_group
+    company.check_and_save_dropdown('tourist_group', tourist_params[:class_group])
   end
+
+  def set_params(params)
+    self.tourist_params = params
+  end
+
+  def check_for_boss
+    c = ApplicationController.current
+    if tourist_params && tourist_params[:class_group]
+      exist = DropdownValue.where(:list => 'tourist_group', :value => tourist_params[:class_group], :company_id => company.id).first
+      if !exist && !(c.is_boss? || c.is_admin?)
+        self.errors.add(:class_group, I18n.t('.errors.messages.right_denied'))
+      elsif !exist
+        check_and_save_group
+      end
+    end
+  end
+
 
   alias_method :name, :full_name
 

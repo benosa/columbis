@@ -22,6 +22,7 @@ ru:
         created_at: 'Создан'
         state: 'Статус'
         sex: 'Пол'
+        class_group: 'Группа'
       images:
         file: 'Файл'
 
@@ -61,6 +62,7 @@ ru:
       passport_number: 'Номер паспорта'
       email: 'Email'
       manager: 'Менеджер'
+      class_group: 'Группа'
     potential_clients:
       full_name: "ФИО"
       email: 'Email'
@@ -82,6 +84,7 @@ ru:
       list_of_clients: 'Список клиентов'
     form:
       common: 'Общие данные'
+      class_group: 'Группа'
       passport_column: 'Паспортные данные'
       passport: 'Паспорт (серия, номер)'
       passport_valid_until: 'Паспорт действителен до'

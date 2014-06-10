@@ -42,6 +42,7 @@ ru:
       nights: 'Кол-во ночей'
       service_class: 'Класс'
       relocation: 'Переезд'
+      tourist_group: 'Группы туристов'
 
   activerecord:
     attributes:

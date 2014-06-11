@@ -21,6 +21,14 @@ ru:
       subject: 'Посетитель зарегистрирован'
     visitor_confirmation:
       subject: 'Регистрация для демо-режима'
+    company_just_become_inactive:
+      subject: 'Срок действия тарифа компании истек'
+    company_just_become_inactive_sup:
+      subject: 'Срок действия тарифа компании истек'
+    company_just_soon_become_inactive:
+      subject: "Срок действия тарифа компании скоро истекает"
+    company_just_soon_become_inactive_sup:
+      subject: "Срок действия тарифа компании скоро истекает"
 
     # Devise methods
     confirmation_instructions:

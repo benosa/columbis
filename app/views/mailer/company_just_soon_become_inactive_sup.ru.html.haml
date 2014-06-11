@@ -1,0 +1,7 @@
+%p
+  На сайте
+  %a{:href => "http://columbis.ru"} Columbis.ru
+%p
+  Срок действия тарифа компании
+  #{@resource.name} (#{@resource.subdomain})
+  истекает через #{CONFIG[:days_before_tariff_end]} дня

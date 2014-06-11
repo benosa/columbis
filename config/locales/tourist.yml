@@ -23,6 +23,7 @@ ru:
         state: 'Статус'
         sex: 'Пол'
         class_group: 'Группа'
+        refused_note: 'Причина отказа'
       images:
         file: 'Файл'
 

@@ -7,7 +7,7 @@ class Tourist < ActiveRecord::Base
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
-                  :images_attributes, :file, :class_group, :refused_note
+                  :images_attributes, :file, :class_group, :refused_note, :office
 
   attr_protected :company_id, :user_id
 
@@ -17,6 +17,9 @@ class Tourist < ActiveRecord::Base
 
   belongs_to :company, :counter_cache => true
   belongs_to :user
+  belongs_to :office
+  belongs_to :assistant, :class_name => 'User'
+
   has_many :payments, :as => :payer
   has_many :images, as: :imageable
 

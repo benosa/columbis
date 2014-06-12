@@ -32,9 +32,13 @@
           = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
         = f.hidden_field :state, value: nil
         - Tourist::POTENTIAL_STATES.each do |state|
-          %p.state
+          %p.state{ class: "#{state}" }
             = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
             = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
+        %p= f.label :refused_note
+        = f.text_field :refused_note
+        %p= f.label I18n.t('.potential_states.refusal_reason')
+        = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 

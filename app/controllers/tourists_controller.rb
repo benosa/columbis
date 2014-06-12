@@ -30,6 +30,7 @@ class TouristsController < ApplicationController
 
   def create
     @tourist.company = current_company
+    @tourist.set_params(params[:tourist])
     @tourist.user = current_user
     set_images
     if @tourist.save

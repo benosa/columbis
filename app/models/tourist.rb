@@ -1,12 +1,13 @@
 # -*- encoding : utf-8 -*-
 class Tourist < ActiveRecord::Base
-  POTENTIAL_STATES = %w[important reserved refused].freeze
+  POTENTIAL_STATES = %w[selection sent revision ready waiting reserved refused].freeze
   SEX_STATES = %w[not_selected male female].freeze
 
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
-                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued, :images_attributes, :file, :class_group
+                  :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
+                  :images_attributes, :file, :class_group, :refused_note
 
   attr_protected :company_id, :user_id
 
@@ -33,6 +34,7 @@ class Tourist < ActiveRecord::Base
   validate :presence_of_full_name
 
   validate :check_for_boss
+  validate :check_refused_reason
 
   # Additional attributes validation
   validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until,
@@ -60,6 +62,7 @@ class Tourist < ActiveRecord::Base
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :passport_valid_until, :date_of_birth, :created_at, :type => :datetime
     has :potential, :type => :boolean
+    has :state, :type => :string
     has :company_id
     has :user_id
 
@@ -112,6 +115,13 @@ class Tourist < ActiveRecord::Base
     end
   end
 
+  def check_refused_reason
+    if tourist_params && tourist_params[:state] == 'refused'
+      if tourist_params[:refused_note].strip == ''
+        self.errors.add(:refused_note, I18n.t('.errors.messages.blank'))
+      end
+    end
+  end
 
   alias_method :name, :full_name
 

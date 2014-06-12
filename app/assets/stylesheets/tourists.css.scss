@@ -6,7 +6,7 @@
 
   // Statuses
   tr {
-    &.important .what_to_do { background: #ED2222; }
+   /* &.important .what_to_do { background: #ED2222; } */
     &.reserved { background: #FF8888; }
     &.refused { background: #CCCCCC; }
   }
@@ -19,6 +19,24 @@
 /*.tourist .first,
 .tourist .first .form_block { width: 450px; }
 .tourist .first .block_title { width: 428px; }*/
+.state.refused {
+  border-top: 1px solid #d5d5d5; padding-top: 10px;
+}
+
+.state.selection label, .state.revision label  {
+  color: #ED2222
+}
+
+.state.reserved label{
+  color: #FF8888
+}
+
+.tourists {
+  tr {
+    &.selection td.state { background: #ED2222; }
+    &.revision td.state { background: #ED2222; }
+  }
+}
 
 .tourist {
   h1 { float: left; }

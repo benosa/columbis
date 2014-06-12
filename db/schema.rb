@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20140610084852) do
-=======
-ActiveRecord::Schema.define(:version => 20131112094735) do
->>>>>>> feature/velez_242
+ActiveRecord::Schema.define(:version => 20140610112937) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -504,6 +500,7 @@ ActiveRecord::Schema.define(:version => 20131112094735) do
     t.string   "passport_issued"
     t.string   "phone_number_valid"
     t.string   "class_group"
+    t.text     "refused_note"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"
@@ -563,7 +560,6 @@ ActiveRecord::Schema.define(:version => 20131112094735) do
     t.string   "phone"
     t.boolean  "use_office_password",                   :default => false
     t.string   "subdomain"
-    t.text     "screen_width"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -37,8 +37,8 @@
             = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
         %p= f.label :refused_note
         = f.text_field :refused_note
-        %p= f.label 'refusal reason'
-        = select_tag 'refusal_reason', options_from_collection_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true}
+        %p= f.label I18n.t('.potential_states.refusal_reason')
+        = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 

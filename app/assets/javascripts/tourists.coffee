@@ -20,6 +20,9 @@ set_tourists_tooltip = (init)->
       )
 
 jQuery ->
+  $('#refusal_reason').on 'change', (e)->
+    $('#tourist_refused_note').attr('value', $(this).val())
+
   if $('.tourist_list').length
     set_tourists_tooltip(true)
     $('body').on 'refreshed', '.current_container', (e)->

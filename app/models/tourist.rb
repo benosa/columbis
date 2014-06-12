@@ -34,6 +34,7 @@ class Tourist < ActiveRecord::Base
   validate :presence_of_full_name
 
   validate :check_for_boss
+  validate :check_refused_reason
 
   # Additional attributes validation
   validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until,
@@ -61,6 +62,7 @@ class Tourist < ActiveRecord::Base
     indexes address(:joint_address), :as => :joint_address, :sortable => true
     has :passport_valid_until, :date_of_birth, :created_at, :type => :datetime
     has :potential, :type => :boolean
+    has :state, :type => :string
     has :company_id
     has :user_id
 
@@ -113,6 +115,13 @@ class Tourist < ActiveRecord::Base
     end
   end
 
+  def check_refused_reason
+    if tourist_params && tourist_params[:state] == 'refused'
+      if tourist_params[:refused_note].strip == ''
+        self.errors.add(:refused_note, I18n.t('.errors.messages.blank'))
+      end
+    end
+  end
 
   alias_method :name, :full_name
 

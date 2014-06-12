@@ -35,6 +35,7 @@ ru:
     waiting: 'На ожидании'
     reserved: 'Забронирован'
     refused: 'Отказался'
+    refusal_reason: 'Список причин'
 
   sex_states_short:
     male: 'М'

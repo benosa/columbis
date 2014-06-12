@@ -6,7 +6,7 @@
 
   // Statuses
   tr {
-    &.important .what_to_do { background: #ED2222; }
+   /* &.important .what_to_do { background: #ED2222; } */
     &.reserved { background: #FF8888; }
     &.refused { background: #CCCCCC; }
   }
@@ -29,6 +29,13 @@
 
 .state.reserved label{
   color: #FF8888
+}
+
+.tourists {
+  tr {
+    &.selection td.state { background: #ED2222; }
+    &.revision td.state { background: #ED2222; }
+  }
 }
 
 .tourist {

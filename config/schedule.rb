@@ -20,8 +20,8 @@ every 1.day, :at => '2:30 am', :roles => [:app] do
 end
 
 every 1.day, :at => '2:40 am', :roles => [:app] do
-  Company.just_soon_become_inactive.mail_tariff_end_soon
-  Company.just_become_inactive.mail_tariff_end
+  runner 'Company.just_soon_become_inactive.mail_tariff_end_soon'
+  runner 'Company.just_become_inactive.mail_tariff_end'
 end
 
 every 1.month, :at => 'start of the month at 3:00 am' do

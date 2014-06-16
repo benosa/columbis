@@ -10,7 +10,8 @@
       %span= t('.wishes')
     %th.what_to_do
       %span= t('.actions')
-    %th.state= sort_link(:state, t('.state'))
+    %th.state= sort_link(:state, t('tourists.form_potential.status'))
+    %th.state= sort_link(:office_id, I18n.t('claims.form.office'))
     %th.actions
       %span= t('actions')
 
@@ -34,6 +35,8 @@
         %p
           - if tourist.state.to_s != '' && tourist.state.to_s != 'important'
             = I18n.t("potential_states.#{tourist.state}")
+      %td.office
+        %p= tourist.office.try(:name)
       %td
         = link_to '', edit_tourist_path(tourist, potential: 1), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
 

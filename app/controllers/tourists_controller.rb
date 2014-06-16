@@ -11,12 +11,12 @@ class TouristsController < ApplicationController
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
         options[:with][:user_id] = params[:user_id].to_i if params[:user_id].present?
         checkout_order(options)
-        scoped = Tourist.search_and_sort(options).includes(:address, (:user if show_potential_clients))
+        scoped = Tourist.search_and_sort(options).includes(:address, :office, (:user if show_potential_clients))
         scoped = scoped.potentials if show_potential_clients
         scoped = search_paginate(scoped, options)
       else
         scoped = Tourist.send(show_potential_clients ? :potentials : :clients)
-        scoped = scoped.accessible_by(current_ability).includes(:address, (:user if show_potential_clients))
+        scoped = scoped.accessible_by(current_ability).includes(:address, :office, (:user if show_potential_clients))
         scoped = scoped.reorder('created_at DESC') if show_potential_clients
         scoped.paginate(:page => params[:page], :per_page => per_page)
       end

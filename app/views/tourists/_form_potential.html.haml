@@ -2,6 +2,8 @@
 - content_for(:error_messages) do
   = f.error_messages
 
+= render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
+
 %fieldset.form_column.form_column-small.first
   .form_block
     .block_title

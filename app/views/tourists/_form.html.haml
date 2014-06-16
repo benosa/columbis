@@ -1,8 +1,9 @@
 - tourist = f.object
 - content_for(:error_messages) do
   = f.error_messages
-- users = current_company.users.reject{ |u| u.role == 'admin' }
-= f.select :assistant_id, users.delete_if{ |o| o.id == tourist.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, wrapper: {class: 'assistant_id-wrap'}
+
+= render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
+
 %fieldset.form_column.form_column-small.first
   .form_block
     .block_title

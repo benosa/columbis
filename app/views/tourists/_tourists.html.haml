@@ -15,6 +15,7 @@
       = sort_link(:joint_address, t('.address'))
     %th.group
       = sort_link(:class_group, t('.class_group'))
+    %th.state= sort_link(:office_id, I18n.t('claims.form.office'))
     %th.actions
       %span= t('actions')
 
@@ -38,6 +39,8 @@
         %p= tourist.address.try(:joint_address)
       %td
         %p= tourist.class_group
+      %td.office
+        %p= tourist.office.try(:name)
       %td
         = link_to '', edit_tourist_path(tourist), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
 

@@ -68,6 +68,7 @@ class Tourist < ActiveRecord::Base
     has :state, :type => :string
     has :company_id
     has :user_id
+    has :office_id
 
     # Add index on date fields for searching
     Tourist.date_indexes :passport_valid_until, :date_of_birth, :created_at do |field, index|

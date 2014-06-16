@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   belongs_to :office
   has_many :tasks
   has_many :user_payments
+  has_many :tourist_comments
 
   before_validation :set_role, :on => :create, :unless => proc{ ROLES.include? self.role  }
   before_validation :generate_login, :on => :create, :if => proc{ self.login.blank?  }

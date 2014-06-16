@@ -107,6 +107,7 @@ ru:
       status: 'Статус'
       potential_to_tourist_warning: 'Клиент %{client} после сохранения будет переведен в туристы. Вы уверены?'
       files: 'Файлы'
+      work_client: 'Работа с Клиентом'
     images:
       file: Файл должен быть не больше 512.0 КБ
     messages:

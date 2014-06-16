@@ -44,5 +44,12 @@
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 
+%fieldset.form_column
+  .form_block
+    .block_title
+      %h2= t('.work_client')
+    .form_block_content
+      .fake_row.fields
+
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

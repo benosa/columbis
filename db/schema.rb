@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140612114326) do
+ActiveRecord::Schema.define(:version => 20140616105232) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -473,6 +473,14 @@ ActiveRecord::Schema.define(:version => 20140612114326) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "applicant",  :default => false
+  end
+
+  create_table "tourist_comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "tourist_id"
+    t.text     "body"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "tourists", :force => true do |t|

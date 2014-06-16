@@ -81,6 +81,24 @@ class TouristsController < ApplicationController
     end
   end
 
+  def create_comment
+    @comment = TouristComments.new(body: params[:body])
+    @comment.user = current_user
+    @comment.tourist = @tourist
+    @comment.save
+ #   Rails.logger.debug "ololo: @tourist"
+    render :json => {
+        :id => @comment
+    }
+  end
+
+  def destroy_comment
+ #   Rails.logger.debug "ololo: @tourist"
+    render :json => {
+        :id => @tourist.inspect
+    }
+  end
+
   private
 
     def set_attrs

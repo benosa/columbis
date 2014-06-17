@@ -83,8 +83,8 @@ Tourism::Application.routes.draw do
   resources :tourists
 
   post '/operators/create_own/:id' => 'operators#create_own', as: 'operator_create_own'
-  get '/tourists/:id/comments/' => 'tourists#create_comment', as: 'tourist_create_comment'
-  get '/tourists/:id/comments/:comment_id/destroy' => 'tourists#destroy_comment', as: 'tourist_destroy_comment'
+  put '/tourists/:id/comments/' => 'tourists#create_comment', as: 'tourist_create_comment'
+  put '/tourists/:id/comments/:comment_id/destroy' => 'tourists#destroy_comment', as: 'tourist_destroy_comment'
 
   # Disable catalogs and addresses
   # resources :addresses

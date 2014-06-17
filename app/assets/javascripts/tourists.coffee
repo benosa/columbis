@@ -64,3 +64,29 @@ jQuery ->
       unless $('#files_block .new_file').length
         $('#files_block .add').trigger('click')
     check_add_file()
+
+  # Add comment
+  $('#add_tourist_comment').on 'click', (e)->
+    e.preventDefault()
+    if $('#comment_body').val()
+      $.ajax
+        context: @
+        url: this.href
+        type: 'post'
+        data: { _method: 'put', body: $('#comment_body').val() }
+        success:(resp)->
+          if (resp.id)
+            $('#gal_image_' + resp.id).remove()
+  #Delete comment
+  $('.delete_tourist_comment').on 'click', (e)->
+    e.preventDefault()
+    if confirm('Удалить?')#$('.upload_images').data('confirm'))
+      $.ajax
+        context: @
+        url: this.href
+        type: 'post'
+        data: { _method: 'put' }
+        success:(resp)->
+          if (resp.id)
+            $('#tourist_comment_' + resp.id).remove()
+

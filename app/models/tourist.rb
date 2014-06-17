@@ -22,7 +22,7 @@ class Tourist < ActiveRecord::Base
 
   has_many :payments, :as => :payer
   has_many :images, as: :imageable
-  has_many :tourist_comments
+  has_many :tourist_comments, :dependent => :destroy, :order => 'created_at DESC'
 
   has_many :tourist_claims, :dependent => :destroy
   has_many :claims, :through => :tourist_claims

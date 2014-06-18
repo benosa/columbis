@@ -44,24 +44,7 @@
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 
-%fieldset.form_column
-  .form_block
-    .block_title
-      %h2= t('.work_client')
-    .form_block_content
-      .comment_form{ id: 'tourist_comment_block' }
-        %textarea{ id: 'comment_body' }
-        %a.add.add_tourist{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment'} Добавить коммент
-        .comments_list{ id: 'tourist_comments_list' }
-          - tourist.tourist_comments.each do |comment|
-            .comment{id: "tourist_comment_#{comment.id}"}
-              %span.date_name
-                = comment.user.full_name
-                = l(comment.created_at, :format => :long)
-              %span.body= comment.body
-              %span.date_name
-                %a.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)} X
-
+= render partial: 'comments', locals: { f: f, tourist: tourist }
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

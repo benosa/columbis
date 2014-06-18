@@ -61,3 +61,5 @@
         = f.select :class_group, current_company.dropdown_values_for('tourist_group'), {include_blank: true}, :class => (is_admin? || is_boss?) ? 'editable-select' : ''
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
+
+= render partial: 'comments', locals: { f: f, tourist: tourist }

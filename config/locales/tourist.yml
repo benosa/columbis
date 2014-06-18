@@ -90,6 +90,7 @@ ru:
       list_of_clients: 'Список клиентов'
     form:
       common: 'Общие данные'
+      add_comment: 'Добавить коммент'
       class_group: 'Группа'
       passport_column: 'Паспортные данные'
       passport: 'Паспорт (серия, номер)'
@@ -111,6 +112,7 @@ ru:
     images:
       file: Файл должен быть не больше 512.0 КБ
     messages:
+      confirm_delete: 'Удалить?'
       created: 'Турист создан'
       updated: 'Турист обновлен'
       destroyed: 'Турист удален'

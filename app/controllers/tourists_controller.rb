@@ -87,17 +87,22 @@ class TouristsController < ApplicationController
     @comment.tourist = @tourist
     @comment.save
     render :json => {
-        :id => @comment
+      :id => @comment.id,
+      :date => l(@comment.created_at, :format => :long),
+      :name => @comment.user.full_name,
+      :body => params[:body],
+      :path => tourist_destroy_comment_path(@tourist, @comment)
     }
   end
 
   def destroy_comment
-   # Rails.logger.debug "ololo: #{params}"
     @comment = TouristComment.find(params[:comment_id])
-    @comment.destroy
-    render :json => {
-        :id => params[:comment_id]
-    }
+    if @comment.user == current_user && @comment.created_at.day == Date.today.day
+      @comment.destroy
+      render :json => {
+          :id => params[:comment_id]
+      }
+    end
   end
 
   private

@@ -1,0 +1,19 @@
+%fieldset.form_column
+  .form_block
+    .block_title
+      %h2= I18n.t('tourists.form_potential.work_client')
+    .form_block_content
+      .comment_form{ id: 'tourist_comment_block' }
+        %textarea{ id: 'comment_body' }
+        %a.add.add_tourist{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment'}
+          = I18n.t('tourists.form.add_comment')
+        .comments_list{ id: 'tourist_comments_list' }
+          - tourist.tourist_comments.each do |comment|
+            .comment{id: "tourist_comment_#{comment.id}"}
+              %span.date_name
+                = comment.user.try(:full_name)
+                = l(comment.created_at, :format => :long)
+              %span.body= comment.body
+              - if comment.user == current_user && comment.created_at.day == Date.today.day
+                %span.date_name
+                  %a.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)} X

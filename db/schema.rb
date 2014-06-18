@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140616105232) do
+ActiveRecord::Schema.define(:version => 20140618110302) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -500,7 +500,6 @@ ActiveRecord::Schema.define(:version => 20140616105232) do
     t.string   "email"
     t.integer  "user_id"
     t.text     "wishes"
-    t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
     t.string   "sex",                  :default => "not_selected"

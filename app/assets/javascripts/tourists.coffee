@@ -19,6 +19,19 @@ set_tourists_tooltip = (init)->
           $(@).tooltip('hide')
       )
 
+ajax_delete_comment = () ->
+  $('.delete_tourist_comment').on 'click', (e)->
+    e.preventDefault()
+    if confirm('Удалить?')#$('.upload_images').data('confirm'))
+      $.ajax
+        context: @
+        url: this.href
+        type: 'post'
+        data: { _method: 'put' }
+        success:(resp)->
+          if (resp.id)
+            $('#tourist_comment_' + resp.id).remove()
+
 jQuery ->
   $('#refusal_reason').on 'change', (e)->
     $('#tourist_refused_note').attr('value', $(this).val())
@@ -76,17 +89,11 @@ jQuery ->
         data: { _method: 'put', body: $('#comment_body').val() }
         success:(resp)->
           if (resp.id)
-            $('#gal_image_' + resp.id).remove()
-  #Delete comment
-  $('.delete_tourist_comment').on 'click', (e)->
-    e.preventDefault()
-    if confirm('Удалить?')#$('.upload_images').data('confirm'))
-      $.ajax
-        context: @
-        url: this.href
-        type: 'post'
-        data: { _method: 'put' }
-        success:(resp)->
-          if (resp.id)
-            $('#tourist_comment_' + resp.id).remove()
+            $('#tourist_comments_list').prepend('<div id="tourist_comment_' + resp.id + '" class="comment">' +
+            '<span class="date_name">' + resp.name + ' ' + resp.date + '</span> ' +
+            '<span class="body">' + resp.body + '</span>' +
+            ' <a class="delete_tourist_comment" href="' + resp.path + '">X</a></div>')
+            ajax_delete_comment()
 
+  #Delete comment
+  ajax_delete_comment()

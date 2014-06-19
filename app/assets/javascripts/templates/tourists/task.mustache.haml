@@ -1,0 +1,5 @@
+- id_prefix = 'tourist_tourist_tasks_attributes_{{id}}'
+- name_prefix = 'tourist[tourist_tasks_attributes][{{id}}]'
+
+.task_block
+  = text_field_tag "#{name_prefix}[name]", '{{name}}', :id => "#{id_prefix}_name"

@@ -18,7 +18,6 @@ ru:
         email: 'Адрес электронной почты'
         special_offer: 'Спецпредложения'
         wishes: 'Куда хочет поехать'
-        actions: 'Что сделать'
         created_at: 'Создан'
         state: 'Статус'
         sex: 'Пол'
@@ -74,7 +73,7 @@ ru:
       email: 'Email'
       manager: 'Менеджер'
       wishes: 'Хочет'
-      actions: 'Что сделать'
+      actions: 'Комментарий'
     show:
       tourists: 'Список туристов'
     edit:
@@ -91,6 +90,7 @@ ru:
     form:
       common: 'Общие данные'
       add_comment: 'Добавить коммент'
+      add_task: 'Добавить задачу'
       class_group: 'Группа'
       passport_column: 'Паспортные данные'
       passport: 'Паспорт (серия, номер)'
@@ -99,6 +99,7 @@ ru:
       email: 'Email'
       special_offer: 'Получать спецпредложения на телефон и электронную почту'
       tourist_to_potential_warning: 'Турист %{tourist} после сохранения будет переведен в потенциальные клиенты. Вы уверены?'
+      tasks: 'Задачи'
     files:
       files: 'Файлы'
       new_files_message: Файл должен быть не больше 512.0 КБ

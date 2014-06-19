@@ -7,7 +7,7 @@ class Tourist < ActiveRecord::Base
                   :passport_series, :passport_number, :passport_valid_until,
                   :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
-                  :images_attributes, :file, :class_group, :refused_note, :office
+                  :images_attributes, :file, :class_group, :refused_note, :office, :tourist_tasks_attributes
 
   attr_protected :company_id, :user_id
 
@@ -23,6 +23,7 @@ class Tourist < ActiveRecord::Base
   has_many :payments, :as => :payer
   has_many :images, as: :imageable
   has_many :tourist_comments, :dependent => :destroy, :order => 'created_at DESC'
+  has_many :tourist_tasks, :dependent => :destroy
 
   has_many :tourist_claims, :dependent => :destroy
   has_many :claims, :through => :tourist_claims
@@ -33,6 +34,7 @@ class Tourist < ActiveRecord::Base
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank
   accepts_nested_attributes_for :images, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :tourist_tasks, allow_destroy: true, reject_if: :all_blank
 
   validates_presence_of :company_id
   validate :presence_of_full_name

@@ -29,8 +29,9 @@
         %span= tourist.email
       %td.wishes{ title: tourist.wishes }
         %p= tourist.wishes
-      %td.what_to_do{ title: tourist.actions }
-        %p= tourist.actions
+      - comment = tourist.tourist_comments.count > 0 ? tourist.tourist_comments.last.body : ""
+      %td.what_to_do{ title: comment }
+        %p= comment
       %td.state
         %p
           - if tourist.state.to_s != '' && tourist.state.to_s != 'important'

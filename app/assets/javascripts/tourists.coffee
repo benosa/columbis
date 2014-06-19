@@ -64,6 +64,21 @@ jQuery ->
     new_files_count = $('#files_block .new_file').length
     if files_count + new_files_count > 10 then $('#add_file_block').hide() else $('#add_file_block').show();
 
+  $('#add_tourist_task').on 'click', (e)->
+    e.preventDefault()
+    last_id = $('#tourist_tasks .task_block:last input').attr('id')
+    if last_id then num = parseInt last_id.replace(/\D/g, '') else num = -1
+    name = "new11"
+    tmpl = JST['tourists/task'].render(id: num + 1, name: name)
+    $('.tasks_block').prepend(tmpl)
+    # last_id = $('#files_block .new_file:last input[type=file]').attr('id')
+    # if last_id then num = parseInt last_id.replace(/\D/g, '') else num = 0
+    # tmpl = JST['tourists/file'].render(id: num + 1)
+    # $('#add_file_block').before(tmpl)
+    # $('#files_block .new_file.new_record').removeClass('new_record')
+    #   .find('.file input[type=file]').bind('change focus click', SITE.fileInputs)
+    # check_add_file()
+
   # Delete file
   $('#files_block').on 'click', '.del', (e)->
     e.preventDefault()

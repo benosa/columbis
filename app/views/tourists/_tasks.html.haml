@@ -1,0 +1,25 @@
+%fieldset.form_column.form_column-small
+  .form_block
+    .block_title
+      %h2= I18n.t('tourists.form.tasks')
+    .form_block_content
+      .fake_row.fields{ id: 'tourist_tasks' }
+        %p
+          %input{id: 'new_task_name'}
+          %a.add.add_tourist{href: "#", id: 'add_tourist_task'}
+            = I18n.t('tourists.form.add_task')
+        .tasks_block{data: {current_user: current_user.id}}
+          = f.fields_for :tourist_tasks do |fi|
+            - task = fi.object
+            - close_message = I18n.t('tourists.form_potential.task_close', user_name: task.user.full_name)
+            - done = task.state == 'done'
+            .task_block{data: { user: task.user.id, close_by: done ? close_message : "" }}
+              %p{ title: done ? task.user.full_name : "" }
+                = check_box_tag 'task_state', task.state, done, { class: 'tourist_task_state' }
+                = fi.text_field :name, size: 0, class: done ? 'disbled name_field' : 'name_field'
+              = link_to '', '#', :class => 'del delete', :title => t('delete')
+              = fi.hidden_field :_destroy
+              = fi.hidden_field :state, {class: 'tourist_task_state_input'}
+              = fi.hidden_field :user_id, {class: 'tourist_task_user_input'}
+              = fi.hidden_field :id
+      .fake_row.new_files

@@ -33,6 +33,8 @@ ajax_delete_comment = () ->
             $('#tourist_comment_' + resp.id).remove()
 
 jQuery ->
+  $('.tasks_block .disbled').attr('disabled', 'disabled')
+
   $('#refusal_reason').on 'change', (e)->
     $('#tourist_refused_note').attr('value', $(this).val())
 
@@ -63,21 +65,6 @@ jQuery ->
     files_count = $('#files_block .file_link').length
     new_files_count = $('#files_block .new_file').length
     if files_count + new_files_count > 10 then $('#add_file_block').hide() else $('#add_file_block').show();
-
-  $('#add_tourist_task').on 'click', (e)->
-    e.preventDefault()
-    last_id = $('#tourist_tasks .task_block:last input').attr('id')
-    if last_id then num = parseInt last_id.replace(/\D/g, '') else num = -1
-    name = "new11"
-    tmpl = JST['tourists/task'].render(id: num + 1, name: name)
-    $('.tasks_block').prepend(tmpl)
-    # last_id = $('#files_block .new_file:last input[type=file]').attr('id')
-    # if last_id then num = parseInt last_id.replace(/\D/g, '') else num = 0
-    # tmpl = JST['tourists/file'].render(id: num + 1)
-    # $('#add_file_block').before(tmpl)
-    # $('#files_block .new_file.new_record').removeClass('new_record')
-    #   .find('.file input[type=file]').bind('change focus click', SITE.fileInputs)
-    # check_add_file()
 
   # Delete file
   $('#files_block').on 'click', '.del', (e)->
@@ -112,3 +99,50 @@ jQuery ->
 
   #Delete comment
   ajax_delete_comment()
+
+  #Add task
+  $('#add_tourist_task').on 'click', (e)->
+    e.preventDefault()
+    last_id = $('#tourist_tasks .task_block:last input:last').attr('id')
+    if last_id then num = parseInt last_id.replace(/\D/g, '') else num = -1
+    name = $('#new_task_name').val().trim()
+    user = $('.tasks_block').data('current_user')
+    if name != ''
+      tmpl = JST['tourists/task'].render(id: num + 1, name: name, user: user)
+      $('.tasks_block').append(tmpl)
+
+  #delete task
+  $('#tourist_tasks').on 'click', '.del', (e)->
+    e.preventDefault()
+    if confirm('Уверены, что хотите удалить?')
+      $f = $(@).closest('.task_block')
+      if $f.length && $f.find(':hidden[name*=_destroy]').length
+        $f.find(':hidden[name*=_destroy]').val('1')
+        $f.hide()
+      else
+        $f.remove()
+
+  $('.tourist_task_state').on 'change', (e)->
+    $t_block = $(@).closest('.task_block')
+    if $(@).attr('checked')
+      $t_block.find('.tourist_task_state_input').val('done')
+      user = $('.tasks_block').data('current_user')
+      $t_block.find('.name_field').attr('disabled', 'disabled')
+    else
+      if !$(@).hasClass('new')
+        confirm_message = $t_block.data('close_by')
+        if confirm_message != ''
+          if confirm(confirm_message)
+            $t_block.find('.tourist_task_state_input').val('new')
+            user = $t_block.data('user')
+            $t_block.find('.name_field').removeAttr('disabled')
+          else
+            $(@).attr('checked', 'checked')
+        else
+          $t_block.find('.tourist_task_state_input').val('new')
+          user = $t_block.data('user')
+          $t_block.find('.name_field').removeAttr('disabled')
+
+    $t_block.find('.tourist_task_user_input').val(user)
+
+

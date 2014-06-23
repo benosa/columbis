@@ -105,6 +105,7 @@ ru:
       new_files_message: Файл должен быть не больше 512.0 КБ
       add_file: 'Еще файл'
     form_potential:
+      task_close: 'Задача была завершена %{user_name}. Вы уверены, что хотите ее возобновить?'
       common: 'Общие данные'
       status: 'Статус'
       potential_to_tourist_warning: 'Клиент %{client} после сохранения будет переведен в туристы. Вы уверены?'

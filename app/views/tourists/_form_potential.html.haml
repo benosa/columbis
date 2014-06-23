@@ -40,24 +40,7 @@
         %p= f.label I18n.t('.potential_states.refusal_reason')
         = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
-%fieldset.form_column.form_column-small
-  .form_block
-    .block_title
-      %h2= I18n.t('tourists.form.tasks')
-    .form_block_content
-      .fake_row.fields{ id: 'tourist_tasks' }
-        %p
-          %input{id: 'new_task_name'}
-          %a.add.add_tourist{href: "#", id: 'add_tourist_task'}
-            = I18n.t('tourists.form.add_task')
-        .tasks_block
-          = f.fields_for :tourist_tasks do |fi|
-            .task_block
-              = fi.text_field(:name)
-              = fi.hidden_field(:_destroy)
-              = fi.hidden_field(:state)
-              = fi.hidden_field :id
-      .fake_row.new_files
+= render partial: 'tasks', locals: { f: f, tourist: tourist }
 
 = render partial: 'files', locals: { f: f, images: tourist.images }
 

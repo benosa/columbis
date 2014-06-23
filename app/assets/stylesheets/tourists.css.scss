@@ -89,6 +89,15 @@
 .comment_form .comment {
   margin-bottom: 10px;
 }
+
+#tourist_tasks .tasks_block {
+  overflow: hidden;
+  p {float: left;}
+  .del { float: right; margin-right: 15px; }
+  input[ type="checkbox"] {
+    display: inline-block;
+  }
+}
 // .edit_tourists {
 //   .form_block {
 //     margin-top: 25px;

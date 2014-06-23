@@ -91,10 +91,8 @@ jQuery ->
         data: { _method: 'put', body: $('#comment_body').val() }
         success:(resp)->
           if (resp.id)
-            $('#tourist_comments_list').prepend('<div id="tourist_comment_' + resp.id + '" class="comment">' +
-            '<span class="date_name">' + resp.name + ' ' + resp.date + '</span> ' +
-            '<span class="body">' + resp.body + '</span>' +
-            ' <a class="delete_tourist_comment" href="' + resp.path + '">X</a></div>')
+            tmpl = JST['tourists/comment'].render(resp: resp)
+            $('#tourist_comments_list ul').prepend(tmpl)
             ajax_delete_comment()
 
   #Delete comment

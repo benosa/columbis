@@ -1,50 +1,50 @@
 - tourist = f.object
 - content_for(:error_messages) do
   = f.error_messages
+.tourist
+  = render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
 
-= render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
+  %fieldset.form_column.form_column-small.first
+    .form_block
+      .block_title
+        %h2= t('.common')
+      .form_block_content
+        .fake_row.fields
+          %p= f.label :full_name, :required => true
+          = f.text_field :full_name, :class => 'wide'
+          %p= f.label :sex
+          = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
+          %p= f.label :phone_number
+          = f.text_field :phone_number, :class => 'wide'
+          %p= f.label :email
+          = f.text_field :email, :class => 'wide'
+          %p= f.label :wishes
+          = f.text_area :wishes, :class => 'wide wishes'
 
-%fieldset.form_column.form_column-small.first
-  .form_block
-    .block_title
-      %h2= t('.common')
-    .form_block_content
-      .fake_row.fields
-        %p= f.label :full_name, :required => true
-        = f.text_field :full_name, :class => 'wide'
-        %p= f.label :sex
-        = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
-        %p= f.label :phone_number
-        = f.text_field :phone_number, :class => 'wide'
-        %p= f.label :email
-        = f.text_field :email, :class => 'wide'
-        %p= f.label :wishes
-        = f.text_area :wishes, :class => 'wide wishes'
+  %fieldset.form_column.form_column-small
+    .form_block
+      .block_title
+        %h2= t('.status')
+      .form_block_content
+        .fake_row.fields
+          %p.potential_wrapper
+            = f.check_box :potential, id: 'tourist_potential'
+            = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
+          = f.hidden_field :state, value: nil
+          - Tourist::POTENTIAL_STATES.each do |state|
+            %p.state{ class: "#{state}" }
+              = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
+              = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: "checkbox left_checkbox #{state}"
+          .state
+            %p.refuse_reason
+              = f.text_field :refused_note
+              = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
-%fieldset.form_column.form_column-small
-  .form_block
-    .block_title
-      %h2= t('.status')
-    .form_block_content
-      .fake_row.fields
-        %p.potential_wrapper
-          = f.check_box :potential, id: 'tourist_potential'
-          = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
-        = f.hidden_field :state, value: nil
-        - Tourist::POTENTIAL_STATES.each do |state|
-          %p.state{ class: "#{state}" }
-            = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
-            = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: 'checkbox left_checkbox'
-        %p= f.label :refused_note
-        = f.text_field :refused_note
-        %p= f.label I18n.t('.potential_states.refusal_reason')
-        = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
+  = render partial: 'tasks', locals: { f: f, tourist: tourist }
 
-= render partial: 'tasks', locals: { f: f, tourist: tourist }
+  = render partial: 'files', locals: { f: f, images: tourist.images }
 
-= render partial: 'files', locals: { f: f, images: tourist.images }
+  = render partial: 'comments', locals: { f: f, tourist: tourist }
 
-= render partial: 'comments', locals: { f: f, tourist: tourist }
-
-%fieldset.form_submit{ :style => 'display: none; height: 0;' }
-  = f.submit
+  %fieldset.form_submit{ :style => 'display: none; height: 0;' }
+    = f.submit

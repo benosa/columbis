@@ -1,0 +1,9 @@
+%li.clearfix{id: 'tourist_comment_{{resp.id}}'}
+  .managers_name
+    %p
+      = '{{resp.name}}'
+    %p.date
+      = '{{resp.date}}'
+  .comment= '{{resp.body}}'
+  %span.date_name
+    %a.delete_tourist_comment{href: '{{resp.path}}'} X

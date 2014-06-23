@@ -98,8 +98,56 @@
     display: inline-block;
   }
 }
-// .edit_tourists {
-//   .form_block {
-//     margin-top: 25px;
-//   }
-// }
+
+// Additional
+.tourist {
+  .refused {width:93%;}
+  .filter_area { margin-top: 25px; }
+  .filter {width: 100%; height: auto; padding: 0; }
+  .filter_row { width: 100%; }
+  .filter_block {  float: left; margin-right: 20px; width: 200px; } 
+  .wrap-select .ik_select .ik_select_link_text { width: 200px; }
+  .filter label:first-child { float: none; }
+  .state .note_red { color: #f00; }
+  .state .note_rose { color: #FFAEB5; }
+  label.refused  { font-size: 14px; font-weight: bold;}
+  .wrap-input { float: left;  }
+  .add_btn { border: none;}
+   .tasks_states { padding-top: 15px; border-top: 1px solid #d5d5d5; margin-right: 20px; margin-top: 5px;}
+  .tasks_states label.checkbox.left_checkbox { padding: 0; margin-right: 7px; }
+  .state_name { width: 224px; }
+  .tasks_block {
+    input.autocomplete  { width: 165px; }
+    .add_btn { float:right;
+      .add { width: 67px; border-radius: 5px; margin-top: 0; }
+    }
+
+   }
+  .clients_tasks {
+    .fake_row textarea { height: 85px; width: 100%; }
+    .form_block_content { padding-right: 20px; padding-bottom: 5px; }
+  }
+
+  .add-comment { text-align: right; margin-bottom: 10px;}
+  .clients_tasks_log {
+    background: #fff; color: #000; border: solid 1px #ccc; border-radius: 4px; padding: 10px;
+    li+li { margin-top: 15px; }
+    p { margin-bottom: 0; }
+    .managers_name  { width: 130px; float:left; margin-right: 20px;
+      .date { color: #f00; }
+    }
+    .comment { width: 505px; float: left; color: #0892FF; }
+
+  }
+  .common_info {
+    .wrap-select { width: 266px; }
+    .form_block_content { padding-bottom: 10px; }
+  }
+  .state {
+    .refuse_reason {
+      overflow: hidden;
+      input { float: left; width: 130px; }
+      .ik_select { float: left; width: 130px !important; }
+    }
+  }
+}

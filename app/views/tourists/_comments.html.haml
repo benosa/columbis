@@ -1,19 +1,23 @@
-%fieldset.form_column
-  .form_block
+%fieldset.form_column.form_column-large
+  .form_block.clients_tasks
     .block_title
       %h2= I18n.t('tourists.form_potential.work_client')
     .form_block_content
-      .comment_form{ id: 'tourist_comment_block' }
+      .fake_row.fields{ id: 'tourist_comment_block' }
         %textarea{ id: 'comment_body' }
-        %a.add.add_tourist{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment'}
-          = I18n.t('tourists.form.add_comment')
-        .comments_list{ id: 'tourist_comments_list' }
-          - tourist.tourist_comments.each do |comment|
-            .comment{id: "tourist_comment_#{comment.id}"}
-              %span.date_name
-                = comment.user.try(:full_name)
-                = l(comment.created_at, :format => :long)
-              %span.body= comment.body
-              - if comment.user == current_user && comment.created_at.day == Date.today.day
-                %span.date_name
-                  %a.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)} X
+        .add-comment
+          %a{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment'}
+            = I18n.t('tourists.form.add_comment')
+        .clients_tasks_log.clearfix{ id: 'tourist_comments_list' }
+          %ul
+            - tourist.tourist_comments.each do |comment|
+              %li.clearfix{id: "tourist_comment_#{comment.id}"}
+                .managers_name
+                  %p
+                    = comment.user.try(:full_name)
+                  %p.date
+                    = l(comment.created_at, :format => :long)
+                .comment= comment.body
+                - if comment.user == current_user && comment.created_at.day == Date.today.day
+                  %span.date_name
+                    %a.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)} X

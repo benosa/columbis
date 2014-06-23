@@ -4,10 +4,12 @@
       %h2= I18n.t('tourists.form.tasks')
     .form_block_content
       .fake_row.fields{ id: 'tourist_tasks' }
-        %p
-          %input{id: 'new_task_name'}
-          %a.add.add_tourist{href: "#", id: 'add_tourist_task'}
-            = I18n.t('tourists.form.add_task')
+        .clearfix
+          %p
+            %input{id: 'new_task_name'}
+            .add_btn
+              %a.add.add_tourist{href: "#", id: 'add_tourist_task'}
+                = I18n.t('tourists.form.add_task')
         .tasks_block{data: {current_user: current_user.id}}
           = f.fields_for :tourist_tasks do |fi|
             - task = fi.object

@@ -89,7 +89,7 @@ ru:
       list_of_clients: 'Список клиентов'
     form:
       common: 'Общие данные'
-      add_comment: 'Добавить коммент'
+      add_comment: 'Добавить комментарий'
       add_task: 'Добавить задачу'
       class_group: 'Группа'
       passport_column: 'Паспортные данные'

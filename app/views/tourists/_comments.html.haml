@@ -19,5 +19,5 @@
                     = l(comment.created_at, :format => :long)
                 .comment= comment.body
                 - if comment.user == current_user && comment.created_at.day == Date.today.day
-                  %span.date_name
-                    %a.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)} X
+                  .del_block
+                    %a.del.delete.delete_tourist_comment{href: tourist_destroy_comment_path(tourist, comment)}

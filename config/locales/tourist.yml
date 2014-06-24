@@ -90,7 +90,7 @@ ru:
     form:
       common: 'Общие данные'
       add_comment: 'Добавить комментарий'
-      add_task: 'Добавить задачу'
+      add_task: 'Добавить'
       class_group: 'Группа'
       passport_column: 'Паспортные данные'
       passport: 'Паспорт (серия, номер)'

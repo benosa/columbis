@@ -21,7 +21,7 @@
           %p= f.label :wishes
           = f.text_area :wishes, :class => 'wide wishes'
 
-  %fieldset.form_column.form_column-small
+  %fieldset.form_column.form_column-small.states_block
     .form_block
       .block_title
         %h2= t('.status')
@@ -44,7 +44,8 @@
 
   = render partial: 'files', locals: { f: f, images: tourist.images }
 
-  = render partial: 'comments', locals: { f: f, tourist: tourist }
+  - unless tourist.new_record?
+    = render partial: 'comments', locals: { f: f, tourist: tourist }
 
   %fieldset.form_submit{ :style => 'display: none; height: 0;' }
     = f.submit

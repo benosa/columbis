@@ -1,6 +1,9 @@
 - users = current_company.users.reject{ |u| u.role == 'admin' }
 .filter
-  = f.label :assistant_id, I18n.t('claims.form.assistant'), :required => false
-  = f.select :assistant_id, users.delete_if{ |o| o.id == tourist.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, wrapper: {class: 'assistant_id-wrap'}
-  = f.label :office_id, t('claims.form.office'), :required => false
-  = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => tourist.office.nil?}, wrapper: {class: 'office_id-wrap'}
+  .filter_row
+    .filter_block
+      = f.label :assistant_id, I18n.t('claims.form.assistant'), :required => false
+      = f.select :assistant_id, users.delete_if{ |o| o.id == tourist.user.try(:id) }.map {|o| [ o.name_for_list, o.id ] }, {:include_blank => true}, wrapper: {class: 'assistant_id-wrap'}
+    .filter_block
+      = f.label :office_id, t('claims.form.office'), :required => false
+      = f.select :office_id, current_company.offices.map {|o| [ o.name, o.id ]}, {:include_blank => tourist.office.nil?}, wrapper: {class: 'office_id-wrap'}

@@ -22,7 +22,7 @@ set_tourists_tooltip = (init)->
 ajax_delete_comment = () ->
   $('.delete_tourist_comment').on 'click', (e)->
     e.preventDefault()
-    if confirm('Удалить?')#$('.upload_images').data('confirm'))
+    if confirm('Удалить?')
       $.ajax
         context: @
         url: this.href
@@ -44,9 +44,9 @@ jQuery ->
       set_tourists_tooltip()
 
   # Form
-  $('.tourist.edit_operator textarea').autosize()
-  $('.tourist.edit_operator .state input[type=checkbox]').on 'change', (e)->
-    $states = $('.tourist.edit_operator .state').not $(this).closest('.state')
+  $('.tourist .states_block textarea').autosize()
+  $('.tourist .states_block .state input[type=checkbox]').on 'change', (e)->
+    $states = $('.tourist .states_block .state').not $(this).closest('.state')
     $states.find('label.checkbox').removeClass('active')
     $states.find('input[type=checkbox]').attr('checked', false)
 
@@ -107,7 +107,7 @@ jQuery ->
     user = $('.tasks_block').data('current_user')
     if name != ''
       tmpl = JST['tourists/task'].render(id: num + 1, name: name, user: user)
-      $('.tasks_block').append(tmpl)
+      $('#task_values').append(tmpl)
 
   #delete task
   $('#tourist_tasks').on 'click', '.del', (e)->
@@ -120,11 +120,17 @@ jQuery ->
       else
         $f.remove()
 
+  $('.checkbox_task').on 'click', (e)->
+    e.preventDefault()
+    $(@).toggleClass('active');
+    $checkbox = $(@).closest('.task_block').find('input[type=checkbox]')
+    $checkbox.attr('checked', $(@).hasClass('active')).trigger('change');
+
   $('.tourist_task_state').on 'change', (e)->
     $t_block = $(@).closest('.task_block')
     if $(@).attr('checked')
       $t_block.find('.tourist_task_state_input').val('done')
-      user = $('.tasks_block').data('current_user')
+      user = $('#task_values').data('current_user')
       $t_block.find('.name_field').attr('disabled', 'disabled')
     else
       if !$(@).hasClass('new')
@@ -140,6 +146,13 @@ jQuery ->
           $t_block.find('.tourist_task_state_input').val('new')
           user = $t_block.data('user')
           $t_block.find('.name_field').removeAttr('disabled')
+
+    if $(@).attr('checked')
+      active = true
+    if active
+      $t_block.find('.checkbox_task').addClass('active')
+    else
+      $t_block.find('.checkbox_task').removeClass('active')
 
     $t_block.find('.tourist_task_user_input').val(user)
 

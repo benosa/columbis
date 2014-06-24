@@ -627,13 +627,13 @@ input[type="checkbox"]{display: none;}
 		.edit_page .filter label:first-child{margin-left: 0px;}
 		.edit_page .filter label.checkbox{margin: 4px 0 0 3px;}
 		.edit_page .filter label.checkbox.right_checkbox{margin: 4px 0 0 30px;}
-		.checkbox{
+		.checkbox, .checkbox_task{
 			background: url(/assets/new_design/images/checkbox.png) no-repeat;
 			display: inline-block;
 			min-height: 15px;
 			min-width: 15px;
 		}
-			.checkbox.active{background: url(/assets/new_design/images/checkbox.png) left -30px no-repeat;}
+			.checkbox.active, .checkbox_task.active{background: url(/assets/new_design/images/checkbox.png) left -30px no-repeat;}
 			.checkbox.right_checkbox{
 				background-position: right 0px;
 				padding-right: 25px;

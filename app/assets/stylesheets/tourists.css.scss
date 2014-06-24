@@ -103,10 +103,16 @@
 .tourist {
   .refused {width:93%;}
   .filter_area { margin-top: 25px; }
-  .filter {width: 100%; height: auto; padding: 0; }
+  .filter {width: 100%; height: auto; padding: 0;margin-top:5px;}
   .filter_row { width: 100%; }
-  .filter_block {  float: left; margin-right: 20px; width: 200px; } 
-  .wrap-select .ik_select .ik_select_link_text { width: 200px; }
+
+  .filter_block {
+     float: left; margin-right: 20px; width: 200px;
+    .ik_select {
+      width: 200px !important;
+     .ik_select_link_text, .ik_select_link { width: 200px; }
+    }
+  }
   .filter label:first-child { float: none; }
   .state .note_red { color: #f00; }
   .state .note_rose { color: #FFAEB5; }
@@ -136,7 +142,8 @@
     .managers_name  { width: 130px; float:left; margin-right: 20px;
       .date { color: #f00; }
     }
-    .comment { width: 505px; float: left; color: #0892FF; }
+    .comment { width: 495px; float: left; color: #0892FF; }
+    .del_block {width:5px; float: right;}
 
   }
   .common_info {

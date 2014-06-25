@@ -45,7 +45,7 @@
 
     = render partial: 'files', locals: { f: f, images: tourist.images }
 
-  .right-col
+  .right-col.clearfix
     - unless tourist.new_record?
       = render partial: 'comments', locals: { f: f, tourist: tourist }
 

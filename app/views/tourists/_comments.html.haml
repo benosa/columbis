@@ -5,8 +5,8 @@
     .form_block_content
       .fake_row.fields{ id: 'tourist_comment_block' }
         %textarea{ id: 'comment_body' }
-        .add-comment
-          %a{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment'}
+        .add-btn.clearfix
+          %a{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment', class: 'add add_tourist'}
             = I18n.t('tourists.form.add_comment')
         .clients_tasks_log.clearfix{ id: 'tourist_comments_list' }
           %ul

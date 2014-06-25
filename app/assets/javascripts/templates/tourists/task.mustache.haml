@@ -4,7 +4,7 @@
 %li.state.task_block.new
   %label.left_checkbox.checkbox_task
   = check_box_tag 'task_state', 'new', false, { class: 'tourist_task_state' }
-  = text_field_tag "#{name_prefix}[name]", '{{name}}', :id => "#{id_prefix}_name"
+  = text_field_tag "#{name_prefix}[name]", '{{name}}', :id => "#{id_prefix}_name", :class => 'state_name'
   = text_field_tag "#{name_prefix}[user_id]", '{{user}}', :id => "#{id_prefix}_user_id", :hidden => true, :class => 'tourist_task_user_input'
   = text_field_tag "#{name_prefix}[state]", 'new', :id => "#{id_prefix}_state", :hidden => true, :class => 'tourist_task_state_input'
   = link_to '', '#', :class => 'del delete', :title => t('delete')

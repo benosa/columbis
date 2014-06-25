@@ -101,11 +101,13 @@
 
 // Additional
 .tourist {
+  .left-col .tourist_tasks_wrap {margin-top:0px !important;}
+  .left-col .tourist_files_wrap { margin: 0px !important;}
   .refused {width:93%;}
   .filter_area { margin-top: 25px; }
-  .filter {width: 100%; height: auto; padding: 0;margin-top:5px;}
+  .filter {width: 100%; height: auto; padding: 0;margin-top:5px; }
   .filter_row { width: 100%; }
-
+  .filter_block {  float: left; margin-right: 20px; width: 200px; } 
   .filter_block {
      float: left; margin-right: 20px; width: 200px;
     .ik_select {
@@ -113,37 +115,43 @@
      .ik_select_link_text, .ik_select_link { width: 200px; }
     }
   }
+  .wrap-select .ik_select .ik_select_link_text { width: 200px; }
   .filter label:first-child { float: none; }
   .state .note_red { color: #f00; }
   .state .note_rose { color: #FFAEB5; }
-  label.refused  { font-size: 14px; font-weight: bold;}
+  label.refused  {  font-weight: bold;}
   .wrap-input { float: left;  }
   .add_btn { border: none;}
    .tasks_states { padding-top: 15px; border-top: 1px solid #d5d5d5; margin-right: 20px; margin-top: 5px;}
-  .tasks_states label.checkbox.left_checkbox { padding: 0; margin-right: 7px; }
-  .state_name { width: 224px; }
+  .tasks_states label.left_checkbox { padding: 0; margin-right: 7px; }
+  .state_name { width: 212px; }
   .tasks_block {
-    input.autocomplete  { width: 165px; }
+    input.autocomplete  { width: 175px !important;   }
     .add_btn { float:right;
       .add { width: 67px; border-radius: 5px; margin-top: 0; }
     }
 
    }
+  .right-col .clients_tasks {width: 100% !important;}
   .clients_tasks {
-    .fake_row textarea { height: 85px; width: 100%; }
+    .fake_row textarea { height: 85px; width: 100%; padding-left: 0;}
     .form_block_content { padding-right: 20px; padding-bottom: 5px; }
+    .add_btn { display: block; padding-right:0;  text-align: right; overflow: hidden; }
+    .add_tourist {  margin-bottom: 10px; background: url("/assets/new_design/images/add_comment.png")  no-repeat; 
+      width: 146px; display: block; float: right;
+    }
+    min-width: 320px; width: auto;
   }
 
-  .add-comment { text-align: right; margin-bottom: 10px;}
+
   .clients_tasks_log {
     background: #fff; color: #000; border: solid 1px #ccc; border-radius: 4px; padding: 10px;
     li+li { margin-top: 15px; }
     p { margin-bottom: 0; }
-    .managers_name  { width: 130px; float:left; margin-right: 20px;
+    .managers_name  { width: 22%; float:left; margin-right: 20px;
       .date { color: #f00; }
     }
-    .comment { width: 495px; float: left; color: #0892FF; }
-    .del_block {width:5px; float: right;}
+    .comment { width:70%; float: left; color: #0892FF; }
 
   }
   .common_info {
@@ -151,10 +159,16 @@
     .form_block_content { padding-bottom: 10px; }
   }
   .state {
-    .refuse_reason {
-      overflow: hidden;
-      input { float: left; width: 130px; }
-      .ik_select { float: left; width: 130px !important; }
-    }
+    .refuse_reason input { float: left; width: 118px; }
+    .ik_select { width: 130px !important; }
   }
+  .form_column { float: left; width: auto; }
+  .form_column-large { margin-right: 0; }
+  .left-col { float: left; max-width: 655px; }
+  .right-col {  margin-left: 655px; }
+  @media screen and (max-width: 1079px) {
+    .left-col { max-width: none; }
+    .right-col { float: left; width: auto; margin-left: 0; }
+  }
+
 }

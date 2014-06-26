@@ -101,8 +101,8 @@
 
 // Additional
 .tourist {
-  .left-col .tourist_tasks_wrap {margin-top:0px !important;}
-  .left-col .tourist_files_wrap { margin: 0px !important;}
+  .true_tourist {width: 100%; min-width: 900px;}
+  #new_task_name {width: 159px;}
   .refused {width:93%;}
   .filter_area { margin-top: 25px; }
   .filter {width: 100%; height: auto; padding: 0;margin-top:5px; }
@@ -132,9 +132,10 @@
     }
 
    }
-  .right-col .clients_tasks {width: 100% !important;}
-  .right-col .clients_tasks_column {width: 100% !important;}
+
+  .clients_tasks_column {width: 100% !important;}
   .clients_tasks {
+    width: 100% !important;
     .fake_row textarea { height: 85px; width: 100%; padding-left: 0;}
     .form_block_content { padding-right: 20px; padding-bottom: 5px; }
     .add_btn { display: block; padding-right:0;  text-align: right; overflow: hidden; }
@@ -165,11 +166,18 @@
   }
   .form_column { float: left; width: auto; }
   .form_column-large { margin-right: 0; }
-  .left-col { float: left; max-width: 655px; }
+  .left-col {
+    float: left; max-width: 655px;
+    .common_block { float: left; }
+    .tourist_files_wrap { margin-top: 0px !important; float: left; }
+    .states_block { float: right;}
+    .tourist_tasks_wrap { margin-top: 0px !important; float: right;}
+  }
   .right-col {  margin-left: 655px; }
   @media screen and (max-width: 1079px) {
     .left-col { max-width: none; }
-    .right-col { float: left; width: auto; margin-left: 0; }
+    .right-col { float: left; width: 100%; margin-left: 0; }
   }
 
 }
+

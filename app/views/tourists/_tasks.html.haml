@@ -5,7 +5,7 @@
     .form_block_content
       .fake_row.fields{ id: 'tourist_tasks' }
         .clearfix
-          %input{id: 'new_task_name'}
+          %input{id: 'new_task_name', type: 'text'}
           .add_btn
             %a.add.add_tourist{href: "#", id: 'add_tourist_task'}
               = I18n.t('tourists.form.add_task')

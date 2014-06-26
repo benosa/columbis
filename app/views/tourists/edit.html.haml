@@ -2,10 +2,6 @@
 
 - title !@tourist.potential? ? t('.edit_tourist', :tourist => @tourist.name) : t('.edit_client', :client => @tourist.name)
 
-- content_for :top do
-  - if @tourist.user
-    .user= t('.created_by', user: @tourist.user.name_for_list)
-
 = form_for @tourist, url: @tourist.potential? ? tourist_path(@tourist) : tourist_path(@tourist, potential: 1), html: { multipart: true } do |form|
   - @form_id = form.options[:html][:id]
   = render :partial => !@tourist.potential? ? 'form' : 'form_potential', :locals => { :f => form }

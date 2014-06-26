@@ -4,8 +4,8 @@
 .tourist
   = render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
 
-  .left-col.clearfix
-    %fieldset.form_column.form_column-small.first
+  .left-col
+    %fieldset.form_column.form_column-small.first.common_block
       .form_block
         .block_title
           %h2= t('.common')
@@ -45,7 +45,7 @@
 
     = render partial: 'files', locals: { f: f, images: tourist.images }
 
-  .right-col.clearfix
+  .right-col
     - unless tourist.new_record?
       = render partial: 'comments', locals: { f: f, tourist: tourist }
 

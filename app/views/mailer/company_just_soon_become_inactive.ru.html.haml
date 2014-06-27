@@ -1,6 +1,10 @@
 %p
   Здравствуйте, #{@resource.owner.try(:full_name)}
   %br
+  %br
   Срок действия тарифа компании
   #{@resource.name} (#{@resource.subdomain})
-  истекает через #{CONFIG[:days_before_tariff_end]} дня
+  - if @day_count > 1
+    истекает через #{@day_count} дня
+  - else
+    истекает сегодня, вам необходимо оплатить, иначе завтра доступ будет ограничен. Для уточнения деталей обращайтесь support@columbis.ru

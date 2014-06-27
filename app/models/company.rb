@@ -153,7 +153,11 @@ class Company < ActiveRecord::Base
   end
 
   def self.just_soon_become_inactive
-    where(["date_trunc('day', tariff_end) - ? = '? days'", Time.zone.now.utc.beginning_of_day, CONFIG[:days_before_tariff_end]])
+    where(["date_trunc('day', tariff_end) - ? <= '? days'", Time.zone.now.utc.beginning_of_day, CONFIG[:days_before_tariff_end]])
+  end
+
+  def self.now_active
+    where(["date_trunc('day', tariff_end) - ? >= '1 day'", Time.zone.now.utc.beginning_of_day])
   end
 
   def self.just_become_inactive
@@ -162,8 +166,9 @@ class Company < ActiveRecord::Base
 
   def self.mail_tariff_end_soon
     find_each do |company|
-      Mailer.company_just_soon_become_inactive(company).deliver
-      Mailer.company_just_soon_become_inactive_sup(company).deliver
+      days = (company.tariff_end - Time.zone.now.utc.beginning_of_day).to_i / 1.day
+      Mailer.company_just_soon_become_inactive(company, days).deliver
+      Mailer.company_just_soon_become_inactive_sup(company, days).deliver
     end
   end
 

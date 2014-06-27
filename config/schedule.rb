@@ -19,8 +19,10 @@ every 1.day, :at => '2:30 am', :roles => [:app] do
   rake_with_rvm 'demo:seed[index]'
 end
 
-every 1.day, :at => '2:40 am', :roles => [:app] do
-  rake_with_rvm 'company:tariff_end'
+if @environment == 'production'
+  every 1.day, :at => '2:40 am', :roles => [:app] do
+    rake_with_rvm 'company:tariff_end'
+  end
 end
 
 every 1.month, :at => 'start of the month at 3:00 am' do

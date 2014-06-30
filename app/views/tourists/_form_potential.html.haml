@@ -24,6 +24,8 @@
             = f.text_field :email, :class => 'wide'
             %p= f.label :wishes
             = f.text_area :wishes, :class => 'wide wishes'
+            %p= f.label :client_stat
+            = f.select :client_stat, current_company.dropdown_values_for('tourist_stat'), {include_blank: true}, :class => (is_admin? || is_boss?) ? 'editable-select wide' : 'wide'
 
     %fieldset.form_column.form_column-small.states_block
       .form_block

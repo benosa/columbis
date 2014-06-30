@@ -23,6 +23,7 @@ ru:
         sex: 'Пол'
         class_group: 'Группа'
         refused_note: 'Причина отказа'
+        client_stat: 'Откуда Клиент'
       images:
         file: 'Файл'
 
@@ -89,6 +90,7 @@ ru:
       list_of_clients: 'Список клиентов'
     form:
       common: 'Общие данные'
+      client_stat: 'Откуда Клиент'
       add_comment: 'Добавить комментарий'
       add_task: 'Добавить'
       class_group: 'Группа'
@@ -105,6 +107,7 @@ ru:
       new_files_message: Файл должен быть не больше 512.0 КБ
       add_file: 'Еще файл'
     form_potential:
+      client_stat: 'Откуда Клиент'
       task_close: 'Задача была завершена %{user_name}. Вы уверены, что хотите ее возобновить?'
       common: 'Общие данные'
       status: 'Статус'

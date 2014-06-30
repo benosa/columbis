@@ -82,7 +82,8 @@ class TouristsController < ApplicationController
   end
 
   def create_comment
-    @comment = TouristComment.new(body: params[:body])
+    body = params[:body].gsub(/\n/, '<br>')
+    @comment = TouristComment.new(body: body)
     @comment.user = current_user
     @comment.tourist = @tourist
     @comment.save
@@ -90,7 +91,7 @@ class TouristsController < ApplicationController
       :id => @comment.id,
       :date => l(@comment.created_at, :format => :long),
       :name => @comment.user.full_name,
-      :body => params[:body],
+      :body => body.html_safe,
       :path => tourist_destroy_comment_path(@tourist, @comment)
     }
   end

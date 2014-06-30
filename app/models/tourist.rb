@@ -8,7 +8,7 @@ class Tourist < ActiveRecord::Base
                   :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
                   :images_attributes, :file, :class_group, :refused_note, :office,
-                  :tourist_tasks_attributes, :user_id, :assistant_id
+                  :tourist_tasks_attributes, :user_id, :assistant_id, :client_stat
 
   attr_protected :company_id
 

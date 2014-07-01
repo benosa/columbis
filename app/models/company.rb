@@ -4,7 +4,7 @@ class Company < ActiveRecord::Base
                   :bank, :bik, :curr_account, :corr_account, :ogrn, :city_ids, :okpo,
                   :site, :inn, :time_zone, :subdomain, :logo, :director, :director_genitive,
                   :sms_signature, :sms_birthday_send, :owner, :user_payment_id, :tariff_end,
-                  :tariff_id, :paid, :kpp, :full_name, :actual_address, :short_claim_list, :active
+                  :tariff_id, :paid, :kpp, :full_name, :actual_address, :short_claim_list, :active, :extended_potential_clients
   mount_uploader :logo, LogoUploader
 
   attr_accessor :company_id
@@ -45,6 +45,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   before_create :check_tariff_plan
+  before_save :check_extended_potential_clients
   after_create do |company|
     Mailer.company_was_created(self).deliver
   end if CONFIG[:support_delivery]
@@ -184,6 +185,12 @@ class Company < ActiveRecord::Base
     def check_tariff_plan
       self.tariff ||= TariffPlan.default
       self.tariff_end ||= Time.zone.now + CONFIG[:days_for_default_tariff].days
+    end
+
+    def check_extended_potential_clients
+      if tariff.try(:extended_potential_clients) == false && extended_potential_clients == true
+        extended_potential_clients = false
+      end
     end
 
     def check_offices_attributes(attributes)

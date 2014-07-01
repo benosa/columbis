@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140630071531) do
+ActiveRecord::Schema.define(:version => 20140701083159) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(:version => 20140630071531) do
     t.string   "inn"
     t.string   "time_zone"
     t.string   "sms_signature"
-    t.boolean  "sms_birthday_send",                                :default => true
+    t.boolean  "sms_birthday_send",                                         :default => true
     t.string   "subdomain"
     t.string   "logo"
     t.string   "director"
@@ -181,16 +181,17 @@ ActiveRecord::Schema.define(:version => 20140630071531) do
     t.integer  "claims_count"
     t.integer  "tourists_count"
     t.integer  "tasks_count"
-    t.boolean  "delta",                                            :default => true,  :null => false
+    t.boolean  "delta",                                                     :default => true,  :null => false
     t.integer  "tariff_id"
     t.integer  "user_payment_id"
     t.datetime "tariff_end"
-    t.decimal  "paid",              :precision => 15, :scale => 2, :default => 0.0,   :null => false
+    t.decimal  "paid",                       :precision => 15, :scale => 2, :default => 0.0,   :null => false
     t.integer  "kpp"
     t.string   "full_name"
     t.string   "actual_address"
-    t.boolean  "short_claim_list",                                 :default => false, :null => false
-    t.boolean  "active",                                           :default => true
+    t.boolean  "short_claim_list",                                          :default => false, :null => false
+    t.boolean  "active",                                                    :default => true
+    t.boolean  "extended_potential_clients",                                :default => false, :null => false
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"
@@ -432,23 +433,24 @@ ActiveRecord::Schema.define(:version => 20140630071531) do
   end
 
   create_table "tariff_plans", :force => true do |t|
-    t.decimal  "price",             :precision => 15, :scale => 2, :default => 0.0,   :null => false
-    t.string   "currency",                                         :default => "rur", :null => false
-    t.string   "name",                                                                :null => false
-    t.boolean  "active",                                           :default => true,  :null => false
-    t.integer  "users_count",                                                         :null => false
-    t.string   "place_size",                                                          :null => false
-    t.boolean  "back_office",                                      :default => false, :null => false
-    t.boolean  "documents_flow",                                   :default => false, :null => false
-    t.boolean  "claims_base",                                      :default => false, :null => false
-    t.boolean  "crm_system",                                       :default => false, :null => false
-    t.boolean  "managers_reminder",                                :default => false, :null => false
-    t.boolean  "analytics",                                        :default => false, :null => false
-    t.boolean  "boss_desktop",                                     :default => false, :null => false
-    t.boolean  "sms_sending",                                      :default => false, :null => false
-    t.datetime "created_at",                                                          :null => false
-    t.datetime "updated_at",                                                          :null => false
-    t.boolean  "default",                                          :default => false, :null => false
+    t.decimal  "price",                      :precision => 15, :scale => 2, :default => 0.0,   :null => false
+    t.string   "currency",                                                  :default => "rur", :null => false
+    t.string   "name",                                                                         :null => false
+    t.boolean  "active",                                                    :default => true,  :null => false
+    t.integer  "users_count",                                                                  :null => false
+    t.string   "place_size",                                                                   :null => false
+    t.boolean  "back_office",                                               :default => false, :null => false
+    t.boolean  "documents_flow",                                            :default => false, :null => false
+    t.boolean  "claims_base",                                               :default => false, :null => false
+    t.boolean  "crm_system",                                                :default => false, :null => false
+    t.boolean  "managers_reminder",                                         :default => false, :null => false
+    t.boolean  "analytics",                                                 :default => false, :null => false
+    t.boolean  "boss_desktop",                                              :default => false, :null => false
+    t.boolean  "sms_sending",                                               :default => false, :null => false
+    t.datetime "created_at",                                                                   :null => false
+    t.datetime "updated_at",                                                                   :null => false
+    t.boolean  "default",                                                   :default => false, :null => false
+    t.boolean  "extended_potential_clients",                                :default => false, :null => false
   end
 
   create_table "tasks", :force => true do |t|

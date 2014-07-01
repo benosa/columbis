@@ -2,7 +2,7 @@
 class Ability
   include CanCan::Ability
 
-  TARIFF_RESTRICTIONS = %w[back_office documents_flow claims_base analytics boss_desktop crm_system managers_reminder sms_sending]
+  TARIFF_RESTRICTIONS = %w[back_office documents_flow claims_base analytics boss_desktop crm_system managers_reminder sms_sending extended_potential_clients]
 
   attr_reader :user, :company
 
@@ -36,6 +36,10 @@ class Ability
     else
       null_restrictions
     end
+  end
+
+  def extended_potential_clients_restrictions_on_right
+    can :extended_potential_clients, :user if @tariff.extended_potential_clients == true
   end
 
   def null_restrictions

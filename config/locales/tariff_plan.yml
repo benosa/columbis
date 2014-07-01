@@ -21,6 +21,7 @@ ru:
       index_tariff_plan: 'Показать все планы'
       edit: "Изменение тарифного плана %{tariff_plan}"
       new: 'Добавление тарифного плана'
+      extended_potential_clients: 'Расширенная форма потенциальных клиентов'
   activerecord:
     attributes:
       tariff_plan:

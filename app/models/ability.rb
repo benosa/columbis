@@ -31,7 +31,7 @@ class Ability
   def restrictions_on_rights_by_tariff
     if @tariff
       TARIFF_RESTRICTIONS. each do |rest|
-        self.send("#{rest}_restrictions_on_right") if !@tariff.try(rest) && self.respond_to?("#{rest}_restrictions_on_right")
+        self.send("#{rest}_restrictions_on_right") if @tariff.try(rest) && self.respond_to?("#{rest}_restrictions_on_right")
       end
     else
       null_restrictions
@@ -39,7 +39,11 @@ class Ability
   end
 
   def extended_potential_clients_restrictions_on_right
-    can :extended_potential_clients, :user if @tariff.extended_potential_clients == true
+    if @tariff.extended_potential_clients == true
+      can :extended_potential_clients, :user
+    else
+      cannot :extended_potential_clients, :user
+    end
   end
 
   def null_restrictions

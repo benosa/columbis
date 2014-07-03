@@ -22,6 +22,9 @@
             = f.text_field :phone_number, :class => 'wide'
             %p= f.label :email
             = f.text_field :email, :class => 'wide'
+            - if cannot?(:extended_potential_clients, :user)
+              %p= f.label :actions
+              = f.text_area :actions, :class => 'wide wishes'
             %p= f.label :wishes
             = f.text_area :wishes, :class => 'wide wishes'
             %p= f.label :client_stat
@@ -32,23 +35,26 @@
         .block_title
           %h2= t('.status')
         .form_block_content
-          .fake_row.fields
+          .fake_row.fields{ class: can?(:extended_potential_clients, :user) ? 'extended' : '' }
+            - state_collection = can?(:extended_potential_clients, :user) ? Tourist::EXTENDED_POTENTIAL_STATES : Tourist::POTENTIAL_STATES
             = f.hidden_field :state, value: nil
-            - Tourist::POTENTIAL_STATES.each do |state|
+            - state_collection.each do |state|
               %p.state{ class: "#{state}" }
                 = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
                 = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: "checkbox left_checkbox #{state}"
-            .state
-              %p.refuse_reason
-                = f.text_field :refused_note
-                = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
+            - if can?(:extended_potential_clients, :user)
+              .state
+                %p.refuse_reason
+                  = f.text_field :refused_note
+                  = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
-    = render partial: 'tasks', locals: { f: f, tourist: tourist }
+    - if can?(:extended_potential_clients, :user)
+      = render partial: 'tasks', locals: { f: f, tourist: tourist }
 
     = render partial: 'files', locals: { f: f, images: tourist.images }
 
   .right-col
-    - unless tourist.new_record?
+    - if !tourist.new_record? && can?(:extended_potential_clients, :user)
       = render partial: 'comments', locals: { f: f, tourist: tourist }
 
   %fieldset.form_submit{ :style => 'display: none; height: 0;' }

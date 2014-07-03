@@ -52,11 +52,11 @@ class TouristsController < ApplicationController
 
   def update
     @tourist.company = current_company
-    @tourist.set_params(params[:tourist])
+    @tourist.set_params(tourist_params)
     manager = @tourist.user
     @tourist.user = current_user unless manager
     set_attrs
-    if @tourist.update_attributes(params[:tourist])
+    if @tourist.update_attributes(tourist_params)
       if params[:save_and_close]
         redirect_to_tourists(@tourist.potential?, :updated)
       else
@@ -82,18 +82,24 @@ class TouristsController < ApplicationController
   end
 
   def create_comment
-    body = params[:body].gsub(/\n/, '<br>')
-    @comment = TouristComment.new(body: body)
-    @comment.user = current_user
-    @comment.tourist = @tourist
-    @comment.save
-    render :json => {
-      :id => @comment.id,
-      :date => l(@comment.created_at, :format => :long),
-      :name => @comment.user.full_name,
-      :body => body.html_safe,
-      :path => tourist_destroy_comment_path(@tourist, @comment)
-    }
+    if can?(:extended_potential_clients, :user)
+      body = params[:body].gsub(/\n/, '<br>')
+      @comment = TouristComment.new(body: body)
+      @comment.user = current_user
+      @comment.tourist = @tourist
+      @comment.save
+      render :json => {
+        :id => @comment.id,
+        :date => l(@comment.created_at, :format => :long),
+        :name => @comment.user.full_name,
+        :body => body.html_safe,
+        :path => tourist_destroy_comment_path(@tourist, @comment)
+      }
+    else
+      render :json => {
+        :fail => 1
+      }
+    end
   end
 
   def destroy_comment
@@ -107,6 +113,18 @@ class TouristsController < ApplicationController
   end
 
   private
+
+    def tourist_params
+      tourist_params = params[:tourist]
+      if cannot?(:extended_potential_clients, :user)
+        if !Tourist::POTENTIAL_STATES.include?(tourist_params['state'])
+          tourist_params['state'] = 'selection'
+        end
+
+        tourist_params.delete('tourist_tasks_attributes')
+      end
+      tourist_params
+    end
 
     def set_attrs
       if params[:tourist][:images_attributes]

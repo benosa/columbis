@@ -22,7 +22,7 @@
 /*.tourist .first,
 .tourist .first .form_block { width: 450px; }
 .tourist .first .block_title { width: 428px; }*/
-.state.refused {
+.extended .state.refused {
   border-top: 1px solid #d5d5d5; padding-top: 10px;
 }
 
@@ -115,7 +115,7 @@
   .filter label:first-child { float: none; }
   .state .note_red { color: #f00; }
   .state .note_rose { color: #FFAEB5; }
-  label.refused  {  font-weight: bold;}
+  .extended label.refused  {  font-weight: bold;}
   .wrap-input { float: left;  }
   .add_btn { border: none;}
    .tasks_states { padding-top: 15px; border-top: 1px solid #d5d5d5; margin-right: 20px; margin-top: 5px;}

@@ -30,7 +30,6 @@
             = f.check_box :short_claim_list
             = f.label :short_claim_list
         %p
-          - Rails.logger.debug "1124: #{can?(:extended_potential_clients, current_user)}"
           - if can?(:extended_potential_clients, :user)
             = f.check_box :extended_potential_clients
           - else

@@ -65,5 +65,5 @@
 
   = render partial: 'files', locals: { f: f, images: tourist.images }
 
-  - unless tourist.new_record?
+  - if !tourist.new_record? && can?(:extended_potential_clients, :user)
     = render partial: 'comments', locals: { f: f, tourist: tourist }

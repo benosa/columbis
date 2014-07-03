@@ -24,6 +24,7 @@ ru:
         class_group: 'Группа'
         refused_note: 'Причина отказа'
         client_stat: 'Откуда Клиент'
+        actions: 'Что сделать'
       images:
         file: 'Файл'
 

@@ -45,7 +45,7 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :printers, :reject_if => :check_printers_attributes, :allow_destroy => true
 
   before_create :check_tariff_plan
-  before_save :check_extended_potential_clients
+  after_validation :check_extended_potential_clients
   after_create do |company|
     Mailer.company_was_created(self).deliver
   end if CONFIG[:support_delivery]
@@ -189,7 +189,7 @@ class Company < ActiveRecord::Base
 
     def check_extended_potential_clients
       if tariff.try(:extended_potential_clients) == false && extended_potential_clients == true
-        extended_potential_clients = false
+        self.extended_potential_clients = false
       end
     end
 

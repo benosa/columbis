@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Tourist < ActiveRecord::Base
-  POTENTIAL_STATES = %w[selection sent revision ready waiting reserved refused].freeze
+  EXTENDED_POTENTIAL_STATES = %w[selection sent revision ready waiting reserved refused].freeze
+  POTENTIAL_STATES = %w[selection reserved refused].freeze
   SEX_STATES = %w[not_selected male female].freeze
 
   attr_accessible :first_name, :last_name, :middle_name,
@@ -8,7 +9,7 @@ class Tourist < ActiveRecord::Base
                   :date_of_birth, :phone_number, :potential, :email,
                   :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
                   :images_attributes, :file, :class_group, :refused_note, :office,
-                  :tourist_tasks_attributes, :user_id, :assistant_id, :client_stat
+                  :tourist_tasks_attributes, :user_id, :assistant_id, :client_stat, :actions
 
   attr_protected :company_id
 

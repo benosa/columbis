@@ -30,7 +30,7 @@ class TouristsController < ApplicationController
 
   def create
     @tourist.company = current_company
-    @tourist.set_params(params[:tourist])
+    @tourist.set_params(tourist_params)
     @tourist.user = current_user
     set_images
     if @tourist.save
@@ -120,7 +120,6 @@ class TouristsController < ApplicationController
         if !Tourist::POTENTIAL_STATES.include?(tourist_params['state'])
           tourist_params['state'] = 'selection'
         end
-
         tourist_params.delete('tourist_tasks_attributes')
       end
       tourist_params

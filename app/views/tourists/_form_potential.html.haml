@@ -2,58 +2,59 @@
 - content_for(:error_messages) do
   = f.error_messages
 .tourist
-  = render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
+  .clearfix
+    = render :partial => 'top_fields', :locals => { :f => f, :tourist => tourist }
 
-  .left-col
-    %fieldset.form_column.form_column-small.first.common_block
-      .form_block
-        .block_title
-          %h2= t('.common')
-        .form_block_content
-          .fake_row.fields
-            %p.potential_wrapper
-              = f.check_box :potential, id: 'tourist_potential'
-              = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
-            %p= f.label :full_name, :required => true
-            = f.text_field :full_name, :class => 'wide'
-            %p= f.label :sex
-            = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
-            %p= f.label :phone_number
-            = f.text_field :phone_number, :class => 'wide'
-            %p= f.label :email
-            = f.text_field :email, :class => 'wide'
-            - if cannot?(:extended_potential_clients, :user)
-              %p= f.label :actions
-              = f.text_area :actions, :class => 'wide wishes'
-            %p= f.label :wishes
-            = f.text_area :wishes, :class => 'wide wishes'
-            %p= f.label :client_stat
-            = f.select :client_stat, current_company.dropdown_values_for('tourist_stat'), {include_blank: true}, :class => (is_admin? || is_boss?) ? 'editable-select wide' : 'wide'
+  .forms_area.clearfix
+    .col-left
+      %fieldset.form_column.form_column-small.first.common_block
+        .form_block
+          .block_title
+            %h2= t('.common')
+          .form_block_content
+            .fake_row.fields
+              %p.potential_wrapper
+                = f.check_box :potential, id: 'tourist_potential'
+                = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
+              %p= f.label :full_name, :required => true
+              = f.text_field :full_name, :class => 'wide'
+              %p= f.label :sex
+              = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
+              %p= f.label :phone_number
+              = f.text_field :phone_number, :class => 'wide'
+              %p= f.label :email
+              = f.text_field :email, :class => 'wide'
+              - if cannot?(:extended_potential_clients, :user)
+                %p= f.label :actions
+                = f.text_area :actions, :class => 'wide wishes'
+              %p= f.label :wishes
+              = f.text_area :wishes, :class => 'wide wishes'
+              %p= f.label :client_stat
+              = f.select :client_stat, current_company.dropdown_values_for('tourist_stat'), {include_blank: true}, :class => (is_admin? || is_boss?) ? 'editable-select wide' : 'wide'
 
-    %fieldset.form_column.form_column-small.states_block
-      .form_block
-        .block_title
-          %h2= t('.status')
-        .form_block_content
-          .fake_row.fields{ class: can?(:extended_potential_clients, :user) ? 'extended' : '' }
-            - state_collection = can?(:extended_potential_clients, :user) ? Tourist::EXTENDED_POTENTIAL_STATES : Tourist::POTENTIAL_STATES
-            = f.hidden_field :state, value: nil
-            - state_collection.each do |state|
-              %p.state{ class: "#{state}" }
-                = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
-                = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: "checkbox left_checkbox #{state}"
-            - if can?(:extended_potential_clients, :user)
-              .state
-                %p.refuse_reason
-                  = f.text_field :refused_note
-                  = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
+      %fieldset.form_column.form_column-small.states_block
+        .form_block
+          .block_title
+            %h2= t('.status')
+          .form_block_content
+            .fake_row.fields{ class: can?(:extended_potential_clients, :user) ? 'extended' : '' }
+              - state_collection = can?(:extended_potential_clients, :user) ? Tourist::EXTENDED_POTENTIAL_STATES : Tourist::POTENTIAL_STATES
+              = f.hidden_field :state, value: nil
+              - state_collection.each do |state|
+                %p.state{ class: "#{state}" }
+                  = check_box_tag 'tourist[state]', state, tourist.state == state, id: "tourist_#{state}"
+                  = label_tag "tourist_#{state}", t("potential_states.#{state}"), class: "checkbox left_checkbox #{state}"
+              - if can?(:extended_potential_clients, :user)
+                .state
+                  %p.refuse_reason
+                    = f.text_field :refused_note
+                    = select_tag 'refusal_reason', options_for_select(current_company.dropdown_values_for('refusal_reason')), {include_blank: true, id: 'refusal_reason'}
 
-    - if can?(:extended_potential_clients, :user)
-      = render partial: 'tasks', locals: { f: f, tourist: tourist }
+      - if can?(:extended_potential_clients, :user)
+        = render partial: 'tasks', locals: { f: f, tourist: tourist }
 
-    = render partial: 'files', locals: { f: f, images: tourist.images }
+      = render partial: 'files', locals: { f: f, images: tourist.images }
 
-  .right-col
     - if !tourist.new_record? && can?(:extended_potential_clients, :user)
       = render partial: 'comments', locals: { f: f, tourist: tourist }
 

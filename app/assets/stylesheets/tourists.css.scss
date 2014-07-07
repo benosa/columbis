@@ -129,7 +129,13 @@
 
    }
 
-  .clients_tasks_column {width: 100% !important;}
+  .clients_tasks_column {
+    margin-left: 325px !important;
+    width: auto !important;
+    display: block;
+    float: none !important;
+    margin-right: 325px !important;
+  }
   .clients_tasks {
     width: 100% !important;
     .fake_row textarea { height: 85px; width: 100%; padding-left: 0;}
@@ -162,18 +168,55 @@
   }
   .form_column { float: left; width: auto; }
   .form_column-large { margin-right: 0; }
-  .left-col {
-    float: left; max-width: 655px;
-    .common_block { float: left; }
-    .tourist_files_wrap { margin-top: 0px !important; float: left; }
-    .states_block { float: right;}
-    .tourist_tasks_wrap { margin-top: 0px !important; float: right;}
-  }
-  .right-col {  margin-left: 655px; }
-  @media screen and (max-width: 1079px) {
-    .left-col { max-width: none; }
-    .right-col { float: left; width: 100%; margin-left: 0; }
-  }
 
+  .forms_area {
+    position: relative;
+    min-height: 800px;
+  }
+  .common_block {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .tourist_files_wrap {
+    position: absolute;
+    left:0;
+    top: 517px;
+  }
+  .states_block {
+    position: absolute;
+    right:0;
+    top: 0;
+    margin-right: 0;
+
+  }
+  .tourist_tasks_wrap {
+    position: absolute;
+    right:0;
+    top: 294px;
+    margin-right: 0;
+  }
+  .col-left {
+    float: none;
+  }
+}
+
+@media screen and (max-width: 1077px) {
+  .tourist {
+    .common_block, .states_block, .tourist_tasks_wrap, .tourist_files_wrap {
+      position: static;
+      float: left;
+      margin-top: 0 !important;
+    }
+    .common_block { margin-top: 25px !important; }
+    .clients_tasks_column {
+      margin-left: 326px !important;
+      margin-right: 0 !important;
+    }
+    .col-left {
+      float: left;
+      width: 326px;
+    }
+  }
 }
 

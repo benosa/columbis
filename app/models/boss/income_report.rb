@@ -73,16 +73,12 @@ module Boss
     protected
 
       def query
-        payments.project(payments[:amount].sum.as('amount'))
-          .join(claims).on(payments[:claim_id].eq(claims[:id]))
+        claims.project(claims[:primary_currency_price].sum.as('amount'))
           .where(claims[:excluded_from_profit].eq(false))
           .where(claims[:canceled].eq(false))
-          .where(payments[:company_id].eq(company.id))
-          .where(payments[:recipient_type].eq('Company'))
-          .where(payments[:approved].eq(true))
-          .where(payments[:canceled].eq(false))
-          .where(payments[:date_in].gteq(@start_date))
-          .where(payments[:date_in].lteq(@end_date))
+          .where(claims[:company_id].eq(company.id))
+          .where(claims[:reservation_date].gteq(@start_date))
+          .where(claims[:reservation_date].lteq(@end_date))
       end
 
       def base_query
@@ -90,25 +86,25 @@ module Boss
       end
 
       def years_query
-        base_query.project("extract(year from date_in) AS year")
+        base_query.project("extract(year from claims.reservation_date) AS year")
           .group(:year)
           .order(:year)
       end
 
       def months_query
-        years_query.project("extract(month from date_in) AS month")
+        years_query.project("extract(month from claims.reservation_date) AS month")
           .group(:month)
           .order(:month)
       end
 
       def days_query
-        months_query.project("extract(day from date_in) AS day")
+        months_query.project("extract(day from claims.reservation_date) AS day")
           .group(:day)
           .order(:day)
       end
 
       def weeks_query
-        years_query.project("extract(week from date_in) AS week")
+        years_query.project("extract(week from claims.reservation_date) AS week")
           .group(:week)
           .order(:week)
       end

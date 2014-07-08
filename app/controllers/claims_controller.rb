@@ -297,8 +297,8 @@ class ClaimsController < ApplicationController
     end
 
     def claim_totals(period, filters = {})
-      conditions = ["company_id = :company_id", "excluded_from_profit = :excluded_from_profit"]
-      binds = { :company_id => current_company, :excluded_from_profit => false }
+      conditions = ["company_id = :company_id", "excluded_from_profit = :excluded_from_profit", "canceled = :canceled"]
+      binds = { :company_id => current_company, :excluded_from_profit => false, :canceled => false }
       if period != :all
         # Get totals of montsh by current filters
         conditions << "reservation_date >= :begin AND reservation_date <= :end"
@@ -319,6 +319,8 @@ class ClaimsController < ApplicationController
                sum(approved_operator_advance) as approved_operator_advance,
                sum(profit) as profit,
                sum(profit_acc) as profit_acc,
+               avg(profit_in_percent) as profit_in_percent,
+               avg(profit_in_percent_acc) as profit_in_percent_acc,
                sum(primary_currency_price) as primary_currency_price,
                sum(bonus) as bonus,
                max(reservation_date) as reservation_date,
@@ -329,6 +331,7 @@ class ClaimsController < ApplicationController
         GROUP BY EXTRACT(YEAR FROM reservation_date), EXTRACT(MONTH FROM reservation_date)
         QUERY
       totals = Claim.find_by_sql([query, binds]).sort_by{ |t| -t.month.to_i }
+
       # Remove current month
       totals.delete_if{ |t| t.month.to_i == Time.zone.now.month }
     end

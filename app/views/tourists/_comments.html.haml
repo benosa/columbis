@@ -1,5 +1,5 @@
-%fieldset.form_column.form_column-large.clients_tasks_column{ class: tourist.potential? ? '' : 'true_tourist' }
-  .form_block.clients_tasks
+%fieldset.form_column.form_column-large.client_comments_column{ class: tourist.potential? ? '' : 'true_tourist' }
+  .form_block.client_comments
     .block_title
       %h2= I18n.t('tourists.form_potential.work_client')
     .form_block_content
@@ -8,7 +8,7 @@
         .add-btn.clearfix
           %a{href: tourist_create_comment_path(tourist), id: 'add_tourist_comment', class: 'add add_tourist'}
             = I18n.t('tourists.form.add_comment')
-        .clients_tasks_log.clearfix{ id: 'tourist_comments_list' }
+        .client_comments_log.clearfix{ id: 'tourist_comments_list' }
           %ul
             - tourist.tourist_comments.each do |comment|
               %li.clearfix{id: "tourist_comment_#{comment.id}"}

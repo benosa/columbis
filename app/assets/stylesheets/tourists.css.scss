@@ -34,7 +34,7 @@
   color: #FF8888
 }
 
-.tourist {
+.tourist, .potential_client {
   h1 { float: left; }
   .user { float: right; margin-top: 11px; }
 
@@ -96,14 +96,14 @@
 }
 
 // Additional
-.tourist {
+.tourist, .potential_client {
   .true_tourist {width: 100%; min-width: 900px;}
   #new_task_name {width: 159px;}
   .refused {width:93%;}
   .filter_area { margin-top: 25px; }
   .filter {width: 100%; height: auto; padding: 0;margin-top:5px; }
   .filter_row { width: 100%; }
-  .filter_block {  float: left; margin-right: 20px; width: 200px; } 
+  .filter_block {  float: left; margin-right: 20px; width: 200px; }
   .filter_block {
      float: left; margin-right: 20px; width: 200px;
     .ik_select {
@@ -128,47 +128,53 @@
     }
 
    }
+  .common_info {
+    .wrap-select { width: 266px; }
+    .form_block_content { padding-bottom: 10px; }
+  }
 
-  .clients_tasks_column {
+  .form_column { float: left; width: auto; }
+  .form_column-large { margin-right: 0; }
+
+  .client_comments_column {
+    .client_comments {
+      width: 100% !important;
+      .fake_row textarea { height: 85px; width: 100%; padding-left: 0;}
+      .form_block_content { padding-right: 20px; padding-bottom: 5px; }
+      .add_btn { display: block; padding-right:0;  text-align: right; overflow: hidden; }
+      .add_tourist {  margin-bottom: 10px; background: url("/assets/new_design/images/add_comment.png")  no-repeat;
+        width: 146px; display: block; float: right;
+      }
+      min-width: 320px; width: auto;
+    }
+    .client_comments_log {
+      background: #fff; color: #000; border: solid 1px #ccc; border-radius: 4px; padding: 10px;
+      li+li { margin-top: 15px; }
+      p { margin-bottom: 0; }
+      .managers_name  { width: 22%; float:left; margin-right: 20px;
+        .date { color: #f00; }
+      }
+      .comment { width:70%; float: left; color: #0892FF; }
+    }
+  }
+}
+
+.tourist {
+  .client_comments_column { float: none; width: 980px; }
+}
+
+.potential_client {
+  .state {
+    .refuse_reason input { float: left; width: 118px; }
+    .ik_select { width: 130px !important; }
+  }
+  .client_comments_column {
     margin-left: 325px !important;
     width: auto !important;
     display: block;
     float: none !important;
     margin-right: 325px !important;
   }
-  .clients_tasks {
-    width: 100% !important;
-    .fake_row textarea { height: 85px; width: 100%; padding-left: 0;}
-    .form_block_content { padding-right: 20px; padding-bottom: 5px; }
-    .add_btn { display: block; padding-right:0;  text-align: right; overflow: hidden; }
-    .add_tourist {  margin-bottom: 10px; background: url("/assets/new_design/images/add_comment.png")  no-repeat; 
-      width: 146px; display: block; float: right;
-    }
-    min-width: 320px; width: auto;
-  }
-
-
-  .clients_tasks_log {
-    background: #fff; color: #000; border: solid 1px #ccc; border-radius: 4px; padding: 10px;
-    li+li { margin-top: 15px; }
-    p { margin-bottom: 0; }
-    .managers_name  { width: 22%; float:left; margin-right: 20px;
-      .date { color: #f00; }
-    }
-    .comment { width:70%; float: left; color: #0892FF; }
-
-  }
-  .common_info {
-    .wrap-select { width: 266px; }
-    .form_block_content { padding-bottom: 10px; }
-  }
-  .state {
-    .refuse_reason input { float: left; width: 118px; }
-    .ik_select { width: 130px !important; }
-  }
-  .form_column { float: left; width: auto; }
-  .form_column-large { margin-right: 0; }
-
   .forms_area {
     position: relative;
     min-height: 800px;
@@ -201,15 +207,23 @@
   }
 }
 
+.new_tourist {
+  .potential_client {
+    .states_block { left: 326px; right: auto; }
+    .tourist_tasks_wrap { left: 326px; right: auto; }
+    .tourist_files_wrap { left: 652px; top: 0; }
+  }
+}
+
 @media screen and (max-width: 1077px) {
-  .tourist {
+  .potential_client {
     .common_block, .states_block, .tourist_tasks_wrap, .tourist_files_wrap {
       position: static;
       float: left;
       margin-top: 0 !important;
     }
     .common_block { margin-top: 25px !important; }
-    .clients_tasks_column {
+    .client_comments_column {
       margin-left: 326px !important;
       margin-right: 0 !important;
     }

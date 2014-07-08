@@ -151,7 +151,7 @@ module ClaimsHelper
   end
 
   def color_for_departure_date_call(claim)
-    if (claim.arrival_date <= Date.current) && !claim.return_call
+    if (claim.arrival_date <= Date.current) && !claim.return_call && is_mistral?
       'red_back'
     else
       ''

@@ -40,6 +40,7 @@ class TouristsController < ApplicationController
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
     @tourist.user = current_user
+    @tourist.office = current_user.office if !(tourist_params[:office_id].to_i > 0)
     set_images
     if @tourist.save
       if params[:save_and_close]
@@ -62,6 +63,7 @@ class TouristsController < ApplicationController
   def update
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
+    @tourist.office = @tourist.user.office if !(tourist_params[:office_id].to_i > 0)
     manager = @tourist.user
     @tourist.user = current_user unless manager
     set_attrs

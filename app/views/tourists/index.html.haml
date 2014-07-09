@@ -13,6 +13,10 @@
       = label_tag :user_id, t('.manager_filter')
       = select_tag :user_id,  options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:user_id]), :prompt => t('all'), :class => 'filter_select', :data => { :param=> 'user_id', :filter => 1 }
 
+      - if is_accountant? || is_boss? || is_admin?
+        = label_tag :office_id, t('.office_filter')
+        = select_tag :office_id,  options_from_collection_for_select(current_company.offices, 'id', 'name', params[:office_id]), :prompt => t('all'), :class => 'filter_select', :data => { :param=> 'office_id', :filter => 1 }
+
 = render 'list'
 
 - content_for(:float_panel) do

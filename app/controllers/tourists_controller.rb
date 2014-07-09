@@ -6,10 +6,16 @@ class TouristsController < ApplicationController
   before_filter :set_last_search, :only => :index
 
   def index
+    if show_potential_clients && ( is_manager? || is_supervisor? )
+      by_office = true
+    end
+
     @tourists =
       if search_or_sort?
         options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
         options[:with][:user_id] = params[:user_id].to_i if params[:user_id].present?
+        options[:with][:office_id] = current_user.office.id if by_office
+        options[:with][:office_id] = params[:office_id].to_i if params[:office_id].present? && !(is_manager? || is_supervisor?)
         checkout_order(options)
         scoped = Tourist.search_and_sort(options).includes(:address, :office, (:user if show_potential_clients))
         scoped = scoped.potentials if show_potential_clients
@@ -17,9 +23,11 @@ class TouristsController < ApplicationController
       else
         scoped = Tourist.send(show_potential_clients ? :potentials : :clients)
         scoped = scoped.accessible_by(current_ability).includes(:address, :office, (:user if show_potential_clients))
+        scoped = scoped.where(office_id: current_user.office.id) if by_office
         scoped = scoped.reorder('created_at DESC') if show_potential_clients
         scoped.paginate(:page => params[:page], :per_page => per_page)
       end
+
     render :partial => 'list' if request.xhr?
   end
 
@@ -32,6 +40,7 @@ class TouristsController < ApplicationController
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
     @tourist.user = current_user
+    @tourist.office = current_user.office if !(tourist_params[:office_id].to_i > 0)
     set_images
     if @tourist.save
       if params[:save_and_close]
@@ -48,11 +57,13 @@ class TouristsController < ApplicationController
 
   def edit
     check_address(@tourist)
+    check_office(@tourist)
   end
 
   def update
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
+    @tourist.office = @tourist.user.office if !(tourist_params[:office_id].to_i > 0)
     manager = @tourist.user
     @tourist.user = current_user unless manager
     set_attrs
@@ -70,6 +81,7 @@ class TouristsController < ApplicationController
   end
 
   def show
+    check_office(@tourist)
   end
 
   def destroy
@@ -184,6 +196,12 @@ class TouristsController < ApplicationController
         redirect_to tourists_path, :notice => message
       else
         redirect_to tourists_path(potential: 1), :notice => message
+      end
+    end
+
+    def check_office(tourist)
+      if tourist.potential? && (current_user.office.id != tourist.office_id) && (is_manager? || is_supervisor?)
+        redirect_to tourists_path(potential: 1), :alert => I18n.t("tourists.messages.cant_edit")
       end
     end
 

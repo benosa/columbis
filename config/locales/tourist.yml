@@ -61,6 +61,7 @@ ru:
       clients: 'Клиенты'
       potential_clients: 'Потенциальные клиенты'
       manager_filter: 'Менеджер'
+      office_filter: 'Офис'
     tourists:
       full_name: "ФИО"
       address: "Адрес"
@@ -118,6 +119,7 @@ ru:
     images:
       file: Файл должен быть не больше 512.0 КБ
     messages:
+      cant_edit: 'Вы не можете редактировать этого клиента'
       confirm_delete: 'Удалить?'
       created: 'Турист создан'
       updated: 'Турист обновлен'

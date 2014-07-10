@@ -2,7 +2,7 @@
 module Boss
   class OperatorReport < Report
 
-    arel_tables :operators, :payments, :claims
+    arel_tables :operators, :payments, :claims, :company_operators
     available_results :amount, :items, :total
 
     def prepare(options = {})
@@ -91,30 +91,28 @@ module Boss
 
       def base_query
         operators.project([operators[:id], operators[:name]])
-          .where(operators[:company_id].eq(company.id))
-          # .group(operators[:id])
+          .join(company_operators).on(company_operators[:operator_id].eq(operators[:id]).and(company_operators[:company_id].eq(company.id)))
+          #.where(operators[:company_id].eq(company.id))
+          #.group(operators[:id])
       end
 
       def amount_query(options = {})
-        query = payments.project(payments[:recipient_id].as('operator_id'), payments[:amount].sum.as('amount'))
-                .join(claims).on(claims[:id].eq(payments[:claim_id]))
+        query = claims.project(claims[:operator_id].as('operator_id'), claims[:primary_currency_operator_price].sum.as('amount'))
                 .where(claims[:excluded_from_profit].eq(false))
-                .where(payments[:company_id].eq(company.id))
-                .where(payments[:recipient_type].eq('Operator'))
-                .where(payments[:payer_type].eq('Company')).where(payments[:payer_id].eq(company.id))
-                .where(payments[:date_in].gteq(start_date).and(payments[:date_in].lteq(end_date)))
-                .where(payments[:approved].eq(true).and(payments[:canceled].eq(false)))
-                .group(payments[:recipient_id])
+                .where(claims[:canceled].eq(false))
+                .where(claims[:company_id].eq(company.id))
+                .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
+                .group(claims[:operator_id])
                 .as('amount_query')
 
-        if options.has_key?(:approved)
-          query = query.where(payments[:approved].eq(options[:approved]))
-        end
+       # if options.has_key?(:approved)
+         # query = query.where(payments[:approved].eq(options[:approved]))
+       # end
 
         query = base_query.project(query[:amount])
                 .join(query).on(query[:operator_id].eq(operators[:id]))
                 .order(order_expr 'amount_query."amount"')
-        # Rails.logger.debug "query: #{query.to_sql}"
+
         query
       end
 

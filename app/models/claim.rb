@@ -16,9 +16,9 @@ class Claim < ActiveRecord::Base
                   :visa_price, :visa_count, :visa_price_currency,
                   :children_visa_price, :children_visa_count, :children_visa_price_currency,
                   :insurance_price, :insurance_count, :insurance_price_currency,
-                  :additional_insurance_price, :additional_insurance_count,  :additional_insurance_price_currency,
+                  :additional_insurance_price, :additional_insurance_count, :additional_insurance_price_currency,
                   :fuel_tax_price, :fuel_tax_count, :fuel_tax_price_currency,
-                  :primary_currency_price, :course_eur, :course_usd, :calculation
+                  :primary_currency_price, :course_eur, :course_usd, :calculation, :primary_currency_operator_price
 
   # flight block
   attr_accessible :airport_back, :depart_to, :depart_back, :airline
@@ -586,10 +586,6 @@ class Claim < ActiveRecord::Base
     data
   end
 
-  def primary_currency_operator_price
-    @primary_currency_operator_price ||= self.operator_price.to_f * (course(self.operator_price_currency) || 1)
-  end
-
   def tour_price_with_discount
     @tour_price_with_discount ||= (discount.to_f > 0 ? tour_price.to_f * (1 - discount.to_f / 100) : tour_price.to_f).round
   end
@@ -649,6 +645,7 @@ class Claim < ActiveRecord::Base
       self.approved_tourist_advance = approved_payments_in.map(&:amount_prim).map(&:to_f).sum
 
       self.primary_currency_price = calculate_tour_price
+      self.primary_currency_operator_price = self.operator_price.to_f * (course(self.operator_price_currency) || 1)
       self.tourist_debt = self.primary_currency_price.to_f - self.tourist_advance.to_f
 
       payments_out = self.payments_out.reject(&:marked_for_destruction?)

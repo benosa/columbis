@@ -19,6 +19,32 @@ module TouristsHelper
     params[:potential].present?
   end
 
+  def last_tourist_comments(tourist)
+    if cannot?(:extended_potential_clients, :user)
+      tourist.actions
+    else
+      comments = TouristComment.where(tourist_id: tourist.id).last(5)
+      title = ""
+
+      for comment in comments
+        sub = ""
+        sub = "..." if comment.body.length > 100
+        title = title +  "\n\n" if title.length > 0
+        title = title + "#{comment.user.full_name}: #{truncate(comment.body, :length => 100)}#{sub}"
+      end
+
+      title
+    end
+  end
+
+  def tourist_comment(tourist)
+    if cannot?(:extended_potential_clients, :user)
+      tourist.actions
+    else
+      tourist.tourist_comments.count > 0 ? tourist.tourist_comments.last.body : ""
+    end
+  end
+
   # alias_method :orig_tourists_path, :tourists_path
   # def tourists_path(args = nil)
   #   if tourist || show_potential_clients

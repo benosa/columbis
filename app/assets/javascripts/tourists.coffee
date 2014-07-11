@@ -1,6 +1,6 @@
 set_tourists_tooltip = (init)->
   options =
-    template: '<div class="tooltip white"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+    template: '<div class="tooltip tour_tip white"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
     placement: 'bottom'
     container: 'body'
     delay: 100

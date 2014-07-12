@@ -10,6 +10,9 @@
     - else
       = render partial: 'shared/search_field', locals: { filter_class: 'search small_filter' }
 
+      = label_tag :user_id, t('.state_filter')
+      = select_tag :state, options_for_select(tourist_state_filter_options, params[:state]), class: 'filter_select', id: 'tourist_state_filter_options', data: { param: 'state', filter: true }
+
       = label_tag :user_id, t('.manager_filter')
       = select_tag :user_id,  options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:user_id]), :prompt => t('all'), :class => 'filter_select', :data => { :param=> 'user_id', :filter => 1 }
 

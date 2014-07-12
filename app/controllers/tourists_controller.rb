@@ -12,10 +12,16 @@ class TouristsController < ApplicationController
 
     @tourists =
       if search_or_sort?
-        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist))
+        options = search_and_sort_options(:with => current_ability.attributes_for(:read, Tourist), :without => {})
         options[:with][:user_id] = params[:user_id].to_i if params[:user_id].present?
         options[:with][:office_id] = current_user.office.id if by_office
         options[:with][:office_id] = params[:office_id].to_i if params[:office_id].present? && !(is_manager? || is_supervisor?)
+        if params[:state] == 'in_work'
+          options[:without][:state_crc32] = ['reserved'.to_crc32, 'refused'.to_crc32]
+        elsif params[:state] != 'all'
+          options[:with][:state_crc32] = params[:state].to_crc32
+        end
+
         checkout_order(options)
         scoped = Tourist.search_and_sort(options).includes(:address, :office, (:user if show_potential_clients))
         scoped = scoped.potentials if show_potential_clients

@@ -29,6 +29,8 @@ ru:
         file: 'Файл'
 
   potential_states:
+    all: 'Все'
+    in_work: 'В работе'
     selection: 'Подбор'
     sent: 'Отправлено'
     revision: 'Доработка'
@@ -62,6 +64,7 @@ ru:
       potential_clients: 'Потенциальные клиенты'
       manager_filter: 'Менеджер'
       office_filter: 'Офис'
+      state_filter: 'Статус'
     tourists:
       full_name: "ФИО"
       address: "Адрес"

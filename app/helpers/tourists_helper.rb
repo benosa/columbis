@@ -15,6 +15,22 @@ module TouristsHelper
     }
   end
 
+  def tourist_state_filter_options
+    res =
+      [
+        [I18n.t('potential_states.all'), 'all'],
+        [I18n.t('potential_states.in_work'), 'in_work']
+      ]
+
+    if can?(:extended_potential_clients, :user)
+      res = res + Tourist::EXTENDED_POTENTIAL_STATES.map{ |st| [ I18n.t("potential_states.#{st}"), st ] }
+    else
+      res = res + Tourist::POTENTIAL_STATES.map{ |st| [ I18n.t("potential_states.#{st}"), st ] }
+    end
+
+    res
+  end
+
   def show_potential_clients
     params[:potential].present?
   end
@@ -30,7 +46,7 @@ module TouristsHelper
         sub = ""
         sub = "..." if comment.body.length > 100
         title = title +  "\n\n" if title.length > 0
-        title = title + "#{comment.user.full_name}: #{truncate(comment.body, :length => 100)}#{sub}"
+        title = title + "#{comment.user.try(:full_name)}: #{truncate(comment.body, :length => 100)}#{sub}"
       end
 
       title

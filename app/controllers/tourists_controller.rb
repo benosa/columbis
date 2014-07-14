@@ -19,7 +19,7 @@ class TouristsController < ApplicationController
         if params[:state] == 'in_work'
           options[:without][:state_crc32] = ['reserved'.to_crc32, 'refused'.to_crc32]
         elsif params[:state] != 'all'
-          options[:with][:state_crc32] = params[:state].to_crc32
+          options[:with][:state_crc32] = params[:state].try(:to_crc32)
         end
 
         checkout_order(options)

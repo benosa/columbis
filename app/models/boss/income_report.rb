@@ -86,25 +86,25 @@ module Boss
       end
 
       def years_query
-        base_query.project("extract(year from claims.reservation_date) AS year")
+        base_query.project("extract(year from reservation_date) AS year")
           .group(:year)
           .order(:year)
       end
 
       def months_query
-        years_query.project("extract(month from claims.reservation_date) AS month")
+        years_query.project("extract(month from reservation_date) AS month")
           .group(:month)
           .order(:month)
       end
 
       def days_query
-        months_query.project("extract(day from claims.reservation_date) AS day")
+        months_query.project("extract(day from reservation_date) AS day")
           .group(:day)
           .order(:day)
       end
 
       def weeks_query
-        years_query.project("extract(week from claims.reservation_date) AS week")
+        years_query.project("extract(week from reservation_date) AS week")
           .group(:week)
           .order(:week)
       end

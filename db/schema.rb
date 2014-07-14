@@ -512,6 +512,7 @@ ActiveRecord::Schema.define(:version => 20140710080033) do
     t.string   "email"
     t.integer  "user_id"
     t.text     "wishes"
+    t.text     "actions"
     t.boolean  "special_offer",        :default => false
     t.string   "state"
     t.string   "sex",                  :default => "not_selected"
@@ -523,7 +524,6 @@ ActiveRecord::Schema.define(:version => 20140710080033) do
     t.integer  "assistant_id"
     t.integer  "office_id"
     t.string   "client_stat"
-    t.text     "actions"
   end
 
   add_index "tourists", ["potential"], :name => "index_tourists_on_potential"

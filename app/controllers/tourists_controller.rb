@@ -100,7 +100,7 @@ class TouristsController < ApplicationController
   end
 
   def create_comment
-    if can?(:extended_potential_clients, :user)
+    if extended_potential_clients?
       body = params[:body].gsub(/\n/, '<br>')
       @comment = TouristComment.new(body: body)
       @comment.user = current_user
@@ -134,7 +134,7 @@ class TouristsController < ApplicationController
 
     def tourist_params
       tourist_params = params[:tourist]
-      if cannot?(:extended_potential_clients, :user)
+      unless extended_potential_clients?
         if !Tourist::POTENTIAL_STATES.include?(tourist_params['state'])
           tourist_params['state'] = 'selection'
         end

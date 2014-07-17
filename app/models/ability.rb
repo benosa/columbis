@@ -39,7 +39,8 @@ class Ability
   end
 
   def extended_potential_clients_restrictions_on_right
-    if @tariff.extended_potential_clients == true
+    Rails.logger.debug "@tariff.inspect: #{@tariff.inspect}"
+    if @tariff.extended_potential_clients
       can :extended_potential_clients, :user
     else
       cannot :extended_potential_clients, :user

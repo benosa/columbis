@@ -188,9 +188,7 @@ class Company < ActiveRecord::Base
     end
 
     def check_extended_potential_clients
-      if tariff.try(:extended_potential_clients) == false && extended_potential_clients == true
-        self.extended_potential_clients = false
-      end
+      self.extended_potential_clients = false unless tariff.try(:extended_potential_clients)
     end
 
     def check_offices_attributes(attributes)

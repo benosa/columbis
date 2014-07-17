@@ -35,8 +35,12 @@ module TouristsHelper
     params[:potential].present?
   end
 
+  def extended_potential_clients?
+    can?(:extended_potential_clients, :user) && current_company.extended_potential_clients
+  end
+
   def last_tourist_comments(tourist)
-    if cannot?(:extended_potential_clients, :user)
+    unless extended_potential_clients?
       tourist.actions
     else
       comments = TouristComment.where(tourist_id: tourist.id).last(5)
@@ -54,7 +58,7 @@ module TouristsHelper
   end
 
   def tourist_comment(tourist)
-    if cannot?(:extended_potential_clients, :user)
+    unless extended_potential_clients?
       tourist.actions
     else
       tourist.tourist_comments.count > 0 ? tourist.tourist_comments.last.body : ""

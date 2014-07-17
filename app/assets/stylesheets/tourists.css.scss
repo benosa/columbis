@@ -22,6 +22,7 @@
 /*.tourist .first,
 .tourist .first .form_block { width: 450px; }
 .tourist .first .block_title { width: 428px; }*/
+.extended label.refused  { font-weight: bold; }
 .extended .state.refused {
   border-top: 1px solid #d5d5d5; padding-top: 10px;
 }
@@ -115,7 +116,6 @@
   .filter label:first-child { float: none; }
   .state .note_red { color: #f00; }
   .state .note_rose { color: #FFAEB5; }
-  .extended label.refused  {  font-weight: bold;}
   .wrap-input { float: left;  }
   .add_btn { border: none;}
    .tasks_states { padding-top: 15px; border-top: 1px solid #d5d5d5; margin-right: 20px; margin-top: 5px;}
@@ -163,7 +163,7 @@
   .client_comments_column { float: none; width: 980px; }
 }
 
-.potential_client {
+.potential_client.extended {
   .state {
     .refuse_reason input { float: left; width: 118px; }
     .ik_select { width: 130px !important; }
@@ -208,7 +208,7 @@
 }
 
 .new_tourist {
-  .potential_client {
+  .potential_client.extended {
     .states_block { left: 326px; right: auto; }
     .tourist_tasks_wrap { left: 326px; right: auto; }
     .tourist_files_wrap { left: 652px; top: 0; }

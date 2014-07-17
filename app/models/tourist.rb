@@ -127,7 +127,7 @@ class Tourist < ActiveRecord::Base
 
   def check_refused_reason
     if tourist_params && tourist_params[:state] == 'refused'
-      if tourist_params[:refused_note].strip == ''
+      if tourist_params[:refused_note].blank? == ''
         self.errors.add(:refused_note, I18n.t('.errors.messages.blank'))
       end
     end

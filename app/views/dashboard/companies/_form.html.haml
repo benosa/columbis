@@ -32,9 +32,7 @@
         %p
           - if can?(:extended_potential_clients, :user)
             = f.check_box :extended_potential_clients
-          - else
-            = f.check_box :extended_potential_clients, :disabled => true, :readonly => true
-          = f.label :extended_potential_clients, id: 'for_potential_client'
+            = f.label :extended_potential_clients, id: 'for_potential_client'
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"
         - if company.logo.present?
           = image_tag company.logo_url(:thumb)

@@ -79,6 +79,12 @@
             %i.icon-ok
           - else
             %i.icon-minus
+        %p
+          =t('.extended_potential_clients') + ": "
+          - if tariff_plan.extended_potential_clients
+            %i.icon-ok
+          - else
+            %i.icon-minus
       %td
         = link_to '', edit_tariff_plan_path(tariff_plan), :class => 'edit_row', :title => t('edit')
         = link_to '', tariff_plan, method: :delete, data: { confirm: t('are_you_sure') }, :class => 'delete', :title => t('delete')

@@ -14,7 +14,7 @@
             - task = fi.object
             - close_message = I18n.t('tourists.form_potential.task_close', user_name: task.user.try(:full_name))
             - done = task.state == 'done'
-            %li.state.task_block{title: done ? task.user.full_name : "", data: { user: task.user.try(:id), close_by: done ? close_message : "" }}
+            %li.state.task_block{title: done ? task.user.try(:full_name) : "", data: { user: task.user.try(:id), close_by: done ? close_message : "" }}
               %label.left_checkbox.checkbox_task{ class: done ? 'active' : '' }
               = check_box_tag 'task_state', task.state, done, { class: 'tourist_task_state' }
               = fi.text_field :name, size: 0, class: done ? 'disbled name_field state_name' : 'name_field state_name'

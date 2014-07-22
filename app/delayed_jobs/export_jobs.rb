@@ -17,6 +17,7 @@ module ExportJobs
   class ExportFile < Struct.new(:company_id)
     include RenderAnywhere
     include FileUtils
+    include ApplicationHelper
 
     def perform
       company = Company.find(company_id)

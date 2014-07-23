@@ -5,9 +5,11 @@ class PasswordsController < Devise::PasswordsController
     else
       self.resource = User.generate_password_by_mail(resource_params)
     end
-    if successfully_sent?(resource)
+
+    if resource &&  successfully_sent?(resource)
       respond_with({}, :location => after_sending_reset_password_instructions_path_for(resource_name))
     else
+      self.resource ||= resource_class.new
       resource.errors.messages[:email] = [I18n.t('errors.messages.maybe_not_found')]
       respond_with(resource)
     end

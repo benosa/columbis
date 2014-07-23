@@ -204,9 +204,13 @@ class User < ActiveRecord::Base
 
   def self.generate_password_by_mail(attributes={})
     user = User.where(email: attributes[:email]).first
-    user.generate_password
-    user.save
-    Mailer.new_password_instructions(user).deliver
+
+    if user
+      user.generate_password
+      user.save
+      Mailer.new_password_instructions(user).deliver
+    end
+
     user
   end
 

@@ -17,36 +17,48 @@ module ExportJobs
   class ExportFile < Struct.new(:company_id)
     include RenderAnywhere
     include FileUtils
-    include ApplicationHelper
+
+    def rendering_controller
+      return @rendering_controller if  @rendering_controller.present?
+      @rendering_controller ||= RenderingController.new
+      @rendering_controller.current_company = Company.find(company_id) rescue nil
+      @rendering_controller
+    end
+
+    class RenderingController < RenderAnywhere::RenderingController
+      attr_accessor :current_company
+      helper_method :current_company
+    end
 
     def perform
-      company = Company.find(company_id)
+      @company = Company.find(company_id) rescue nil
 
-      inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
-      @totals = Claim.where(:company_id => company_id).includes(inluded_tables).order('claims.reservation_date desc')
+      if @company
+        inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
+        @totals = Claim.where(:company_id => company_id).includes(inluded_tables).order('claims.reservation_date desc')
 
-      @tourists = Tourist.where(:company_id => company_id).includes([:address, :user])
+        @tourists = Tourist.where(:company_id => company_id).includes([:address, :user])
 
-      @clients = Tourist.where(:company_id => company_id).includes(:address).potentials.order('tourists.created_at DESC')
+        @clients = Tourist.where(:company_id => company_id).includes(:address).potentials.order('tourists.created_at DESC')
 
-      @managers = User.where(:company_id => company_id)
+        @managers = User.where(:company_id => company_id)
 
-      @operators = Operator.by_company(company).includes(:address).order(:name)
+        @operators = Operator.by_company(@company).includes(:address).order(:name)
 
-      @tourists_payments = Payment.where(:company_id => company_id, :payer_type => 'Tourist').order('date_in desc')
+        @tourists_payments = Payment.where(:company_id => company_id, :payer_type => 'Tourist').order('date_in desc')
 
-      @operator_payments = Payment.where(:company_id => company_id, :recipient_type => 'Operator').order('date_in desc')
+        @operator_payments = Payment.where(:company_id => company_id, :recipient_type => 'Operator').order('date_in desc')
 
-      html = render :template => 'dashboard/data_transfer/claims', :formats => [:xls],
-        :locals => {:@totals => @totals, :@managers => @managers, :@tourists => @tourists, :@clients => @clients,
-          :@operators => @operators, :@tourists_payments => @tourists_payments, :@operator_payments => @operator_payments }
+        html = render :template => 'dashboard/data_transfer/claims', :formats => [:xls],
+          :locals => {:@totals => @totals, :@managers => @managers, :@tourists => @tourists, :@clients => @clients,
+            :@operators => @operators, :@tourists_payments => @tourists_payments, :@operator_payments => @operator_payments }
 
-      path = Rails.root.join "uploads/#{company_id}"
+        path = Rails.root.join "uploads/#{company_id}"
 
-    # Rails.logger.debug "qwert33: #{path}"
-      FileUtils.mkdir_p path if !File.directory?(path)
+        FileUtils.mkdir_p path if !File.directory?(path)
 
-      IO.write("#{path}/export.xls", html)
+        IO.write("#{path}/export.xls", html)
+      end
     end
 
     def enqueue(job)

@@ -108,9 +108,13 @@
       <NumberFormat ss:Format="Long Date"/>
     </Style>
     <% @managers.each do |user| %>
-      <% if user.try(:color) %>
+      <% if user.try(:color) != '' %>
     <Style ss:ID="users-<%= user.id.to_s %>">
       <Interior ss:Color="<%= user.color %>" ss:Pattern="Solid"/>
+    </Style>
+      <% else %>
+    <Style ss:ID="users-<%= user.id.to_s %>">
+      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
     </Style>
       <% end %>
     <% end %>

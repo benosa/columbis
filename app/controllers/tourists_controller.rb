@@ -59,7 +59,7 @@ class TouristsController < ApplicationController
   def update
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
-    @tourist.office = @tourist.user.office if !(tourist_params[:office_id].to_i > 0)
+    @tourist.office = @tourist.user.try(:office) if !(tourist_params[:office_id].to_i > 0)
     manager = @tourist.user
     @tourist.user = current_user unless manager
     set_attrs

@@ -80,6 +80,7 @@ namespace :demo do
       operator = Operator.new(name: Faker::Name.operator_name)
       operator.company = @company
       operator.save
+      CompanyOperator.create(company_id: @company.id, operator_id: operator.id)
     end
     puts 'Operators are created'
 

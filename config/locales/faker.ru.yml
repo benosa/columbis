@@ -47,4 +47,4 @@ ru:
       color: ['#F4A460', '#00FFFF', '#7FFFD4', '#7FFF00', '#FF7F50', '#6495ED', '#00BFFF', '#48D1CC', '#FFFF00', '#F5DEB3']
 
     phone_number:
-      formats: ['(9##)###-##-##']
+      formats: ['+7##########']

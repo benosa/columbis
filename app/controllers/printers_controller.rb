@@ -98,10 +98,24 @@ class PrintersController < ApplicationController
         page_part.inner_html = value
       else
         head = page.at_css "head"
-        page_part = Nokogiri::XML::Node.new part, page
-        page_part.content = value
-        head.add_next_sibling(page_part)
+
+        if head
+          page_part = Nokogiri::XML::Node.new part, page
+          page_part.content = value
+          head.add_next_sibling(page_part)
+        elsif part == "body"
+          page = Nokogiri::HTML::DocumentFragment.parse ""
+          Nokogiri::HTML::Builder.with(page) do |doc|
+            doc.html {
+              doc.head
+              doc.body
+            }
+          end
+          page_part = page.at_css(part)
+          page_part.inner_html = value
+        end
       end
+
       if part == 'body'
         width = 'width:640px'
         style = page_part['style']

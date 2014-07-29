@@ -39,6 +39,9 @@
         - if is_admin?
           %p= f.label :company
           = f.select :company_id, Company.all.map{ |c| [c.name, c.id] }
+        - if can?(:export_notification, :user)
+          = f.label :export_notification, I18n.t('users.form.export_notification'), :class => 'checkbox left_checkbox'
+          = f.check_box :export_notification
 
   .form_block.grey_block
     .block_title

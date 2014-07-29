@@ -33,7 +33,7 @@
 
     = yield(:head)
 
-  %body{ :class => "#{(body_class unless is_claim_form)} #{yield(:body_class)}".strip }
+  %body{ :class => "#{(body_class unless is_claim_form)} #{yield(:body_class)}".strip, data: { export_notification: current_user.try(:export_notification).to_s } }
     #container.all.clearfix
 
       .header

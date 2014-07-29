@@ -39,7 +39,6 @@ class Ability
   end
 
   def extended_potential_clients_restrictions_on_right
-    Rails.logger.debug "@tariff.inspect: #{@tariff.inspect}"
     if @tariff.extended_potential_clients
       can :extended_potential_clients, :user
     else
@@ -65,6 +64,7 @@ class Ability
     cannot :manage, Company
     can :manage, Company, :id => user.company_id
     cannot [:new, :create], Company if company
+    can :export_notification, User
   end
 
   def boss
@@ -94,6 +94,7 @@ class Ability
     can :users_sign_in_as, :user
     can :offline_version, User
     can :switch_view, User
+    can :export_notification, User
   end
 
   def accountant

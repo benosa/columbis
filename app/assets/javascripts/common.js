@@ -1,3 +1,68 @@
+var validNavigation = false;
+ 
+function endSession() {
+  // Browser or broswer tab is closed
+  // Do sth here ...
+  alert("bye");
+}
+ 
+function wireUpEvents() {
+  /*
+  * For a list of events that triggers onbeforeunload on IE
+  * check http://msdn.microsoft.com/en-us/library/ms536907(VS.85).aspx
+  */
+  // window.onbeforeunload = function() {
+  //     console.log('Window was refreshed!34');
+  //     if (!validNavigation) {
+  //        endSession();
+  //     }
+  // }
+  $(window).on('beforeunload', function() {
+      if (!validNavigation) {
+        var e = e || window.event;
+
+  //IE & Firefox
+  if (e) {
+    e.returnValue = 'Are you sure?';
+  }
+
+  // For Safari
+  return 'Are you sure?';
+      }
+
+  });
+ 
+  // Attach the event keypress to exclude the F5 refresh
+  $(document).bind('keypress', function(e) {
+    alert('111')
+    if (e.keyCode == 116){
+      validNavigation = true;
+    }
+  });
+ 
+  // Attach the event click for all links in the page
+  $("a").bind("click", function() {
+    validNavigation = true;
+  });
+ 
+  // Attach the event submit for all forms in the page
+  $("form").bind("submit", function() {
+    validNavigation = true;
+  });
+ 
+  // Attach the event click for all inputs in the page
+  $("input[type=submit]").bind("click", function() {
+    validNavigation = true;
+  });
+   
+}
+ 
+// Wire up the events as soon as the DOM tree is ready
+$(document).ready(function() {
+  wireUpEvents();
+  console.log('Window was refreshed!11');
+});
+
 $(function(){
 
   // Set Russian cultute for Globalize plugin as default
@@ -22,6 +87,19 @@ $(function(){
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
     $t[$checkbox.is(':disabled') ? 'addClass' : 'removeClass']('disabled');
   });
+
+ // if ($('body').data('export_notification') == true) {
+  //  $(window).on('beforeunload', function() {
+     // alert('1113');//confirm('111');
+   //   return 'message';
+   // });
+    //return 'message';
+ // }
+  // _close = window.close;
+  // window.close = function() {
+  //   alert('1111');
+  //   _close();
+  // };
 
   // $('.editable-select').editableSelect({
   //   bg_iframe: true,

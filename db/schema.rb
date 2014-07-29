@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140710080033) do
+ActiveRecord::Schema.define(:version => 20140729055143) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -583,6 +583,7 @@ ActiveRecord::Schema.define(:version => 20140710080033) do
     t.string   "phone"
     t.boolean  "use_office_password",                   :default => false
     t.string   "subdomain"
+    t.boolean  "export_notification",                   :default => false, :null => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -1,66 +1,70 @@
 var validNavigation = false;
- 
-function endSession() {
-  // Browser or broswer tab is closed
-  // Do sth here ...
-  alert("bye");
-}
- 
-function wireUpEvents() {
-  /*
-  * For a list of events that triggers onbeforeunload on IE
-  * check http://msdn.microsoft.com/en-us/library/ms536907(VS.85).aspx
-  */
-  // window.onbeforeunload = function() {
-  //     console.log('Window was refreshed!34');
-  //     if (!validNavigation) {
-  //        endSession();
-  //     }
-  // }
-  $(window).on('beforeunload', function() {
-      if (!validNavigation) {
-        var e = e || window.event;
 
-  //IE & Firefox
-  if (e) {
-    e.returnValue = 'Are you sure?';
+function setCookie(name, value, days) {
+    if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    var expires = '; expires=' + date.toGMTString()
+    } else var expires = '';
+    document.cookie = name + '=' + value + expires + '; path=/;';
   }
+function getCookie(name) {
+  var nameEQ = name + '=';
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+  var c = ca[i];
+  while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
+  }
+  return null
+}
 
-  // For Safari
-  return 'Are you sure?';
+function wireUpEvents() {
+
+  $(window).on('beforeunload', function() {
+    if (!validNavigation) {
+      var notificated = getCookie('export_notification');
+      var message = $('body').data('export_n_message');
+      if (notificated != '1') {
+        setCookie('export_notification', '1', 1);
+        if (navigator.userAgent.search(/Firefox/) > -1) {
+          alert(message);
+          return 1;
+        } else {
+          return message;
+        }
       }
-
+    }
   });
- 
+
   // Attach the event keypress to exclude the F5 refresh
   $(document).bind('keypress', function(e) {
-    alert('111')
     if (e.keyCode == 116){
       validNavigation = true;
     }
   });
- 
+
   // Attach the event click for all links in the page
   $("a").bind("click", function() {
     validNavigation = true;
   });
- 
+
   // Attach the event submit for all forms in the page
   $("form").bind("submit", function() {
     validNavigation = true;
   });
- 
+
   // Attach the event click for all inputs in the page
   $("input[type=submit]").bind("click", function() {
     validNavigation = true;
   });
-   
+
 }
- 
-// Wire up the events as soon as the DOM tree is ready
+
 $(document).ready(function() {
-  wireUpEvents();
-  console.log('Window was refreshed!11');
+  if ($('body').data('export_notification') == true) {
+    wireUpEvents();
+  }
 });
 
 $(function(){
@@ -87,32 +91,6 @@ $(function(){
     $t[$checkbox.is(':checked') ? 'addClass' : 'removeClass']('active');
     $t[$checkbox.is(':disabled') ? 'addClass' : 'removeClass']('disabled');
   });
-
- // if ($('body').data('export_notification') == true) {
-  //  $(window).on('beforeunload', function() {
-     // alert('1113');//confirm('111');
-   //   return 'message';
-   // });
-    //return 'message';
- // }
-  // _close = window.close;
-  // window.close = function() {
-  //   alert('1111');
-  //   _close();
-  // };
-
-  // $('.editable-select').editableSelect({
-  //   bg_iframe: true,
-  //   onSelect: function(list_item) {
-  //     // alert('List item text: '+ list_item.text());
-  //     // 'this' is a reference to the instance of EditableSelect
-  //     // object, so you have full access to everything there
-  //     // alert('Input value: '+ this.text.val());
-  //   },
-  //   case_sensitive: false, // If set to true, the user has to type in an exact
-  //                       // match for the item to get highlighted
-  //   items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
-  // });
 
   // user color
   $('#user_color').live('change', function(event){

@@ -3,7 +3,7 @@
     - if false && logged_as_another_user?
       = link_to("#{t('logout')}: #{current_user.login}", destroy_user_session_path, :class => 'logout')
     - else
-      = link_to(t('logout'), destroy_user_session_path, :method => :delete, :class => 'logout')
+      = link_to(t('logout'), destroy_user_session_path, :method => :delete, :class => 'logout', :id => 'logout_link')
   %li
     #ajax-indicator
 - else

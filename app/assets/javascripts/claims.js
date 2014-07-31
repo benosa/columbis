@@ -350,12 +350,14 @@ function set_new_claim_js() {
 var select_tourist = function(el, data) {
   var $row = $(el).closest('.fake_row'),
       data = data || {};
-  $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until'], function() {
+  $.each(['passport_series', 'passport_number', 'date_of_birth', 'passport_valid_until', 'fio_latin', 'phone_number', 'email'], function() {
     $row.find('input.' + this).val(data[this]);
   });
+
+  console.log($row.find('select.sex_select'));
+  $row.find("select.sex_select").ikSelect('select', data['sex']);
+
   if($row.hasClass('applicant')) {
-    $row.find('.phone_number').val(data.phone_number);
-    $row.find('.email').val(data.email);
     $row.find('.address').val(data.address);
   }
   $row.find('.hidden_id').val(data.id);

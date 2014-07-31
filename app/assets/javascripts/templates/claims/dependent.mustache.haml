@@ -23,7 +23,7 @@
             = text_field_tag "#{name_prefix}[passport_valid_until]", '{{passport_valid_until}}', :id => "#{id_prefix}_passport_valid_until", :class => 'datepicker passport_valid_until expires_date'
           .wrap-select.sex-wrap
             %label{ :for => "#{id_prefix}_sex"}= I18n.t('claims.tourists.sex')
-            = select_tag "#{name_prefix}[sex]", options_for_select(Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, '{{sex}}'), :id => "#{id_prefix}_sex", :class => 'wide', :not_highlighted => true
+            = select_tag "#{name_prefix}[sex]", options_for_select(Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, '{{sex}}'), :id => "#{id_prefix}_sex", :class => 'wide sex_select', :not_highlighted => true
         .block-stretch.olo
           %label{ :for => "#{id_prefix}_full_name", :class => 'required' }= I18n.t('claims.tourists.full_name_fio')
           .wrap-input.autocomplete-wrap.name-wrap

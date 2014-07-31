@@ -13,7 +13,7 @@
     = f.text_field :passport_valid_until, :class => 'datepicker passport_valid_until expires_date', :value => l(tourist.try(:passport_valid_until), :format => :long)
   .wrap-input.no_margin_sex
     = f.label :sex, I18n.t('claims.tourists.sex')
-    = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide', :not_highlighted => true
+    = f.select :sex, Tourist::SEX_STATES.collect { |o| [t('sex_states_short.'+o), o] }, {}, :class => 'wide sex_select', :not_highlighted => true
 .block-stretch
   .wrap-input.autocomplete-wrap.name-wrap
     - unless local_assigns[:full_name_label] == false

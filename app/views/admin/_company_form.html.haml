@@ -13,6 +13,8 @@
         = f.select :tariff_id, active_tariff_plans.collect {|p| [ p.name, p.id ] }, {}, :not_highlighted => true
         %p= f.label :tariff_end, I18n.t('.admin.companies_info.payed_until')
         = f.text_field :tariff_end, :class => 'datepicker date', :value => l(@company.tariff_end.to_date, :format => :long), wrapper: false
+        %p=f.label :admin_note, I18n.t('.admin.companies_info.admin_note')
+        = f.text_area :admin_note, :class => 'wide wishes'
 
 %fieldset.form_submit{ :style => 'display: none; height: 0;' }
   = f.submit

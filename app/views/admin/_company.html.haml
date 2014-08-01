@@ -34,5 +34,8 @@
     = company.tariff.name
   %td
     = l(company.tariff_end, format: :long)
+  %td{ :title => company.admin_note.to_s, :class => 'admin_note' }
+    - if company.admin_note.to_s != ''
+      %span{ :class => 'attention_company'}
   %td
     = link_to '', admin_companies_edit_path(company.id), :class => 'edit_row', :title => t('edit')

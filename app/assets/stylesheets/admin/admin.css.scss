@@ -11,4 +11,23 @@
 
 .admin_companies {
   display: inline-block; width: 85%;
+  .attention_company {
+    background: url(/assets/new_design/images/attention.png) 0 0 no-repeat;
+    width: 25px;
+    height: 15px;
+  }
+
+}
+
+.admin_note {
+  opacity: 1 !important; filter: alpha(opacity=1);
+  .tooltip-arrow {
+    border-bottom-color: #999;
+  }
+  .tooltip-inner {
+    background-color: #FFF;
+    border: 1px solid #999;
+    color: #222;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+  }
 }

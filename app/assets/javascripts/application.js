@@ -26,6 +26,7 @@
 //= require offline
 //= require sms
 //= require users
+//= require admin
 //= require user_payments
 //= require ckeditor/init
 //= require spectrum

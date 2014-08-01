@@ -27,6 +27,7 @@ ru:
       settings: 'Настройки'
       company_list: 'Список компаний'
       all: 'Все'
+      admin_note: 'Примечание'
 
     visitors_info:
       title: 'Информация о посетителях'

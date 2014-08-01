@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140729055143) do
+ActiveRecord::Schema.define(:version => 20140801062030) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(:version => 20140729055143) do
     t.boolean  "short_claim_list",                                          :default => false, :null => false
     t.boolean  "active",                                                    :default => true
     t.boolean  "extended_potential_clients",                                :default => false, :null => false
+    t.text     "admin_note"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain"

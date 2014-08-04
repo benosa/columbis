@@ -7,9 +7,10 @@
             = f.label :num
             = f.text_field :num, :disabled => true, :value => claim.num, :class => 'number'
           .filter_block.block-confirmation
-            = f.label :operator_confirmation, :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
+            = f.label :operator_confirmation, id: 'operator_confirmation_long', :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
+            = f.label :operator_confirmation, I18n.t('claims.form.operator_confirmation_short'), id: 'operator_confirmation_short', :required => claim.operator_confirmation_flag, :data => { :required_title => I18n.t('required_field') }
             .wrap-flag.confirmation_flag-wrap
-              = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox'
+              = f.label :operator_confirmation_flag, '&nbsp;'.html_safe, :class => 'checkbox with_tooltip', title: I18n.t('claims.form.op_confirm_title')
               = f.check_box :operator_confirmation_flag
             = f.text_field :operator_confirmation, :class => 'confirmation ' << (claim.operator_confirmation_flag ? 'blue_back' : 'red_back'),  :required => claim.operator_confirmation_flag, :data => { :errors_text => 'false' }, wrapper: {class: 'confirmation-wrap'}
 
@@ -26,9 +27,10 @@
       .filter_group.group-check-date
         .filter_group_inner
           .filter_block.block-check_date
-            = f.label :check_date
+            = f.label :check_date, id: "check_date_long"
+            = f.label :check_date, I18n.t('claims.form.check_date_short'), id: "check_date_short"
             .wrap-flag.closed-wrap
-              = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox'
+              = f.label :closed, '&nbsp;'.html_safe, :class => 'checkbox  with_tooltip', title: I18n.t('claims.form.closed_title')
               = f.check_box :closed
             = f.text_field :check_date, :class => 'visa datepicker check_date ' << check_date_status(claim), :value => l(claim.check_date, :format => :long), wrapper: {class: 'check_date-wrap'}
           .filter_block.block-reservation_date

@@ -720,6 +720,16 @@
   }
 }
 
+.block-check_date #check_date_short { display: none}
+.block-confirmation #operator_confirmation_short { display: none}
+
+@media screen and (max-width: 1225px) {
+  .block-confirmation #operator_confirmation_long {display: none}
+  .block-confirmation #operator_confirmation_short {display: block}
+  .block-check_date #check_date_long {display: none}
+  .block-check_date #check_date_short {display: block}
+}
+
 //header
 // .header{
 //   width: auto;

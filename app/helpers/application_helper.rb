@@ -262,6 +262,13 @@ module ApplicationHelper
     link_to text, '#', class: button_class, data: link_data
   end
 
+  def export_notification_data
+    {
+      export_notification: can?(:export_notification, :user) ? current_user.try(:export_notification).to_s : false,
+      export_n_message: I18n.t('export_n_message')
+    }
+  end
+
   private
 
     def manifest_default_text

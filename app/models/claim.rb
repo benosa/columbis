@@ -979,7 +979,7 @@ class Claim < ActiveRecord::Base
         'СайтКомпании' => company.try(:site),
         'EmailКомпании' => company.try(:email),
         'Логотип' => company.logo_url(:thumb),
-        'LOGO' => company.logo_url(:thumb),
+        'Лого' => "<img src=\"#{company.logo_url(:thumb)}\" />",
         'ФИОДериктораКомпании' => company.director,
         'ФИОДериктораКомпанииРод' => company.director_genitive,
         'ФИОДериктораКомпанииИниц' => initials(company.director),

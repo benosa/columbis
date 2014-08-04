@@ -354,7 +354,6 @@ var select_tourist = function(el, data) {
     $row.find('input.' + this).val(data[this]);
   });
 
-  console.log($row.find('select.sex_select'));
   $row.find("select.sex_select").ikSelect('select', data['sex']);
 
   if($row.hasClass('applicant')) {

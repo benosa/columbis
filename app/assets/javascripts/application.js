@@ -11,6 +11,8 @@
 //= require mustache
 //= require hogan
 //= require best_in_place
+//= require ckeditor/init
+//= require spectrum
 //
 //= require_tree ../../templates
 //= require_tree ./templates
@@ -28,5 +30,4 @@
 //= require users
 //= require admin
 //= require user_payments
-//= require ckeditor/init
-//= require spectrum
+//= require export_notification

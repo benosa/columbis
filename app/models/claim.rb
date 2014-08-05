@@ -1017,7 +1017,7 @@ class Claim < ActiveRecord::Base
         'ТуроператорАдрес' => (operator.address.present? ? operator.address.pretty_full_address : ''),
         'ТуроператорАдресФакт' => operator.try(:actual_address) ? operator.actual_address :
           (operator.address.present? ? operator.address.pretty_full_address : ''),
-        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? operator.insurer_provision.to_s.gsub(/\d+/) { |sum| "#{sum} (#{sum.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" } : '',
+        'ТуроператорФинОбеспечение' => operator.insurer_provision.present? ? "#{operator.insurer_provision.to_f} рублей (#{operator.insurer_provision.to_f.amount_in_words(CurrencyCourse::PRIMARY_CURRENCY)})" : '',
         'Страховщик' => operator.try(:insurer),
         'СтраховщикПолноеНазвание' => operator.try(:insurer_full_name),
         'СтраховщикАдрес' => operator.try(:insurer_address),

@@ -64,7 +64,7 @@ class Ability
     cannot :manage, Company
     can :manage, Company, :id => user.company_id
     cannot [:new, :create], Company if company
-    can :export_notification, User
+    can :export_notification, :user
   end
 
   def boss
@@ -94,7 +94,7 @@ class Ability
     can :users_sign_in_as, :user
     can :offline_version, User
     can :switch_view, User
-    can :export_notification, User
+    can :export_notification, :user
   end
 
   def accountant

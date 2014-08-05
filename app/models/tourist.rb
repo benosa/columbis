@@ -115,7 +115,7 @@ class Tourist < ActiveRecord::Base
 
   def check_for_boss
     c = ApplicationController.current
-    if tourist_params && tourist_params[:class_group]
+    if tourist_params && tourist_params[:class_group].to_s != ''
       exist = DropdownValue.where(:list => 'tourist_group', :value => tourist_params[:class_group], :company_id => company.id).first
       if !exist && !(c.is_boss? || c.is_admin?)
         self.errors.add(:class_group, I18n.t('.errors.messages.right_denied'))

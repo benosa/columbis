@@ -55,6 +55,8 @@
           = f.text_field :passport_valid_until, :class => 'datepicker wide', :value => l(tourist.passport_valid_until, :format => :long)
           %p= f.label :passport_issued
           = f.text_area :passport_issued, :class => 'wide'
+          %p= f.label :native_passport
+          = f.text_area :native_passport, :class => 'wide'
     .form_block
       .block_title
         %h2= t('.class_group')

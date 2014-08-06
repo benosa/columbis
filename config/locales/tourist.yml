@@ -10,6 +10,7 @@ ru:
         passport_series: "Серия паспорта"
         passport_number: "Номер паспорта"
         passport_issued: 'Кем, где и когда выдан паспорт'
+        native_passport: 'Данные российского паспорта'
         phone_number: "Номер телефона"
         address: "Адрес"
         passport_valid_until: "Действителен до"

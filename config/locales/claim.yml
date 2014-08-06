@@ -159,6 +159,7 @@ ru:
     tourist:
       tourists_full_name_hint: 'Договор оформлен на'
       passport_issued: 'Паспорт выдан:'
+      native_passport: 'Данные российского паспорта'
 
     flights:
       title: 'Авиаперелёты'

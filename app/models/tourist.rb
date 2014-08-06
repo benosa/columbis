@@ -6,7 +6,7 @@ class Tourist < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :middle_name,
                   :passport_series, :passport_number, :passport_valid_until,
-                  :date_of_birth, :phone_number, :potential, :email,
+                  :date_of_birth, :phone_number, :potential, :email, :native_passport,
                   :address_attributes, :special_offer, :sex, :fio_latin, :passport_issued,
                   :images_attributes, :file, :class_group, :refused_note, :office,
                   :tourist_tasks_attributes, :user_id, :assistant_id, :client_stat, :actions

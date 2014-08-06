@@ -358,6 +358,7 @@ var select_tourist = function(el, data) {
 
   if($row.hasClass('applicant')) {
     $row.find('.address').val(data.address);
+    $row.find('.native_passport').val(data.native_passport);
   }
   $row.find('.hidden_id').val(data.id);
 };

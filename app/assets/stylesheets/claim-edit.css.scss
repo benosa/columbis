@@ -381,6 +381,13 @@
           }
           .passport_valid_until-wrap { width: 80px; margin-right: 0; margin-left: 0; }
           .sex-wrap { width: 60px; margin: 0 0 0 10px; }
+          .passport_issued_app {
+            width: 90px; margin-left: 10px; float:left;
+          }
+
+          .native_passport_app {
+            width: 309px; margin: 0 0 0 8px; float:left;
+          }
         }
         .down-block {
           width: 100%;
@@ -391,7 +398,7 @@
           }
           .block-right {
             width: 430px;
-            .app_passport_date {margin-left: 10px !important;}
+            .app_passport_date {margin-left: 0px !important;}
             .wrap-input { margin-right: 0; float: none; }
           }
         }

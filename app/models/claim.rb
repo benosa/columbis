@@ -999,6 +999,7 @@ class Claim < ActiveRecord::Base
         'НомерПаспорта' => applicant.try(:passport_number),
         'СрокПаспорта' => applicant.try(:passport_valid_until),
         'ПаспортВыдан' => applicant.try(:passport_issued),
+        'ДанныеРосПаспорта' => applicant.try(:native_passport),
         'Обращение' => applicant.try(:sex) ? I18n.t("appeal_by_sex.#{applicant.sex}") : '',
         'Туристы' => dependents.map(&:full_name).unshift(applicant.try(:full_name)).map{|name| name.gsub ' ', '&nbsp;'}.compact.join(', ')
       }) if applicant

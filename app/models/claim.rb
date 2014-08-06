@@ -907,7 +907,7 @@ class Claim < ActiveRecord::Base
     def printable_fields
       fields = {
         'Номер' => num,
-        'Менеджер' => user.full_name,
+        'Менеджер' => user.try(:full_name),
         'НомерДоговора' => contract_name,
         'ДатаЗаездаС' => (arrival_date.strftime('%d/%m/%Y') if arrival_date),
         'ДатаЗаездаПо' => (departure_date.strftime('%d/%m/%Y') if departure_date),

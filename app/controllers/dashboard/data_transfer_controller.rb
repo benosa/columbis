@@ -27,6 +27,21 @@ class Dashboard::DataTransferController < ApplicationController
     render :index
   end
 
+  def export_full
+   # ExportJobs.import_file(current_company.id)
+
+    respond_to do |format|
+      format.xls {
+        unless ExportJobs.working? current_company.id
+          ExportJobs.export_file_full current_company.id
+          redirect_to dashboard_data_index_path, :notice => t("dashboard.transfer.export_start")
+        else
+          redirect_to dashboard_data_index_path, :alert => t("dashboard.transfer.export_working")
+        end
+      }
+    end
+  end
+
   def export
    # ExportJobs.import_file(current_company.id)
 

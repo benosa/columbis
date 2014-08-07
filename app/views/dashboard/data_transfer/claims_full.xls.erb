@@ -157,6 +157,28 @@
         <Cell><Data ss:Type="String"><%= t('claims.index.docs') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.index.memo') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('claims.index.check_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.form.early_reservation') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.excluded_from_profit') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.claim.canceled') %></Data></Cell>
+        <Cell><Data ss:Type="String">Закрыта</Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.index.active') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('claims.tour_price.tour_price') %></Data></Cell>
+        <Cell><Data ss:Type="String">Страховка</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительная страховка</Data></Cell>
+        <Cell><Data ss:Type="String">Скидка</Data></Cell>
+        <Cell><Data ss:Type="String">Цена визы</Data></Cell>
+        <Cell><Data ss:Type="String">Топливный сбор</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительные услуги</Data></Cell>
+        <Cell><Data ss:Type="String">Оператор валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Цена тура валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Страховка валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительная страховка валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Виза валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Топливный сбор валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Дополнительные услуги валюта</Data></Cell>
+        <Cell><Data ss:Type="String">Курс USD</Data></Cell>
+        <Cell><Data ss:Type="String">Курс EUR</Data></Cell>
+
       </Row>
     <% @totals.each do |claim| %>
       <%= ExportJobs.excel_element "Row", "companies-gray_back", styles, claim.canceled? %>
@@ -228,6 +250,28 @@
         <%= ExportJobs.excel_element "Cell", "companies-dates-#{check_date_status(claim)}", styles %>
         <% end %>
           <%= ExportJobs.excel_date claim.check_date %></Cell>
+        <Cell><Data ss:Type="String"><%= claim.early_reservation ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.excluded_from_profit ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.canceled ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.active ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.closed ? 'Да' : 'Нет' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.tour_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.insurance_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_insurance_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.discount %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.visa_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.fuel_tax_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_services_price %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.operator_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.tour_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.insurance_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_insurance_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.visa_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.fuel_tax_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.additional_services_price_currency %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.course_usd.to_f.round 3 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= claim.course_eur.to_f.round 3 %></Data></Cell>
+
       </Row>
     <% end %>
     </Table>
@@ -255,30 +299,32 @@
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.last_name') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.first_name') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.middle_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.sex') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.date_of_birth') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.phone_number') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.email') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.fio_latin') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_series') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_number') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_valid_until') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.passport_issued') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.class_group') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.office') %></Data></Cell>
       </Row>
     <% @tourists.each do |tourist| %>
       <%= ExportJobs.excel_element "Row", "users-#{tourist.try(:user).try(:id)}", styles %>
         <Cell><Data ss:Type="String"><%= tourist.last_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.first_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.middle_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t("sex_states.#{tourist.sex}") %></Data></Cell>
         <Cell ss:StyleID="date"><%= ExportJobs.excel_date tourist.date_of_birth %></Cell>
         <Cell><Data ss:Type="String"><%= tourist.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.email %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.fio_latin %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_series %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.passport_number %></Data></Cell>
         <Cell ss:StyleID="date"><%= ExportJobs.excel_date tourist.passport_valid_until %></Cell>
+        <Cell><Data ss:Type="String"><%= tourist.passport_issued %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourist.address.try(:joint_address) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= tourist.class_group %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= tourist.office.try(:name) %></Data></Cell>
       </Row>
     <% end %>
     </Table>
@@ -300,31 +346,198 @@
       <ProtectScenarios>False</ProtectScenarios>
     </WorksheetOptions>
   </Worksheet>
-  <Worksheet ss:Name="Потенциальные клиенты">
+  <Worksheet ss:Name="Клиенты">
     <Table>
       <Row>
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:created_at) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.manager') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(t('tourists.tourists.full_name')) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.sex') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Tourist.human_attribute_name(:phone_number) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.email') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('tourists.potential_clients.wishes') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.actions') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= t('activerecord.attributes.tourist.state') %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= t('tourists.tourists.office') %></Data></Cell>
       </Row>
     <% @clients.each do |client| %>
       <%= ExportJobs.excel_element "Row", "users-#{client.try(:user).try(:id)}", styles %>
         <Cell ss:StyleID="date"><%= ExportJobs.excel_date client.created_at.to_date %></Cell>
         <Cell><Data ss:Type="String"><%= client.user.try(:login) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t("sex_states.#{client.sex}") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.phone_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.email %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.wishes %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.actions %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.state.to_s != '' ? t("potential_states.#{client.state}") : '' %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= client.office.try(:name) %></Data></Cell>
       </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Операторы">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.full_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.register_number') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.register_series') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.inn') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.ogrn') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.code_of_reason') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.phone_numbers') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.site') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.banking_details') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.actual_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('tourists.tourists.address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_full_name') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.actual_insurer_address') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('operators.form.provision') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_date') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_start') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.operator.insurer_contract_end') %></Data></Cell>
+      </Row>
+    <% @operators.each do |operator| %>
+      <%= ExportJobs.excel_element "Row", "", styles %>
+        <Cell><Data ss:Type="String"><%= operator.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.full_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.register_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.register_series %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.inn %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.ogrn %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.code_of_reason %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.phone_numbers %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.site %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.banking_details %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.actual_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.address.try(:joint_address) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_full_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.actual_insurer_address %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_provision %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= operator.insurer_contract %></Data></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_date %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_start %></Cell>
+        <Cell ss:StyleID="date"><%= ExportJobs.excel_date operator.insurer_contract_end %></Cell>
+      </Row>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Оплаты от туриста">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Номер заявки</Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.date_in') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.currency') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.description') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.form') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount_prim') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.approved') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
+      </Row>
+    <% @tourists_payments.each do |payment| %>
+      <% if payment.claim %>
+        <%= ExportJobs.excel_element "Row", "", styles %>
+          <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+          <Cell ss:StyleID="date"><%= ExportJobs.excel_date payment.date_in %></Cell>
+          <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+        </Row>
+        <% end %>
+    <% end %>
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+      <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+      </PageSetup>
+      <Print>
+        <ValidPrinterInfo/>
+        <PaperSizeIndex>0</PaperSizeIndex>
+        <VerticalResolution>0</VerticalResolution>
+        <NumberofCopies>0</NumberofCopies>
+      </Print>
+      <Selected/>
+      <Panes/>
+      <ProtectObjects>False</ProtectObjects>
+      <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+  </Worksheet>
+  <Worksheet ss:Name="Оплаты оператору">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Номер заявки</Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.date_in') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.currency') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.description') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.form') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.amount_prim') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.approved') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t('activerecord.attributes.payment.reversed_course') %></Data></Cell>
+      </Row>
+    <% @operator_payments.each do |payment| %>
+      <% if payment.claim %>
+        <%= ExportJobs.excel_element "Row", "", styles %>
+          <Cell><Data ss:Type="String"><%= payment.claim.num %></Data></Cell>
+          <Cell ss:StyleID="date"><%= ExportJobs.excel_date payment.date_in %></Cell>
+          <Cell><Data ss:Type="String"><%= payment.currency %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.description %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.form %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.amount_prim %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.approved ? 'Да' : 'Нет' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.course %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= payment.reversed_course ? 'Да' : 'Нет' %></Data></Cell>
+        </Row>
+      <% end %>
     <% end %>
     </Table>
     <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">

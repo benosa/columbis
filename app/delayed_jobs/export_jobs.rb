@@ -6,6 +6,10 @@ RenderAnywhere::RenderingController.send :helper, ClaimsHelper
 
 module ExportJobs
 
+  def self.export_file_full(company_id)
+    Delayed::Job.enqueue ExportFileFull.new(company_id)
+  end
+
   def self.export_file(company_id)
     Delayed::Job.enqueue ExportFile.new(company_id)
   end
@@ -14,7 +18,7 @@ module ExportJobs
     !!Rails.cache.read("export_file/#{company_id}")
   end
 
-  class ExportFile < Struct.new(:company_id)
+  class ExportFileFull < Struct.new(:company_id)
     include RenderAnywhere
     include FileUtils
 
@@ -49,9 +53,58 @@ module ExportJobs
 
         @operator_payments = Payment.where(:company_id => company_id, :recipient_type => 'Operator').order('date_in desc')
 
-        html = render :template => 'dashboard/data_transfer/claims', :formats => [:xls],
+        html = render :template => 'dashboard/data_transfer/claims_full', :formats => [:xls],
           :locals => {:@totals => @totals, :@managers => @managers, :@tourists => @tourists, :@clients => @clients,
             :@operators => @operators, :@tourists_payments => @tourists_payments, :@operator_payments => @operator_payments }
+
+        path = Rails.root.join "uploads/#{company_id}"
+
+        FileUtils.mkdir_p path if !File.directory?(path)
+
+        IO.write("#{path}/export_full.xls", html)
+      end
+    end
+
+    def enqueue(job)
+      Rails.cache.write "export_file/#{company_id}", true
+    end
+
+    def after(job)
+      Rails.cache.clear "export_file/#{company_id}"
+    end
+  end
+
+  class ExportFile < Struct.new(:company_id)
+    include RenderAnywhere
+    include FileUtils
+
+    def rendering_controller
+      return @rendering_controller if  @rendering_controller.present?
+      @rendering_controller ||= RenderingController.new
+      @rendering_controller.current_company = Company.find(company_id) rescue nil
+      @rendering_controller
+    end
+
+    class RenderingController < RenderAnywhere::RenderingController
+      attr_accessor :current_company
+      helper_method :current_company
+    end
+
+    def perform
+      @company = Company.find(company_id) rescue nil
+
+      if @company
+        inluded_tables = [:user, :office, :operator, :country, :city, :applicant, :dependents, :assistant]
+        @totals = Claim.where(:company_id => company_id).includes(inluded_tables).order('claims.reservation_date desc')
+
+        @tourists = Tourist.where(:company_id => company_id).includes([:address, :user, :office]).clients.order('tourists.created_at DESC')
+
+        @clients = Tourist.where(:company_id => company_id).includes([:address, :office]).potentials.order('tourists.created_at DESC')
+
+        @managers = User.where(:company_id => company_id)
+
+        html = render :template => 'dashboard/data_transfer/claims', :formats => [:xls],
+          :locals => {:@totals => @totals, :@managers => @managers, :@tourists => @tourists, :@clients => @clients }
 
         path = Rails.root.join "uploads/#{company_id}"
 

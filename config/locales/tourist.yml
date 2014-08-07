@@ -75,6 +75,7 @@ ru:
       email: 'Email'
       manager: 'Менеджер'
       class_group: 'Группа'
+      office: 'Офис'
     potential_clients:
       full_name: "ФИО"
       email: 'Email'

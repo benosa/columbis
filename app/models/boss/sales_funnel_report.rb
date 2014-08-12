@@ -4,17 +4,16 @@ module Boss
     available_results :count
 
     def prepare(options = {})
-     # up  = build_result(query: up_query,  typecast: {count: :to_i, name: :to_s})
       middle  = build_result(query: middle_query,  typecast: {count: :to_i, name: :to_s})
       down  = build_result(query: down_query,  typecast: {count: :to_i, name: :to_s})
       canceled  = build_result(query: canceled_query,  typecast: {count: :to_i, name: :to_s})
-      yo = build_result(query: yo_query,  typecast: {state: :to_s, count: :to_i})
-     # Rails.logger.debug "olo113: #{yo.inspect}"
+      clients = build_result(query: clients_query,  typecast: {state: :to_s, count: :to_i})
+      # Rails.logger.debug "olo113: #{yo.inspect}"
       @results[:count] = []
-     #   Rails.logger.debug "olo113: #{yo.data}"
-      yo.data.each do |state|
+
+      clients.data.each do |state|
         if state['state'].to_s != ''
-          @results[:count].push("name" => I18n.t("potential_states.#{state['state']}"), "count" => state["count"].to_i)
+          @results[:count].push("name" => I18n.t(".salesfunnel_report.#{state['state']}"), "count" => state["count"].to_i)
         end
       end
 
@@ -34,6 +33,27 @@ module Boss
           text: '',
           marginRight: 0
         },
+        labels: {
+          items: [
+            {
+              html: 'sdfsfdsdfsdf',
+              style: {
+                left: '300px',
+                top: '100px'
+              }
+            },
+            {
+              html: 'sdfs11fdsdfsdf',
+              style: {
+                left: '300px',
+                top: '200px'
+              }
+            }
+          ],
+          style: {
+            color: '#3E576F'
+          }
+        },
         series: [{
           name: I18n.t('report.tourist_quantity'),
           data: data.map{ |o| [o["name"], o["count"]] }
@@ -46,7 +66,6 @@ module Boss
         claims.project(tourist_claims[:tourist_id].count)
           .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
           .where(claims[:company_id].eq(company.id))
-          .where(claims[:canceled].eq(false))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:excluded_from_profit].eq(false))
       end
@@ -57,7 +76,7 @@ module Boss
           .where(tourists[:potential].eq(true))
       end
 
-      def yo_query
+      def clients_query
         tourists.project(tourists[:state], tourists[:id].count)
           .where(tourists[:company_id].eq(company.id))
           .where(tourists[:potential].eq(true))
@@ -67,16 +86,18 @@ module Boss
 
       def middle_query
         base_query.project("'#{I18n.t('.salesfunnel_report.middle')}' as name")
+          .where(claims[:canceled].eq(false))
           .where(claims[:closed].eq(false))
       end
 
       def down_query
         base_query.project("'#{I18n.t('.salesfunnel_report.up')}' as name")
+          .where(claims[:canceled].eq(false))
           .where(claims[:closed].eq(true))
       end
 
       def canceled_query
-        base_query.project("'olo11' as name")
+        base_query.project("'#{I18n.t('.salesfunnel_report.canceled')}' as name")
           .where(claims[:canceled].eq(true))
       end
   end

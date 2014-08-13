@@ -8,7 +8,6 @@ module Boss
       down  = build_result(query: down_query,  typecast: {count: :to_i, name: :to_s})
       canceled  = build_result(query: canceled_query,  typecast: {count: :to_i, name: :to_s})
       clients = build_result(query: clients_query,  typecast: {state: :to_s, count: :to_i})
-      # Rails.logger.debug "olo113: #{yo.inspect}"
       @results[:count] = []
 
       clients.data.each do |state|
@@ -20,6 +19,10 @@ module Boss
       [middle, down, canceled].each do |data|
         @results[:count].push(data.map { |o| {"name" => o["name"], "count" => o["count"]}}.first)
       end
+
+      @count = 0
+      @results[:count].each {|e| @count += e['count'].to_i}
+      @results[:count].each {|e| e['name'] += " #{((e['count'].to_f / @count.to_f) * 100).round(1)}%"}  if @count > 0
       self
     end
 
@@ -32,27 +35,6 @@ module Boss
         title: {
           text: '',
           marginRight: 0
-        },
-        labels: {
-          items: [
-            {
-              html: 'sdfsfdsdfsdf',
-              style: {
-                left: '300px',
-                top: '100px'
-              }
-            },
-            {
-              html: 'sdfs11fdsdfsdf',
-              style: {
-                left: '300px',
-                top: '200px'
-              }
-            }
-          ],
-          style: {
-            color: '#3E576F'
-          }
         },
         series: [{
           name: I18n.t('report.tourist_quantity'),

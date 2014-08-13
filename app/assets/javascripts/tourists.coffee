@@ -106,6 +106,7 @@ jQuery ->
     name = $('#new_task_name').val().trim()
     user = $('.tasks_block').data('current_user')
     if name != ''
+      $('#new_task_name').attr('value', '')
       tmpl = JST['tourists/task'].render(id: num + 1, name: name, user: user)
       $('#task_values').append(tmpl)
 

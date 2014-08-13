@@ -28,6 +28,8 @@ ru:
         actions: 'Что сделать'
       images:
         file: 'Файл'
+      tourist_tasks:
+        name: "Название задачи"
 
   potential_states:
     all: 'Все'

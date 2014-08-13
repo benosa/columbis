@@ -42,6 +42,7 @@ ru:
     reserved: 'Забронирован'
     refused: 'Отказался'
     refusal_reason: 'Список причин'
+    not_in_work: 'Не в работе'
 
   sex_states_short:
     male: 'М'

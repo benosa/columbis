@@ -166,8 +166,8 @@
         <Cell ss:StyleID="<%= row_date_style %>"><%= ExportJobs.excel_date claim.reservation_date %></Cell>
         <Cell><Data ss:Type="String"><%= claim.tourist_stat %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.office.name %></Data></Cell>
-        <%= ExportJobs.excel_element "Cell", "users-#{claim.user.id}", styles %>
-          <Data ss:Type="String"><%= claim.user.login %></Data></Cell>
+        <%= ExportJobs.excel_element "Cell", "users-#{claim.user.try(:id)}", styles %>
+          <Data ss:Type="String"><%= claim.user.try(:login) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= tourists_list(claim) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= claim.applicant.try(:phone_number) %></Data></Cell>
         <% if claim.canceled? %>

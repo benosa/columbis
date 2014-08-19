@@ -9,7 +9,7 @@ ru:
         middle_name: "Отчество"
         passport_series: "Серия паспорта"
         passport_number: "Номер паспорта"
-        passport_issued: 'Кем, где и когда выдан паспорт'
+        passport_issued: 'Кем, где и когда выдан загранпаспорт'
         native_passport: 'Данные российского паспорта'
         phone_number: "Номер телефона"
         address: "Адрес"
@@ -105,8 +105,8 @@ ru:
       add_task: 'Добавить'
       class_group: 'Группа'
       passport_column: 'Паспортные данные'
-      passport: 'Паспорт (серия, номер)'
-      passport_valid_until: 'Паспорт действителен до'
+      passport: 'Загранпаспорт (серия, номер)'
+      passport_valid_until: 'Загранпаспорт действителен до'
       address: 'Адрес'
       email: 'Email'
       special_offer: 'Получать спецпредложения на телефон и электронную почту'

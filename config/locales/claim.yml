@@ -148,7 +148,7 @@ ru:
       full_name_fio: 'ФИО'
       date_of_birth: 'Дата рождения'
       passport: 'Паспорт'
-      passport_full: 'Паспорт(серия/номер)'
+      passport_full: 'Загр.паспорт(сер/ном)'
       passport_expire: 'Действит. до'
       sex: 'Пол'
       phone: 'Телефон'
@@ -158,7 +158,7 @@ ru:
 
     tourist:
       tourists_full_name_hint: 'Договор оформлен на'
-      passport_issued: 'Паспорт выдан:'
+      passport_issued: 'Загр.пас. выдан'
       native_passport: 'Данные российского паспорта'
 
     flights:

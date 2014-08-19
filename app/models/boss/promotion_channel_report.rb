@@ -40,7 +40,7 @@ module Boss
         title = I18n.t('report.claim_quantity')
         ytitle = I18n.t('report.pcs')
       end
-      data = data_check(factor, data)
+     # data = data_check(factor, data)
 
       settings = {
         title: {
@@ -67,7 +67,7 @@ module Boss
       elsif factor == :count
         title = I18n.t('report.claim_quantity')
       end
-      data = data_check(factor, data)
+     # data = data_check(factor, data)
 
       settings = {
         title: {
@@ -95,7 +95,7 @@ module Boss
 
       def base_query
         claims.project(
-            "#{interval_field('claims.tourist_stat')} AS name"
+            "claims.tourist_stat AS name"
           )
         .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
         .where(claims[:canceled].eq(false))

@@ -51,7 +51,7 @@ ru:
       if_not_password: 'Если никакой пароль не задан, он будет создан автоматически'
       color_chose_text: 'Выбрать'
       color_cansel_text: 'отменить'
-      export_notification: 'Уведомлять об экспорте данных'
+      export_notification: 'Напоминать о выгрузке данных'
 
     messages:
       created: 'Пользователь создан'

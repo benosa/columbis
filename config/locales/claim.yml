@@ -102,8 +102,8 @@ ru:
       user: 'Менеджер'
       assistant: 'Ассистент'
       visa: 'Виза'
-      check_date: 'Контрольная дата вылета'
-      check_date_short: 'Контр. дата вылета'
+      check_date: 'Дата проверки вылета'
+      check_date_short: 'Проверка вылета'
 
       tourist: 'Турист'
 
@@ -136,7 +136,7 @@ ru:
       operator_confirmation: 'Подтверждение оператора'
       reservation_date: 'Дата резервирования'
       early_reservation: 'Раннее бронирование'
-      check_date: 'Контрольная дата вылета'
+      check_date: 'Дата проверки вылета'
       operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
       reservation_date_two_line: 'Дата<br/>резерв.'
       early_reservation_two_line: 'Раннее<br/>бронир.'
@@ -247,7 +247,7 @@ ru:
     attributes:
       claim:
         user_id: 'Менеджер'
-        check_date: 'Контрольная дата вылета'
+        check_date: 'Дата проверки вылета'
         office_id: 'Офис'
         operator_id: 'Туроператор'
         operator: 'Туроператор'

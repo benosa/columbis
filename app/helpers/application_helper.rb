@@ -269,6 +269,14 @@ module ApplicationHelper
     }
   end
 
+  def html_data
+    if current_user.start_trip
+      {
+        start_trip_step: current_user.start_trip.step
+      }
+    end
+  end
+
   private
 
     def manifest_default_text

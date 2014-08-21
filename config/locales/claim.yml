@@ -71,7 +71,7 @@ ru:
       operator_paid_prim: 'Оплачено оп-ру руб.'
       operator_debt: 'Долг оп-ру'
       currency: 'Валюта'
-      check_date: 'Контр. дата вылета'
+      check_date: 'Проверка вылета'
       calculation: 'Расчет'
       paid: 'Оплачено в валюте'
       docs: 'Документы'
@@ -126,7 +126,7 @@ ru:
       operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
       reservation_date_two_line: 'Дата<br/>резерв.'
       early_reservation_two_line: 'Раннее<br/>бронир.'
-      check_date_two_line: 'Контр.<br/>дата'
+      check_date_two_line: 'Пров.<br/>вылета'
 
     form_filter:
       office: 'Офис'
@@ -140,7 +140,7 @@ ru:
       operator_confirmation_two_line: 'Подтвержд.<br/>оператора'
       reservation_date_two_line: 'Дата<br/>резерв.'
       early_reservation_two_line: 'Раннее<br/>бронир.'
-      check_date_two_line: 'Контр.<br/>дата'
+      check_date_two_line: 'Пров.<br/>вылета'
 
     tourists:
       tourists: 'Туристы'

@@ -152,23 +152,15 @@ class ApplicationController < ActionController::Base
 
   private
     def check_start_trip
-     # Rails.logger.debug "olo11: #{current_company.inspect}"
       step = cookies[:start_trip_step]
       yield
       if step.to_i == 1
         if @company.errors.count == 0
-          Rails.logger.debug "olo11suc: #{@company.errors.inspect}"
           current_user.start_trip.step = 2
           current_user.start_trip.save
-        else
-          cookies.delete :start_trip_step, domain: '.' + CONFIG[:domain]
-          Rails.logger.debug "olo11er: #{@company.errors.inspect} #{CONFIG[:domain]}"
         end
-       # Rails.logger.debug "olo114: #{@company.errors.inspect}"
-        # current_user.start_trip.step = 2
-        # current_user.start_trip.save
+        cookies.delete :start_trip_step
       end
-      # cookies.delete('start_trip_step')
     end
 
     def set_time_zone

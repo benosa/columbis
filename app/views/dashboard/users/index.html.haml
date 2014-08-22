@@ -37,4 +37,4 @@
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'
-  = link_to t('.add_user'), new_dashboard_user_path, :class => 'add_operator'
+  = link_to t('.add_user'), new_dashboard_user_path, id: 'add_worker', :class => 'add_operator'

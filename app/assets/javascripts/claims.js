@@ -1333,6 +1333,20 @@ $(function() {
      }
   });
 
+  $('#claim_arrival_date').change(function() {
+    date = $('#claim_arrival_date').datepicker('getDate');
+    day = date.getUTCDay();
+    diff = 1;
+    if (day == 6) {
+      diff = 2;
+    }
+    if (day == 0) {
+      diff = 3;
+    }
+    date.setDate(date.getDate() - diff);
+    $('#claim_check_date').datepicker('setDate', date);
+  });
+
 });
 
 // Aling #mistral_top_managers block for Mistral

@@ -1,5 +1,5 @@
 !!!
-%html{ :manifest => params[:offline] && '/tourism.manifest', :class => yield(:html_class) }
+%html{ :manifest => params[:offline] && '/tourism.manifest', :class => "#{yield(:html_class)} #{('start_trip' if current_user.start_trip)}", data: html_data }
   %head
     %title
       = yield(:title) || 'Untitled'

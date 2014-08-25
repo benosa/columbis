@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   helper_method :original_user=, :original_user, :logged_as_another_user?
 
   around_filter :set_time_zone
+  around_filter :check_start_trip, :if => :current_user_start_trip?
 
   before_filter :check_company_office
   skip_before_filter :check_company_office, :only => :sign_out # it's doesn't work :(
@@ -150,6 +151,37 @@ class ApplicationController < ActionController::Base
   end
 
   private
+    def check_start_trip
+      step = cookies[:start_trip_step]
+      redirect_to(dashboard_users_path) if current_user.start_trip.step == 2 && request.path != dashboard_users_path
+      if current_user.start_trip.step == 3 && request.path != new_dashboard_user_path && request.get?
+        redirect_to(new_dashboard_user_path)
+      end
+
+      yield
+      if step.to_i == 1
+        cookies.delete :start_trip_step
+        if @company.errors.count == 0
+          current_user.start_trip.step = 2
+          current_user.start_trip.save
+        end
+      end
+
+      if step.to_i == 2
+        cookies.delete :start_trip_step
+        current_user.start_trip.step = 3
+        current_user.start_trip.save
+      end
+
+      if step.to_i == 3
+       # Rails.logger.debug "olo11: #{@user.errors.count}"
+        cookies.delete :start_trip_step
+        if @user.errors.count == 0
+          current_user.start_trip.step = 0
+          current_user.start_trip.save
+        end
+      end
+    end
 
     def set_time_zone
       old_time_zone = Time.zone
@@ -178,6 +210,10 @@ class ApplicationController < ActionController::Base
 
     def current_company_inactive?
       !current_company.is_active? if current_company
+    end
+
+    def current_user_start_trip?
+      current_user.try(:start_trip)
     end
 
     def original_user=(user)

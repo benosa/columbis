@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   has_many :user_payments
   has_many :tourist_comments
   has_many :tourist_tasks
+  has_one :start_trip
 
   before_validation :set_role, :on => :create, :unless => proc{ ROLES.include? self.role  }
   before_validation :generate_login, :on => :create, :if => proc{ self.login.blank?  }
@@ -43,6 +44,7 @@ class User < ActiveRecord::Base
   before_save :check_owner_boss
   after_save :send_registration_info_to_support, :if => :just_confirmed? if CONFIG[:support_delivery]
   after_save :create_company, :if => :just_confirmed?
+  after_create :add_start_trip
   after_update :touch_claims
   after_destroy :touch_claims
 
@@ -220,6 +222,10 @@ class User < ActiveRecord::Base
 
   def generate_password
     self.password = User.generate_password
+  end
+
+  def add_start_trip
+    StartTrip.create(user_id: id, step: 1) if role == 'boss'
   end
 
   private

@@ -153,13 +153,33 @@ class ApplicationController < ActionController::Base
   private
     def check_start_trip
       step = cookies[:start_trip_step]
+      redirect_to(dashboard_users_path) if current_user.start_trip.step == 2 && request.path != dashboard_users_path
+      if current_user.start_trip.step == 3 && request.path != new_dashboard_user_path && request.get?
+        redirect_to(new_dashboard_user_path)
+      end
+
       yield
       if step.to_i == 1
+        cookies.delete :start_trip_step
         if @company.errors.count == 0
           current_user.start_trip.step = 2
           current_user.start_trip.save
         end
+      end
+
+      if step.to_i == 2
         cookies.delete :start_trip_step
+        current_user.start_trip.step = 3
+        current_user.start_trip.save
+      end
+
+      if step.to_i == 3
+       # Rails.logger.debug "olo11: #{@user.errors.count}"
+        cookies.delete :start_trip_step
+        if @user.errors.count == 0
+          current_user.start_trip.step = 0
+          current_user.start_trip.save
+        end
       end
     end
 

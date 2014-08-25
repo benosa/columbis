@@ -12,7 +12,7 @@ function step1_images_position() {
   offset = $('#company_name').offset();
   $('#cat_1').offset({ top: offset.top, left: offset.left + 140 });
   $('#cloud1_step1').offset({ top: offset.top -50, left: offset.left + 310});
-  $('#cloud2_step1').offset({ top: offset.top, left: offset.left + 810});
+  $('#cloud2_step1').offset({ top: offset.top, left: offset.left + 800});
 }
 
 function step2_images_position() {
@@ -24,8 +24,8 @@ function step2_images_position() {
 function step3_images_position() {
   var offset = $('.save').offset();
   $('#cat_2').offset({ top: offset.top - 250, left: offset.left - 200});
-  $('#cloud1_step3').offset({ top: offset.top - 550, left: offset.left - 1200});
-  $('#cloud2_step3').offset({ top: offset.top - 550, left: offset.left - 600});
+  $('#cloud1_step3').offset({ top: offset.top - 700, left: offset.left - 500});
+  $('#cloud2_step3').offset({ top: offset.top - 450, left: offset.left - 500});
 }
 
 function add_image(id, name) {
@@ -38,14 +38,10 @@ $(function(){
   //var step = $('html').data('start_trip_step');
 
   if (step == '1') {
-    // cat
     $('html').append('<div id="cat_1"></div>');
-    // glove
     add_image('glove_step1', 'glove.png');
     $('#glove_step1').css({position: 'fixed'});
-    // genius text left
     add_image('cloud1_step1', 'columbis-31.png');
-    // genius text right
     add_image('cloud2_step1', 'columbis-32.png');
 
     step1_images_position();
@@ -63,9 +59,12 @@ $(function(){
 
   if (step == '2') {
     $('html').append('<div id="cat_2"></div>');
-  //  $('#cat2').offset({ top: 100, left: 100});
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
+
+    $("#add_worker").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
 
     var resizeId;
     $(window).resize(function() {
@@ -78,10 +77,14 @@ $(function(){
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css( {position: 'fixed'} );
     add_image('cloud1_step3', 'columbis-41.png');
-    $('#cloud1_step3').css({position: 'fixed'});
+    $('#cloud1_step3').css({position: 'fixed', width: '400px', height: '250px'});
     add_image('cloud2_step3', 'columbis-42.png');
-    $('#cloud2_step3').css({position: 'fixed'});
+    $('#cloud2_step3').css({position: 'fixed', width: '400px', height: '250px'});
     step3_images_position();
+
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
 
     var resizeId;
     $(window).resize(function() {

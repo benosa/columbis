@@ -150,7 +150,8 @@ class Company < ActiveRecord::Base
     days = ((tariff_end - tariff_start)/86400).to_i
     day_amount = paid.to_i / days
     day_balance = ((tariff_end - Time.zone.now)/86400).to_i
-    (day_amount*day_balance).to_f.round(2)
+    result = (day_amount*day_balance).to_f.round(2)
+    result > 0 ? result : 0
   end
 
   def self.just_soon_become_inactive

@@ -152,35 +152,13 @@ class ApplicationController < ActionController::Base
 
   private
     def check_start_trip
-      step = cookies[:start_trip_step]
-      redirect_to(dashboard_users_path) if current_user.start_trip.step == 2 && request.path != dashboard_users_path
-      if current_user.start_trip.step == 3 && request.path != new_dashboard_user_path && request.get?
-        redirect_to(new_dashboard_user_path)
-      end
+      path = current_user.start_trip.check_step_actions_path({path: request.path, get: request.get?}) if current_user
+      redirect_to(path) if path
 
       yield
-      if step.to_i == 1
-        cookies.delete :start_trip_step
-        if @company.errors.count == 0
-          current_user.start_trip.step = 2
-          current_user.start_trip.save
-        end
-      end
 
-      if step.to_i == 2
-        cookies.delete :start_trip_step
-        current_user.start_trip.step = 3
-        current_user.start_trip.save
-      end
-
-      if step.to_i == 3
-       # Rails.logger.debug "olo11: #{@user.errors.count}"
-        cookies.delete :start_trip_step
-        if @user.errors.count == 0
-          current_user.start_trip.step = 0
-          current_user.start_trip.save
-        end
-      end
+      current_user.start_trip.check_step_actions_cookie(cookies[:start_trip_step].to_i, @company, @user) if current_user
+      cookies.delete :start_trip_step
     end
 
     def set_time_zone

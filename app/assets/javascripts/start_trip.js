@@ -6,6 +6,16 @@ function step_cookie_set(step, path) {
   $.cookie('start_trip_step', step, {expires: expirationDate, path: path});
 }
 
+function getParameterByName(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+function step0_images_position() {
+  offset = $('#user_session_submit').offset();
+  $('#cat_1').offset({ top: offset.top + 170, left: offset.left });
+  $('#cloud1_step0').offset({ top: offset.top - 150, left: offset.left + 210});
+}
+
 function step1_images_position() {
   var offset = $('.save').offset();
   $('#glove_step1').offset({ top: offset.top, left: offset.left - 100});
@@ -36,6 +46,18 @@ function add_image(id, name) {
 
 $(function(){
   //var step = $('html').data('start_trip_step');
+  cat_reg = getParameterByName('start_trip');
+  if (cat_reg && !step) {
+    $('html').append('<div id="cat_1"></div>');
+    add_image('cloud1_step0', 'columbis-1.png');
+    step0_images_position();
+
+    var resizeId;
+    $(window).resize(function() {
+      clearTimeout(resizeId);
+      resizeId = setTimeout(step0_images_position, 200);
+    });
+  }
 
   if (step == '1') {
     $('html').append('<div id="cat_1"></div>');
@@ -57,7 +79,7 @@ $(function(){
     });
   }
 
-  if (step == '2') {
+  if (step == '2' || step == '4') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
@@ -73,7 +95,7 @@ $(function(){
     });
   }
 
-  if (step == '3') {
+  if (step == '3' || step == '5') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css( {position: 'fixed'} );
     add_image('cloud1_step3', 'columbis-41.png');

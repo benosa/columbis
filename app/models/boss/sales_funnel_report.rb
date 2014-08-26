@@ -45,11 +45,21 @@ module Boss
 
     private
       def base_query
-        claims.project(tourist_claims[:tourist_id].count)
+        query = claims.project(tourist_claims[:tourist_id].count)
           .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:excluded_from_profit].eq(false))
+
+        # if options.has_key?(:office_id)
+        #   query = query.where(claims[:office_id].eq(options[:office_id]))
+        # end
+
+        # if options.has_key?(:user_id)
+        #   query = query.where(claims[:user_id].eq(options[:user_id]))
+        # end
+
+        query
       end
 
       def up_query

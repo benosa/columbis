@@ -173,6 +173,7 @@ module Boss
       end
 
       def report_params
+        #, :office_id, :user_id
         options = params.select{ |k,v| [:start_date, :end_date, :row_count, :show_others].include?(k.to_sym) }
         options.merge({
           company: current_company,

@@ -4,7 +4,8 @@ module Boss
     available_results :count
 
     def prepare(options = {})
-      middle  = build_result(query: middle_query,  typecast: {count: :to_i, name: :to_s})
+      @params = { manager: options['manager'], office: options['offce'] }
+      middle = build_result(query: middle_query,  typecast: {count: :to_i, name: :to_s})
       down  = build_result(query: down_query,  typecast: {count: :to_i, name: :to_s})
       canceled  = build_result(query: canceled_query,  typecast: {count: :to_i, name: :to_s})
       clients = build_result(query: clients_query,  typecast: {state: :to_s, count: :to_i})
@@ -45,11 +46,21 @@ module Boss
 
     private
       def base_query
-        claims.project(tourist_claims[:tourist_id].count)
+        query = claims.project(tourist_claims[:tourist_id].count)
           .join(tourist_claims).on(tourist_claims[:claim_id].eq(claims[:id]))
           .where(claims[:company_id].eq(company.id))
           .where(claims[:reservation_date].gteq(start_date).and(claims[:reservation_date].lteq(end_date)))
           .where(claims[:excluded_from_profit].eq(false))
+
+        if @params[:office].to_i > 0
+          query = query.where(claims[:office_id].eq(@params[:office]))
+        end
+
+        if @params[:manager].to_i > 0
+          query = query.where(claims[:user_id].eq(@params[:manager]))
+        end
+
+        query
       end
 
       def up_query
@@ -59,11 +70,21 @@ module Boss
       end
 
       def clients_query
-        tourists.project(tourists[:state], tourists[:id].count)
+        query = tourists.project(tourists[:state], tourists[:id].count)
           .where(tourists[:company_id].eq(company.id))
           .where(tourists[:potential].eq(true))
           .where(tourists[:created_at].gteq(start_date).and(tourists[:created_at].lteq(end_date)))
           .group(tourists[:state])
+
+        if @params[:office].to_i > 0
+          query = query.where(tourists[:office_id].eq(@params[:office]))
+        end
+
+        if @params[:manager].to_i > 0
+          query = query.where(tourists[:user_id].eq(@params[:manager]))
+        end
+
+        query
       end
 
       def middle_query

@@ -21,6 +21,8 @@
       = check_box_tag :show_others, 1, @report.show_others, data: { param: 'show_others', filter: 1, default: @report.show_others, unchecked: '0' }
   - if local_assigns[:other_menu]
     = render partial: local_assigns[:other_menu]
+  - if local_assigns[:office_manager]
+    = render partial: 'filter_office_manager'
 
   %fieldset
     = link_to t('.filter_reset'), '#', id: 'filter_reset', class: 'filter_reset'

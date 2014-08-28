@@ -1,0 +1,7 @@
+.field_wrapper
+  = label_tag :offce, I18n.t('claims.index.office_filter')
+  = select_tag :offce, content_tag(:option, t('all'), :value => "0") + options_from_collection_for_select(current_company.offices, 'id', 'name', params[:offce]), :class => 'filter_select', :data => { :param=> 'offce', :filter => 1 }
+
+.field_wrapper
+  = label_tag :manager, I18n.t('claims.index.user_filter')
+  = select_tag :manager, content_tag(:option, t('all'), :value => "0") + options_from_collection_for_select(current_company.users.reject{ |u| u.role == 'admin' }, 'id', 'name_for_list', params[:manager]), :class => 'filter_select', :data => { :param => 'manager', :filter => 1 }

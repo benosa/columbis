@@ -159,7 +159,7 @@ module Boss
     end
 
     def salesfunnel
-      @report = SalesFunnelReport.new(report_params).prepare
+      @report = SalesFunnelReport.new(report_params).prepare(report_params)
       @count  = @report.count
       render partial: 'salesfunnel' if request.xhr?
     end
@@ -173,8 +173,7 @@ module Boss
       end
 
       def report_params
-        #, :office_id, :user_id
-        options = params.select{ |k,v| [:start_date, :end_date, :row_count, :show_others].include?(k.to_sym) }
+        options = params.select{ |k,v| [:start_date, :end_date, :row_count, :show_others, :manager, :offce].include?(k.to_sym) }
         options.merge({
           company: current_company,
           user: current_user,

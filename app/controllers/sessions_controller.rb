@@ -3,7 +3,7 @@ require 'base64'
 
 class SessionsController < Devise::SessionsController
   skip_before_filter :verify_authenticity_token, :if => :skip_verify_authenticity_token?
-  before_filter :check_demo_access, :only => [:new, :create], :if => :demo_sign_in?
+  # before_filter :check_demo_access, :only => [:new, :create], :if => :demo_sign_in?
   before_filter :set_demo_message, :if => proc{ request.subdomain == 'demo' }
 
   def create

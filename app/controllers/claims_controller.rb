@@ -333,18 +333,18 @@ class ClaimsController < ApplicationController
       totals = Claim.find_by_sql([query, binds]).sort_by{ |t| -t.month.to_i }
 
       # Remove current month
-      totals.delete_if{ |t| t.month.to_i == Time.zone.now.month }
+      totals.delete_if{ |t| t.month.to_i == Time.zone.now.month && t.year.to_i == Time.zone.now.year }
     end
 
     def get_totals(claims)
       totals = nil
       # show totals only if list is sorted by reservation_date
-      if (is_admin? or is_boss?) and sort_col == :reservation_date and !claims.empty?
+      if (is_admin? or is_boss?) and (sort_col == :reservation_date or params[:sort] == nil) and !claims.empty?
         # Get beginning of month of min date and end of month of max date from particular claims
         first_reservation_date = claims.first.try(:reservation_date)
         last_reservation_date = claims.last.try(:reservation_date)
         if first_reservation_date && last_reservation_date
-          period = if sort_dir == :desc
+          period = if (sort_dir == :desc or params[:sort] == nil)
             last_reservation_date.beginning_of_month..first_reservation_date.end_of_month
           else
             first_reservation_date.beginning_of_month..last_reservation_date.end_of_month

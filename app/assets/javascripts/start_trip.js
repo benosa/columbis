@@ -79,7 +79,7 @@ $(function(){
     });
   }
 
-  if (step == '2' || step == '4') {
+  if (step == '2') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
@@ -95,7 +95,7 @@ $(function(){
     });
   }
 
-  if (step == '3' || step == '5') {
+  if (step == '3') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css( {position: 'fixed'} );
     add_image('cloud1_step3', 'columbis-41.png');
@@ -112,6 +112,18 @@ $(function(){
     $(window).resize(function() {
       clearTimeout(resizeId);
       resizeId = setTimeout(step3_images_position, 200);
+    });
+  }
+
+  if (step == '4') {
+    $(".create_own").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '5') {
+    $("#new_claim_link").bind("click", function() {
+      step_cookie_set(step, '/')
     });
   }
 

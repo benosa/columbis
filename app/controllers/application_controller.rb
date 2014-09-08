@@ -152,7 +152,7 @@ class ApplicationController < ActionController::Base
 
   private
     def check_start_trip
-      path = current_user.start_trip.check_step_actions_path({path: request.path, get: request.get?}) if current_user
+      path = current_user.start_trip.check_step_actions_path({path: request.path, get: request.get?}, params) if current_user
       redirect_to(path) if path
 
       yield

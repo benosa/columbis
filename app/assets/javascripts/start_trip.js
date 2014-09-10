@@ -127,4 +127,10 @@ $(function(){
     });
   }
 
+  if (step == '6') {
+    $(".save_and_close").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
 });

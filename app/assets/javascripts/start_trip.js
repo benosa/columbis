@@ -133,4 +133,48 @@ $(function(){
     });
   }
 
+  if (step == '7') {
+    $(".save_and_close").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '8' || step == '10') {
+    $("#new_claim_link").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '9' || step == '11') {
+    $(".save_and_close").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '12') {
+    var clicks = {
+      arrival_date: 0,
+      check_date: 0,
+      approved_operator_advance_prim: 0
+    }
+
+    $(".claims_header a").live("click", function() {
+      if (clicks[$(this).data('sort')] != undefined) {
+        clicks[$(this).data('sort')] = 1;
+      }
+
+      var all = true;
+      for (var prop in clicks) {
+        if (clicks[prop] == 0) {
+          all = false
+        }
+      }
+
+      if (all) {
+        window.location.href = '/tourists?potential=true';
+      }
+    });
+
+  }
+
 });

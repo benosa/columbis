@@ -7,7 +7,7 @@ class StartTrip < ActiveRecord::Base
 
   belongs_to :user
 
-  def check_step_actions_path(req, controller = false, params = [])
+  def check_step_actions_path(req, params = [], step_c = false)
     path = false
     path = dashboard_users_path if (step == 2) && req[:path] != dashboard_users_path
     if (step == 3) && req[:path] != new_dashboard_user_path && req[:get]
@@ -23,13 +23,26 @@ class StartTrip < ActiveRecord::Base
       path = operators_path
     end
 
-    if step == 6 && req[:get] && req[:path] != new_claim_path
+    if (step == 6 || step == 9 || step == 11) && req[:get] && req[:path] != new_claim_path
       path = new_claim_path
     end
 
-    if step == 7 && req[:get] && req[:path] != claims_path# && req[:path] != edit_claim_path
-      Rails.logger.debug "olo11: #{controller.action_name}"
+    if step == 7 && req[:get] && (req[:path] != claims_path ||
+    params['controller'] == 'claims' && params['action'] != 'edit')
       path = claims_path
+    end
+
+    if (step == 8 || step == 10) && req[:get] && req[:path] != claims_path && req[:path] != new_claim_path
+      path = claims_path
+    end
+
+    if step == 12 && step_c == 0 && req[:get] && (req[:path] != claims_path ||
+    params['controller'] == 'claims' && params['action'] != 'index')
+      path = claims_path
+    end
+
+    if step == 13 && req[:get] && (req[:path] != tourists_path || params[:potential] != 'true')
+      path = tourists_path(potential: true)
     end
 
     path
@@ -43,7 +56,7 @@ class StartTrip < ActiveRecord::Base
       end
     end
 
-    if step == 2 || step == 4 || step == 5
+    if step == 2 || step == 4 || step == 5 || step == 8 || step == 10 || step == 12
       self.step = step + 1
       self.save
     end
@@ -55,7 +68,7 @@ class StartTrip < ActiveRecord::Base
       end
     end
 
-    if step == 6
+    if step == 6 || step == 7 || step == 9 || step == 11
       if claim && claim.errors.count == 0
         self.step = step + 1
         self.save

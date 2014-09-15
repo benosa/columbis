@@ -9,10 +9,7 @@
     .form_block_content
       .fake_row
         %p= f.label :subdomain
-        = f.text_field :subdomain, :class => 'bank subdomain'
-        %span.domain= ".#{CONFIG[:domain]}"
-        %br
-        %span.domain_example= t('.domain_example', domain: CONFIG[:domain])
+        = f.text_field :subdomain, :class => 'bank'
         %p= f.label :name
         = f.text_field :name, :class => 'bank' + (' highlighted' if company.name.blank?).to_s
         %p= f.label :email

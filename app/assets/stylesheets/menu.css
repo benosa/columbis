@@ -250,7 +250,11 @@ TABLE OF CONTENTS
 .rmenu li.disabled a.no_active_a{
    color: #666;
 }
-
+.second_menu .logo a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
 /*  _______________________________________
 

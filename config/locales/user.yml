@@ -7,7 +7,7 @@ ru:
         first_name: "Имя"
         middle_name: "Отчество"
         role: 'Тип пользователя'
-        subdomain: 'Адрес в системе'
+        subdomain: 'Логин компании'
         email: 'Адрес электронной почты'
         phone: 'Телефон'
         password: 'Пароль'

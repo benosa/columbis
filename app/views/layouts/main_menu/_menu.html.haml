@@ -9,6 +9,9 @@
     = render 'layouts/main_menu/support'
     - if user_signed_in? && is_admin?
       = render 'layouts/main_menu/admin'
+    - else
+      %li
+        %a{ :href => 'http://columbis.ru' } www.columbis.ru
     - if can?(:users_sign_in_as, :user) && (show_demo_enter || show_demo_exit)
       = render 'layouts/main_menu/demo'
 %ul.user_panel

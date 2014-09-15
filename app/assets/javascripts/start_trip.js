@@ -44,6 +44,17 @@ function add_image(id, name) {
   img.appendTo('html');
 }
 
+function block_a(attr, selector) {
+  $("a").bind("click", function(event) {
+    if ($(event.target).attr(attr) === undefined ||
+    $(event.target).attr(attr) != undefined &&
+    $(event.target).attr(attr).indexOf(selector) == -1) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
+  });
+}
+
 $(function(){
   //var step = $('html').data('start_trip_step');
   cat_reg = getParameterByName('start_trip');
@@ -68,6 +79,7 @@ $(function(){
 
     step1_images_position();
 
+    block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -84,6 +96,7 @@ $(function(){
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
 
+    block_a('id', 'add_worker');
     $("#add_worker").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -104,6 +117,7 @@ $(function(){
     $('#cloud2_step3').css({position: 'fixed', width: '400px', height: '250px'});
     step3_images_position();
 
+    block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -116,42 +130,55 @@ $(function(){
   }
 
   if (step == '4') {
+    block_a('class', 'create_own');
     $(".create_own").bind("click", function() {
       step_cookie_set(step, '/')
     });
   }
 
   if (step == '5') {
-    $("#new_claim_link").bind("click", function() {
+    block_a('class', 'new_claim_link');
+    $(".new_claim_link").bind("click", function() {
       step_cookie_set(step, '/')
     });
   }
 
   if (step == '6') {
-    $(".save_and_close").bind("click", function() {
+    block_a('class', 'save');
+    $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
   }
 
-  if (step == '7') {
-    $(".save_and_close").bind("click", function() {
-      step_cookie_set(step, '/')
-    });
-  }
+  //тут class id_link
 
-  if (step == '8' || step == '10') {
-    $("#new_claim_link").bind("click", function() {
-      step_cookie_set(step, '/')
+  if (step == '8') {
+    block_a('class', 'save');
+    $(".save").bind("click", function(event) {
+      if ($('#claim_country_name').attr('value') == '') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      } else {
+        step_cookie_set(step, '/');
+      }
     });
   }
 
   if (step == '9' || step == '11') {
-    $(".save_and_close").bind("click", function() {
+    block_a('class', "new_claim_link");
+    $(".new_claim_link").bind("click", function() {
       step_cookie_set(step, '/')
     });
   }
 
-  if (step == '12') {
+  if (step == '10' || step == '12') {
+    block_a('class', "save");
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '13') {
     var clicks = {
       arrival_date: 0,
       check_date: 0,
@@ -171,10 +198,25 @@ $(function(){
       }
 
       if (all) {
+        step_cookie_set(step, '/')
         window.location.href = '/tourists?potential=true';
       }
     });
 
+  }
+
+  if (step == '14') {
+    block_a('id', 'add_potential');
+    $("#add_potential").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '15') {
+    block_a('class', 'save');
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
   }
 
 });

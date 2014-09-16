@@ -34,6 +34,8 @@ class StartTrip < ActiveRecord::Base
       if step == 7 && req[:get] && req[:path] != claims_path &&
       (params['controller'] == 'claims' && params['action'] != 'edit')
         path = claims_path
+      elsif step == 7 && step_c == 7
+        inc_step
       end
 
       if step == 8

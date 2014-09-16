@@ -150,7 +150,12 @@ $(function(){
     });
   }
 
-  //тут class id_link
+  if (step == '7') {
+    block_a('class', 'id_link');
+    $(".id_link").bind("click", function(event) {
+      step_cookie_set(step, '/');
+    });
+  }
 
   if (step == '8') {
     block_a('class', 'save');
@@ -184,6 +189,13 @@ $(function(){
       check_date: 0,
       approved_operator_advance_prim: 0
     }
+
+    $("a").bind("click", function(event) {
+      if (!$(event.target).parents('.claims_header').length == 1){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    });
 
     $(".claims_header a").live("click", function() {
       if (clicks[$(this).data('sort')] != undefined) {

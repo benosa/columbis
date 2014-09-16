@@ -1,5 +1,5 @@
 %li{:class => (params[:controller] == 'claims' and params[:action] == 'new') ? 'active' : ' '}
-  = link_to t('.new_claim'), new_claim_path
+  = link_to t('.new_claim'), new_claim_path, class: 'new_claim_link'
   .rmenu_dropdown
     %ul
       %li= link_to ' ', '#'

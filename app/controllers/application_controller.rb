@@ -152,12 +152,16 @@ class ApplicationController < ActionController::Base
 
   private
     def check_start_trip
-      path = current_user.start_trip.check_step_actions_path({path: request.path, get: request.get?}) if current_user
+      if current_user
+        path = current_user.start_trip.check_step_actions_path({path: request.path, get: request.get?}, params, cookies[:start_trip_step].to_i)
+      end
       redirect_to(path) if path
 
       yield
 
-      current_user.start_trip.check_step_actions_cookie(cookies[:start_trip_step].to_i, @company, @user) if current_user
+      if current_user
+        current_user.start_trip.check_step_actions_cookie(cookies[:start_trip_step].to_i, @company, @user, @claim, @tourist)
+      end
       cookies.delete :start_trip_step
     end
 

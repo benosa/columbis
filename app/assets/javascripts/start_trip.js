@@ -44,6 +44,17 @@ function add_image(id, name) {
   img.appendTo('html');
 }
 
+function block_a(attr, selector) {
+  $("a").bind("click", function(event) {
+    if ($(event.target).attr(attr) === undefined ||
+    $(event.target).attr(attr) != undefined &&
+    $(event.target).attr(attr).indexOf(selector) == -1) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
+  });
+}
+
 $(function(){
   //var step = $('html').data('start_trip_step');
   cat_reg = getParameterByName('start_trip');
@@ -68,6 +79,7 @@ $(function(){
 
     step1_images_position();
 
+    block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -79,11 +91,12 @@ $(function(){
     });
   }
 
-  if (step == '2' || step == '4') {
+  if (step == '2') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
 
+    block_a('id', 'add_worker');
     $("#add_worker").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -95,7 +108,7 @@ $(function(){
     });
   }
 
-  if (step == '3' || step == '5') {
+  if (step == '3') {
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css( {position: 'fixed'} );
     add_image('cloud1_step3', 'columbis-41.png');
@@ -104,6 +117,7 @@ $(function(){
     $('#cloud2_step3').css({position: 'fixed', width: '400px', height: '250px'});
     step3_images_position();
 
+    block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
@@ -112,6 +126,108 @@ $(function(){
     $(window).resize(function() {
       clearTimeout(resizeId);
       resizeId = setTimeout(step3_images_position, 200);
+    });
+  }
+
+  if (step == '4') {
+    block_a('class', 'create_own');
+    $(".create_own").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '5') {
+    block_a('class', 'new_claim_link');
+    $(".new_claim_link").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '6') {
+    block_a('class', 'save');
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '7') {
+    block_a('class', 'id_link');
+    $(".id_link").bind("click", function(event) {
+      step_cookie_set(step, '/');
+    });
+  }
+
+  if (step == '8') {
+    block_a('class', 'save');
+    $(".save").bind("click", function(event) {
+      if ($('#claim_country_name').attr('value') == '') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      } else {
+        step_cookie_set(step, '/');
+      }
+    });
+  }
+
+  if (step == '9' || step == '11') {
+    block_a('class', "new_claim_link");
+    $(".new_claim_link").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '10' || step == '12') {
+    block_a('class', "save");
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '13') {
+    var clicks = {
+      arrival_date: 0,
+      check_date: 0,
+      approved_operator_advance_prim: 0
+    }
+
+    $("a").bind("click", function(event) {
+      if (!$(event.target).parents('.claims_header').length == 1){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    });
+
+    $(".claims_header a").live("click", function() {
+      if (clicks[$(this).data('sort')] != undefined) {
+        clicks[$(this).data('sort')] = 1;
+      }
+
+      var all = true;
+      for (var prop in clicks) {
+        if (clicks[prop] == 0) {
+          all = false
+        }
+      }
+
+      if (all) {
+        step_cookie_set(step, '/')
+        window.location.href = '/tourists?potential=true';
+      }
+    });
+
+  }
+
+  if (step == '14') {
+    block_a('id', 'add_potential');
+    $("#add_potential").bind("click", function() {
+      step_cookie_set(step, '/')
+    });
+  }
+
+  if (step == '15') {
+    block_a('class', 'save');
+    $(".save").bind("click", function() {
+      step_cookie_set(step, '/')
     });
   }
 

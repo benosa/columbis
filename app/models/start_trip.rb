@@ -73,30 +73,30 @@ class StartTrip < ActiveRecord::Base
     path
   end
 
-  def check_step_actions_cookie(step, company, user, claim, tourist)
-    if step == 1
+  def check_step_actions_cookie(step_c, company, user, claim, tourist)
+    if step_c == 1
       if company && company.errors.count == 0
         inc_step
       end
     end
 
-    if step == 2 || step == 4 || step == 7 || step == 9 || step == 11 || step == 13 || step == 14
+    if step_c == 2 || step_c == 4 || step_c == 7 || step_c == 9 || step_c == 11 || step_c == 13 || step_c == 14
       inc_step
     end
 
-    if step == 3
+    if step_c == 3
       if user && user.errors.count == 0
         inc_step
       end
     end
 
-    if step == 6 || step == 8 || step == 10 || step == 12
+    if step_c == 6 || step_c == 8 || step_c == 10 || step_c == 12
       if claim && claim.errors.count == 0
         inc_step
       end
     end
 
-    if step == 15
+    if step_c == 15
       if tourist && tourist.errors.count == 0
         inc_step
       end

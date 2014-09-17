@@ -43,6 +43,7 @@ jQuery ->
     formColWidth = $forms.find('.form_col:first').width()
     smallFormWidth = smallFormWidths[0] # smallFormWidths[newColumns - 1]
     if formColWidth < smallFormWidth then $forms.addClass('small_forms') else $forms.removeClass('small_forms')
+    $('body').trigger("column_resize")
 
   $(window).resize setColumns
   setColumns()

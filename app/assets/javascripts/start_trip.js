@@ -38,6 +38,45 @@ function step3_images_position() {
   $('#cloud2_step3').offset({ top: offset.top - 450, left: offset.left - 500});
 }
 
+function step4_images_position() {
+  var offset = $('.create_own').first().offset();
+  $('#cat_2').offset({ top: offset.top - 195, left: offset.left - 235 });
+}
+
+function step5_images_position() {
+  var offset = $('.new_claim_link').first().offset();
+  $('#cat_1').offset({ top: offset.top + 5, left: offset.left + 95 });
+}
+
+function step6_images_position() {
+  var offset = $('#claim_applicant_attributes_address').offset();
+  $('#cat_1').offset({ top: offset.top + 25, left: offset.left + 95 });
+  var offset = $('#claim_arrival_date').offset();
+  $('#glove_step6').offset({ top: offset.top + 20, left: offset.left - 110});
+  var offset = $('.tourist_stat').first().offset();
+  $('#glove_step6_2').offset({ top: offset.top + 20, left: offset.left - 110});
+  var offset = $('.save_and_close').first().offset();
+  $('#glove_step6_3').offset({ top: offset.top + 10, left: offset.left - 110});
+
+}
+
+function step7_images_position() {
+  var offset = $('.id_link').first().offset();
+  $('#cat_1').offset({ top: offset.top - 52, left: offset.left + 17 });
+}
+
+function step8_images_position() {
+  var offset = $('#claim_country_name').first().offset();
+  $('#cat_2').offset({ top: offset.top - 178, left: offset.left - 245});
+  var offset = $('.save_and_close').first().offset();
+  $('#glove_step8').offset({ top: offset.top + 10, left: offset.left - 110});
+}
+
+function step9_images_position() {
+  var offset = $('.new_claim_link').last().offset();
+  $('#cat_2').offset({ top: offset.top - 188, left: offset.left - 245});
+}
+
 function add_image(id, name) {
   var img = $('<img id="' + id + '">');
   img.attr('src', '/assets/start_trip/' + name);
@@ -55,6 +94,14 @@ function block_a(attr, selector) {
   });
 }
 
+function resize_action(func) {
+  var resizeId;
+    $(window).resize(function() {
+      clearTimeout(resizeId);
+      resizeId = setTimeout(func, 200);
+    });
+}
+
 $(function(){
   //var step = $('html').data('start_trip_step');
   cat_reg = getParameterByName('start_trip');
@@ -62,12 +109,7 @@ $(function(){
     $('html').append('<div id="cat_1"></div>');
     add_image('cloud1_step0', 'columbis-1.png');
     step0_images_position();
-
-    var resizeId;
-    $(window).resize(function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(step0_images_position, 200);
-    });
+    resize_action(step0_images_position);
   }
 
   if (step == '1') {
@@ -76,18 +118,12 @@ $(function(){
     $('#glove_step1').css({position: 'fixed'});
     add_image('cloud1_step1', 'columbis-31.png');
     add_image('cloud2_step1', 'columbis-32.png');
-
     step1_images_position();
+    resize_action(step1_images_position);
 
     block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
-    });
-
-    var resizeId;
-    $(window).resize(function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(step1_images_position, 200);
     });
   }
 
@@ -95,16 +131,11 @@ $(function(){
     $('html').append('<div id="cat_2"></div>');
     $('#cat_2').css({position: 'fixed'});
     step2_images_position();
+    resize_action(step2_images_position);
 
     block_a('id', 'add_worker');
     $("#add_worker").bind("click", function() {
       step_cookie_set(step, '/')
-    });
-
-    var resizeId;
-    $(window).resize(function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(step2_images_position, 200);
     });
   }
 
@@ -116,20 +147,18 @@ $(function(){
     add_image('cloud2_step3', 'columbis-42.png');
     $('#cloud2_step3').css({position: 'fixed', width: '400px', height: '250px'});
     step3_images_position();
+    resize_action(step3_images_position);
 
     block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
     });
-
-    var resizeId;
-    $(window).resize(function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(step3_images_position, 200);
-    });
   }
 
   if (step == '4') {
+    $('html').append('<div id="cat_2"></div>');
+    step4_images_position();
+    resize_action(step4_images_position);
     block_a('class', 'create_own');
     $(".create_own").bind("click", function() {
       step_cookie_set(step, '/')
@@ -137,6 +166,9 @@ $(function(){
   }
 
   if (step == '5') {
+    $('html').append('<div id="cat_1"></div>');
+    step5_images_position();
+    resize_action(step5_images_position);
     block_a('class', 'new_claim_link');
     $(".new_claim_link").bind("click", function() {
       step_cookie_set(step, '/')
@@ -144,6 +176,13 @@ $(function(){
   }
 
   if (step == '6') {
+    $("body").on("column_resize", step6_images_position);
+    $('html').append('<div id="cat_1"></div>');
+    add_image('glove_step6', 'glove.png');
+    add_image('glove_step6_2', 'glove.png');
+    add_image('glove_step6_3', 'glove.png');
+    $('#glove_step6_3').css( {position: 'fixed'} );
+    resize_action(step6_images_position);
     block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')
@@ -151,6 +190,9 @@ $(function(){
   }
 
   if (step == '7') {
+    $('html').append('<div id="cat_1"></div>');
+    step7_images_position();
+    resize_action(step7_images_position);
     block_a('class', 'id_link');
     $(".id_link").bind("click", function(event) {
       step_cookie_set(step, '/');
@@ -158,6 +200,11 @@ $(function(){
   }
 
   if (step == '8') {
+    $("body").on("column_resize", step8_images_position);
+    $('html').append('<div id="cat_2"></div>');
+    add_image('glove_step8', 'glove.png');
+    $('#glove_step8').css( {position: 'fixed'} );
+    resize_action(step8_images_position);
     block_a('class', 'save');
     $(".save").bind("click", function(event) {
       if ($('#claim_country_name').attr('value') == '') {
@@ -170,6 +217,9 @@ $(function(){
   }
 
   if (step == '9' || step == '11') {
+    $('html').append('<div id="cat_2"></div>');
+    step9_images_position();
+    resize_action(step9_images_position);
     block_a('class', "new_claim_link");
     $(".new_claim_link").bind("click", function() {
       step_cookie_set(step, '/')
@@ -177,6 +227,13 @@ $(function(){
   }
 
   if (step == '10' || step == '12') {
+    $("body").on("column_resize", step6_images_position);
+    $('html').append('<div id="cat_1"></div>');
+    add_image('glove_step6', 'glove.png');
+    add_image('glove_step6_2', 'glove.png');
+    add_image('glove_step6_3', 'glove.png');
+    $('#glove_step6_3').css( {position: 'fixed'} );
+    resize_action(step6_images_position);
     block_a('class', "save");
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')

@@ -1,5 +1,6 @@
 #cat_1 {width: 266px; height: 265px; background: url("/assets/start_trip/cats.png") no-repeat -10px 0; z-index: 9999;}
 #cat_2 {width: 230px; height: 268px; background: url("/assets/start_trip/cats.png") no-repeat -290px 0; z-index: 9999;}
-.glove_rd {width:113px; height: 83px; background: url("/assets/start_trip/fingers.png") no-repeat -312px -24px; z-index: 9999;}
+.glove_rd {width:113px; height: 83px; position: absolute; background: url("/assets/start_trip/fingers.png") no-repeat -312px -24px; z-index: 9999;}
+.glove_ld {width:113px; height: 83px; position: absolute; background: url("/assets/start_trip/fingers.png") no-repeat -312px -140px; z-index: 9999;}
 #cloud2_step1 {position: absolute;}
 #cloud1_step1 {position: absolute;}

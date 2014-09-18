@@ -51,11 +51,11 @@ function step5_images_position() {
 function step6_images_position() {
   var offset = $('#claim_applicant_attributes_address').offset();
   $('#cat_1').offset({ top: offset.top + 25, left: offset.left + 95 });
-  var offset = $('#claim_arrival_date').offset();
+  offset = $('#claim_arrival_date').offset();
   $('#glove_step6').offset({ top: offset.top + 20, left: offset.left - 110});
-  var offset = $('.tourist_stat').first().offset();
+  offset = $('.tourist_stat').first().offset();
   $('#glove_step6_2').offset({ top: offset.top + 20, left: offset.left - 110});
-  var offset = $('.save_and_close').first().offset();
+  offset = $('.save_and_close').first().offset();
   $('#glove_step6_3').offset({ top: offset.top + 10, left: offset.left - 110});
 
 }
@@ -68,7 +68,7 @@ function step7_images_position() {
 function step8_images_position() {
   var offset = $('#claim_country_name').first().offset();
   $('#cat_2').offset({ top: offset.top - 178, left: offset.left - 245});
-  var offset = $('.save_and_close').first().offset();
+  offset = $('.save_and_close').first().offset();
   $('#glove_step8').offset({ top: offset.top + 10, left: offset.left - 110});
 }
 
@@ -80,11 +80,35 @@ function step9_images_position() {
 function step13_images_position() {
   var offset = $('#check_date_link').offset();
   $('#glove1').offset({ top: offset.top - 85, left: offset.left - 90});
-  var offset = $('#tourist_advance_link').offset();
+  offset = $('#tourist_advance_link').offset();
   $('#glove2').offset({ top: offset.top - 85, left: offset.left - 90});
-  var offset = $('#arrival_date_link').offset();
+  offset = $('#arrival_date_link').offset();
  // $('#glove3').offset({ top: offset.top - 85, left: offset.left - 90});
   $('#cat_2').offset({ top: offset.top - 185, left: offset.left - 220});
+}
+
+function step13_images_position() {
+  var offset = $('#check_date_link').offset();
+  $('#glove1').offset({ top: offset.top - 85, left: offset.left - 90});
+  offset = $('#tourist_advance_link').offset();
+  $('#glove2').offset({ top: offset.top - 85, left: offset.left - 90});
+  offset = $('#arrival_date_link').offset();
+ // $('#glove3').offset({ top: offset.top - 85, left: offset.left - 90});
+  $('#cat_2').offset({ top: offset.top - 185, left: offset.left - 220});
+}
+
+function step14_images_position() {
+  var offset = $('#add_potential').offset();
+  $('#cat_2').offset({ top: offset.top - 195, left: offset.left - 230});
+}
+
+function step15_images_position() {
+  var offset = $('#tourist_full_name').offset();
+  $('#glove1').offset({ top: offset.top - 85, left: offset.left + 200});
+  offset = $('#tourist_phone_number').offset();
+  $('#glove2').offset({ top: offset.top - 30, left: offset.left + 280});
+  offset = $('.save_and_close').first().offset();
+  $('#cat_2').offset({ top: offset.top - 195, left: offset.left - 230});
 }
 
 function add_image(id, name) {
@@ -293,6 +317,10 @@ $(function(){
   }
 
   if (step == '14') {
+    $('html').append('<div id="cat_2"></div>');
+    $('#cat_2').css( {position: 'fixed'} );
+    step14_images_position();
+    resize_action(step14_images_position);
     block_a('id', 'add_potential');
     $("#add_potential").bind("click", function() {
       step_cookie_set(step, '/')
@@ -300,6 +328,12 @@ $(function(){
   }
 
   if (step == '15') {
+    $('html').append('<div id="cat_2"></div>');
+    $('#cat_2').css( {position: 'fixed'} );
+    $('html').append('<div id="glove1" class="glove_ld"></div>');
+    $('html').append('<div id="glove2" class="glove_ld"></div>');
+    step15_images_position();
+    resize_action(step15_images_position);
     block_a('class', 'save');
     $(".save").bind("click", function() {
       step_cookie_set(step, '/')

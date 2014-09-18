@@ -77,6 +77,16 @@ function step9_images_position() {
   $('#cat_2').offset({ top: offset.top - 188, left: offset.left - 245});
 }
 
+function step13_images_position() {
+  var offset = $('#check_date_link').offset();
+  $('#glove1').offset({ top: offset.top - 85, left: offset.left - 90});
+  var offset = $('#tourist_advance_link').offset();
+  $('#glove2').offset({ top: offset.top - 85, left: offset.left - 90});
+  var offset = $('#arrival_date_link').offset();
+ // $('#glove3').offset({ top: offset.top - 85, left: offset.left - 90});
+  $('#cat_2').offset({ top: offset.top - 185, left: offset.left - 220});
+}
+
 function add_image(id, name) {
   var img = $('<img id="' + id + '">');
   img.attr('src', '/assets/start_trip/' + name);
@@ -244,8 +254,16 @@ $(function(){
     var clicks = {
       arrival_date: 0,
       check_date: 0,
-      approved_operator_advance_prim: 0
+      tourist_advance: 0
     }
+
+    $('html').append('<div id="glove1" class="glove_rd"></div>');
+    $('html').append('<div id="glove2" class="glove_rd"></div>');
+    $('html').append('<div id="cat_2"></div>');
+
+    step13_images_position();
+    resize_action(step13_images_position);
+
 
     $("a").bind("click", function(event) {
       if (!$(event.target).parents('.claims_header').length == 1){

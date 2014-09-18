@@ -80,7 +80,7 @@ class StartTrip < ActiveRecord::Base
       end
     end
 
-    if step_c == 2 || step_c == 4 || step_c == 7 || step_c == 9 || step_c == 11 || step_c == 13 || step_c == 14
+    if step_c == 2 || step_c == 4
       inc_step
     end
 

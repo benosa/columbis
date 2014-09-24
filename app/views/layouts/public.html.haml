@@ -22,6 +22,8 @@
       = javascript_include_tag 'claim-edit'
 
     - if CONFIG[:domain] == 'columbis.ru'
+      = render 'layouts/google_analytics'
+      = render 'layouts/yandex_metrika'
       = render 'layouts/mail_ru'
 
     = csrf_meta_tag

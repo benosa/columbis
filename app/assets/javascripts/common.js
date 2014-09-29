@@ -400,6 +400,10 @@ function dpikOptions() {
           clearInterval(timer);
         }
       }, 13);
+
+      setTimeout(function(){
+        $('.ui-datepicker').css('z-index', 99);
+      }, 0);
     },
     onChangeMonthYear: function(year, month, inst) {
       var $dpdiv = $(inst.dpDiv),

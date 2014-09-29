@@ -27,45 +27,44 @@ class StartTrip < ActiveRecord::Base
         inc_step
       end
 
-      if (step == 6 || step == 10 || step == 12) && req[:get] && req[:path] != new_claim_path
+      if (step == 6 || step == 9 || step == 11) && req[:get] && req[:path] != new_claim_path
         path = new_claim_path
       end
 
-      if step == 7 && req[:get] && req[:path] != claims_path &&
-      (params['controller'] == 'claims' && params['action'] != 'edit')
-        path = claims_path
-      elsif step == 7 && step_c == 7
-        inc_step
-      end
+ #     if step == 7 && req[:get] && (params['controller'] == 'claims' && params['action'] != 'edit')
+  #      path = claims_path
+  #    elsif step == 7 && step_c == 7
+  #      inc_step
+  #    end
 
-      if step == 8
+      if step == 7
         claim = Claim.where(user_id: user.id).first
         if req[:get] && req[:path] != edit_claim_path(claim)
           path = edit_claim_path(claim)
         end
       end
 
-      if (step == 9 || step == 11) && req[:get] && req[:path] != claims_path && req[:path] != new_claim_path
+      if (step == 8 || step == 10) && req[:get] && req[:path] != claims_path && req[:path] != new_claim_path
         path = claims_path
-      elsif (step == 9 && step_c == 9 || step == 11 && step_c == 11)
+      elsif (step == 8 && step_c == 8 || step == 10 && step_c == 10)
         inc_step
       end
 
-      if step == 13 && step_c == 0 && req[:get] && (req[:path] != claims_path ||
+      if step == 12 && step_c == 0 && req[:get] && (req[:path] != claims_path ||
       params['controller'] == 'claims' && params['action'] != 'index')
         path = claims_path
+      elsif step == 12 && step_c == 12
+        inc_step
+      end
+
+      if step == 13 && req[:get] && req[:path] != new_tourist_path &&
+      (req[:path] != tourists_path || params[:potential] != 'true')
+        path = tourists_path(potential: true)
       elsif step == 13 && step_c == 13
         inc_step
       end
 
-      if step == 14 && req[:get] && req[:path] != new_tourist_path &&
-      (req[:path] != tourists_path || params[:potential] != 'true')
-        path = tourists_path(potential: true)
-      elsif step == 14 && step_c == 14
-        inc_step
-      end
-
-      if step == 15 && req[:get] && (req[:path] != new_tourist_path || params[:potential] != 'true')
+      if step == 14 && req[:get] && (req[:path] != new_tourist_path || params[:potential] != 'true')
         path = new_tourist_path(potential: true)
       end
     end
@@ -90,13 +89,13 @@ class StartTrip < ActiveRecord::Base
       end
     end
 
-    if step_c == 6 || step_c == 8 || step_c == 10 || step_c == 12
+    if step_c == 6 || step_c == 7 || step_c == 9 || step_c == 11
       if claim && claim.errors.count == 0
         inc_step
       end
     end
 
-    if step_c == 15
+    if step_c == 14
       if tourist && tourist.errors.count == 0
         inc_step
       end

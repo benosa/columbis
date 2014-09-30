@@ -10,11 +10,12 @@ class StartTrip < ActiveRecord::Base
   def check_step_actions_path(req, params = [], step_c = false)
     path = false
 
-    if params['action'] != 'current_timestamp' && params['controller'] != 'claims_autocomplete'
+    if params['action'] != 'current_timestamp' && params['controller'] != 'claims_autocomplete' &&
+    (params['controller'] != 'sessions' && params['action'] != 'destroy')
       if step_c == -1
         self.active = false
         self.save
-      else
+      elsif active
         path = dashboard_users_path if (step == 2) && req[:path] != dashboard_users_path
         if (step == 3) && req[:path] != new_dashboard_user_path && req[:get]
           path = new_dashboard_user_path

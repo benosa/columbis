@@ -270,7 +270,7 @@ module ApplicationHelper
   end
 
   def html_data
-    if current_user.start_trip.active
+    if current_user.start_trip.try(:active)
       {
         start_trip_step: current_user.start_trip.step
       }

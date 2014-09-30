@@ -10,6 +10,11 @@ function getParameterByName(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 
+function set_button_position(delta) {
+  offset = $('.logo').offset();
+  $('#disable_game').offset({ top: offset.top + 40, left: offset.left - 90 });
+}
+
 function step0_images_position(delta) {
   offset = $('#user_session_submit').offset();
   $('#cat_step0').offset({ top: offset.top + 170, left: offset.left });
@@ -57,7 +62,7 @@ function step6_images_position(delta) {
   var offset = $('#claim_applicant_attributes_address').offset();
   $('#cat_step6').offset({ top: offset.top + 35, left: offset.left - 195 });
   offset = $('#claim_applicant_attributes_address').offset();
-  $('#cloud1_step6').offset({ top: offset.top + 25, left: offset.left + 150 });
+  $('#cloud1_step6').offset({ top: offset.top + 5, left: offset.left + 120 });
   offset = $('#claim_arrival_date').offset();
   $('#glove_step6').offset({ top: offset.top + 20, left: offset.left - 110});
   offset = $('.tourist_stat').first().offset();
@@ -127,7 +132,7 @@ function step14_images_position(delta) {
 }
 
 function add_image(id, name, delta, position, zindex) {
-  var img = $('<img id="' + id + '">');
+  var img = $('<img id="' + id + '" class="game_image">');
   img.attr('src', '/assets/start_trip/' + name);
   img.appendTo('html');
   img.css({position: position, zIndex: zindex});
@@ -163,15 +168,26 @@ $(function(){
   //var step = $('html').data('start_trip_step');
   cat_reg = getParameterByName('start_trip');
   if (cat_reg && !step) {
-    add_image('cat_step0', 'cat_left.png', 1, 'absolute', 9999)
+    add_image('cat_step0', 'cat_left.png', 1, 'absolute', 9999);
     add_image('cloud1_step0', 'enter.png', 1, 'absolute', 9999);
     step0_images_position(1);
     resize_action(step0_images_position, 1);
   }
 
+  if (step > 0) {
+    add_image('disable_game', 'disable-lg.png', 0.7, 'fixed', 9999);
+    $('#disable_game').wrap('<a id="disable_game_link" href="#"></a>');
+    set_button_position(1);
+    resize_action(set_button_position, 1);
+    $("#disable_game_link").bind("click", function() {
+      step_cookie_set(-1, '/');
+      window.location.href = '/';
+    });
+  }
+
   if (step == '1') {
-    add_image('cat_step1', 'cat_left.png', 1, 'fixed', 9999)
-    add_image('glove_step1', 'fingerRightDown.png', 1, 'absolute', 9999);
+    add_image('cat_step1', 'cat_left.png', 1, 'absolute', 9999)
+    add_image('glove_step1', 'fingerRightDown.png', 1, 'fixed', 9999);
     add_image('cloud1_step1', 'game-1.png', 1, 'absolute', 9999);
     step1_images_position(1);
     resize_action(step1_images_position, 1);
@@ -185,7 +201,6 @@ $(function(){
   if (step == '2') {
     add_image('cat_step2', 'cat_right.png', 1, 'fixed', 9999);
     add_image('cloud1_step2', 'game-2.png', 1, 'fixed', 9999);
-   // $('#cat_2').css({position: 'fixed'});
     step2_images_position(1);
     resize_action(step2_images_position, 1);
 
@@ -231,8 +246,8 @@ $(function(){
 
   if (step == '6') {
     $("body").on("column_resize", step6_images_position);
-    add_image('cat_step6', 'cat_left.png', 1, 'absolute', 98);
     add_image('cloud1_step6', 'game-6.png', 0.75, 'absolute', 98);
+    add_image('cat_step6', 'cat_left.png', 1, 'absolute', 98);
     add_image('glove_step6', 'fingerRightTop.png', 1, 'absolute', 9999);
     add_image('glove_step6_2', 'fingerRightTop.png', 1, 'absolute', 9999);
     add_image('glove_step6_3', 'fingerRightDown.png', 1, 'fixed', 9999);

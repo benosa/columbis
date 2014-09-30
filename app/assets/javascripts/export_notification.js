@@ -9,9 +9,10 @@ function export_notification_cookie_set() {
 function export_notification_f() {
   if (!validNavigation) {
     var notificated = $.cookie('export_notification');
+    var start_trip = $('html').data('start_trip_step') > -1;
     var message = $('body').data('export_n_message');
 
-    if (notificated != '1') {
+    if (notificated != '1' && !start_trip) {
       export_notification_cookie_set();
       if (navigator.userAgent.search(/Firefox/) > -1) {
         alert(message);
@@ -25,8 +26,9 @@ function export_notification_f() {
 
 function export_notification_exit() {
   var notificated = $.cookie('export_notification');
+  var start_trip = $('html').data('start_trip_step') > -1;
   var message = $('body').data('export_n_message');
-  if (notificated != '1') {
+  if (notificated != '1' && !start_trip) {
     export_notification_cookie_set();
     alert(message);
     return false;

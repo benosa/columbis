@@ -14,6 +14,10 @@
         %a{ :href => 'http://columbis.ru' } www.columbis.ru
     - if can?(:users_sign_in_as, :user) && (show_demo_enter || show_demo_exit)
       = render 'layouts/main_menu/demo'
+    - if need_start_trip?
+      %li
+        %a{ :id => 'game_enter_on', :href => '#' }
+          = I18n.t('game_on')
 %ul.user_panel
   = render 'devise/menu/registration_items'
   = render 'devise/menu/login_items'

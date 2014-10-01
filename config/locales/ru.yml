@@ -51,6 +51,7 @@ ru:
   login: 'Войти'
   register: 'Зарегистрироваться'
   profile: 'Профиль'
+  game_on: 'Включить помощь'
   unauthorized:
     default: 'Вы не имеете доступа к этой странице.'
   current_password_for_changes: '(действующий пароль для подтверждения изменений)'

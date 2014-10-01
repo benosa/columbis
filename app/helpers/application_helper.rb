@@ -277,6 +277,14 @@ module ApplicationHelper
     end
   end
 
+  def need_start_trip?
+    if Claim.where(user_id: current_user.id).count <= 3 and current_user.start_trip.try(:active) == false
+      true
+    else
+      false
+    end
+  end
+
   private
 
     def manifest_default_text

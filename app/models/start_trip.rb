@@ -12,6 +12,11 @@ class StartTrip < ActiveRecord::Base
 
     if params['action'] != 'current_timestamp' && params['controller'] != 'claims_autocomplete' &&
     (params['controller'] != 'sessions' && params['action'] != 'destroy')
+      if step_c == -3
+        self.active = true
+        self.save
+      end
+
       if step_c == -1
         self.active = false
         self.save

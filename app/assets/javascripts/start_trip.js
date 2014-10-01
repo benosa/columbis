@@ -206,11 +206,30 @@ function resize_action(func, delta) {
     });
 }
 
+function new_claim_scroll() {
+  $( ".applicant input, #claim_arrival_date" ).change(function() {
+    var all_set = true;
+    $('.applicant .required, #claim_arrival_date, #claim_applicant_attributes_full_name').each(function() {
+      if ($(this).attr('value') == "") {
+        all_set = false
+      }
+    });
+
+    if (all_set == true) {
+      var offset = $('.tourist_stat-wrap').offset();
+      $('html').scrollTop(offset.top);
+    }
+
+  });
+}
+
 $(function(){
+
   $("#game_enter_on").bind("click", function() {
     step_cookie_set(-3, '/');
     window.location.href = '/';
   });
+
   //var step = $('html').data('start_trip_step');
   cat_reg = getParameterByName('start_trip');
   if (cat_reg && !step) {
@@ -291,6 +310,7 @@ $(function(){
   }
 
   if (step == '6') {
+    new_claim_scroll();
     $("body").on("column_resize", step6_images_position);
     add_image('cloud1_step6', 'game-6.png', 0.75, 'absolute', 98);
     add_image('cat_step6', 'cat_left.png', 1, 'absolute', 98);
@@ -338,6 +358,7 @@ $(function(){
   }
 
   if (step == '9' || step == '11') {
+    new_claim_scroll();
     $("body").on("column_resize", step9_images_position);
     add_image('cat_step9', 'cat_left.png', 1, 'absolute', 98);
     add_image('cloud1_step9', 'game-6.png', 0.75, 'absolute', 98);
@@ -410,7 +431,7 @@ $(function(){
 
   if (step == '14') {
     add_image('cat_step14', 'cat_right.png', 1, 'fixed', 9999);
-    add_image('cloud1_step14', 'game-11.png', 0.75, 'fixed', 999);
+    add_image('cloud1_step14', 'game-12.png', 0.75, 'fixed', 999);
     add_image('glove1_step14', 'fingerLeftTop.png', 1, 'absolute', 9999);
     step14_images_position(1);
     resize_action(step14_images_position, 1);

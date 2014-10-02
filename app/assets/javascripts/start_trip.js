@@ -336,6 +336,8 @@ $(function(){
       if ($('#claim_country_name').attr('value') == '') {
         event.stopImmediatePropagation();
         event.preventDefault();
+        $('#claim_country_name').parent().addClass('error_message');
+        $('#claim_country_name').parent().append('<span class="span_error">Это поле нужно заполнить</span>');
       } else {
         step_cookie_set(step, '/');
       }

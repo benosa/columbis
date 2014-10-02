@@ -2,7 +2,8 @@ var step = $('html').data('start_trip_step');
 var ratios = {
    1024: 0.7,
    1280: 0.75,
-   1366: 0.8
+   1366: 0.8,
+   1500: 0.9
 }
 
 function get_delta() {
@@ -72,16 +73,20 @@ function step3_images_position(delta) {
   set_scale();
   var offset = $('.save').offset();
   $('#cat_step3').offset({ top: offset.top - 300 * get_delta(), left: offset.left - 350 * get_delta()});
-  $('#cloud1_step3').offset({ top: offset.top - 800 * get_delta(), left: offset.left - 800 * get_delta()});
- // $('#cloud2_step3').offset({ top: offset.top - 450, left: offset.left - 500});
+  if (get_delta() <= 0.8) {
+    offset = $('.back').offset();
+    $('#cloud1_step3').offset({ top: offset.top - 330 * get_delta(), left: offset.left + 200});
+  } else {
+    $('#cloud1_step3').offset({ top: offset.top - 800 * get_delta(), left: offset.left - 800 * get_delta()});
+  }
 }
 
 function step4_images_position(delta) {
   set_scale();
   var offset = $('.create_own').eq(4).offset();
-  $('#cat_step4').offset({ top: offset.top - 195, left: offset.left - 360 });
+  $('#cat_step4').offset({ top: offset.top - 195 * get_delta(), left: offset.left - 360 * get_delta() });
   var offset = $('#cat_step4').offset();
-  $('#cloud1_step4').offset({ top: offset.top + 55, left: offset.left - 760 });
+  $('#cloud1_step4').offset({ top: offset.top + 55 * get_delta(), left: offset.left - 760 * get_delta() });
 }
 
 function step5_images_position(delta) {
@@ -93,16 +98,23 @@ function step5_images_position(delta) {
 
 function step6_images_position(delta) {
   set_scale();
-  var offset = $('#claim_applicant_attributes_address').offset();
-  $('#cat_step6').offset({ top: offset.top + 35, left: offset.left - 195 });
-  offset = $('#claim_applicant_attributes_address').offset();
-  $('#cloud1_step6').offset({ top: offset.top + 5, left: offset.left + 120 });
-  offset = $('#claim_arrival_date').offset();
-  $('#glove_step6').offset({ top: offset.top + 20, left: offset.left - 110});
+  var offset = $('#claim_arrival_date').offset();
+  $('#glove_step6').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.tourist_stat').first().offset();
-  $('#glove_step6_2').offset({ top: offset.top + 20, left: offset.left - 110});
+  $('#glove_step6_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save').first().offset();
-  $('#glove_step6_3').offset({ top: offset.top - 100, left: offset.left - 110});
+  $('#glove_step6_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
+  if (get_delta() <= 0.8) {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step6').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
+    offset = $('.header').offset();
+    $('#cloud1_step6').offset({ top: offset.top + 15, left: offset.left + 20 });
+    $('#cloud1_step6').css({ zIndex: 99999 })
+  } else {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step6').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
+    $('#cloud1_step6').offset({ top: offset.top + 5 * get_delta(), left: offset.left + 120 * get_delta() });
+  }
 }
 
 // function step7_images_position(delta) {
@@ -113,62 +125,69 @@ function step6_images_position(delta) {
 function step7_images_position(delta) {
   set_scale();
   var offset = $('#claim_country_name').first().offset();
-  $('#cat_step7').offset({ top: offset.top - 278, left: offset.left - 355});
-  $('#cloud1_step7').offset({ top: offset.top - 508, left: offset.left - 255});
+  $('#cat_step7').offset({ top: offset.top - 278 * get_delta(), left: offset.left - 355 * get_delta()});
+  $('#cloud1_step7').offset({ top: offset.top - 508 * get_delta(), left: offset.left - 255 * get_delta()});
   offset = $('.save_and_close').first().offset();
-  $('#glove_step7').offset({ top: offset.top - 110, left: offset.left - 110});
+  $('#glove_step7').offset({ top: offset.top - 110 * get_delta(), left: offset.left - 110 * get_delta()});
 }
 
 function step8_images_position(delta) {
   set_scale();
   var offset = $('.new_claim_link').last().offset();
-  $('#cat_step8').offset({ top: offset.top - 288, left: offset.left - 345});
-  $('#cloud1_step8').offset({ top: offset.top - 338, left: offset.left - 995});
+  $('#cat_step8').offset({ top: offset.top - 288 * get_delta(), left: offset.left - 345 * get_delta()});
+  $('#cloud1_step8').offset({ top: offset.top - 338 * get_delta(), left: offset.left - 995 * get_delta()});
 }
 
 function step9_images_position(delta) {
   set_scale();
-  var offset = $('#claim_applicant_attributes_address').offset();
-  $('#cat_step9').offset({ top: offset.top + 35, left: offset.left - 195 });
-  offset = $('#claim_applicant_attributes_address').offset();
-  $('#cloud1_step9').offset({ top: offset.top + 25, left: offset.left + 150 });
-  offset = $('#claim_arrival_date').offset();
-  $('#glove_step9').offset({ top: offset.top + 20, left: offset.left - 110});
+  var offset = $('#claim_arrival_date').offset();
+  $('#glove_step9').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.tourist_stat').first().offset();
-  $('#glove_step9_2').offset({ top: offset.top + 20, left: offset.left - 110});
+  $('#glove_step9_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save_and_close').first().offset();
-  $('#glove_step9_3').offset({ top: offset.top - 100, left: offset.left - 110});
+  $('#glove_step9_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
+  if (get_delta() <= 0.8) {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step9').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
+    offset = $('.header').offset();
+    $('#cloud1_step9').offset({ top: offset.top + 15, left: offset.left + 20 });
+    $('#cloud1_step9').css({ zIndex: 99999 })
+  } else {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step9').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
+    $('#cloud1_step9').offset({ top: offset.top + 5 * get_delta(), left: offset.left + 120 * get_delta() });
+  }
 }
 
 function step12_images_position(delta) {
   set_scale();
   var offset = $('#check_date_link').offset();
-  $('#glove1_step12').offset({ top: offset.top - 90, left: offset.left - 95});
+  $('#glove1_step12').offset({ top: offset.top - 90 * get_delta(), left: offset.left - 95 * get_delta()});
   offset = $('#operator_maturity_link').offset();
-  $('#glove2_step12').offset({ top: offset.top - 90, left: offset.left - 95});
+  $('#glove2_step12').offset({ top: offset.top - 90 * get_delta(), left: offset.left - 95 * get_delta()});
   offset = $('#arrival_date_link').offset();
-  $('#glove3_step12').offset({ top: offset.top - 90, left: offset.left - 95});
+  $('#glove3_step12').offset({ top: offset.top - 90 * get_delta(), left: offset.left - 95 * get_delta()});
   offset = $('.pagination').offset();
-  $('#cat_step12').offset({ top: offset.top - 325, left: offset.left + 220});
-  $('#cloud1_step12').offset({ top: offset.top - 445, left: offset.left + 520});
+  $('#cat_step12').offset({ top: offset.top - 325 * get_delta(), left: offset.left + 220 * get_delta()});
+  $('#cloud1_step12').offset({ top: offset.top - 445 * get_delta(), left: offset.left + 520 * get_delta()});
 }
 
 function step13_images_position(delta) {
   set_scale();
   var offset = $('#add_potential').offset();
-  $('#cat_step13').offset({ top: offset.top - 295, left: offset.left - 330});
-  $('#cloud1_step13').offset({ top: offset.top - 535, left: offset.left - 750});
+  $('#cat_step13').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 330 * get_delta()});
+  $('#cloud1_step13').offset({ top: offset.top - 535 * get_delta(), left: offset.left - 750 * get_delta()});
 }
 
 function step14_images_position(delta) {
   set_scale();
   var offset = $('#tourist_full_name').offset();
-  $('#glove1_step14').offset({ top: offset.top + 45, left: offset.left + 320});
+  $('#glove1_step14').offset({ top: offset.top + 45 * get_delta(), left: offset.left + 320 * get_delta()});
   // offset = $('#tourist_phone_number').offset();
   // $('#glove2').offset({ top: offset.top - 30, left: offset.left + 280});
   offset = $('.save_and_close').first().offset();
-  $('#cat_step14').offset({ top: offset.top - 295, left: offset.left - 330});
-  $('#cloud1_step14').offset({ top: offset.top - 625, left: offset.left - 540});
+  $('#cat_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 330 * get_delta()});
+  $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 540 * get_delta()});
 }
 
 function add_image(id, name, delta, position, zindex) {
@@ -224,7 +243,6 @@ function new_claim_scroll() {
 }
 
 $(function(){
-
   $("#game_enter_on").bind("click", function() {
     step_cookie_set(-3, '/');
     window.location.href = '/';
@@ -337,7 +355,9 @@ $(function(){
         event.stopImmediatePropagation();
         event.preventDefault();
         $('#claim_country_name').parent().addClass('error_message');
-        $('#claim_country_name').parent().append('<span class="span_error">Это поле нужно заполнить</span>');
+        if (!$('.span_error').length) {
+          $('#claim_country_name').parent().append('<span class="span_error">Это поле нужно заполнить</span>');
+        }
       } else {
         step_cookie_set(step, '/');
       }

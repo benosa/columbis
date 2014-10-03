@@ -3,7 +3,7 @@ class Mailer < ActionMailer::Base
   include AbstractController::Callbacks
   include Devise::Mailers::Helpers
   layout 'mailer'
-  default from: CONFIG[:support_email]
+  default from: "Columbis.ru <#{CONFIG[:support_email]}>"
 
   before_filter :set_attach
   after_filter :control_delivery

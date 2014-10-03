@@ -168,8 +168,12 @@ function step12_images_position(delta) {
   offset = $('#arrival_date_link').offset();
   $('#glove3_step12').offset({ top: offset.top - 90 * get_delta(), left: offset.left - 95 * get_delta()});
   offset = $('.pagination').offset();
-  $('#cat_step12').offset({ top: offset.top - 325 * get_delta(), left: offset.left + 220 * get_delta()});
-  $('#cloud1_step12').offset({ top: offset.top - 445 * get_delta(), left: offset.left + 520 * get_delta()});
+  $('#cat_step12').offset({ top: offset.top - 290 * get_delta(), left: offset.left + 220 * get_delta()});
+  $('#cloud1_step12').offset({ top: offset.top - 300 * get_delta(), left: offset.left + 470 * get_delta()});
+  if (get_delta() > 0.8) {
+    offset = $('.logo').offset();
+    $('#disable_game').offset({ top: offset.top + 10 * get_delta(), left: offset.left - 90 * get_delta()});
+  }
 }
 
 function step13_images_position(delta) {
@@ -406,7 +410,7 @@ $(function(){
     add_image('glove1_step12', 'fingerRightDown.png', 1, 'absolute', 9999);
     add_image('glove2_step12', 'fingerRightDown.png', 1, 'absolute', 9999);
     add_image('glove3_step12', 'fingerRightDown.png', 1, 'absolute', 9999);
-    add_image('cloud1_step12', 'game-8.png', 1, 'absolute', 9999);
+    add_image('cloud1_step12', 'game-8.png', 0.8, 'absolute', 9999);
 
     step12_images_position();
     resize_action(step12_images_position, 1);

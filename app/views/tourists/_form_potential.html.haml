@@ -13,9 +13,6 @@
             %h2= t('.common')
           .form_block_content
             .fake_row.fields
-              %p.potential_wrapper
-                = f.check_box :potential, id: 'tourist_potential'
-                = f.label :potential, class: 'checkbox left_checkbox', for: 'tourist_potential', data: { confirm: t('.potential_to_tourist_warning', client: tourist.full_name) }
               %p= f.label :full_name, :required => true
               = f.text_field :full_name, :class => 'wide'
               %p= f.label :sex

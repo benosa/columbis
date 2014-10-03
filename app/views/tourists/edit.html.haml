@@ -14,4 +14,5 @@
   - unless @tourist.potential?
     = link_to t('.list_of_tourist'), tourists_path, :class => 'list_operator'
   - else
-    = link_to t('.list_of_clients'), tourists_path(potential: 1), :class => 'list_operator'
+    = link_to t('.list_of_clients'), tourists_path(potential: 1), :class => 'list_operator with_l_margin'
+    = link_to t('.move_to_tourists'), tourist_add_to_clients_path, :title => I18n.t('.tourists.edit.move_title'), :class => 'add_operator with_tooltip', method: :post

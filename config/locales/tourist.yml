@@ -92,6 +92,8 @@ ru:
       edit_client: 'Редактирование клиента %{client}'
       list_of_tourist: 'Список туристов'
       list_of_clients: 'Список клиентов'
+      move_to_tourists: 'Перевести в клиенты'
+      move_title: 'Необходимо будет дозаполнить поля'
       created_by: 'Создан: %{user}'
     new:
       new_tourist: 'Новый турист'

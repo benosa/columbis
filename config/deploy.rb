@@ -20,7 +20,7 @@ default_run_options[:pty] = true
 
 set :scm, :git
 set :keep_releases, 5
-set :repository,  "git@git.freshfiesta.ru:zammer/columbis.git"
+set :repository,  "git@git.freshfiesta.ru:ap/columbis.git"
 
 set :user, "deploy"
 set :use_sudo, false

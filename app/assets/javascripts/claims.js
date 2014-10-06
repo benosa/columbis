@@ -1352,6 +1352,8 @@ $(function() {
 // Aling #mistral_top_managers block for Mistral
 $(function() {
   if (!$('.main_page.mistral-company')) return;
+  var h1_w = $('.h1_title').width();
+
   function align_mistral_top_managers() {
     var offset = $('.second_menu .sale_lider').offset(),
         left = offset && offset.left;
@@ -1359,9 +1361,23 @@ $(function() {
       offset = $('.second_menu .type').offset();
       left = offset && offset.left;
     }
+
     if (left) {
       $('#mistral_top_managers').css('left', left);
     }
+
+    if (left) {
+      console.log(left + ' ' + (h1_w + $('.mistral_filter').width() + 85));
+      if (left < (h1_w + $('.mistral_filter').width() + 85)) {
+        $('.h1_title').css('float', 'none');
+        $('.mistral_filter').css('margin-top', '75px');
+      } else {
+        console.log(1);
+        $('.h1_title').css('float', 'left');
+        $('.mistral_filter').css('margin-top', '30px');
+      }
+    }
+
   }
   align_mistral_top_managers();
   $(window).resize(align_mistral_top_managers);

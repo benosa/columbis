@@ -35,6 +35,17 @@
   color: #FF8888
 }
 
+
+.potential_links {
+  .create_own {
+    margin-left: 5px !important;
+  }
+
+  .delete {
+    margin-left: 5px !important;
+  }
+}
+
 .tourist, .potential_client {
   h1 { float: left; }
   .user { float: right; margin-top: 11px; }
@@ -71,6 +82,8 @@
       .del { float: right; }
     }
   }
+
+  .with_l_margin {margin-left: 20px;}
 }
 
 .edit_tourist .comment_form {

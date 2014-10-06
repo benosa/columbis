@@ -37,8 +37,8 @@
             = I18n.t("potential_states.#{tourist.state}")
       %td.office
         %p= tourist.office.try(:name)
-      %td
+      %td.potential_links
         = link_to '', edit_tourist_path(tourist, potential: 1), :class => 'edit_row', :title => t('edit'), id: "edit_tourist_#{tourist.id}"
-
+        = link_to '', tourist_add_to_clients_path(tourist), :class => 'create_own with_tooltip', :title => I18n.t('.tourists.edit.move_title'), id: "move_tourist_#{tourist.id}", method: :post
         = link_to '', tourist_path(tourist), :confirm => t('are_you_sure'), :method => :delete, :class => 'delete', id: "delete_tourist_#{tourist.id}", :title => t('delete')
 

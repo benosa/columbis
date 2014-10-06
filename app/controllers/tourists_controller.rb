@@ -72,6 +72,15 @@ class TouristsController < ApplicationController
     end
   end
 
+  def add_to_clients
+    if @tourist.potential?
+      @tourist.potential = false
+      check_address(@tourist, false)
+      @tourist.save
+      render :action => "edit"
+    end
+  end
+
   def show
     check_office(@tourist)
   end

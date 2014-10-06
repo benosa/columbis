@@ -25,8 +25,8 @@
               %tr{:style => "width:530px"}
                 %td{:colspan => "2", :style => "padding-top:10px; color:#333; font: 13px Arial; width:530px"}
                   - unless message.to.first == CONFIG[:support_email] # mail for user
-                    - if @resource.kind_of?(User) && @resource.first_last_name
-                      %h1{:style => "color:#333; font: 20px Arial;"} Здравствуйте, #{@resource.first_last_name}
+                    - if @resource.kind_of?(User) && @resource.first_name
+                      %h1{:style => "color:#333; font: 20px Arial;"} #{@resource.first_name}, здравствуйте!
                     = yield
                     %p Спасибо, что выбрали Columbis!
                   - else # message for support

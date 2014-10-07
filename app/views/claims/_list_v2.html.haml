@@ -1,20 +1,21 @@
-.claims.current_container.claim_list_v1
+.claims.current_container.claim_list_v2
   .reservations_wrapper
     %table#claims.reservations{ :rules => 'all'}
       %thead
         %tr.claims_header
-          %th= sort_link 'num', t('claims.index.num')
+          %th.last_cols
           %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
-          %th= sort_link 'tourist_stat', t('claims.index.tourist_stat')
+          %th= sort_link 'tourist_stat', t('claims.index.tourist_stat_br')
           - if show_office
-            %th.blue_box= sort_link 'office', t('claims.index.office')
-            %th.blue_box= sort_link 'user_id', t('claims.index.manager')
+            %th.blue_box
+              = sort_link 'office', t('claims.index.office')
+              = sort_link 'user_id', t('claims.index.manager')
           - else
             %th.blue_box= sort_link 'user_id', t('claims.index.manager')
           %th.blue_box= sort_link 'applicant', t('claims.index.full_name')
           %th.blue_box= sort_link 'phone_number', t('claims.index.phone_number')
           %th.sand_box.short= sort_link 'arrival_date', t('claims.index.arrival_date')
-          %th.sand_box.short= sort_link 'departure_date', t('claims.index.departure_date')
+          %th.sand_box.short= sort_link 'departure_date', t('claims.index.departure_date_br')
           %th.sand_box= sort_link 'country', t('claims.index.to')
           %th.sand_box= sort_link 'airport_back', t('claims.index.from')
           %th.sand_box= sort_link 'visa', t('claims.index.visa')
@@ -43,11 +44,9 @@
           %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs')
           %th= sort_link 'docs_note', t('claims.index.memo')
           %th= sort_link 'check_date', t('claims.index.check_date')
-          %th.last_cols
-          %th.last_cols
 
       %tbody#claims_body
-        = render partial: 'claims', object: @claims, locals: { totals: @totals }
+        = render partial: 'claims_v2', object: @claims, locals: { totals: @totals }
 
         - if next_page <= @claims_collection.total_pages
           %tr{ :class => "waypoint", :data => {:page => next_page} }

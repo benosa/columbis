@@ -1,5 +1,5 @@
 - if current_company.short_claim_list
-  = render partial: 'claims_new', object: @claims, locals: { totals: @totals }
+  = render partial: 'claims_short', object: @claims, locals: { totals: @totals }
 - else
   = render partial: 'claims', object: @claims, locals: { totals: @totals }
 

@@ -1179,5 +1179,6 @@ input[type="checkbox"]{display: none;}
 				width: 594px;
 			}
 
-#company_short_claim_list, #company_extended_potential_clients {display: inline-block; margin-right: 5px; margin-top: 4px; }
+#company_short_claim_list, #company_extended_potential_clients, #company_claim_list_v2
+  {display: inline-block; margin-right: 5px; margin-top: 4px; }
 #for_potential_client {width: 154px;}

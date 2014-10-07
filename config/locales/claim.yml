@@ -59,6 +59,7 @@ ru:
       term: 'Срок по визе'
       arrival_date: 'Вылет'
       departure_date: 'Возврат'
+      departure_date_br: 'Воз-<br/>врат'
       operator: 'Оператор'
       claim: 'Заявка'
       price: 'Цена'
@@ -91,6 +92,8 @@ ru:
       phone_number: 'Тел.'
       sent: 'Отпр.'
       tourist_stat: 'Откуда'
+      tourist_stat_br: 'От-<br/>куда'
+
       add_claim: 'Добавить бронь'
       column_settings: 'Настройки столбцов'
       options_all: 'Все'

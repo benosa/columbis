@@ -1,5 +1,5 @@
 .current_container
-  %table.reservations.tour_operators
+  %table.reservations.tour_operators.list_table
     %tr
       %th= sort_link(:name, Operator.human_attribute_name(:name), :default)
       %th= sort_link(:register_number, Operator.human_attribute_name(:register_number))
@@ -12,7 +12,7 @@
         %span= t('actions')
 
     - for operator in @operators
-      %tr{ :class => cycle('odd', 'even') + from_reestr_class(operator), id: "operator_#{operator.id}" }
+      %tr{ :class => cycle('odd', 'even') + from_reestr_class(operator), id: "operator_#{operator.id}", data: { edit_path: edit_operator_path(operator) } }
         %td
           %p= operator.name
         %td

@@ -53,7 +53,7 @@
         .clear
 
       .wrapper
-        #content.content
+        #content.content{:class => content_class}
           = render 'shared/messages'
           .top
             - if show_title?

@@ -255,6 +255,12 @@ $(function(){
   // Refine bottom padding for content
   set_content_bottom_padding();
 
+  $('.list_v2 .list_table tr').on('click', function() {
+    if ($(this).data('edit_path') != undefined) {
+      window.location.href = $(this).data('edit_path');
+    }
+  });
+
 });
 
 function setAutocomplete(selector, is_container, options) {

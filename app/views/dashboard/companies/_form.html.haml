@@ -23,9 +23,9 @@
         %p= f.label :time_zone
         = f.time_zone_select :time_zone, nil, :default => "Moscow"
         - unless is_mistral?
-          %p
-            = f.check_box :short_claim_list
-            = f.label :short_claim_list
+          -#%p
+          -#  = f.check_box :short_claim_list
+          -#  = f.label :short_claim_list
           %p
             = f.check_box :claim_list_v2
             = f.label :claim_list_v2

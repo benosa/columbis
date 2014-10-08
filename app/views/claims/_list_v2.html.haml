@@ -21,9 +21,8 @@
           %th.sand_box= sort_link 'visa', t('claims.index.visa')
           %th.sand_box.short= sort_link 'visa_check', t('claims.index.term')
           %th= sort_link 'operator', t('claims.index.operator')
-          %th= sort_link 'operator_confirmation', t('claims.index.operator_confirmation')
-          %th.purple_box.medium= sort_link 'primary_currency_price', t('claims.index.price')
-          %th.purple_box.medium= sort_link 'calculation', t('claims.index.calculation')
+          %th= sort_link 'operator_confirmation', t('claims.index.operator_confirmation_br')
+          %th.purple_box.medium= sort_link 'calculation', t('claims.index.calculation_rur')
           %th.purple_box.medium= sort_link 'tourist_advance', t('claims.index.advance')
           %th.purple_box.medium= sort_link 'tourist_debt', t('claims.index.debt')
           %th.purple_box.medium= sort_link 'operator_price', t('claims.index.operator_price')
@@ -41,7 +40,7 @@
               %th.green_back.medium= sort_link 'profit_in_percent', '%'
               %th.green_back.medium= sort_link 'bonus_percent', '% премии'
               %th.green_back.medium= sort_link 'bonus', 'Премия'
-          %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs')
+          %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs_br')
           %th= sort_link 'docs_note', t('claims.index.memo')
           %th= sort_link 'check_date', t('claims.index.check_date')
 

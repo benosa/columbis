@@ -27,13 +27,11 @@
     %span{ :title => l( claim.visa_check, :format => :short ) }
       = l( claim.visa_check, :format => :short )
   %td{ :title => claim.operator.try(:name) }
-    = truncate(claim.operator.try(:name), :length => 8)
+    = truncate(operator_name(claim.operator.try(:name)), :length => 8)
   %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
     = truncate(claim.operator_confirmation, :length => 10)
-  %td{ :title => claim.primary_currency_price.to_money }
-    = claim.primary_currency_price.to_money
   %td{ :title => claim.calculation }
-    = truncate(claim.calculation, :length => 8)
+    = /[0-9]+/.match(claim.calculation)
   %td{ :title => claim.tourist_advance.to_money, :class => color_for_tourist_advance(claim)}
     = claim.tourist_advance.to_money
   %td{ :title => claim.tourist_debt.to_money, :class => color_for_tourist_advance(claim) }
@@ -64,7 +62,7 @@
         :display_with => lambda {|b| b.to_percent.html_safe }
       %td.bonus.buh_col= claim.bonus.to_money
   %td{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => [!claim.canceled? && claim.documents_status, show_accountant_columns && 'thick_border'] }
-    = t('claims.documents_statuses.' << claim.documents_status)
+    = truncate(t('claims.documents_statuses.' << claim.documents_status), :length => 6)
   %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }
     = truncate(claim.memo, :length => 8)
   %td{ :title => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }

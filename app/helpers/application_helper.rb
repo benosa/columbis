@@ -364,4 +364,10 @@ module ApplicationHelper
       @devise_mapping ||= Devise.mappings[:user]
     end
 
+    def content_class
+      if current_company.claim_list_v2
+        'list_v2'
+      end
+    end
+
 end

@@ -5,7 +5,9 @@ set_tourists_tooltip = (init)->
     container: 'body'
     delay: 100
     animation: false
-    trigger: 'manual'
+
+  if !$('.list_v2').length
+    options['trigger'] = 'manual'
 
   $('#tourists td[title]').each ->
     if !$(@).hasClass('with_tooltip')

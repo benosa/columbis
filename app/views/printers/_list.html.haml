@@ -1,5 +1,5 @@
 .current_container
-  %table.reservations.tour_operators
+  %table.reservations.tour_operators.list_table
     %tr
       %th= sort_link(:mode, t('.mode'), :default)
       %th= sort_link(:template_name, t('.template_name'))
@@ -7,7 +7,7 @@
         %span= t('actions')
 
     - for printer in @printers
-      %tr{:id => "printer_#{printer.id}"}
+      %tr{ :id => "printer_#{printer.id}", data: { edit_path: edit_printer_path(printer.id) } }
         %td{:style => "width: 100px"}
           %p= printer.mode
         %td

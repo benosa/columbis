@@ -1,0 +1,14 @@
+%p
+  Благодарим вас за регистрацию на сайте
+  %a{:href => "http://columbis.ru"} Columbis.ru
+
+%p
+  Вы можете зайти на сайт, используя
+  %br
+  логин: #{@resource.login}
+  %br
+  пароль: #{@resource.password}
+
+%p
+  Вы можете изменить свой пароль на этой странице:
+  = link_to visitors_confirm_url

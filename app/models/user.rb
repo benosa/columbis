@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+         :recoverable, :rememberable, :trackable, :validatable#, :confirmable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :office_id, :use_office_password, :export_notification,
@@ -42,9 +42,10 @@ class User < ActiveRecord::Base
 
   before_save :check_name_attributes
   before_save :check_owner_boss
-  after_save :send_registration_info_to_support, :if => :just_confirmed? if CONFIG[:support_delivery]
-  after_save :create_company, :if => :just_confirmed?
+  after_create :send_registration_info_to_support if CONFIG[:support_delivery]
+  after_create :create_company
   after_create :add_start_trip
+  after_create :registration_message
   after_update :touch_claims
   after_destroy :touch_claims
 
@@ -196,10 +197,6 @@ class User < ActiveRecord::Base
     self == company.owner if company
   end
 
-  def just_confirmed?
-    confirmed_at_changed? && confirmed_at_was.nil?
-  end
-
   def self.find_for_database_authentication(conditions)
     self.where(:login => conditions[:login]).first || self.where(:email => conditions[:login]).first
   end
@@ -226,6 +223,10 @@ class User < ActiveRecord::Base
 
   def add_start_trip
     StartTrip.create(user_id: id, step: 1) if role == 'boss'
+  end
+
+  def registration_message
+    Mailer.registration_message(self).deliver
   end
 
   private

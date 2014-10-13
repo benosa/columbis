@@ -2,7 +2,7 @@
 class Mailer < ActionMailer::Base
   include AbstractController::Callbacks
   include Devise::Mailers::Helpers
-  include ApplicationHelper
+  helper UsersHelper
 
   layout 'mailer'
   default from: "Columbis.ru <#{CONFIG[:support_email]}>"

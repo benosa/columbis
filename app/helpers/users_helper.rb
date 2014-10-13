@@ -25,4 +25,10 @@ module UsersHelper
   def show_demo_exit
     demo_user? && logged_as_another_user?
   end
+
+  def user_edit_url(resource)
+    root_url(subdomain: resource.try(:company).try(:subdomain)).to_s +
+      url_for(:controller => 'registrations', :action => 'edit').to_s.gsub(/^./, "")
+  end
+
 end

@@ -2,8 +2,10 @@
 class Mailer < ActionMailer::Base
   include AbstractController::Callbacks
   include Devise::Mailers::Helpers
+  helper UsersHelper
+
   layout 'mailer'
-  default from: CONFIG[:support_email]
+  default from: "Columbis.ru <#{CONFIG[:support_email]}>"
 
   before_filter :set_attach
   after_filter :control_delivery
@@ -69,6 +71,12 @@ class Mailer < ActionMailer::Base
     @resource = user
     subject = I18n.t('mailer.user_was_created_subject', user: user.full_name || user.login)
     mail to: CONFIG[:support_email], subject: subject
+  end
+
+  def registration_message(user)
+    @resource = user
+    subject = I18n.t('mailer.user_was_created_subject', user: user.full_name || user.login)
+    mail to: user.email, subject: subject
   end
 
   def task_was_created(task)

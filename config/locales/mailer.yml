@@ -33,6 +33,8 @@ ru:
     # Devise methods
     confirmation_instructions:
       subject: "Инструкции по подтверждению учётной записи"
+    registration_message:
+      subject: "Регистрационные данные"
     new_password_instructions:
       subject: "Новый пароль"
     reset_password_instructions:

@@ -40,7 +40,9 @@
       = render 'layouts/main_menu/top_managers' unless top_managers.empty?
 
 - if current_company.short_claim_list
-  = render :partial => 'list_new'
+  = render :partial => 'list_short'
+- elsif current_company.claim_list_v2
+  = render :partial => 'list_v2'
 - else
   = render :partial => 'list'
 

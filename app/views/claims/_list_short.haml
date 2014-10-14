@@ -1,4 +1,4 @@
-.claims_list_new
+.claim_list_short
   .claims.current_container
     .reservations_wrapper
       %table#claims.reservations{ :rules => 'all'}
@@ -12,7 +12,7 @@
             %th.reservation_date= sort_link 'reservation_date', t('claims.index.res_new_date'), :desc
             %th
         %tbody#claims_body
-          = render partial: 'claims_new', object: @claims, locals: { totals: @totals }
+          = render partial: 'claims_short', object: @claims, locals: { totals: @totals }
 
           - if next_page <= @claims_collection.total_pages
             %tr{ :class => "waypoint", :data => {:page => next_page} }

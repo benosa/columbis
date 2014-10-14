@@ -1,4 +1,4 @@
-%table#tourists.tourists.reservations.tour_operators{ class: is_mistral? && 'lower_rows' }
+%table#tourists.tourists.reservations.tour_operators.list_table{ class: is_mistral? && 'lower_rows' }
   %tr
     %th.created_at
       = sort_link(:created_at, Tourist.human_attribute_name(:created_at), :desc)
@@ -16,11 +16,11 @@
       %span= t('actions')
 
   - for tourist in tourists
-    %tr{ :class => [cycle('odd', 'even'), tourist.state != '' ? tourist.state : 'no_state'], id: "tourist-#{tourist.id}"}
+    %tr{ :class => [cycle('odd', 'even'), tourist.state != '' ? tourist.state : 'no_state'], id: "tourist-#{tourist.id}", data: { edit_path: edit_tourist_path(tourist, potential: 1) } }
       %td
         %p= l(tourist.created_at.to_date, :format => :long)
       %td{ title: tourist.user.try(:full_name), style: tourist.user.try(:color) && "background: none #{tourist.user.try(:color)} !important;" }
-        %p= tourist.user.try(:login)
+        %p= tourist_manager(tourist)
       %td.full_name{ title: tourist.name }
         %p= tourist.name
       %td{ title: tourist.phone_number }

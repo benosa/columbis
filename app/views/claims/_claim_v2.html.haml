@@ -1,0 +1,69 @@
+%tr.row{ :class => [claim.canceled? && 'gray_back', cycle("odd", "even")], data: { edit_path: edit_claim_path(claim) } }
+  %td.docs_note{ :title => claim.docs_note }
+    %span{ :class => !claim.docs_note.try(:empty?) && 'attention' }
+  %td= l( claim.reservation_date, :format => :default )
+  %td{ :title => claim.tourist_stat }
+    = truncate(claim.tourist_stat, :length => 4)
+  - manager_names = claim.office.name.to_s + ', ' + claim.user.try(:full_name).to_s + (", #{claim.assistant.try(:full_name)}" if claim.assistant.present?).to_s
+  %td{ :title => manager_names + (is_admin? ? ", #{claim.company.name}" : ""), :style => claim.user.try(:color) && "background: none #{claim.user.try(:color)} !important;" }
+    = truncate(claim.user.first_last_name, :length => 8)
+  %td{ :title => tourists_list(claim), :style => claim.assistant.try(:color) && "background: none #{claim.assistant.try(:color)} !important;" }
+    = truncate(claim.applicant.try(:initials_name), :length => 8)
+  %td{ :title => claim.applicant.try(:phone_number) }
+    = truncate(claim.applicant.try(:phone_number), :length => 10)
+  %td{ :class => color_for_flight(claim) }
+    %span{ :title => l(claim.arrival_date, :format => :long) }
+      = l( claim.arrival_date, :format => :short )
+  %td{ :class => "#{color_for_departure_date_call(claim)}" }
+    %span{ :title => l(claim.departure_date, :format => :long)}
+      = l( claim.departure_date, :format => :short )
+  %td{ :title => claim.country.try(:name) }
+    = truncate(claim.country.try(:name), :length => 6)
+  %td{ :title => claim.city.try(:name) }
+    = truncate(claim.city.try(:name), :length => 6)
+  %td{ :title => text_for_visa(claim), :class => color_for_visa(claim) }
+    = text_for_visa(claim, true)
+  %td{ :class => (!claim.canceled? && claim.visa_confirmation_flag) && claim.visa }
+    %span{ :title => l( claim.visa_check, :format => :short ) }
+      = l( claim.visa_check, :format => :short )
+  %td{ :title => claim.operator.try(:name) }
+    = truncate(operator_name(claim.operator.try(:name)), :length => 8)
+  %td{ :title => claim.operator_confirmation, :class => !claim.canceled? && !claim.operator_confirmation_flag && 'red_back' }
+    = truncate(claim.operator_confirmation, :length => 10)
+  %td{ :title => claim.calculation }
+    = /[0-9]+/.match(claim.calculation)
+  %td{ :title => claim.tourist_advance.to_money, :class => color_for_tourist_advance(claim)}
+    = claim.tourist_advance.to_money
+  %td{ :title => claim.tourist_debt.to_money, :class => color_for_tourist_advance(claim) }
+    = claim.tourist_debt.to_money
+  %td{ :class => color_for_operator_price(claim), :title => (claim.operator_price > 0) && "#{claim.operator_price_currency.upcase}: #{claim.operator_price.to_money}" }
+    = operator_price(claim)
+  %td{ :title => l(claim.operator_maturity, :format => :short) }
+    = l( claim.operator_maturity, :format => :short )
+  %td{ :title => claim.operator_advance.to_money }
+    = operator_advance(claim)
+  %td{ :title => claim.operator_debt.to_money, :class => color_for_operator_debt(claim) }
+    = operator_debt(claim)
+  - if show_accountant_columns
+    %td.thick_border.buh_col{ :class => claim.approved_tourist_advance < claim.primary_currency_price && 'red_back' }
+      = approved_advance(claim, :tourist)
+    %td.buh_col= approved_advance(claim, :operator_prim)
+    %td.buh_col= approved_advance(claim, :operator)
+    %td.buh_col{ :class => claim.profit_acc < 0 && !claim.excluded_from_profit && 'red_back', :title => !claim.excluded_from_profit && profit_tooltip_acc(claim) }
+      = claim.profit_acc.to_money
+    %td.buh_col{ :title => !claim.excluded_from_profit && profit_in_percent_tooltip_acc(claim) }
+      = claim.profit_in_percent_acc.to_percent unless claim.excluded_from_profit
+    - if show_bonus_columns
+      %td.buh_col{ :class => claim.profit < 0 && !claim.excluded_from_profit && 'red_back', :title => !claim.excluded_from_profit && profit_tooltip(claim) }
+        = claim.profit.to_money
+      %td.buh_col{ :title => !claim.excluded_from_profit && profit_in_percent_tooltip(claim) }
+        = claim.profit_in_percent.to_percent unless claim.excluded_from_profit
+      %td.bonus_percent.buh_col= best_in_place claim, :bonus_percent, :path => update_bonus_claims_path(claim),
+        :display_with => lambda {|b| b.to_percent.html_safe }
+      %td.bonus.buh_col= claim.bonus.to_money
+  %td{ :title => t('claims.documents_statuses.' << claim.documents_status), :class => [!claim.canceled? && claim.documents_status, show_accountant_columns && 'thick_border'] }
+    = truncate(t('claims.documents_statuses.' << claim.documents_status), :length => 6)
+  %td{ :class => (!claim.memo_tasks_done and claim.memo != '') && 'red_back', :title => claim.memo }
+    = truncate(claim.memo, :length => 8)
+  %td{ :title => l( claim.check_date, :format => :default ), :class => check_date_status(claim) }
+    = l( claim.check_date, :format => :default )

@@ -275,9 +275,13 @@ function set_claims_tooltip(init) {
     placement: 'bottom',
     container: 'body',
     delay: 300,
-    animation: false,
-    trigger: 'manual'
+    animation: false
   };
+
+  if ($('.claim_list_v1').length) {
+    options['trigger'] = 'manual';
+  }
+
   $('#claims td[title], #claims td span[title]').each(function() {
     if (!$(this).hasClass('with_tooltip')) {
       if ($(this).is('.docs_note')) {
@@ -285,6 +289,11 @@ function set_claims_tooltip(init) {
           template: '<div class="tooltip claims_tooltip docs_note"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
           placement: 'left'
         });
+
+        if ($('.claim_list_v2').length) {
+          docs_note_opts['placement'] = 'right';
+        }
+
         $(this).tooltip(docs_note_opts).addClass('with_tooltip');
       } else {
         $(this).tooltip(options).addClass('with_tooltip');
@@ -1176,7 +1185,7 @@ $(function() {
     localStorage.setItem('claim_unlock', '');
   }
   // Row highlight
-  $('body').on('click', '.claims_list_new #claims .row td', function(e) {
+  $('body').on('click', '.claim_list_short #claims .row td', function(e) {
     var $row = $(this).closest('.row');
 
     if ($('.full_claim_info').length) {
@@ -1241,7 +1250,7 @@ $(function() {
     });
   });
 
-  $('.claims_list_old').on('click', '#claims .row td', function(e) {
+  $('.claim_list_v1').on('click', '#claims .row td', function(e) {
     var $row = $(this).closest('.row'),
     $hrow = $('#claims .row.highlight');
     if ($row.get(0) == $hrow.get(0)) {
@@ -1381,4 +1390,13 @@ $(function() {
   }
   align_mistral_top_managers();
   $(window).resize(align_mistral_top_managers);
+});
+
+// Claims list V2
+$(function() {
+  $('.claim_list_v2 tr').on('click', function() {
+    if ($(this).data('edit_path') != undefined) {
+      window.location.href = $(this).data('edit_path');
+    }
+  });
 });

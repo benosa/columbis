@@ -195,7 +195,7 @@ module ApplicationHelper
     else
       (Claim.columns_hash[column].try(:type).try(:to_s) =~ /^date/ ? :desc : :asc)
     end
-    link_to title.to_s, '#', { :id => "#{col}_link",  :class => css_class, :data => { :sort => col, :dir => dir } }
+    link_to raw(title.to_s), '#', { :id => "#{col}_link",  :class => css_class, :data => { :sort => col, :dir => dir } }
   end
 
   def availability_filter_options
@@ -362,6 +362,12 @@ module ApplicationHelper
 
     def devise_mapping
       @devise_mapping ||= Devise.mappings[:user]
+    end
+
+    def content_class
+      if current_company.claim_list_v2
+        'list_v2'
+      end
     end
 
 end

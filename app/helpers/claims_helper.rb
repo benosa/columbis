@@ -390,6 +390,10 @@ module ClaimsHelper
     styles
   end
 
+  def operator_name(name)
+    name.to_s.gsub(/OOO\s./, '').gsub(/ООО\s./, '').gsub(/ЗАО\s./, '').gsub(/[»"«']/, '')
+  end
+
   def excel_element(element, style_id, styles, check = true)
     path = style_id.to_s.split('-')
     style = styles

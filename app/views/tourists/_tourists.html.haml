@@ -1,4 +1,4 @@
-%table#tourists.tourists.reservations.tour_operators{ class: is_mistral? && 'lower_rows' }
+%table#tourists.tourists.reservations.tour_operators.list_table{ class: is_mistral? && 'lower_rows' }
   %tr
     %th.full_name= sort_link(:full_name, Tourist.human_attribute_name(t('.full_name')), :default)
     %th.date_of_birth
@@ -20,7 +20,7 @@
       %span= t('actions')
 
   - for tourist in tourists
-    %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}"}
+    %tr{ :class => cycle('odd', 'even'), id: "tourist-#{tourist.id}", data: { edit_path: edit_tourist_path(tourist) } }
       %td{ title: tourist.name }
         %p= tourist.name
       %td

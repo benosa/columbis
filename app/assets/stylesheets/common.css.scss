@@ -1,6 +1,6 @@
 /*
 *= require claims
-*= require claims_list_new
+*= require claim_list_short
 *= require company
 *= require tourists
 *= require users
@@ -992,6 +992,10 @@ label.question_mark { background: url(/assets/question.png) 100% 2px no-repeat; 
       color: #990000;
     }
   }
+}
+
+.list_v2 .list_table .edit_row {
+  display: none;
 }
 
 /*** END modals and popups ***/

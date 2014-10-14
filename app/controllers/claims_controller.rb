@@ -38,7 +38,9 @@ class ClaimsController < ApplicationController
     limit_collection_total_entries @claims_collection
     if request.xhr?
       if current_company.short_claim_list
-        render :partial => 'list_new'
+        render :partial => 'list_short'
+      elsif current_company.claim_list_v2
+        render :partial => 'list_v2'
       else
         render :partial => 'list'
       end

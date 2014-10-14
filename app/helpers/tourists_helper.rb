@@ -65,6 +65,14 @@ module TouristsHelper
     end
   end
 
+  def tourist_manager(tourist)
+    if current_company.claim_list_v2
+      tourist.user.try(:full_name)
+    else
+      tourist.user.try(:login)
+    end
+  end
+
   # alias_method :orig_tourists_path, :tourists_path
   # def tourists_path(args = nil)
   #   if tourist || show_potential_clients

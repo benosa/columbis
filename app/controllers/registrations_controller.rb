@@ -29,7 +29,8 @@ class RegistrationsController < Devise::RegistrationsController
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_up(resource_name, resource)
         respond_to do |format|
-          format.json { render :json => {:success => true, :message => I18n.t('devise.registrations.user.signed_up_but_unconfirmed')} }
+          format.json { render :json => {:success => true, :url => current_company_root_url,
+            :message => I18n.t('devise.registrations.user.signed_up_but_unconfirmed')} }
           format.html { respond_with resource, :location => after_sign_up_path_for(resource) }
         end
       else

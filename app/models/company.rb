@@ -35,6 +35,7 @@ class Company < ActiveRecord::Base
   has_many :printers, :order => :id, :dependent => :destroy, inverse_of: :company
 
   validates_presence_of :name, :tariff_id, :tariff_end
+  validate :number_of_offices
   validates :subdomain, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: proc{ I18n.t('activerecord.errors.messages.subdomain_invalid') } },
@@ -182,6 +183,14 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def number_of_offices
+    Rails.logger.debug("olo_val #{offices.size}")
+    false
+    if tariff.offices_count > 0 && offices.size > tariff.offices_count
+      errors.add(:company, "oloo11232")
+    end
+  end
+
   private
 
     def check_tariff_plan
@@ -195,6 +204,7 @@ class Company < ActiveRecord::Base
 
     def check_offices_attributes(attributes)
       offices.count < offices.length && attributes['id'].blank? && attributes['name'].blank?
+      false
     end
 
     def check_printers_attributes(attributes)

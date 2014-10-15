@@ -27,15 +27,23 @@ class Dashboard::UsersController < ApplicationController
   end
 
   def new
-    @user.role = 'manager'
+    if can?(:add_user, :user)
+      @user.role = 'manager'
+    else
+      redirect_to dashboard_users_url, :alert => t('users.messages.user_cant_be_created')
+    end
   end
 
   def create
-    @user.company = current_company
-    if @user.create_new(params[:user], current_user)
-      redirect_to dashboard_users_url, :notice => t('users.messages.created')
+    if can?(:add_user, :user)
+      @user.company = current_company
+      if @user.create_new(params[:user], current_user)
+        redirect_to dashboard_users_url, :notice => t('users.messages.created')
+      else
+        render :action => 'new'
+      end
     else
-      render :action => 'new'
+      redirect_to dashboard_users_url, :alert => t('users.messages.user_cant_be_created')
     end
   end
 

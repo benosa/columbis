@@ -23,7 +23,9 @@ class Dashboard::CompaniesController < ApplicationController
   def update
     params[:company].delete(:import) # no access to import
     @company = current_company unless @company
+    Rails.logger.debug("olo_uns #{@company.offices.size}")
     if @company.update_attributes(params[:company])
+      Rails.logger.debug("olo_save #{@company.offices.size}")
       current_user.update_attribute(:office_id, @company.offices.first.id) if current_user.office.nil? and !@company.offices.empty?
 
       if @company.previous_changes['subdomain'] != nil

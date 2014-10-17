@@ -184,10 +184,8 @@ class Company < ActiveRecord::Base
   end
 
   def number_of_offices
-    Rails.logger.debug("olo_val #{offices.size}")
-    false
-    if tariff.offices_count > 0 && offices.size > tariff.offices_count
-      errors.add(:company, "oloo11232")
+    if tariff.offices_count > 0 && offices.length > tariff.offices_count
+      errors.add(:base, I18n.t("dashboard.companies.errors.cant_add_office"))
     end
   end
 

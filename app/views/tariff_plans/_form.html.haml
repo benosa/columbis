@@ -12,6 +12,10 @@
         %p= f.label :price
         = f.number_field :price
         = f.select :currency, ([CurrencyCourse::PRIMARY_CURRENCY]).collect { |o| [t(o.upcase), o] }, {}, :class => 'price_select', :not_highlighted => true
+        %p= f.label :price_half_year
+        = f.number_field :price_half_year
+        %p= f.label :price_year
+        = f.number_field :price_year
         %p= f.label :users_count
         = f.number_field :users_count
         %p= f.label :offices_count

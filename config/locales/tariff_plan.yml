@@ -5,6 +5,8 @@ ru:
       settings: 'Настройки'
       name: 'Имя'
       price: 'Цена'
+      price_half_year: 'Цена за полгода'
+      price_year: 'Цена за год'
       active: 'Активный'
       users_count: 'Количество пользователей'
       place_size: 'Пространство, ГБ'

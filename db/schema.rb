@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141014103221) do
+ActiveRecord::Schema.define(:version => 20141016050248) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -464,6 +464,8 @@ ActiveRecord::Schema.define(:version => 20141014103221) do
     t.boolean  "extended_potential_clients",                                :default => false, :null => false
     t.integer  "offices_count"
     t.integer  "claims_count"
+    t.float    "price_half_year",                                           :default => 0.0
+    t.float    "price_year",                                                :default => 0.0
   end
 
   create_table "tasks", :force => true do |t|

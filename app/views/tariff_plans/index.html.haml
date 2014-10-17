@@ -9,6 +9,10 @@
     %th
       %span=t('.price')
     %th
+      %span=t('.price_half_year')
+    %th
+      %span=t('.price_year')
+    %th
       %span=t('.active')
     %th.tariff_settings
       %span=t('.settings')
@@ -19,6 +23,8 @@
     %tr
       %td= "#{tariff_plan.name}#{" (#{TariffPlan.human_attribute_name :default})" if tariff_plan.default}"
       %td= tariff_plan.price.to_s + " " + t(tariff_plan.currency)
+      %td= tariff_plan.price_half_year.to_s + " " + t(tariff_plan.currency)
+      %td= tariff_plan.price_year.to_s + " " + t(tariff_plan.currency)
       %td
         - if tariff_plan.active
           %i.icon-ok

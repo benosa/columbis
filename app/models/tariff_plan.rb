@@ -2,7 +2,7 @@ class TariffPlan < ActiveRecord::Base
   attr_accessible :active, :analytics, :back_office, :boss_desktop, :claims_base, :crm_system,
                   :documents_flow, :managers_reminder, :name, :place_size, :price, :sms_sending,
                   :users_count, :currency, :default, :extended_potential_clients, :offices_count,
-                  :claims_count
+                  :claims_count, :price_half_year, :price_year
 
   has_many :user_payments
   has_many :companies, :foreign_key => :tariff_id

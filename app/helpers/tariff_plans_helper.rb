@@ -6,7 +6,7 @@ module TariffPlansHelper
 
   def tariff_plans_data
     tariff_plans = active_tariff_plans
-    tariff_plans.collect { |tp| [tp.id, tp.currency, tp.price] } if tariff_plans
+    tariff_plans.collect { |tp| [tp.id, tp.currency, tp.price, tp.price_half_year, tp.price_year, I18n.t(tp.currency)] } if tariff_plans
   end
 
   def active_tariff_plans

@@ -104,12 +104,12 @@ function step6_images_position(delta) {
   $('#glove_step6_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save').first().offset();
   $('#glove_step6_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
-  if (get_delta() <= 0.8) {
-    offset = $('#claim_applicant_attributes_address').offset();
-    $('#cat_step6').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
-    offset = $('.header').offset();
-    $('#cloud1_step6').offset({ top: offset.top + 15, left: offset.left + 20 });
-    $('#cloud1_step6').css({ zIndex: 99999 })
+  if (get_delta() <= 0.75) {
+    offset = $('#claim_arrival_date').offset();
+    $('#cat_step6').offset({ top: offset.top - 185 * get_delta(), left: offset.left + 80 * get_delta() });
+  //  offset = $('.h1_title').offset();
+    $('#cloud1_step6').offset({ top: offset.top - 20 , left: offset.left + 160 * get_delta() });
+   // $('#cloud1_step6').css({ zIndex: 99999 })
   } else {
     offset = $('#claim_applicant_attributes_address').offset();
     $('#cat_step6').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
@@ -334,7 +334,7 @@ $(function(){
   if (step == '6') {
     new_claim_scroll();
     $("body").on("column_resize", step6_images_position);
-    add_image('cloud1_step6', 'game-6.png', 0.75, 'absolute', 98);
+    add_image('cloud1_step6', 'game-6.png', 0.70, 'absolute', 98);
     add_image('cat_step6', 'cat_left.png', 1, 'absolute', 98);
     add_image('glove_step6', 'fingerRightTop.png', 1, 'absolute', 9999);
     add_image('glove_step6_2', 'fingerRightTop.png', 1, 'absolute', 9999);

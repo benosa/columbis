@@ -40,11 +40,7 @@ function set_scale(){
 function set_button_position(delta) {
   set_scale();
   offset = $('.logo').offset();
-  if (get_delta() <= 0.75 && $('.long_menu').length) {
-    $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 200 * get_delta()});
-  } else {
-    $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 90 * get_delta()});
-  }
+  $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 90 * get_delta()});
 }
 
 function step0_images_position(delta) {
@@ -77,7 +73,10 @@ function step3_images_position(delta) {
   set_scale();
   var offset = $('.save').offset();
   $('#cat_step3').offset({ top: offset.top - 300 * get_delta(), left: offset.left - 350 * get_delta()});
-  if (get_delta() <= 0.8) {
+  if (get_delta() <= 0.75) {
+    offset = $('.back').offset();
+    $('#cloud1_step3').offset({ top: offset.top - 330 * get_delta(), left: offset.left + 50});
+  } else if (get_delta() <= 0.9) {
     offset = $('.back').offset();
     $('#cloud1_step3').offset({ top: offset.top - 330 * get_delta(), left: offset.left + 200});
   } else {
@@ -96,7 +95,7 @@ function step4_images_position(delta) {
 function step5_images_position(delta) {
   set_scale();
   var offset = $('.new_claim_link').first().offset();
-  $('#cat_step5').offset({ top: offset.top + 35, left: offset.left + 100 });
+  $('#cat_step5').offset({ top: offset.top + 35, left: offset.left + 80 });
   $('#cloud1_step5').offset({ top: offset.top + 100, left: offset.left + 395 });
 }
 
@@ -108,16 +107,23 @@ function step6_images_position(delta) {
   $('#glove_step6_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save').first().offset();
   $('#glove_step6_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
-  if (get_delta() <= 0.75) {
-    offset = $('#claim_arrival_date').offset();
-    $('#cat_step6').offset({ top: offset.top - 195 * get_delta(), left: offset.left + 80 * get_delta() });
-    $('#cloud1_step6').offset({ top: offset.top - 50 , left: offset.left + 170 * get_delta() });
+  if (get_delta() <= 0.8) {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step6').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
+    offset = $('.header').offset();
+    $('#cloud1_step6').offset({ top: offset.top + 15, left: offset.left + 20 });
+    $('#cloud1_step6').css({ zIndex: 99999 })
   } else {
     offset = $('#claim_applicant_attributes_address').offset();
     $('#cat_step6').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
     $('#cloud1_step6').offset({ top: offset.top + 5 * get_delta(), left: offset.left + 120 * get_delta() });
   }
 }
+
+// function step7_images_position(delta) {
+//   var offset = $('.id_link').first().offset();
+//   $('#cat_step7').offset({ top: offset.top + 2, left: offset.left + 17 });
+// }
 
 function step7_images_position(delta) {
   set_scale();
@@ -143,10 +149,12 @@ function step9_images_position(delta) {
   $('#glove_step9_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save_and_close').first().offset();
   $('#glove_step9_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
-  if (get_delta() <= 0.75) {
-    offset = $('#claim_arrival_date').offset();
-    $('#cat_step9').offset({ top: offset.top - 195 * get_delta(), left: offset.left + 80 * get_delta() });
-    $('#cloud1_step9').offset({ top: offset.top - 50 , left: offset.left + 170 * get_delta() });
+  if (get_delta() <= 0.8) {
+    offset = $('#claim_applicant_attributes_address').offset();
+    $('#cat_step9').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
+    offset = $('.header').offset();
+    $('#cloud1_step9').offset({ top: offset.top + 15, left: offset.left + 20 });
+    $('#cloud1_step9').css({ zIndex: 99999 })
   } else {
     offset = $('#claim_applicant_attributes_address').offset();
     $('#cat_step9').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
@@ -185,8 +193,18 @@ function step14_images_position(delta) {
   // offset = $('#tourist_phone_number').offset();
   // $('#glove2').offset({ top: offset.top - 30, left: offset.left + 280});
   offset = $('.save_and_close').first().offset();
-  $('#cat_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 330 * get_delta()});
-  $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 540 * get_delta()});
+  if (get_delta() <= 0.75 ) {
+    $('#cat_l_step14').show();
+    $('#cat_step14').hide();
+    $('#cat_l_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left + 30 * get_delta()});
+    $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 180 * get_delta()});
+  } else {
+    $('#cat_l_step14').hide();
+    $('#cat_step14').show();
+    $('#cat_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 330 * get_delta()});
+    $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 540 * get_delta()});
+  }
+
 }
 
 function add_image(id, name, delta, position, zindex) {
@@ -329,7 +347,7 @@ $(function(){
   if (step == '6') {
     new_claim_scroll();
     $("body").on("column_resize", step6_images_position);
-    add_image('cloud1_step6', 'game-6.png', 0.70, 'absolute', 98);
+    add_image('cloud1_step6', 'game-6.png', 0.75, 'absolute', 98);
     add_image('cat_step6', 'cat_left.png', 1, 'absolute', 98);
     add_image('glove_step6', 'fingerRightTop.png', 1, 'absolute', 9999);
     add_image('glove_step6_2', 'fingerRightTop.png', 1, 'absolute', 9999);
@@ -452,6 +470,8 @@ $(function(){
 
   if (step == '14') {
     add_image('cat_step14', 'cat_right.png', 1, 'fixed', 9999);
+    add_image('cat_l_step14', 'cat_left.png', 1, 'fixed', 9999);
+    $('#cat_l_step14').hide();
     add_image('cloud1_step14', 'game-12.png', 0.75, 'fixed', 999);
     add_image('glove1_step14', 'fingerLeftTop.png', 1, 'absolute', 9999);
     step14_images_position(1);

@@ -27,11 +27,15 @@ $(document).ready ->
       period = parseInt this.period.val()
       if !isNaN(id) && !isNaN(period)
         $('#user_payment_period').ikSelect("remove_options", ['1', '3', '6', '12'])
-        #period = period - 2 if period >= 12 # 2 month free
+
         N = this.data.length
         for _i in [0...N]
           t = this.data[_i]
           if t[0] == id
+            if (t[3] == 0)
+              t[3] = t[2] * 6
+            if (t[4] == 0)
+              t[4] = t[2] * 10
             $('#user_payment_period').ikSelect("add_options", { 1: this.periods[1] + ' (' + t[2] + ' ' + t[5] + ')'})
             $('#user_payment_period').ikSelect("add_options", { 3: this.periods[3] + ' (' + 3 * t[2] + ' ' + t[5] + ')'})
             $('#user_payment_period').ikSelect("add_options", { 6: this.periods[6] + ' (' + t[3] + ' ' + t[5] + ')'})

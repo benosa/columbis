@@ -202,7 +202,6 @@ class Company < ActiveRecord::Base
 
     def check_offices_attributes(attributes)
       offices.count < offices.length && attributes['id'].blank? && attributes['name'].blank?
-      false
     end
 
     def check_printers_attributes(attributes)

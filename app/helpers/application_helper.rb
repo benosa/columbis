@@ -370,4 +370,10 @@ module ApplicationHelper
       end
     end
 
+    def is_management?
+      controllers =  ['dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities',
+        'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans']
+      controllers.include? params[:controller]
+    end
+
 end

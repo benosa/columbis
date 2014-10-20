@@ -256,6 +256,10 @@ TABLE OF CONTENTS
   height: 100%;
 }
 
+.long_menu {
+  min-width: 1200px;
+}
+
 /*  _______________________________________
 
     03 MOBILES

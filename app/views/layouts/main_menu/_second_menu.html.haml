@@ -1,5 +1,5 @@
 .second_menu
-  %ul.rmenu
+  %ul.rmenu{class: is_management? ? 'long_menu' : ''}
     - unless current_company.new_record?
       - case params[:controller]
         - when 'claims'

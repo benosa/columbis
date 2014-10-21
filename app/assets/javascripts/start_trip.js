@@ -40,7 +40,11 @@ function set_scale(){
 function set_button_position(delta) {
   set_scale();
   offset = $('.logo').offset();
-  $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 90 * get_delta()});
+  if (get_delta() <= 0.75 && $('.long_menu').length) {
+    $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 200 * get_delta()});
+  } else {
+    $('#disable_game').offset({ top: offset.top + 40 * get_delta(), left: offset.left - 90 * get_delta()});
+  }
 }
 
 function step0_images_position(delta) {
@@ -107,23 +111,16 @@ function step6_images_position(delta) {
   $('#glove_step6_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save').first().offset();
   $('#glove_step6_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
-  if (get_delta() <= 0.8) {
-    offset = $('#claim_applicant_attributes_address').offset();
-    $('#cat_step6').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
-    offset = $('.header').offset();
-    $('#cloud1_step6').offset({ top: offset.top + 15, left: offset.left + 20 });
-    $('#cloud1_step6').css({ zIndex: 99999 })
+  if (get_delta() <= 0.75) {
+    offset = $('#claim_arrival_date').offset();
+    $('#cat_step6').offset({ top: offset.top - 195 * get_delta(), left: offset.left + 80 * get_delta() });
+    $('#cloud1_step6').offset({ top: offset.top - 50 , left: offset.left + 170 * get_delta() });
   } else {
     offset = $('#claim_applicant_attributes_address').offset();
     $('#cat_step6').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });
     $('#cloud1_step6').offset({ top: offset.top + 5 * get_delta(), left: offset.left + 120 * get_delta() });
   }
 }
-
-// function step7_images_position(delta) {
-//   var offset = $('.id_link').first().offset();
-//   $('#cat_step7').offset({ top: offset.top + 2, left: offset.left + 17 });
-// }
 
 function step7_images_position(delta) {
   set_scale();
@@ -149,12 +146,10 @@ function step9_images_position(delta) {
   $('#glove_step9_2').offset({ top: offset.top + 20 * get_delta(), left: offset.left - 110 * get_delta()});
   offset = $('.save_and_close').first().offset();
   $('#glove_step9_3').offset({ top: offset.top - 100 * get_delta(), left: offset.left - 110 * get_delta()});
-  if (get_delta() <= 0.8) {
-    offset = $('#claim_applicant_attributes_address').offset();
-    $('#cat_step9').offset({ top: offset.top + 45 * get_delta(), left: offset.left - 140 * get_delta() });
-    offset = $('.header').offset();
-    $('#cloud1_step9').offset({ top: offset.top + 15, left: offset.left + 20 });
-    $('#cloud1_step9').css({ zIndex: 99999 })
+  if (get_delta() <= 0.75) {
+    offset = $('#claim_arrival_date').offset();
+    $('#cat_step9').offset({ top: offset.top - 195 * get_delta(), left: offset.left + 80 * get_delta() });
+    $('#cloud1_step9').offset({ top: offset.top - 50 , left: offset.left + 170 * get_delta() });
   } else {
     offset = $('#claim_applicant_attributes_address').offset();
     $('#cat_step9').offset({ top: offset.top + 35 * get_delta(), left: offset.left - 195 * get_delta() });

@@ -101,6 +101,8 @@
 
   .even td, .odd td { background: #F5F5F5; } // #FCFCFC gray background used only for canceled claims
 
+
+
   // Оld coloring for claims
   tbody {
     .red_back, .nothing_done, .hot, .not_ready, .received {
@@ -126,7 +128,7 @@
 
     .blue_back, .all_done, .departed {
       // background-color: #bde0fa !important;
-      background-color: #F5F5F5 !important; // temporary solution, in this meaning blue_back is just clear cell
+      background-color: #F5F5F5; // temporary solution, in this meaning blue_back is just clear cell
       span { color: black !important; }
     }
 
@@ -979,6 +981,13 @@ option {
     height: 30px;
     padding: 5px 19px 6px 19px;
   }
+}
+
+
+.claim_list_v2 .reservations {
+  tr:hover td {background: #cccccc}
+  .even td { background: #ffffff}
+  .odd td {background: #f4f4f4}
 }
 
 /* high_resolution */

@@ -220,7 +220,7 @@ class TouristsController < ApplicationController
     end
 
     def check_office(tourist)
-      if tourist.potential? && (current_user.office.id != tourist.office_id) && (is_manager? || is_supervisor?)
+      if tourist.potential? && (current_user.office.id != tourist.office_id) && is_manager?
         redirect_to tourists_path(potential: 1), :alert => I18n.t("tourists.messages.cant_edit")
       end
     end

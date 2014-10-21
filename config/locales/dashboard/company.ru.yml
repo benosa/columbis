@@ -60,6 +60,8 @@ ru:
         add_file: 'Добавить файл'
         mode_select_tooltip: 'Печатная форма с таким типом уже существует'
         country_select_tooltip: 'Памятка для данной страны уже существует'
+      errors:
+        cant_add_office: "Вы больше не можете добавлять офисы"
 
   activerecord:
     models:

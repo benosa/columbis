@@ -56,7 +56,7 @@
           = link_to '', '#', :class => 'del delete', :title => t('delete')
           %p= of.label :default_password, t('.office.default_password')
           = of.text_field :default_password, :class => 'office_input'
-          = of.hidden_field(:_destroy)
+          = of.hidden_field :_destroy, :value => false
           = of.hidden_field :id
       #add_office_block.fake_row.white
         = link_to t('.add_office'), '#', :class => 'add add_city'

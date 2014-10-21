@@ -105,7 +105,10 @@ class UserPayment < ActiveRecord::Base
         self.currency = self.tariff.currency
         self.period = 1 unless self.period
         payed_period = period >= 12 ? period - 2 : period
-        self.amount = self.tariff.price * payed_period - balance
+        self.amount = self.tariff.price * payed_period
+        self.amount = self.tariff.price_half_year if period == 6 && self.tariff.price_half_year > 0
+        self.amount = self.tariff.price_year if period == 12 && self.tariff.price_year > 0
+        self.amount = self.amount - balance
         self.amount = 0 if self.amount < 0
       end
     end

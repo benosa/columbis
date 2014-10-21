@@ -70,28 +70,36 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    @claim.fill_new
-    check_flights
+    if can?(:add_claim, :user)
+      @claim.fill_new
+      check_flights
+    else
+      redirect_to claims_url, :alert => t('claims.messages.claim_cant_be_created')
+    end
   end
 
   def create
-    @claim.assign_reflections_and_save(params[:claim])
+    if can?(:add_claim, :user)
+      @claim.assign_reflections_and_save(params[:claim])
 
-    unless @claim.errors.any?
-      respond_to do |format|
-        format.html {
-          redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
-          redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
-        }
-        format.js {
-          render :partial => 'claim_create'
-        }
+      unless @claim.errors.any?
+        respond_to do |format|
+          format.html {
+            redirect_path = @commit_type == :save_and_close ? claims_url : edit_claim_url(@claim)
+            redirect_to redirect_path, :notice => t('claims.messages.successfully_created_claim')
+          }
+          format.js {
+            render :partial => 'claim_create'
+          }
+        end
+      else
+        @claim.applicant ||= Tourist.new #Tourist.new(params[:claim][:applicant_attributes])
+        check_payments
+        check_flights
+        render :action => 'new'
       end
     else
-      @claim.applicant ||= Tourist.new #Tourist.new(params[:claim][:applicant_attributes])
-      check_payments
-      check_flights
-      render :action => 'new'
+      redirect_to claims_url, :alert => t('claims.messages.claim_cant_be_created')
     end
   end
 

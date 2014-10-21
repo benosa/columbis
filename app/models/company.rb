@@ -35,6 +35,7 @@ class Company < ActiveRecord::Base
   has_many :printers, :order => :id, :dependent => :destroy, inverse_of: :company
 
   validates_presence_of :name, :tariff_id, :tariff_end
+  validate :number_of_offices
   validates :subdomain, presence: true, subdomain: true,
     length: { minimum: 3, maximum: 20 },
     format: { with: /\A[-a-z0-9]{3,20}\Z/, message: proc{ I18n.t('activerecord.errors.messages.subdomain_invalid') } },
@@ -179,6 +180,12 @@ class Company < ActiveRecord::Base
     find_each do |company|
       Mailer.company_just_become_inactive(company).deliver
       Mailer.company_just_become_inactive_sup(company).deliver
+    end
+  end
+
+  def number_of_offices
+    if tariff.offices_count > 0 && offices.length > tariff.offices_count
+      errors.add(:base, I18n.t("dashboard.companies.errors.cant_add_office"))
     end
   end
 

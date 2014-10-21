@@ -14,8 +14,27 @@ class Ability
 
     full_rights_by_role
     restrictions_on_rights_by_tariff() if @is_paid
+    check_adding
 
     demo_restriction
+  end
+
+  def check_adding
+    if @tariff
+      if @tariff.claims_count.to_i > 0 &&
+        Claim.where(company_id: @company.id).where('extract(month from reservation_date) = ?', Time.now.month).
+        where('extract(year from reservation_date) = ?', Time.now.year).count >= @tariff.claims_count.to_i
+        cannot :add_claim, :user
+      else
+        can :add_claim, :user
+      end
+
+      if @tariff.users_count.to_i > 0 && User.where(company_id: @company.id).count >= @tariff.users_count.to_i
+        cannot :add_user, :user
+      else
+        can :add_user, :user
+      end
+    end
   end
 
   def full_rights_by_role

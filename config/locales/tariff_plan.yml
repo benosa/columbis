@@ -5,6 +5,8 @@ ru:
       settings: 'Настройки'
       name: 'Имя'
       price: 'Цена'
+      price_half_year: 'Цена за полгода'
+      price_year: 'Цена за год'
       active: 'Активный'
       users_count: 'Количество пользователей'
       place_size: 'Пространство, ГБ'
@@ -22,6 +24,8 @@ ru:
       edit: "Изменение тарифного плана %{tariff_plan}"
       new: 'Добавление тарифного плана'
       extended_potential_clients: 'Расширенная форма потенциальных клиентов'
+      offices_count: 'Количество офисов'
+      claims_count: 'Количество заявок в месяц'
   activerecord:
     attributes:
       tariff_plan:

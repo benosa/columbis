@@ -104,6 +104,21 @@
 
 
   // Оld coloring for claims
+  tr.total {
+    td { background: #bde0fa !important; }
+    .description { text-align: center; }
+  }
+
+  tr.row.highlight {
+    td { background-color: #bde0fa;
+      &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #bde0fa !important; }
+      &.buh_col.red_back { background-color: #ed2222 !important; }
+    }
+    &.gray_back td { background-color: #bde0fa !important; }
+  }
+}
+
+.mistral-company .claims .reservations {
   tbody {
     .red_back, .nothing_done, .hot, .not_ready, .received {
       background-color: #ED2222 !important;
@@ -138,18 +153,6 @@
     }
   }
 
-  tr.total {
-    td { background: #bde0fa !important; }
-    .description { text-align: center; }
-  }
-
-  tr.row.highlight {
-    td { background-color: #bde0fa;
-      &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #bde0fa !important; }
-      &.buh_col.red_back { background-color: #ed2222 !important; }
-    }
-    &.gray_back td { background-color: #bde0fa !important; }
-  }
 }
 
 .reservations th.double_sort a.sort_active.desc {
@@ -318,7 +321,7 @@ option {
   .wrapper, .claims, .reservations_wrapper { overflow: visible; }
   // .claims .reservations { margin-bottom: 171px; }
 
-  .buh_col { background: #FFFFFF !important; } // #FCFFD5
+  .buh_col { background: #FFFFFF } // #FCFFD5
   .thick_border { border-left: 2px solid #999; }
 
   .claims_tooltip {
@@ -981,13 +984,6 @@ option {
     height: 30px;
     padding: 5px 19px 6px 19px;
   }
-}
-
-
-.claim_list_v2 .reservations {
-  tr:hover td {background: #cccccc}
-  .even td { background: #ffffff}
-  .odd td {background: #f4f4f4}
 }
 
 /* high_resolution */

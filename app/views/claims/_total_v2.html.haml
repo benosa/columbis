@@ -1,0 +1,14 @@
+%tr{ :class => 'total', :data => {:date => total.reservation_date} }
+  %td.description{ :colspan => 21 }
+    = description
+  %td.thick_border= as_money(total.approved_tourist_advance)
+  %td
+  %td= as_money(total.approved_operator_advance)
+  %td= as_money(total.profit_acc)
+  %td= total.profit_in_percent_acc.to_percent
+  - if show_bonus_columns
+    %td= as_money(total.profit)
+    %td= total.profit_in_percent.to_percent
+    %td
+    %td= as_money(total.bonus)
+  %td.thick_border{ :colspan => 5 }

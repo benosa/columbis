@@ -1,0 +1,23 @@
+.claim_list_v2 .reservations {
+  tr:hover td {background: #cccccc}
+  .even td,  { background: #ffffff}
+  .odd td {background: #f4f4f4}
+
+  td span {color: black;}
+
+  .green_back, .docs_sent {
+    background-color: #53aa55 !important;
+    span { color: black !important; }
+  }
+
+  .red_back, .nothing_done, .hot, .not_ready, .received {
+    background-color: #f05f5f !important;
+    span { color: black !important; }
+    color: black !important;
+  }
+
+  .orange_back, .docs_got, .soon {
+    background-color: #ffb1b1 !important;
+    span { color: black !important; }
+  }
+}

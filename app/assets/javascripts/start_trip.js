@@ -3,7 +3,7 @@ var ratios = {
    1024: 0.7,
    1280: 0.75,
    1366: 0.8,
-   1500: 0.9
+   1550: 0.9
 }
 
 function get_delta() {
@@ -77,14 +77,19 @@ function step3_images_position(delta) {
   set_scale();
   var offset = $('.save').offset();
   $('#cat_step3').offset({ top: offset.top - 300 * get_delta(), left: offset.left - 350 * get_delta()});
+  $('#cloud1_step3r').show();
+  $('#cloud1_step3').hide();
   if (get_delta() <= 0.75) {
     offset = $('.back').offset();
-    $('#cloud1_step3').offset({ top: offset.top - 330 * get_delta(), left: offset.left + 50});
+    $('#cloud1_step3r').offset({ top: offset.top - 290 * get_delta(), left: offset.left + 110});
   } else if (get_delta() <= 0.9) {
     offset = $('.back').offset();
-    $('#cloud1_step3').offset({ top: offset.top - 330 * get_delta(), left: offset.left + 200});
+    $('#cloud1_step3r').offset({ top: offset.top - 270 * get_delta(), left: offset.left + 280});
   } else {
-    $('#cloud1_step3').offset({ top: offset.top - 800 * get_delta(), left: offset.left - 800 * get_delta()});
+    $('#cloud1_step3r').hide();
+    $('#cloud1_step3').show();
+
+    $('#cloud1_step3').offset({ top: offset.top - 700 * get_delta(), left: offset.left - 650 * get_delta()});
   }
 }
 
@@ -189,13 +194,13 @@ function step14_images_position(delta) {
   // $('#glove2').offset({ top: offset.top - 30, left: offset.left + 280});
   offset = $('.save_and_close').first().offset();
   if (get_delta() <= 0.75 ) {
-    $('#cat_l_step14').show();
-    $('#cat_step14').hide();
-    $('#cat_l_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left + 30 * get_delta()});
-    $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 180 * get_delta()});
+    $('#cloud1_step14r').show();
+    $('#cloud1_step14').hide();
+    $('#cat_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 350 * get_delta()});
+    $('#cloud1_step14r').offset({ top: offset.top - 445 * get_delta(), left: offset.left - 170 * get_delta()});
   } else {
-    $('#cat_l_step14').hide();
-    $('#cat_step14').show();
+    $('#cloud1_step14r').hide();
+    $('#cloud1_step14').show();
     $('#cat_step14').offset({ top: offset.top - 295 * get_delta(), left: offset.left - 330 * get_delta()});
     $('#cloud1_step14').offset({ top: offset.top - 625 * get_delta(), left: offset.left - 540 * get_delta()});
   }
@@ -307,7 +312,10 @@ $(function(){
 
   if (step == '3') {
     add_image('cat_step3', 'cat_right.png', 1, 'fixed', 9999);
-    add_image('cloud1_step3', 'game-3.png', 0.8, 'fixed', 9999);
+    add_image('cloud1_step3', 'game-3b.png', 0.8, 'fixed', 9999);
+    add_image('cloud1_step3r', 'game-3r.png', 0.8, 'fixed', 9999);
+    $('#cloud1_step3').hide();
+
     step3_images_position(1);
     resize_action(step3_images_position, 1);
 
@@ -465,8 +473,8 @@ $(function(){
 
   if (step == '14') {
     add_image('cat_step14', 'cat_right.png', 1, 'fixed', 9999);
-    add_image('cat_l_step14', 'cat_left.png', 1, 'fixed', 9999);
-    $('#cat_l_step14').hide();
+    add_image('cloud1_step14r', 'game-14l.png', 0.75, 'fixed', 9999);
+    $('#cloud1_step14r').hide();
     add_image('cloud1_step14', 'game-12.png', 0.75, 'fixed', 999);
     add_image('glove1_step14', 'fingerLeftTop.png', 1, 'absolute', 9999);
     step14_images_position(1);

@@ -1,4 +1,7 @@
 # Custom delayed jobs for import
+# Импорт производится из xls файла в стандартной кодировке (не xml)
+# Сейчас включен импорт только потенциальный клиентов на первом листе в формате
+# ФИО, Телефон(+7...), Email, Пожелания со второй строки
 module ImportJobs
 
   def self.import_file(import_info_id)
@@ -17,17 +20,17 @@ module ImportJobs
 
       import_info = ImportInfo.find(import_info_id)
       if import_info.filename?
-        importing = Import::Formats::XLS.new([:client, :operator, :tourist, :claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
-#        importing = Import::Formats::XLS.new([:claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
+        importing = Import::Formats::XLS.new([:client_simple], import_info.filename.path, import_info.company_id, import_info.id)
+      #  importing = Import::Formats::XLS.new([:client, :operator, :tourist, :claim, :payment_operator, :payment_tourist], import_info.filename.path, import_info.company_id, import_info.id)
 
         result = importing.start
         if result[:success]
-          claim_ids = ImportItem.select(:model_id).where(model_class: 'Claim', import_info_id: import_info_id).all.map { |c| c.model_id }
-          if claim_ids.count
-            Claim.where(id: claim_ids).each do |cl|
-              cl.save
-            end
-          end
+          # claim_ids = ImportItem.select(:model_id).where(model_class: 'Claim', import_info_id: import_info_id).all.map { |c| c.model_id }
+          # if claim_ids.count
+          #   Claim.where(id: claim_ids).each do |cl|
+          #     cl.save
+          #   end
+          # end
           count = ImportItem.where(import_info_id: import_info_id).count
           success_count = ImportItem.where(import_info_id: import_info_id, success: true).count
           ImportInfo.update(import_info_id, status: 'success', count: count, success_count: success_count)

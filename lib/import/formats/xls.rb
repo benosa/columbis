@@ -19,11 +19,15 @@ module Import
       end
 
       def check_tabs(tabs_info)
+        logger = Logger.new('log/import.log')
         begin
           oo = Roo::Excel.new(@file)
         rescue
+          logger.info "error #{@file}"
           return result = { success: false, :data => {file_format: 'неверный'} }
         end
+
+        logger.info "open #{@file}"
 
         result = { success: true, :data => {} }
         tabs_info.each do |k,v|

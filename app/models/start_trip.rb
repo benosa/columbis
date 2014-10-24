@@ -21,7 +21,7 @@ class StartTrip < ActiveRecord::Base
         self.active = false
         self.save
       elsif active
-        path = dashboard_edit_company_path if (step == 1) && req[:path] != dashboard_edit_company_path
+        #path = dashboard_edit_company_path if (step == 1) && req[:path] != dashboard_edit_company_path
         path = dashboard_users_path if (step == 2) && req[:path] != dashboard_users_path
         if (step == 3) && req[:path] != new_dashboard_user_path && req[:get]
           path = new_dashboard_user_path

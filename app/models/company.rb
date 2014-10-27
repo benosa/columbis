@@ -184,7 +184,7 @@ class Company < ActiveRecord::Base
   end
 
   def number_of_offices
-    if tariff.offices_count > 0 && offices.length > tariff.offices_count
+    if tariff.offices_count.to_i > 0 && offices.length > tariff.offices_count
       errors.add(:base, I18n.t("dashboard.companies.errors.cant_add_office"))
     end
   end

@@ -21,4 +21,6 @@
 *= require spectrum
 *= require data_transfer
 *= require start_trip
+*= require claims
+*= require new_design/css/style_v2
 */

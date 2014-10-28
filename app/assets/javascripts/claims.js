@@ -105,6 +105,7 @@ function loadClaimsByScroll(data){
       set_editable_bonus_percent();
       remove_duplicated_totals();
       set_claims_tooltip();
+      set_list_v2_actions();
     }
   });
 }
@@ -1393,10 +1394,14 @@ $(function() {
 });
 
 // Claims list V2
-$(function() {
+function set_list_v2_actions() {
   $('.claim_list_v2 tr').on('click', function() {
     if ($(this).data('edit_path') != undefined) {
       window.location.href = $(this).data('edit_path');
     }
   });
+}
+
+$(function() {
+  set_list_v2_actions();
 });

@@ -87,8 +87,13 @@ class User < ActiveRecord::Base
   end
 
   def self.available_colors
-    @available_colors = YAML.load_file("#{Rails.root}/app/assets/colors.yml")['colors'].sort unless @available_colors
+    @available_colors = YAML.load_file("#{Rails.root}/app/assets/colors_short.yml")['color_short_list'].sort unless @available_colors
     @available_colors
+  end
+
+  def check_color
+    self.color = User.available_colors.sample[1] unless color
+    color
   end
 
   def available_roles

@@ -1,5 +1,4 @@
 /*
-*= require claims
 *= require claim_list_short
 *= require company
 *= require tourists
@@ -185,7 +184,7 @@ body {
 .green_back, .docs_sent {
   /*background: url(/assets/new_design/images/green_box.png) right repeat-x !important;*/
   // background: #e7f9e9 !important;
-  background: #99F7A5 !important;
+  background: #99F7A5;
 }
 
 .navy_back, .visa_approved {
@@ -197,7 +196,7 @@ body {
 .blue_back, .all_done, .departed {
   /*background: url(/assets/new_design/images/dark_blue_box.png) right repeat-x #BDE0FA !important;*/
   // background: #e6eff8 !important;
-  background: #AED1F7 !important;
+  background: #AED1F7;
 }
 
 .gray_back {

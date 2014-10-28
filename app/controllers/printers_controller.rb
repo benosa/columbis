@@ -71,6 +71,10 @@ class PrintersController < ApplicationController
     end
   end
 
+  def print_vars
+    @vars = YAML.load_file("#{Rails.root}/app/assets/print_vars.yml")
+  end
+
   private
 
     def get_doc_part(printer, part)

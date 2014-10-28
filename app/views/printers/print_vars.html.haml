@@ -1,0 +1,13 @@
+%table.print_vars
+  - @vars.each do |key, value|
+    %tr
+      %td
+        %p
+          = key.mb_chars.upcase
+        - if value.class == Hash
+          - value.each do |key2, value2|
+            %p.second_lvl
+              = key2.mb_chars.upcase
+      %td
+        - if value.class != Hash
+          = value

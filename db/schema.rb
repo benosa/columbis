@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016050248) do
+ActiveRecord::Schema.define(:version => 20141028095154) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "addressable_id"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(:version => 20141016050248) do
     t.string   "actual_address"
     t.boolean  "short_claim_list",                                          :default => false, :null => false
     t.boolean  "active",                                                    :default => true
-    t.boolean  "extended_potential_clients",                                :default => false, :null => false
+    t.boolean  "extended_potential_clients",                                :default => true,  :null => false
     t.text     "admin_note"
     t.boolean  "claim_list_v2",                                             :default => true,  :null => false
   end
@@ -461,7 +461,7 @@ ActiveRecord::Schema.define(:version => 20141016050248) do
     t.datetime "created_at",                                                                   :null => false
     t.datetime "updated_at",                                                                   :null => false
     t.boolean  "default",                                                   :default => false, :null => false
-    t.boolean  "extended_potential_clients",                                :default => false, :null => false
+    t.boolean  "extended_potential_clients",                                :default => true,  :null => false
     t.integer  "offices_count"
     t.integer  "claims_count"
     t.float    "price_half_year",                                           :default => 0.0

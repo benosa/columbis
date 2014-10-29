@@ -31,6 +31,7 @@ class TouristsController < ApplicationController
   def create
     @tourist.company = current_company
     @tourist.set_params(tourist_params)
+    @tourist.potential = true if params['potential'] == '1' && !@tourist.potential
     @tourist.user = current_user
     @tourist.office = current_user.office if !(tourist_params[:office_id].to_i > 0)
     set_images

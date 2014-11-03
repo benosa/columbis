@@ -76,9 +76,13 @@ class TouristsController < ApplicationController
   def add_to_clients
     if @tourist.potential?
       @tourist.potential = false
-      check_address(@tourist, false)
-      @tourist.save
-      render :action => "edit"
+      @tourist.no_validation = true
+     # check_address(@tourist, false)
+      if @tourist.save
+        redirect_to new_claim_path(tourist_id: @tourist.id)
+      else
+        render :action => "edit"
+      end
     end
   end
 

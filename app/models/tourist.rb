@@ -13,7 +13,7 @@ class Tourist < ActiveRecord::Base
 
   attr_protected :company_id
 
-  attr_accessor :validate_secondary_attributes, :full_name
+  attr_accessor :validate_secondary_attributes, :full_name, :no_validation
 
   attr_accessor :tourist_params
 
@@ -46,7 +46,7 @@ class Tourist < ActiveRecord::Base
 
   # Additional attributes validation
   validates_presence_of :date_of_birth, :passport_series, :passport_number, :passport_valid_until,
-    :if => proc{ |tourist| !tourist.potential && tourist.send(:additional_attributes_validation_condition) }
+    :if => proc{ |tourist| !tourist.potential && !no_validation}#tourist.send(:additional_attributes_validation_condition) }
 
   # Secondary attributes validation
   validates :email, email: true, presence: true, :if => :secondary_attributes_validation_condition # uniqueness: { scope: :company_id }
@@ -142,7 +142,7 @@ class Tourist < ActiveRecord::Base
     end
 
     def presence_of_full_name
-      unless potential?
+      unless (potential? || no_validation)
         atr = if last_name.blank? && first_name.blank? then :full_name
         elsif last_name.blank? then :last_name
         elsif first_name.blank? then :first_name

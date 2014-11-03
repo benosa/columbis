@@ -72,6 +72,7 @@ class ClaimsController < ApplicationController
   def new
     if can?(:add_claim, :user)
       @claim.fill_new
+      @claim.applicant = Tourist.find(params['tourist_id']) if params['tourist_id']
       check_flights
     else
       redirect_to claims_url, :alert => t('claims.messages.claim_cant_be_created')

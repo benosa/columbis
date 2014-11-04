@@ -163,7 +163,8 @@ namespace :operators do
         elem.include?("б-р") ||
         elem.include?("шоссе") ||
         elem.include?("проезд") ||
-        elem.include?("пр-д")
+        elem.include?("пр-д") ||
+        elem.include?("проспект")
         address["street"] = elem
         break
       end

@@ -43,7 +43,7 @@ namespace :operators do
     paths = []
     urls.each do |url|
       doc = Nokogiri::HTML(open url)
-      doc.xpath('//table[@class="mra-l"]/tr/td/nobr/a').each do |tag|
+      doc.xpath('//div[@class="b_inner__src_rslt_item"]/a').each do |tag|
         paths << "http://reestr.russiatourism.ru/?ac=view&id_reestr=#{tag[:href].split('=').last}"
       end
     end
@@ -72,8 +72,9 @@ namespace :operators do
     info = {url: path}
     puts "Open: #{path}"
     doc = Nokogiri::HTML(open(path))
+
     if doc
-      doc.xpath('//table[@class="mra-l"]/tr/td').each do |tag|
+      doc.xpath('//div[@class="b_inner__regis_item"]').each do |tag|
         case
         when tag.content.include?("Реестровый номер")
           info[:register_number] = tag.next_element.content.split(' ').last if tag.next_element
@@ -104,9 +105,9 @@ namespace :operators do
           info[:insurer_contract_date] = [date[2], date[1], date[0]].join('.')
         when tag.content.include?("Срок действия финансового обеспечения")
           content = tag.next_element.content if tag.next_element
-          date = content[2..11].split('/').map { |e| e.to_i }
+          date = content[3..11].split('/').map { |e| e.to_i }
           info[:insurer_contract_start] = [date[2], date[1], date[0]].join('.')
-          date = content.last(10).split('/').map { |e| e.to_i }
+          date = content.last(11).split('/').map { |e| e.to_i }
           info[:insurer_contract_end] = [date[2], date[1], date[0]].join('.')
         when tag.content.include?("Адрес (место нахождения):")
           info[:address] = tag.next_element.content if tag.next_element
@@ -121,8 +122,6 @@ namespace :operators do
   end
 
   def load_operator_info_to_base(operator_info)
-   # puts operator_info
-   # return
     if operator_info[:register_number]
       operator = Operator.where(:register_number => operator_info[:register_number],
         :register_series => operator_info[:register_series],
@@ -149,8 +148,10 @@ namespace :operators do
     address = {}
     address_array = address_string.gsub(/\,\s/, ',').split(',') if address_string
     # zip_code
-    address["zip_code"] = address_array[0]
-    address_array.delete_at(0)
+    if !(/[0-9]/=~ address_array[0]).nil?
+      address["zip_code"] = address_array[0]
+      address_array.delete_at(0)
+    end
     # street
     address_array.each do |elem|
       if elem.include?("ул.") ||
@@ -159,7 +160,10 @@ namespace :operators do
         elem.include?("пр.") ||
         elem.include?(" пер") ||
         elem.include?("пер.") ||
-        elem.include?("б-р")
+        elem.include?("б-р") ||
+        elem.include?("шоссе") ||
+        elem.include?("проезд") ||
+        elem.include?("пр-д")
         address["street"] = elem
         break
       end
@@ -203,7 +207,7 @@ namespace :operators do
     end
     # housing
     address_array.each do |elem|
-      if (elem.include?("д.") && !(/[0-9]/=~ elem).nil? ) || (/^\d+$|\d+\/\d+$|\d+.$|\d+\/\d+.$/=~ elem) == 0
+      if (elem.include?("д.") && !(/[0-9]/=~ elem).nil? ) || (/^\d+$|\d+\/\d+$|\d+.$|\d+\/\d+.$/=~ elem) != nil
         address["house_number"] = elem
         break
       end

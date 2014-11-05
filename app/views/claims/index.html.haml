@@ -39,12 +39,12 @@
     - cache [current_company, :top_managers], :expires_in => 1.hour do
       = render 'layouts/main_menu/top_managers' unless top_managers.empty?
 
-- if current_company.short_claim_list
-  = render :partial => 'list_short'
-- elsif current_company.claim_list_v2
-  = render :partial => 'list_v2'
-- else
-  = render :partial => 'list'
+-# if current_company.short_claim_list
+-#  = render :partial => 'list_short'
+-# elsif current_company.claim_list_v2
+= render :partial => 'list_v2'
+-# else
+-#  = render :partial => 'list'
 
 - content_for(:float_panel) do
   = link_to t('back'), :back, :class => 'back'

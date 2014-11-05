@@ -1,5 +1,5 @@
 %tr{ :class => 'total', :data => {:date => total.reservation_date} }
-  %td.description{ :colspan => 21 }
+  %td.description{ :colspan => (show_office && current_company.offices.count > 1) ? 22 : 21}
     = description
   %td.thick_border= as_money(total.approved_tourist_advance)
   %td
@@ -11,4 +11,4 @@
     %td= total.profit_in_percent.to_percent
     %td
     %td= as_money(total.bonus)
-  %td.thick_border{ :colspan => 3 }
+  %td.thick_border{ :colspan => 4 }

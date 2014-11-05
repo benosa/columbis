@@ -3,13 +3,11 @@
     %table#claims.reservations{ :rules => 'all'}
       %thead
         %tr.claims_header
-          %th.last_cols
+          %th= sort_link 'num', t('claims.index.num')
           %th= sort_link 'reservation_date', t('claims.index.reservation_date'), :desc
           %th= sort_link 'tourist_stat', t('claims.index.tourist_stat_br')
-          - if show_office
-            %th.blue_box
-              = sort_link 'office', t('claims.index.office')
-              = sort_link 'user_id', t('claims.index.manager')
+          - if show_office && current_company.offices.count > 1
+            %th.blue_box= sort_link 'user_id', t('claims.index.manager')
           - else
             %th.blue_box= sort_link 'user_id', t('claims.index.manager')
           %th.blue_box= sort_link 'applicant', t('claims.index.full_name')
@@ -43,6 +41,7 @@
           %th{ :class => show_accountant_columns && 'thick_border' }= sort_link 'documents_status', t('claims.index.docs_br')
           %th= sort_link 'docs_note', t('claims.index.memo')
           %th= sort_link 'check_date', t('claims.index.check_date')
+          %th.last_cols
 
       %tbody#claims_body
         = render partial: 'claims_v2', object: @claims, locals: { totals: @totals }

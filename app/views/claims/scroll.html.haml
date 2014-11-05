@@ -1,9 +1,9 @@
-- if current_company.short_claim_list
-  = render partial: 'claims_short', object: @claims, locals: { totals: @totals }
-- elsif current_company.claim_list_v2
-  = render partial: 'claims_v2', object: @claims, locals: { totals: @totals }
-- else
-  = render partial: 'claims', object: @claims, locals: { totals: @totals }
+-# if current_company.short_claim_list
+-#  = render partial: 'claims_short', object: @claims, locals: { totals: @totals }
+-# elsif current_company.claim_list_v2
+= render partial: 'claims_v2', object: @claims, locals: { totals: @totals }
+-# else
+-#  = render partial: 'claims', object: @claims, locals: { totals: @totals }
 
 - if next_page <= @claims_collection.total_pages
   %tr{ :class => "waypoint", :data => {:page => next_page} }

@@ -74,7 +74,7 @@ ru:
       currency: 'Валюта'
       check_date: 'Проверка вылета'
       calculation: 'Расчет'
-      calculation_rur: 'Расчет<br/>rur'
+      calculation_rur: 'Расчет,<br/>рубли'
       paid: 'Оплачено в валюте'
       docs: 'Документы'
       docs_br: 'Доку-<br/>менты'

@@ -10,4 +10,5 @@
       %li.first_menu_stroke{:class => params[:controller] == 'tasks' && 'active' }
         = link_to name, tasks_path
       %li.first_menu_stroke= link_to t('.download_instructions'), domain_root_url + 'uploads/instructions.pdf', target: '_blank'
+      %li.first_menu_stroke= link_to 'Переменные шаблонов', print_vars_path
 

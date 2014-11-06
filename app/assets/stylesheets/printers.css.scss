@@ -22,3 +22,13 @@ p.for_editor {
     height: 300px;
   }
 }
+
+table.print_vars {
+  margin-left: 20px;
+  td {
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+
+  .section_m td {padding-top: 25px;}
+}

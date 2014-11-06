@@ -71,6 +71,17 @@ class PrintersController < ApplicationController
     end
   end
 
+  def print_vars
+    @vars = YAML.load_file("#{Rails.root}/app/assets/print_vars.yml")
+    @table = []
+    @vars.each do |key, value|
+      @table << [key.to_s, '', value['.'].to_s.html_safe]
+      value.each do |key2, value2|
+        @table << ['', key2.mb_chars.upcase.to_s, value2.to_s.html_safe]
+      end
+    end
+  end
+
   private
 
     def get_doc_part(printer, part)

@@ -1,13 +1,10 @@
 %table.print_vars
-  - @vars.each do |key, value|
-    %tr
-      %td
-        %p
-          = key.mb_chars.upcase
-        - if value.class == Hash
-          - value.each do |key2, value2|
-            %p.second_lvl
-              = key2.mb_chars.upcase
-      %td
-        - if value.class != Hash
-          = value
+  - @table.each do |value|
+    - if value[1] != '.'
+      %tr{class: value[0] != '' ? 'section_m' : '' }
+        %td
+          = value[0]
+        %td
+          = value[1]
+        %td
+          = value[2]

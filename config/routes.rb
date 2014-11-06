@@ -150,6 +150,8 @@ Tourism::Application.routes.draw do
   match 'dashboard' => "dashboard#index"
   match 'online' => "site#online"
 
+  get 'print_vars' => 'printers#print_vars', as: 'print_vars'
+
   root :to => 'claims#index'
 
   match "/dj" => DelayedJobWeb, :anchor => false

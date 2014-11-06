@@ -8,7 +8,10 @@
       = truncate(claim.office.name, :length => 8)
   - manager_names = claim.office.name.to_s + ', ' + claim.user.try(:full_name).to_s + (", #{claim.assistant.try(:full_name)}" if claim.assistant.present?).to_s
   %td{ :title => manager_names + (is_admin? ? ", #{claim.company.name}" : ""), :style => claim.user.try(:color) && "background: none #{claim.user.try(:color)} !important;" }
-    = truncate(claim.user.try(:first_last_name), :length => 8)
+    - if current_company.claim_list_v2
+      = truncate(claim.user.try(:first_last_name), :length => 8)
+    - else
+      = truncate(claim.user.try(:login), :length => 8)
   %td{ :title => tourists_list(claim), :style => claim.assistant.try(:color) && "background: none #{claim.assistant.try(:color)} !important;" }
     = truncate(claim.applicant.try(:initials_name), :length => 8)
   %td{ :title => claim.applicant.try(:phone_number) }
@@ -71,3 +74,6 @@
     = l( claim.check_date, :format => :default )
   %td.docs_note{ :title => claim.docs_note }
     %span{ :class => !claim.docs_note.try(:empty?) && 'attention' }
+  - if !current_company.claim_list_v2
+    %td
+      = link_to '', edit_claim_path(claim), :class => 'edit_row'

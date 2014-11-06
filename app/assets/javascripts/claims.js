@@ -279,7 +279,7 @@ function set_claims_tooltip(init) {
     animation: false
   };
 
-  if ($('.claim_list_v1').length) {
+  if (!$('.js_v2').length) {
     options['trigger'] = 'manual';
   }
 
@@ -290,10 +290,6 @@ function set_claims_tooltip(init) {
           template: '<div class="tooltip claims_tooltip docs_note"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
           placement: 'left'
         });
-
-        if ($('.claim_list_v2').length) {
-          docs_note_opts['placement'] = 'right';
-        }
 
         $(this).tooltip(docs_note_opts).addClass('with_tooltip');
       } else {
@@ -1395,7 +1391,7 @@ $(function() {
 
 // Claims list V2
 function set_list_v2_actions() {
-  $('.claim_list_v2 tr').on('click', function() {
+  $('.js_v2 tr').on('click', function() {
     if ($(this).data('edit_path') != undefined) {
       window.location.href = $(this).data('edit_path');
     }

@@ -1,5 +1,4 @@
 .claim_list_v2 .reservations {
-  tr {cursor: pointer}
   tr:hover td {background: #cccccc}
   .even td,  { background: #ffffff}
   .odd td {background: #f4f4f4}
@@ -25,4 +24,8 @@
 
 .list_v2 .list_table tr {
   cursor: pointer
+}
+
+.js_v2 {
+  tr {cursor: pointer}
 }

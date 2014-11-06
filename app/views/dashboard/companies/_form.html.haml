@@ -26,9 +26,9 @@
           -#%p
           -#  = f.check_box :short_claim_list
           -#  = f.label :short_claim_list
-          -#%p
-          -#  = f.check_box :claim_list_v2
-          -#  = f.label :claim_list_v2
+          %p
+            = f.check_box :claim_list_v2
+            = f.label :claim_list_v2
         %p
           - if can?(:extended_potential_clients, :user) && company.created_at < '2014-10-28'
             = f.check_box :extended_potential_clients

@@ -1,4 +1,4 @@
-.claims.current_container.claim_list_v2
+.claims.current_container.claim_list_v2{class: current_company.claim_list_v2 ? 'js_v2' : '' }
   .reservations_wrapper
     %table#claims.reservations{ :rules => 'all'}
       %thead
@@ -43,6 +43,8 @@
           %th= sort_link 'docs_note', t('claims.index.memo')
           %th= sort_link 'check_date', t('claims.index.check_date')
           %th.last_cols
+          - if !current_company.claim_list_v2
+            %th.last_cols
 
       %tbody#claims_body
         = render partial: 'claims_v2', object: @claims, locals: { totals: @totals }

@@ -3,4 +3,7 @@
     MISS
   %div{:class => manager_pos(current_user) }
   %span
-    MISTRAL
+    - if is_mistral?
+      MISTRAL
+    - else
+      = current_company.name.upcase

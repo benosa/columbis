@@ -97,7 +97,7 @@ module Mistral
       # If data in current month are empty, get it from previous
       if !@report || @report.data.empty?
         @i = 1
-        while !@report || @report.data.empty? do
+        while (!@report || @report.data.empty?) && @i < 36 do
           report_options.merge!({
             start_date: (Date.current - @i.month).beginning_of_month,
             end_date: (Date.current - @i.month).end_of_month

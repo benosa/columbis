@@ -1,6 +1,6 @@
 .claim_list_v2 .reservations {
   tr:hover td {background: #cccccc}
-  .even td,  { background: #ffffff}
+  .even td  { background: #ffffff}
   .odd td {background: #f4f4f4}
 
   td span {color: black;}
@@ -28,4 +28,10 @@
 
 .js_v2 {
   tr {cursor: pointer}
+}
+
+.tourists {
+  tr:hover {background: #cccccc}
+  .even { background: #ffffff}
+  .odd {background: #f4f4f4}
 }

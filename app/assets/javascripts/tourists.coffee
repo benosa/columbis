@@ -3,7 +3,7 @@ set_tourists_tooltip = (init)->
     template: '<div class="tooltip tour_tip white"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
     placement: 'bottom'
     container: 'body'
-    delay: 100
+    delay: 300
     animation: false
 
   if !$('.list_v2').length
@@ -13,7 +13,7 @@ set_tourists_tooltip = (init)->
     if !$(@).hasClass('with_tooltip')
       $(@).tooltip(options).addClass('with_tooltip')
 
-  if init
+  if init && !$('.list_v2').length
     $('body')
       .on('click', '.tourists .with_tooltip', (e)-> $(@).tooltip('toggle'))
       .on('mouseout', '.tourists .with_tooltip', (e)->

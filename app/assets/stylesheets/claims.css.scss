@@ -120,29 +120,29 @@
 
 .mistral-company .claims .reservations {
   tbody {
-    .red_back, .nothing_done, .hot, .not_ready, .received {
-      background-color: #ED2222 !important;
-      color: black !important;
-      span { color: black !important; }
-    }
+    // .red_back, .nothing_done, .hot, .not_ready, .received {
+    //   background-color: #ED2222 !important;
+    //   color: black !important;
+    //   span { color: black !important; }
+    // }
 
-    .orange_back, .docs_got, .soon {
-      background-color: #ff8888 !important;
-      span { color: black !important; }
-    }
+    // .orange_back, .docs_got, .soon {
+    //   background-color: #ff8888 !important;
+    //   span { color: black !important; }
+    // }
 
-    .green_back, .docs_sent {
-      background-color: #21d00c !important;
-      span { color: black !important; }
-    }
+    // .green_back, .docs_sent {
+    //   background-color: #21d00c !important;
+    //   span { color: black !important; }
+    // }
 
     .navy_back, .visa_approved {
       background-color: #96B1F0 !important;
       span { color: black !important; }
-    }
+     }
 
     .blue_back, .all_done, .departed {
-      // background-color: #bde0fa !important;
+      background-color: #bde0fa !important;
       background-color: #F5F5F5; // temporary solution, in this meaning blue_back is just clear cell
       span { color: black !important; }
     }
@@ -359,25 +359,25 @@ option {
       padding: 2px 2px;
       p, span { color: #000; }
       border: 1px #333 solid;
-      &.buh_col { background: #BDE0FA !important; }
-      &.buh_col.red_back { background-color: #ed2222 !important; }
+     // &.buh_col { background: #BDE0FA !important; }
+     // &.buh_col.red_back { background-color: #ed2222 !important; }
     }
     tr {
       &.even, &.odd {
-        td { background: #BDE0FA; }
+       // td { background: #BDE0FA; }
       }
       &.total {
-        td { background: #E5F5FE !important; }
+       // td { background: #E5F5FE !important; }
       }
       &.row.highlight {
-        td { background-color: #E5F5FE;
+        td { //background-color: #E5F5FE;
           &.buh_col, &.departed, &.blue_back, &.all_done { background-color: #E5F5FE !important; }
           &.buh_col.red_back { background-color: #ed2222 !important; }
         }
         &.gray_back td { background-color: #E5F5FE !important; }
       }
     }
-    .blue_back, .all_done, .departed { background-color: #BDE0FA !important; }
+   // .blue_back, .all_done, .departed { background-color: #BDE0FA !important; }
   }
 
   .top {

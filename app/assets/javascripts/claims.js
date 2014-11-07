@@ -1391,9 +1391,11 @@ $(function() {
 
 // Claims list V2
 function set_list_v2_actions() {
-  $('.js_v2 tr').on('click', function() {
-    if ($(this).data('edit_path') != undefined) {
-      window.location.href = $(this).data('edit_path');
+  $('.js_v2 tr').on('click', function(event) {
+    if(!$(event.target).parents('.bonus_percent').length) {
+      if ($(this).data('edit_path') != undefined) {
+        window.location.href = $(this).data('edit_path');
+      }
     }
   });
 }

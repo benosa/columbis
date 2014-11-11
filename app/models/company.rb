@@ -168,18 +168,24 @@ class Company < ActiveRecord::Base
     where(["date_trunc('day', tariff_end) = ?", Time.zone.now.utc.beginning_of_day])
   end
 
-  def self.mail_tariff_end_soon
+  def self.mail_tariff_end_soon_and_update_free
     find_each do |company|
-      days = (company.tariff_end - Time.zone.now.utc.beginning_of_day).to_i / 1.day
-      Mailer.company_just_soon_become_inactive(company, days).deliver
-      Mailer.company_just_soon_become_inactive_sup(company, days).deliver
+      if company.tariff.price.to_f > 0
+        days = (company.tariff_end - Time.zone.now.utc.beginning_of_day).to_i / 1.day
+        Mailer.company_just_soon_become_inactive(company, days).deliver
+        Mailer.company_just_soon_become_inactive_sup(company, days).deliver
+      else
+        company.update_column(:tariff_end, Time.zone.now + 360.days)
+      end
     end
   end
 
   def self.mail_tariff_end
     find_each do |company|
-      Mailer.company_just_become_inactive(company).deliver
-      Mailer.company_just_become_inactive_sup(company).deliver
+      if company.tariff.price.to_f > 0
+        Mailer.company_just_become_inactive(company).deliver
+        Mailer.company_just_become_inactive_sup(company).deliver
+      end
     end
   end
 

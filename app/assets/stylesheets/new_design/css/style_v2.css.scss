@@ -5,7 +5,7 @@
 
   td span {color: black;}
 
-  .green_back, .docs_sent {
+  td.green_back, .docs_sent {
     background-color: #53aa55 !important;
     span { color: black !important; }
   }
@@ -28,6 +28,11 @@
 
 .js_v2 {
   tr {cursor: pointer}
+}
+
+.claims .reservations th.green_back {
+  background: url("/assets/green_title_1.png") repeat-x; // scroll right//, url("/assets/th_blue.png") repeat-x scroll left top;
+  background-color: #c4efbd;//#99f7a5;
 }
 
 .tourists {

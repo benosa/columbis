@@ -43,8 +43,10 @@ class PrintersController < ApplicationController
 
   def update
     if @printer.update_attributes(params[:printer])
-      set_doc_part(@printer, 'body', params[:doc_body]) if @printer.template?
-      set_doc_part(@printer, 'style', params[:doc_style]) if @printer.template? && is_admin?
+      if !params['printer']['template']
+        set_doc_part(@printer, 'body', params[:doc_body]) if @printer.template?
+        set_doc_part(@printer, 'style', params[:doc_style]) if @printer.template? && is_admin?
+      end
       redirect_to printers_path, :notice => t('printers.messages.successfully_updated_printer')
     else
       render :action => :edit

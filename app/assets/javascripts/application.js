@@ -32,3 +32,4 @@
 //= require user_payments
 //= require export_notification
 //= require start_trip
+//= require printers

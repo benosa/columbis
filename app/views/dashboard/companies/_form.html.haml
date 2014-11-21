@@ -30,7 +30,8 @@
             = f.check_box :claim_list_v2
             = f.label :claim_list_v2
         %p
-          - if can?(:extended_potential_clients, :user) && company.created_at < '2014-10-28'
+          - if can?(:extended_potential_clients, :user)
+            -# && company.created_at < '2014-10-28'
             = f.check_box :extended_potential_clients
             = f.label :extended_potential_clients, id: 'for_potential_client'
         %p= f.label :logo, "#{Company.human_attribute_name(:logo)} #{t('.logo_size')}"

@@ -58,11 +58,11 @@ class Ability
   end
 
   def extended_potential_clients_restrictions_on_right
-    if @tariff.extended_potential_clients
+   # if @tariff.extended_potential_clients
       can :extended_potential_clients, :user
-    else
-      cannot :extended_potential_clients, :user
-    end
+   # else
+   #   cannot :extended_potential_clients, :user
+   # end
   end
 
   def null_restrictions

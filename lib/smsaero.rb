@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Smsaero
   attr_accessor :login, :password, :json
   attr_accessor :data, :url

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Mistral module for special Mistral company functionality
 module Mistral
 

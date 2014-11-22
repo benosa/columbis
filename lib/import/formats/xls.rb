@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Import
   module Formats
     class XLS < Import::Importer

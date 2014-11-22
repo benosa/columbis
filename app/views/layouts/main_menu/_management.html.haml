@@ -1,6 +1,6 @@
 - c = params[:controller]
 - abil = params[:availability]
-- a_class = c == 'dashboard/companies' || c == 'dashboard/users' || c == 'printers' || c == 'operators' || c == 'cities' || c == 'countries' || c == 'dashboard/dropdown_values' || c == 'sms_sendings' || c == 'tariff_plans' ? 'active' : ''
+- a_class = c == 'dashboard/companies' || c == 'dashboard/users' || c == 'printers' || c == 'operators' || c == 'cities' || c == 'countries' || c == 'dashboard/dropdown_values' || c == 'tariff_plans' ? 'active' : ''
 
 %li{:class => a_class}
   %a{:href => dashboard_edit_company_path}= t('.management')

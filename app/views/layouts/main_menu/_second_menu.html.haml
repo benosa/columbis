@@ -4,9 +4,9 @@
       - case params[:controller]
         - when 'claims'
           = render 'layouts/main_menu/second_claims'
-        - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'sms_sendings', 'tariff_plans'
+        - when 'dashboard/companies', 'dashboard/users', 'printers', 'operators', 'cities', 'countries', 'dashboard/dropdown_values', 'tariff_plans'
           = render 'layouts/main_menu/second_management'
-        - when 'tourists'
+        - when 'tourists' , 'sms_sendings'
           = render 'layouts/main_menu/second_clients'
         - when 'boss/reports', 'boss/base'
           = render 'layouts/main_menu/second_reports'

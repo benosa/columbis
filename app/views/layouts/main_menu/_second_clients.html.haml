@@ -1,11 +1,16 @@
 - tourists_class = ''
 - potentials_class = ''
+- sms_sendings_class = ''
 
-- if params[:controller] == 'tourists'
-  - if params[:potential].blank?
-    - tourists_class = 'active'
-  - else
-    - potentials_class = 'active'
+- if params[:controller] == 'tourists' || params[:controller] == 'sms_sendings'
+ - li_class = 'active'
+ - if params[:potential] == 'true'
+  - potentials_class = 'active'
+ - elsif params[:sms_sendings] == 'true'
+  - sms_sendings_class = 'active'
+ - else
+  - tourists_class = 'active'
 
 %li{ :class => tourists_class }= link_to t('.tourists'), tourists_path
 %li{ :class => potentials_class }= link_to t('.potentials'), tourists_path(:potential => true)
+%li{ :class => sms_sendings_class }= link_to t('.sms_sendings'), sms_sendings_path(:sms_sendings => true)
